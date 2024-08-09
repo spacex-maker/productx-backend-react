@@ -1,6 +1,14 @@
 import axios from 'axios'
 import {message} from "antd";
-import { API_BASE_URL } from './config';
+
+let baseURL = 'http://localhost:8080'; // 默认地址，可以根据需要修改
+
+export const setBaseURL = (url) => {
+    baseURL = url;
+};
+
+export const API_BASE_URL = baseURL;
+
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
 })

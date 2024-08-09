@@ -17,8 +17,8 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilLockUnlocked, cilUser } from '@coreui/icons'
 import LoginHeader from 'src/views/pages/login/LoginHeader'
-import axiosInstance from 'src/axiosInstance'
-import { API_BASE_URL } from 'src/config'
+import { API_BASE_URL, axiosInstance ,setBaseURL} from 'src/axiosInstance'
+import {Input} from "antd";
 
 const captchaUrl = API_BASE_URL + '/base/system/captcha'
 
@@ -30,7 +30,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false) // 管理密码可见性
   const navigate = useNavigate()
   const [captcha, setCaptcha] = useState(captchaUrl)
-
+  const [apiBaseURL, setApiBaseURL] = useState('');
   const refreshCaptcha = () => {
     // Append a timestamp to the URL to force a refresh
     setCaptcha(`${captchaUrl}?${new Date().getTime()}`)
@@ -39,7 +39,7 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault()
     const formData = { username, password, verify }
-
+    setBaseURL(apiBaseURL);
     try {
       const response = await axiosInstance.post('/base/anakki/manager/login', formData)
 
@@ -113,6 +113,11 @@ const LoginPage = () => {
 
                       <CRow>
                         <CCol xs={6}>
+                          <Input
+                              placeholder="请输入 API 基地址"
+                              value={apiBaseURL}
+                              onChange={(e) => setApiBaseURL(e.target.value)}
+                          />
                           <CButton color="primary" className="px-4" type="submit">
                             登录
                           </CButton>
