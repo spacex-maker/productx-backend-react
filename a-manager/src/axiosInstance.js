@@ -1,7 +1,8 @@
 import axios from 'axios'
 import {message} from "antd";
+import { API_BASE_URL } from './config';
 const axiosInstance = axios.create({
-    baseURL: 'https://www.anakkix.cn/',
+    baseURL: API_BASE_URL,
 })
 // 请求拦截器
 axiosInstance.interceptors.request.use(config => {
