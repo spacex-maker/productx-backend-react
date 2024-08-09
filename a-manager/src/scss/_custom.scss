@@ -1,0 +1,169 @@
+// Here you can add other styles
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  max-width: 100%;
+  background-color: transparent;
+}
+
+.table th,
+.table td {
+  vertical-align: middle; /* 垂直居中 */
+  text-align: center; /* 水平居中 */
+  max-width: 200px; /* 你可以根据需要调整这个宽度 */
+}
+
+.table th {
+  white-space: nowrap;
+  font-size: 0.8rem; /* 设置全局 th 文字大小 */
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.golden-ratio-image {
+  width: 100px; /* 你可以根据需要调整这个宽度 */
+  height: auto;
+}
+
+.vertical-span {
+  display: block;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.toggle-switch input:checked + .toggle-switch-slider {
+  background-color: #2196f3;
+}
+
+.toggle-switch-slider:before {
+  position: absolute;
+  content: '';
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+.toggle-switch input:checked + .toggle-switch-slider:before {
+  transform: translateX(14px);
+}
+
+.toggle-switch-slider.round {
+  border-radius: 34px;
+}
+
+.toggle-switch-slider.round:before {
+  border-radius: 50%;
+}
+
+.media-body {
+  padding-left: 10px;
+}
+
+.media {
+  display: flex;
+  align-items: center;
+}
+
+.image-list {
+  flex-shrink: 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+}
+
+.page-item {
+  margin: 0 2px;
+}
+
+.page-item .page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.record-font {
+  font-size: 0.7rem;
+}
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* 间隔 */
+}
+
+.search-box {
+  width: 200px;
+  font-size: 14px; /* 输入框字体大小 */
+  position: relative;
+}
+
+.search-box::placeholder {
+  color: #999;
+  font-size: 12px; /* placeholder 字体大小 */
+}
+.golden-ratio-image {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.golden-ratio-image.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+}
+.header.header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 800;
+}
