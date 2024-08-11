@@ -57,8 +57,8 @@ const UserList = () => {
                 params: {current, size: pageSize, ...filteredParams},
             })
 
-            setData(response.data.data)
-            setTotalNum(response.data.totalNum)
+            setData(response.data)
+            setTotalNum(response.totalNum)
         } catch (error) {
             console.error('Failed to fetch data', error)
         } finally {
