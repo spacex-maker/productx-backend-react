@@ -5,15 +5,13 @@ import { Upload, Button, message, Spin } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
-const FileUpload = ({ onUploadSuccess, onUploadError ,onUploadStatusChange, onUploadProgress}) => {
+const FileUpload = ({ onUploadSuccess, onUploadError, onUploadStatusChange, onUploadProgress}) => {
     const [loading, setLoading] = useState(false);
 
     // 获取临时密钥
     const getTemporaryCredentials = async () => {
         try {
-
-            const response = await api.get('/manage/manager/getCosCredential');
-            return response.data.data;
+            return await api.get('/manage/manager/getCosCredential');
         } catch (error) {
             console.error('Failed to fetch temporary credentials', error);
             throw error;
@@ -24,7 +22,6 @@ const FileUpload = ({ onUploadSuccess, onUploadError ,onUploadStatusChange, onUp
     const handleUpload = async (fileList) => {
         setLoading(true);
         onUploadStatusChange(true); // 上传开始
-
         try {
             const { secretId, secretKey, sessionToken, host } = await getTemporaryCredentials();
             const match = host.match(/https:\/\/([^\.]+)\.cos\.([^.]+)\.myqcloud\.com\//);
@@ -61,17 +58,15 @@ const FileUpload = ({ onUploadSuccess, onUploadError ,onUploadStatusChange, onUp
                                 resolve({
                                     url: `https://${Bucket}.cos.${Region}.myqcloud.com/${fileName}`,
                                     name: file.name,
+                                    size: file.size,
+                                    resourceType: file.type,
                                 });
                             }
                         });
                     });
                 });
-
-                const results = await Promise.all(uploadPromises);
-                const fileUrls = results.map((result) => result.url);
-                const fileNames = results.map((result) => result.name);
-                onUploadSuccess(fileUrls, fileNames);
-                message.success('文件上传成功');
+                let files = await Promise.all(uploadPromises);
+                onUploadSuccess(files);
             } else {
                 throw new Error('URL format is incorrect.');
             }
@@ -92,7 +87,6 @@ const FileUpload = ({ onUploadSuccess, onUploadError ,onUploadStatusChange, onUp
                     .catch(onError);
             }}
             multiple
-            showUploadList={false}
         >
             <Button icon={<UploadOutlined />} disabled={loading}>
                 {loading ? <Spin /> : '上传文件'}

@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
 import 'src/scss/_custom.scss'
-import { Modal, Button, Form, Input, Upload, message, Spin } from 'antd'
+import {Modal, Button, Form, Input, Upload, message, Spin, Progress} from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
+import {UseSelectableRows} from "src/components/common/UseSelectableRows";
+import {HandleBatchDelete} from "src/components/common/HandleBatchDelete";
+import FileUpload from "src/components/common/TencentCosFileUpload";
+import Pagination from "src/components/common/Pagination";
 
 // 上传资源
 const uploadResource = async (values) => {
   try {
-    const token = localStorage.getItem('jwtManageToken')
-    const formData = new FormData()
+    const formData = new FormData();
+
+    // 处理其他字段
     Object.keys(values).forEach((key) => {
-      if (key === 'file') {
-        values[key].forEach((file) => formData.append('file', file.file.originFileObj))
-      } else {
-        formData.append(key, values[key])
-      }
-    })
+      formData.append(key, values[key]);
+    });
 
     await api.post('/manage/resource/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        authorization: `${token}`,
       },
     })
 
@@ -36,8 +36,6 @@ const ResourceList = () => {
   const [totalNum, setTotalNum] = useState(0)
   const [current, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [selectAll, setSelectAll] = useState(false)
-  const [selectedRows, setSelectedRows] = useState([])
   const [searchParams, setSearchParams] = useState({
     uploadUser: '',
     resourceName: '',
@@ -52,6 +50,12 @@ const ResourceList = () => {
   const [isLoading, setIsLoading] = useState(false) // 添加加载状态
   const [form] = Form.useForm()
 
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadPercent, setUploadPercent] = useState(0);
+  const [uploadSpeed, setUploadSpeed] = useState(0);
+  const [uploadedFileNames, setUploadedFileNames] = useState([]);
+
   useEffect(() => {
     fetchData()
   }, [current, pageSize])
@@ -59,41 +63,33 @@ const ResourceList = () => {
   const fetchData = async () => {
     setIsLoading(true) // 开始加载
     try {
-      const token = localStorage.getItem('jwtManageToken')
       const filteredParams = Object.fromEntries(
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       )
       const response = await api.get('/manage/resource/list', {
         params: { current, size: pageSize, ...filteredParams },
-        headers: { authorization: `${token}` },
       })
 
-      setData(response.data.data.data)
-      setTotalNum(response.data.data.totalNum)
+      setData(response.data)
+      setTotalNum(response.data.totalNum)
     } catch (error) {
       console.error('Failed to fetch data', error)
     } finally {
       setIsLoading(false) // 完成加载
     }
   }
+  const handleUploadStatusChange = (uploading) => {
+    console.log("上传状态改变:"+uploading)
+    setIsUploading(uploading);
+  };
 
+  const handleUploadProgress = (percentCompleted, speed) => {
+    setUploadPercent(percentCompleted);
+    setUploadSpeed(speed);
+  };
   const handleSearchChange = (event) => {
     const { name, value } = event.target
     setSearchParams((prevParams) => ({ ...prevParams, [name]: value }))
-  }
-
-  const handleSelectAll = (event) => {
-    const checked = event.target.checked
-    setSelectAll(checked)
-    setSelectedRows(checked ? data.map((item) => item.id) : [])
-  }
-
-  const handleSelectRow = (id) => {
-    const newSelectedRows = selectedRows.includes(id)
-      ? selectedRows.filter((rowId) => rowId !== id)
-      : [...selectedRows, id]
-    setSelectedRows(newSelectedRows)
-    setSelectAll(newSelectedRows.length === data.length)
   }
 
   const handleUploadModalCancel = () => setIsUploadModalVisible(false)
@@ -102,13 +98,38 @@ const ResourceList = () => {
     setIsImageModalVisible(false)
     setFullscreenImage(null)
   }
+  const handleUploadSuccess = (newFileUrls, newFileNames) => {
+    // 获取当前表单中的 fileUrls，如果没有则返回空数组
+    const currentFileUrls = form.getFieldValue('fileUrls') || [];
+
+    // 将当前的 fileUrls 与新上传的 newFileUrls 合并
+    const updatedFileUrls = [...currentFileUrls, ...newFileUrls];
+
+    // 更新表单字段的值
+    form.setFieldsValue({ fileUrls: updatedFileUrls });
+
+    // 更新文件名状态，将新文件名追加到已有文件名数组中
+    setUploadedFileNames((prevFileNames) => [...prevFileNames, ...newFileNames]);
+
+    fetchData();
+  };
+  const handleUploadError = (error) => {
+    console.error('Upload error:', error);
+    // 这里可以添加错误提示
+  };
 
   const handleImageClick = (imgUrl) => {
     const urlWithoutParams = imgUrl.split('?')[0]
     setFullscreenImage(urlWithoutParams)
     setIsImageModalVisible(true)
   }
-
+  const {
+    selectedRows,
+    selectAll,
+    handleSelectAll,
+    handleSelectRow,
+    resetSelection, // 获取重置选择状态的方法
+  } = UseSelectableRows();
   const handleSearch = () => {
     fetchData()
   }
@@ -146,6 +167,39 @@ const ResourceList = () => {
           >
             上传资源
           </Button>
+          <Button
+              type="danger"
+              onClick={() => HandleBatchDelete({
+                url: '/manage/resource/delete-batch',
+                selectedRows,
+                fetchData,
+              })}
+              disabled={selectedRows.length === 0}
+          >
+            批量删除
+          </Button>
+          <Button
+              type="danger"
+              onClick={() => HandleBatchDelete({
+                url: '/manage/resource/disable-batch',
+                selectedRows,
+                fetchData,
+              })}
+              disabled={selectedRows.length === 0}
+          >
+            批量失效
+          </Button>
+          <Button
+              type="danger"
+              onClick={() => HandleBatchDelete({
+                url: '/manage/resource/enable-batch',
+                selectedRows,
+                fetchData,
+              })}
+              disabled={selectedRows.length === 0}
+          >
+            批量生效
+          </Button>
         </div>
       </div>
 
@@ -172,17 +226,40 @@ const ResourceList = () => {
           <Form.Item name="isPublic" label="是否公开">
             <Input placeholder="请输入是否公开" />
           </Form.Item>
-          <Form.Item name="file" label="选择文件" valuePropName="fileList">
-            <Upload beforeUpload={() => false} showUploadList={false}>
-              <Button icon={<UploadOutlined />}>选择文件</Button>
-            </Upload>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              上传
-            </Button>
+          <Form.Item
+              name="fileUrls"
+              label="选择文件"
+              rules={[{ required: true, message: '请选择文件' }]}
+          >
+            <FileUpload
+                onUploadSuccess={handleUploadSuccess}
+                onUploadError={handleUploadError}
+                onUploadStatusChange={handleUploadStatusChange}
+                onUploadProgress={handleUploadProgress}
+            />
           </Form.Item>
         </Form>
+        {/* 显示上传的文件名 */}
+        {uploadedFileNames.length > 0 && (
+            <Form.Item label="已上传文件">
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {uploadedFileNames.map((fileName, index) => (
+                    <div key={index}>{fileName}</div>
+                ))}
+              </div>
+            </Form.Item>
+        )}
+        <Form.Item>
+          <Button type="primary" htmlType="submit" disabled={isUploading}>
+            {isUploading ? '上传中' : '上传'}
+          </Button>
+          {isUploading && (
+              <div style={{ marginTop: '20px' }}>
+                <Progress percent={uploadPercent} />
+                <p>Speed: {uploadSpeed} KB/s</p>
+              </div>
+          )}
+        </Form.Item>
       </Modal>
 
       <Modal
@@ -222,6 +299,9 @@ const ResourceList = () => {
                   '文件介绍',
                   '文件大小',
                   '是否公开',
+                  '资源链接',
+                  '过期时间',
+                  '状态',
                   '浏览量',
                   '下载量',
                   '点赞数',
@@ -256,6 +336,9 @@ const ResourceList = () => {
                   <td className="text-truncate">{item.description}</td>
                   <td className="text-truncate">{(item.fileSize / 1024).toFixed(2)}MB</td>
                   <td className="text-truncate">{item.isPublic ? '是' : '否'}</td>
+                  <td className="text-truncate">{item.fileUrl}</td>
+                  <td className="text-truncate">{item.expirationDate}</td>
+                  <td className="text-truncate">{item.status}</td>
                   <td className="text-truncate">{item.viewCount}</td>
                   <td className="text-truncate">{item.downloadCount}</td>
                   <td className="text-truncate">{item.likeCount}</td>
@@ -270,17 +353,11 @@ const ResourceList = () => {
         </Spin>
       </div>
 
-      <nav>
-        <ul className="pagination">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <li key={index} className={`page-item ${current === index + 1 ? 'active' : ''}`}>
-              <button className="page-link" onClick={() => setCurrent(index + 1)}>
-                {index + 1}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <Pagination
+          totalPages={totalPages}
+          current={current}
+          onPageChange={(page) => setCurrent(page)}
+      />
     </div>
   )
 }

@@ -111,7 +111,7 @@ const AppHeaderDropdown = () => {
                   <CIcon icon={cilLockLocked} className="me-2" />
                   <Link to="/login">登录</Link>
                 </CDropdownItem>
-                <CDropdownItem href="/register">
+                <CDropdownItem>
                   <CIcon icon={cilLockLocked} className="me-2" />
                   <Link to="/register">注册</Link>
                 </CDropdownItem>

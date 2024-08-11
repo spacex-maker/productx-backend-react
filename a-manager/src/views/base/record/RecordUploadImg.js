@@ -3,7 +3,6 @@ import {message} from "antd";
 
 const RecordUploadImg = async (values) => {
   try {
-    const token = localStorage.getItem('jwtManageToken');
     const formData = new FormData();
 
     // 处理其他字段
@@ -13,8 +12,7 @@ const RecordUploadImg = async (values) => {
 
     await api.post('/manage/record/upload', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-        authorization: `${token}`,
+        'Content-Type': 'multipart/form-data'
       },
     });
 

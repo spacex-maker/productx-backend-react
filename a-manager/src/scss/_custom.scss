@@ -167,3 +167,8 @@
   top: 0;
   z-index: 800;
 }
+.captcha-img {
+  cursor: pointer;
+  width: 8.0rem;
+  border-radius: var(--cui-border-radius);
+}

@@ -1,21 +1,31 @@
 import axios from 'axios'
 import {message} from "antd";
-
-let baseURL = 'http://localhost:8080'; // 默认地址，可以根据需要修改
-
 export const setBaseURL = (url) => {
-    baseURL = url;
+    if (!url || typeof url !== 'string' || !isValidURL(url)) {
+        message.error('无效的 API 基地址');
+        return;
+    }
+    API_BASE_URL = url;
+    message.success(`API 基地址已更新为: ${API_BASE_URL}`);
 };
-
-export const API_BASE_URL = baseURL;
+// 校验 URL 的合法性
+const isValidURL = (url) => {
+    try {
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false;
+    }
+};
+export var API_BASE_URL = 'http://localhost:8080'; // 默认地址，可以根据需要修改
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
 })
 // 请求拦截器
 axiosInstance.interceptors.request.use(config => {
+    config.baseURL = API_BASE_URL;
     const token = localStorage.getItem('jwtManageToken');
-
     if (token) {
         // 如果 Token 存在，则将其添加到请求头中
         config.headers['Authorization'] = `${token}`;

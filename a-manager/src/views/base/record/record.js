@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import {Modal, Button, Form, Input, DatePicker, Upload, Spin, Select, Row, Col, Progress} from 'antd';
+import {Modal, Button, Form, Input, DatePicker, Upload, Spin, Select, Row, Col, Progress, message, Switch} from 'antd';
 import Pagination from 'src/components/common/Pagination';
-import { UploadOutlined } from '@ant-design/icons';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import FileUpload from 'src/components/common/TencentCosFileUpload';
 import {RecordUploadImg} from "src/views/base/record/RecordUploadImg";
-// 更新图片状态
+import UploadedFilesList from "src/components/common/UploadedFilesList";
 const updateImageStatus = async (id, newStatus) => {
     try {
         await api.post(
@@ -46,8 +45,7 @@ const RecordList = () => {
     const [fullscreenImage, setFullscreenImage] = useState(null);
     const [isLoading, setIsLoading] = useState(false); // 添加加载状态
     const [form] = Form.useForm();
-    const [uploadedFileNames, setUploadedFileNames] = useState([]);
-
+    const [uploadedFiles, setUploadedFiles] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadPercent, setUploadPercent] = useState(0);
     const [uploadSpeed, setUploadSpeed] = useState(0);
@@ -99,8 +97,8 @@ const RecordList = () => {
                 params: { current, size: pageSize, ...filteredParams },
             });
 
-            setData(response.data.data);
-            setTotalNum(response.data.totalNum);
+            setData(response.data);
+            setTotalNum(response.totalNum);
             resetSelection(); // 重置选择状态
         } catch (error) {
             console.error('Failed to fetch data', error);
@@ -131,11 +129,20 @@ const RecordList = () => {
         console.log('Selected type:', value); // 调试信息
         setSearchParams((prevParams) => ({ ...prevParams, type: value }));
     };
-
-    const uploadImg = async (values) => {
-        await RecordUploadImg(values);
+    const uploadRecord = async (values) => {
+        try {
+            await api.post('/manage/record/upload', values, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            message.success('上传成功!');
+        } catch (error) {
+            console.error('Failed to upload image', error);
+            message.error('上传失败');
+        }
         setIsUploadModalVisible(false);
-        form.resetFields();
+        fetchData();
     };
 
     const handleImageClick = (imgUrl) => {
@@ -150,18 +157,18 @@ const RecordList = () => {
         setIsImageModalVisible(false);
         setFullscreenImage(null);
     };
-    const handleUploadSuccess = (newFileUrls, newFileNames) => {
+    const handleUploadSuccess = (newFiles) => {
         // 获取当前表单中的 fileUrls，如果没有则返回空数组
-        const currentFileUrls = form.getFieldValue('fileUrls') || [];
+        const currentFiles = form.getFieldValue('files') || [];
 
         // 将当前的 fileUrls 与新上传的 newFileUrls 合并
-        const updatedFileUrls = [...currentFileUrls, ...newFileUrls];
+        const updatedFiles = [...currentFiles, ...newFiles];
 
         // 更新表单字段的值
-        form.setFieldsValue({ fileUrls: updatedFileUrls });
+        form.setFieldsValue({ files: updatedFiles });
 
         // 更新文件名状态，将新文件名追加到已有文件名数组中
-        setUploadedFileNames((prevFileNames) => [...prevFileNames, ...newFileNames]);
+        setUploadedFiles((prevFiles) => [...prevFiles, ...newFiles]);
 
         fetchData();
     };
@@ -169,7 +176,6 @@ const RecordList = () => {
         console.error('Upload error:', error);
         // 这里可以添加错误提示
     };
-    const totalPages = Math.ceil(totalNum / pageSize);
 
     return (
         <div>
@@ -238,11 +244,11 @@ const RecordList = () => {
                 footer={null}
                 zIndex={1000}
             >
-                <Form form={form} onFinish={uploadImg} layout="vertical">
+                <Form form={form} onFinish={uploadRecord} layout="vertical">
                     <Row gutter={16}>
                         <Col span={8}>
-                            <Form.Item name="type" label="类型">
-                                <Select placeholder="选择输入类型" style={{ width: '100%' }}>
+                            <Form.Item name="type" label="板块">
+                                <Select placeholder="选择输入板块" style={{ width: '100%' }}>
                                     {imageTypes.map((type) => (
                                         <Option key={type.value} value={type.value}>
                                             {type.label}
@@ -284,7 +290,7 @@ const RecordList = () => {
                     </Row>
 
                     <Row gutter={16}>
-                        <Col span={12}>
+                        <Col span={8}>
                             <Form.Item
                                 name="photoTime"
                                 label="拍摄时间"
@@ -293,42 +299,38 @@ const RecordList = () => {
                                 <DatePicker showTime style={{ width: '100%' }} />
                             </Form.Item>
                         </Col>
-
-                        <Col span={12}>
+                        <Col span={8}>
                             <Form.Item
-                                name="fileUrls"
-                                label="选择文件"
-                                rules={[{ required: true, message: '请选择文件' }]}
+                                name="status"
+                                label="立即生效"
+                                valuePropName="checked" // 这里用于将 Switch 的值与表单值绑定
                             >
-                                <FileUpload
-                                    onUploadSuccess={handleUploadSuccess}
-                                    onUploadError={handleUploadError}
-                                    onUploadStatusChange={handleUploadStatusChange}
-                                    onUploadProgress={handleUploadProgress}
-                                />
+                                <Switch />
                             </Form.Item>
                         </Col>
                     </Row>
-                    {/* 显示上传的文件名 */}
-                    {uploadedFileNames.length > 0 && (
-                        <Form.Item label="已上传文件">
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                {uploadedFileNames.map((fileName, index) => (
-                                    <div key={index}>{fileName}</div>
-                                ))}
-                            </div>
-                        </Form.Item>
-                    )}
+                    <Form.Item
+                        name="files"
+                        rules={[{ required: true, message: '请选择文件' }]}
+                    >
+                        <FileUpload
+                            onUploadSuccess={handleUploadSuccess}
+                            onUploadError={handleUploadError}
+                            onUploadStatusChange={handleUploadStatusChange}
+                            onUploadProgress={handleUploadProgress}
+                        />
+                    </Form.Item>
+                    <UploadedFilesList uploadedFiles={uploadedFiles} />
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" disabled={isUploading}>
-                            {isUploading ? '上传中' : '上传'}
-                        </Button>
                         {isUploading && (
                             <div style={{ marginTop: '20px' }}>
                                 <Progress percent={uploadPercent} />
-                                <p>Speed: {uploadSpeed} KB/s</p>
+                                <p>上传速度: {uploadSpeed} KB/s</p>
                             </div>
                         )}
+                        <Button type="primary" htmlType="submit" disabled={isUploading}>
+                            {isUploading ? '上传中' : '上传'}
+                        </Button>
                     </Form.Item>
                 </Form>
             </Modal>
@@ -431,11 +433,6 @@ const RecordList = () => {
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <button className="btn btn-danger" onClick={() => handleDelete(item.id)}>
-                                        删除
-                                    </button>
-                                </td>
                             </tr>
                         ))}
                         </tbody>
@@ -443,7 +440,7 @@ const RecordList = () => {
                 </Spin>
             </div>
             <Pagination
-                totalPages={totalPages}
+                totalPages={Math.ceil(totalNum / pageSize)}
                 current={current}
                 onPageChange={(page) => setCurrent(page)}
             />

@@ -103,11 +103,10 @@ const RecordList = () => {
             size: pageSize,
             ...filteredParams, // 将过滤后的参数展开到请求中
           },
-          headers: { authorization: `${token}` },
         })
 
-        setData(response.data.data.data) // 访问数据对象中的 data 数组
-        setTotalNum(response.data.data.totalNum) // 获取总条目数
+        setData(response.data) // 访问数据对象中的 data 数组
+        setTotalNum(response.totalNum) // 获取总条目数
       } catch (error) {
         console.error('Failed to fetch data', error)
       }
