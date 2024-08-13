@@ -7,6 +7,7 @@ import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import FileUpload from 'src/components/common/TencentCosFileUpload';
 import {RecordUploadImg} from "src/views/base/record/RecordUploadImg";
 import UploadedFilesList from "src/components/common/UploadedFilesList";
+import ImageOrVideoModal from "src/views/base/record/ImageOrVideoModal";
 const updateImageStatus = async (id, newStatus) => {
     try {
         await api.post(
@@ -335,18 +336,11 @@ const RecordList = () => {
                 </Form>
             </Modal>
 
-            <Modal
-                open={isImageModalVisible}
-                footer={null}
-                onCancel={handleImageModalCancel}
-                width="80%"
-                style={{ top: 20 }}
-                zIndex={2000}
-            >
-                {fullscreenImage && (
-                    <img src={fullscreenImage} style={{ width: '100%' }} alt="fullscreen" />
-                )}
-            </Modal>
+            <ImageOrVideoModal
+                isImageModalVisible={isImageModalVisible}
+                fullscreenImage={fullscreenImage}
+                handleImageModalCancel={handleImageModalCancel}
+            />
 
             <div className="table-container">
                 <Spin spinning={isLoading}>
