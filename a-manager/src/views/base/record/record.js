@@ -73,7 +73,7 @@ const RecordList = () => {
         handleSelectRow,
         resetSelection, // 获取重置选择状态的方法
     } = UseSelectableRows();
-// 获取图文类型枚举
+    // 获取图文类型枚举
     const fetchImageTypes = async () => {
         try {
             const response = await api.get('/base/system/record-type');
@@ -342,9 +342,9 @@ const RecordList = () => {
                 handleImageModalCancel={handleImageModalCancel}
             />
 
-            <div className="table-container">
+            <div className="table-responsive">
                 <Spin spinning={isLoading}>
-                    <table className="table table-bordered">
+                    <table className="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>
@@ -370,10 +370,10 @@ const RecordList = () => {
                                 '文件大小',
                                 '状态',
                                 '图片信息',
-                                '操作',
                             ].map((field) => (
                                 <th key={field}>{field}</th>
                             ))}
+                            <th className="fixed-column">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -415,19 +415,23 @@ const RecordList = () => {
                                             />
                                         </div>
                                         <div className="media-body">
-                        <span className="vertical-span">
-                          拍摄时间：{item.photoTime.replace('T', ' ')}
-                        </span>
                                             <span className="vertical-span">
-                          上传时间：{item.createTime.replace('T', ' ')}
-                        </span>
-                                            <span className="vertical-span">
-                          修改时间：{item.updateTime.replace('T', ' ')}
-                        </span>
+                                              拍摄时间：{item.photoTime.replace('T', ' ')}
+                                            </span>
+                                                                <span className="vertical-span">
+                                              上传时间：{item.createTime.replace('T', ' ')}
+                                            </span>
+                                                                <span className="vertical-span">
+                                              修改时间：{item.updateTime.replace('T', ' ')}
+                                            </span>
                                         </div>
                                     </div>
                                 </td>
+                                <td className="text-truncate fixed-column">
+                                    操作
+                                </td>
                             </tr>
+
                         ))}
                         </tbody>
                     </table>

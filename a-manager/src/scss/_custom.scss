@@ -172,3 +172,45 @@
   width: 8.0rem;
   border-radius: var(--cui-border-radius);
 }
+.table-wrapper {
+  position: relative;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  max-width: 100%;
+}
+
+
+/*表格处理相关*/
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fixed-column {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  right: 0;
+  z-index: 10;
+  padding: 10px;
+  border-left: 2px solid #ddd; /* Optional: border to separate fixed column */
+}
+
+.table thead th {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 10px;
+  border-bottom: 2px solid #ddd; /* Optional: border to separate header */
+}
+
+.table tbody td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

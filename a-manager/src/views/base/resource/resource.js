@@ -277,6 +277,7 @@ const ResourceList = () => {
 
       <div className="table-responsive">
         <Spin spinning={isLoading}>
+          <div className="table-wrapper">
           <table className="table table-bordered table-striped">
             <thead>
               <tr>
@@ -287,7 +288,7 @@ const ResourceList = () => {
                       className="custom-control-input"
                       id="select_all"
                       checked={selectAll}
-                      onChange={handleSelectAll}
+                      onChange={(event) => handleSelectAll(event, data)}
                     />
                     <label className="custom-control-label" htmlFor="select_all"></label>
                   </div>
@@ -306,10 +307,10 @@ const ResourceList = () => {
                   '下载量',
                   '点赞数',
                   '不喜欢数',
-                  '操作',
                 ].map((field) => (
                   <th key={field}>{field}</th>
                 ))}
+                <th className="fixed-column">操作</th>
               </tr>
             </thead>
             <tbody>
@@ -343,13 +344,14 @@ const ResourceList = () => {
                   <td className="text-truncate">{item.downloadCount}</td>
                   <td className="text-truncate">{item.likeCount}</td>
                   <td className="text-truncate">{item.dislikeCount}</td>
-                  <td>
+                  <td className="text-truncate fixed-column">
                     <Button onClick={() => handleImageClick(item.url)}>查看</Button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
         </Spin>
       </div>
 
