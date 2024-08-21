@@ -6,7 +6,7 @@ import {
   cilChartPie,
   cilCursor,
   cilDescription,
-  cilDrop,
+  cilDrop, cilFolder, cilGroup, cilImage, cilMovie,
   cilNotes,
   cilPencil,
   cilPuzzle,
@@ -31,12 +31,12 @@ const _nav = [
     component: CNavItem,
     name: '管理',
     to: '/user/list',
-    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: '用户管理',
     to: '/data/userList',
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
@@ -46,11 +46,13 @@ const _nav = [
     component: CNavItem,
     name: '图片管理',
     to: '/data/manage',
+    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: '资源管理',
     to: '/data/resource',
+    icon: <CIcon icon={cilMovie} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
