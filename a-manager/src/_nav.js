@@ -1,18 +1,18 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-    cilBell,
-    cilCalculator,
-    cilChartPie,
-    cilCursor,
-    cilDescription,
-    cilDrop, cilEnvelopeClosed, cilFolder, cilGroup, cilImage, cilMovie,
-    cilNotes,
-    cilPencil,
-    cilPuzzle,
-    cilSpeedometer,
-    cilStar,
-    cilUser,
+  cilBell,
+  cilCalculator,
+  cilChartPie,
+  cilCursor,
+  cilDescription,
+  cilDrop, cilEnvelopeClosed, cilFolder, cilGroup, cilImage, cilMovie,
+  cilNotes,
+  cilPencil,
+  cilPuzzle, cilSettings,
+  cilSpeedometer,
+  cilStar,
+  cilUser,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -59,6 +59,16 @@ const _nav = [
     name: '留言管理',
     to: '/data/comments',
     icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: '系统',
+  },
+  {
+    component: CNavItem,
+    name: '基础设置',
+    to: '/data/systemConfig',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

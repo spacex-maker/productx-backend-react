@@ -16,7 +16,9 @@ export const UseSelectableRows = () => {
             : [...selectedRows, id];
 
         setSelectedRows(newSelectedRows);
-        setSelectAll(newSelectedRows.length === data.length);
+        if (data){
+            setSelectAll(newSelectedRows.length === data.length);
+        }
     };
 
     const resetSelection = () => {

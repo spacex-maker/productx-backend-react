@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Input, Spin, Progress, message } from 'antd';
+import {  Button, Spin} from 'antd';
 import api from 'src/axiosInstance';
 import {UseSelectableRows} from "src/components/common/UseSelectableRows";
 import {HandleBatchDelete} from "src/components/common/HandleBatchDelete";
@@ -90,7 +90,7 @@ const CommentList = () => {
               {isLoading ? <Spin /> : '查询'}
             </Button>
             <Button
-                type="danger"
+                type="primary"
                 onClick={() => HandleBatchDelete({
                   url: '/manage/friends-comment/delete-batch',
                   selectedRows,
@@ -101,7 +101,7 @@ const CommentList = () => {
               批量删除
             </Button>
             <Button
-                type="danger"
+                type="primary"
                 onClick={() => HandleBatch({
                   url: '/manage/friends-comment/pass-batch',
                   selectedRows,
@@ -112,7 +112,7 @@ const CommentList = () => {
               批量通过
             </Button>
             <Button
-                type="danger"
+                type="primary"
                 onClick={() => HandleBatch({
                   url: '/manage/friends-comment/close-batch',
                   selectedRows,

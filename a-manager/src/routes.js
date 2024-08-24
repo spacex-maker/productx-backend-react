@@ -58,6 +58,7 @@ const ImageManage = React.lazy(() => import('./views/base/record/record'))
 const ResourceManage = React.lazy(() => import('./views/base/resource/resource'))
 const userManage = React.lazy(() => import('./views/base/userList/ListUsers'))
 const commentsManage = React.lazy(() => import('./views/base/comment/comment'))
+const systemConfig = React.lazy(() => import('./views/base/systemConfig/systemConfig'))
 
 const manageLogin = Login;
 const routes = [
@@ -111,6 +112,7 @@ const routes = [
   { path: '/data/resource', name: '资源管理', element: ResourceManage },
   { path: '/data/userList', name: '用户管理', element: userManage },
   { path: '/data/comments', name: '留言管理', element: commentsManage },
+  { path: '/data/systemConfig', name: '留言管理', element: systemConfig },
   { path: '/login', name: '登录', element: manageLogin },
 ]
 
