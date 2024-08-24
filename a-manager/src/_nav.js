@@ -1,18 +1,18 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop, cilFolder, cilGroup, cilImage, cilMovie,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
-  cilSpeedometer,
-  cilStar,
-  cilUser,
+    cilBell,
+    cilCalculator,
+    cilChartPie,
+    cilCursor,
+    cilDescription,
+    cilDrop, cilEnvelopeClosed, cilFolder, cilGroup, cilImage, cilMovie,
+    cilNotes,
+    cilPencil,
+    cilPuzzle,
+    cilSpeedometer,
+    cilStar,
+    cilUser,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -53,6 +53,12 @@ const _nav = [
     name: '资源管理',
     to: '/data/resource',
     icon: <CIcon icon={cilMovie} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: '留言管理',
+    to: '/data/comments',
+    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

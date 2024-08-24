@@ -57,6 +57,7 @@ const ThreeScene = React.lazy(() => import('./views/base/threeJs/ThreeScene'))
 const ImageManage = React.lazy(() => import('./views/base/record/record'))
 const ResourceManage = React.lazy(() => import('./views/base/resource/resource'))
 const userManage = React.lazy(() => import('./views/base/userList/ListUsers'))
+const commentsManage = React.lazy(() => import('./views/base/comment/comment'))
 
 const manageLogin = Login;
 const routes = [
@@ -109,6 +110,7 @@ const routes = [
   { path: '/data/manage', name: '图片管理', element: ImageManage },
   { path: '/data/resource', name: '资源管理', element: ResourceManage },
   { path: '/data/userList', name: '用户管理', element: userManage },
+  { path: '/data/comments', name: '留言管理', element: commentsManage },
   { path: '/login', name: '登录', element: manageLogin },
 ]
 

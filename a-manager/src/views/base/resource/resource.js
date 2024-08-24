@@ -71,7 +71,7 @@ const ResourceList = () => {
       })
 
       setData(response.data)
-      setTotalNum(response.data.totalNum)
+      setTotalNum(response.totalNum)
     } catch (error) {
       console.error('Failed to fetch data', error)
     } finally {
