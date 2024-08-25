@@ -1,11 +1,11 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell,
+  cilBell, cilBrowser,
   cilCalculator,
   cilChartPie,
   cilCursor,
-  cilDescription,
+  cilDescription, cilDevices,
   cilDrop, cilEnvelopeClosed, cilFolder, cilGroup, cilImage, cilMovie,
   cilNotes,
   cilPencil,
@@ -69,6 +69,22 @@ const _nav = [
     name: '基础设置',
     to: '/data/systemConfig',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: '日志系统',
+  },
+  {
+    component: CNavItem,
+    name: 'IP访问日志',
+    to: '/data/ipAddress',
+    icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: '路径访问日志',
+    to: '/data/pathStatisticLog',
+    icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

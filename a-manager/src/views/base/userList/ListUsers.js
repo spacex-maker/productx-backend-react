@@ -4,6 +4,7 @@ import 'src/scss/_custom.scss'
 import {Modal, Button, Form, Input, DatePicker, message, Spin} from 'antd'
 import {UseSelectableRows} from 'src/components/common/UseSelectableRows'
 import {HandleBatchDelete} from 'src/components/common/HandleBatchDelete';
+import Pagination from "src/components/common/Pagination";
 // 示例函数: 用于更新用户状态
 const updateUserStatus = async (id, newStatus) => {
     await api.post(
@@ -237,17 +238,13 @@ const UserList = () => {
                 </Spin>
             </div>
 
-            <nav aria-label="Page navigation">
-                <ul className="pagination">
-                    {Array.from({length: totalPages}, (_, index) => (
-                        <li key={index} className={`page-item ${current === index + 1 ? 'active' : ''}`}>
-                            <button className="page-link" onClick={() => setCurrent(index + 1)}>
-                                {index + 1}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
+            <Pagination
+                totalPages={Math.ceil(totalNum / pageSize)}
+                current={current}
+                onPageChange={setCurrent}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
+            />
 
             <Modal
                 title="新增用户"

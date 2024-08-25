@@ -356,9 +356,11 @@ const ResourceList = () => {
       </div>
 
       <Pagination
-          totalPages={totalPages}
+          totalPages={Math.ceil(totalNum / pageSize)}
           current={current}
-          onPageChange={(page) => setCurrent(page)}
+          onPageChange={setCurrent}
+          pageSize={pageSize}
+          onPageSizeChange={setPageSize}
       />
     </div>
   )

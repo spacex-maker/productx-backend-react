@@ -37,7 +37,7 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={20} />
+          <strong>Anakki X ADMIN</strong>
           <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={20} />
         </CSidebarBrand>
         <CCloseButton
