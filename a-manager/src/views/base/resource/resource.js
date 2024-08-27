@@ -7,6 +7,7 @@ import {UseSelectableRows} from "src/components/common/UseSelectableRows";
 import {HandleBatchDelete} from "src/components/common/HandleBatchDelete";
 import FileUpload from "src/components/common/TencentCosFileUpload";
 import Pagination from "src/components/common/Pagination";
+import {HandleBatch} from "src/components/common/HandleBatch";
 
 // 上传资源
 const uploadResource = async (values) => {
@@ -117,12 +118,16 @@ const ResourceList = () => {
     console.error('Upload error:', error);
     // 这里可以添加错误提示
   };
-
-  const handleImageClick = (imgUrl) => {
-    const urlWithoutParams = imgUrl.split('?')[0]
-    setFullscreenImage(urlWithoutParams)
-    setIsImageModalVisible(true)
-  }
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+    setSelectedItem(null);
+  };
+  const [selectedItem, setSelectedItem] = useState(null); // 选中的记录
+  const [isModalVisible, setIsModalVisible] = useState(false); // 弹窗可见性
+  const handleViewDetails = (item) => {
+    setSelectedItem(item);
+    setIsModalVisible(true);
+  };
   const {
     selectedRows,
     selectAll,
@@ -168,7 +173,7 @@ const ResourceList = () => {
             上传资源
           </Button>
           <Button
-              type="danger"
+              type="primary"
               onClick={() => HandleBatchDelete({
                 url: '/manage/resource/delete-batch',
                 selectedRows,
@@ -179,8 +184,8 @@ const ResourceList = () => {
             批量删除
           </Button>
           <Button
-              type="danger"
-              onClick={() => HandleBatchDelete({
+              type="primary"
+              onClick={() => HandleBatch({
                 url: '/manage/resource/disable-batch',
                 selectedRows,
                 fetchData,
@@ -190,8 +195,8 @@ const ResourceList = () => {
             批量失效
           </Button>
           <Button
-              type="danger"
-              onClick={() => HandleBatchDelete({
+              type="primary"
+              onClick={() => HandleBatch({
                 url: '/manage/resource/enable-batch',
                 selectedRows,
                 fetchData,
@@ -294,6 +299,7 @@ const ResourceList = () => {
                   </div>
                 </th>
                 {[
+                  '状态',
                   '上传用户',
                   '资源名称',
                   '文件标题',
@@ -302,7 +308,6 @@ const ResourceList = () => {
                   '是否公开',
                   '资源链接',
                   '过期时间',
-                  '状态',
                   '浏览量',
                   '下载量',
                   '点赞数',
@@ -331,21 +336,35 @@ const ResourceList = () => {
                       ></label>
                     </div>
                   </td>
+                  <td className="text-truncate" style={{
+                    color: item.status === 'COMMON' ? 'green' :
+                        item.status === 'INVALID' ? 'orange' :
+                            item.status === 'DELETE' ? 'red' : 'black'
+                  }}>
+                    {item.status === 'COMMON' ? '正常' :
+                        item.status === 'INVALID' ? '失效' :
+                            item.status === 'DELETE' ? '删除' : '未知'}
+                  </td>
                   <td className="text-truncate">{item.uploadUser}</td>
                   <td className="text-truncate">{item.resourceName}</td>
                   <td className="text-truncate">{item.title}</td>
                   <td className="text-truncate">{item.description}</td>
                   <td className="text-truncate">{(item.fileSize / 1024).toFixed(2)}MB</td>
-                  <td className="text-truncate">{item.isPublic ? '是' : '否'}</td>
+                  <td className="text-truncate" style={{
+                    color: item.isPublic ? 'green' : 'red'
+                  }}>
+                    {item.isPublic ? '全站公开' : '上传者可见'}
+                  </td>
                   <td className="text-truncate">{item.fileUrl}</td>
                   <td className="text-truncate">{item.expirationDate}</td>
-                  <td className="text-truncate">{item.status}</td>
                   <td className="text-truncate">{item.viewCount}</td>
                   <td className="text-truncate">{item.downloadCount}</td>
                   <td className="text-truncate">{item.likeCount}</td>
                   <td className="text-truncate">{item.dislikeCount}</td>
                   <td className="text-truncate fixed-column">
-                    <Button onClick={() => handleImageClick(item.url)}>查看</Button>
+                    <Button onClick={() => handleViewDetails(item)} type="link">
+                      查看详情
+                    </Button>
                   </td>
                 </tr>
               ))}
@@ -362,6 +381,59 @@ const ResourceList = () => {
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
       />
+      <Modal
+          title="资源详细信息"
+          visible={isModalVisible}
+          onCancel={handleModalCancel}
+          footer={null}
+          zIndex={1000}
+      >
+        {selectedItem && (
+            <div>
+              <p><strong>资源名称:</strong> {selectedItem.resourceName}</p>
+              <p><strong>上传用户:</strong> {selectedItem.uploadUser}</p>
+              <p><strong>标题:</strong> {selectedItem.title}</p>
+              <p><strong>描述:</strong> {selectedItem.description}</p>
+              <p><strong>url:</strong> {selectedItem.fileUrl}</p>
+              <p><strong>文件大小:</strong> {(selectedItem.fileSize / 1024).toFixed(2)}MB</p>
+              <p>
+                <strong>状态:</strong>
+                <span style={{
+                  color: selectedItem.status === 'COMMON' ? 'green' :
+                      selectedItem.status === 'INVALID' ? 'orange' :
+                          selectedItem.status === 'DELETE' ? 'red' : 'black'
+                }}>
+                    {selectedItem.status === 'COMMON' ? '正常' :
+                        selectedItem.status === 'INVALID' ? '失效' :
+                            selectedItem.status === 'DELETE' ? '删除' : '未知'}
+                </span>
+              </p>
+              <p><strong>过期时间:</strong> {selectedItem.expirationDate}</p>
+              <p><strong>下载量:</strong> {selectedItem.downloadCount}</p>
+              <p><strong>是否公开:</strong> {selectedItem.isPublic ? '是' : '否'}</p>
+              <p><strong>上传时间:</strong> {selectedItem.createTime}</p>
+              {selectedItem.fileUrls && selectedItem.fileUrls.map((url, index) => (
+                  <div key={index}>
+                    {url.endsWith('.mp4') ? (
+                        <div>
+                          <video width="320" height="240" controls>
+                            <source src={url} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                          <p>视频封面:</p>
+                          <img src={selectedItem.coverImageUrl} alt="Cover" style={{ width: '320px' }} />
+                        </div>
+                    ) : (
+                        <div>
+                          <img src={url} alt="Resource" style={{ width: '320px' }} />
+                        </div>
+                    )}
+                  </div>
+              ))}
+            </div>
+        )}
+      </Modal>
+
     </div>
   )
 }

@@ -201,9 +201,10 @@ const SystemConfig = () => {
             <Pagination
                 totalPages={Math.ceil(totalNum / pageSize)}
                 current={current}
-                onPageChange={(page) => setCurrent(page)}
+                onPageChange={setCurrent}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
             />
-
             <Modal
                 title="新增配置项"
                 visible={isAddModalVisible}

@@ -8,6 +8,7 @@ import FileUpload from 'src/components/common/TencentCosFileUpload';
 import {RecordUploadImg} from "src/views/base/record/RecordUploadImg";
 import UploadedFilesList from "src/components/common/UploadedFilesList";
 import ImageOrVideoModal from "src/views/base/record/ImageOrVideoModal";
+const { RangePicker } = DatePicker;
 const updateImageStatus = async (id, newStatus) => {
     try {
         await api.post(
@@ -21,7 +22,10 @@ const updateImageStatus = async (id, newStatus) => {
     }
 };
 
-
+const formatDate = (date) => {
+    if (!date) return null;
+    return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+};
 
 const RecordList = () => {
     const [data, setData] = useState([]);
@@ -40,6 +44,9 @@ const RecordList = () => {
         createTimeEnd: '',
         photoBy: '',
     });
+    const [searchTypes, setSearchTypes] = useState({
+        type: '',
+    });
     const [imageTypes, setImageTypes] = useState([]); // 图文类型
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [isImageModalVisible, setIsImageModalVisible] = useState(false);
@@ -51,6 +58,20 @@ const RecordList = () => {
     const [uploadPercent, setUploadPercent] = useState(0);
     const [uploadSpeed, setUploadSpeed] = useState(0);
 
+    const handleDateChange = (dates) => {
+        setSearchParams((prevParams) => ({
+            ...prevParams,
+            createTimeStart: dates ? dates[0].toDate() : null,
+            createTimeEnd: dates ? dates[1].toDate() : null,
+        }));
+    };
+    const handlePhotoDateChange = (dates) => {
+        setSearchParams((prevParams) => ({
+            ...prevParams,
+            photoTimeStart: dates ? dates[0].toDate() : null,
+            photoTimeEnd: dates ? dates[1].toDate() : null,
+        }));
+    };
     const handleUploadStatusChange = (uploading) => {
         console.log("上传状态改变:"+uploading)
         setIsUploading(uploading);
@@ -61,10 +82,10 @@ const RecordList = () => {
         setUploadSpeed(speed);
     };
     useEffect(() => {
-        fetchData();
+        fetchData()
         fetchImageTypes();
         // 获取图文类型
-    }, [current, pageSize, searchParams]);
+    }, [searchTypes]);
 
     const {
         selectedRows,
@@ -91,13 +112,19 @@ const RecordList = () => {
     const fetchData = async () => {
         setIsLoading(true); // 开始加载
         try {
-            const filteredParams = Object.fromEntries(
-                Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
+            // 过滤掉空值和null值
+            const params = Object.fromEntries(
+                Object.entries({
+                    ...searchParams,
+                    createTimeStart: formatDate(searchParams.createTimeStart),
+                    createTimeEnd: formatDate(searchParams.createTimeEnd),
+                    photoTimeStart: formatDate(searchParams.photoTimeStart),
+                    photoTimeEnd: formatDate(searchParams.photoTimeEnd),
+                    current,
+                    size: pageSize,
+                }).filter(([_, v]) => v !== '' && v !== null)
             );
-            const response = await api.get('/manage/record/list', {
-                params: { current, size: pageSize, ...filteredParams },
-            });
-
+            const response = await api.get('/manage/record/list', { params });
             setData(response.data);
             setTotalNum(response.totalNum);
             resetSelection(); // 重置选择状态
@@ -128,7 +155,7 @@ const RecordList = () => {
 
     const handleTypeChange = (value) => {
         console.log('Selected type:', value); // 调试信息
-        setSearchParams((prevParams) => ({ ...prevParams, type: value }));
+        setSearchTypes((prevParams) => ({ ...prevParams, type: value }));
     };
     const uploadRecord = async (values) => {
         try {
@@ -187,7 +214,7 @@ const RecordList = () => {
                         className="search-box"
                         value={searchParams.type || undefined}
                         onChange={handleTypeChange}
-                        style={{ width: 200, marginBottom: '16px' }}
+                        style={{ width: 200}}
                         allowClear // 允许清空
                     >
                         {imageTypes.map((type) => (
@@ -196,18 +223,56 @@ const RecordList = () => {
                             </Select.Option>
                         ))}
                     </Select>
-                    {Object.keys(searchParams).filter(key => key !== 'type').map((key) => (
-                        <div key={key} className="position-relative">
-                            <input
-                                type={key.includes('Time') ? 'datetime-local' : 'text'}
-                                className="form-control search-box"
-                                name={key}
-                                placeholder={`搜索${key}`}
-                                value={searchParams[key]}
-                                onChange={handleSearchChange}
-                            />
-                        </div>
-                    ))}
+                    <Input
+                        type="text"
+                        className="form-control search-box"
+                        name="title"
+                        placeholder="标题"
+                        value={searchParams.title}
+                        onChange={handleSearchChange}
+                    />
+                    <Input
+                        type="text"
+                        className="form-control search-box"
+                        name="location"
+                        placeholder="位置"
+                        value={searchParams.location}
+                        onChange={handleSearchChange}
+                    />
+                    <Input
+                        type="text"
+                        className="form-control search-box"
+                        name="description"
+                        placeholder="描述"
+                        value={searchParams.description}
+                        onChange={handleSearchChange}
+                    />
+                    <Input
+                        type="text"
+                        className="form-control search-box"
+                        name="imgUrl"
+                        placeholder="图片路径"
+                        value={searchParams.imgUrl}
+                    />
+                    <Input
+                        type="text"
+                        className="form-control search-box"
+                        name="photoBy"
+                        placeholder="拍摄人"
+                        value={searchParams.photoBy}
+                    />
+                    <RangePicker
+                        showTime
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder={['上传时间-开始', '上传时间-结束']}
+                        onChange={handleDateChange}
+                    />
+                    <RangePicker
+                        showTime
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder={['拍摄时间-开始', '拍摄时间-结束']}
+                        onChange={handlePhotoDateChange}
+                    />
                     <Button
                         type="primary"
                         onClick={fetchData}
@@ -224,7 +289,7 @@ const RecordList = () => {
                         上传图片
                     </Button>
                     <Button
-                        type="danger"
+                        type="primary"
                         onClick={() => HandleBatchDelete({
                             url: '/manage/record/delete-batch',
                             selectedRows,

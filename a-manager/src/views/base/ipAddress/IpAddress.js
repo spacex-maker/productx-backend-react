@@ -159,7 +159,7 @@ const IpAddressManagement = () => {
                         {isLoading ? <Spin /> : '查询'}
                     </Button>
                     <Button
-                        type="danger"
+                        type="primary"
                         onClick={() => HandleBatchDelete({
                             url: '/manage/ip-address/delete-batch',
                             selectedRows,
@@ -242,7 +242,9 @@ const IpAddressManagement = () => {
             <Pagination
                 totalPages={Math.ceil(totalNum / pageSize)}
                 current={current}
-                onPageChange={(page) => setCurrent(page)}
+                onPageChange={setCurrent}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
             />
 
             {/* 详情弹窗 */}

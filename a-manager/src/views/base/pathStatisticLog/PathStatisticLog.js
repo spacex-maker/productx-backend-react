@@ -152,7 +152,7 @@ const PathAccessLogManagement = () => {
                         {isLoading ? <Spin /> : '查询'}
                     </Button>
                     <Button
-                        type="danger"
+                        type="primary"
                         onClick={() => HandleBatchDelete({
                             url: '/manage/path-statistic-log/delete-batch',
                             selectedRows,
@@ -183,7 +183,7 @@ const PathAccessLogManagement = () => {
                                         <label className="custom-control-label" htmlFor="select_all"></label>
                                     </div>
                                 </th>
-                                <th>路径</th>
+                                <th style={{ minWidth: '15rem', textAlign: 'left' }}>路径</th>
                                 <th>访问者IP</th>
                                 <th>国家</th>
                                 <th>省</th>
@@ -211,7 +211,7 @@ const PathAccessLogManagement = () => {
                                             ></label>
                                         </div>
                                     </td>
-                                    <td>{item.path}</td>
+                                    <td style={{ textAlign: 'left' }}>{item.path}</td>
                                     <td>{item.clientIp}</td>
                                     <td>{item.country}</td>
                                     <td>{item.prov}</td>
