@@ -291,7 +291,7 @@ const RoomManagement = () => {
 
             <Modal
                 title="房间详情"
-                visible={isModalVisible}
+                open={isModalVisible}
                 onCancel={handleModalCancel}
                 footer={null}
             >
