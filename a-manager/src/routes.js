@@ -61,6 +61,7 @@ const commentsManage = React.lazy(() => import('./views/base/comment/comment'))
 const systemConfig = React.lazy(() => import('./views/base/systemConfig/systemConfig'))
 const ipAddress = React.lazy(() => import('./views/base/ipAddress/IpAddress'))
 const pathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'))
+const chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
 
 
 
@@ -120,7 +121,7 @@ const routes = [
   { path: '/data/systemConfig', name: '系统设置', element: systemConfig },
   { path: '/data/ipAddress', name: 'ip访问日志', element: ipAddress },
   { path: '/data/pathStatisticLog', name: '路径访问日志', element: pathStatisticLog },
-
+  { path: '/chat/chatroom', name: '聊天室', element: chatroom },
   { path: '/login', name: '登录', element: manageLogin },
 ]
 

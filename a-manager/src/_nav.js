@@ -3,7 +3,7 @@ import CIcon from '@coreui/icons-react'
 import {
   cilBell, cilBrowser,
   cilCalculator,
-  cilChartPie,
+  cilChartPie, cilCommentSquare,
   cilCursor,
   cilDescription, cilDevices,
   cilDrop, cilEnvelopeClosed, cilFolder, cilGroup, cilImage, cilMovie,
@@ -85,6 +85,16 @@ const _nav = [
     name: '路径访问日志',
     to: '/data/pathStatisticLog',
     icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: '聊天室',
+  },
+  {
+    component: CNavItem,
+    name: '聊天室管理',
+    to: '/chat/chatroom',
+    icon: <CIcon icon={cilCommentSquare} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
