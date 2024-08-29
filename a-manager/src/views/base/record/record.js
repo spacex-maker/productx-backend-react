@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import {Modal, Button, Form, Input, DatePicker, Upload, Spin, Select, Row, Col, Progress, message, Switch} from 'antd';
+import {
+    Modal,
+    Button,
+    Form,
+    Input,
+    DatePicker,
+    Upload,
+    Spin,
+    Select,
+    Row,
+    Col,
+    Progress,
+    message,
+    Switch,
+    AutoComplete
+} from 'antd';
 import Pagination from 'src/components/common/Pagination';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
@@ -314,13 +329,16 @@ const RecordList = () => {
                     <Row gutter={16}>
                         <Col span={8}>
                             <Form.Item name="type" label="板块">
-                                <Select placeholder="选择输入板块" style={{ width: '100%' }}>
+                                <AutoComplete placeholder="选择输入板块" style={{ width: '100%' }}
+                                              filterOption={(inputValue, option) =>
+                                                  option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+                                >
                                     {imageTypes.map((type) => (
-                                        <Option key={type.value} value={type.value}>
+                                        <AutoComplete.Option key={type.value} value={type.value}>
                                             {type.label}
-                                        </Option>
+                                        </AutoComplete.Option>
                                     ))}
-                                </Select>
+                                </AutoComplete>
                             </Form.Item>
                         </Col>
 
