@@ -59,9 +59,6 @@ const RecordList = () => {
         createTimeEnd: '',
         photoBy: '',
     });
-    const [searchTypes, setSearchTypes] = useState({
-        type: '',
-    });
     const [imageTypes, setImageTypes] = useState([]); // 图文类型
     const [isUploadModalVisible, setIsUploadModalVisible] = useState(false);
     const [isImageModalVisible, setIsImageModalVisible] = useState(false);
@@ -100,7 +97,7 @@ const RecordList = () => {
         fetchData()
         fetchImageTypes();
         // 获取图文类型
-    }, [searchTypes]);
+    }, [current, pageSize,searchParams]);
 
     const {
         selectedRows,
@@ -167,11 +164,10 @@ const RecordList = () => {
         const { name, value } = event.target;
         setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
     };
-
-    const handleTypeChange = (value) => {
-        console.log('Selected type:', value); // 调试信息
-        setSearchTypes((prevParams) => ({ ...prevParams, type: value }));
+    const handleSelectChange = (value, name) => {
+        setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
     };
+
     const uploadRecord = async (values) => {
         try {
             await api.post('/manage/record/upload', values, {
@@ -228,8 +224,8 @@ const RecordList = () => {
                         placeholder="选择图文类型"
                         className="search-box"
                         value={searchParams.type || undefined}
-                        onChange={handleTypeChange}
                         style={{ width: 200}}
+                        onChange={(value) => handleSelectChange(value, 'type')}
                         allowClear // 允许清空
                     >
                         {imageTypes.map((type) => (

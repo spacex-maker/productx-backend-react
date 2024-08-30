@@ -254,6 +254,10 @@ const PathAccessLogManagement = () => {
                         <p><strong>市:</strong> {selectedItem.city}</p>
                         <p><strong>区:</strong> {selectedItem.district}</p>
                         <p><strong>访问时间:</strong> {formatDate(selectedItem.createTime)}</p>
+                        <p><strong>设备信息:</strong></p>
+                        <pre style={{ backgroundColor: '#f5f5f5', padding: '10px', borderRadius: '5px', overflowX: 'auto' }}>
+                            {JSON.stringify(JSON.parse(selectedItem.viewInfo), null, 2)}
+                        </pre>
                     </div>
                 )}
             </Modal>
