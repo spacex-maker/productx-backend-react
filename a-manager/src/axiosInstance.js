@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {message} from "antd";
+import {useNavigate} from "react-router-dom";
 export const setBaseURL = (url) => {
     if (!url || typeof url !== 'string' || !isValidURL(url)) {
         message.error('无效的 API 基地址');
@@ -8,6 +9,10 @@ export const setBaseURL = (url) => {
     API_BASE_URL = url;
     message.success(`API 基地址已更新为: ${API_BASE_URL}`);
 };
+
+
+
+
 // 校验 URL 的合法性
 const isValidURL = (url) => {
     try {
@@ -17,7 +22,7 @@ const isValidURL = (url) => {
         return false;
     }
 };
-export var API_BASE_URL = 'https://anakkix.cn'; // 默认地址，可以根据需要修改
+export var API_BASE_URL = 'http://localhost:8080'; // 默认地址，可以根据需要修改
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,

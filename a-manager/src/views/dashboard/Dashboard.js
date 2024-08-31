@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
-import classNames from 'classnames'
-import api from 'src/axiosInstance'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   CAvatar,
-  CButton,
-  CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
   CProgress,
@@ -25,7 +21,6 @@ import {
   cibFacebook,
   cibTwitter,
   cibLinkedin,
-  cilCloudDownload,
   cilPeople,
   cilUser,
   cilUserFemale,
@@ -38,13 +33,12 @@ import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
 
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import WidgetsBrand from '../widgets/WidgetsBrand'
 import DailyVisitChart from './DailyVisitChart' // Import the new chart component
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState('2024-01-01')
   const [endDate, setEndDate] = useState('2024-08-01')
+
 
   const progressExample = [
     { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },

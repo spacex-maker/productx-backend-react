@@ -37,8 +37,6 @@ const AppHeaderDropdown = () => {
     // Clear the token and update the login status
     localStorage.removeItem('jwtManageToken');
     setIsLoggedIn(false);
-    // Optionally redirect to login page
-    window.location.href = '/login';
   };
 
   return (
@@ -103,7 +101,7 @@ const AppHeaderDropdown = () => {
           {isLoggedIn ? (
               <CDropdownItem onClick={handleLogout}>
                 <CIcon icon={cilLockLocked} className="me-2" />
-                登出
+                <Link to="/login">登出</Link>
               </CDropdownItem>
           ) : (
               <>
