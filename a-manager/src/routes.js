@@ -1,5 +1,4 @@
 import React from 'react'
-import Login from "src/views/pages/login/LoginPage";
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -63,10 +62,9 @@ const ipAddress = React.lazy(() => import('./views/base/ipAddress/IpAddress'))
 const pathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'))
 const chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
 
+const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'))
 
 
-
-const manageLogin = Login;
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: '主页', element: Dashboard },
@@ -122,7 +120,7 @@ const routes = [
   { path: '/data/ipAddress', name: 'ip访问日志', element: ipAddress },
   { path: '/data/pathStatisticLog', name: '路径访问日志', element: pathStatisticLog },
   { path: '/chat/chatroom', name: '聊天室', element: chatroom },
-  { path: '/login', name: '登录', element: manageLogin },
+  { path: '/login', name: '登录', element: LoginPage },
 ]
 
 export default routes
