@@ -56,12 +56,12 @@ const ThreeScene = React.lazy(() => import('./views/base/threeJs/ThreeScene'))
 
 const ImageManage = React.lazy(() => import('./views/base/record/record'))
 const ResourceManage = React.lazy(() => import('./views/base/resource/resource'))
-const userManage = React.lazy(() => import('./views/base/userList/ListUsers'))
-const commentsManage = React.lazy(() => import('./views/base/comment/comment'))
-const systemConfig = React.lazy(() => import('./views/base/systemConfig/systemConfig'))
-const ipAddress = React.lazy(() => import('./views/base/ipAddress/IpAddress'))
-const pathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'))
-const chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
+const UserManage = React.lazy(() => import('./views/base/userList/ListUsers'))
+const CommentsManage = React.lazy(() => import('./views/base/comment/comment'))
+const SystemConfig = React.lazy(() => import('./views/base/systemConfig/systemConfig'))
+const IpAddress = React.lazy(() => import('./views/base/ipAddress/IpAddress'))
+const PathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'))
+const Chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
 
 const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'))
 
@@ -137,42 +137,42 @@ const routes = [
     {
         path: '/data/userList', name: '用户管理', element: (
             <PrivateRoute>
-                <userManage/>
+                <UserManage/>
             </PrivateRoute>
         )
     },
     {
         path: '/data/comments', name: '留言管理', element: (
             <PrivateRoute>
-                <commentsManage/>
+                <CommentsManage/>
             </PrivateRoute>
         )
     },
     {
         path: '/data/systemConfig', name: '系统设置', element: (
             <PrivateRoute>
-                <systemConfig/>
+                <SystemConfig/>
             </PrivateRoute>
         )
     },
     {
         path: '/data/ipAddress', name: 'ip访问日志', element: (
             <PrivateRoute>
-                <ipAddress/>
+                <IpAddress/>
             </PrivateRoute>
         )
     },
     {
         path: '/data/pathStatisticLog', name: '路径访问日志', element: (
             <PrivateRoute>
-                <pathStatisticLog/>
+                <PathStatisticLog/>
             </PrivateRoute>
         )
     },
     {
         path: '/chat/chatroom', name: '聊天室', element: (
             <PrivateRoute>
-                <chatroom/>
+                <Chatroom/>
             </PrivateRoute>
         )
     },
