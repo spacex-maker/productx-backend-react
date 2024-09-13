@@ -214,6 +214,7 @@ const RecordList = () => {
     const handleUploadError = (error) => {
         console.error('Upload error:', error);
         // 这里可以添加错误提示
+        alert(error)
     };
 
     return (

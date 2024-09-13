@@ -64,6 +64,7 @@ const PathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/
 const Chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
 
 const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'))
+const NoteGroup = React.lazy(() => import('./views/base/noteGroup/NoteGroup'))
 
 
 const routes = [
@@ -173,6 +174,13 @@ const routes = [
         path: '/chat/chatroom', name: '聊天室', element: (
             <PrivateRoute>
                 <Chatroom/>
+            </PrivateRoute>
+        )
+    },
+    {
+        path: '/data/noteGroup', name: '聊天室', element: (
+            <PrivateRoute>
+                <NoteGroup/>
             </PrivateRoute>
         )
     },

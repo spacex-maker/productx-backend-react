@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import COS from 'cos-js-sdk-v5';
 import { Upload, Button, message, Spin } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
-const FileUpload = ({ onUploadSuccess, onUploadError, onUploadStatusChange, onUploadProgress}) => {
+const FileUpload = ({
+                        maxFileCount = null, // 默认值为 null，即不限制文件数量
+                        onUploadSuccess,
+                        onUploadError,
+                        onUploadStatusChange,
+                        onUploadProgress
+                    }) => {
     const [loading, setLoading] = useState(false);
+    const [fileList, setFileList] = useState([]);
 
     // 获取临时密钥
     const getTemporaryCredentials = async () => {
@@ -79,13 +85,37 @@ const FileUpload = ({ onUploadSuccess, onUploadError, onUploadStatusChange, onUp
         }
     };
 
+    // 自定义请求处理
+    const customRequest = ({ file, onSuccess, onError }) => {
+        if (maxFileCount !== null && fileList.length > maxFileCount) {
+            message.error(`只能上传 ${maxFileCount} 个文件`);
+            onError(new Error(`只能上传 ${maxFileCount} 个文件`));
+            return;
+        }
+
+        handleUpload([file])
+            .then(() => {
+                // 更新文件列表
+                setFileList(prevFileList => [...prevFileList, file]);
+                onSuccess();
+            })
+            .catch(onError);
+    };
+
+    // 限制文件数量
+    const handleChange = ({ fileList: newFileList }) => {
+        if (maxFileCount !== null && newFileList.length > maxFileCount) {
+            message.error(`只能上传 ${maxFileCount} 个文件`);
+            return;
+        }
+        setFileList(newFileList);
+    };
+
     return (
         <Upload
-            customRequest={({ file, onSuccess, onError }) => {
-                handleUpload([file])
-                    .then(() => onSuccess())
-                    .catch(onError);
-            }}
+            customRequest={customRequest}
+            fileList={fileList}
+            onChange={handleChange}
             multiple
         >
             <Button icon={<UploadOutlined />} disabled={loading}>
