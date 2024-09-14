@@ -33,13 +33,13 @@ const AddGroupModal = ({ visible, onClose, onSuccess }) => {
 
     const handleUploadSuccess = (newFiles) => {
         // 获取当前表单中的文件，如果没有则返回空数组
-        const currentFiles = form.getFieldValue('coverImage') || [];
+        const currentFiles = form.getFieldValue('files') || [];
 
         // 将当前的文件与新上传的文件合并
         const updatedFiles = [...currentFiles, ...newFiles];
 
         // 更新表单字段的值
-        form.setFieldsValue({ coverImage: updatedFiles });
+        form.setFieldsValue({ files: updatedFiles });
     };
 
     const handleUploadError = (error) => {
@@ -88,8 +88,7 @@ const AddGroupModal = ({ visible, onClose, onSuccess }) => {
                 </Form.Item>
                 <Form.Item
                     label="封面图片"
-                    name="coverImage"
-                    rules={[{ required: true, message: '请选择文件' }]}
+                    name="files"
                 >
                     <FileUpload
                         maxFileCount={1} // 限制为1张图

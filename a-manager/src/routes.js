@@ -65,7 +65,7 @@ const Chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
 
 const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'))
 const NoteGroup = React.lazy(() => import('./views/base/noteGroup/NoteGroup'))
-
+const Note = React.lazy(() => import('./views/base/note/NoteManagement'))
 
 const routes = [
     {path: '/', exact: true, name: 'Home'},
@@ -181,6 +181,13 @@ const routes = [
         path: '/data/noteGroup', name: '笔记分组', element: (
             <PrivateRoute>
                 <NoteGroup/>
+            </PrivateRoute>
+        )
+    },
+    {
+        path: '/data/note', name: '笔记', element: (
+            <PrivateRoute>
+                <Note/>
             </PrivateRoute>
         )
     },

@@ -67,6 +67,12 @@ const _nav = [
     icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: '笔记管理',
+    to: '/data/note',
+    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: '系统',
   },

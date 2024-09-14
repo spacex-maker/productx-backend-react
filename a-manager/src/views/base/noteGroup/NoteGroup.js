@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Spin, Input, Modal } from 'antd';
+import {Button, Spin, Input, Modal, message} from 'antd';
 import api from 'src/axiosInstance';
 import Pagination from 'src/components/common/Pagination';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
-import AddGroupModal from './AddGroupModal'; // 引入新增分组的组件
+import AddGroupModal from './AddGroupModal';
+import {CModal, CTable} from "@coreui/react";
 
 const NoteGroupManagement = () => {
     const [data, setData] = useState([]);
@@ -23,9 +24,19 @@ const NoteGroupManagement = () => {
         status: '',
         scopeAccess: '',
     });
-
+    const [isNoteModalVisible, setIsNoteModalVisible] = useState(false); // 控制“笔记管理”弹窗
+    const [groupNotes, setGroupNotes] = useState([]); // 当前分组的笔记列表
+    const [allNotes, setAllNotes] = useState([]); // 所有笔记的分页列表
+    const [selectedGroup, setSelectedGroup] = useState(null); // 当前选中的分组
     const [selectedItem, setSelectedItem] = useState(null); // 选中的记录
+    const [totalSelectNoteNum, setTotalSelectNoteNum] = useState(0);
+    const [currentSelectNotePage, setCurrentSelectNotePage] = useState(1);
+    const [selectNotePageSize, setSelectNotePageSize] = useState(10);
+    const [currentGroupId, setCurrentGroupId] = useState(null); // 选中的记录
 
+    const [totalGroupNoteNum, setTotalGroupNoteNum] = useState(0);
+    const [currentGroupNotePage, setCurrentGroupNotePage] = useState(1);
+    const [groupNotePageSize, setGroupNotePageSize] = useState(10);
     useEffect(() => {
         fetchData();
     }, [current, pageSize]);
@@ -70,12 +81,85 @@ const NoteGroupManagement = () => {
         setIsDetailModalVisible(false);
         setSelectedItem(null);
     };
+    const handleNoteModalCancel = () => {
+        setIsNoteModalVisible(false);
+        setSelectedGroup(null);
+    };
+
+    const handleAddNoteToGroup = async (note) => {
+        // 检查笔记是否已经存在于 groupNotes 列表中
+        const isNoteExist = groupNotes.some(existingNote => existingNote.id === note.id);
+
+        if (!isNoteExist) {
+            const response =
+                await api.post('/manage/note-group-rel/add-note-to-group',
+                    {
+                        noteGroupId: currentGroupId,
+                        noteId: note.id
+                    });
+            if (response){
+                handleManageNotes(currentGroupId)
+            }
+
+        } else {
+            // 可以在这里添加提示用户笔记已存在的逻辑，例如使用 Ant Design 的 notification 组件
+            message.error("这篇笔记已经在分组中")
+        }
+    };
+
+    const handleRemoveNoteFromGroup = async (noteId) => {
+        const response =
+            await api.post('/manage/note-group-rel/remove-note-from-group',
+                {
+                    noteGroupId: currentGroupId,
+                    noteId: noteId
+                });
+        if (response) {
+            handleManageNotes(currentGroupId)
+        }
+    };
 
     const handleAddGroupSuccess = () => {
         fetchData(); // 重新加载数据
         setIsModalVisible(false); // 关闭弹窗
     };
 
+    useEffect(() => {
+        handleManageNotes(currentGroupId);
+    }, [currentSelectNotePage, selectNotePageSize,currentGroupNotePage,groupNotePageSize]);
+
+    const handleManageNotes = async (groupId) => {
+        if (null==groupId){
+            return;
+        }
+        setCurrentGroupId(groupId);
+        setSelectedGroup(groupId);
+        // 请求该分组下的笔记
+        const groupResponse = await api.get(`/manage/note/list-notes-for-manage?noteGroupId=${groupId}`,{
+            params:
+                {
+                    current: currentGroupNotePage,
+                    size: groupNotePageSize
+                }
+            }
+        );
+        setGroupNotes(groupResponse.data);
+        setTotalGroupNoteNum(groupResponse.totalNum);
+
+        // 请求所有的笔记（分页）
+        const allNotesResponse =
+            await api.get('/manage/note/list-notes-for-manage',{
+                params:
+                    {
+                        current: currentSelectNotePage,
+                        size: selectNotePageSize
+                    }
+            });
+        setAllNotes(allNotesResponse.data);
+        setTotalSelectNoteNum(allNotesResponse.totalNum);
+        // 显示模态框
+        setIsNoteModalVisible(true);
+    };
     const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows(data.map(item => item.id));
 
     return (
@@ -199,7 +283,11 @@ const NoteGroupManagement = () => {
                                         <Button onClick={() => handleViewDetails(item)} type="link">
                                             查看详情
                                         </Button>
+                                            <Button onClick={() => handleManageNotes(item.id)} type="link">
+                                                笔记管理
+                                            </Button>
                                     </td>
+
                                 </tr>
                             ))}
                             </tbody>
@@ -214,7 +302,125 @@ const NoteGroupManagement = () => {
                 pageSize={pageSize}
                 onPageSizeChange={setPageSize}
             />
+            {/* 笔记管理模态框 */}
+            <CModal
+                title={`管理笔记 - ${selectedGroup ? selectedGroup.groupName : ''}`}
+                visible={isNoteModalVisible}
+                onClose={handleNoteModalCancel}
+                size="xl"
+            >
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {/* 左侧：分组内笔记列表 */}
+                    <div style={{ width: '48%' }}>
+                        <div style={{ justifyContent: 'center',alignItems: 'center' ,display: 'flex'}}>
+                            <div>分组笔记</div>
+                        </div>
+                        <div className="table-responsive">
+                            <Spin spinning={isLoading}>
+                                <div className="table-wrapper">
+                                    <CTable striped className="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>笔记标题</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {groupNotes.map(note => (
+                                                <tr key={note.id}>
+                                                    <td>
+                                                        {note.title}
+                                                    </td>
+                                                    <td style={{
+                                                        color: note.status === 'COMMON' ? 'green' :
+                                                            note.status === 'INVALID' ? 'orange' :
+                                                                note.status === 'DRAFT' ? 'blue' :
+                                                                note.status === 'DELETE' ? 'red' : 'black'
+                                                    }}>
+                                                        {note.status === 'COMMON' ? '正常' :
+                                                            note.status === 'INVALID' ? '失效' :
+                                                                note.status === 'DRAFT' ? '草稿' :
+                                                                note.status === 'DELETE' ? '删除' : '未知'}
+                                                    </td>
+                                                    <td>
+                                                        <Button type="link" onClick={() => handleRemoveNoteFromGroup(note.id)}>
+                                                            移除
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </CTable>
+                                </div>
+                            </Spin>
+                        </div>
+                        {/* 分页组件 */}
+                        <Pagination
+                            totalPages={Math.ceil(totalGroupNoteNum / groupNotePageSize)}
+                            current={currentGroupNotePage}
+                            onPageChange={setCurrentGroupNotePage}
+                            pageSize={groupNotePageSize}
+                            onPageSizeChange={setGroupNotePageSize}
+                        />
+                    </div>
+                    <div style={{ width: '48%' }}>
+                        <div style={{ justifyContent: 'center',alignItems: 'center' ,display: 'flex'}}>
+                            <div>全部笔记</div>
+                        </div>
+                        {/* 右侧：所有笔记列表 */}
+                        <div className="table-responsive">
+                            <Spin spinning={isLoading}>
+                                <div className="table-wrapper">
+                                    <table className="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>笔记标题</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
+                                            {allNotes.map(note => (
+                                                <tr key={note.id}>
+                                                    <td>
+                                                        {note.title}
+                                                    </td>
+                                                    <td style={{
+                                                        color: note.status === 'COMMON' ? 'green' :
+                                                            note.status === 'INVALID' ? 'orange' :
+                                                                note.status === 'DRAFT' ? 'blue' :
+                                                                note.status === 'DELETE' ? 'red' : 'black'
+                                                    }}>
+                                                        {note.status === 'COMMON' ? '正常' :
+                                                            note.status === 'INVALID' ? '失效' :
+                                                                note.status === 'DRAFT' ? '草稿' :
+                                                                note.status === 'DELETE' ? '删除' : '未知'}
+                                                    </td>
+                                                    <td>
+                                                        <Button type="link" onClick={() => handleAddNoteToGroup(note)}>
+                                                            添加
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Spin>
+                        </div>
+                    {/* 分页组件 */}
+                    <Pagination
+                        totalPages={Math.ceil(totalSelectNoteNum / selectNotePageSize)}
+                        current={currentSelectNotePage}
+                        onPageChange={setCurrentSelectNotePage}
+                        pageSize={selectNotePageSize}
+                        onPageSizeChange={setSelectNotePageSize}
+                    />
+                    </div>
+                </div>
+            </CModal>
             {/* 详情弹窗 */}
             <Modal
                 title="详情"
