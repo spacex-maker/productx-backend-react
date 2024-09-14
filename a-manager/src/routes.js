@@ -178,7 +178,7 @@ const routes = [
         )
     },
     {
-        path: '/data/noteGroup', name: '聊天室', element: (
+        path: '/data/noteGroup', name: '笔记分组', element: (
             <PrivateRoute>
                 <NoteGroup/>
             </PrivateRoute>
