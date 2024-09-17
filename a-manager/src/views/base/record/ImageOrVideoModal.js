@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Modal } from 'antd';
-
+import './ImageOrVideoModal.css'
 const ImageOrVideoModal = ({ isImageModalVisible, fullscreenImage, handleImageModalCancel }) => {
     // Reference to the video element
     const videoRef = useRef(null);
@@ -22,9 +22,9 @@ const ImageOrVideoModal = ({ isImageModalVisible, fullscreenImage, handleImageMo
         <Modal
             open={isImageModalVisible}
             footer={null}
+            bodyStyle={{ padding: '0' }} // 设置 Modal 内容区域的 padding
             onCancel={handleCancel}
-            width="80%"
-            style={{ top: 20 }}
+            style={{ width: '100%', maxHeight: '90vh' ,padding: '0px 0px'}}
             zIndex={2000}
         >
             {fullscreenImage && (
@@ -36,7 +36,7 @@ const ImageOrVideoModal = ({ isImageModalVisible, fullscreenImage, handleImageMo
                         ref={videoRef}
                     />
                 ) : (
-                    <img src={fullscreenImage} style={{ width: '100%' }} alt="fullscreen" />
+                    <img src={fullscreenImage} style={{ width: '100%',borderRadius: '2rem' }} alt="fullscreen" />
                 )
             )}
         </Modal>
