@@ -40,6 +40,7 @@ export default defineConfig(() => {
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.scss'],
     },
     server: {
+      host: '0.0.0.0', // 允许通过 IP 访问
       port: 3000,
       proxy: {
         // https://vitejs.dev/config/server-options.html

@@ -22,7 +22,7 @@ const isValidURL = (url) => {
         return false;
     }
 };
-export var API_BASE_URL = 'https://anakkix.cn'; // 默认地址，可以根据需要修改
+export var API_BASE_URL = 'http://127.0.0.1:8090'; // 默认地址，可以根据需要修改
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
