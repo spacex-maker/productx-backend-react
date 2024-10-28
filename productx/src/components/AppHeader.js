@@ -54,17 +54,6 @@ const AppHeader = () => {
     return () => document.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    // Fetch site view count
-    const fetchSiteViewCount = async () => {
-
-        const response = await api.get('/base/system/siteViewCount')
-          setSiteViewCount(response) // Assuming the response has a field 'viewCount'
-    }
-
-    fetchSiteViewCount()
-  }, [])
-
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
       <CContainer className="border-bottom px-4" fluid>
@@ -107,11 +96,6 @@ const AppHeader = () => {
             <div className="nav-link d-flex align-items-center">
               <CIcon icon={cilSun} size="lg" className="me-2" />
               <span>{currentTime}</span>
-            </div>
-          </CNavItem>
-          <CNavItem>
-            <div className="nav-link d-flex align-items-center">
-              <span>访问量: {siteViewCount !== null ? siteViewCount : '加载中...'}</span>
             </div>
           </CNavItem>
         </CHeaderNav>

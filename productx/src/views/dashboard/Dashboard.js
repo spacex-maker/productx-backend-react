@@ -33,8 +33,6 @@ import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
 
-import DailyVisitChart from './DailyVisitChart' // Import the new chart component
-
 const Dashboard = () => {
   const [startDate, setStartDate] = useState('2024-01-01')
   const [endDate, setEndDate] = useState('2024-08-01')
@@ -170,7 +168,6 @@ const Dashboard = () => {
                 Dashboard
               </CCardHeader>
               <CCardBody>
-                <DailyVisitChart startDate={startDate} endDate={endDate} />
                 <CRow>
                   {progressExample.map((item, index) => (
                       <CCol key={index} sm={6} md={4} lg={3}>
