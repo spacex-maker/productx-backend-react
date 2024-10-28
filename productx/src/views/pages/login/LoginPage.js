@@ -55,7 +55,7 @@ const LoginPage = () => {
         setLoading(true) // 在请求开始时禁用按钮
         e.preventDefault()
         const formData = {username, password, verify}
-        const response = await axiosInstance.post('/base/anakki/manager/login', formData)
+        const response = await axiosInstance.post('/manage/manager/login', formData)
         localStorage.setItem('jwtManageToken', response)
         navigate('/dashboard')
         setNotice("登录成功")

@@ -5,8 +5,8 @@ const AppFooter = () => {
   return (
     <CFooter className="px-4">
       <div>
-        <a href="https://anakkix.cn" target="_blank" rel="noopener noreferrer">
-            <strong>AnakkiX</strong>
+        <a href="https://ProductX.cn" target="_blank" rel="noopener noreferrer">
+            <strong>ProductX</strong>
         </a>
       </div>
       <div className="ms-auto">
@@ -15,8 +15,8 @@ const AppFooter = () => {
           CoreUI
         </a>
           &
-          <a href="https://anakkix.cn" target="_blank" rel="noopener noreferrer">
-              AnakkiX
+          <a href="https://ProductX.cn" target="_blank" rel="noopener noreferrer">
+              ProductX
           </a>
           &
           <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">
