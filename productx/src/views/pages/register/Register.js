@@ -1,5 +1,5 @@
-import React from 'react'
-import RegisterHeader from './RegisterHeader' // 引入Header组
+import React, { useState } from 'react';
+import RegisterHeader from './RegisterHeader'; // 引入Header组件
 import {
   CButton,
   CCard,
@@ -12,11 +12,42 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import { cilLockLocked, cilUser } from '@coreui/icons';
+import axiosInstance from 'src/axiosInstance'; // 确保导入你的 axios 实例
+import { message } from 'antd'; // 用于提示消息
 
 const Register = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  // 提交注册表单
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    // 检查密码是否匹配
+    if (password !== confirmPassword) {
+      message.error('两次输入的密码不匹配');
+      return;
+    }
+
+    const formData = {
+      username,
+      password,
+    };
+
+    try {
+      const response = await axiosInstance.post('/manage/manager/register', formData);
+      message.success('注册成功！');
+      // 可以在此处重定向到登录页或其他页面
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || '注册失败，请重试';
+      message.error(errorMessage);
+    }
+  };
+
   return (
     <div>
       <RegisterHeader />
@@ -27,18 +58,19 @@ const Register = () => {
               <CCardGroup>
                 <CCard className="p-4">
                   <CCardBody className="p-4">
-                    <CForm>
+                    <CForm onSubmit={handleRegister}>
                       <h4>注册</h4>
                       <p className="text-body-secondary"></p>
                       <CInputGroup className="mb-3">
                         <CInputGroupText>
                           <CIcon icon={cilUser} />
                         </CInputGroupText>
-                        <CFormInput placeholder="用户名" autoComplete="username" />
-                      </CInputGroup>
-                      <CInputGroup className="mb-3">
-                        <CInputGroupText>@</CInputGroupText>
-                        <CFormInput placeholder="邮箱" autoComplete="email" />
+                        <CFormInput
+                          placeholder="用户名"
+                          autoComplete="username"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                        />
                       </CInputGroup>
                       <CInputGroup className="mb-3">
                         <CInputGroupText>
@@ -48,6 +80,8 @@ const Register = () => {
                           type="password"
                           placeholder="密码"
                           autoComplete="new-password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                         />
                       </CInputGroup>
                       <CInputGroup className="mb-4">
@@ -56,12 +90,16 @@ const Register = () => {
                         </CInputGroupText>
                         <CFormInput
                           type="password"
-                          placeholder="再次输入"
+                          placeholder="再次输入密码"
                           autoComplete="new-password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                       </CInputGroup>
                       <div className="d-grid">
-                        <CButton color="success">注册</CButton>
+                        <CButton color="success" type="submit">
+                          注册
+                        </CButton>
                       </div>
                     </CForm>
                   </CCardBody>
@@ -72,7 +110,7 @@ const Register = () => {
         </CContainer>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
