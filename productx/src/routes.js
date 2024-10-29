@@ -65,6 +65,7 @@ const Chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
 
 const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'))
 const ListCurrency = React.lazy(() => import('./views/base/sysCurrencies/SysCurrencies'))
+const ListCountry = React.lazy(() => import('./views/base/countries/Country'))
 
 const routes = [
   {path: '/', exact: true, name: 'Home'},
@@ -180,6 +181,13 @@ const routes = [
     path: '/data/sysCurrency', name: '系统支持货币', element: (
       <PrivateRoute>
         <ListCurrency/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/country', name: '系统支持国家', element: (
+      <PrivateRoute>
+        <ListCountry/>
       </PrivateRoute>
     )
   },
