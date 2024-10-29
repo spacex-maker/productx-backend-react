@@ -4,9 +4,13 @@ import { Modal, Button, Form, Input, DatePicker, message, Spin } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
+import UserTable from "src/views/base/userList/UserTable";
+import UpdateUserModal from "src/views/base/userList/UpdateUserModal";
+import UserDetailModal from "src/views/base/userList/UserDetailModal";
+import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
 
 const updateUserStatus = async (id, newStatus) => {
-  await api.post('/manage/user/change-status', { id, state: newStatus ? 'COMMON' : 'BAN' })
+  await api.post('/manage/user/change-status', { id, status: newStatus ? 'COMMON' : 'BAN' })
 }
 
 const createUser = async (userData) => {
@@ -26,6 +30,7 @@ const UserList = () => {
     username: '',
     nickname: '',
     email: '',
+    address: '',
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -33,11 +38,15 @@ const UserList = () => {
   const [createForm] = Form.useForm()
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
-
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null) // 用于存储选中的用户
   useEffect(() => {
     fetchData()
   }, [current, pageSize, searchParams])
-
+  const handleDetailClick = (user) => {
+    setSelectedUser(user)
+    setIsDetailModalVisible(true)
+  }
   const {
     selectedRows,
     selectAll,
@@ -69,7 +78,7 @@ const UserList = () => {
   const handleStatusChange = async (id, event) => {
     const newStatus = event.target.checked
     await updateUserStatus(id, newStatus)
-    fetchData() // 状态更新后重新获取数据
+    await fetchData() // 状态更新后重新获取数据
   }
 
   const handleSearchChange = (event) => {
@@ -81,14 +90,14 @@ const UserList = () => {
     await createUser(values)
     setIsCreateModalVisible(false)
     createForm.resetFields()
-    fetchData()
+    await fetchData()
   }
 
   const handleUpdateUser = async (values) => {
     await updateUser(values)
     setIsUpdateModalVisible(false)
     updateForm.resetFields()
-    fetchData()
+    await fetchData()
   }
 
   const handleEditClick = (user) => {
@@ -148,78 +157,18 @@ const UserList = () => {
 
       <div className="table-responsive">
         <Spin spinning={isLoading}>
-          <table className="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th>
-                <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id="select_all"
-                    checked={selectAll}
-                    onChange={handleSelectAll}
-                  />
-                  <label className="custom-control-label" htmlFor="select_all"></label>
-                </div>
-              </th>
-              {['ID', '头像', '用户名', '昵称', '邮箱', '地址', '状态', '操作'].map((field) => (
-                <th key={field}>{field}</th>
-              ))}
-            </tr>
-            </thead>
-            <tbody>
-            {data.map((item) => (
-              <tr key={item.id} className="record-font">
-                <td>
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id={`td_checkbox_${item.id}`}
-                      checked={selectedRows.includes(item.id)}
-                      onChange={() => handleSelectRow(item.id)}
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor={`td_checkbox_${item.id}`}
-                    ></label>
-                  </div>
-                </td>
-                <td className="text-truncate">{item.id}</td>
-                <td className="text-truncate">
-                  <img
-                    src={item.avatar}
-                    alt="avatar"
-                    style={{ width: '50px', height: '50px', borderRadius: '50%' }}
-                  />
-                </td>
-                <td className="text-truncate">{item.username}</td>
-                <td className="text-truncate">{item.nickname}</td>
-                <td className="text-truncate">{item.email}</td>
-                <td className="text-truncate">{item.address}</td>
-                <td>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={item.isActive}
-                      onChange={(e) => handleStatusChange(item.id, e)}
-                    />
-                    <span className="toggle-switch-slider"></span>
-                  </label>
-                </td>
-                <td>
-                  <Button type="link" onClick={() => handleEditClick(item)}>
-                    修改
-                  </Button>
-                </td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
+          <UserTable
+            data={data}
+            selectAll={selectAll}
+            selectedRows={selectedRows}
+            handleSelectAll={handleSelectAll}
+            handleSelectRow={handleSelectRow}
+            handleStatusChange={handleStatusChange}
+            handleEditClick={handleEditClick}
+            handleDetailClick={handleDetailClick}
+          />
         </Spin>
       </div>
-
       <Pagination
         totalPages={totalPages}
         current={current}
@@ -227,64 +176,25 @@ const UserList = () => {
         pageSize={pageSize}
         onPageSizeChange={setPageSize}
       />
-
-      <Modal
-        title="新增用户"
-        visible={isCreateModalVisible}
+      <UserCreateFormModal
+        isVisible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
-        onOk={() => createForm.submit()}
-      >
-        <Form form={createForm} onFinish={handleCreateUser}>
-          <Form.Item
-            label="用户名"
-            name="username"
-            rules={[{ required: true, message: '请输入用户名' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[{ required: true, message: '请输入密码' }]}
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item
-            label="用户昵称"
-            name="nickname"
-            rules={[{ required: true, message: '请输入用户昵称' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="用户生日" name="birthday">
-            <DatePicker />
-          </Form.Item>
-          <Form.Item label="邮箱" name="email" rules={[{ required: true, message: '请输入邮箱' }]}>
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      <Modal
-        title="修改用户"
-        visible={isUpdateModalVisible}
+        onFinish={handleCreateUser}
+        form={createForm}
+      />
+      <UpdateUserModal
+        isVisible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
         onOk={() => updateForm.submit()}
-      >
-        <Form form={updateForm} onFinish={handleUpdateUser}>
-          <Form.Item name="id" hidden></Form.Item>
-          <Form.Item
-            label="用户昵称"
-            name="nickname"
-            rules={[{ required: true, message: '请输入用户昵称' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="邮箱" name="email" rules={[{ required: true, message: '请输入邮箱' }]}>
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
+        form={updateForm}
+        handleUpdateUser={handleUpdateUser}
+        selectedUser={selectedUser} // 传递当前选中的用户信息
+      />
+      <UserDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        selectedUser={selectedUser}
+      />
     </div>
   )
 }

@@ -37,13 +37,13 @@ const LoginPage = () => {
   }, []);
 
   const refreshCaptcha = () => {
-    setCaptcha(`${API_BASE_URL + '/base/system/captcha'}?${new Date().getTime()}`);
+    setCaptcha(`${API_BASE_URL + '/manage/base/system/captcha'}?${new Date().getTime()}`);
   };
 
   const handleSetBaseURL = () => {
     if (apiBaseURL) {
       const fullURL = `${protocol}://${apiBaseURL}`;
-      setBaseURL(fullURL);
+      napiBaseURLsetBaseURL(fullURL);
       console.log('设置的 API 基地址:', fullURL);
     } else {
       console.error('请输入有效的 API 基地址');
@@ -67,7 +67,7 @@ const LoginPage = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = `${API_BASE_URL}/auth/github`; // 跳转到后端 GitHub 登录接口
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=http://127.0.0.1:8090/manage/manager/github-callback`; // 跳转到后端 GitHub 登录接口
   };
 
   return (
