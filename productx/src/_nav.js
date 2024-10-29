@@ -88,8 +88,8 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'IP访问日志',
-    to: '/data/ipAddress',
+    name: '系统支持货币',
+    to: '/data/sysCurrency',
     icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
   },
   {
