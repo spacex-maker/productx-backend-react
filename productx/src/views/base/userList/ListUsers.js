@@ -10,7 +10,7 @@ import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
 
 const updateUserStatus = async (id, newStatus) => {
-  await api.post('/manage/user/change-status', { id, status: newStatus ? 'COMMON' : 'BAN' })
+  await api.post('/manage/user/change-status', { id, status: newStatus ? 1 : 0 })
 }
 
 const createUser = async (userData) => {

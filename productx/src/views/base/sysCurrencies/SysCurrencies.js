@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import api from 'src/axiosInstance'
-import { Modal, Button, Form, Input, message, Spin } from 'antd'
-import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
-import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
+import {Modal, Button, Form, Input, message, Spin, Select} from 'antd'
+import {UseSelectableRows} from 'src/components/common/UseSelectableRows'
+import {HandleBatchDelete} from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
 import CurrencyTable from "src/views/base/sysCurrencies/CurrencyTable"
 import UpdateCurrencyModal from "src/views/base/sysCurrencies/UpdateCurrencyModal"
 import CurrencyCreateFormModal from "src/views/base/sysCurrencies/CurrencyCreateFormModal"
 
 const updateCurrencyStatus = async (id, newStatus) => {
-  await api.post('/manage/sys-currencies/change-status', { id, status })
+  await api.post('/manage/sys-currencies/change-status', {id, status: newStatus ? 1 : 0})
 }
 
 const createCurrency = async (currencyData) => {
@@ -23,12 +23,13 @@ const updateCurrency = async (updateData) => {
 const CurrencyList = () => {
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
-  const [current, setCurrent] = useState(1)
+  const [currentPage, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [searchParams, setSearchParams] = useState({
     currencyCode: '',
     currencyName: '',
     descriptionZh: '',
+    status: '',
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +42,7 @@ const CurrencyList = () => {
 
   useEffect(() => {
     fetchData()
-  }, [current, pageSize, searchParams])
+  }, [currentPage, pageSize, searchParams])
 
   const handleDetailClick = (currency) => {
     setSelectedCurrency(currency)
@@ -62,7 +63,7 @@ const CurrencyList = () => {
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       )
       const response = await api.get('/manage/sys-currencies/list', {
-        params: { current, size: pageSize, ...filteredParams },
+        params: {currentPage, size: pageSize, ...filteredParams},
       })
 
       if (response && response.data) {
@@ -83,8 +84,8 @@ const CurrencyList = () => {
   }
 
   const handleSearchChange = (event) => {
-    const { name, value } = event.target
-    setSearchParams((prevParams) => ({ ...prevParams, [name]: value }))
+    const {name, value} = event.target
+    setSearchParams((prevParams) => ({...prevParams, [name]: value}))
   }
 
   const handleCreateCurrency = async (values) => {
@@ -120,80 +121,90 @@ const CurrencyList = () => {
       <div className="mb-3">
         <div className="search-container">
           <div className="position-relative mb-2">
-            <input
-              type="text"
-              className="form-control search-box"
-              name="currencyName"
-              placeholder="搜索英文名称"
+            <Input
               value={searchParams.currencyName}
               onChange={handleSearchChange}
+              name="currencyName"
+              c
+              allowClear // 添加这个属性
             />
           </div>
           <div className="position-relative mb-2">
-            <input
-              type="text"
-              className="form-control search-box"
-              name="descriptionZh"
-              placeholder="搜索中文名称"
+            <Input
               value={searchParams.descriptionZh}
               onChange={handleSearchChange}
+              name="descriptionZh"
+              placeholder="搜索中文名称"
+              allowClear // 添加这个属性
             />
           </div>
           <div className="position-relative mb-2">
-            <input
-              type="text"
-              className="form-control search-box"
-              name="currencyCode"
-              placeholder="搜索货币代码"
+            <Input
               value={searchParams.currencyCode}
               onChange={handleSearchChange}
+              name="currencyCode"
+              placeholder="搜索货币代码"
+              allowClear // 添加这个属性
             />
           </div>
+          <div className="position-relative mb-2">
+            <Select
+              className="search-box"
+              name="status"
+              value={searchParams.status}
+              onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
+              allowClear // 添加这个属性以允许清空选择
+              placeholder="是否启用"
+            >
+              <Option value="1">启用</Option>
+              <Option value="0">禁用</Option>
+            </Select>
+          </div>
+          <Button
+            type="primary"
+            onClick={fetchData}
+            className="search-button"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spin/> : '查询'}
+          </Button>
+        </div>
+      </div>
+
+      <div className="mb-3">
+        <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
+          新增货币
+        </Button>
         <Button
-          type="primary"
-          onClick={fetchData}
-          className="search-button"
-          disabled={isLoading}
+          type="danger"
+          onClick={() => HandleBatchDelete({
+            url: '/manage/currency/delete-batch',
+            selectedRows,
+            fetchData,
+          })}
+          disabled={selectedRows.length === 0}
         >
-          {isLoading ? <Spin/> : '查询'}
+          批量删除
         </Button>
       </div>
-    </div>
 
-  <div className="mb-3">
-    <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
-      新增货币
-    </Button>
-    <Button
-      type="danger"
-      onClick={() => HandleBatchDelete({
-        url: '/manage/currency/delete-batch',
-        selectedRows,
-        fetchData,
-      })}
-      disabled={selectedRows.length === 0}
-    >
-      批量删除
-    </Button>
-  </div>
-
-  <div className="table-responsive">
-    <Spin spinning={isLoading}>
-      <CurrencyTable
-        data={data}
-        selectAll={selectAll}
-        selectedRows={selectedRows}
-        handleSelectAll={handleSelectAll}
-        handleSelectRow={handleSelectRow}
-        handleStatusChange={handleStatusChange}
-        handleEditClick={handleEditClick}
+      <div className="table-responsive">
+        <Spin spinning={isLoading}>
+          <CurrencyTable
+            data={data}
+            selectAll={selectAll}
+            selectedRows={selectedRows}
+            handleSelectAll={handleSelectAll}
+            handleSelectRow={handleSelectRow}
+            handleStatusChange={handleStatusChange}
+            handleEditClick={handleEditClick}
             handleDetailClick={handleDetailClick}
           />
         </Spin>
       </div>
       <Pagination
         totalPages={totalPages}
-        current={current}
+        current={currentPage}
         onPageChange={setCurrent}
         pageSize={pageSize}
         onPageSizeChange={setPageSize}
