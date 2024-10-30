@@ -26,8 +26,10 @@ const ExpressList = () => {
   const [currentPage, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchParams, setSearchParams] = useState({
-    courierName: '',
-    courierCode: '',
+    name: '',
+    trackingNumberFormat: '',
+    website: '',
+    contactNumber: '',
     status: '',
   });
 
@@ -122,7 +124,7 @@ const ExpressList = () => {
                 size="small"
                 value={searchParams.courierName}
                 onChange={handleSearchChange}
-                name="courierName"
+                name="name"
                 placeholder="快递公司名称"
                 allowClear
               />
@@ -132,8 +134,28 @@ const ExpressList = () => {
                 size="small"
                 value={searchParams.courierCode}
                 onChange={handleSearchChange}
-                name="courierCode"
-                placeholder="快递公司代码"
+                name="trackingNumberFormat"
+                placeholder="单号格式，正则表达式"
+                allowClear
+              />
+            </Col>
+            <Col>
+              <Input
+                size="small"
+                value={searchParams.courierCode}
+                onChange={handleSearchChange}
+                name="website"
+                placeholder="官网"
+                allowClear
+              />
+            </Col>
+            <Col>
+              <Input
+                size="small"
+                value={searchParams.courierCode}
+                onChange={handleSearchChange}
+                name="contactNumber"
+                placeholder="客服电话"
                 allowClear
               />
             </Col>
