@@ -26,9 +26,12 @@ const CurrencyTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', 'English Name', '中文名称', '货币代码', '符号', '状态', '操作'].map((field) => (
+        {['ID', 'English Name', '中文名称', '货币代码', '符号', '状态'].map((field) => (
           <th key={field}>{field}</th>
         ))}
+        <th className="fixed-column"
+            key='操作'>操作
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -62,7 +65,7 @@ const CurrencyTable = ({
               <span className="toggle-switch-slider"></span>
             </label>
           </td>
-          <td>
+          <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>
               修改
             </Button>

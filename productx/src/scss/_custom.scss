@@ -297,3 +297,9 @@ textarea::placeholder,
   width: 3px;
   height: 3px;
 }
+
+.fixed-column {
+  position: sticky;
+  right: 0;
+  z-index: 1; /* 确保它在最上层 */
+}

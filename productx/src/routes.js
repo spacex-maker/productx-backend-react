@@ -69,7 +69,7 @@ const ListCountry = React.lazy(() => import('./views/base/countries/Country'))
 
 const ListExpress = React.lazy(() => import('./views/base/express/Express'))
 
-
+const ListGlobalBank= React.lazy(() => import('./views/base/globalBank/GlobalBank'))
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -201,6 +201,14 @@ const routes = [
       </PrivateRoute>
     )
   },
+  {
+    path: '/data/globalBank', name: '系统支持银行', element: (
+      <PrivateRoute>
+        <ListGlobalBank/>
+      </PrivateRoute>
+    )
+  },
+
 ]
 
 export default routes

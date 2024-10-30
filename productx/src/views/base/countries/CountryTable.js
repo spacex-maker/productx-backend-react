@@ -42,9 +42,12 @@ const CountryTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['国家名称', '国家代码', '大陆', '状态', '操作'].map((field) => (
+          {['国家名称', '国家代码', '大陆', '状态'].map((field) => (
             <th key={field}>{field}</th>
           ))}
+          <th className="fixed-column"
+              key='操作'>操作
+          </th>
         </tr>
         </thead>
         <tbody>
@@ -76,7 +79,7 @@ const CountryTable = ({
                 <span className="toggle-switch-slider"></span>
               </label>
             </td>
-            <td>
+            <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 修改
               </Button>

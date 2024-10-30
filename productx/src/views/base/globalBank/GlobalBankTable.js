@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button } from 'antd';
 
-const ExpressTable = ({
-                               data,
-                               selectAll,
-                               selectedRows,
-                               handleSelectAll,
-                               handleSelectRow,
-                               handleStatusChange,
-                               handleEditClick,
-                             }) => {
+const BankTable = ({
+                     data,
+                     selectAll,
+                     selectedRows,
+                     handleSelectAll,
+                     handleSelectRow,
+                     handleStatusChange,
+                     handleEditClick,
+                   }) => {
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -26,11 +26,23 @@ const ExpressTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', '快递公司名称', '运单格式', '网站', '联系电话', '状态'].map((field) => (
+        {[
+          'ID',
+          '银行名称',
+          'SWIFT代码',
+          '国家',
+          '城市',
+          '地址',
+          '邮政编码',
+          '联系电话',
+          '邮箱',
+          '官网',
+          '状态',
+        ].map((field) => (
           <th key={field}>{field}</th>
         ))}
-        <th className="fixed-column"
-            key='操作'>操作
+        <th className = "fixed-column"
+          key='操作'>操作
         </th>
       </tr>
       </thead>
@@ -51,19 +63,24 @@ const ExpressTable = ({
             </div>
           </td>
           <td className="text-truncate">{item.id}</td>
-          <td className="text-truncate">{item.name}</td>
-          <td className="text-truncate">{item.trackingNumberFormat}</td>
+          <td className="text-truncate">{item.bankName}</td>
+          <td className="text-truncate">{item.swiftCode}</td>
+          <td className="text-truncate">{item.country}</td>
+          <td className="text-truncate">{item.city}</td>
+          <td className="text-truncate">{item.address}</td>
+          <td className="text-truncate">{item.postalCode}</td>
+          <td className="text-truncate">{item.phoneNumber}</td>
+          <td className="text-truncate">{item.email}</td>
           <td className="text-truncate">
             <a href={item.website} target="_blank" rel="noopener noreferrer">
               {item.website}
             </a>
           </td>
-          <td className="text-truncate">{item.contactNumber}</td>
           <td>
             <label className="toggle-switch">
               <input
                 type="checkbox"
-                checked={item.status === 1}
+                checked={item.supported}
                 onChange={(e) => handleStatusChange(item.id, e)}
               />
               <span className="toggle-switch-slider"></span>
@@ -81,4 +98,4 @@ const ExpressTable = ({
   );
 };
 
-export default ExpressTable;
+export default BankTable;

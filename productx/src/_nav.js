@@ -100,6 +100,12 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: '系统支持银行',
+    to: '/data/globalBank',
+    icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: '路径访问日志',
     to: '/data/pathStatisticLog',
     icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
