@@ -27,9 +27,12 @@ const UserTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', '头像', '用户名', '昵称', '邮箱', '地址', '状态', '操作'].map((field) => (
+        {['ID', '头像', '用户名', '昵称', '邮箱', '地址', '状态'].map((field) => (
           <th key={field}>{field}</th>
         ))}
+        <th className="fixed-column"
+            key='操作'>操作
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -55,7 +58,7 @@ const UserTable = ({
             <img
               src={item.avatar} // 假设 user.avatar 是头像的 URL
               alt={`${item.nickname}的头像`}
-              style={{ width: '40px', height: '40px', borderRadius: '25%' }} // 设置为40px的图片并圆形显示
+              style={{width: '40px', height: '40px', borderRadius: '25%'}} // 设置为40px的图片并圆形显示
             />
           </td>
           <td className="text-truncate">{item.username}</td>
@@ -72,7 +75,7 @@ const UserTable = ({
               <span className="toggle-switch-slider"></span>
             </label>
           </td>
-          <td>
+          <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>
               修改
             </Button>
