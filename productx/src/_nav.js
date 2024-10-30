@@ -84,7 +84,7 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: '日志系统',
+    name: '系统设置',
   },
   {
     component: CNavItem,
@@ -108,6 +108,16 @@ const _nav = [
     component: CNavItem,
     name: '路径访问日志',
     to: '/data/pathStatisticLog',
+    icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: '客服',
+  },
+  {
+    component: CNavItem,
+    name: '工单系统',
+    to: '/data/workOrder',
     icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
   },
   {
