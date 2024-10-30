@@ -67,6 +67,9 @@ const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'))
 const ListCurrency = React.lazy(() => import('./views/base/sysCurrencies/SysCurrencies'))
 const ListCountry = React.lazy(() => import('./views/base/countries/Country'))
 
+const ListExpress = React.lazy(() => import('./views/base/express/Express'))
+
+
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -188,6 +191,13 @@ const routes = [
     path: '/data/country', name: '系统支持国家', element: (
       <PrivateRoute>
         <ListCountry/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/express', name: '系统支持快递', element: (
+      <PrivateRoute>
+        <ListExpress/>
       </PrivateRoute>
     )
   },

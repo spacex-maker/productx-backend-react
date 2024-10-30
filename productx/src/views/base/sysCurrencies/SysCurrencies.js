@@ -175,28 +175,29 @@ const CurrencyList = () => {
                 {isLoading ? <Spin/> : '查询'}
               </Button>
             </Col>
+            <Col>
+              <Button
+                size="small"
+                type="primary" onClick={() => setIsCreateModalVisible(true)}>
+                新增货币
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => HandleBatchDelete({
+                  url: '/manage/currency/delete-batch',
+                  selectedRows,
+                  fetchData,
+                })}
+                disabled={selectedRows.length === 0}
+              >
+                批量删除
+              </Button>
+            </Col>
           </Row>
-          <Col>
-            <Button
-              size="small"
-              type="primary" onClick={() => setIsCreateModalVisible(true)}>
-              新增货币
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              size="small"
-              type="primary"
-              onClick={() => HandleBatchDelete({
-                url: '/manage/currency/delete-batch',
-                selectedRows,
-                fetchData,
-              })}
-              disabled={selectedRows.length === 0}
-            >
-              批量删除
-            </Button>
-          </Col>
+
         </div>
       </div>
 

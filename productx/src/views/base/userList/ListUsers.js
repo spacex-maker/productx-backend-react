@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Modal, Button, Form, Input, DatePicker, message, Spin } from 'antd'
+import {Modal, Button, Form, Input, DatePicker, message, Spin, Row, Col, Select} from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
@@ -115,44 +115,104 @@ const UserList = () => {
     <div>
       <div className="mb-3">
         <div className="search-container">
-          {Object.keys(searchParams).map((key) => (
-            <div key={key} className="position-relative">
-              <input
-                type="text"
-                className="form-control search-box"
-                name={key}
-                placeholder={`搜索${key}`}
-                value={searchParams[key]}
-                onChange={handleSearchChange}
-              />
-            </div>
-          ))}
-          <Button
-            type="primary"
-            onClick={fetchData}
-            className="search-button"
-            disabled={isLoading}
-          >
-            {isLoading ? <Spin /> : '查询'}
-          </Button>
-        </div>
-      </div>
+          <div className="search-container">
+            <Row gutter={[10, 10]}>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.username}
+                  onChange={handleSearchChange}
+                  name="username"
+                  placeholder="用户名"
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.nickname}
+                  onChange={handleSearchChange}
+                  name="nickname"
+                  placeholder="昵称"
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.email}
+                  onChange={handleSearchChange}
+                  name="email"
+                  placeholder="邮箱"
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.address}
+                  onChange={handleSearchChange}
+                  name="address"
+                  placeholder="地址"
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Select
+                  size="small"
+                  className="search-box"
+                  name="status"
+                  onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
+                  allowClear // 添加这个属性以允许清空选择
+                  placeholder="是否启用"
+                >
+                  <Option value="1">启用</Option>
+                  <Option value="0">禁用</Option>
+                </Select>
+              </Col>
+              <Col>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={fetchData}
+                  className="search-button"
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin/> : '查询'}
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  size="small"
+                  type="primary" onClick={() => setIsCreateModalVisible(true)}>
+                  创建用户
+                </Button>
+              </Col>
+              <Col>
+              <Button
+                size="small"
+                type="primary" onClick={() => setIsCreateModalVisible(true)}>
+                修改用户
+              </Button>
+            </Col>
+              <Col>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/user/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  批量删除
+                </Button>
+              </Col>
+            </Row>
 
-      <div className="mb-3">
-        <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
-          新增用户
-        </Button>
-        <Button
-          type="danger"
-          onClick={() => HandleBatchDelete({
-            url: '/manage/user/delete-batch',
-            selectedRows,
-            fetchData,
-          })}
-          disabled={selectedRows.length === 0}
-        >
-          批量删除
-        </Button>
+          </div>
+        </div>
       </div>
 
       <div className="table-responsive">
