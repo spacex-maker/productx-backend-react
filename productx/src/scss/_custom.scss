@@ -248,17 +248,6 @@ textarea::placeholder,
   margin: 0; /* 取消复选框的默认外边距 */
 }
 
-.toggle-switch {
-  width: 40px; /* 可以调整开关的宽度 */
-  height: 20px; /* 可以调整开关的高度 */
-}
-
-.toggle-switch-slider {
-  height: 20px; /* 使开关滑块的高度与外部容器相同 */
-  width: 40px; /* 确保滑块在外部容器内 */
-}
-
-
 .pagination {
   display: flex;
   align-items: center; /* 垂直居中 */
