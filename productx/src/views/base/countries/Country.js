@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Modal, Button, Form, Input, message, Spin, Select } from 'antd';
+import {Modal, Button, Form, Input, message, Spin, Select, Col, Row} from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
@@ -22,6 +22,7 @@ const updateCountry = async (updateData) => {
 
 const CountryList = () => {
   const [data, setData] = useState([]);
+  const [allData, setAllData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -41,6 +42,7 @@ const CountryList = () => {
 
   useEffect(() => {
     fetchData();
+    fetchAllData()
   }, [currentPage, pageSize, searchParams]);
 
   const {
@@ -71,7 +73,24 @@ const CountryList = () => {
       setIsLoading(false);
     }
   };
+  const fetchAllData = async () => {
+    setIsLoading(true);
+    try {
+      const filteredParams = Object.fromEntries(
+        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
+      );
+      const response = await api.get('/manage/countries/list-all');
 
+      if (response) {
+        setAllData(response);
+      }
+    } catch (error) {
+      console.error('Failed to fetch data', error);
+      message.error('数据加载失败，请重试！');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
     setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
@@ -83,7 +102,11 @@ const CountryList = () => {
     createForm.resetFields();
     await fetchData();
   };
-
+  const handleStatusChange = async (id, event) => {
+    const newStatus = event.target.checked
+    await updateCountryStatus(id, newStatus)
+    await fetchData() // Re-fetch data after status update
+  }
   const handleUpdateCountry = async (values) => {
     await updateCountry(values);
     setIsUpdateModalVisible(false);
@@ -109,45 +132,86 @@ const CountryList = () => {
     <div>
       <div className="mb-3">
         <div className="search-container">
-          <Input
-            value={searchParams.name}
-            onChange={handleSearchChange}
-            name="name"
-            placeholder="搜索国家名称"
-            allowClear
-            className="mb-2"
-          />
-          <Input
-            value={searchParams.code}
-            onChange={handleSearchChange}
-            name="code"
-            placeholder="搜索国家代码"
-            allowClear
-            className="mb-2"
-          />
-          <Select
-            className="mb-2"
-            name="status"
-            value={searchParams.status}
-            onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
-            allowClear
-            placeholder="状态"
-          >
-            <Select.Option value="1">启用</Select.Option>
-            <Select.Option value="0">禁用</Select.Option>
-          </Select>
-          <Button
-            type="primary"
-            onClick={fetchData}
-            disabled={isLoading}
-          >
-            {isLoading ? <Spin /> : '查询'}
-          </Button>
+          <Row gutter={[16, 16]}>
+            <Col>
+              <Input
+                size="small"
+                value={searchParams.name}
+                onChange={handleSearchChange}
+                name="name"
+                placeholder="搜索国家名称"
+                allowClear
+              />
+            </Col>
+
+            <Col>
+              <Input
+                size="small"
+                value={searchParams.code}
+                onChange={handleSearchChange}
+                name="code"
+                placeholder="搜索国家代码"
+                allowClear
+              />
+            </Col>
+
+            <Col>
+              <Select
+                size="small"
+                name="continent"
+                onChange={(value) => handleSearchChange({target: {name: 'continent', value}})}
+                allowClear
+                placeholder="选择大陆"
+                style={{width: '100%'}}
+                popupMatchSelectWidth={false} // 确保下拉菜单宽度根据内容自适应
+                dropdownStyle={{ minWidth: 150 }} // 可调整此宽度以适应内容
+              >
+                <Select.Option value="非洲">非洲 (Africa)</Select.Option>
+                <Select.Option value="亚洲">亚洲 (Asia)</Select.Option>
+                <Select.Option value="欧洲">欧洲 (Europe)</Select.Option>
+                <Select.Option value="北美洲">北美洲 (North America)</Select.Option>
+                <Select.Option value="南美洲">南美洲 (South America)</Select.Option>
+                <Select.Option value="大洋洲">大洋洲 (Oceania)</Select.Option>
+                <Select.Option value="南极洲">南极洲 (Antarctica)</Select.Option>
+              </Select>
+            </Col>
+
+            <Col>
+              <Select
+                size="small"
+                name="status"
+                onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
+                allowClear
+                placeholder="是否已开展业务"
+                style={{width: '100%'}}
+              >
+                <Select.Option value="1">是</Select.Option>
+                <Select.Option value="0">否</Select.Option>
+              </Select>
+            </Col>
+
+            <Col>
+              <Button
+                type="primary"
+                size="small"
+                onClick={fetchData}
+                disabled={isLoading}
+                style={{width: '100%', fontSize: '12px'}}
+              >
+                {isLoading ? <Spin size="small"/> : '查询'}
+              </Button>
+            </Col>
+          </Row>
         </div>
+
       </div>
 
       <div className="mb-3">
-        <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
+        <Button
+          type="primary"
+          onClick={() => setIsCreateModalVisible(true)}
+          size="small"
+        >
           新增国家
         </Button>
         <Button
@@ -158,6 +222,7 @@ const CountryList = () => {
             fetchData,
           })}
           disabled={selectedRows.length === 0}
+          size="small"
         >
           批量删除
         </Button>
@@ -166,16 +231,19 @@ const CountryList = () => {
       <div className="table-responsive">
         <Spin spinning={isLoading}>
           <CountryTable
+            allData={allData}
             data={data}
             selectAll={selectAll}
             selectedRows={selectedRows}
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
+            handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
           />
         </Spin>
       </div>
       <Pagination
+        size="small"
         totalPages={totalPages}
         current={currentPage}
         onPageChange={setCurrent}

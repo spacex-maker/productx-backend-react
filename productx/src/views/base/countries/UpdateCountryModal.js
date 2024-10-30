@@ -14,8 +14,8 @@ const UpdateCountryModal = ({
     if (isVisible && selectedCountry) {
       form.setFieldsValue({
         id: selectedCountry.id,
-        countryName: selectedCountry.countryName,
-        countryCode: selectedCountry.countryCode,
+        countryName: selectedCountry.name,
+        countryCode: selectedCountry.code,
         continent: selectedCountry.continent,
       });
     }
@@ -36,7 +36,7 @@ const UpdateCountryModal = ({
         </Form.Item>
 
         <Form.Item
-          label="国家名称"
+          label="国家名称(country name)"
           name="countryName"
           rules={[{ required: true, message: '请输入国家名称' }]}
           style={{ marginBottom: '8px' }} // 调整上下间距
@@ -45,7 +45,7 @@ const UpdateCountryModal = ({
         </Form.Item>
 
         <Form.Item
-          label="国家代码"
+          label="国家代码(country code)"
           name="countryCode"
           rules={[{ required: true, message: '请输入国家代码' }]}
           style={{ marginBottom: '8px' }} // 调整上下间距
@@ -54,7 +54,7 @@ const UpdateCountryModal = ({
         </Form.Item>
 
         <Form.Item
-          label="大陆"
+          label="大陆(continent)"
           name="continent"
           rules={[{ required: true, message: '请输入大陆' }]}
           style={{ marginBottom: '8px' }} // 调整上下间距

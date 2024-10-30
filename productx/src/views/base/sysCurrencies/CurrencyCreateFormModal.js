@@ -10,7 +10,7 @@ const CurrencyCreateFormModal = ({
   return (
     <Modal
       title="新增货币(create currency)"
-      visible={isVisible}
+      open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
     >

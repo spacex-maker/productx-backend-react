@@ -10,7 +10,7 @@ const CountryCreateFormModal = ({
   return (
     <Modal
       title="新增国家(create country)"
-      visible={isVisible}
+      open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
     >

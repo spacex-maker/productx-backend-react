@@ -9,7 +9,6 @@ const CurrencyTable = ({
                          handleSelectRow,
                          handleStatusChange,
                          handleEditClick,
-                         handleDetailClick,
                        }) => {
   return (
     <table className="table table-bordered table-striped">
@@ -22,12 +21,12 @@ const CurrencyTable = ({
               className="custom-control-input"
               id="select_all"
               checked={selectAll}
-              onChange={handleSelectAll}
+              onChange={(event) => handleSelectAll(event, data)}
             />
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', 'English Name','中文名称', '货币代码','符号' , '状态', '操作'].map((field) => (
+        {['ID', 'English Name', '中文名称', '货币代码', '符号', '状态', '操作'].map((field) => (
           <th key={field}>{field}</th>
         ))}
       </tr>
@@ -39,10 +38,8 @@ const CurrencyTable = ({
             <div className="custom-control custom-checkbox">
               <input
                 type="checkbox"
-                className="custom-control-input"
-                id={`td_checkbox_${item.id}`}
                 checked={selectedRows.includes(item.id)}
-                onChange={() => handleSelectRow(item.id)}
+                onChange={() => handleSelectRow(item.id, data)}
               />
               <label
                 className="custom-control-label"

@@ -214,3 +214,97 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+:root {
+  --global-font-size: 10px;
+}
+
+body, .ant-typography, .ant-btn, .ant-input, .ant-select, .ant-table, .ant-modal {
+  font-size: var(--global-font-size);
+}
+input::placeholder,
+textarea::placeholder,
+.select-placeholder::placeholder,
+.ant-select-selection-placeholder {
+  font-size: var(--global-font-size);
+  color: #999;     /* 可选：设定 placeholder 的颜色 */
+}
+/* CSS */
+.table {
+  font-size: 12px; /* 调整字体大小 */
+}
+
+.table th,
+.table td {
+  padding: 2px; /* 减少单元格的内边距 */
+  vertical-align: middle; /* 垂直居中 */
+}
+
+.table tbody tr {
+  line-height: 0.8; /* 调整行高 */
+}
+
+.custom-control-input {
+  margin: 0; /* 取消复选框的默认外边距 */
+}
+
+.toggle-switch {
+  width: 40px; /* 可以调整开关的宽度 */
+  height: 20px; /* 可以调整开关的高度 */
+}
+
+.toggle-switch-slider {
+  height: 20px; /* 使开关滑块的高度与外部容器相同 */
+  width: 40px; /* 确保滑块在外部容器内 */
+}
+
+
+.pagination {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  padding: 0; /* 去掉内边距 */
+  margin: 0; /* 去掉外边距 */
+}
+
+.pagination .page-item {
+  margin: 0; /* 去掉页码项的外边距 */
+}
+
+.pagination .page-link {
+  padding: 0.25rem 0.5rem; /* 减小按钮的内边距 */
+  font-size: 12px; /* 调整字体大小 */
+  line-height: 1.2; /* 调整行高 */
+  height: 30px; /* 统一高度 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+}
+
+.pagination input[type="number"] {
+  width: 4rem; /* 调整输入框的宽度 */
+  padding: 0.25rem; /* 减小输入框的内边距 */
+  font-size: 12px; /* 调整输入框字体大小 */
+  margin: 0 0.5rem; /* 调整输入框的外边距 */
+}
+
+.pagination select {
+  padding: 0.25rem; /* 减小下拉框的内边距 */
+  font-size: 12px; /* 调整下拉框字体大小 */
+  margin: 0 0.5rem; /* 调整下拉框的外边距 */
+}
+
+
+/* styles.css */
+.highlight-marker {
+  background-color: rgba(255, 0, 0, 0.54); /* 选中国家的标记颜色 */
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+}
+
+.default-marker {
+  background-color: rgba(125, 125, 125, 0.38); /* 未选中国家的标记颜色 */
+  border-radius: 50%;
+  width: 3px;
+  height: 3px;
+}
