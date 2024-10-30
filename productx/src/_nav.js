@@ -116,6 +116,16 @@ const _nav = [
   },
   {
     component: CNavTitle,
+    name: '快递系统',
+  },
+  {
+    component: CNavItem,
+    name: '快递平台',
+    to: '/data/express',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
     name: '世界',
   },
   {

@@ -241,15 +241,16 @@ const CountryList = () => {
             handleEditClick={handleEditClick}
           />
         </Spin>
+
+        <Pagination
+          size="small"
+          totalPages={totalPages}
+          current={currentPage}
+          onPageChange={setCurrent}
+          pageSize={pageSize}
+          onPageSizeChange={setPageSize}
+        />
       </div>
-      <Pagination
-        size="small"
-        totalPages={totalPages}
-        current={currentPage}
-        onPageChange={setCurrent}
-        pageSize={pageSize}
-        onPageSizeChange={setPageSize}
-      />
       <CountryCreateFormModal
         isVisible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
