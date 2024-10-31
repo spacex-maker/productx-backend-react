@@ -58,21 +58,34 @@ const ImageManage = React.lazy(() => import('./views/base/record/record'))
 const ResourceManage = React.lazy(() => import('./views/base/resource/resource'))
 const UserManage = React.lazy(() => import('./views/base/userList/ListUsers'))
 const CommentsManage = React.lazy(() => import('./views/base/comment/comment'))
-const SystemConfig = React.lazy(() => import('./views/base/systemConfig/systemConfig'))
-const IpAddress = React.lazy(() => import('./views/base/ipAddress/IpAddress'))
-const PathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'))
-const Chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'))
+const SystemConfig
+  = React.lazy(() => import('./views/base/systemConfig/systemConfig'))
+const IpAddress
+  = React.lazy(() => import('./views/base/ipAddress/IpAddress'))
+const PathStatisticLog
+  = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'))
+const Chatroom
+  = React.lazy(() => import('./views/base/chatroom/Chatroom'))
 
-const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'))
-const ListCurrency = React.lazy(() => import('./views/base/sysCurrencies/SysCurrencies'))
-const ListCountry = React.lazy(() => import('./views/base/countries/Country'))
+const LoginPage
+  = React.lazy(() => import('./views/pages/login/LoginPage'))
+const ListCurrency
+  = React.lazy(() => import('./views/base/sysCurrencies/SysCurrencies'))
+const ListCountry
+  = React.lazy(() => import('./views/base/countries/Country'))
 
-const ListExpress = React.lazy(() => import('./views/base/express/Express'))
+const ListExpress
+  = React.lazy(() => import('./views/base/express/Express'))
 
-const ListGlobalBank= React.lazy(() => import('./views/base/globalBank/GlobalBank'))
+const ListGlobalBank
+  = React.lazy(() => import('./views/base/globalBank/GlobalBank'))
 
-const ListWorkOrder= React.lazy(() => import('./views/base/workOrder/WorkOrder'))
+const ListWorkOrder
+  = React.lazy(() => import('./views/base/workOrder/WorkOrder'))
 
+
+const ListDepartment
+  = React.lazy(() => import('./views/base/adminDepartment/AdminDepartment'))
 
 
 const routes = [
@@ -220,6 +233,14 @@ const routes = [
       </PrivateRoute>
     )
   },
+  {
+    path: '/data/department', name: '部门管理', element: (
+      <PrivateRoute>
+        <ListDepartment/>
+      </PrivateRoute>
+    )
+  },
+
 ]
 
 export default routes

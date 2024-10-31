@@ -123,6 +123,7 @@ const WorkOrderList = () => {
                 onChange={(value) => setSearchParams((prev) => ({ ...prev, categoryId: value }))}
                 allowClear
                 placeholder="选择工单类型"
+                popupMatchSelectWidth={false} // 确保下拉菜单宽度根据内容自适应
               >
                 {WorkOrderTypes.map((type) => (
                   <Select.Option key={type.id} value={type.id}>
@@ -136,7 +137,6 @@ const WorkOrderList = () => {
                 checked={searchParams.myOrder}
                 onChange={(checked) => {
                   setSearchParams((prev) => ({ ...prev, myOrder: checked }));
-                  fetchData(); // 切换后立即进行查询
                 }}
                 checkedChildren="我的工单"
                 unCheckedChildren="所有工单"

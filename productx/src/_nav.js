@@ -142,6 +142,16 @@ const _nav = [
   },
   {
     component: CNavTitle,
+    name: '公司管理',
+  },
+  {
+    component: CNavItem,
+    name: '部门管理',
+    to: '/data/department',
+    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
     name: '世界',
   },
   {

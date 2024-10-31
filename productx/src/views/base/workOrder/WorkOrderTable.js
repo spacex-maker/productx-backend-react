@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Descriptions, Modal} from 'antd';
 import WorkOrderStatus from "src/views/base/workOrder/WorkOrderStatus";
-import {formatDate} from "src/components/common/Common";
+import {formatDate, formatTimeDifference} from "src/components/common/Common";
+import WorkOrderRow from "src/views/base/workOrder/WorkOrderRow";
 
 
 // 获取状态标签方法
@@ -67,37 +68,15 @@ const WorkOrderTable = ({
         </thead>
         <tbody>
         {data.map((item) => (
-          <tr key={item.id} className="record-font">
-            <td>
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  checked={selectedRows.includes(item.id)}
-                  onChange={() => handleSelectRow(item.id, data)}
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor={`td_checkbox_${item.id}`}
-                ></label>
-              </div>
-            </td>
-            <td className="text-truncate">{item.id}</td>
-            <td className="text-truncate">{item.title}</td>
-            <td className="text-truncate">{item.description}</td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td>
-              {getStatusLabel(item.status)}
-            </td>
-            <td className="fixed-column">
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
-              </Button>
-              <Button type="link" onClick={() => handleViewDetails(item)}>
-                查看详情
-              </Button>
-            </td>
-          </tr>
-        ))}
+            <WorkOrderRow
+              key={item.id}
+              item={item}
+              selectedRows={selectedRows}
+              handleSelectRow={handleSelectRow}
+              handleEditClick={handleEditClick}
+              handleViewDetails={handleViewDetails}
+            />
+          ))}
         </tbody>
       </table>
 
