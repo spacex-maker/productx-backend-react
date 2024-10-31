@@ -6,12 +6,8 @@ import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
 import WorkOrderTable from 'src/views/base/workOrder/WorkOrderTable'; // 确保你有这个表格组件
 import UpdateWorkOrderModal from 'src/views/base/workOrder/UpdateWorkOrderModal'; // 确保你有这个更新模态框组件
-import WorkOrderCreateFormModal from 'src/views/base/workOrder/WorkOrderCreateFormModal'; // 确保你有这个创建模态框组件
-
-const fetchWorkOrders = async (params) => {
-  const response = await api.get('/manage/workOrder/list', { params });
-  return response.data.data;
-};
+import WorkOrderCreateFormModal from 'src/views/base/workOrder/WorkOrderCreateFormModal';
+import WorkOrderStatus from "src/views/base/workOrder/WorkOrderStatus"; // 确保你有这个创建模态框组件
 
 const WorkOrderList = () => {
   const [data, setData] = useState([]);
@@ -41,10 +37,8 @@ const WorkOrderList = () => {
       const filteredParams = Object.fromEntries(
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null)
       );
-      const responseData = await fetchWorkOrders({
-        currentPage,
-        size: pageSize,
-        ...filteredParams,
+      const responseData = await api.get('/manage/work-order/list', {
+        params: { currentPage, size: pageSize, ...filteredParams },
       });
       setData(responseData.data);
       setTotalNum(responseData.totalNum);
@@ -61,14 +55,14 @@ const WorkOrderList = () => {
   };
 
   const handleCreateWorkOrder = async (values) => {
-    await api.post('/manage/workOrder/create', values);
+    await api.post('/manage/work-order/create', values);
     setIsCreateModalVisible(false);
     createForm.resetFields();
     await fetchData();
   };
 
   const handleUpdateWorkOrder = async (values) => {
-    await api.put('/manage/workOrder/update', values);
+    await api.put('/manage/work-order/update', values);
     setIsUpdateModalVisible(false);
     updateForm.resetFields();
     await fetchData();
@@ -110,11 +104,13 @@ const WorkOrderList = () => {
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
                 placeholder="状态"
+                popupMatchSelectWidth={false} // 确保下拉菜单宽度根据内容自适应
               >
-                <Select.Option value="PENDING_ASSIGNMENT">待分配</Select.Option>
-                <Select.Option value="IN_PROGRESS">进行中</Select.Option>
-                <Select.Option value="COMPLETED">已完成</Select.Option>
-                {/* 添加更多状态选项 */}
+                {Object.values(WorkOrderStatus).map((status) => (
+                  <Select.Option key={status.value} value={status.value}>
+                    {status.label}
+                  </Select.Option>
+                ))}
               </Select>
             </Col>
             <Col>
