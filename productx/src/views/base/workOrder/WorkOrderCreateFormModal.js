@@ -29,21 +29,6 @@ const WorkOrderCreateFormModal = ({
         >
           <Input.TextArea />
         </Form.Item>
-        <Form.Item
-          label="创建时间(Creation Date)"
-          name="createdAt"
-          rules={[{ required: true, message: '请选择创建时间' }]}
-        >
-          <DatePicker style={{ width: '100%' }} />
-        </Form.Item>
-        <Form.Item
-          label="是否启用(Enabled)"
-          name="status"
-          valuePropName="checked"
-          initialValue={false}
-        >
-          <Switch />
-        </Form.Item>
       </Form>
     </Modal>
   );
