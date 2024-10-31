@@ -88,6 +88,10 @@ const ListDepartment
   = React.lazy(() => import('./views/base/adminDepartment/AdminDepartment'))
 
 
+const ListManager
+  = React.lazy(() => import('./views/base/manager/Manager'))
+
+
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -237,6 +241,13 @@ const routes = [
     path: '/data/department', name: '部门管理', element: (
       <PrivateRoute>
         <ListDepartment/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/manager', name: '员工管理', element: (
+      <PrivateRoute>
+        <ListManager/>
       </PrivateRoute>
     )
   },
