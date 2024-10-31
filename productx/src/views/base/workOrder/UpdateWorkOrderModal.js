@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, DatePicker, Switch } from 'antd';
+import { Modal, Form, Input, Select } from 'antd';
+import WorkOrderStatus from './WorkOrderStatus'; // 确保导入 WorkOrderStatus
 
 const UpdateWorkOrderModal = ({
                                 isVisible,
@@ -37,39 +38,18 @@ const UpdateWorkOrderModal = ({
         </Form.Item>
 
         <Form.Item
-          label="工单标题(Work Order Title)"
-          name="title"
-          rules={[{ required: true, message: '请输入工单标题' }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label="工单描述(Description)"
-          name="description"
-          rules={[{ required: true, message: '请输入工单描述' }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Input.TextArea />
-        </Form.Item>
-
-        <Form.Item
-          label="创建时间(Creation Date)"
-          name="createdAt"
-          rules={[{ required: true, message: '请选择创建时间' }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <DatePicker style={{ width: '100%' }} />
-        </Form.Item>
-
-        <Form.Item
-          label="是否启用(Enabled)"
+          label="工单状态(Status)"
           name="status"
-          valuePropName="checked"
+          rules={[{ required: true, message: '请选择工单状态' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Switch />
+          <Select placeholder="请选择工单状态">
+            {Object.values(WorkOrderStatus).map((status) => (
+              <Select.Option key={status.value} value={status.value}>
+                {status.label}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
       </Form>
     </Modal>

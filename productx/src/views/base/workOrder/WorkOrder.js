@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Modal, Button, Form, Input, message, Spin, Select, Col, Row } from 'antd';
+import { Modal, Button, Form, Input, message, Spin, Select, Col, Row, Switch } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
 import WorkOrderTable from 'src/views/base/workOrder/WorkOrderTable'; // 确保你有这个表格组件
 import UpdateWorkOrderModal from 'src/views/base/workOrder/UpdateWorkOrderModal'; // 确保你有这个更新模态框组件
 import WorkOrderCreateFormModal from 'src/views/base/workOrder/WorkOrderCreateFormModal';
-import WorkOrderStatus from "src/views/base/workOrder/WorkOrderStatus"; // 确保你有这个创建模态框组件
+import WorkOrderStatus from "src/views/base/workOrder/WorkOrderStatus";
+import WorkOrderTypes from "src/views/base/workOrder/WorkOrderType"; // 确保你有这个创建模态框组件
 
 const WorkOrderList = () => {
   const [data, setData] = useState([]);
@@ -18,6 +19,8 @@ const WorkOrderList = () => {
     title: '',
     status: '',
     createBy: '',
+    categoryId: '',
+    myOrder: false, // 新增的查询参数
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -112,6 +115,32 @@ const WorkOrderList = () => {
                   </Select.Option>
                 ))}
               </Select>
+            </Col>
+            <Col>
+              <Select
+                size="small"
+                name="categoryId"
+                onChange={(value) => setSearchParams((prev) => ({ ...prev, categoryId: value }))}
+                allowClear
+                placeholder="选择工单类型"
+              >
+                {WorkOrderTypes.map((type) => (
+                  <Select.Option key={type.id} value={type.id}>
+                    {type.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Col>
+            <Col>
+              <Switch
+                checked={searchParams.myOrder}
+                onChange={(checked) => {
+                  setSearchParams((prev) => ({ ...prev, myOrder: checked }));
+                  fetchData(); // 切换后立即进行查询
+                }}
+                checkedChildren="我的工单"
+                unCheckedChildren="所有工单"
+              />
             </Col>
             <Col>
               <Button
