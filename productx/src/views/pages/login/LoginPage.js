@@ -43,7 +43,7 @@ const LoginPage = () => {
   const handleSetBaseURL = () => {
     if (apiBaseURL) {
       const fullURL = `${protocol}://${apiBaseURL}`;
-      napiBaseURLsetBaseURL(fullURL);
+      setBaseURL(fullURL);
       console.log('设置的 API 基地址:', fullURL);
     } else {
       console.error('请输入有效的 API 基地址');
@@ -55,8 +55,7 @@ const LoginPage = () => {
     e.preventDefault();
     const formData = { username, password, verify };
     try {
-      const response = await axiosInstance.post('/manage/manager/login', formData);
-      localStorage.setItem('jwtManageToken', response.data.token); // 确保在响应中获取 token
+      await axiosInstance.post('/manage/manager/login', formData);
       navigate('/dashboard');
       setNotice("登录成功");
     } catch (error) {
@@ -67,7 +66,7 @@ const LoginPage = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=http://127.0.0.1:8090/manage/manager/github-callback`; // 跳转到后端 GitHub 登录接口
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=http://127.0.0.1:8090/manage/manager/github-callback`;
   };
 
   return (
@@ -76,38 +75,31 @@ const LoginPage = () => {
       <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
-            <CCol md={8}>
+            <CCol md={6}>
               <CCardGroup>
-                <CCard className="p-4">
-                  <CCardBody className="p-4">
+                <CCard className="p-3">
+                  <CCardBody>
                     <CCol xs={12}>
-                      <CRow>
-                        <CCol md={3}>
-                          <CFormSelect value={protocol} onChange={(e) => setProtocol(e.target.value)}>
-                            <option value="http">http</option>
-                            <option value="https">https</option>
-                          </CFormSelect>
-                        </CCol>
-                        <CCol xs={6}>
-                          <CFormInput
-                            placeholder="请输入 API 基地址"
-                            value={apiBaseURL}
-                            onChange={(e) => setApiBaseURL(e.target.value)}
-                          />
-                        </CCol>
-                        <CCol xs={3}>
-                          <CButton color="primary" className="px-4" type="button" onClick={handleSetBaseURL}>
-                            设置
-                          </CButton>
-                        </CCol>
-                      </CRow>
+                      <CFormSelect value={protocol} onChange={(e) => setProtocol(e.target.value)} size="sm">
+                        <option value="http">http</option>
+                        <option value="https">https</option>
+                      </CFormSelect>
+                      <CInputGroup className="mb-2">
+                        <CFormInput
+                          placeholder="请输入 API 基地址"
+                          value={apiBaseURL}
+                          onChange={(e) => setApiBaseURL(e.target.value)}
+                          size="sm"
+                        />
+                        <CButton color="primary" className="px-2" type="button" onClick={handleSetBaseURL}>
+                          设置
+                        </CButton>
+                      </CInputGroup>
                     </CCol>
-                    <br />
                     <CForm onSubmit={handleLogin}>
-                      <h4>登录</h4>
-                      <p className="text-body-secondary">公告：</p>
+                      <h4 className="mb-3">登录</h4>
                       {notice && <p id="manager-login-notice">{notice}</p>}
-                      <CInputGroup className="mb-3">
+                      <CInputGroup className="mb-2">
                         <CInputGroupText>
                           <CIcon icon={cilUser} />
                         </CInputGroupText>
@@ -116,12 +108,12 @@ const LoginPage = () => {
                           autoComplete="username"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
+                          size="sm"
                         />
                       </CInputGroup>
-                      <CInputGroup className="mb-4">
+                      <CInputGroup className="mb-2">
                         <CInputGroupText>
-                          <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked}
-                                 onClick={() => setShowPassword(!showPassword)} />
+                          <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} onClick={() => setShowPassword(!showPassword)} />
                         </CInputGroupText>
                         <CFormInput
                           type={showPassword ? 'text' : 'password'}
@@ -129,40 +121,43 @@ const LoginPage = () => {
                           autoComplete="current-password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
+                          size="sm"
                         />
                       </CInputGroup>
-                      <CInputGroup className="mb-4">
+                      <CInputGroup className="mb-3">
                         <div>
                           <img
                             className="captcha-img"
                             src={captcha}
                             alt="验证码"
                             onClick={refreshCaptcha}
+                            style={{ cursor: 'pointer', marginRight: '5px' }}
                           />
                         </div>
                         <CFormInput
                           type="text"
                           className="form-control"
-                          placeholder="请输入验证码（点击图片刷新）"
+                          placeholder="请输入验证码"
                           maxLength="6"
                           value={verify}
                           onChange={(e) => setVerify(e.target.value)}
+                          size="sm"
                         />
                       </CInputGroup>
 
                       <CRow>
-                        <CCol xs={3}>
-                          <CButton color="primary" className="px-4" type="submit" disabled={loading}>
+                        <CCol xs={4}>
+                          <CButton color="primary" className="px-3" type="submit" disabled={loading} size="sm">
                             {loading ? '登录中...' : '登录'}
                           </CButton>
                         </CCol>
-                        <CCol xs={3} className="text-right">
-                          <CButton color="link" className="px-0" style={{ float: 'right' }}>
+                        <CCol xs={4} className="text-right">
+                          <CButton color="link" className="px-0" style={{ float: 'right', fontSize: 'smaller' }}>
                             忘记密码
                           </CButton>
                         </CCol>
-                        <CCol xs={3}>
-                          <CButton color="primary" className="px-4" type="button" onClick={handleGitHubLogin}>
+                        <CCol xs={4}>
+                          <CButton color="primary" className="px-3" type="button" onClick={handleGitHubLogin} size="sm">
                             GitHub 登录
                           </CButton>
                         </CCol>

@@ -54,14 +54,13 @@ const Register = () => {
       <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
-            <CCol md={8}>
+            <CCol md={6}>
               <CCardGroup>
-                <CCard className="p-4">
-                  <CCardBody className="p-4">
+                <CCard className="p-3">
+                  <CCardBody className="p-3">
                     <CForm onSubmit={handleRegister}>
-                      <h4>注册</h4>
-                      <p className="text-body-secondary"></p>
-                      <CInputGroup className="mb-3">
+                      <h4 className="mb-3" style={{ fontSize: '20px' }}>注册</h4>
+                      <CInputGroup className="mb-2">
                         <CInputGroupText>
                           <CIcon icon={cilUser} />
                         </CInputGroupText>
@@ -70,9 +69,10 @@ const Register = () => {
                           autoComplete="username"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
+                          style={{ fontSize: '14px' }}
                         />
                       </CInputGroup>
-                      <CInputGroup className="mb-3">
+                      <CInputGroup className="mb-2">
                         <CInputGroupText>
                           <CIcon icon={cilLockLocked} />
                         </CInputGroupText>
@@ -82,9 +82,10 @@ const Register = () => {
                           autoComplete="new-password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
+                          style={{ fontSize: '14px' }}
                         />
                       </CInputGroup>
-                      <CInputGroup className="mb-4">
+                      <CInputGroup className="mb-3">
                         <CInputGroupText>
                           <CIcon icon={cilLockLocked} />
                         </CInputGroupText>
@@ -94,6 +95,7 @@ const Register = () => {
                           autoComplete="new-password"
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
+                          style={{ fontSize: '14px' }}
                         />
                       </CInputGroup>
                       <div className="d-grid">
