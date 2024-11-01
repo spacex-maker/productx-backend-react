@@ -64,8 +64,6 @@ axiosInstance.interceptors.response.use(
     }
   },
   (error) => {
-    console.error(`请求失败: ${error.message}`, error);
-    message.error(`请求失败: ${error.message}`, 4);
     return Promise.reject(error);
   }
 );
