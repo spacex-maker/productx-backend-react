@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Pagination = ({totalPages, current, onPageChange, pageSize, onPageSizeChange}) => {
+const Pagination = ({ totalPages, current, onPageChange, pageSize, onPageSizeChange }) => {
   const maxButtons = 5;
 
   const getPageRange = () => {
@@ -12,7 +12,7 @@ const Pagination = ({totalPages, current, onPageChange, pageSize, onPageSizeChan
       start = Math.max(1, end - maxButtons + 1);
     }
 
-    return Array.from({length: end - start + 1}, (_, index) => start + index);
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
   };
 
   const handleJumpToPage = (event) => {
@@ -30,7 +30,7 @@ const Pagination = ({totalPages, current, onPageChange, pageSize, onPageSizeChan
   };
 
   return (
-    <div style={{float: 'right'}}>
+    <div style={{ float: 'right' }}>
       <nav aria-label="Page navigation">
         <ul className="pagination">
           {/* 上一页 */}
@@ -80,7 +80,7 @@ const Pagination = ({totalPages, current, onPageChange, pageSize, onPageSizeChan
             <input
               type="number"
               className="page-link"
-              style={{width: '4rem', textAlign: 'center'}}
+              style={{ width: '4rem', textAlign: 'center' }}
               min="1"
               max={totalPages}
               placeholder="跳转"
@@ -99,6 +99,13 @@ const Pagination = ({totalPages, current, onPageChange, pageSize, onPageSizeChan
                 <option key={size} value={size}>{size} 条/页</option>
               ))}
             </select>
+          </li>
+
+          {/* 总页数显示 */}
+          <li className="page-item">
+            <span className="page-link">
+              总页数: {totalPages}
+            </span>
           </li>
         </ul>
       </nav>
