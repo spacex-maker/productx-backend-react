@@ -6,7 +6,7 @@ import {Button} from "antd";
 const LoginHeader = () => {
   return (
     <CHeader position="sticky">
-      <CHeaderBrand to="/">ANAKKI MANAGE-X</CHeaderBrand>
+      <CHeaderBrand to="/">Product MANAGE-X</CHeaderBrand>
       <CHeaderNav className="ms-auto">
         <Button>
           <Link to="/register">注册</Link>
