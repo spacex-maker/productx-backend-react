@@ -23,19 +23,20 @@ import {
 import CIcon from '@coreui/icons-react';
 import avatar8 from './../../assets/images/avatars/8.jpg';
 import {Link} from "react-router-dom";
+import Cookies from 'js-cookie';
+
 
 const AppHeaderDropdown = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Check if user is logged in by checking token
-    const token = localStorage.getItem('jwtManageToken');
-    setIsLoggedIn(!!token);
+    // 登录成功后，可以在这里更新状态
+    setIsLoggedIn(true);
   }, []);
 
   const handleLogout = () => {
-    // Clear the token and update the login status
-    localStorage.removeItem('jwtManageToken');
+    // Clear the jwtManageToken cookie
+    Cookies.remove('jwtManageToken');
     setIsLoggedIn(false);
   };
 
