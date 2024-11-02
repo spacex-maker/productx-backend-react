@@ -4,7 +4,12 @@ import api from 'src/axiosInstance';
 import {CButton, CListGroup, CListGroupItem} from "@coreui/react";
 import Pagination from "src/components/common/Pagination";
 import {UseSelectableRows} from "src/components/common/UseSelectableRows";
-
+import {formatDate} from "src/components/common/Common";
+import AddDepartmentModal from "src/views/base/adminDepartment/AddDepartmentModal";
+import CIcon from "@coreui/icons-react";
+import {cilArrowLeft, cilCaretLeft, cilPlus} from "@coreui/icons";
+import ManagerCreateFormModal from "src/views/base/manager/ManagerCreateFormModal";
+import AddDepartmentManagerModal from "src/views/base/adminDepartment/AddDepartmentManagerModal";
 
 
 const AdminDepartments = () => {
@@ -19,10 +24,16 @@ const AdminDepartments = () => {
   const [pageSize, setPageSize] = useState(10); // 每页显示条数
   const totalPages = Math.ceil(totalNum / pageSize);
   const [isGlobalSearch, setIsGlobalSearch] = useState(false);
+  const [isAddDepartmentModalVisible, setIsAddDepartmentModalVisible] = useState(false);
 
+  const showAddDepartmentModal = () => setIsAddDepartmentModalVisible(true);
+  const hideAddDepartmentModal = () => setIsAddDepartmentModalVisible(false);
   // Modal 状态管理
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm(); // 创建表单实例
+  const [isVisible, setIsVisible] = useState(false);
+
+  const showModal = () => setIsVisible(true);
+  const hideModal = () => setIsVisible(false);
+
 
   useEffect(() => {
     fetchDepartments(parentId);
@@ -42,7 +53,6 @@ const AdminDepartments = () => {
       console.error('Error fetching departments:', error);
     }
   };
-
   const fetchEmployees = async (departmentId, page, pageSize, searchManagerTerm = '', isGlobalSearch = false) => {
     try {
       const response = await api.get('/manage/admin-manager-departments/list', {
@@ -80,35 +90,28 @@ const AdminDepartments = () => {
     setCurrent(page);
     setPageSize(pageSize);
   };
-  const handleStatusChange = async (id, event) => {
-    const newStatus = event.target.checked
-    await updateUserStatus(id, newStatus)
+  const handleStatusChange = async (id, checked) => {
+    await api.post('/manage/admin-manager-departments/change-status', { id, status: checked });
     await fetchEmployees() // 状态更新后重新获取数据
   }
+  const handleRemoveClick = async (id) => {
+    try {
+      await api.post('/manage/admin-manager-departments/remove',
+        { id: id },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    } catch (error) {
+      console.error('Error removing department:', error);
+    }
+    await fetchEmployees(); // 状态更新后重新获取数据
+  };
   const filteredDepartments = departments.filter(department =>
     department.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const showModal = () => {
-    setIsModalVisible(true); // 显示模态框
-    form.resetFields(); // 重置表单字段
-  };
-
-  const handleOk = async () => {
-    try {
-      const values = await form.validateFields(); // 验证表单
-      const response = await api.post('/manage/manager/create', values); // 调用新增接口
-      console.log('新增管理员成功:', response);
-      setIsModalVisible(false); // 关闭模态框
-      fetchEmployees(parentId, currentPage, pageSize); // 刷新员工列表
-    } catch (error) {
-      console.error('新增管理员失败:', error);
-    }
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false); // 关闭模态框
-  };
   const {
     selectedRows,
     selectAll,
@@ -126,7 +129,10 @@ const AdminDepartments = () => {
             className="custom-button"
             style={{ marginRight: '8px',width: 60 }} // 增加右边距
           >
-            返回
+            <CIcon
+              size="sm"
+              icon={cilArrowLeft}
+              title="返回" />
           </CButton>
           <Input
             size="small"
@@ -135,8 +141,20 @@ const AdminDepartments = () => {
             onChange={handleSearch}
             allowClear
           />
+          <CButton size="sm" onClick={showAddDepartmentModal} >
+            <CIcon
+              size="sm"
+              icon={cilPlus}
+              title="新增" />
+          </CButton>
         </div>
 
+        <AddDepartmentModal
+          visible={isAddDepartmentModalVisible}
+          onClose={hideAddDepartmentModal}
+          onAddSuccess={fetchDepartments} // Refresh list when a department is added
+          parentId={parentId}
+        />
         <CListGroup
           bordered
           style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}
@@ -168,7 +186,7 @@ const AdminDepartments = () => {
               <Button
                 size="small"
                 type="primary" onClick={showModal}>
-                新增管理员
+                加入员工
               </Button>
             </Col>
             <Col>
@@ -197,7 +215,7 @@ const AdminDepartments = () => {
                 <label className="custom-control-label" htmlFor="select_all"></label>
               </div>
             </th>
-            {['管理员名称', '部门 ID', '创建时间', '创建人', '状态'].map((field) => (
+            {['管理员名称', '加入时间', '操作人', '状态'].map((field) => (
               <th key={field}>{field}</th>
             ))}
             <th className="fixed-column">操作</th>
@@ -222,8 +240,7 @@ const AdminDepartments = () => {
                 </div>
               </td>
               <td>{item.managerName}</td>
-              <td>{item.departmentId}</td>
-              <td>{item.createTime}</td>
+              <td>{formatDate(item.createTime)}</td>
               <td>{item.createBy}</td>
               <td>
                 <Switch
@@ -238,13 +255,13 @@ const AdminDepartments = () => {
                   修改
                 </Button>
                 <Popconfirm
-                  title="确定要删除这个用户吗？"
-                  onConfirm={() => handleDeleteClick(item.id)}
+                  title="确定要将此用户移除部门吗？"
+                  onConfirm={() => handleRemoveClick(item.id)}
                   okText="是"
                   cancelText="否"
                 >
                   <Button type="link" danger>
-                    删除
+                    移除
                   </Button>
                 </Popconfirm>
               </td>
@@ -259,67 +276,13 @@ const AdminDepartments = () => {
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
         />
+        <AddDepartmentManagerModal
+          isVisible={isVisible}
+          onClose={hideModal}
+          onAddSuccess={() => fetchEmployees(parentId, currentPage, pageSize)}
+          parentId={parentId}
+        />
       </div>
-
-      <Modal
-        size="small"
-        title="新增管理员"
-        open={isModalVisible}
-        onCancel={handleCancel}
-        okText="提交"
-        cancelText="取消"
-        onOk={() => form.submit()}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleOk}
-        >
-          <Form.Item
-            name="username"
-            label="管理员名称"
-            rules={[{ required: true, message: '请输入管理员名称' }]}
-          >
-            <Input placeholder="管理员名称" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            label="密码"
-            rules={[{ required: true, message: '请输入密码' }]}
-          >
-            <Input placeholder="密码" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="邮箱"
-            rules={[{ required: true, message: '请输入邮箱' }]}
-          >
-            <Input placeholder="邮箱" />
-          </Form.Item>
-          <Form.Item
-            name="phone"
-            label="手机号"
-            rules={[{ required: true, message: '请输入手机号' }]}
-          >
-            <Input placeholder="手机号" />
-          </Form.Item>
-          <Form.Item
-            name="departmentId"
-            label="部门 ID"
-            rules={[{ required: true, message: '请输入部门 ID' }]}
-          >
-            <Input placeholder="部门 ID" />
-          </Form.Item>
-          <Form.Item
-            name="status"
-            label="状态"
-            valuePropName="checked"
-          >
-            <Switch />
-          </Form.Item>
-        </Form>
-      </Modal>
-
     </div>
   );
 };

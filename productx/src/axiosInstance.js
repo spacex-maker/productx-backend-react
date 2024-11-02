@@ -44,13 +44,11 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 响应拦截器
 axiosInstance.interceptors.response.use(
   (response) => {
     const { success, data, message: msg } = response.data;
 
     if (success) {
-      console.log("请求成功");
       return data;
     } else {
       const error = response.data.error || 'Unknown Error'; // 默认错误信息
@@ -64,8 +62,11 @@ axiosInstance.interceptors.response.use(
     }
   },
   (error) => {
+    const errorMessage = error.response ? error.response.data.message : '网络错误，请检查您的连接';
+    message.error(`请求失败: ${errorMessage}`, 4);
     return Promise.reject(error);
   }
 );
+
 
 export default axiosInstance;
