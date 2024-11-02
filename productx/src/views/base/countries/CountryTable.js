@@ -12,17 +12,9 @@ const CountryTable = ({
                         handleStatusChange,
                         handleEditClick,
                       }) => {
-  // 用于存储选中的国家代码
-  const [selectedCountries, setSelectedCountries] = useState([]);
 
   const handleSelectRowWrapper = (id, data) => {
     handleSelectRow(id, data);
-
-    for (let country in allData) {
-      if (country.status===1) {
-        setSelectedCountries(country.name);
-      }
-    }
   };
 
   return (
@@ -73,7 +65,7 @@ const CountryTable = ({
               <label className="toggle-switch">
                 <input
                   type="checkbox"
-                  checked={item.status === 1}
+                  checked={item.status}
                   onChange={(e) => handleStatusChange(item.id, e)}
                 />
                 <span className="toggle-switch-slider"></span>
@@ -88,7 +80,7 @@ const CountryTable = ({
         ))}
         </tbody>
       </table>
-      <WorldMap selectedCountries={selectedCountries} />
+      <WorldMap countries={allData} />
     </>
   );
 };

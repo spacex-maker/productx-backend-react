@@ -9,7 +9,6 @@ const ManagerTable = ({
                           handleSelectRow,
                           handleStatusChange,
                           handleEditClick,
-                          handleDeleteClick,
                         }) => {
   return (
     <table className="table table-bordered table-striped">

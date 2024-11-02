@@ -59,7 +59,7 @@ const CurrencyTable = ({
             <label className="toggle-switch">
               <input
                 type="checkbox"
-                checked={item.status === 1}
+                checked={item.status}
                 onChange={(e) => handleStatusChange(item.id, e)}
               />
               <span className="toggle-switch-slider"></span>

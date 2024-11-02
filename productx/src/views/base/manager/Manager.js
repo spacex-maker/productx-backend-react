@@ -9,7 +9,7 @@ import UpdateManagerModal from "src/views/base/manager/UpdateManagerModal"; // �
 import ManagerCreateFormModal from "src/views/base/manager/ManagerCreateFormModal"; // 新建管理员模态框
 
 const updateManagerStatus = async (id, newStatus) => {
-  await api.post('/manage/manager/change-status', { id, status: newStatus ? 1 : 0 });
+  await api.post('/manage/manager/change-status', { id, status: newStatus });
 }
 
 const createManager = async (managerData) => {
@@ -90,7 +90,10 @@ const ManagerList = () => {
     updateForm.resetFields();
     await fetchData();
   };
-
+  const handleStatusChange = async (id, event) => {
+    await updateManagerStatus(id, event)
+    await fetchData() // 状态更新后重新获取数据
+  }
   const handleEditClick = (manager) => {
     updateForm.setFieldsValue({
       id: manager.id,
@@ -144,12 +147,12 @@ const ManagerList = () => {
               <Select
                 size="small"
                 name="status"
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
+                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value === 1}})}
                 allowClear
-                placeholder="状态"
+                placeholder="选择状态"
               >
-                <Select.Option value={true}>启用</Select.Option>
-                <Select.Option value={false}>禁用</Select.Option>
+                <Select.Option value={1}>启用</Select.Option>
+                <Select.Option value={0}>禁用</Select.Option>
               </Select>
             </Col>
             <Col>
@@ -196,6 +199,7 @@ const ManagerList = () => {
             selectedRows={selectedRows}
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
+            handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
           />
         </Spin>

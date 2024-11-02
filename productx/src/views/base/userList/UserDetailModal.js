@@ -34,8 +34,8 @@ const UserDetailModal = ({
                 style={{width: '50px', height: '50px', borderRadius: '25%'}}
               />
               <Space direction="vertical" style={{width: '100px'}}>
-                <Text type={selectedUser.status === 1 ? 'success' : 'danger'}>
-                  {selectedUser.status === 1 ? '正常' : '禁用'}
+                <Text type={selectedUser.status? 'success' : 'danger'}>
+                  {selectedUser.status ? '正常' : '禁用'}
                 </Text>
               </Space>
             </Space>
