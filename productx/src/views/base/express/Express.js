@@ -9,7 +9,7 @@ import UpdateCourierModal from 'src/views/base/express/UpdateExpressCompanyModal
 import CourierCreateFormModal from 'src/views/base/express/ExpressCompanyCreateFormModal';
 
 const updateCourierStatus = async (id, newStatus) => {
-  await api.post('/manage/express/change-status', { id, status: newStatus ? 1 : 0 });
+  await api.post('/manage/express/change-status', { id, status: newStatus});
 };
 
 const createCourier = async (courierData) => {

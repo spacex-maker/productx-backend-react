@@ -9,7 +9,7 @@ import UpdateCurrencyModal from "src/views/base/sysCurrencies/UpdateCurrencyModa
 import CurrencyCreateFormModal from "src/views/base/sysCurrencies/CurrencyCreateFormModal"
 
 const updateCurrencyStatus = async (id, newStatus) => {
-  await api.post('/manage/sys-currencies/change-status', {id, status: newStatus ? 1 : 0})
+  await api.post('/manage/sys-currencies/change-status', {id, status: newStatus})
 }
 
 const createCurrency = async (currencyData) => {
@@ -160,8 +160,8 @@ const CurrencyList = () => {
                 allowClear // 添加这个属性以允许清空选择
                 placeholder="是否启用"
               >
-                <Option value="1">启用</Option>
-                <Option value="0">禁用</Option>
+                <Option value="true">启用</Option>
+                <Option value="false">禁用</Option>
               </Select>
             </Col>
             <Col>

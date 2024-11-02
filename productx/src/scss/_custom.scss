@@ -118,17 +118,9 @@
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: #007bff;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
 }
 
-.page-item.active .page-link {
-  z-index: 1;
-  color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
-}
+
 .record-font {
   font-size: 0.7rem;
 }
@@ -302,4 +294,9 @@ textarea::placeholder,
   position: sticky;
   right: 0;
   z-index: 1; /* 确保它在最上层 */
+}
+
+.custom-button {
+  font-size: 14px;
+  padding: 1px 8px;
 }

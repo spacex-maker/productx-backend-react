@@ -10,7 +10,7 @@ import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
 
 const updateUserStatus = async (id, newStatus) => {
-  await api.post('/manage/user/change-status', { id, status: newStatus ? 1 : 0 })
+  await api.post('/manage/user/change-status', { id, status: newStatus})
 }
 
 const createUser = async (userData) => {
@@ -166,8 +166,8 @@ const UserList = () => {
                   allowClear // 添加这个属性以允许清空选择
                   placeholder="是否启用"
                 >
-                  <Option value="1">启用</Option>
-                  <Option value="0">禁用</Option>
+                  <Option value="true">启用</Option>
+                  <Option value="false">禁用</Option>
                 </Select>
               </Col>
               <Col>

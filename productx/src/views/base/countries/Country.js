@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import api from 'src/axiosInstance';
 import {Modal, Button, Form, Input, message, Spin, Select, Col, Row} from 'antd';
-import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
-import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
+import {UseSelectableRows} from 'src/components/common/UseSelectableRows';
+import {HandleBatchDelete} from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
 import CountryTable from 'src/views/base/countries/CountryTable'; // 你需要创建这个表格组件
 import UpdateCountryModal from 'src/views/base/countries/UpdateCountryModal'; // 你需要创建这个更新模态框
 import CountryCreateFormModal from 'src/views/base/countries/CountryCreateFormModal'; // 你需要创建这个创建模态框
 
 const updateCountryStatus = async (id, newStatus) => {
-  await api.post('/manage/countries/change-status', { id, status: newStatus ? 1 : 0 });
+  await api.post('/manage/countries/change-status', {id, status: newStatus});
 };
 
 const createCountry = async (countryData) => {
@@ -59,7 +59,7 @@ const CountryList = () => {
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       );
       const response = await api.get('/manage/countries/list', {
-        params: { currentPage, size: pageSize, ...filteredParams },
+        params: {currentPage, pageSize: pageSize, ...filteredParams},
       });
 
       if (response && response.data) {
@@ -92,25 +92,28 @@ const CountryList = () => {
     }
   };
   const handleSearchChange = (event) => {
-    const { name, value } = event.target;
-    setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
+    const {name, value} = event.target;
+    setSearchParams((prevParams) => ({...prevParams, [name]: value}));
   };
 
   const handleCreateCountry = async (values) => {
     await createCountry(values);
     setIsCreateModalVisible(false);
     createForm.resetFields();
+    await fetchAllData()
     await fetchData();
   };
   const handleStatusChange = async (id, event) => {
     const newStatus = event.target.checked
     await updateCountryStatus(id, newStatus)
+    await fetchAllData()
     await fetchData() // Re-fetch data after status update
   }
   const handleUpdateCountry = async (values) => {
     await updateCountry(values);
     setIsUpdateModalVisible(false);
     updateForm.resetFields();
+    await fetchAllData()
     await fetchData();
   };
 
@@ -164,7 +167,7 @@ const CountryList = () => {
                 placeholder="选择大陆"
                 style={{width: '100%'}}
                 popupMatchSelectWidth={false} // 确保下拉菜单宽度根据内容自适应
-                dropdownStyle={{ minWidth: 150 }} // 可调整此宽度以适应内容
+                dropdownStyle={{minWidth: 150}} // 可调整此宽度以适应内容
               >
                 <Select.Option value="非洲">非洲 (Africa)</Select.Option>
                 <Select.Option value="亚洲">亚洲 (Asia)</Select.Option>

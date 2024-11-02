@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Input, Button, List, Popconfirm, Switch, Col, Row, Modal, Form } from 'antd';
 import api from 'src/axiosInstance';
-import { CListGroup, CListGroupItem } from "@coreui/react";
+import {CButton, CListGroup, CListGroupItem} from "@coreui/react";
 import Pagination from "src/components/common/Pagination";
+import {UseSelectableRows} from "src/components/common/UseSelectableRows";
+
+
 
 const AdminDepartments = () => {
   const [departments, setDepartments] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
   const [employees, setEmployees] = useState([]); // 部门内员工列表
-  const [selectedRows, setSelectedRows] = useState([]);
   const [parentId, setParentId] = useState(1); // 初始父级部门 ID
   const [parentHistory, setParentHistory] = useState([1]); // 用于存储父级部门 ID 的历史
   const [searchTerm, setSearchTerm] = useState('');
   const [searchManagerTerm, setSearchManagerTerm] = useState('');
   const [pageSize, setPageSize] = useState(10); // 每页显示条数
-  const [selectAll, setSelectAll] = useState(false);
   const totalPages = Math.ceil(totalNum / pageSize);
   const [isGlobalSearch, setIsGlobalSearch] = useState(false);
 
@@ -79,7 +80,11 @@ const AdminDepartments = () => {
     setCurrent(page);
     setPageSize(pageSize);
   };
-
+  const handleStatusChange = async (id, event) => {
+    const newStatus = event.target.checked
+    await updateUserStatus(id, newStatus)
+    await fetchEmployees() // 状态更新后重新获取数据
+  }
   const filteredDepartments = departments.filter(department =>
     department.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -104,19 +109,25 @@ const AdminDepartments = () => {
   const handleCancel = () => {
     setIsModalVisible(false); // 关闭模态框
   };
-
+  const {
+    selectedRows,
+    selectAll,
+    handleSelectAll,
+    handleSelectRow,
+  } = UseSelectableRows()
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       <div style={{ width: '200px' }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-          <Button
-            size="small"
+          <CButton
+            size="sm"
             onClick={handleBack}
             disabled={parentHistory.length <= 1}
-            style={{ marginRight: '8px' }} // 增加右边距
+            className="custom-button"
+            style={{ marginRight: '8px',width: 60 }} // 增加右边距
           >
-            返回上一级
-          </Button>
+            返回
+          </CButton>
           <Input
             size="small"
             placeholder="搜索部门"
@@ -181,7 +192,7 @@ const AdminDepartments = () => {
                   className="custom-control-input"
                   id="select_all"
                   checked={selectAll}
-                  onChange={(event) => handleSelectAll(event)}
+                  onChange={(event) => handleSelectAll(event, employees)}
                 />
                 <label className="custom-control-label" htmlFor="select_all"></label>
               </div>
@@ -194,19 +205,19 @@ const AdminDepartments = () => {
           </thead>
           <tbody>
           {employees.map((item) => (
-            <tr key={item.managerId}>
+            <tr key={item.id}>
               <td>
                 <div className="custom-control custom-checkbox">
                   <input
                     type="checkbox"
                     className="custom-control-input"
-                    id={`td_checkbox_${item.managerId}`}
-                    checked={selectedRows.includes(item.managerId)}
-                    onChange={() => handleSelectRow(item.managerId)}
+                    id={`td_checkbox_${item.id}`}
+                    checked={selectedRows.includes(item.id)}
+                    onChange={() => handleSelectRow(item.id,employees)}
                   />
                   <label
                     className="custom-control-label"
-                    htmlFor={`td_checkbox_${item.managerId}`}
+                    htmlFor={`td_checkbox_${item.id}`}
                   ></label>
                 </div>
               </td>
@@ -217,7 +228,7 @@ const AdminDepartments = () => {
               <td>
                 <Switch
                   checked={item.status}
-                  onChange={(checked) => handleChange(item.id, checked)}
+                  onChange={(checked) => handleStatusChange(item.id, checked)}
                   checkedChildren="启用"
                   unCheckedChildren="禁用"
                 />
@@ -228,7 +239,7 @@ const AdminDepartments = () => {
                 </Button>
                 <Popconfirm
                   title="确定要删除这个用户吗？"
-                  onConfirm={() => handleDeleteClick(item.managerId)}
+                  onConfirm={() => handleDeleteClick(item.id)}
                   okText="是"
                   cancelText="否"
                 >
