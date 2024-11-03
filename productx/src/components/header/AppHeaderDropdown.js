@@ -24,6 +24,8 @@ import CIcon from '@coreui/icons-react';
 import avatar8 from './../../assets/images/avatars/8.jpg';
 import {Link} from "react-router-dom";
 import Cookies from 'js-cookie';
+import axiosInstance from "src/axiosInstance";
+import {message} from "antd";
 
 
 const AppHeaderDropdown = () => {
@@ -34,12 +36,20 @@ const AppHeaderDropdown = () => {
     setIsLoggedIn(true);
   }, []);
 
-  const handleLogout = () => {
-    // Clear the jwtManageToken cookie
-    Cookies.remove('jwtManageToken');
-    setIsLoggedIn(false);
-  };
+  const handleLoginOut = async (e) => {
 
+    e.preventDefault();
+    try {
+      await axiosInstance.post('/manage/manager/logout');
+      // Clear the jwtManageToken cookie
+      Cookies.remove('LOGIN_IDENTITY');
+      setIsLoggedIn(false);
+      message.info("登出成功");
+    } catch (error) {
+      message.error('已登出', 4);
+    } finally {
+    }
+  };
   return (
       <CDropdown variant="nav-item">
         <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
@@ -100,7 +110,7 @@ const AppHeaderDropdown = () => {
           </CDropdownItem>
           <CDropdownDivider />
           {isLoggedIn ? (
-              <CDropdownItem onClick={handleLogout}>
+              <CDropdownItem onClick={handleLoginOut}>
                 <CIcon icon={cilLockLocked} className="me-2" />
                 <Link to="/login">登出</Link>
               </CDropdownItem>
