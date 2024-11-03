@@ -52,21 +52,30 @@ axiosInstance.interceptors.response.use(
       return data;
     } else {
       const error = response.data.error || 'Unknown Error'; // 默认错误信息
-      if (error === 'Unauthorized') {
-        message.warning('会话已过期，请重新登录', 4);
-        return Promise.reject(new Error('Session expired'));
-      } else {
-        message.error(`错误码: ${success}, 错误信息: ${msg}`, 4);
-        return Promise.reject(new Error(msg || 'Error'));
-      }
+      message.error(`错误码: ${success}, 错误信息: ${msg}`, 4);
+      return Promise.reject(new Error(msg || 'Error'));
     }
   },
   (error) => {
-    const errorMessage = error.response ? error.response.data.message : '网络错误，请检查您的连接';
-    message.error(`请求失败: ${errorMessage}`, 4);
+    if (error.response) {
+      // 判断状态码
+      const { status, error: errorType, message } = error.response.data;
+
+      if (status === 401) {
+        message.warning('未授权，请重新登录', 4);
+        // 这里可以执行一些操作，例如重定向到登录页
+      } else {
+        message.error(`请求失败: ${message || errorType}`, 4);
+      }
+    } else {
+      // 处理网络错误
+      message.error('请登录', 4);
+    }
     return Promise.reject(error);
   }
 );
+
+
 
 
 export default axiosInstance;
