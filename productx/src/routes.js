@@ -1,5 +1,6 @@
 import React from 'react'
 import PrivateRoute from "src/components/PrivateRoute";
+import AdminRole from "src/views/base/adminRole/AdminRole";
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -91,6 +92,9 @@ const ListDepartment
 const ListManager
   = React.lazy(() => import('./views/base/manager/Manager'))
 
+
+const ListRole
+  = React.lazy(() => import('./views/base/adminRole/AdminRole'))
 
 const routes = [
   {path: '/', exact: true, name: 'Home'},
@@ -248,6 +252,13 @@ const routes = [
     path: '/data/manager', name: '员工管理', element: (
       <PrivateRoute>
         <ListManager/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/role', name: '角色管理', element: (
+      <PrivateRoute>
+        <ListRole/>
       </PrivateRoute>
     )
   },
