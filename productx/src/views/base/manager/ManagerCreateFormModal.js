@@ -1,5 +1,7 @@
-import React from 'react';
-import { Modal, Form, Input, Select } from 'antd';
+import React, {useState} from 'react';
+import {Modal, Form, Input, Select, AutoComplete} from 'antd';
+import RoleSelect from "src/views/base/adminRole/RoleSelect";
+const emailSuffixes = ['@gmail.com', '@yahoo.com', '@outlook.com', '@qq.com', '@icloud.com'];
 
 const ManagerCreateFormModal = ({
                                     isVisible,
@@ -7,6 +9,19 @@ const ManagerCreateFormModal = ({
                                     onFinish,
                                     form,
                                   }) => {
+  const [emailOptions, setEmailOptions] = useState([]);
+
+  const handleEmailChange = (value) => {
+    if (!value || value.includes('@')) {
+      setEmailOptions([]);
+    } else {
+      const newOptions = emailSuffixes.map(suffix => ({
+        label: `${value}${suffix}`,
+        value: `${value}${suffix}`,
+      }));
+      setEmailOptions(newOptions);
+    }
+  };
   return (
     <Modal
       title="新增管理员用户 (Create Admin User)"
@@ -27,7 +42,13 @@ const ManagerCreateFormModal = ({
           name="email"
           rules={[{ required: true, message: '请输入邮箱', type: 'email' }]}
         >
-          <Input />
+          <AutoComplete
+            options={emailOptions}
+            onChange={handleEmailChange}
+            placeholder="请输入邮箱"
+          >
+            <Input />
+          </AutoComplete>
         </Form.Item>
         <Form.Item
           label="电话 (Phone)"
@@ -43,19 +64,8 @@ const ManagerCreateFormModal = ({
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item
-          label="角色ID (Role ID)"
-          name="roleId"
-          rules={[{ required: true, message: '请选择角色ID' }]}
-        >
-          <Select placeholder="请选择角色ID">
-            {/* 假设角色ID为数字类型，提供一些示例 */}
-            <Select.Option value={0}>普通用户</Select.Option>
-            <Select.Option value={1}>管理员</Select.Option>
-            <Select.Option value={2}>超级管理员</Select.Option>
-            <Select.Option value={3}>其他角色</Select.Option>
-          </Select>
-        </Form.Item>
+        <RoleSelect
+        />
       </Form>
     </Modal>
   );

@@ -46,17 +46,18 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
+
     const { success, data, message: msg } = response.data;
 
     if (success) {
       return data;
     } else {
-      const error = response.data.error || 'Unknown Error'; // 默认错误信息
-      message.error(`错误码: ${success}, 错误信息: ${msg}`, 4);
+      message.error(`${msg}`, 4);
       return Promise.reject(new Error(msg || 'Error'));
     }
   },
   (error) => {
+
     if (error.response) {
       // 判断状态码
       const { status, error: errorType, message } = error.response.data;

@@ -94,6 +94,11 @@ const ManagerList = () => {
     await updateManagerStatus(id, event)
     await fetchData() // 状态更新后重新获取数据
   }
+
+  const handleDeleteClick = async (id) => {
+    await api.post(`/manage/manager/remove`, { id });
+    await fetchData() // 状态更新后重新获取数据
+  }
   const handleEditClick = (manager) => {
     updateForm.setFieldsValue({
       id: manager.id,
@@ -201,6 +206,7 @@ const ManagerList = () => {
             handleSelectRow={handleSelectRow}
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
+            handleDeleteClick={handleDeleteClick}
           />
         </Spin>
       </div>
