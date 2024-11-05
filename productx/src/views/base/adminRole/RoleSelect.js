@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Select } from 'antd';
 import api from 'src/axiosInstance';
+
 const RoleSelect = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -9,7 +10,7 @@ const RoleSelect = () => {
   const fetchRoles = async (search) => {
     setLoading(true);
     try {
-      const response = await api.get('/manage/admin-roles/list', {
+      const response = await api.get('/manage/admin-roles/list-all', {
         params: { roleName: search }, // 传入角色名称搜索参数
       });
 
@@ -49,7 +50,7 @@ const RoleSelect = () => {
       >
         {roles.map(role => (
           <Select.Option key={role.id} value={role.id}>
-            {role.roleName} {/* 显示角色名称 */}
+            {role.roleName}
           </Select.Option>
         ))}
       </Select>
