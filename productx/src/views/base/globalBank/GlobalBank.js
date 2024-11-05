@@ -30,7 +30,7 @@ const BankList = () => {
     swiftCode: '',
     country: '',
     city: '',
-    supported: '',
+    status: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -151,7 +151,7 @@ const BankList = () => {
               <Select
                 size="small"
                 name="supported"
-                onChange={(value) => handleSearchChange({ target: { name: 'supported', value } })}
+                onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
                 placeholder="是否支持"
               >
