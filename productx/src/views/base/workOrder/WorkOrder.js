@@ -65,7 +65,7 @@ const WorkOrderList = () => {
   };
 
   const handleUpdateWorkOrder = async (values) => {
-    await api.put('/manage/work-order/update', values);
+    await api.post('/manage/work-order/update', values);
     setIsUpdateModalVisible(false);
     updateForm.resetFields();
     await fetchData();
