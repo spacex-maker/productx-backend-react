@@ -1,16 +1,17 @@
 import React from 'react';
-import { Button, Popconfirm } from 'antd';
+import {Button, Popconfirm} from 'antd';
+import {formatDate} from "src/components/common/Common";
 
 const AdminRoleTable = ({
-                     data,
-                     selectAll,
-                     selectedRows,
-                     handleSelectAll,
-                     handleSelectRow,
-                     handleStatusChange,
-                     handleEditClick,
-                     handleDeleteClick
-                   }) => {
+                          data,
+                          selectAll,
+                          selectedRows,
+                          handleSelectAll,
+                          handleSelectRow,
+                          handleStatusChange,
+                          handleEditClick,
+                          handleDeleteClick
+                        }) => {
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -27,7 +28,7 @@ const AdminRoleTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', '角色名称', '英文名称', '状态', '描述', '创建者', '创建时间', '更新者', '更新时间'].map((field) => (
+        {['ID', '角色名称', '英文名称', '描述', '创建者', '更新者', '创建时间', '更新时间', '状态'].map((field) => (
           <th key={field}>{field}</th>
         ))}
         <th className="fixed-column" key="操作">操作</th>
@@ -54,21 +55,22 @@ const AdminRoleTable = ({
           <td className="text-truncate">{item.id}</td>
           <td className="text-truncate">{item.roleName}</td>
           <td className="text-truncate">{item.roleNameEn}</td>
+          <td className="text-truncate">{item.description || '无'}</td>
+
+          <td className="text-truncate">{item.createBy || '无'}</td>
+          <td className="text-truncate">{item.updateBy || '无'}</td>
+          <td className="text-truncate">{formatDate(item.updateTime) || '无'}</td>
+          <td className="text-truncate">{formatDate(item.createTime) || '无'}</td>
           <td>
             <label className="toggle-switch">
               <input
                 type="checkbox"
-                checked={item.status === 1}
-                onChange={(e) => handleStatusChange(item.id, e.target.checked ? 1 : 0)}
+                checked={item.status}
+                onChange={(e) => handleStatusChange(item.id, e.target.checked)}
               />
               <span className="toggle-switch-slider"></span>
             </label>
           </td>
-          <td className="text-truncate">{item.description || '无'}</td>
-          <td className="text-truncate">{item.createBy || '无'}</td>
-          <td className="text-truncate">{item.createTime || '无'}</td>
-          <td className="text-truncate">{item.updateBy || '无'}</td>
-          <td className="text-truncate">{item.updateTime || '无'}</td>
           <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>
               修改

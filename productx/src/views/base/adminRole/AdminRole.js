@@ -125,15 +125,25 @@ const AdminRole = () => {
               />
             </Col>
             <Col>
+              <Input
+                size="small"
+                value={searchParams.roleNameEn}
+                onChange={handleSearchChange}
+                name="roleNameEn"
+                placeholder="角色英文名"
+                allowClear
+              />
+            </Col>
+            <Col>
               <Select
                 size="small"
                 name="status"
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value } })}
+                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value} })}
                 allowClear
                 placeholder="选择状态"
               >
-                <Select.Option value={1}>启用</Select.Option>
-                <Select.Option value={0}>禁用</Select.Option>
+                <Select.Option value="true">启用</Select.Option>
+                <Select.Option value="false">禁用</Select.Option>
               </Select>
             </Col>
             <Col>

@@ -38,9 +38,11 @@ const AdminDepartments = () => {
   useEffect(() => {
     fetchDepartments(parentId);
   }, [parentId]);
-
+  {}
   useEffect(() => {
-    fetchEmployees(parentId, currentPage, pageSize, searchManagerTerm, isGlobalSearch);
+    fetchEmployees(parentId, searchManagerTerm, isGlobalSearch).then(r =>{
+
+    });
   }, [parentId, currentPage, pageSize, searchTerm, searchManagerTerm, isGlobalSearch]);
 
   const fetchDepartments = async (id) => {
@@ -53,10 +55,10 @@ const AdminDepartments = () => {
       console.error('Error fetching departments:', error);
     }
   };
-  const fetchEmployees = async (departmentId, page, pageSize, searchManagerTerm = '', isGlobalSearch = false) => {
+  const fetchEmployees = async (departmentId, searchManagerTerm = '', isGlobalSearch = false) => {
     try {
       const response = await api.get('/manage/admin-manager-departments/list', {
-        params: { departmentId: isGlobalSearch ? null : departmentId, page, pageSize, managerName: searchManagerTerm }
+        params: { departmentId: isGlobalSearch ? null : departmentId, currentPage, pageSize, managerName: searchManagerTerm }
       });
       setEmployees(response.data);
       setTotalNum(response.totalNum);
@@ -92,7 +94,7 @@ const AdminDepartments = () => {
   };
   const handleStatusChange = async (id, checked) => {
     await api.post('/manage/admin-manager-departments/change-status', { id, status: checked });
-    await fetchEmployees() // 状态更新后重新获取数据
+    await fetchEmployees(parentId) // 状态更新后重新获取数据
   }
   const handleRemoveClick = async (id) => {
     try {
@@ -107,7 +109,7 @@ const AdminDepartments = () => {
     } catch (error) {
       console.error('Error removing department:', error);
     }
-    await fetchEmployees(); // 状态更新后重新获取数据
+    await fetchEmployees(parentId); // 状态更新后重新获取数据
   };
   const filteredDepartments = departments.filter(department =>
     department.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -163,15 +165,18 @@ const AdminDepartments = () => {
             <CListGroupItem
               key={item.id}
               onClick={() => handleDepartmentClick(item.id)}
-              style={{ cursor: 'pointer' }}
+              style={{cursor: 'pointer'}}
             >
-              {item.name}
+              <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div>{item.name}</div>
+                <div>{item.employeeCount}</div>
+              </div>
             </CListGroupItem>
           ))}
         </CListGroup>
       </div>
-      <div style={{ flex: 1, padding: '0px 10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+      <div style={{flex: 1, padding: '0px 10px'}}>
+        <div style={{display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
           <Row gutter={[16, 16]}>
             <Col>
               <Input
@@ -279,7 +284,7 @@ const AdminDepartments = () => {
         <AddDepartmentManagerModal
           isVisible={isVisible}
           onClose={hideModal}
-          onAddSuccess={() => fetchEmployees(parentId, currentPage, pageSize)}
+          onAddSuccess={(parentId) => fetchEmployees(parentId)}
           parentId={parentId}
         />
       </div>

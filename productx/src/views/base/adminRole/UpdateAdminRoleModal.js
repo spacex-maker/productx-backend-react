@@ -15,6 +15,7 @@ const UpdateRoleModal = ({
       form.setFieldsValue({
         id: selectedRole.id,
         roleName: selectedRole.roleName,
+        roleNameEn: selectedRole.roleNameEn,
         description: selectedRole.description,
         status: selectedRole.status,
       });
@@ -45,7 +46,14 @@ const UpdateRoleModal = ({
         >
           <Input placeholder="请输入角色名称" />
         </Form.Item>
-
+        <Form.Item
+          label="英文角色名称"
+          name="roleNameEn"
+          rules={[{ required: true, message: '请输入英文角色名称' }]}
+          style={{ marginBottom: '8px' }}
+        >
+          <Input placeholder="请输入英文角色名称" />
+        </Form.Item>
         {/* 角色描述 */}
         <Form.Item
           label="角色描述"
