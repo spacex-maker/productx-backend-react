@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
 
-const ManagerTable = ({
-                          data,
-                          selectAll,
-                          selectedRows,
-                          handleSelectAll,
-                          handleSelectRow,
-                          handleStatusChange,
-                          handleEditClick,
-                        }) => {
+const PermissionTable = ({
+                           data,
+                           selectAll,
+                           selectedRows,
+                           handleSelectAll,
+                           handleSelectRow,
+                           handleStatusChange,
+                           handleEditClick,
+                         }) => {
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -26,10 +26,10 @@ const ManagerTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', '用户名', '邮箱', '电话', '角色ID', '状态'].map((field) => (
+        {['ID', '权限名称', '权限英文名', '描述', '类型', '状态'].map((field) => (
           <th key={field}>{field}</th>
         ))}
-        <th className="fixed-column" key='操作'>操作</th>
+        <th className="fixed-column" key="操作">操作</th>
       </tr>
       </thead>
       <tbody>
@@ -51,16 +51,18 @@ const ManagerTable = ({
             </div>
           </td>
           <td className="text-truncate">{item.id}</td>
-          <td className="text-truncate">{item.username}</td>
-          <td className="text-truncate">{item.email || '-'}</td>
-          <td className="text-truncate">{item.phone || '-'}</td>
-          <td className="text-truncate">{item.roleId}</td>
+          <td className="text-truncate">{item.permissionName}</td>
+          <td className="text-truncate">{item.permissionNameEn}</td>
+          <td className="text-truncate">{item.description}</td>
+          <td className="text-truncate">
+            {item.type === 1 ? '菜单' : '接口'}
+          </td>
           <td>
             <label className="toggle-switch">
               <input
                 type="checkbox"
-                checked={item.status}
-                onChange={(e) => handleStatusChange(item.id, e.target.checked)}
+                checked={item.status === 1}
+                onChange={(e) => handleStatusChange(item.id, e.target.checked ? 1 : 0)}
               />
               <span className="toggle-switch-slider"></span>
             </label>
@@ -70,7 +72,7 @@ const ManagerTable = ({
               修改
             </Button>
             <Popconfirm
-              title="确定要删除这个用户吗？"
+              title="确定要删除这个权限吗？"
               onConfirm={() => handleDeleteClick(item.id)}
               okText="是"
               cancelText="否"
@@ -87,4 +89,4 @@ const ManagerTable = ({
   );
 };
 
-export default ManagerTable;
+export default PermissionTable;
