@@ -39,6 +39,12 @@ const _nav = [
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: '订单管理',
+    to: '/data/userOrder',
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: '数据管理',
   },
