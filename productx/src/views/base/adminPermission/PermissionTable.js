@@ -9,6 +9,7 @@ const PermissionTable = ({
                            handleSelectRow,
                            handleStatusChange,
                            handleEditClick,
+                           handleDeleteClick
                          }) => {
   return (
     <table className="table table-bordered table-striped">
@@ -61,8 +62,8 @@ const PermissionTable = ({
             <label className="toggle-switch">
               <input
                 type="checkbox"
-                checked={item.status === 1}
-                onChange={(e) => handleStatusChange(item.id, e.target.checked ? 1 : 0)}
+                checked={item.status}
+                onChange={(e) => handleStatusChange(item.id, e.target.checked)}
               />
               <span className="toggle-switch-slider"></span>
             </label>
