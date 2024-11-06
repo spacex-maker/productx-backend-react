@@ -99,6 +99,9 @@ const ListRole
 const ListPermission
   = React.lazy(() => import('./views/base/adminPermission/AdminPermission'))
 
+const ListUserOrder
+  = React.lazy(() => import('./views/base/userOrder/UserOrder'))
+
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -269,6 +272,13 @@ const routes = [
     path: '/data/permission', name: '权限管理', element: (
       <PrivateRoute>
         <ListPermission/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/userOrder', name: '订单管理', element: (
+      <PrivateRoute>
+        <ListUserOrder/>
       </PrivateRoute>
     )
   },

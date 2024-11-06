@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 
 const formatDate = (date) => {
-    if (!date) return null;
+    if (!date) return "-";
     return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
 };
 
