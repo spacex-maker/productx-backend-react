@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'  // 引入 useTranslation
 import api from 'src/axiosInstance'
 import {
   CContainer,
@@ -19,7 +20,7 @@ import CIcon from '@coreui/icons-react'
 import {
   cilBell,
   cilContrast,
-  cilEnvelopeOpen,
+  cilEnvelopeOpen, cilLanguage,
   cilList,
   cilMenu,
   cilMoon,
@@ -28,10 +29,12 @@ import {
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
+import Icon from "@ant-design/icons";
 
 const AppHeader = () => {
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
+  const { t, i18n } = useTranslation()  // 获取 i18n 实例
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
@@ -48,11 +51,16 @@ const AppHeader = () => {
   useEffect(() => {
     const handleScroll = () => {
       headerRef.current &&
-        headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
+      headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
     }
     document.addEventListener('scroll', handleScroll)
     return () => document.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // 切换语言的方法
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang)
+  }
 
   return (
     <CHeader position="sticky" className="mb-4 p-0" ref={headerRef}>
@@ -98,11 +106,6 @@ const AppHeader = () => {
               <span>{currentTime}</span>
             </div>
           </CNavItem>
-        </CHeaderNav>
-        <CHeaderNav>
-          <li className="nav-item py-1">
-            <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
-          </li>
           <CDropdown variant="nav-item" placement="bottom-end">
             <CDropdownToggle caret={false}>
               {colorMode === 'dark' ? (
@@ -143,9 +146,21 @@ const AppHeader = () => {
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
-          <li className="nav-item py-1">
-            <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
-          </li>
+          <CDropdown variant="nav-item" placement="bottom-end" className="ms-2">
+            <CDropdownToggle caret={false}>
+              <CIcon icon={cilLanguage} size="lg" />
+            </CDropdownToggle>
+            <CDropdownMenu>
+              <CDropdownItem onClick={() => changeLanguage('en')}>English</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('zh')}>中文</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('fr')}>Français</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('es')}>Español</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('de')}>Deutsch</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('it')}>Italiano</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('ja')}>日本語</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('ru')}>Русский</CDropdownItem>
+            </CDropdownMenu>
+          </CDropdown>
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>

@@ -1,6 +1,7 @@
 import React from 'react'
 import PrivateRoute from "src/components/PrivateRoute";
 import AdminRole from "src/views/base/adminRole/AdminRole";
+import {t} from "i18next";
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -171,7 +172,7 @@ const routes = [
     )
   },
   {
-    path: '/data/userList', name: '用户管理', element: (
+    path: '/data/userList', name: t('usersManage'), element: (
       <PrivateRoute>
         <UserManage/>
       </PrivateRoute>
