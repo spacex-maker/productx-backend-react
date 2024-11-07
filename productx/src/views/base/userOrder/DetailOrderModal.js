@@ -31,7 +31,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
 
   // 如果数据还没有加载完，显示loading
   if (!orderData) {
-    return <div>Loading...</div>;
+    return "";
   }
 
   // 解析支付方式
