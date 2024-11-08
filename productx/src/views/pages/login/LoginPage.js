@@ -15,10 +15,225 @@ import {
   CRow,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilLockLocked, cilLockUnlocked, cilUser } from '@coreui/icons';
+import { cilLockLocked, cilLockUnlocked, cilUser, cilSettings } from '@coreui/icons';
 import LoginHeader from 'src/views/pages/login/LoginHeader';
 import axiosInstance, { API_BASE_URL, setBaseURL } from 'src/axiosInstance';
 import { message } from 'antd';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
+
+const breakpoints = {
+  xs: '320px',
+  sm: '576px',
+  md: '768px',
+  lg: '992px',
+  xl: '1200px'
+};
+
+const PageWrapper = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1c2e 0%, #131525 100%);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0) 70%);
+    top: -300px;
+    right: -300px;
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0) 70%);
+    bottom: -250px;
+    left: -250px;
+    border-radius: 50%;
+  }
+`;
+
+const ContentWrapper = styled(CContainer)`
+  padding-top: 80px;
+
+  @media (max-width: ${breakpoints.sm}) {
+    padding-top: 60px;
+  }
+`;
+
+const LoginCard = styled(CCard)`
+  background: rgba(30, 32, 47, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+`;
+
+const CardHeader = styled.div`
+  padding: 24px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+
+  h4 {
+    color: #f1f5f9;
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.25rem;
+    background: linear-gradient(120deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+`;
+
+const CardBody = styled(CCardBody)`
+  padding: 24px;
+`;
+
+const ApiSection = styled.div`
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+`;
+
+const ApiTitle = styled.div`
+  font-size: 0.875rem;
+  color: #8b5cf6;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const LoginForm = styled(CForm)`
+  .divider {
+    margin: 24px 0;
+    border-top: 1px solid rgba(99, 102, 241, 0.1);
+    position: relative;
+
+    &::after {
+      content: 'or';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(30, 32, 47, 0.95);
+      padding: 0 16px;
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+  }
+`;
+
+const StyledInputGroup = styled(CInputGroup)`
+  margin-bottom: 16px;
+
+  .input-group-text {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-right: none;
+    color: #8b5cf6;
+    padding: 8px 12px;
+    cursor: pointer;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+`;
+
+const StyledInput = styled(CFormInput)`
+  background: rgba(30, 32, 47, 0.95);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-left: none;
+  color: #e2e8f0;
+  padding: 8px 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: #64748b;
+  }
+
+  &:focus {
+    background: rgba(30, 32, 47, 0.98);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+    color: #f1f5f9;
+  }
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.1);
+  }
+`;
+
+const StyledButton = styled(CButton)`
+  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  border: none;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+  }
+
+  &:disabled {
+    background: linear-gradient(120deg, #4b4d8b, #5d4b8b);
+    opacity: 0.7;
+  }
+`;
+
+const GithubButton = styled(CButton)`
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: #8b5cf6;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+  }
+`;
+
+const ForgotPasswordLink = styled.a`
+  color: #8b5cf6;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #6366f1;
+    text-decoration: underline;
+  }
+`;
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -31,6 +246,11 @@ const LoginPage = () => {
   const [apiBaseURL, setApiBaseURL] = useState('');
   const [protocol, setProtocol] = useState('http');
   const [loading, setLoading] = useState(false);
+
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   useEffect(() => {
     refreshCaptcha();
@@ -70,127 +290,139 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <PageWrapper>
       <LoginHeader />
-      <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-        <CContainer>
+      <div className="min-vh-100 d-flex align-items-center">
+        <ContentWrapper>
           <CRow className="justify-content-center">
-            <CCol md={4}>
-              <CCardGroup>
-                <CCard className="p-3">
-                  <CCardBody>
-                    <CRow className="mb-3">
-                      <CCol xs={12}>
-                        <CRow>
-                          <CCol xs={4}>
-                            <CFormSelect value={protocol} onChange={(e) => setProtocol(e.target.value)} size="sm">
-                              <option value="http">http</option>
-                              <option value="https">https</option>
-                            </CFormSelect>
-                          </CCol>
-                          <CCol xs={8}>
-                            <CInputGroup>
-                              <CFormInput
-                                placeholder="请输入 API 基地址"
-                                value={apiBaseURL}
-                                onChange={(e) => setApiBaseURL(e.target.value)}
-                                size="sm"
-                              />
-                              <CButton
-                                className="custom-button"
-                                size={"sm"}
-                                color="primary" className="px-2" type="button" onClick={handleSetBaseURL}>
-                                设置
-                              </CButton>
-                            </CInputGroup>
-                          </CCol>
-                        </CRow>
-                      </CCol>
-                    </CRow>
-                    <CForm onSubmit={handleLogin}>
-                      <h5 className="mb-3">登录</h5>
-                      {notice && <p id="manager-login-notice">{notice}</p>}
-                      <CInputGroup className="mb-2">
+            <CCol xs={12} sm={10} md={8} lg={6} xl={5}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <LoginCard>
+                  <CardHeader>
+                    <h4>登录到 ProductX Admin</h4>
+                  </CardHeader>
+                  <CardBody>
+                    <ApiSection>
+                      <ApiTitle>
+                        <CIcon icon={cilSettings} />
+                        API 配置
+                      </ApiTitle>
+                      <CRow>
+                        <CCol xs={12} sm={4}>
+                          <CFormSelect
+                            value={protocol}
+                            onChange={(e) => setProtocol(e.target.value)}
+                            size="sm"
+                          >
+                            <option value="http">http</option>
+                            <option value="https">https</option>
+                          </CFormSelect>
+                        </CCol>
+                        <CCol xs={12} sm={8} className="mt-2 mt-sm-0">
+                          <StyledInputGroup>
+                            <StyledInput
+                              placeholder="请输入 API 基地址"
+                              value={apiBaseURL}
+                              onChange={(e) => setApiBaseURL(e.target.value)}
+                              size="sm"
+                            />
+                            <StyledButton
+                              size="sm"
+                              onClick={handleSetBaseURL}
+                            >
+                              设置
+                            </StyledButton>
+                          </StyledInputGroup>
+                        </CCol>
+                      </CRow>
+                    </ApiSection>
+
+                    <LoginForm onSubmit={handleLogin}>
+                      <StyledInputGroup>
                         <CInputGroupText>
                           <CIcon icon={cilUser} />
                         </CInputGroupText>
-                        <CFormInput
+                        <StyledInput
                           placeholder="用户名"
-                          autoComplete="username"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
-                          size="sm"
                         />
-                      </CInputGroup>
-                      <CInputGroup className="mb-2">
-                        <CInputGroupText>
-                          <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} onClick={() => setShowPassword(!showPassword)} />
+                      </StyledInputGroup>
+
+                      <StyledInputGroup>
+                        <CInputGroupText onClick={() => setShowPassword(!showPassword)}>
+                          <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} />
                         </CInputGroupText>
-                        <CFormInput
-                          type={showPassword ? 'text' : 'password'}
+                        <StyledInput
+                          type={showPassword ? "text" : "password"}
                           placeholder="密码"
-                          autoComplete="current-password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          size="sm"
                         />
-                      </CInputGroup>
-                      <CInputGroup className="mb-2">
-                        <div>
+                      </StyledInputGroup>
+
+                      <StyledInputGroup className="mb-4">
+                        <div className="captcha-wrapper">
                           <img
-                            className="captcha-img"
                             src={captcha}
                             alt="验证码"
                             onClick={refreshCaptcha}
-                            style={{ cursor: 'pointer', marginRight: '5px' }}
+                            style={{
+                              height: '32px',
+                              borderRadius: '4px',
+                              cursor: 'pointer'
+                            }}
                           />
                         </div>
-                        <CFormInput
-                          type="text"
-                          className="form-control"
-                          placeholder="请输入验证码"
-                          maxLength="4"
+                        <StyledInput
+                          placeholder="验证码"
                           value={verify}
                           onChange={(e) => setVerify(e.target.value)}
-                          size="sm"
                         />
-                      </CInputGroup>
+                      </StyledInputGroup>
+
+                      <StyledButton
+                        type="submit"
+                        className="w-100"
+                        disabled={loading}
+                      >
+                        {loading ? "登录中..." : "登录"}
+                      </StyledButton>
+
+                      <div className="divider" />
 
                       <CRow>
-                        <CCol xs={6}>
-                          <CButton color="primary" className="px-3" type="submit" disabled={loading} size="sm">
-                            {loading ? '登录中...' : '登录'}
-                          </CButton>
-                        </CCol>
-                        <CCol xs={3} className="text-right">
-                          <CButton color="link" className="px-0" style={{ float: 'right', fontSize: 'smaller' }}>
-                            忘记密码
-                          </CButton>
-                        </CCol>
-                        <CCol xs={3} className="text-right" >
-                          <CButton
-                            style={{width: '100%'}}
-                            color="primary"
-                            className="px-2"
-                            type="button"
-                            onClick={handleGitHubLogin} size="sm">
+                        <CCol xs={12} className="text-center mb-3">
+                          <GithubButton
+                            onClick={handleGitHubLogin}
+                            className="w-100"
+                          >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 className="bi bi-github" viewBox="0 0 16 16">
-                              <path
-                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                                 className="bi bi-github me-2" viewBox="0 0 16 16">
+                              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
                             </svg>
-                          </CButton>
+                            使用 GitHub 登录
+                          </GithubButton>
+                        </CCol>
+                        <CCol xs={12} className="text-center">
+                          <ForgotPasswordLink>
+                            忘记密码？
+                          </ForgotPasswordLink>
                         </CCol>
                       </CRow>
-                    </CForm>
-                  </CCardBody>
-                </CCard>
-              </CCardGroup>
+                    </LoginForm>
+                  </CardBody>
+                </LoginCard>
+              </motion.div>
             </CCol>
           </CRow>
-        </CContainer>
+        </ContentWrapper>
       </div>
-    </div>
+    </PageWrapper>
   );
 };
 
