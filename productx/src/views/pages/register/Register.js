@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import RegisterHeader from './RegisterHeader';
 import {
   CButton,
@@ -13,12 +13,13 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CSpinner,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
-import axiosInstance from 'src/axiosInstance';
+import api, { API_BASE_URL, setBaseURL } from 'src/axiosInstance';
 import { message } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import RippleEffect from 'src/components/RippleEffect';
 import WaveEffect from 'src/components/WaveEffect';
 
@@ -61,20 +62,7 @@ const StyledCard = styled(CCard)`
 
 const StyledInputGroup = styled(CInputGroup)`
   margin-bottom: 16px;
-
-  .input-group-text {
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    border-right: none;
-    color: #8b5cf6;
-    padding: 10px 16px;
-
-    svg {
-      width: 18px;
-      height: 18px;
-    }
-  }
-`
+`;
 
 const StyledInput = styled(CFormInput)`
   background: rgba(30, 32, 47, 0.95);
@@ -101,16 +89,43 @@ const StyledInput = styled(CFormInput)`
   }
 `;
 
-const StyledButton = styled(CButton)`
-  background: linear-gradient(120deg, #6366f1, #8b5cf6);
-  border: none;
-  padding: 12px;
-  font-weight: 500;
+const WaterButton = styled.button`
+  position: relative;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-size: 16px;
+  cursor: pointer;
+  overflow: hidden;
   transition: all 0.3s ease;
+  margin-top: 16px;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    border-color: rgba(99, 102, 241, 0.5);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  // 水波效果
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(
+      180deg,
+      rgba(99, 102, 241, 0.2) 0%,
+      rgba(99, 102, 241, 0.4) 100%
+    );
+    transition: height 0.3s ease;
   }
 `;
 
@@ -137,67 +152,143 @@ const TitleText = styled.h3`
   -webkit-text-fill-color: transparent;
 `;
 
-const Register = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const ProgressIndicator = styled.div`
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 2px;
+  margin: 24px 0 8px;
+  overflow: hidden;
+`;
 
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+const ProgressBar = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: ${props => props.progress * 100}%;
+  background: ${props =>
+    props.progress === 1
+      ? 'linear-gradient(90deg, #6366f1, #8b5cf6)'
+      : 'linear-gradient(90deg, #6366f1, #818cf8)'
+  };
+  transition: width 0.3s ease, background 0.3s ease;
+`;
+
+const ProgressText = styled.div`
+  text-align: center;
+  font-size: 13px;
+  color: ${props => {
+    if (props.isError) return '#ef4444';
+    if (props.progress === 1) return '#8b5cf6';
+    return '#64748b';
+  }};
+  margin-top: 8px;
+  transition: color 0.3s ease;
+`;
+
+// 添加动画变体定义
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delayChildren: 0.2,
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const inputVariants = {
+  hidden: {
+    opacity: 0,
+    x: -20
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  }
+};
+
+const Register = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [loading, setLoading] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // 修改检查表单是否完整且有效的函数
+  const isFormValid = useCallback(() => {
+    const { username, password, confirmPassword } = formData;
+    return (
+      username.trim() !== '' &&
+      password.trim() !== '' &&
+      confirmPassword.trim() !== '' &&
+      password === confirmPassword
+    );
+  }, [formData]);
+
+  // 简化 checkPasswordMatch 函数
+  const checkPasswordMatch = useCallback(() => {
+    const match = formData.password === formData.confirmPassword;
+    setPasswordMatch(match);
+    setErrorMessage(match ? '' : '两次输入的密码不一致');
+    return match;
+  }, [formData.password, formData.confirmPassword]);
+
+  // 处理输入框变化
+  const handleInputChange = (field) => (e) => {
+    const value = e.target.value.trim();
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+
+    // 当修改密码或确认密码时，检查匹配
+    if (field === 'password' || field === 'confirmPassword') {
+      setTimeout(() => {
+        checkPasswordMatch();
+      }, 300);
+    }
   };
 
+  // 处理注册
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    if (password !== confirmPassword) {
-      message.error('两次输入的密码不匹配');
-      return;
-    }
-
-    const formData = {
-      username,
-      password,
-    };
+    if (!isFormValid()) return;
 
     try {
-      const response = await axiosInstance.post('/manage/manager/register', formData);
-      message.success('注册成功！');
+      setLoading(true);
+      const data = await api.post('/manage/manager/register', {
+        username: formData.username,
+        password: formData.password
+      });
+
+      if (data) {
+        message.success('注册成功！');
+        // 延迟跳转，让用户看到成功提示
+        setTimeout(() => {
+          navigate('/login');
+        }, 1500);
+      }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || '注册失败，请重试';
-      message.error(errorMessage);
-    }
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        when: "beforeChildren",
-        staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: (i) => ({
-      x: i % 2 === 0 ? -1000 : 1000,
-      y: i % 3 === 0 ? -1000 : (i % 3 === 1 ? 1000 : 0),
-      rotate: Math.random() * 360,
-      opacity: 0
-    }),
-    visible: {
-      x: 0,
-      y: 0,
-      rotate: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 100
-      }
+      console.error('注册失败:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -217,81 +308,70 @@ const Register = () => {
                 <StyledCard>
                   <CCardBody>
                     <CForm onSubmit={handleRegister}>
-                      <motion.div
-                        custom={0}
-                        variants={itemVariants}
-                      >
-                        <TitleText>创建账号</TitleText>
-                      </motion.div>
+                      <TitleText>创建账号</TitleText>
 
-                      <motion.div
-                        custom={1}
-                        variants={itemVariants}
-                      >
-                        <StyledInputGroup>
-                          <CInputGroupText>
-                            <CIcon icon={cilUser} />
-                          </CInputGroupText>
-                          <StyledInput
-                            placeholder="请输入用户名"
-                            autoComplete="username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                          />
-                        </StyledInputGroup>
-                      </motion.div>
+                      <StyledInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilUser} />
+                        </CInputGroupText>
+                        <StyledInput
+                          placeholder="请输入用户名"
+                          autoComplete="username"
+                          value={formData.username}
+                          onChange={handleInputChange('username')}
+                        />
+                      </StyledInputGroup>
 
-                      <motion.div
-                        custom={2}
-                        variants={itemVariants}
-                      >
-                        <StyledInputGroup>
-                          <CInputGroupText>
-                            <CIcon icon={cilLockLocked} />
-                          </CInputGroupText>
-                          <StyledInput
-                            type="password"
-                            placeholder="请输入密码"
-                            autoComplete="new-password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                          />
-                        </StyledInputGroup>
-                      </motion.div>
+                      <StyledInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <StyledInput
+                          type="password"
+                          placeholder="请输入密码"
+                          autoComplete="new-password"
+                          value={formData.password}
+                          onChange={handleInputChange('password')}
+                        />
+                      </StyledInputGroup>
 
-                      <motion.div
-                        custom={3}
-                        variants={itemVariants}
-                      >
-                        <StyledInputGroup>
-                          <CInputGroupText>
-                            <CIcon icon={cilLockLocked} />
-                          </CInputGroupText>
-                          <StyledInput
-                            type="password"
-                            placeholder="请确认密码"
-                            autoComplete="new-password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                          />
-                        </StyledInputGroup>
-                      </motion.div>
+                      <StyledInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <StyledInput
+                          type="password"
+                          placeholder="请确认密码"
+                          autoComplete="new-password"
+                          value={formData.confirmPassword}
+                          onChange={handleInputChange('confirmPassword')}
+                        />
+                      </StyledInputGroup>
 
-                      <motion.div
-                        custom={4}
-                        variants={itemVariants}
-                      >
-                        <div className="d-grid gap-2">
-                          <StyledButton type="submit">
-                            注册
-                          </StyledButton>
-                          <div className="text-center mt-3">
-                            <LoginLink to="/login">
-                              已有账号？立即登录
-                            </LoginLink>
-                          </div>
-                        </div>
-                      </motion.div>
+                      {/* 修改注册按钮部分 */}
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key="register-button"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 20 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <WaterButton
+                            type="submit"
+                            disabled={loading || !isFormValid()}
+                            onClick={handleRegister}
+                          >
+                            {loading ? (
+                              <>
+                                <CSpinner size="sm" className="me-2" />
+                                注册中...
+                              </>
+                            ) : '注册'}
+                            <RippleEffect />
+                          </WaterButton>
+                        </motion.div>
+                      </AnimatePresence>
                     </CForm>
                   </CCardBody>
                 </StyledCard>
@@ -303,5 +383,57 @@ const Register = () => {
     </PageWrapper>
   );
 };
+
+// 只保留这些新的样式组件
+const AnimatedInputGroupText = styled(CInputGroupText)`
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-right: none;
+  color: #8b5cf6;
+  transition: all 0.3s ease;
+
+  svg {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
+  }
+`;
+
+const AnimatedInput = styled(CFormInput)`
+  background: rgba(30, 32, 47, 0.95);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-left: none;
+  color: #e2e8f0;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: #64748b;
+    transition: all 0.3s ease;
+  }
+
+  &:focus {
+    background: rgba(30, 32, 47, 0.98);
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+
+    &::placeholder {
+      transform: translateX(10px);
+      opacity: 0.5;
+    }
+
+    & + ${AnimatedInputGroupText} {
+      border-color: rgba(99, 102, 241, 0.5);
+    }
+  }
+
+  ${props => props.hasValue && `
+    border-color: rgba(99, 102, 241, 0.4);
+    & + ${AnimatedInputGroupText} {
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+  `}
+`;
 
 export default Register;

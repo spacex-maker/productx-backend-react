@@ -31,15 +31,15 @@ const WaveEffect = ({ onDoubleClick }) => {
         this.x = mouseX;
         this.y = mouseY;
         this.radius = 0;
-        this.intensity = 2500; // 波浪强度
+        this.intensity = 50000; // 波浪强度
         this.phase = 0;
-        this.maxRadius = 250; // 最大影响半径
+        this.maxRadius = 600; // 最大影响半径
       }
 
       update() {
         this.radius += 4;
         this.intensity *= 0.985; // 波浪逐渐减弱
-        return this.radius < this.maxRadius;
+        return true;
       }
     }
 
