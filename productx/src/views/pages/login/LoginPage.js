@@ -21,6 +21,7 @@ import axiosInstance, { API_BASE_URL, setBaseURL } from 'src/axiosInstance';
 import { message } from 'antd';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import WaveEffect from 'src/components/WaveEffect';
 
 const breakpoints = {
   xs: '320px',
@@ -96,11 +97,19 @@ const CardBody = styled(CCardBody)`
 `;
 
 const ApiSection = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   padding: 16px;
   background: rgba(99, 102, 241, 0.05);
   border-radius: 12px;
   border: 1px solid rgba(99, 102, 241, 0.1);
+  transition: all 0.3s ease;
+
+  opacity: ${props => props.visible ? 1 : 0};
+  transform: translateY(${props => props.visible ? '0' : '-20px'});
+  height: ${props => props.visible ? 'auto' : '0'};
+  margin: ${props => props.visible ? '0 0 16px 0' : '0'};
+  padding: ${props => props.visible ? '16px' : '0'};
+  pointer-events: ${props => props.visible ? 'all' : 'none'};
 `;
 
 const ApiTitle = styled.div`
@@ -114,6 +123,80 @@ const ApiTitle = styled.div`
   svg {
     width: 16px;
     height: 16px;
+  }
+`;
+
+const ApiInputGroup = styled.div`
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  gap: 1px;
+  background: rgba(99, 102, 241, 0.2);
+  border-radius: 6px;
+  padding: 1px;
+`;
+
+const ProtocolSelect = styled(CFormSelect)`
+  width: 90px !important;
+  border-radius: 4px 0 0 4px !important;
+  border: none !important;
+  background: rgba(30, 32, 47, 0.95) !important;
+  color: #e2e8f0 !important;
+  font-size: 14px;
+  height: 36px;
+  padding: 0 8px;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: none !important;
+    background: rgba(30, 32, 47, 0.98) !important;
+  }
+
+  option {
+    background: #1e202f;
+    color: #e2e8f0;
+  }
+`;
+
+const ApiInput = styled(CFormInput)`
+  flex: 1;
+  background: rgba(30, 32, 47, 0.95) !important;
+  border: none !important;
+  color: #e2e8f0 !important;
+  font-size: 14px;
+  height: 36px;
+  padding: 0 12px;
+
+  &:focus {
+    box-shadow: none !important;
+    background: rgba(30, 32, 47, 0.98) !important;
+  }
+
+  &::placeholder {
+    color: #64748b;
+  }
+`;
+
+const ApiButton = styled(CButton)`
+  background: #6366f1 !important;
+  border: none !important;
+  color: white !important;
+  font-size: 14px;
+  padding: 0 16px;
+  height: 36px;
+  border-radius: 0 4px 4px 0 !important;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #4f46e5 !important;
+  }
+
+  &:active {
+    background: #4338ca !important;
+  }
+
+  &:focus {
+    box-shadow: none !important;
   }
 `;
 
@@ -138,20 +221,24 @@ const LoginForm = styled(CForm)`
 `;
 
 const StyledInputGroup = styled(CInputGroup)`
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 
   .input-group-text {
     background: rgba(99, 102, 241, 0.1);
     border: 1px solid rgba(99, 102, 241, 0.2);
     border-right: none;
     color: #8b5cf6;
-    padding: 8px 12px;
+    padding: 6px 10px;
     cursor: pointer;
 
     svg {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
     }
+  }
+
+  &:last-of-type {
+    margin-bottom: 20px;
   }
 `;
 
@@ -160,8 +247,10 @@ const StyledInput = styled(CFormInput)`
   border: 1px solid rgba(99, 102, 241, 0.2);
   border-left: none;
   color: #e2e8f0;
-  padding: 8px 12px;
+  padding: 6px 10px;
   font-size: 14px;
+  height: 32px;
+  line-height: 20px;
   transition: all 0.3s ease;
 
   &::placeholder {
@@ -235,6 +324,69 @@ const ForgotPasswordLink = styled.a`
   }
 `;
 
+const StyledFormSelect = styled(CFormSelect)`
+  height: 36px;
+  background: rgba(30, 32, 47, 0.95);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  color: #e2e8f0;
+  font-size: 14px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    background: rgba(30, 32, 47, 0.98);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+    color: #f1f5f9;
+  }
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.1);
+  }
+
+  option {
+    background: #1a1c2e;
+    color: #e2e8f0;
+    padding: 8px;
+  }
+`;
+
+const CaptchaInputGroup = styled(StyledInputGroup)`
+  .captcha-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-right: none;
+
+    img {
+      height: 28px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  }
+`;
+
+const ApiConfigHint = styled.div`
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #8b5cf6;
+  font-size: 12px;
+  opacity: 0.7;
+  pointer-events: none;
+
+  @media (max-width: ${breakpoints.sm}) {
+    display: none;
+  }
+`;
+
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -246,6 +398,7 @@ const LoginPage = () => {
   const [apiBaseURL, setApiBaseURL] = useState('');
   const [protocol, setProtocol] = useState('http');
   const [loading, setLoading] = useState(false);
+  const [showApiConfig, setShowApiConfig] = useState(false);
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -289,131 +442,176 @@ const LoginPage = () => {
     window.location.href = 'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=http://127.0.0.1:8090/manage/manager/github-callback';
   };
 
+  // 定义随机初始位置
+  const getRandomPosition = () => ({
+    x: (Math.random() - 0.5) * window.innerWidth * 0.8,
+    y: (Math.random() - 0.5) * window.innerHeight * 0.8,
+    rotate: Math.random() * 360 - 180,
+    scale: 0.5 + Math.random() * 0.5,
+  });
+
+  // 动画变体
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: (i) => ({
+      ...getRandomPosition(),
+      opacity: 0
+    }),
+    visible: {
+      x: 0,
+      y: 0,
+      rotate: 0,
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        damping: 20,
+        stiffness: 100,
+        duration: 1.5
+      }
+    }
+  };
+
+  const handleWaveDoubleClick = () => {
+    setShowApiConfig(prev => !prev);
+    message.info(showApiConfig ? 'API 配置已隐藏' : 'API 配置已显示');
+  };
+
   return (
     <PageWrapper>
+      <WaveEffect onDoubleClick={handleWaveDoubleClick} />
       <LoginHeader />
       <div className="min-vh-100 d-flex align-items-center">
         <ContentWrapper>
           <CRow className="justify-content-center">
             <CCol xs={12} sm={10} md={8} lg={6} xl={5}>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
               >
                 <LoginCard>
-                  <CardHeader>
-                    <h4>登录到 ProductX Admin</h4>
-                  </CardHeader>
+                  <motion.div variants={itemVariants} custom={0}>
+                    <CardHeader>
+                      <h4>登录到 ProductX Admin</h4>
+                    </CardHeader>
+                  </motion.div>
+
                   <CardBody>
-                    <ApiSection>
-                      <ApiTitle>
-                        <CIcon icon={cilSettings} />
-                        API 配置
-                      </ApiTitle>
-                      <CRow>
-                        <CCol xs={12} sm={4}>
-                          <CFormSelect
+                    <motion.div variants={itemVariants} custom={1}>
+                      <ApiSection visible={showApiConfig}>
+                        <ApiTitle>
+                          <CIcon icon={cilSettings} />
+                          API 配置
+                        </ApiTitle>
+                        <ApiInputGroup>
+                          <ProtocolSelect
                             value={protocol}
                             onChange={(e) => setProtocol(e.target.value)}
-                            size="sm"
                           >
                             <option value="http">http</option>
                             <option value="https">https</option>
-                          </CFormSelect>
-                        </CCol>
-                        <CCol xs={12} sm={8} className="mt-2 mt-sm-0">
-                          <StyledInputGroup>
-                            <StyledInput
-                              placeholder="请输入 API 基地址"
-                              value={apiBaseURL}
-                              onChange={(e) => setApiBaseURL(e.target.value)}
-                              size="sm"
-                            />
-                            <StyledButton
-                              size="sm"
-                              onClick={handleSetBaseURL}
-                            >
-                              设置
-                            </StyledButton>
-                          </StyledInputGroup>
-                        </CCol>
-                      </CRow>
-                    </ApiSection>
+                          </ProtocolSelect>
+                          <ApiInput
+                            placeholder="请输入 API 基地址"
+                            value={apiBaseURL}
+                            onChange={(e) => setApiBaseURL(e.target.value)}
+                          />
+                          <ApiButton onClick={handleSetBaseURL}>
+                            设置
+                          </ApiButton>
+                        </ApiInputGroup>
+                      </ApiSection>
+                    </motion.div>
 
                     <LoginForm onSubmit={handleLogin}>
-                      <StyledInputGroup>
-                        <CInputGroupText>
-                          <CIcon icon={cilUser} />
-                        </CInputGroupText>
-                        <StyledInput
-                          placeholder="用户名"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                        />
-                      </StyledInputGroup>
-
-                      <StyledInputGroup>
-                        <CInputGroupText onClick={() => setShowPassword(!showPassword)}>
-                          <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} />
-                        </CInputGroupText>
-                        <StyledInput
-                          type={showPassword ? "text" : "password"}
-                          placeholder="密码"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-                      </StyledInputGroup>
-
-                      <StyledInputGroup className="mb-4">
-                        <div className="captcha-wrapper">
-                          <img
-                            src={captcha}
-                            alt="验证码"
-                            onClick={refreshCaptcha}
-                            style={{
-                              height: '32px',
-                              borderRadius: '4px',
-                              cursor: 'pointer'
-                            }}
+                      <motion.div variants={itemVariants} custom={2}>
+                        <StyledInputGroup>
+                          <CInputGroupText>
+                            <CIcon icon={cilUser} />
+                          </CInputGroupText>
+                          <StyledInput
+                            placeholder="用户名"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                           />
-                        </div>
-                        <StyledInput
-                          placeholder="验证码"
-                          value={verify}
-                          onChange={(e) => setVerify(e.target.value)}
-                        />
-                      </StyledInputGroup>
+                        </StyledInputGroup>
+                      </motion.div>
 
-                      <StyledButton
-                        type="submit"
-                        className="w-100"
-                        disabled={loading}
-                      >
-                        {loading ? "登录中..." : "登录"}
-                      </StyledButton>
+                      <motion.div variants={itemVariants} custom={3}>
+                        <StyledInputGroup>
+                          <CInputGroupText onClick={() => setShowPassword(!showPassword)}>
+                            <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} />
+                          </CInputGroupText>
+                          <StyledInput
+                            type={showPassword ? "text" : "password"}
+                            placeholder="密码"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </StyledInputGroup>
+                      </motion.div>
+
+                      <motion.div variants={itemVariants} custom={4}>
+                        <CaptchaInputGroup>
+                          <div className="captcha-wrapper">
+                            <img
+                              src={captcha}
+                              alt="验证码"
+                              onClick={refreshCaptcha}
+                            />
+                          </div>
+                          <StyledInput
+                            placeholder="验证码"
+                            value={verify}
+                            onChange={(e) => setVerify(e.target.value)}
+                          />
+                        </CaptchaInputGroup>
+                      </motion.div>
+
+                      <motion.div variants={itemVariants} custom={5}>
+                        <StyledButton
+                          type="submit"
+                          className="w-100"
+                          disabled={loading}
+                        >
+                          {loading ? "登录中..." : "登录"}
+                        </StyledButton>
+                      </motion.div>
 
                       <div className="divider" />
 
-                      <CRow>
-                        <CCol xs={12} className="text-center mb-3">
-                          <GithubButton
-                            onClick={handleGitHubLogin}
-                            className="w-100"
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 className="bi bi-github me-2" viewBox="0 0 16 16">
-                              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-                            </svg>
-                            使用 GitHub 登录
-                          </GithubButton>
-                        </CCol>
-                        <CCol xs={12} className="text-center">
-                          <ForgotPasswordLink>
-                            忘记密码？
-                          </ForgotPasswordLink>
-                        </CCol>
-                      </CRow>
+                      <motion.div variants={itemVariants} custom={6}>
+                        <CRow>
+                          <CCol xs={12} className="text-center mb-3">
+                            <GithubButton
+                              onClick={handleGitHubLogin}
+                              className="w-100"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                   className="bi bi-github me-2" viewBox="0 0 16 16">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                              </svg>
+                              使用 GitHub 登录
+                            </GithubButton>
+                          </CCol>
+                          <CCol xs={12} className="text-center">
+                            <ForgotPasswordLink>
+                              忘记密码？
+                            </ForgotPasswordLink>
+                          </CCol>
+                        </CRow>
+                      </motion.div>
                     </LoginForm>
                   </CardBody>
                 </LoginCard>
@@ -422,6 +620,11 @@ const LoginPage = () => {
           </CRow>
         </ContentWrapper>
       </div>
+      {!showApiConfig && (
+        <ApiConfigHint>
+          双击水面显示 API 配置
+        </ApiConfigHint>
+      )}
     </PageWrapper>
   );
 };

@@ -19,6 +19,8 @@ import { cilLockLocked, cilUser } from '@coreui/icons';
 import axiosInstance from 'src/axiosInstance';
 import { message } from 'antd';
 import { Link } from 'react-router-dom';
+import RippleEffect from 'src/components/RippleEffect';
+import WaveEffect from 'src/components/WaveEffect';
 
 const PageWrapper = styled.div`
   min-height: 100vh;
@@ -201,6 +203,7 @@ const Register = () => {
 
   return (
     <PageWrapper>
+      <WaveEffect />
       <RegisterHeader />
       <div className="min-vh-100 d-flex flex-row align-items-center">
         <CContainer>
