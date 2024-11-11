@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Checkbox, Row, Col, Divider, Typography } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
@@ -11,6 +12,8 @@ const UpdateUserModal = ({
                            handleUpdateUser,
                            selectedUser
                          }) => {
+  const { t } = useTranslation();
+
   // 当模态框打开时，设置表单字段的值
   useEffect(() => {
     if (isVisible && selectedUser) {
@@ -35,7 +38,7 @@ const UpdateUserModal = ({
 
   return (
     <Modal
-      title="编辑用户信息"
+      title={t('editUserInfo')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
@@ -52,80 +55,80 @@ const UpdateUserModal = ({
         </Form.Item>
 
         {/* 基本信息部分 */}
-        <Title level={5} style={{ marginBottom: '16px' }}>基本信息</Title>
+        <Title level={5} style={{ marginBottom: '16px' }}>{t('basicInfo')}</Title>
         <Divider style={{ margin: '8px 0' }} />
 
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="昵称"
+              label={t('nickname')}
               name="nickname"
-              rules={[{ required: true, message: '请输入用户昵称' }]}
+              rules={[{ required: true, message: t('nicknameRequired') }]}
               style={{ marginBottom: '12px' }} // 缩小下边距
             >
-              <Input placeholder="请输入昵称" />
+              <Input placeholder={t('enterNickname')} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="全名" name="fullName" style={{ marginBottom: '12px' }}>
-              <Input placeholder="请输入全名" />
+            <Form.Item label={t('fullName')} name="fullName" style={{ marginBottom: '12px' }}>
+              <Input placeholder={t('enterFullName')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item label="电子邮件" name="email" style={{ marginBottom: '12px' }}>
-              <Input placeholder="请输入电子邮件" />
+            <Form.Item label={t('email')} name="email" style={{ marginBottom: '12px' }}>
+              <Input placeholder={t('enterEmail')} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="电话号码" name="phoneNumber" style={{ marginBottom: '12px' }}>
-              <Input placeholder="请输入电话号码" />
+            <Form.Item label={t('phoneNumber')} name="phoneNumber" style={{ marginBottom: '12px' }}>
+              <Input placeholder={t('enterPhoneNumber')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item label="用户介绍" name="description" style={{ marginBottom: '12px' }}>
-              <Input placeholder="请输入用户介绍" />
+            <Form.Item label={t('description')} name="description" style={{ marginBottom: '12px' }}>
+              <Input placeholder={t('enterDescription')} />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="信誉分" name="creditScore" style={{ marginBottom: '12px' }}>
-              <Input type="number" placeholder="请输入信誉分" />
+            <Form.Item label={t('creditScore')} name="creditScore" style={{ marginBottom: '12px' }}>
+              <Input type="number" placeholder={t('enterCreditScore')} />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item label="状态" name="status" valuePropName="checked" style={{ marginBottom: '12px' }}>
-          <Checkbox>激活</Checkbox>
+        <Form.Item label={t('status')} name="status" valuePropName="checked" style={{ marginBottom: '12px' }}>
+          <Checkbox>{t('active')}</Checkbox>
         </Form.Item>
 
         {/* 地址信息部分 */}
-        <Title level={5} style={{ marginBottom: '16px' }}>地址信息</Title>
+        <Title level={5} style={{ marginBottom: '16px' }}>{t('addressInfo')}</Title>
         <Divider style={{ margin: '8px 0' }} />
 
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="国家"
+              label={t('country')}
               name="country"
-              rules={[{ required: true, message: '请输入国家' }]}
+              rules={[{ required: true, message: t('countryRequired') }]}
               style={{ marginBottom: '12px' }}
             >
-              <Input placeholder="请输入国家" />
+              <Input placeholder={t('enterCountry')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label="州/省"
+              label={t('state')}
               name="state"
-              rules={[{ required: true, message: '请输入州/省' }]}
+              rules={[{ required: true, message: t('stateRequired') }]}
               style={{ marginBottom: '12px' }}
             >
-              <Input placeholder="请输入州/省" />
+              <Input placeholder={t('enterState')} />
             </Form.Item>
           </Col>
         </Row>
@@ -133,37 +136,37 @@ const UpdateUserModal = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="城市"
+              label={t('city')}
               name="city"
-              rules={[{ required: true, message: '请输入城市' }]}
+              rules={[{ required: true, message: t('cityRequired') }]}
               style={{ marginBottom: '12px' }}
             >
-              <Input placeholder="请输入城市" />
+              <Input placeholder={t('enterCity')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label="邮政编码"
+              label={t('postalCode')}
               name="postalCode"
-              rules={[{ required: true, message: '请输入邮政编码' }]}
+              rules={[{ required: true, message: t('postalCodeRequired') }]}
               style={{ marginBottom: '12px' }}
             >
-              <Input placeholder="请输入邮政编码" />
+              <Input placeholder={t('enterPostalCode')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
-          label="详细地址"
+          label={t('addressDetail')}
           name="address"
-          rules={[{ required: true, message: '请输入详细地址' }]}
+          rules={[{ required: true, message: t('addressDetailRequired') }]}
           style={{ marginBottom: '12px' }}
         >
-          <Input placeholder="请输入详细地址" />
+          <Input placeholder={t('enterAddressDetail')} />
         </Form.Item>
 
-        <Form.Item label="激活状态" name="isActive" style={{ marginBottom: '0px' }}>
-          <Input disabled placeholder="激活状态" />
+        <Form.Item label={t('isActive')} name="isActive" style={{ marginBottom: '0px' }}>
+          <Input disabled placeholder={t('isActive')} />
         </Form.Item>
       </Form>
     </Modal>

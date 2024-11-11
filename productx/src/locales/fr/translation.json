@@ -1,6 +1,6 @@
 {
   "welcome": "Bienvenue",
-  "description": "Ceci est un exemple d'internationalisation.",
+  "description": "Description",
   "usersManage": "Gestion des utilisateurs",
   "createUser": "Créer un utilisateur",
   "username": "Nom d'utilisateur",
@@ -71,5 +71,22 @@
   "country": "Pays",
   "state": "État/Province",
   "city": "Ville",
-  "postalCode": "Code Postal"
+  "postalCode": "Code Postal",
+  "basicInfo": "Informations de Base",
+  "addressInfo": "Informations sur l'Adresse",
+  "editUserInfo": "Modifier les informations utilisateur",
+  "enterNickname": "Veuillez entrer votre surnom",
+  "enterFullName": "Veuillez entrer votre nom complet",
+  "enterEmail": "Veuillez entrer votre e-mail",
+  "enterPhoneNumber": "Veuillez entrer votre numéro de téléphone",
+  "userDescription": "Description",
+  "enterDescription": "Veuillez entrer une description",
+  "enterCreditScore": "Veuillez entrer votre score de crédit",
+  "enterCountry": "Veuillez entrer votre pays",
+  "stateProvince": "État/Province",
+  "enterStateProvince": "Veuillez entrer votre état ou province",
+  "enterCity": "Veuillez entrer votre ville",
+  "enterPostalCode": "Veuillez entrer votre code postal",
+  "addressDetails": "Détails de l'adresse",
+  "enterAddressDetails": "Veuillez entrer les détails de l'adresse"
 }

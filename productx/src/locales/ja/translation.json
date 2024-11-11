@@ -1,6 +1,6 @@
 {
   "welcome": "ようこそ",
-  "description": "これは国際化の例です。",
+  "description": "説明",
   "usersManage": "ユーザー管理",
   "createUser": "ユーザーを作成",
   "username": "ユーザー名",
@@ -71,5 +71,22 @@
   "country": "国",
   "state": "州/省",
   "city": "市",
-  "postalCode": "郵便番号"
+  "postalCode": "郵便番号",
+  "basicInfo": "基本情報",
+  "addressInfo": "住所情報",
+  "editUserInfo": "ユーザー情報の編集",
+  "enterNickname": "ニックネームを入力してください",
+  "enterFullName": "フルネームを入力してください",
+  "enterEmail": "メールアドレスを入力してください",
+  "enterPhoneNumber": "電話番号を入力してください",
+  "userDescription": "説明",
+  "enterDescription": "説明を入力してください",
+  "enterCreditScore": "信用スコアを入力してください",
+  "enterCountry": "国を入力してください",
+  "stateProvince": "州/省",
+  "enterStateProvince": "州または省を入力してください",
+  "enterCity": "市を入力してください",
+  "enterPostalCode": "郵便番号を入力してください",
+  "addressDetails": "住所詳細",
+  "enterAddressDetails": "住所の詳細を入力してください"
 }
