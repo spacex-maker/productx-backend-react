@@ -88,5 +88,10 @@
   "enterCity": "Пожалуйста, введите город",
   "enterPostalCode": "Пожалуйста, введите почтовый индекс",
   "addressDetails": "Детали адреса",
-  "enterAddressDetails": "Пожалуйста, введите детали адреса"
+  "enterAddressDetails": "Пожалуйста, введите детали адреса",
+  "enabled": "Включено",
+  "disabled": "Отключено",
+  "avatar": "Аватар",
+  "action": "Действие",
+  "detail": "Детали"
 }

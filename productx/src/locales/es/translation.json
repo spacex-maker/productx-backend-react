@@ -88,5 +88,10 @@
   "enterCity": "Por favor ingrese su ciudad",
   "enterPostalCode": "Por favor ingrese su código postal",
   "addressDetails": "Detalles de la dirección",
-  "enterAddressDetails": "Por favor ingrese los detalles de la dirección"
+  "enterAddressDetails": "Por favor ingrese los detalles de la dirección",
+  "enabled": "Habilitado",
+  "disabled": "Deshabilitado",
+  "avatar": "Avatar",
+  "action": "Acción",
+  "detail": "Detalle"
 }

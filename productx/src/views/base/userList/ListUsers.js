@@ -8,7 +8,7 @@ import UserTable from "src/views/base/userList/UserTable";
 import UpdateUserModal from "src/views/base/userList/UpdateUserModal";
 import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
-
+import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 const updateUserStatus = async (id, newStatus) => {
   await api.post('/manage/user/change-status', { id, status: newStatus})
 }
@@ -22,6 +22,7 @@ const updateUser = async (updateData) => {
 }
 
 const UserList = () => {
+  const { t } = useTranslation(); // 使用 t() 方法进行翻译
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
   const [current, setCurrent] = useState(1)
@@ -119,7 +120,7 @@ const UserList = () => {
                   value={searchParams.username}
                   onChange={handleSearchChange}
                   name="username"
-                  placeholder="用户名"
+                  placeholder={t('username')}
                   allowClear // 添加这个属性
                 />
               </Col>
@@ -129,7 +130,7 @@ const UserList = () => {
                   value={searchParams.nickname}
                   onChange={handleSearchChange}
                   name="nickname"
-                  placeholder="昵称"
+                  placeholder={t('nickname')}
                   allowClear // 添加这个属性
                 />
               </Col>
@@ -139,7 +140,7 @@ const UserList = () => {
                   value={searchParams.email}
                   onChange={handleSearchChange}
                   name="email"
-                  placeholder="邮箱"
+                  placeholder={t('email')}
                   allowClear // 添加这个属性
                 />
               </Col>
@@ -149,7 +150,7 @@ const UserList = () => {
                   value={searchParams.address}
                   onChange={handleSearchChange}
                   name="address"
-                  placeholder="地址"
+                  placeholder={t('address')}
                   allowClear // 添加这个属性
                 />
               </Col>
@@ -160,10 +161,10 @@ const UserList = () => {
                   name="status"
                   onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
                   allowClear // 添加这个属性以允许清空选择
-                  placeholder="是否启用"
+                  placeholder={t('status')}
                 >
-                  <Option value="true">启用</Option>
-                  <Option value="false">禁用</Option>
+                  <Option value="true">{t('enabled')}</Option>
+                  <Option value="false">{t('disabled')}</Option>
                 </Select>
               </Col>
               <Col>
@@ -174,14 +175,14 @@ const UserList = () => {
                   className="search-button"
                   disabled={isLoading}
                 >
-                  {isLoading ? <Spin/> : '查询'}
+                  {isLoading ? <Spin/> : t('search')}
                 </Button>
               </Col>
               <Col>
                 <Button
                   size="small"
                   type="primary" onClick={() => setIsCreateModalVisible(true)}>
-                  创建用户
+                  {t('createUser')}
                 </Button>
               </Col>
               <Col>
@@ -195,7 +196,7 @@ const UserList = () => {
                   })}
                   disabled={selectedRows.length === 0}
                 >
-                  批量删除
+                  {t('batchDelete')}
                 </Button>
               </Col>
             </Row>

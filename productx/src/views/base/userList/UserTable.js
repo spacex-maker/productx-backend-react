@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const UserTable = ({
                      data,
@@ -11,6 +12,8 @@ const UserTable = ({
                      handleEditClick,
                      handleDetailClick
                    }) => {
+  const { t } = useTranslation(); // 使用 useTranslation 获取 t 函数
+
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -27,12 +30,10 @@ const UserTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', '头像', '用户名', '昵称', '邮箱', '地址', '状态'].map((field) => (
-          <th key={field}>{field}</th>
-        ))}
-        <th className="fixed-column"
-            key='操作'>操作
-        </th>
+        {['ID', 'avatar', 'username', 'nickname', 'email', 'address', 'status'].map((field) => (
+          <th key={field}>{t(field)}</th>
+          ))}
+        <th className="fixed-column" key='操作'>{t('action')}</th>
       </tr>
       </thead>
       <tbody>
@@ -58,7 +59,7 @@ const UserTable = ({
             <img
               src={item.avatar} // 假设 user.avatar 是头像的 URL
               alt={`${item.nickname}的头像`}
-              style={{width: '40px', height: '40px', borderRadius: '25%'}} // 设置为40px的图片并圆形显示
+              style={{ width: '40px', height: '40px', borderRadius: '25%' }} // 设置为40px的图片并圆形显示
             />
           </td>
           <td className="text-truncate">{item.username}</td>
@@ -77,10 +78,10 @@ const UserTable = ({
           </td>
           <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>
-              修改
+              {t('update')} {/* 翻译修改按钮 */}
             </Button>
             <Button type="link" onClick={() => handleDetailClick(item)}>
-              详情
+              {t('detail')} {/* 翻译详情按钮 */}
             </Button>
           </td>
         </tr>
