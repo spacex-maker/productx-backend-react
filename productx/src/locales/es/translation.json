@@ -1,6 +1,6 @@
 {
   "welcome": "Bienvenido",
-  "description": "Este es un ejemplo de internacionalización.",
+  "description": "Descripción",
   "usersManage": "Gestión de usuarios",
   "createUser": "Crear usuario",
   "username": "Nombre de usuario",
@@ -71,5 +71,22 @@
   "country": "País",
   "state": "Estado/Provincia",
   "city": "Ciudad",
-  "postalCode": "Código Postal"
+  "postalCode": "Código Postal",
+  "basicInfo": "Información Básica",
+  "addressInfo": "Información de Dirección",
+  "editUserInfo": "Editar información del usuario",
+  "enterNickname": "Por favor ingrese su apodo",
+  "enterFullName": "Por favor ingrese su nombre completo",
+  "enterEmail": "Por favor ingrese su correo electrónico",
+  "enterPhoneNumber": "Por favor ingrese su número de teléfono",
+  "userDescription": "Descripción",
+  "enterDescription": "Por favor ingrese una descripción",
+  "enterCreditScore": "Por favor ingrese la puntuación de crédito",
+  "enterCountry": "Por favor ingrese su país",
+  "stateProvince": "Estado/Provincia",
+  "enterStateProvince": "Por favor ingrese su estado o provincia",
+  "enterCity": "Por favor ingrese su ciudad",
+  "enterPostalCode": "Por favor ingrese su código postal",
+  "addressDetails": "Detalles de la dirección",
+  "enterAddressDetails": "Por favor ingrese los detalles de la dirección"
 }

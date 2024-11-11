@@ -1,6 +1,6 @@
 {
   "welcome": "欢迎",
-  "description": "这是一个国际化的示例。",
+  "description": "描述",
   "usersManage": "用户管理",
   "createUser": "创建用户",
   "username": "用户名",
@@ -71,5 +71,22 @@
   "country": "国家",
   "state": "州/省",
   "city": "城市",
-  "postalCode": "邮政编码"
+  "postalCode": "邮政编码",
+  "basicInfo": "基本信息",
+  "addressInfo": "地址信息",
+  "editUserInfo": "编辑用户信息",
+  "enterNickname": "请输入昵称",
+  "enterFullName": "请输入全名",
+  "enterEmail": "请输入电子邮件",
+  "enterPhoneNumber": "请输入电话号码",
+  "userDescription": "描述",
+  "enterDescription": "请输入描述",
+  "enterCreditScore": "请输入信用评分",
+  "enterCountry": "请输入国家",
+  "stateProvince": "省/州",
+  "enterStateProvince": "请输入省或州",
+  "enterCity": "请输入城市",
+  "enterPostalCode": "请输入邮政编码",
+  "addressDetails": "详细地址",
+  "enterAddressDetails": "请输入详细地址"
 }
