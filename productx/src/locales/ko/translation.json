@@ -104,5 +104,6 @@
   "paymentMethod": "결제 방법",
   "paymentTime": "결제 시간",
   "totalAmount": "총 금액",
-  "deliveryMethod": "배송 방법"
+  "deliveryMethod": "배송 방법",
+  "createOrder": "주문 만들기"
 }
