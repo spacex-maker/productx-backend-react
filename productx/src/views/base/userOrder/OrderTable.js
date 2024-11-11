@@ -99,21 +99,20 @@ const OrderTable = ({
             <td className="text-truncate">{item.shippingMethod}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
+                {t('edit')}
               </Button>
 
               <Button type="link" onClick={() => handleViewDetails(item.id)}>
-                查看详情
+                {t('detail')}
               </Button>
-
               <Popconfirm
-                title="确定要删除这个订单吗？"
+                title= {t('confirmDelete?')}
                 onConfirm={() => handleDeleteClick(item.id)}
                 okText="是"
                 cancelText="否"
               >
                 <Button type="link" danger>
-                  删除
+                  {t('delete')}
                 </Button>
               </Popconfirm>
             </td>
