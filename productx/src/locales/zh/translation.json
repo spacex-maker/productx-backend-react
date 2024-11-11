@@ -65,5 +65,11 @@
   "export": "导出",
   "import": "导入",
   "successMessage": "操作成功完成。",
-  "errorMessage": "发生错误，请稍后再试。"
+  "errorMessage": "发生错误，请稍后再试。",
+  "fullName": "全名",
+  "creditScore": "信誉分",
+  "country": "国家",
+  "state": "州/省",
+  "city": "城市",
+  "postalCode": "邮政编码"
 }

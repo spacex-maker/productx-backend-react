@@ -65,5 +65,11 @@
   "export": "Exportieren",
   "import": "Importieren",
   "successMessage": "Operation erfolgreich abgeschlossen.",
-  "errorMessage": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal."
+  "errorMessage": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal.",
+  "fullName": "Vollständiger Name",
+  "creditScore": "Kreditpunktzahl",
+  "country": "Land",
+  "state": "Bundesland",
+  "city": "Stadt",
+  "postalCode": "Postleitzahl"
 }

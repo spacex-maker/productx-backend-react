@@ -65,5 +65,11 @@
   "export": "Esporta",
   "import": "Importa",
   "successMessage": "Operazione completata con successo.",
-  "errorMessage": "Si è verificato un errore. Riprova più tardi."
+  "errorMessage": "Si è verificato un errore. Riprova più tardi.",
+  "fullName": "Nome Completo",
+  "creditScore": "Punteggio di Credito",
+  "country": "Paese",
+  "state": "Stato/Provincia",
+  "city": "Città",
+  "postalCode": "Codice Postale"
 }

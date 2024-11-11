@@ -65,5 +65,11 @@
   "export": "エクスポート",
   "import": "インポート",
   "successMessage": "操作が成功しました。",
-  "errorMessage": "エラーが発生しました。後で再試行してください。"
+  "errorMessage": "エラーが発生しました。後で再試行してください。",
+  "fullName": "フルネーム",
+  "creditScore": "信用スコア",
+  "country": "国",
+  "state": "州/省",
+  "city": "市",
+  "postalCode": "郵便番号"
 }
