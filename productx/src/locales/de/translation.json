@@ -104,5 +104,6 @@
   "paymentMethod": "Zahlungsmethode",
   "paymentTime": "Zahlungszeit",
   "totalAmount": "Gesamtbetrag",
-  "deliveryMethod": "Liefermethode"
+  "deliveryMethod": "Liefermethode",
+  "createOrder": "إنشاء طلب"
 }

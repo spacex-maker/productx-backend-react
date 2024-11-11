@@ -104,5 +104,6 @@
   "paymentMethod": "Payment Method",
   "paymentTime": "Payment Time",
   "totalAmount": "Total Amount",
-  "deliveryMethod": "Delivery Method"
+  "deliveryMethod": "Delivery Method",
+  "createOrder": "Bestellung erstellen"
 }

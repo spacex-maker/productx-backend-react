@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Button, Popconfirm } from 'antd';
-import { formatDate } from "src/components/common/Common";
+import React, {useState} from 'react';
+import {Button, Popconfirm} from 'antd';
+import {formatDate} from "src/components/common/Common";
 import DetailOrderModal from "src/views/base/userOrder/DetailOrderModal";
-
+import {useTranslation} from 'react-i18next'; // 引入 useTranslation
 const OrderTable = ({
                       data,
                       selectAll,
@@ -36,7 +36,7 @@ const OrderTable = ({
     setIsModalVisible(false);
     setOrderId(null);
   };
-
+  const {t} = useTranslation(); // 使用 t() 方法进行翻译
   return (
     <div>
       <table className="table table-bordered table-striped">
@@ -54,7 +54,17 @@ const OrderTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['ORDER_ID', 'USER_ID', '收货人', '手机号', '订单状态', '支付方式', '支付时间', '总金额', '配送方式'].map((field) => (
+          {[
+            'orderId',
+            'userId',
+            'receiver',
+            'phoneNumber',
+            'orderStatus',
+            'paymentMethod',
+            'paymentTime',
+            'totalAmount',
+            'deliveryMethod'
+          ].map((field) => (
             <th key={field}>{t(field)}</th>
           ))}
           <th className="fixed-column" key='操作'>{t('action')}</th>

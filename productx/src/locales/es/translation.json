@@ -104,5 +104,6 @@
   "paymentMethod": "Método de pago",
   "paymentTime": "Hora de pago",
   "totalAmount": "Cantidad total",
-  "deliveryMethod": "Método de entrega"
+  "deliveryMethod": "Método de entrega",
+  "createOrder": "Crear pedido"
 }

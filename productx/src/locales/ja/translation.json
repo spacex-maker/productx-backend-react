@@ -104,5 +104,6 @@
   "paymentMethod": "支払い方法",
   "paymentTime": "支払時間",
   "totalAmount": "合計金額",
-  "deliveryMethod": "配達方法"
+  "deliveryMethod": "配達方法",
+  "createOrder": "注文を作成"
 }

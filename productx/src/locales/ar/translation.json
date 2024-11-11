@@ -104,5 +104,6 @@
   "paymentMethod": "طريقة الدفع",
   "paymentTime": "وقت الدفع",
   "totalAmount": "المبلغ الإجمالي",
-  "deliveryMethod": "طريقة التوصيل"
+  "deliveryMethod": "طريقة التوصيل",
+  "createOrder": "Create Order"
 }

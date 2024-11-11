@@ -104,5 +104,6 @@
   "paymentMethod": "Метод оплаты",
   "paymentTime": "Время оплаты",
   "totalAmount": "Общая сумма",
-  "deliveryMethod": "Метод доставки"
+  "deliveryMethod": "Метод доставки",
+  "createOrder": "Создать заказ"
 }
