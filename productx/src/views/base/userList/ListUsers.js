@@ -101,11 +101,7 @@ const UserList = () => {
   }
 
   const handleEditClick = (user) => {
-    updateForm.setFieldsValue({
-      id: user.id,
-      nickname: user.nickname,
-      email: user.email,
-    })
+    setSelectedUser(user)
     setIsUpdateModalVisible(true)
   }
 
@@ -188,13 +184,6 @@ const UserList = () => {
                   创建用户
                 </Button>
               </Col>
-              <Col>
-              <Button
-                size="small"
-                type="primary" onClick={() => setIsCreateModalVisible(true)}>
-                修改用户
-              </Button>
-            </Col>
               <Col>
                 <Button
                   size="small"
