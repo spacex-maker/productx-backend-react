@@ -88,5 +88,10 @@
   "enterCity": "Inserisci la città",
   "enterPostalCode": "Inserisci il CAP",
   "addressDetails": "Dettagli dell'indirizzo",
-  "enterAddressDetails": "Inserisci i dettagli dell'indirizzo"
+  "enterAddressDetails": "Inserisci i dettagli dell'indirizzo",
+  "enabled": "Abilitato",
+  "disabled": "Disabilitato",
+  "avatar": "Avatar",
+  "action": "Azione",
+  "detail": "Dettaglio"
 }

@@ -88,5 +88,10 @@
   "postalCode": "Postal Code",
   "enterPostalCode": "Please enter your postal code",
   "addressDetails": "Address Details",
-  "enterAddressDetails": "Please enter your address details"
+  "enterAddressDetails": "Please enter your address details",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  "avatar": "Avatar",
+  "action": "Action",
+  "detail": "Detail"
 }

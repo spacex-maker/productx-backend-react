@@ -88,5 +88,10 @@
   "enterCity": "Veuillez entrer votre ville",
   "enterPostalCode": "Veuillez entrer votre code postal",
   "addressDetails": "Détails de l'adresse",
-  "enterAddressDetails": "Veuillez entrer les détails de l'adresse"
+  "enterAddressDetails": "Veuillez entrer les détails de l'adresse",
+  "enabled": "Activé",
+  "disabled": "Désactivé",
+  "avatar": "Avatar",
+  "action": "Action",
+  "detail": "Détail"
 }

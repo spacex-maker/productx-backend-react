@@ -88,5 +88,10 @@
   "enterCity": "市を入力してください",
   "enterPostalCode": "郵便番号を入力してください",
   "addressDetails": "住所詳細",
-  "enterAddressDetails": "住所の詳細を入力してください"
+  "enterAddressDetails": "住所の詳細を入力してください",
+  "enabled": "有効",
+  "disabled": "無効",
+  "avatar": "アバター",
+  "action": "アクション",
+  "detail": "詳細"
 }

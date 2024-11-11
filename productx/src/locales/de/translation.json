@@ -88,5 +88,10 @@
   "enterCity": "Bitte Stadt eingeben",
   "enterPostalCode": "Bitte Postleitzahl eingeben",
   "addressDetails": "Adresse Details",
-  "enterAddressDetails": "Bitte Adressdetails eingeben"
+  "enterAddressDetails": "Bitte Adressdetails eingeben",
+  "enabled": "Aktiviert",
+  "disabled": "Deaktiviert",
+  "avatar": "Avatar",
+  "action": "Aktion",
+  "detail": "Detail"
 }

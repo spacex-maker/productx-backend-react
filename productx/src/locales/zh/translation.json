@@ -88,5 +88,10 @@
   "enterCity": "请输入城市",
   "enterPostalCode": "请输入邮政编码",
   "addressDetails": "详细地址",
-  "enterAddressDetails": "请输入详细地址"
+  "enterAddressDetails": "请输入详细地址",
+  "enabled": "启用",
+  "disabled": "禁用",
+  "avatar": "头像",
+  "action": "操作",
+  "detail": "详情"
 }
