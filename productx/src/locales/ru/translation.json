@@ -93,5 +93,16 @@
   "disabled": "Отключено",
   "avatar": "Аватар",
   "action": "Действие",
-  "detail": "Детали"
+  "detail": "Детали",
+  "selectOrderStatus": "Выберите статус заказа",
+  "paid": "Оплачено",
+  "shipped": "Отправлено",
+  "orderId": "ID заказа",
+  "userId": "ID пользователя",
+  "receiver": "Получатель",
+  "orderStatus": "Статус заказа",
+  "paymentMethod": "Метод оплаты",
+  "paymentTime": "Время оплаты",
+  "totalAmount": "Общая сумма",
+  "deliveryMethod": "Метод доставки"
 }

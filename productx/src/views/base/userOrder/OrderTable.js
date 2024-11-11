@@ -54,10 +54,10 @@ const OrderTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['订单ID', '用户ID', '收货人', '手机号', '订单状态', '支付方式', '支付时间', '总金额', '配送方式'].map((field) => (
-            <th key={field}>{field}</th>
+          {['ORDER_ID', 'USER_ID', '收货人', '手机号', '订单状态', '支付方式', '支付时间', '总金额', '配送方式'].map((field) => (
+            <th key={field}>{t(field)}</th>
           ))}
-          <th className="fixed-column" key="操作">操作</th>
+          <th className="fixed-column" key='操作'>{t('action')}</th>
         </tr>
         </thead>
         <tbody>

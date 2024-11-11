@@ -8,6 +8,8 @@ import de from './locales/de/translation.json';
 import it from './locales/it/translation.json';
 import ja from './locales/ja/translation.json';
 import ru from './locales/ru/translation.json';
+import ar from './locales/ar/translation.json';
+import ko from './locales/ko/translation.json';
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
@@ -18,6 +20,8 @@ i18n.use(initReactI18next).init({
     it: { translation: it },
     ja: { translation: ja },
     ru: { translation: ru },
+    ar: { translation: ar },
+    ko: { translation: ko },
   },
   lng: 'zh', // 默认语言
   fallbackLng: 'en', // 备用语言

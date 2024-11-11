@@ -93,5 +93,18 @@
   "disabled": "禁用",
   "avatar": "头像",
   "action": "操作",
-  "detail": "详情"
+  "detail": "详情",
+  "selectOrderStatus": "选择订单状态",
+  "paid": "已支付",
+  "shipped": "已发货",
+  "orderId": "订单号",
+  "userId": "用户ID",
+  "receiver": "收货人",
+  "orderStatus": "订单状态",
+  "paymentMethod": "支付方式",
+  "paymentTime": "支付时间",
+  "totalAmount": "总金额",
+  "deliveryMethod": "配送方式",
+  "createOrder": "创建订单",
+  "batchDelete": "批量删除"
 }

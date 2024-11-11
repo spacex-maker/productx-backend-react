@@ -153,12 +153,14 @@ const AppHeader = () => {
             <CDropdownMenu>
               <CDropdownItem onClick={() => changeLanguage('en')}>English</CDropdownItem>
               <CDropdownItem onClick={() => changeLanguage('zh')}>中文</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('fr')}>Français</CDropdownItem>
               <CDropdownItem onClick={() => changeLanguage('es')}>Español</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('de')}>Deutsch</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('it')}>Italiano</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('ja')}>日本語</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('fr')}>Français</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('ar')}>عربي</CDropdownItem> {/* 阿拉伯语 */}
               <CDropdownItem onClick={() => changeLanguage('ru')}>Русский</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('de')}>Deutsch</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('ko')}>한국어</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('ja')}>日本語</CDropdownItem>
+              <CDropdownItem onClick={() => changeLanguage('it')}>Italiano</CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
           <AppHeaderDropdown />
