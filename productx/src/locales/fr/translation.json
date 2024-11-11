@@ -93,5 +93,16 @@
   "disabled": "Désactivé",
   "avatar": "Avatar",
   "action": "Action",
-  "detail": "Détail"
+  "detail": "Détail",
+  "selectOrderStatus": "Sélectionner le statut de la commande",
+  "paid": "Payé",
+  "shipped": "Expédié",
+  "orderId": "ID de commande",
+  "userId": "ID utilisateur",
+  "receiver": "Récepteur",
+  "orderStatus": "Statut de la commande",
+  "paymentMethod": "Méthode de paiement",
+  "paymentTime": "Heure de paiement",
+  "totalAmount": "Montant total",
+  "deliveryMethod": "Méthode de livraison"
 }

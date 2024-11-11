@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination";
 import OrderTable from "src/views/base/userOrder/OrderTable"; // 假设你有一个订单表格组件
 import OrderCreateFormModal from "src/views/base/userOrder/AddOrderModal"; // 新建订单模态框
 import UpdateOrderModal from "src/views/base/userOrder/UpdateOrderModal"; // 更新订单模态框
+import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 
 const createOrder = async (orderData) => {
   await api.post('/manage/user-order/create', orderData);
@@ -17,6 +18,7 @@ const updateOrder = async (updateData) => {
 };
 
 const UserOrder = () => {
+  const { t } = useTranslation(); // 使用 t() 方法进行翻译
   const [data, setData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,7 +60,7 @@ const UserOrder = () => {
         setData(response.data); // 更新数据结构
         setTotalNum(response.totalNum); // 获取总记录数
       } else {
-        message.info("暂无数据(No Data)");
+        message.info(t("noData"));
       }
     } catch (error) {
       console.error('Failed to fetch orders', error);
@@ -116,7 +118,7 @@ const UserOrder = () => {
                 value={searchParams.userId}
                 onChange={handleSearchChange}
                 name="userId"
-                placeholder="用户ID"
+                placeholder={t("userId")}
                 allowClear
               />
             </Col>
@@ -126,16 +128,16 @@ const UserOrder = () => {
                 name="orderStatus"
                 onChange={(value) => handleSearchChange({ target: { name: 'orderStatus', value: value } })}
                 allowClear
-                placeholder="选择订单状态"
+                placeholder={t("selectOrderStatus")}
               >
-                <Option value="PENDING">待处理</Option>
-                <Option value="PAID">已支付</Option>
-                <Option value="SHIPPED">已发货</Option>
-                <Option value="ARRIVED">已到达</Option>
-                <Option value="COMPLETED">已完成</Option>
-                <Option value="CANCELLED">已取消</Option>
-                <Option value="RETURNING">退货中</Option>
-                <Option value="RETURNED">已退货</Option>
+                <Option value="PENDING">{t("pending")}</Option>
+                <Option value="PAID">{t("paid")}</Option>
+                <Option value="SHIPPED">{t("shipped")}</Option>
+                <Option value="ARRIVED">{t("arrived")}</Option>
+                <Option value="COMPLETED">{t("completed")}</Option>
+                <Option value="CANCELLED">{t("cancelled")}</Option>
+                <Option value="RETURNING">{t("returning")}</Option>
+                <Option value="RETURNED">{t("returned")}</Option>
               </Select>
             </Col>
             <Col>
@@ -145,7 +147,7 @@ const UserOrder = () => {
                 onClick={fetchData}
                 disabled={isLoading}
               >
-                {isLoading ? <Spin /> : '查询'}
+                {isLoading ? <Spin /> : t("search")}
               </Button>
             </Col>
             <Col>
@@ -154,7 +156,7 @@ const UserOrder = () => {
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
               >
-                新增订单
+                {t("createOrder")}
               </Button>
             </Col>
             <Col>
@@ -168,7 +170,7 @@ const UserOrder = () => {
                 })}
                 disabled={selectedRows.length === 0}
               >
-                批量删除
+                {t("batchDelete")}
               </Button>
             </Col>
           </Row>

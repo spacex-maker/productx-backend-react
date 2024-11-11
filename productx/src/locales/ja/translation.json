@@ -93,5 +93,16 @@
   "disabled": "無効",
   "avatar": "アバター",
   "action": "アクション",
-  "detail": "詳細"
+  "detail": "詳細",
+  "selectOrderStatus": "注文状態を選択",
+  "paid": "支払済み",
+  "shipped": "発送済み",
+  "orderId": "注文ID",
+  "userId": "ユーザーID",
+  "receiver": "受取人",
+  "orderStatus": "注文状態",
+  "paymentMethod": "支払い方法",
+  "paymentTime": "支払時間",
+  "totalAmount": "合計金額",
+  "deliveryMethod": "配達方法"
 }

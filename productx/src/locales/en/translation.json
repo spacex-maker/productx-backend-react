@@ -93,5 +93,16 @@
   "disabled": "Disabled",
   "avatar": "Avatar",
   "action": "Action",
-  "detail": "Detail"
+  "detail": "Detail",
+  "selectOrderStatus": "Select Order Status",
+  "paid": "Paid",
+  "shipped": "Shipped",
+  "orderId": "Order ID",
+  "userId": "User ID",
+  "receiver": "Receiver",
+  "orderStatus": "Order Status",
+  "paymentMethod": "Payment Method",
+  "paymentTime": "Payment Time",
+  "totalAmount": "Total Amount",
+  "deliveryMethod": "Delivery Method"
 }

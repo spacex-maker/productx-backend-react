@@ -67,7 +67,7 @@ const UserList = () => {
 
       if (response && response.data) {
         setData(response.data) // 更新为新的数据结构
-        setTotalNum(response.data.totalNum) // 读取总数
+        setTotalNum(response.totalNum) // 读取总数
       }
     } catch (error) {
       console.error('Failed to fetch data', error)

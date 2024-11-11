@@ -15,7 +15,6 @@ import {
   cilUser,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
-
 const _nav = [
   {
     component: CNavItem,
@@ -34,7 +33,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: '用户管理',
+    name: 'usersManage',
     to: '/data/userList',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
   },
