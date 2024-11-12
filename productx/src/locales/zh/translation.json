@@ -158,5 +158,10 @@
   "selectPaymentTime": "选择支付时间",
   "enterTotalAmount": "请输入总金额",
   "selectShippingMethod": "选择配送方式",
-  "enterDeliveryAddress": "请输入配送地址"
+  "enterDeliveryAddress": "请输入配送地址",
+  "orderItems": "订单项",
+  "orderHistory": "订单历史",
+  "category": "分类",
+  "sellerInfo": "卖家信息",
+  "buyerInfo": "买家信息"
 }

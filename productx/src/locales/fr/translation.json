@@ -157,5 +157,10 @@
   "selectPaymentTime": "Sélectionner le temps de paiement",
   "enterTotalAmount": "Entrer le montant total",
   "selectShippingMethod": "Sélectionner la méthode de livraison",
-  "enterDeliveryAddress": "Entrer l'adresse de livraison"
+  "enterDeliveryAddress": "Entrer l'adresse de livraison",
+  "orderItems": "Articles de commande",
+  "orderHistory": "Historique des commandes",
+  "category": "Catégorie",
+  "sellerInfo": "Informations du vendeur",
+  "buyerInfo": "Informations de l'acheteur"
 }

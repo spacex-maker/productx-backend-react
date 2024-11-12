@@ -157,5 +157,10 @@
   "selectPaymentTime": "اختر وقت الدفع",
   "enterTotalAmount": "أدخل المبلغ الإجمالي",
   "selectShippingMethod": "اختر طريقة الشحن",
-  "enterDeliveryAddress": "أدخل عنوان التسليم"
+  "enterDeliveryAddress": "أدخل عنوان التسليم",
+  "orderItems": "عناصر الطلب",
+  "orderHistory": "تاريخ الطلب",
+  "category": "الفئة",
+  "sellerInfo": "معلومات البائع",
+  "buyerInfo": "معلومات المشتري"
 }

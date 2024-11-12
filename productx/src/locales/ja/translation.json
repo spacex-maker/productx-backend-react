@@ -157,5 +157,10 @@
   "selectPaymentTime": "支払い時間を選択",
   "enterTotalAmount": "合計金額を入力",
   "selectShippingMethod": "配送方法を選択",
-  "enterDeliveryAddress": "配送先住所を入力"
+  "enterDeliveryAddress": "配送先住所を入力",
+  "orderItems": "注文アイテム",
+  "orderHistory": "注文履歴",
+  "category": "カテゴリー",
+  "sellerInfo": "販売者情報",
+  "buyerInfo": "購入者情報"
 }

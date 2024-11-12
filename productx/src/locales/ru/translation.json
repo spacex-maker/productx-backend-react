@@ -157,5 +157,10 @@
   "selectPaymentTime": "Выберите время оплаты",
   "enterTotalAmount": "Введите общую сумму",
   "selectShippingMethod": "Выберите способ доставки",
-  "enterDeliveryAddress": "Введите адрес доставки"
+  "enterDeliveryAddress": "Введите адрес доставки",
+  "orderItems": "Товары в заказе",
+  "orderHistory": "История заказов",
+  "category": "Категория",
+  "sellerInfo": "Информация о продавце",
+  "buyerInfo": "Информация о покупателе"
 }

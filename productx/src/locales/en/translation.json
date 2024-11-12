@@ -157,5 +157,10 @@
   "selectPaymentTime": "Select Payment Time",
   "enterTotalAmount": "Enter Total Amount",
   "selectShippingMethod": "Select Shipping Method",
-  "enterDeliveryAddress": "Enter Delivery Address"
+  "enterDeliveryAddress": "Enter Delivery Address",
+  "orderItems": "Order Items",
+  "orderHistory": "Order History",
+  "category": "Category",
+  "sellerInfo": "Seller Information",
+  "buyerInfo": "Buyer Information"
 }

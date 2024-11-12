@@ -157,5 +157,10 @@
   "selectPaymentTime": "결제 시간 선택",
   "enterTotalAmount": "총 금액 입력",
   "selectShippingMethod": "배송 방법 선택",
-  "enterDeliveryAddress": "배송 주소 입력"
+  "enterDeliveryAddress": "배송 주소 입력",
+  "orderItems": "주문 항목",
+  "orderHistory": "주문 내역",
+  "category": "카테고리",
+  "sellerInfo": "판매자 정보",
+  "buyerInfo": "구매자 정보"
 }
