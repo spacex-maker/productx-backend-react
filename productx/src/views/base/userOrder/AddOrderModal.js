@@ -57,7 +57,7 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
       okText={t("submit")}
       cancelText={t("cancel")}
       width={560}
-      bodyStyle={{ padding: '10px' }}
+      styles={{ padding: '10px' }}
     >
       <Alert
         message={t("orderInfoWarning")}

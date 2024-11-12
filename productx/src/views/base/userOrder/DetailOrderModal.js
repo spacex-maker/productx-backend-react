@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space } from 'antd';
+import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space, Image, Avatar } from 'antd';
 import { useTranslation } from 'react-i18next'; // 导入 useTranslation
 import api from "src/axiosInstance";
 import { formatDate } from "src/components/common/Common";
+import { UserOutlined, ShopOutlined } from '@ant-design/icons';
+
 const DetailOrderModal = ({ visible, orderId, onCancel }) => {
   const [orderData, setOrderData] = useState(null);
   const { t } = useTranslation(); // 获取 t 函数
@@ -32,7 +34,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
     return "";
   }
 
-  // 解析支付方式
+  // 解析支付方
   const parsePaymentType = (paymentType) => {
     if (paymentType && paymentType.includes('##')) {
       const [currency, network] = paymentType.split('##');
@@ -41,7 +43,13 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
     return paymentType;
   };
 
-  const { userOrder, userOrderDetails, orderStatusHistories } = orderData;
+  const {
+    userOrder,
+    userProducts,
+    orderStatusHistories,
+    buyerDetail,
+    sellerDetail
+  } = orderData;
 
   return (
     <Modal
@@ -50,9 +58,111 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
       onCancel={onCancel}
       footer={null}
       width={580}
-      bodyStyle={{ padding: '12px', fontSize: '10px' }}
+      bodyStyle={{ padding: '12px', fontSize: '12px' }}
     >
-      {/* 基本信息 */}
+      {/* 买家和卖家信息 */}
+      <div style={{ marginBottom: '8px' }}>
+        <div style={{
+          display: 'flex',
+          gap: '12px',
+          padding: '8px',
+          background: '#fafafa',
+          borderRadius: '2px'
+        }}>
+          {/* 买家信息 */}
+          <div style={{ flex: 1 }}>
+            <div style={{
+              fontSize: '11px',
+              color: '#666',
+              marginBottom: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}>
+              <UserOutlined style={{ fontSize: '11px' }}/>
+              {t('buyerInfo')}
+            </div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <Avatar
+                size={24}
+                src={buyerDetail?.avatar}
+                icon={<UserOutlined />}
+              />
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: '500' }}>
+                  {buyerDetail?.nickname || buyerDetail?.username || '-'}
+                  <span style={{
+                    marginLeft: '4px',
+                    padding: '0 4px',
+                    background: '#e6f7ff',
+                    color: '#1890ff',
+                    fontSize: '10px',
+                    borderRadius: '2px'
+                  }}>
+                    {t('creditScore')}： {buyerDetail?.creditScore || 0}
+                  </span>
+                </div>
+                <div style={{ fontSize: '11px', color: '#999' }}>
+                  {buyerDetail?.city}{buyerDetail?.country ? `, ${buyerDetail.country}` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 分隔线 */}
+          <Divider type="vertical" style={{ height: 'auto', margin: '0' }} />
+
+          {/* 卖家信息 */}
+          <div style={{ flex: 1 }}>
+            <div style={{
+              fontSize: '11px',
+              color: '#666',
+              marginBottom: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}>
+              <ShopOutlined style={{ fontSize: '11px' }}/>
+              {t('sellerInfo')}
+            </div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <Avatar
+                size={24}
+                src={sellerDetail?.avatar}
+                icon={<ShopOutlined />}
+              />
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: '500' }}>
+                  {sellerDetail?.nickname || sellerDetail?.username || '-'}
+                  <span style={{
+                    marginLeft: '4px',
+                    padding: '0 4px',
+                    background: '#f6ffed',
+                    color: '#52c41a',
+                    fontSize: '10px',
+                    borderRadius: '2px'
+                  }}>
+                    {t('creditScore')}： {sellerDetail?.creditScore || 0}
+                  </span>
+                </div>
+                <div style={{ fontSize: '11px', color: '#999' }}>
+                  {sellerDetail?.city}{sellerDetail?.country ? `, ${sellerDetail.country}` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 订单基本信息 */}
       <Descriptions
         bordered
         size="small"
@@ -60,19 +170,17 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
         labelStyle={{
           width: '90px',
           padding: '4px 8px',
-          fontSize: '12px',
+          fontSize: '11px',
           backgroundColor: '#fafafa'
         }}
         contentStyle={{
           padding: '4px 8px',
-          fontSize: '12px'
+          fontSize: '11px'
         }}
         style={{ marginBottom: '8px' }}
       >
         <Descriptions.Item label={t('orderId')}>{userOrder.id}</Descriptions.Item>
         <Descriptions.Item label={t('orderStatus')}>{userOrder.orderStatus}</Descriptions.Item>
-        <Descriptions.Item label={t('userId')}>{userOrder.userId}</Descriptions.Item>
-        <Descriptions.Item label={t('sellerId')}>{userOrder.sellerId}</Descriptions.Item>
         <Descriptions.Item label={t('receiverName')}>{userOrder.receiverName}</Descriptions.Item>
         <Descriptions.Item label={t('phoneNumber')}>{userOrder.phoneNum}</Descriptions.Item>
         <Descriptions.Item label={t('paymentType')}>{parsePaymentType(userOrder.paymentType)}</Descriptions.Item>
@@ -94,26 +202,116 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
         }}>
           {t('orderItems')}
         </div>
-        {userOrderDetails.map((detail) => (
+        {userProducts.map((product) => (
           <div
-            key={detail.id}
+            key={product.id}
             style={{
               padding: '4px 8px',
               borderBottom: '1px solid #f0f0f0',
               fontSize: '12px',
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'flex-start',
+              gap: '8px'
             }}
           >
+            {/* 左侧产品信息 */}
             <div style={{ flex: 1 }}>
-              <div>{detail.productName}</div>
+              <div style={{ fontWeight: '500' }}>{product.productName}</div>
+              <div style={{ color: '#666', fontSize: '11px', marginTop: '2px' }}>
+                {product.productDescription}
+              </div>
+              <div style={{ color: '#999', fontSize: '11px', marginTop: '2px' }}>
+                {t('category')}: {product.category}
+              </div>
               <div style={{ color: '#999', fontSize: '11px' }}>
-                {t('quantity')}: {detail.quantity} × {detail.unitPrice} CNY
+                {t('city')}: {product.city}
+              </div>
+              <div style={{ fontSize: '11px', marginTop: '4px', color: '#ff4d4f' }}>
+                <span>{product.price} CNY</span>
+                {product.originalPrice && (
+                  <span style={{
+                    color: '#999',
+                    textDecoration: 'line-through',
+                    marginLeft: '8px'
+                  }}>
+                    {product.originalPrice} CNY
+                  </span>
+                )}
               </div>
             </div>
-            <div style={{ color: '#ff4d4f', fontWeight: '500' }}>
-              {detail.totalPrice} CNY
+
+            {/* 右侧图片区域 */}
+            <div style={{
+              width: '100px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px'
+            }}>
+              {/* 封面图 */}
+              <Image
+                width={100}
+                height={75}
+                src={product.imageCover}
+                alt={product.productName}
+                style={{
+                  objectFit: 'cover',
+                  borderRadius: '2px'
+                }}
+              />
+
+              {/* 图片网格 */}
+              {product.imageList?.length > 0 && (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '2px',
+                  width: '100px'
+                }}>
+                  {product.imageList.slice(0, 9).map((image, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        position: 'relative',
+                        width: '32px',
+                        height: '32px'
+                      }}
+                    >
+                      <Image
+                        src={image}
+                        alt={`${product.productName} ${index + 1}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          borderRadius: '2px'
+                        }}
+                        preview={{
+                          src: image, // 预览时显示原图
+                          mask: null // 移除预览遮罩文字
+                        }}
+                      />
+                      {index === 8 && product.imageList.length > 9 && (
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          background: 'rgba(0,0,0,0.5)',
+                          color: '#fff',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '11px',
+                          borderRadius: '2px'
+                        }}>
+                          +{product.imageList.length - 9}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ))}
