@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space, Image, Avatar } from 'antd';
 import { useTranslation } from 'react-i18next'; // 导入 useTranslation
 import api from "src/axiosInstance";
 import { formatDate } from "src/components/common/Common";
-import { UserOutlined, ShopOutlined } from '@ant-design/icons';
+import { UserOutlined, ShopOutlined, MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 
 const DetailOrderModal = ({ visible, orderId, onCancel }) => {
+  // 所有的 hooks 必须在组件顶部声明
   const [orderData, setOrderData] = useState(null);
-  const { t } = useTranslation(); // 获取 t 函数
+  const { t } = useTranslation();
+  const [userDetailVisible, setUserDetailVisible] = useState(false);
+  const [currentUserDetail, setCurrentUserDetail] = useState(null);
 
   // 获取订单数据
   useEffect(() => {
@@ -16,23 +19,122 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
         try {
           const response = await api.get(`/manage/user-order/detail?id=${orderId}`);
           if (response) {
-            setOrderData(response); // 设置数据
-          } else {
-            console.error('获取订单数据失败:', response);
+            setOrderData(response);
           }
         } catch (error) {
           console.error('请求失败:', error);
         }
       };
-
       fetchOrderDetails();
     }
   }, [orderId]);
 
-  // 如果数据还没有加载完，显示loading
+  // 用户详情弹窗组件 - 移到组件外部或使用 useMemo
+  const UserDetailModal = useMemo(() => {
+    return ({ visible, user, onCancel }) => {
+      if (!user) return null;
+      
+      return (
+        <Modal
+          title="用户详情"
+          open={visible}
+          onCancel={onCancel}
+          footer={null}
+          width={400}
+          bodyStyle={{ padding: '12px', fontSize: '12px' }}
+        >
+          {/* 用户基本信息 */}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            gap: '12px',
+            padding: '8px',
+            marginBottom: '12px',
+            background: '#fafafa',
+            borderRadius: '2px'
+          }}>
+            <Avatar 
+              size={48} 
+              src={user.avatar}
+              icon={<UserOutlined />}
+            />
+            <div>
+              <div style={{ fontSize: '14px', fontWeight: '500' }}>
+                {user.nickname || user.username}
+              </div>
+              <div style={{ fontSize: '12px', color: '#666' }}>
+                ID: {user.id}
+              </div>
+              <div style={{ 
+                marginTop: '4px',
+                padding: '0 8px',
+                background: '#f6ffed',
+                color: '#52c41a',
+                fontSize: '11px',
+                borderRadius: '10px',
+                display: 'inline-block'
+              }}>
+                信用分：{user.creditScore || 0}
+              </div>
+            </div>
+          </div>
+
+          {/* 详细信息 */}
+          <Descriptions
+            size="small"
+            column={1}
+            labelStyle={{ 
+              width: '80px',
+              fontSize: '11px',
+              color: '#666'
+            }}
+            contentStyle={{ 
+              fontSize: '11px'
+            }}
+          >
+            <Descriptions.Item 
+              label={<><MailOutlined style={{ marginRight: '4px' }} />邮箱</>}
+            >
+              {user.email || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item 
+              label={<><PhoneOutlined style={{ marginRight: '4px' }} />电话</>}
+            >
+              {user.phoneNumber || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item 
+              label={<><HomeOutlined style={{ marginRight: '4px' }} />地址</>}
+            >
+              {[user.country, user.state, user.city, user.address]
+                .filter(Boolean)
+                .join(', ') || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item label="邮编">
+              {user.postalCode || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item label="简介">
+              {user.description || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item label="注册时间">
+              {formatDate(user.createTime)}
+            </Descriptions.Item>
+          </Descriptions>
+        </Modal>
+      );
+    };
+  }, []); // 依赖项为空数组，因为这个组件不依赖外部变量
+
+  // 处理函数
+  const showUserDetail = useCallback((userDetail) => {
+    setCurrentUserDetail(userDetail);
+    setUserDetailVisible(true);
+  }, []);
+
   if (!orderData) {
-    return "";
+    return null;
   }
+
+  const { userOrder, userProducts, orderStatusHistories, buyerDetail, sellerDetail } = orderData;
 
   // 解析支付方
   const parsePaymentType = (paymentType) => {
@@ -42,14 +144,6 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
     }
     return paymentType;
   };
-
-  const {
-    userOrder,
-    userProducts,
-    orderStatusHistories,
-    buyerDetail,
-    sellerDetail
-  } = orderData;
 
   return (
     <Modal
@@ -91,6 +185,8 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
                 size={24}
                 src={buyerDetail?.avatar}
                 icon={<UserOutlined />}
+                style={{ cursor: 'pointer' }}
+                onClick={() => showUserDetail(buyerDetail)}
               />
               <div>
                 <div style={{ fontSize: '11px', fontWeight: '500' }}>
@@ -138,6 +234,8 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
                 size={24}
                 src={sellerDetail?.avatar}
                 icon={<ShopOutlined />}
+                style={{ cursor: 'pointer' }}
+                onClick={() => showUserDetail(sellerDetail)}
               />
               <div>
                 <div style={{ fontSize: '11px', fontWeight: '500' }}>
@@ -379,6 +477,13 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
           </Popconfirm>
         </Space>
       </div>
+
+      {/* 用户详情弹窗 */}
+      <UserDetailModal
+        visible={userDetailVisible}
+        user={currentUserDetail}
+        onCancel={() => setUserDetailVisible(false)}
+      />
     </Modal>
   );
 };
