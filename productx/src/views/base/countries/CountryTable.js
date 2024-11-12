@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
-import WorldMap from './WorldMap';
+
 
 const CountryTable = ({
                         allData,
@@ -80,7 +80,7 @@ const CountryTable = ({
         ))}
         </tbody>
       </table>
-      <WorldMap countries={allData} />
+
     </>
   );
 };

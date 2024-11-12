@@ -7,7 +7,7 @@ import Pagination from 'src/components/common/Pagination';
 import CountryTable from 'src/views/base/countries/CountryTable'; // 你需要创建这个表格组件
 import UpdateCountryModal from 'src/views/base/countries/UpdateCountryModal'; // 你需要创建这个更新模态框
 import CountryCreateFormModal from 'src/views/base/countries/CountryCreateFormModal'; // 你需要创建这个创建模态框
-
+import WorldMap from './WorldMap';
 const updateCountryStatus = async (id, newStatus) => {
   await api.post('/manage/countries/change-status', {id, status: newStatus});
 };
@@ -253,6 +253,7 @@ const CountryList = () => {
           pageSize={pageSize}
           onPageSizeChange={setPageSize}
         />
+        <WorldMap countries={allData} />
       </div>
       <CountryCreateFormModal
         isVisible={isCreateModalVisible}

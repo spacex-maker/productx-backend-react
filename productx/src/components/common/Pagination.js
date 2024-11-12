@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CPagination, CPaginationItem } from '@coreui/react';
-
+import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 const Pagination = ({ totalPages, current, onPageChange, pageSize, onPageSizeChange }) => {
   const maxButtons = 5;
 
@@ -22,7 +22,7 @@ const Pagination = ({ totalPages, current, onPageChange, pageSize, onPageSizeCha
       onPageSizeChange(size);
     }
   };
-
+  const { t } = useTranslation(); // 使用 t() 方法进行翻译
   return (
     <div style={{ float: 'right' }}>
       <CPagination align="end" aria-label="Page navigation example">
@@ -70,7 +70,7 @@ const Pagination = ({ totalPages, current, onPageChange, pageSize, onPageSizeCha
           ))}
         </select>
         <span className="page-link" style={{ marginLeft: '10px' }}>
-          总页数: {totalPages}
+          {t('totalPages')}: {totalPages}
         </span>
       </CPagination>
     </div>
