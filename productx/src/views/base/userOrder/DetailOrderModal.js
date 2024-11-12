@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal } from 'antd';
+import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space } from 'antd';
 import { useTranslation } from 'react-i18next'; // 导入 useTranslation
 import api from "src/axiosInstance";
 import { formatDate } from "src/components/common/Common";
-
 const DetailOrderModal = ({ visible, orderId, onCancel }) => {
   const [orderData, setOrderData] = useState(null);
   const { t } = useTranslation(); // 获取 t 函数
@@ -46,58 +45,142 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
 
   return (
     <Modal
-      title={t('detail')} // 假设 orderDetails 是一个常见的键，改成 t('orderDetails')
+      title={t('detail')}
       open={visible}
       onCancel={onCancel}
       footer={null}
-      width={700}
-      bodyStyle={{ padding: '8px 16px' }}
+      width={580}
+      bodyStyle={{ padding: '12px', fontSize: '10px' }}
     >
-      <Descriptions bordered size="small" column={1}>
+      {/* 基本信息 */}
+      <Descriptions
+        bordered
+        size="small"
+        column={2}
+        labelStyle={{
+          width: '90px',
+          padding: '4px 8px',
+          fontSize: '12px',
+          backgroundColor: '#fafafa'
+        }}
+        contentStyle={{
+          padding: '4px 8px',
+          fontSize: '12px'
+        }}
+        style={{ marginBottom: '8px' }}
+      >
         <Descriptions.Item label={t('orderId')}>{userOrder.id}</Descriptions.Item>
+        <Descriptions.Item label={t('orderStatus')}>{userOrder.orderStatus}</Descriptions.Item>
         <Descriptions.Item label={t('userId')}>{userOrder.userId}</Descriptions.Item>
         <Descriptions.Item label={t('sellerId')}>{userOrder.sellerId}</Descriptions.Item>
         <Descriptions.Item label={t('receiverName')}>{userOrder.receiverName}</Descriptions.Item>
-        <Descriptions.Item label={t('phoneNum')}>{userOrder.phoneNum}</Descriptions.Item>
-        <Descriptions.Item label={t('orderStatus')}>{userOrder.orderStatus}</Descriptions.Item>
+        <Descriptions.Item label={t('phoneNumber')}>{userOrder.phoneNum}</Descriptions.Item>
         <Descriptions.Item label={t('paymentType')}>{parsePaymentType(userOrder.paymentType)}</Descriptions.Item>
         <Descriptions.Item label={t('payTime')}>{formatDate(userOrder.payTime)}</Descriptions.Item>
-        <Descriptions.Item label={t('totalAmount')}>{userOrder.totalAmount} CNY</Descriptions.Item>
-        <Descriptions.Item label={t('shippingMethod')}>{userOrder.shippingMethod}</Descriptions.Item>
-        <Descriptions.Item label={t('deliveryAddress')}>{userOrder.deliveryAddress}</Descriptions.Item>
-        <Descriptions.Item label={t('notes')}>{userOrder.notes || t('noNotes')}</Descriptions.Item>
+        <Descriptions.Item label={t('totalAmount')} span={2}>{userOrder.totalAmount} CNY</Descriptions.Item>
+        <Descriptions.Item label={t('shippingMethod')} span={2}>{userOrder.shippingMethod}</Descriptions.Item>
+        <Descriptions.Item label={t('deliveryAddress')} span={2}>{userOrder.deliveryAddress}</Descriptions.Item>
+        <Descriptions.Item label={t('notes')} span={2}>{userOrder.notes || t('noNotes')}</Descriptions.Item>
       </Descriptions>
-      <Divider style={{ margin: '8px 0' }} />
-      {userOrderDetails.map((detail) => (
-        <div key={detail.id} className="order-item" style={{ marginBottom: '8px' }}>
-          <p><strong>{t('productName')}：</strong>{detail.productName}</p>
-          <p><strong>{t('quantity')}：</strong>{detail.quantity}</p>
-          <p><strong>{t('unitPrice')}：</strong>{detail.unitPrice} CNY</p>
-          <p><strong>{t('totalPrice')}：</strong>{detail.totalPrice} CNY</p>
+
+      {/* 商品信息 */}
+      <div style={{ marginBottom: '8px' }}>
+        <div style={{
+          backgroundColor: '#fafafa',
+          padding: '4px 8px',
+          fontWeight: '500',
+          fontSize: '12px',
+          marginBottom: '4px'
+        }}>
+          {t('orderItems')}
         </div>
-      ))}
-      <Divider style={{ margin: '8px 0' }} />
-      <Timeline style={{ marginBottom: '8px' }}>
-        {orderStatusHistories.map((history) => (
-          <Timeline.Item key={history.id} color="green">
-            <p><strong>{t('statusChange')}：</strong>{history.oldStatus} → {history.newStatus}</p>
-            <p><strong>{t('changeTime')}：</strong>{formatDate(history.createTime)}</p>
-            <p><strong>{t('operator')}：</strong>{history.createBy}</p>
-            {history.remarks && <p><strong>{t('remarks')}：</strong>{history.remarks}</p>}
-          </Timeline.Item>
+        {userOrderDetails.map((detail) => (
+          <div
+            key={detail.id}
+            style={{
+              padding: '4px 8px',
+              borderBottom: '1px solid #f0f0f0',
+              fontSize: '12px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <div style={{ flex: 1 }}>
+              <div>{detail.productName}</div>
+              <div style={{ color: '#999', fontSize: '11px' }}>
+                {t('quantity')}: {detail.quantity} × {detail.unitPrice} CNY
+              </div>
+            </div>
+            <div style={{ color: '#ff4d4f', fontWeight: '500' }}>
+              {detail.totalPrice} CNY
+            </div>
+          </div>
         ))}
-      </Timeline>
+      </div>
 
-      <Divider style={{ margin: '8px 0' }} />
+      {/* 订单状态历史 */}
+      <div style={{ marginBottom: '8px' }}>
+        <div style={{
+          backgroundColor: '#fafafa',
+          padding: '4px 8px',
+          fontWeight: '500',
+          fontSize: '12px',
+          marginBottom: '4px'
+        }}>
+          {t('orderHistory')}
+        </div>
+        <Timeline
+          style={{
+            padding: '4px 8px',
+            fontSize: '12px'
+          }}
+        >
+          {orderStatusHistories.map((history) => (
+            <Timeline.Item
+              key={history.id}
+              color="blue"
+              style={{ paddingBottom: '4px' }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div>
+                  <div style={{ fontSize: '12px' }}>{history.oldStatus} → {history.newStatus}</div>
+                  <div style={{ color: '#999', fontSize: '11px' }}>
+                    {t('operator')}: {history.createBy}
+                  </div>
+                  {history.remarks && (
+                    <div style={{ color: '#666', fontSize: '11px' }}>
+                      {history.remarks}
+                    </div>
+                  )}
+                </div>
+                <div style={{ color: '#999', fontSize: '11px' }}>
+                  {formatDate(history.createTime)}
+                </div>
+              </div>
+            </Timeline.Item>
+          ))}
+        </Timeline>
+      </div>
 
-      <Popconfirm
-        title={t('confirmCancel')}
-        onConfirm={() => console.log('取消订单')}
-        okText={t('yes')}
-        cancelText={t('no')}
-      >
-        <Button type="primary" danger style={{ marginTop: '8px' }}>{t('deleteOrder')}</Button>
-      </Popconfirm>
+      {/* 操作按钮 */}
+      <div style={{ textAlign: 'right', fontSize: '12px' }}>
+        <Space size={4}>
+          <Button size="small" onClick={onCancel} style={{ fontSize: '12px', height: '24px' }}>
+            {t('close')}
+          </Button>
+          <Popconfirm
+            title={t('confirmCancel')}
+            onConfirm={() => console.log('取消订单')}
+            okText={t('yes')}
+            cancelText={t('no')}
+          >
+            <Button size="small" type="primary" danger style={{ fontSize: '12px', height: '24px' }}>
+              {t('deleteOrder')}
+            </Button>
+          </Popconfirm>
+        </Space>
+      </div>
     </Modal>
   );
 };
