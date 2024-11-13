@@ -136,6 +136,12 @@ const _nav = [
     icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: '[系统]加密货币管理',
+    to: '/data/sysCryptoCurrencies',
+    icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: '聊天室',
   },

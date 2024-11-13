@@ -104,6 +104,9 @@ const ListUserOrder
 const ListSysWallets
   = React.lazy(() => import('./views/base/sysWallets/SysWallets'))
 
+const ListSysCryptoCurrencies= React.lazy(() => import('./views/base/sysCryptoCurrencies/SysCryptoCurrencies'))
+
+
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -291,7 +294,13 @@ const routes = [
       </PrivateRoute>
     )
   },
-
+  {
+    path: '/data/sysCryptoCurrencies', name: '[系统]加密货币管理', element: (
+      <PrivateRoute>
+        <ListSysCryptoCurrencies/>
+      </PrivateRoute>
+    )
+  },
 ]
 
 export default routes
