@@ -127,6 +127,16 @@ const _nav = [
   },
   {
     component: CNavTitle,
+    name: '财务系统',
+  },
+  {
+    component: CNavItem,
+    name: '[系统]钱包管理',
+    to: '/data/sysWallets',
+    icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
     name: '聊天室',
   },
   {

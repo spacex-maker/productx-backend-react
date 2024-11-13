@@ -101,6 +101,9 @@ const ListPermission
 const ListUserOrder
   = React.lazy(() => import('./views/base/userOrder/UserOrder'))
 
+const ListSysWallets
+  = React.lazy(() => import('./views/base/sysWallets/SysWallets'))
+
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -278,6 +281,13 @@ const routes = [
     path: '/data/userOrder', name: '订单管理', element: (
       <PrivateRoute>
         <ListUserOrder/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/sysWallets', name: '[系统]钱包管理', element: (
+      <PrivateRoute>
+        <ListSysWallets/>
       </PrivateRoute>
     )
   },
