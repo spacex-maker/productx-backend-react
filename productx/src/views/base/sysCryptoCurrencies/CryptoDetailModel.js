@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Descriptions, Typography, Space } from 'antd';
-import { useTranslation } from 'react-i18next'; // 导入 useTranslation
-import { formatDate } from 'src/components/common/Common'; // 可能需要你自定义的日期格式化函数
+import { useTranslation } from 'react-i18next';
+import api from 'src/axiosInstance';
 
 const { Text } = Typography;
 
@@ -10,90 +10,120 @@ const CryptoDetailModal = ({
                              onCancel,
                              selectedCrypto,
                            }) => {
+  const { t } = useTranslation();
+  const [selectedCryptoDetail, setSelectedCryptoDetail] = useState(null);
 
-  const { t } = useTranslation(); // 使用 useTranslation 获取 t 函数
+  const textStyle = { fontSize: '12px' };
 
-  const textStyle = { fontSize: '10px' }; // 统一的文本样式
+  useEffect(() => {
+    const fetchCryptoDetail = async () => {
+      if (isVisible && selectedCrypto && selectedCrypto.id) {
+        try {
+          const response = await api.get(`/manage/sys-crypto-currencies/detail?id=${selectedCrypto.id}`);
+          if (response) {
+            setSelectedCryptoDetail(response);
+          } else {
+            console.error('Failed to fetch crypto details, no data received');
+          }
+        } catch (error) {
+          console.error('Failed to fetch crypto details', error);
+        }
+      } else {
+        setSelectedCryptoDetail(null);
+      }
+    };
+
+    fetchCryptoDetail();
+  }, [isVisible, selectedCrypto]);
 
   return (
     <Modal
-      title={t('cryptoDetail')} // 使用 t 函数进行翻译
+      title={t('cryptoDetail')}
       open={isVisible}
       onCancel={onCancel}
       footer={[
-        <Button key="back" onClick={onCancel}>
-          {t('close')} {/* 使用 t 函数进行翻译 */}
+        <Button key="back" onClick={onCancel} style={{ padding: '5px 10px' }}>
+          {t('close')}
         </Button>,
       ]}
-      width={600} // 调整宽度以适应内容
-      style={{ zIndex: 1050 }} // 设置较高的 z-index
+      width={800} // Adjusted width for better display
+      style={{ zIndex: 1050 }}
+      bodyStyle={{ padding: '10px 20px' }}
     >
-      {selectedCrypto && (
+      {selectedCryptoDetail ? (
         <div>
-          <Space style={{ marginBottom: 20, width: '100%', justifyContent: 'space-between' }}>
-            <Space style={{ width: 30 }}>
-              <img
-                src={selectedCrypto.logoUrl}
-                alt={`${selectedCrypto.name} logo`}
-                style={{ width: '50px', height: '50px', borderRadius: '25%' }}
-              />
-            </Space>
-            <Space direction="vertical" style={{ width: 300 }}>
-              <Text style={textStyle}><strong>{t('name')}：</strong> {selectedCrypto.name}</Text>
-              <Text style={textStyle}><strong>{t('chineseName')}：</strong> {selectedCrypto.chineseName}</Text>
-              <Text style={textStyle}><strong>{t('symbol')}：</strong> {selectedCrypto.symbol}</Text>
-              <Text style={textStyle}><strong>{t('type')}：</strong> {selectedCrypto.type}</Text>
+          <Space style={{ marginBottom: 10, width: '100%', justifyContent: 'space-between' }}>
+            <img
+              src={selectedCryptoDetail.logoUrl}
+              alt={`${selectedCryptoDetail.name} logo`}
+              style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+            />
+            <Space direction="vertical" style={{ width: '70%' }}>
+              <Text style={textStyle}><strong>{t('name')}：</strong> {selectedCryptoDetail.name}</Text>
+              <Text style={textStyle}><strong>{t('chineseName')}：</strong> {selectedCryptoDetail.chineseName}</Text>
+              <Text style={textStyle}><strong>{t('symbol')}：</strong> {selectedCryptoDetail.symbol}</Text>
             </Space>
           </Space>
 
-          <Descriptions bordered size="small" column={1} style={{ fontSize: '14px' }}>
+          <Descriptions bordered size="small" column={1} style={{ fontSize: '12px', marginTop: 10 }}>
+            {/* Description Section */}
             <Descriptions.Item label={t('description')}>
-              <Text style={textStyle}>{selectedCrypto.description}</Text>
+              <Text style={textStyle}>{selectedCryptoDetail.description || t('noDescription')}</Text>
             </Descriptions.Item>
 
+            {/* Market Info Section */}
             <Descriptions.Item label={t('marketInfo')}>
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Text style={textStyle}><strong>{t('marketCap')}：</strong> {selectedCrypto.marketCap}</Text>
-                <Text style={textStyle}><strong>{t('price')}：</strong> {selectedCrypto.price}</Text>
-                <Text style={textStyle}><strong>{t('24hChange')}：</strong> {selectedCrypto.value24hChange}%</Text>
-                <Text style={textStyle}><strong>{t('24hHigh')}：</strong> {selectedCrypto.value24hHigh}</Text>
-                <Text style={textStyle}><strong>{t('24hLow')}：</strong> {selectedCrypto.value24hLow}</Text>
+              <Space direction="vertical" size={0}>
+                <Text style={textStyle}><strong>{t('marketCap')}：</strong> ${selectedCryptoDetail.marketCap.toFixed(2)}</Text>
+                <Text style={textStyle}><strong>{t('price')}：</strong> ${selectedCryptoDetail.price.toFixed(2)}</Text>
+                <Text style={textStyle}><strong>{t('24hChange')}：</strong> {selectedCryptoDetail.value24hChange}%</Text>
+                <Text style={textStyle}><strong>{t('24hHigh')}：</strong> ${selectedCryptoDetail.value24hHigh.toFixed(2)}</Text>
+                <Text style={textStyle}><strong>{t('24hLow')}：</strong> ${selectedCryptoDetail.value24hLow.toFixed(2)}</Text>
               </Space>
             </Descriptions.Item>
 
+            {/* Supply Info Section */}
             <Descriptions.Item label={t('supplyInfo')}>
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Text style={textStyle}><strong>{t('totalSupply')}：</strong> {selectedCrypto.totalSupply}</Text>
-                <Text style={textStyle}><strong>{t('circulatingSupply')}：</strong> {selectedCrypto.circulatingSupply}</Text>
-                <Text style={textStyle}><strong>{t('maxSupply')}：</strong> {selectedCrypto.maxSupply}</Text>
+              <Space direction="vertical" size={0}>
+                <Text style={textStyle}><strong>{t('totalSupply')}：</strong> {selectedCryptoDetail.totalSupply.toFixed(0)}</Text>
+                <Text style={textStyle}><strong>{t('circulatingSupply')}：</strong> {selectedCryptoDetail.circulatingSupply.toFixed(0)}</Text>
+                <Text style={textStyle}><strong>{t('maxSupply')}：</strong> {selectedCryptoDetail.maxSupply.toFixed(0)}</Text>
               </Space>
             </Descriptions.Item>
 
-            <Descriptions.Item label={t('otherInfo')}>
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Text style={textStyle}><strong>{t('platform')}：</strong> {selectedCrypto.platform}</Text>
-                <Text style={textStyle}><strong>{t('website')}：</strong> <a href={selectedCrypto.website} target="_blank" rel="noopener noreferrer">{selectedCrypto.website}</a></Text>
-                <Text style={textStyle}><strong>{t('whitepaperUrl')}：</strong> <a href={selectedCrypto.whitepaperUrl} target="_blank" rel="noopener noreferrer">{selectedCrypto.whitepaperUrl}</a></Text>
-                <Text style={textStyle}><strong>{t('socialLinks')}：</strong> <a href={selectedCrypto.socialLinks.twitter} target="_blank" rel="noopener noreferrer">Twitter</a></Text>
+            {/* Investor Info Section */}
+            <Descriptions.Item label={t('investorInfo')}>
+              <Space direction="vertical" size={0}>
+                <Text style={textStyle}><strong>{t('totalInvestment')}：</strong> ${selectedCryptoDetail.totalInvestment.toFixed(2)}</Text>
+                <Text style={textStyle}><strong>{t('fundingRound')}：</strong> {selectedCryptoDetail.fundingRound}</Text>
+                <Text style={textStyle}><strong>{t('fundingDate')}：</strong> {selectedCryptoDetail.fundingDate}</Text>
+                <Text style={textStyle}><strong>{t('investors')}：</strong> {JSON.parse(selectedCryptoDetail.investors).join(', ')}</Text>
               </Space>
             </Descriptions.Item>
 
-            <Descriptions.Item label={t('regulationInfo')}>
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Text style={textStyle}><strong>{t('regulatedRegion')}：</strong> {selectedCrypto.regulatedRegion}</Text>
-                <Text style={textStyle}><strong>{t('regulationStatus')}：</strong> {selectedCrypto.regulationStatus}</Text>
-                <Text style={textStyle}><strong>{t('fundingRound')}：</strong> {selectedCrypto.fundingRound}</Text>
-              </Space>
-            </Descriptions.Item>
-
+            {/* Blockchain Info Section */}
             <Descriptions.Item label={t('blockchainInfo')}>
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Text style={textStyle}><strong>{t('blockchainType')}：</strong> {selectedCrypto.blockchainType}</Text>
-                <Text style={textStyle}><strong>{t('hashAlgorithm')}：</strong> {selectedCrypto.hashAlgorithm}</Text>
+              <Space direction="vertical" size={0}>
+                <Text style={textStyle}><strong>{t('blockchainType')}：</strong> {selectedCryptoDetail.blockchainType}</Text>
+                <Text style={textStyle}><strong>{t('blockTime')}：</strong> {selectedCryptoDetail.blockTime} {t('seconds')}</Text>
+                <Text style={textStyle}><strong>{t('transactionSpeed')}：</strong> {selectedCryptoDetail.transactionSpeed} {t('transactionsPerSecond')}</Text>
+                <Text style={textStyle}><strong>{t('hashAlgorithm')}：</strong> {selectedCryptoDetail.hashAlgorithm}</Text>
+              </Space>
+            </Descriptions.Item>
+
+            {/* Other Info Section */}
+            <Descriptions.Item label={t('otherInfo')}>
+              <Space direction="vertical" size={0}>
+                <Text style={textStyle}><strong>{t('platform')}：</strong> {selectedCryptoDetail.platform}</Text>
+                <Text style={textStyle}><strong>{t('website')}：</strong> <a href={selectedCryptoDetail.website} target="_blank" rel="noopener noreferrer">{selectedCryptoDetail.website}</a></Text>
+                <Text style={textStyle}><strong>{t('whitepaper')}：</strong> <a href={selectedCryptoDetail.whitepaperUrl} target="_blank" rel="noopener noreferrer">{selectedCryptoDetail.whitepaperUrl}</a></Text>
+                <Text style={textStyle}><strong>{t('socialLinks')}：</strong> {JSON.parse(selectedCryptoDetail.socialLinks)?.twitter && <a href={JSON.parse(selectedCryptoDetail.socialLinks).twitter} target="_blank" rel="noopener noreferrer">{t('twitter')}</a>}</Text>
               </Space>
             </Descriptions.Item>
           </Descriptions>
         </div>
+      ) : (
+        <Text>{t('loadingDetails')}</Text>
       )}
     </Modal>
   );
