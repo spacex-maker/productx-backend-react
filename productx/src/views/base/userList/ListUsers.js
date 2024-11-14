@@ -9,7 +9,6 @@ import UpdateUserModal from "src/views/base/userList/UpdateUserModal";
 import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
 import { useTranslation } from 'react-i18next'; // 引入 useTranslation
-import { commonStyles } from './styles';
 const updateUserStatus = async (id, newStatus) => {
   await api.post('/manage/user/change-status', { id, status: newStatus})
 }
@@ -110,100 +109,100 @@ const UserList = () => {
   const totalPages = Math.ceil(totalNum / pageSize)
 
   return (
-    <div style={{ fontSize: '8px' }}>
-      <div style={{ marginBottom: '6px' }}>
-        <Row gutter={[6, 6]}>
-          <Col>
-            <Input
-              size="small"
-              style={commonStyles.searchStyle.input}
-              value={searchParams.username}
-              onChange={handleSearchChange}
-              name="username"
-              placeholder={t('username')}
-              allowClear
-            />
-          </Col>
-          <Col>
-            <Input
-              size="small"
-              style={commonStyles.searchStyle.input}
-              value={searchParams.nickname}
-              onChange={handleSearchChange}
-              name="nickname"
-              placeholder={t('nickname')}
-              allowClear
-            />
-          </Col>
-          <Col>
-            <Input
-              size="small"
-              style={commonStyles.searchStyle.input}
-              value={searchParams.email}
-              onChange={handleSearchChange}
-              name="email"
-              placeholder={t('email')}
-              allowClear
-            />
-          </Col>
-          <Col>
-            <Input
-              size="small"
-              style={commonStyles.searchStyle.input}
-              value={searchParams.address}
-              onChange={handleSearchChange}
-              name="address"
-              placeholder={t('address')}
-              allowClear
-            />
-          </Col>
-          <Col>
-            <Select
-              size="small"
-              className="search-box"
-              name="status"
-              onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
-              allowClear // 添加这个属性以允许清空选择
-              placeholder={t('status')}
-            >
-              <Option value="true">{t('enabled')}</Option>
-              <Option value="false">{t('disabled')}</Option>
-            </Select>
-          </Col>
-          <Col>
-            <Button
-              size="small"
-              type="primary"
-              style={commonStyles.buttonStyle}
-              onClick={fetchData}
-              disabled={isLoading}
-            >
-              {isLoading ? <Spin size="small" /> : t('search')}
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              size="small"
-              type="primary" onClick={() => setIsCreateModalVisible(true)}>
-              {t('createUser')}
-            </Button>
-          </Col>
-          <Col>
-            <Button
-              size="small"
-              type="primary"
-              style={commonStyles.buttonStyle}
-              onClick={() => HandleBatchDelete({
-                url: '/manage/user/delete-batch',
-                selectedRows,
-                fetchData,
-              })}
-              disabled={selectedRows.length === 0}
-            >
-              {t('batchDelete')}
-            </Button>
-          </Col>
-        </Row>
+    <div>
+      <div className="mb-3">
+        <div className="search-container">
+          <div className="search-container">
+            <Row gutter={[10, 10]}>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.username}
+                  onChange={handleSearchChange}
+                  name="username"
+                  placeholder={t('username')}
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.nickname}
+                  onChange={handleSearchChange}
+                  name="nickname"
+                  placeholder={t('nickname')}
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.email}
+                  onChange={handleSearchChange}
+                  name="email"
+                  placeholder={t('email')}
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Input
+                  size="small"
+                  value={searchParams.address}
+                  onChange={handleSearchChange}
+                  name="address"
+                  placeholder={t('address')}
+                  allowClear // 添加这个属性
+                />
+              </Col>
+              <Col>
+                <Select
+                  size="small"
+                  className="search-box"
+                  name="status"
+                  onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
+                  allowClear // 添加这个属性以允许清空选择
+                  placeholder={t('status')}
+                >
+                  <Option value="true">{t('enabled')}</Option>
+                  <Option value="false">{t('disabled')}</Option>
+                </Select>
+              </Col>
+              <Col>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={fetchData}
+                  className="search-button"
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin/> : t('search')}
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  size="small"
+                  type="primary" onClick={() => setIsCreateModalVisible(true)}>
+                  {t('createUser')}
+                </Button>
+              </Col>
+              <Col>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/user/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Col>
+            </Row>
+
+          </div>
+        </div>
       </div>
 
       <div className="table-responsive">

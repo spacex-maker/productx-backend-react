@@ -17,46 +17,46 @@ const UserDetailModal = ({
 
   return (
     <Modal
-      title={<span style={{ fontSize: '10px' }}>{t('detail')}</span>}
+      title={t('detail')} // 使用 t 函数进行翻译
       open={isVisible}
       onCancel={onCancel}
       footer={[
-        <Button 
-          key="back" 
-          onClick={onCancel}
-          size="small"
-          style={{ 
-            fontSize: '8px',
-            height: '20px',
-            padding: '0 6px'
-          }}
-        >
-          {t('close')}
+        <Button key="back" onClick={onCancel}>
+          {t('close')} {/* 使用 t 函数进行翻译 */}
         </Button>,
       ]}
-      width={400}
-      bodyStyle={{ padding: '6px' }}
+      width={500} // 调整宽度以适应内容
+      style={{ zIndex: 1050 }} // 设置较高的 z-index
     >
       {selectedUser && (
-        <div style={{ fontSize: '8px' }}>
-          <Space style={{ marginBottom: '8px' }}>
-            <img
-              src={selectedUser.avatar}
-              alt={`${selectedUser.nickname}的头像`}
-              style={{ width: '24px', height: '24px', borderRadius: '25%' }}
-            />
-            <Text style={{ fontSize: '8px' }}>
-              {selectedUser.status ? t('statusActive') : t('statusInactive')}
-            </Text>
+        <div>
+          <Space style={{ marginBottom: 20, width: '100%', justifyContent: 'space-between' }}>
+            <Space style={{ width: 30 }}>
+              <img
+                src={selectedUser.avatar}
+                alt={`${selectedUser.nickname}的头像`}
+                style={{ width: '50px', height: '50px', borderRadius: '25%' }}
+              />
+              <Space direction="vertical" style={{ width: '100px' }}>
+                <Text type={selectedUser.status ? 'success' : 'danger'}>
+                  {selectedUser.status ? t('statusActive') : t('statusInactive')}
+                </Text>
+              </Space>
+            </Space>
+            <br />
+            <Space direction="vertical" style={{ width: 300 }}>
+              <Space direction="vertical">
+                <Space>
+                  <Text style={textStyle}><strong>{t('username')}：</strong>{selectedUser.username}</Text>
+                  <Text style={textStyle}><strong>{t('nickname')}：</strong> {selectedUser.nickname}</Text>
+                  <Text style={textStyle}><strong>{t('fullName')}：</strong> {selectedUser.fullName}</Text>
+                </Space>
+                <Text style={textStyle}><strong>{t('phoneNumber')}：</strong> {selectedUser.phoneNumber}</Text>
+              </Space>
+            </Space>
           </Space>
-          
-          <Descriptions 
-            bordered 
-            size="small" 
-            column={1} 
-            labelStyle={{ fontSize: '8px', padding: '4px 6px' }}
-            contentStyle={{ fontSize: '8px', padding: '4px 6px' }}
-          >
+
+          <Descriptions bordered size="small" column={1} style={{ fontSize: '14px' }}>
             <Descriptions.Item label={t('addressInfo')}>
               <Space direction="vertical" style={{ width: '100%' }}>
                 <Space>

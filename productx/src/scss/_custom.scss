@@ -297,7 +297,31 @@ textarea::placeholder,
   z-index: 1; /* 确保它在最上层 */
 }
 
-.custom-button {
-  font-size: 14px;
-  padding: 1px 8px;
+.ant-form-item {
+  margin-bottom: 4px !important;  // 从 8px 减小到 4px
+}
+
+.ant-form-item-label {
+  padding-bottom: 0 !important;  // 减少标签和输入框之间的间距
+}
+
+.ant-form-item-label > label {
+  font-size: 8px !important;
+  height: 14px !important;        // 从 16px 减小到 14px
+  line-height: 14px !important;   // 从 16px 减小到 14px
+}
+
+.ant-row {
+  margin-bottom: 4px !important;  // 行间距也相应减小
+}
+
+// ... 其他全局样式保持不变 ...
+
+.ant-form-vertical .ant-form-item {
+  padding-bottom: 0 !important;
+}
+
+.ant-form-item-explain {
+  min-height: 12px !important;    // 减小错误提示的高度
+  margin-top: 1px !important;     // 减小错误提示的上边距
 }
