@@ -4,17 +4,39 @@ import { useTranslation } from 'react-i18next';
 
 const { Title } = Typography;
 
-const UpdateUserModal = ({
-                           isVisible,
-                           onCancel,
-                           onOk,
-                           form,
-                           handleUpdateUser,
-                           selectedUser
-                         }) => {
+// 定义统一的样式
+const styles = {
+  label: {
+    fontSize: '8px',
+    height: '16px',
+    lineHeight: '16px',
+    marginBottom: '2px'
+  },
+  input: {
+    height: '20px',
+    fontSize: '8px',
+    padding: '0 4px',
+    lineHeight: '20px'
+  },
+  formItem: {
+    marginBottom: '4px'
+  },
+  title: {
+    fontSize: '8px',
+    marginBottom: '4px'
+  },
+  divider: {
+    margin: '4px 0'
+  },
+  modal: {
+    title: { fontSize: '8px' },
+    body: { padding: '8px' }
+  }
+};
+
+const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, selectedUser }) => {
   const { t } = useTranslation();
 
-  // 当模态框打开时，设置表单字段的值
   useEffect(() => {
     if (isVisible && selectedUser) {
       form.setFieldsValue({
@@ -38,139 +60,238 @@ const UpdateUserModal = ({
 
   return (
     <Modal
-      title={t('editUserInfo')}
+      title={<span style={styles.modal.title}>{t('editUserInfo')}</span>}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      width={500} // 设置模态框宽度为500px
+      width={400}
+      bodyStyle={styles.modal.body}
     >
       <Form
         form={form}
         onFinish={handleUpdateUser}
         layout="vertical"
-        style={{ gap: '8px' }} // 使用 gap 控制输入框之间的间距
+        style={{ gap: '4px' }}
       >
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
 
         {/* 基本信息部分 */}
-        <Title level={5} style={{ marginBottom: '16px' }}>{t('basicInfo')}</Title>
-        <Divider style={{ margin: '8px 0' }} />
+        <Title level={5} style={styles.title}>{t('basicInfo')}</Title>
+        <Divider style={styles.divider} />
 
-        <Row gutter={16}>
+        <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={t('nickname')}
+              label={<span style={styles.label}>{t('nickname')}</span>}
               name="nickname"
               rules={[{ required: true, message: t('nicknameRequired') }]}
-              style={{ marginBottom: '12px' }} // 缩小下边距
+              style={styles.formItem}
             >
-              <Input placeholder={t('enterNickname')} />
+              <Input 
+                placeholder={t('enterNickname')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label={t('fullName')} name="fullName" style={{ marginBottom: '12px' }}>
-              <Input placeholder={t('enterFullName')} />
+            <Form.Item 
+              label={<span style={styles.label}>{t('fullName')}</span>}
+              name="fullName" 
+              style={styles.formItem}
+            >
+              <Input 
+                placeholder={t('enterFullName')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
         </Row>
 
-        <Row gutter={16}>
+        <Row gutter={8}>
           <Col span={12}>
-            <Form.Item label={t('email')} name="email" style={{ marginBottom: '12px' }}>
-              <Input placeholder={t('enterEmail')} />
+            <Form.Item 
+              label={<span style={styles.label}>{t('email')}</span>}
+              name="email" 
+              style={styles.formItem}
+            >
+              <Input 
+                placeholder={t('enterEmail')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label={t('phoneNumber')} name="phoneNumber" style={{ marginBottom: '12px' }}>
-              <Input placeholder={t('enterPhoneNumber')} />
+            <Form.Item 
+              label={<span style={styles.label}>{t('phoneNumber')}</span>}
+              name="phoneNumber" 
+              style={styles.formItem}
+            >
+              <Input 
+                placeholder={t('enterPhoneNumber')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
         </Row>
 
-        <Row gutter={16}>
+        <Row gutter={8}>
           <Col span={12}>
-            <Form.Item label={t('description')} name="description" style={{ marginBottom: '12px' }}>
-              <Input placeholder={t('enterDescription')} />
+            <Form.Item 
+              label={<span style={styles.label}>{t('description')}</span>}
+              name="description" 
+              style={styles.formItem}
+            >
+              <Input 
+                placeholder={t('enterDescription')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label={t('creditScore')} name="creditScore" style={{ marginBottom: '12px' }}>
-              <Input type="number" placeholder={t('enterCreditScore')} />
+            <Form.Item 
+              label={<span style={styles.label}>{t('creditScore')}</span>}
+              name="creditScore" 
+              style={styles.formItem}
+            >
+              <Input 
+                type="number" 
+                placeholder={t('enterCreditScore')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item label={t('status')} name="status" valuePropName="checked" style={{ marginBottom: '12px' }}>
+        <Form.Item 
+          label={<span style={styles.label}>{t('status')}</span>}
+          name="status" 
+          valuePropName="checked" 
+          style={styles.formItem}
+        >
           <Checkbox>{t('active')}</Checkbox>
         </Form.Item>
 
         {/* 地址信息部分 */}
-        <Title level={5} style={{ marginBottom: '16px' }}>{t('addressInfo')}</Title>
-        <Divider style={{ margin: '8px 0' }} />
+        <Title level={5} style={styles.title}>{t('addressInfo')}</Title>
+        <Divider style={styles.divider} />
 
-        <Row gutter={16}>
+        <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={t('country')}
+              label={<span style={styles.label}>{t('country')}</span>}
               name="country"
               rules={[{ required: true, message: t('countryRequired') }]}
-              style={{ marginBottom: '12px' }}
+              style={styles.formItem}
             >
-              <Input placeholder={t('enterCountry')} />
+              <Input 
+                placeholder={t('enterCountry')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('state')}
+              label={<span style={styles.label}>{t('state')}</span>}
               name="state"
               rules={[{ required: true, message: t('stateRequired') }]}
-              style={{ marginBottom: '12px' }}
+              style={styles.formItem}
             >
-              <Input placeholder={t('enterState')} />
+              <Input 
+                placeholder={t('enterState')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
         </Row>
 
-        <Row gutter={16}>
+        <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={t('city')}
+              label={<span style={styles.label}>{t('city')}</span>}
               name="city"
               rules={[{ required: true, message: t('cityRequired') }]}
-              style={{ marginBottom: '12px' }}
+              style={styles.formItem}
             >
-              <Input placeholder={t('enterCity')} />
+              <Input 
+                placeholder={t('enterCity')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('postalCode')}
+              label={<span style={styles.label}>{t('postalCode')}</span>}
               name="postalCode"
               rules={[{ required: true, message: t('postalCodeRequired') }]}
-              style={{ marginBottom: '12px' }}
+              style={styles.formItem}
             >
-              <Input placeholder={t('enterPostalCode')} />
+              <Input 
+                placeholder={t('enterPostalCode')} 
+                style={styles.input}
+              />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
-          label={t('addressDetail')}
+          label={<span style={styles.label}>{t('addressDetail')}</span>}
           name="address"
           rules={[{ required: true, message: t('addressDetailRequired') }]}
-          style={{ marginBottom: '12px' }}
+          style={styles.formItem}
         >
-          <Input placeholder={t('enterAddressDetail')} />
+          <Input 
+            placeholder={t('enterAddressDetail')} 
+            style={styles.input}
+          />
         </Form.Item>
 
-        <Form.Item label={t('isActive')} name="isActive" style={{ marginBottom: '0px' }}>
-          <Input disabled placeholder={t('isActive')} />
+        <Form.Item 
+          label={<span style={styles.label}>{t('isActive')}</span>}
+          name="isActive" 
+          style={{ marginBottom: '0px' }}
+        >
+          <Input 
+            disabled 
+            placeholder={t('isActive')} 
+            style={styles.input}
+          />
         </Form.Item>
       </Form>
     </Modal>
   );
 };
+
+// 添加全局样式
+const globalStyles = `
+  .ant-form-item {
+    margin-bottom: 4px !important;
+  }
+  
+  .ant-form-item-label {
+    padding-bottom: 0 !important;
+  }
+  
+  .ant-form-item-label > label {
+    font-size: 8px !important;
+    height: 14px !important;
+    line-height: 14px !important;
+  }
+  
+  .ant-row {
+    margin-bottom: 4px !important;
+  }
+  
+  .ant-form-item-explain {
+    min-height: 12px !important;
+    margin-top: 1px !important;
+  }
+`;
+
+// 将全局样式添加到文档中
+const styleSheet = document.createElement('style');
+styleSheet.innerText = globalStyles;
+document.head.appendChild(styleSheet);
 
 export default UpdateUserModal;
