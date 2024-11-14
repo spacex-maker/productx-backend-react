@@ -38,6 +38,45 @@ const WalletList = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
   const [selectedWallet, setSelectedWallet] = useState(null)
+  const [countries, setCountries] = useState([]);  // 存储获取到的国家列表
+  const [cryptoCurrencies, setCryptoCurrencies] = useState([]);  // 存储获取到的钱包类型列表
+
+  // 获取国家列表
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);  // 设置国家列表
+        } else {
+          message.error('获取国家列表失败');
+        }
+      } catch (error) {
+        message.error('请求失败，请检查网络连接');
+        console.error('获取国家列表失败:', error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
+  // 获取钱包类型列表
+  useEffect(() => {
+    const fetchCryptoCurrencies = async () => {
+      try {
+        const response = await api.get('/manage/sys-crypto-currencies/list-all-enable');
+        if (response) {
+          setCryptoCurrencies(response);  // 设置钱包类型列表
+        } else {
+          message.error('获取钱包类型列表失败');
+        }
+      } catch (error) {
+        message.error('请求失败，请检查网络连接');
+        console.error('获取钱包类型列表失败:', error);
+      }
+    };
+    fetchCryptoCurrencies();
+  }, []);
+
 
   useEffect(() => {
     fetchData()
@@ -68,11 +107,13 @@ const WalletList = () => {
     const { name, value } = event.target
     setSearchParams((prevParams) => ({ ...prevParams, [name]: value }))
   }
+
   const handleStatusChange = async (id, event) => {
     const newStatus = event.target.checked
     await api.post('/manage/sys-wallets/change-status', { id, status: newStatus })
     await fetchData() // Re-fetch data after status update
   }
+
   const handleCreateWallet = async (values) => {
     await createWallet(values)
     setIsCreateModalVisible(false)
@@ -114,18 +155,19 @@ const WalletList = () => {
             <Col>
               <Select
                 size="small"
-                className="search-box"
                 name="type"
-                value={searchParams.type}
                 onChange={(value) => handleSearchChange({ target: { name: 'type', value } })}
+                placeholder="请选择钱包类型"
                 allowClear
-                placeholder="钱包类型"
-              >
-                <Select.Option value="1">类型 1</Select.Option>
-                <Select.Option value="2">类型 2</Select.Option>
+                style={{ width: '100%' }}>
+                {cryptoCurrencies.map((crypto) => (
+                  <Select.Option key={crypto.id} value={crypto.id}>
+                    {crypto.name} ({crypto.symbol})
+                  </Select.Option>
+                ))}
               </Select>
             </Col>
-            <Col>
+            <Col xs={24} sm={6}>
               <Input
                 size="small"
                 value={searchParams.label}
@@ -135,15 +177,20 @@ const WalletList = () => {
                 allowClear
               />
             </Col>
-            <Col>
-              <Input
+            <Col xs={24} sm={6}>
+              <Select
                 size="small"
-                value={searchParams.countryCode}
-                onChange={handleSearchChange}
                 name="countryCode"
-                placeholder="国家码"
+                onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value } })}
+                placeholder="钱包所属国家"
                 allowClear
-              />
+                style={{ width: '100%' }}>
+                {countries.map((country) => (
+                  <Select.Option key={country.id} value={country.code}>
+                    {country.name} ({country.code})
+                  </Select.Option>
+                ))}
+              </Select>
             </Col>
             <Col>
               <Button
@@ -152,6 +199,7 @@ const WalletList = () => {
                 onClick={fetchData}
                 className="search-button"
                 disabled={isLoading}
+                block
               >
                 {isLoading ? <Spin /> : '查询'}
               </Button>
@@ -161,6 +209,7 @@ const WalletList = () => {
                 size="small"
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
+                block
               >
                 新增钱包
               </Button>
@@ -175,6 +224,7 @@ const WalletList = () => {
                   fetchData,
                 })}
                 disabled={selectedRows.length === 0}
+                block
               >
                 批量删除
               </Button>
@@ -208,6 +258,8 @@ const WalletList = () => {
         onCancel={() => setIsCreateModalVisible(false)}
         onFinish={handleCreateWallet}
         form={createForm}
+        countries={countries}
+        cryptoCurrencies={cryptoCurrencies}
       />
       <UpdateWalletModal
         isVisible={isUpdateModalVisible}
