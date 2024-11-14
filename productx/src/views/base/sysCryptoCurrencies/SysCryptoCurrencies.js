@@ -40,17 +40,11 @@ const CryptoCurrencyList = () => {
   const [createForm] = Form.useForm()
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
-  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState(null)
 
   useEffect(() => {
     fetchData()
   }, [currentPage, pageSize, searchParams])
-
-  const handleDetailClick = (currency) => {
-    setSelectedCurrency(currency)
-    setIsDetailModalVisible(true)
-  }
 
   const {
     selectedRows,
@@ -215,7 +209,6 @@ const CryptoCurrencyList = () => {
             handleSelectRow={handleSelectRow}
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
-            handleDetailClick={handleDetailClick}
           />
         </Spin>
       </div>

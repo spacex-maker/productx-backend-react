@@ -186,5 +186,12 @@
   "fundingRound": "자금 조달 라운드",
   "blockchainInfo": "블록체인 정보",
   "blockchainType": "블록체인 유형",
-  "hashAlgorithm": "해시 알고리즘"
+  "hashAlgorithm": "해시 알고리즘",
+  "whitepaper": "백서",
+  "transactionSpeed": "거래 속도",
+  "blockTime": "블록 시간",
+  "investors": "투자자",
+  "investorInfo": "투자자 정보",
+  "fundingDate": "펀딩 날짜",
+  "totalInvestment": "총 투자"
 }

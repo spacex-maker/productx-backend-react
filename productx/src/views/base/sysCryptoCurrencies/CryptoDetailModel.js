@@ -46,9 +46,8 @@ const CryptoDetailModal = ({
           {t('close')}
         </Button>,
       ]}
-      width={800} // Adjusted width for better display
-      style={{ zIndex: 1050 }}
-      bodyStyle={{ padding: '10px 20px' }}
+      width={600}
+      style={{ zIndex: 1050 ,padding: '10px 20px' }}
     >
       {selectedCryptoDetail ? (
         <div>

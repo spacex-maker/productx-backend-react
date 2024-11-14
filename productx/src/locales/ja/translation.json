@@ -186,5 +186,12 @@
   "fundingRound": "資金調達ラウンド",
   "blockchainInfo": "ブロックチェーン情報",
   "blockchainType": "ブロックチェーンタイプ",
-  "hashAlgorithm": "ハッシュアルゴリズム"
+  "hashAlgorithm": "ハッシュアルゴリズム",
+  "whitepaper": "ホワイトペーパー",
+  "transactionSpeed": "取引速度",
+  "blockTime": "ブロックタイム",
+  "investors": "投資家",
+  "investorInfo": "投資家情報",
+  "fundingDate": "資金調達日",
+  "totalInvestment": "総投資額"
 }

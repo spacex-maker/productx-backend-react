@@ -186,5 +186,12 @@
   "fundingRound": "Funding Round",
   "blockchainInfo": "Blockchain Info",
   "blockchainType": "Blockchain Type",
-  "hashAlgorithm": "Hash Algorithm"
+  "hashAlgorithm": "Hash Algorithm",
+  "whitepaper": "Whitepaper",
+  "transactionSpeed": "Transaction Speed",
+  "blockTime": "Block Time",
+  "investors": "Investors",
+  "investorInfo": "Investor Information",
+  "fundingDate": "Funding Date",
+  "totalInvestment": "Total Investment"
 }

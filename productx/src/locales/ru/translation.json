@@ -186,5 +186,12 @@
   "fundingRound": "Раунд финансирования",
   "blockchainInfo": "Информация о блокчейне",
   "blockchainType": "Тип блокчейна",
-  "hashAlgorithm": "Алгоритм хеширования"
+  "hashAlgorithm": "Алгоритм хеширования",
+  "whitepaper": "Белая книга",
+  "transactionSpeed": "Скорость транзакции",
+  "blockTime": "Время блока",
+  "investors": "Инвесторы",
+  "investorInfo": "Информация об инвесторах",
+  "fundingDate": "Дата финансирования",
+  "totalInvestment": "Общая инвестиция"
 }
