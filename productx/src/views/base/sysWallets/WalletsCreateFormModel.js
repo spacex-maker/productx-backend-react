@@ -7,46 +7,9 @@ const WalletCreateFormModal = ({
                                  onCancel,
                                  onFinish,
                                  form,
+                                 countries,
+                                 cryptoCurrencies
                                }) => {
-  const [countries, setCountries] = useState([]);  // 存储获取到的国家列表
-  const [cryptoCurrencies, setCryptoCurrencies] = useState([]);  // 存储获取到的钱包类型列表
-
-  // 获取国家列表
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await api.get('/manage/countries/list-all-enable');
-        if (response) {
-          setCountries(response);  // 设置国家列表
-        } else {
-          message.error('获取国家列表失败');
-        }
-      } catch (error) {
-        message.error('请求失败，请检查网络连接');
-        console.error('获取国家列表失败:', error);
-      }
-    };
-    fetchCountries();
-  }, []);
-
-  // 获取钱包类型列表
-  useEffect(() => {
-    const fetchCryptoCurrencies = async () => {
-      try {
-        const response = await api.get('/manage/sys-crypto-currencies/list-all-enable');
-        if (response) {
-          setCryptoCurrencies(response);  // 设置钱包类型列表
-        } else {
-          message.error('获取钱包类型列表失败');
-        }
-      } catch (error) {
-        message.error('请求失败，请检查网络连接');
-        console.error('获取钱包类型列表失败:', error);
-      }
-    };
-    fetchCryptoCurrencies();
-  }, []);
-
   return (
     <Modal
       title="新增钱包"
@@ -80,7 +43,8 @@ const WalletCreateFormModal = ({
           name="countryCode"
           rules={[{ required: true, message: '请选择国家码' }]}
         >
-          <Select placeholder="请选择国家" allowClear>
+          <Select
+            placeholder="请选择国家" allowClear>
             {countries.map((country) => (
               <Select.Option key={country.code} value={country.code}>
                 {country.name} ({country.code})

@@ -49,10 +49,15 @@ const CryptoCurrencyTable = ({
               <div className="custom-control custom-checkbox">
                 <input
                   type="checkbox"
-                  checked={selectedRows.includes(item.name)}
-                  onChange={() => handleSelectRow(item.name, data)}
+                  className="custom-control-input"
+                  id={`td_checkbox_${item.id}`}
+                  checked={selectedRows.includes(item.id)}
+                  onChange={() => handleSelectRow(item.id, data)}
                 />
-                <label className="custom-control-label" htmlFor={`td_checkbox_${item.name}`}></label>
+                <label
+                  className="custom-control-label"
+                  htmlFor={`td_checkbox_${item.id}`}
+                ></label>
               </div>
             </td>
             <td className="text-truncate">{item.name}</td>
@@ -63,7 +68,7 @@ const CryptoCurrencyTable = ({
             <td className="text-truncate">{item.totalSupply.toLocaleString()}</td>
             <td>
               <label className="toggle-switch">
-                <input
+              <input
                   type="checkbox"
                   checked={item.status}
                   onChange={(e) => handleStatusChange(item.id, e)}

@@ -59,12 +59,14 @@ const WalletTable = ({
             <div className="custom-control custom-checkbox">
               <input
                 type="checkbox"
-                checked={selectedRows.includes(item.address)}
-                onChange={() => handleSelectRow(item.address, data)}
+                className="custom-control-input"
+                id={`td_checkbox_${item.id}`}
+                checked={selectedRows.includes(item.id)}
+                onChange={() => handleSelectRow(item.id, data)}
               />
               <label
                 className="custom-control-label"
-                htmlFor={`td_checkbox_${item.address}`}
+                htmlFor={`td_checkbox_${item.id}`}
               ></label>
             </div>
           </td>
