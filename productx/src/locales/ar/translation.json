@@ -186,5 +186,12 @@
   "fundingRound": "جولة التمويل",
   "blockchainInfo": "معلومات البلوكشين",
   "blockchainType": "نوع البلوكشين",
-  "hashAlgorithm": "خوارزمية التجزئة"
+  "hashAlgorithm": "خوارزمية التجزئة",
+  "whitepaper": "الورقة البيضاء",
+  "transactionSpeed": "سرعة المعاملة",
+  "blockTime": "وقت الكتلة",
+  "investors": "المستثمرون",
+  "investorInfo": "معلومات المستثمر",
+  "fundingDate": "تاريخ التمويل",
+  "totalInvestment": "إجمالي الاستثمار"
 }

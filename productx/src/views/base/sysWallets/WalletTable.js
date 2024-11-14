@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from 'antd';
-import { CopyOutlined } from '@ant-design/icons';
+import {Button, message} from 'antd';
+import {CopyOutlined} from '@ant-design/icons';
+import api from 'src/axiosInstance';
 
 const WalletTable = ({
                        data,
@@ -15,10 +16,19 @@ const WalletTable = ({
   // 复制到剪贴板的功能
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address)
+      .then(() => {
+        message.success('地址已复制到剪贴板');
+      })
       .catch((err) => {
         console.error('复制失败:', err);
+        message.error('复制失败');
       });
   };
+  const handleBlockchainQuery = (address) => {
+    // Blockchain browser query logic
+    const blockchainUrl = `https://etherscan.io/address/${address}`; // Example for Ethereum
+    window.open(blockchainUrl, '_blank');
+  }
 
   return (
     <table className="table table-bordered table-striped">
@@ -58,16 +68,20 @@ const WalletTable = ({
               ></label>
             </div>
           </td>
-          <td className="text-truncate">
-            {item.address}
-            <Button
-              icon={<CopyOutlined />}
-              size="small"
-              onClick={() => handleCopy(item.address)}
-              style={{ marginLeft: '8px' }}
-            />
+          <td>
+            <div style={{display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
+              <div style={{flex: 1, overflow: 'hidden', textOverflow: 'ellipsis'}}>
+                {item.address}
+              </div>
+              <Button
+                icon={<CopyOutlined/>}
+                size="small"
+                onClick={() => handleCopy(item.address)}
+                style={{marginLeft: '8px'}}
+              />
+            </div>
           </td>
-          <td className="text-truncate">{item.type === 1 ? '类型 1' : '类型 2'}</td>
+          <td className="text-truncate">{item.typeName}</td>
           <td className="text-truncate">{item.label}</td>
           <td className="text-truncate">{item.countryCode}</td>
           <td>
@@ -75,7 +89,7 @@ const WalletTable = ({
               <input
                 type="checkbox"
                 checked={item.status}
-                onChange={(e) => handleStatusChange(item.address, e)}
+                onChange={(e) => handleStatusChange(item.id, e)}
               />
               <span className="toggle-switch-slider"></span>
             </label>
@@ -83,6 +97,13 @@ const WalletTable = ({
           <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>
               修改
+            </Button>
+            <Button
+              type="link"
+              size="small"
+              onClick={() => handleBlockchainQuery(item.address)}
+            >
+              区块链浏览器
             </Button>
           </td>
         </tr>

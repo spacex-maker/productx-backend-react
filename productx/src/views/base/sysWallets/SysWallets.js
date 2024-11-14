@@ -68,7 +68,11 @@ const WalletList = () => {
     const { name, value } = event.target
     setSearchParams((prevParams) => ({ ...prevParams, [name]: value }))
   }
-
+  const handleStatusChange = async (id, event) => {
+    const newStatus = event.target.checked
+    await api.post('/manage/sys-wallets/change-status', { id, status: newStatus })
+    await fetchData() // Re-fetch data after status update
+  }
   const handleCreateWallet = async (values) => {
     await createWallet(values)
     setIsCreateModalVisible(false)
@@ -187,7 +191,8 @@ const WalletList = () => {
             selectedRows={selectedRows}
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
-            handleUpdateWallet={handleUpdateWallet}
+            handleStatusChange={handleStatusChange}
+            handleEditClick={handleUpdateWallet}
           />
         </Spin>
       </div>

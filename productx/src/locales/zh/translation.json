@@ -187,5 +187,12 @@
   "fundingRound": "融资轮次",
   "blockchainInfo": "区块链信息",
   "blockchainType": "区块链类型",
-  "hashAlgorithm": "哈希算法"
+  "hashAlgorithm": "哈希算法",
+  "whitepaper": "白皮书",
+  "transactionSpeed": "交易速度",
+  "blockTime": "出块时间",
+  "investors": "投资人",
+  "investorInfo": "投资信息",
+  "fundingDate": "融资日期",
+  "totalInvestment": "总投资"
 }

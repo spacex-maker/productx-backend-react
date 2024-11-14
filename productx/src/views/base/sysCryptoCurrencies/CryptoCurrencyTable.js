@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import CryptoDetailModal from "src/views/base/sysCryptoCurrencies/CryptoDetailModel"; // 引入 CryptoDetailModal
-
+import { useTranslation } from 'react-i18next'; // 导入 useTranslation
 const CryptoCurrencyTable = ({
                                data,
                                selectAll,
@@ -13,7 +13,7 @@ const CryptoCurrencyTable = ({
                              }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
-
+  const { t } = useTranslation(); // 使用 useTranslation 获取 t 函数
   const handleDetailClick = (crypto) => {
     setSelectedCrypto(crypto); // 设置选中的加密货币数据
     setIsModalVisible(true);    // 打开详情模态框
@@ -36,12 +36,10 @@ const CryptoCurrencyTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['Name', 'Symbol', 'Price', '24h Change', 'Market Cap', 'Total Supply', 'Status'].map((field) => (
-            <th key={field}>{field}</th>
+          {['name', 'symbol', 'price', '24hChange', 'marketCap', 'totalSupply', 'status'].map((field) => (
+            <th key={field}>{t(field)}</th>
           ))}
-          <th className="fixed-column" key="操作">
-            操作
-          </th>
+          <th className="fixed-column" key='操作'>{t('action')}</th>
         </tr>
         </thead>
         <tbody>
@@ -68,7 +66,7 @@ const CryptoCurrencyTable = ({
                 <input
                   type="checkbox"
                   checked={item.status}
-                  onChange={(e) => handleStatusChange(item.name, e)}
+                  onChange={(e) => handleStatusChange(item.id, e)}
                 />
                 <span className="toggle-switch-slider"></span>
               </label>

@@ -186,5 +186,12 @@
   "fundingRound": "Ronde de financement",
   "blockchainInfo": "Informations sur la blockchain",
   "blockchainType": "Type de blockchain",
-  "hashAlgorithm": "Algorithme de hachage"
+  "hashAlgorithm": "Algorithme de hachage",
+  "whitepaper": "Livre blanc",
+  "transactionSpeed": "Vitesse de transaction",
+  "blockTime": "Temps de bloc",
+  "investors": "Investisseurs",
+  "investorInfo": "Informations sur les investisseurs",
+  "fundingDate": "Date de financement",
+  "totalInvestment": "Investissement total"
 }
