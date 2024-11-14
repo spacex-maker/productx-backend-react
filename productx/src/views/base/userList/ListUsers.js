@@ -62,7 +62,7 @@ const UserList = () => {
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       )
       const response = await api.get('/manage/user/list', {
-        params: { current, size: pageSize, ...filteredParams },
+        params: { currentPage:current, pageSize: pageSize, ...filteredParams },
       })
 
       if (response && response.data) {
