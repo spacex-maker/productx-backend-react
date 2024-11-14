@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form } from 'antd';
-import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm } from 'antd';
+import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
 const CountryDetailModal = ({ visible, country, onCancel }) => {
@@ -11,6 +11,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   const [searchValues, setSearchValues] = useState({});
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [addForm] = Form.useForm();
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editingRecord, setEditingRecord] = useState(null);
+  const [editForm] = Form.useForm();
 
   useEffect(() => {
     if (visible && country?.id) {
@@ -120,6 +123,61 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     },
   });
 
+  const handleStatusChange = async (record, checked) => {
+    try {
+      await api.post('/manage/global-addresses/change-status', {
+        id: record.id,
+        status: checked
+      });
+      const currentParentId = currentRegion ? currentRegion.id : country.id;
+      fetchRegions(currentParentId);
+    } catch (error) {
+      console.error('状态切换失败:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await api.post('/manage/global-addresses/remove', { id });
+      const currentParentId = currentRegion ? currentRegion.id : country.id;
+      fetchRegions(currentParentId);
+    } catch (error) {
+      console.error('删除失败:', error);
+    }
+  };
+
+  const handleEdit = (record) => {
+    setEditingRecord(record);
+    editForm.setFieldsValue({
+      id: record.id,
+      code: record.code,
+      name: record.name,
+      shortName: record.shortName,
+      type: record.type,
+      countryCode: record.countryCode,
+      population: record.population,
+      areaKm2: record.areaKm2,
+      capital: record.capital,
+      region: record.region,
+    });
+    setEditModalVisible(true);
+  };
+
+  const handleUpdate = async (values) => {
+    try {
+      await api.post('/manage/global-addresses/update', {
+        ...values,
+        id: editingRecord.id
+      });
+      setEditModalVisible(false);
+      editForm.resetFields();
+      const currentParentId = currentRegion ? currentRegion.id : country.id;
+      fetchRegions(currentParentId);
+    } catch (error) {
+      console.error('修改失败:', error);
+    }
+  };
+
   const columns = [
     {
       title: '名称',
@@ -180,19 +238,84 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       render: (val) => val ? `${val.toLocaleString()} km²` : '-',
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      width: 50,
+      render: (status, record) => (
+        <Switch
+          checked={status}
+          size="small"
+          onChange={(checked) => handleStatusChange(record, checked)}
+          style={{ 
+            transform: 'scale(0.8)',
+            marginTop: '-2px',
+            minWidth: '32px',
+            height: '16px'
+          }}
+        />
+      ),
+    },
+    {
       title: '操作',
       key: 'action',
-      width: 60,
+      width: 100,
       fixed: 'right',
       render: (_, record) => (
-        <Button
-          type="link"
-          size="small"
-          style={{ fontSize: '8px', padding: '0 4px' }}
-          onClick={() => handleDrillDown(record)}
-        >
-          详情
-        </Button>
+        <div style={{ 
+          display: 'flex', 
+          gap: '4px',
+          alignItems: 'center',
+          fontSize: '8px'
+        }}>
+          <Button
+            type="link"
+            size="small"
+            style={{ 
+              fontSize: '8px', 
+              padding: '0 4px',
+              height: '16px',
+              lineHeight: '16px'
+            }}
+            onClick={() => handleDrillDown(record)}
+          >
+            详情
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            style={{ 
+              fontSize: '8px', 
+              padding: '0 4px',
+              height: '16px',
+              lineHeight: '16px'
+            }}
+            onClick={() => handleEdit(record)}
+          >
+            修改
+          </Button>
+          <Popconfirm
+            title={<span style={{ fontSize: '8px' }}>确定要删除吗？</span>}
+            onConfirm={() => handleDelete(record.id)}
+            okText="确定"
+            cancelText="取消"
+            okButtonProps={{ size: 'small', style: { fontSize: '8px' } }}
+            cancelButtonProps={{ size: 'small', style: { fontSize: '8px' } }}
+          >
+            <Button
+              type="link"
+              danger
+              size="small"
+              icon={<DeleteOutlined style={{ fontSize: '8px' }} />}
+              style={{ 
+                fontSize: '8px', 
+                padding: '0 4px',
+                height: '16px',
+                lineHeight: '16px'
+              }}
+            />
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -223,7 +346,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'space-between',
-          padding: '0 4px'
+          padding: '0 4px',
+          marginRight: '24px'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px' }}>
             <GlobalOutlined style={{ fontSize: '10px' }} />
@@ -248,7 +372,12 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             type="primary"
             size="small"
             icon={<PlusOutlined />}
-            style={{ fontSize: '8px', padding: '0 4px', height: '20px' }}
+            style={{ 
+              fontSize: '8px', 
+              padding: '0 4px', 
+              height: '20px',
+              marginRight: '8px'
+            }}
             onClick={() => setAddModalVisible(true)}
           >
             新增
@@ -257,9 +386,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       }
       open={visible}
       onCancel={onCancel}
-      width={600}
+      width={750}
       footer={null}
       bodyStyle={{ padding: '6px' }}
+      closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
     >
       {/* 统计信息 */}
       <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
@@ -345,6 +475,127 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           size="small"
           style={{ fontSize: '8px' }}
         >
+          <Row gutter={8}>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>行政区划编码</span>}
+                name="code"
+                rules={[{ required: true, message: '请输入编码' }]}
+              >
+                <Input style={{ fontSize: '8px' }} placeholder="例如：CN-BJ" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>国家码</span>}
+                name="countryCode"
+                rules={[{ required: true, message: '请输入国家码' }]}
+              >
+                <Input style={{ fontSize: '8px' }} placeholder="例如：CN" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={8}>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>名称</span>}
+                name="name"
+                rules={[{ required: true, message: '请输入名称' }]}
+              >
+                <Input style={{ fontSize: '8px' }} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>简称</span>}
+                name="shortName"
+              >
+                <Input style={{ fontSize: '8px' }} />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={8}>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>类型</span>}
+                name="type"
+                rules={[{ required: true, message: '请输入类型' }]}
+              >
+                <Input style={{ fontSize: '8px' }} placeholder="例如：省、市、区" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>区域</span>}
+                name="region"
+              >
+                <Input style={{ fontSize: '8px' }} placeholder="例如：华北、华南" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={8}>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>人口</span>}
+                name="population"
+              >
+                <Input 
+                  type="number" 
+                  style={{ fontSize: '8px' }} 
+                  placeholder="单位：人"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={{ fontSize: '8px' }}>面积</span>}
+                name="areaKm2"
+              >
+                <Input 
+                  type="number" 
+                  style={{ fontSize: '8px' }} 
+                  placeholder="单位：平方公里"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item
+            label={<span style={{ fontSize: '8px' }}>省会/首府</span>}
+            name="capital"
+          >
+            <Input style={{ fontSize: '8px' }} />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* 修改表单弹窗 */}
+      <Modal
+        title={<div style={{ fontSize: '10px' }}>修改行政区划</div>}
+        open={editModalVisible}
+        onCancel={() => {
+          setEditModalVisible(false);
+          editForm.resetFields();
+        }}
+        onOk={() => editForm.submit()}
+        width={400}
+        bodyStyle={{ padding: '8px' }}
+        destroyOnClose
+      >
+        <Form
+          form={editForm}
+          onFinish={handleUpdate}
+          layout="vertical"
+          size="small"
+          style={{ fontSize: '8px' }}
+        >
+          <Form.Item name="id" hidden>
+            <Input />
+          </Form.Item>
+
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
@@ -636,6 +887,69 @@ const styles = `
     font-size: 8px;
     padding: 2px 8px;
     height: 20px;
+  }
+  
+  .ant-switch {
+    min-width: 32px;
+    height: 16px;
+    line-height: 16px;
+  }
+  
+  .ant-switch-handle {
+    width: 14px;
+    height: 14px;
+    top: 1px;
+  }
+  
+  .ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 15px);
+  }
+  
+  .ant-switch-small {
+    min-width: 32px;
+    height: 16px;
+  }
+  
+  .ant-switch-small .ant-switch-handle {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .ant-switch-small.ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 15px);
+  }
+  
+  .ant-popover {
+    font-size: 8px;
+  }
+  
+  .ant-popover-message {
+    font-size: 8px;
+    padding: 4px 0;
+  }
+  
+  .ant-popover-buttons {
+    margin-top: 4px;
+  }
+  
+  .ant-popover-buttons .ant-btn {
+    font-size: 8px;
+    padding: 0 4px;
+    height: 20px;
+    line-height: 20px;
+  }
+  
+  .ant-popconfirm-buttons {
+    display: flex;
+    gap: 4px;
+  }
+  
+  .ant-popover-inner-content {
+    padding: 4px 8px;
+  }
+  
+  .ant-popover-arrow {
+    display: none;
   }
 `;
 

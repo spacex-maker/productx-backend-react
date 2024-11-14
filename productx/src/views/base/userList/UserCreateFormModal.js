@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Form, Input, Row, Col, Divider, Typography, Checkbox } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { commonStyles } from './styles';
 
 const { Title } = Typography;
 
@@ -14,29 +15,38 @@ const UserCreateFormModal = ({
 
   return (
     <Modal
-      title={t('createUser')}
+      title={<span style={commonStyles.modalStyle.title}>{t('createUser')}</span>}
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
-      cancelText={t('cancel')}
-      okText={t('save')}
-      width={500} // 设置模态框宽度为500px
+      cancelText={<span style={commonStyles.modalStyle.button}>{t('cancel')}</span>}
+      okText={<span style={commonStyles.modalStyle.button}>{t('save')}</span>}
+      width={400}
+      bodyStyle={commonStyles.modalStyle.bodyPadding}
     >
-      <Form form={form} onFinish={onFinish} layout="vertical" style={{ gap: '8px' }}>
-
-        {/* 基本信息部分 */}
-        <Title level={5} style={{ marginBottom: '16px' }}>{t('basicInfo')}</Title>
-        <Divider style={{ margin: '8px 0' }} />
-
-        <Row gutter={16}>
+      <Form 
+        form={form} 
+        onFinish={onFinish} 
+        layout="vertical" 
+        size="small"
+        style={commonStyles.formStyle}
+      >
+        <Title level={5} style={commonStyles.formStyle.title}>
+          {t('basicInfo')}
+        </Title>
+        <Divider style={commonStyles.formStyle.divider} />
+        
+        <Row gutter={6}>
           <Col span={12}>
             <Form.Item
-              label={t('nickname')}
+              label={<span style={commonStyles.formStyle.label}>{t('nickname')}</span>}
               name="nickname"
               rules={[{ required: true, message: '请输入用户昵称' }]}
-              style={{ marginBottom: '12px' }}
+              style={commonStyles.formStyle.item}
             >
-              <Input placeholder="请输入用户昵称" />
+              <Input 
+                style={commonStyles.formStyle.input} 
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -44,7 +54,7 @@ const UserCreateFormModal = ({
               label={t('fullName')}
               name="fullName"
               rules={[{ required: true, message: '请输入用户全名' }]}
-              style={{ marginBottom: '12px' }}
+              style={commonStyles.formStyle.item}
             >
               <Input placeholder="请输入用户全名" />
             </Form.Item>
@@ -57,7 +67,7 @@ const UserCreateFormModal = ({
               label={t('password')}
               name="password"
               rules={[{ required: true, message: '请输入用户密码' }]}
-              style={{ marginBottom: '12px' }}
+              style={commonStyles.formStyle.item}
             >
               <Input.Password placeholder="请输入密码" />
             </Form.Item>
@@ -67,37 +77,37 @@ const UserCreateFormModal = ({
               label={t('phoneNumber')}
               name="phoneNumber"
               rules={[{ required: true, message: '请输入用户电话号码' }]}
-              style={{ marginBottom: '12px' }}
+              style={commonStyles.formStyle.item}
             >
               <Input placeholder="请输入电话号码" />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item label={t('email')} name="email" style={{ marginBottom: '12px' }}>
+        <Form.Item label={t('email')} name="email" style={commonStyles.formStyle.item}>
           <Input placeholder="请输入用户电子邮件" />
         </Form.Item>
 
-        <Form.Item label={t('description')} name="description" style={{ marginBottom: '12px' }}>
+        <Form.Item label={t('description')} name="description" style={commonStyles.formStyle.item}>
           <Input placeholder="请输入用户介绍" />
         </Form.Item>
 
-        <Form.Item label={t('status')} name="status" valuePropName="checked" style={{ marginBottom: '12px' }}>
+        <Form.Item label={t('status')} name="status" valuePropName="checked" style={commonStyles.formStyle.item}>
           <Checkbox>{t('active')}</Checkbox>
         </Form.Item>
 
         {/* 地址信息部分 */}
-        <Title level={5} style={{ marginBottom: '16px' }}>{t('addressInfo')}</Title>
-        <Divider style={{ margin: '8px 0' }} />
+        <Title level={5} style={commonStyles.formStyle.title}>{t('addressInfo')}</Title>
+        <Divider style={commonStyles.formStyle.divider} />
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item label={t('country')} name="country" style={{ marginBottom: '12px' }}>
+            <Form.Item label={t('country')} name="country" style={commonStyles.formStyle.item}>
               <Input placeholder="请输入国家" />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label={t('state')} name="state" style={{ marginBottom: '12px' }}>
+            <Form.Item label={t('state')} name="state" style={commonStyles.formStyle.item}>
               <Input placeholder="请输入州/省" />
             </Form.Item>
           </Col>
@@ -105,27 +115,27 @@ const UserCreateFormModal = ({
 
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item label={t('city')} name="city" style={{ marginBottom: '12px' }}>
+            <Form.Item label={t('city')} name="city" style={commonStyles.formStyle.item}>
               <Input placeholder="请输入城市" />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label={t('postalCode')} name="postalCode" style={{ marginBottom: '12px' }}>
+            <Form.Item label={t('postalCode')} name="postalCode" style={commonStyles.formStyle.item}>
               <Input placeholder="请输入邮政编码" />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item label={t('address')} name="address" style={{ marginBottom: '12px' }}>
+        <Form.Item label={t('address')} name="address" style={commonStyles.formStyle.item}>
           <Input placeholder="请输入详细地址" />
         </Form.Item>
 
         {/* 其他信息部分 */}
-        <Form.Item label={t('creditScore')} name="creditScore" style={{ marginBottom: '12px' }}>
+        <Form.Item label={t('creditScore')} name="creditScore" style={commonStyles.formStyle.item}>
           <Input type="number" placeholder="请输入信誉分" defaultValue={1000} />
         </Form.Item>
 
-        <Form.Item label={t('isActive')} name="isActive" valuePropName="checked" style={{ marginBottom: '0px' }}>
+        <Form.Item label={t('isActive')} name="isActive" valuePropName="checked" style={commonStyles.formStyle.item}>
           <Checkbox>{t('isAccountActive')}</Checkbox>
         </Form.Item>
       </Form>
