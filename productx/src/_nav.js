@@ -45,51 +45,7 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: '数据管理',
-  },
-  {
-    component: CNavItem,
-    name: '图片管理',
-    to: '/data/manage',
-    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: '资源管理',
-    to: '/data/resource',
-    icon: <CIcon icon={cilMovie} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: '留言管理',
-    to: '/data/comments',
-    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: '笔记分组管理',
-    to: '/data/noteGroup',
-    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: '笔记管理',
-    to: '/data/note',
-    icon: <CIcon icon={cilEnvelopeClosed} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavTitle,
     name: '系统',
-  },
-  {
-    component: CNavItem,
-    name: '基础设置',
-    to: '/data/systemConfig',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavTitle,
-    name: '系统设置',
   },
   {
     component: CNavItem,
@@ -108,12 +64,6 @@ const _nav = [
     name: '系统支持银行',
     to: '/data/globalBank',
     icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: '路径访问日志',
-    to: '/data/pathStatisticLog',
-    icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
@@ -140,16 +90,6 @@ const _nav = [
     name: '[系统]加密货币管理',
     to: '/data/sysCryptoCurrencies',
     icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavTitle,
-    name: '聊天室',
-  },
-  {
-    component: CNavItem,
-    name: '聊天室管理',
-    to: '/chat/chatroom',
-    icon: <CIcon icon={cilCommentSquare} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

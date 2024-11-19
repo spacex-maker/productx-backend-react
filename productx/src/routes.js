@@ -161,20 +161,7 @@ const routes = [
   {path: '/notifications/toasts', name: 'Toasts', element: Toasts},
   {path: '/widgets', name: 'Widgets', element: Widgets},
   {path: '/threeJs', name: 'threeJs', element: ThreeScene},
-  {
-    path: '/data/manage', name: '图片管理', element: (
-      <PrivateRoute>
-        <ImageManage/>
-      </PrivateRoute>
-    )
-  },
-  {
-    path: '/data/resource', name: '资源管理', element: (
-      <PrivateRoute>
-        <ResourceManage/>
-      </PrivateRoute>
-    )
-  },
+
   {
     path: '/data/userList', name: '用户管理', element: (
       <PrivateRoute>
@@ -200,13 +187,6 @@ const routes = [
     path: '/data/ipAddress', name: 'ip访问日志', element: (
       <PrivateRoute>
         <IpAddress/>
-      </PrivateRoute>
-    )
-  },
-  {
-    path: '/data/pathStatisticLog', name: '路径访问日志', element: (
-      <PrivateRoute>
-        <PathStatisticLog/>
       </PrivateRoute>
     )
   },
