@@ -19,6 +19,8 @@
     "start": "vite"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
+    "lodash.debounce": "^4.0.8",
     "@ant-design/icons": "^5.4.0",
     "@coreui/chartjs": "^4.0.0",
     "@coreui/coreui": "^5.0.2",
