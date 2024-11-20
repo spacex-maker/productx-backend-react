@@ -38,6 +38,7 @@
     "echarts": "^5.5.1",
     "framer-motion": "^11.11.17",
     "i18next": "^23.16.8",
+    "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "prop-types": "^15.8.1",
     "qcloud-cos": "^2.1.0",
