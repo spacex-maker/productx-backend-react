@@ -30,11 +30,11 @@ const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true // 允许携带 Cookie
 });
-
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-    config.baseURL = API_BASE_URL;
+    config.baseURL = API_BASE_URL; // 设置基础 URL
+    config.withCredentials = true; // 确保跨域请求时携带 Cookie
     const token = localStorage.getItem('jwtManageToken');
     if (token) {
       config.headers['Authorization'] = `${token}`;
