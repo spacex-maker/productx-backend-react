@@ -623,7 +623,7 @@ const LoginPage = () => {
       </div>
       {!showApiConfig && (
         <ApiConfigHint>
-          双击水面显示 API 配置！
+          双击水面显示 API 配置！！！
         </ApiConfigHint>
       )}
     </PageWrapper>
