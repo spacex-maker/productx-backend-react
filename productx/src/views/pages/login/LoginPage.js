@@ -440,7 +440,7 @@ const LoginPage = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = 'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=http://127.0.0.1:8090/manage/manager/github-callback';
+    window.location.href = 'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=http://34.92.218.25:8090/manage/manager/github-callback';
   };
 
   // 定义随机初始位置
