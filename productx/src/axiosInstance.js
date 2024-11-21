@@ -2,7 +2,7 @@ import axios from 'axios';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-export var API_BASE_URL = 'http://34.92.218.25:8090'; // 默认地址
+export var API_BASE_URL = 'https://protx.cn'; // 默认地址
 
 // 设置 API 基地址
 export const setBaseURL = (url) => {
