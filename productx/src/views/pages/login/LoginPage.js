@@ -17,7 +17,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilLockUnlocked, cilUser, cilSettings } from '@coreui/icons';
 import LoginHeader from 'src/views/pages/login/LoginHeader';
-import axiosInstance, { API_BASE_URL, setBaseURL, API_CONFIG } from 'src/axiosInstance';
+import api, { API_BASE_URL, setBaseURL, API_CONFIG } from 'src/axiosInstance';
 import { message } from 'antd';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -425,7 +425,8 @@ const LoginPage = () => {
     e.preventDefault();
     const formData = { username, password, verify };
     try {
-      await axiosInstance.post('/manage/manager/login', formData);
+      const token = await api.post('/manage/manager/login', formData);
+      localStorage.setItem('jwtManageToken',token);
       navigate('/dashboard');
       setNotice("登录成功");
     } catch (error) {
@@ -488,13 +489,13 @@ const LoginPage = () => {
   useEffect(() => {
     const hostname = window.location.hostname;
     let initialEnv = 'PROD';
-    
+
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
       initialEnv = 'LOCAL';
     } else if (hostname.includes('test')) {
       initialEnv = 'TEST';
     }
-    
+
     setSelectedEnv(initialEnv);
   }, []);
 
