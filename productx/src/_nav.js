@@ -92,6 +92,12 @@ const _nav = [
     icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: '[系统]对象存储管理',
+    to: '/data/cos',
+    icon: <CIcon icon={cilBrowser} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: '快递系统',
   },

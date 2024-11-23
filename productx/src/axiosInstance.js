@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 export const API_CONFIG = {
   PROD: 'https://protx.cn',
   TEST: 'https://test.protx.cn',
-  LOCAL: 'http://localhost:8080'
+  LOCAL: 'http://localhost:8090'
 };
 
 // 自动判断当前环境
 const autoDetectEnvironment = () => {
   const hostname = window.location.hostname;
-  
+
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return 'LOCAL';
   } else if (hostname.includes('test')) {
@@ -33,7 +33,7 @@ export const setBaseURL = (environment) => {
   }
   API_BASE_URL = url;
   axiosInstance.defaults.baseURL = API_BASE_URL;
-  
+
   // 更新环境提示信息
   const envNames = {
     PROD: '生产',
