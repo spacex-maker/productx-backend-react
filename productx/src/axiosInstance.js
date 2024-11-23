@@ -53,6 +53,12 @@ const isValidURL = (url) => {
   }
 };
 
+// 添加不需要 token 的白名单路径
+const whiteList = [
+  '/login',
+  // 可以添加其他不需要 token 的路径
+];
+
 // 创建 axios 实例
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -63,10 +69,20 @@ axiosInstance.interceptors.request.use(
   (config) => {
     config.baseURL = API_BASE_URL; // 设置基础 URL
     config.withCredentials = true; // 确保跨域请求时携带 Cookie
-    const token = localStorage.getItem('jwtManageToken');
-    if (token) {
-      config.headers['Authorization'] = `${token}`;
+
+    // 检查请求路径是否在白名单中
+    const isWhitelisted = whiteList.some(path =>
+      config.url.includes(path)
+    );
+
+    // 只有不在白名单中的请求才添加 token
+    if (!isWhitelisted) {
+      const token = localStorage.getItem('jwtManageToken');
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     }
+
     return config;
   },
   (error) => Promise.reject(error)
