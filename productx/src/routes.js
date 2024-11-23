@@ -104,6 +104,10 @@ const ListUserOrder
 const ListSysWallets
   = React.lazy(() => import('./views/base/sysWallets/SysWallets'))
 
+const SysCos
+  = React.lazy(() => import('./views/base/cos/Cos'))
+
+
 const ListSysCryptoCurrencies= React.lazy(() => import('./views/base/sysCryptoCurrencies/SysCryptoCurrencies'))
 
 
@@ -278,6 +282,13 @@ const routes = [
     path: '/data/sysCryptoCurrencies', name: '[系统]加密货币管理', element: (
       <PrivateRoute>
         <ListSysCryptoCurrencies/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/cos', name: '[系统]对象存储管理', element: (
+      <PrivateRoute>
+        <SysCos/>
       </PrivateRoute>
     )
   },
