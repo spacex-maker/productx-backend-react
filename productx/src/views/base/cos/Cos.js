@@ -25,7 +25,8 @@ import {
   CTableRow,
   CTableHeaderCell,
   CTableDataCell,
-  CFormCheck
+  CFormCheck,
+  CTooltip
 } from '@coreui/react';
 import {Upload, message, Progress} from 'antd';
 import CIcon from '@coreui/icons-react';
@@ -37,7 +38,10 @@ import {
   cilFolder,
   cilCloudDownload,
   cilHistory,
-  cilCopy
+  cilCopy,
+  cilPause,
+  cilPlay,
+  cilX
 } from '@coreui/icons';
 import COS from 'cos-js-sdk-v5';
 import api from 'src/axiosInstance';
@@ -87,7 +91,7 @@ const GlobalStyle = styled.div`
     padding: 4px 8px !important;
   }
   
-  // Space 组件间距优化
+  // Space 件间距优化
   .ant-space {
     gap: 4px !important;
   }
@@ -106,7 +110,12 @@ const Cos = () => {
   const bucketName = 'px-1258150206';
   const region = 'ap-nanjing';
   const [currentPath, setCurrentPath] = useState('');
-  const [uploadProgress, setUploadProgress] = useState({});
+  const [uploadProgress, setUploadProgress] = useState({
+    visible: false,
+    files: {},  // { fileName: { progress: number, status: string, speed: string, loaded: number, total: number, xhr: XMLHttpRequest } }
+    total: 0,
+    completed: 0
+  });
   const [uploadModalVisible, setUploadModalVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadHistory, setUploadHistory] = useState([]);
@@ -128,6 +137,8 @@ const Cos = () => {
     total: 0,
     completed: 0
   });
+  const [uploadPaused, setUploadPaused] = useState({});  // { fileName: boolean }
+  const [uploadTasks, setUploadTasks] = useState({});  // { fileName: { taskId: string, chunks: array } }
 
   // 初始化 COS 实例
   const initCOS = async () => {
@@ -138,7 +149,7 @@ const Cos = () => {
       const { secretId, secretKey, sessionToken, expiredTime } = response;
 
       if (!secretId || !secretKey || !sessionToken) {
-        throw new Error('获取临时密钥失败：密钥信息不完整');
+        throw new Error('获取临时密钥失败：密钥信息完整');
       }
 
       const cos = new COS({
@@ -156,7 +167,7 @@ const Cos = () => {
       setCosInstance(cos);
       return cos;
     } catch (error) {
-      console.error('初始化 COS 失败:', error); // 调试用
+      console.error('初始化 COS 失败:', error); // 调用
       message.error('初始化 COS 失败：' + error.message);
       return null;
     }
@@ -322,7 +333,6 @@ const Cos = () => {
 
   // 修改上传文件函数
   const handleUpload = async (files) => {
-    // 支持多文件
     const fileList = Array.isArray(files) ? files : [files];
     setUploading(true);
     setUploadModalVisible(true);
@@ -331,60 +341,284 @@ const Cos = () => {
     const initialProgress = {};
     fileList.forEach(file => {
       initialProgress[file.name] = {
-        percent: 0,
-        status: 'active',
-        size: formatSize(file.size)
+        progress: 0,
+        status: 'pending',
+        speed: '0 KB/s',
+        loaded: 0,
+        total: file.size,
+        startTime: Date.now()
       };
     });
-    setUploadProgress(initialProgress);
+    
+    setUploadProgress({
+      visible: true,
+      files: initialProgress,
+      total: fileList.length,
+      completed: 0
+    });
 
     try {
-      await Promise.all(fileList.map(file => {
-        const key = currentPath + file.name;
-        return cosInstance.uploadFile({
+      await Promise.all(fileList.map(file => startMultipartUpload(file)));
+    } catch (error) {
+      message.error('部分文件上传失败：' + error.message);
+    }
+  };
+
+  // 实现分片上传
+  const startMultipartUpload = async (file) => {
+    const key = currentPath + file.name;
+    
+    try {
+      // 初始化分片上传
+      const initResult = await new Promise((resolve, reject) => {
+        cosInstance.multipartInit({
           Bucket: bucketName,
           Region: region,
           Key: key,
-          Body: file,
-          onProgress: (progressData) => {
-            setUploadProgress(prev => ({
-              ...prev,
-              [file.name]: {
-                ...prev[file.name],
-                percent: Math.round(progressData.percent * 100),
-                status: 'active'
-              }
-            }));
+          onProgress: function(progressData) {
+            console.log('初始化进度:', JSON.stringify(progressData));
           }
-        }).then(() => {
-          setUploadProgress(prev => ({
-            ...prev,
-            [file.name]: {
-              ...prev[file.name],
-              percent: 100,
-              status: 'success'
-            }
-          }));
-        }).catch((error) => {
-          setUploadProgress(prev => ({
-            ...prev,
-            [file.name]: {
-              ...prev[file.name],
-              status: 'error',
-              error: error.message
-            }
-          }));
-          throw error;
+        }, function(err, data) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
         });
+      });
+
+      const uploadId = initResult.UploadId;
+      const chunkSize = 1024 * 1024; // 1MB per chunk
+      const totalChunks = Math.ceil(file.size / chunkSize);
+      const chunks = [];
+
+      // 保存任务信息
+      setUploadTasks(prev => ({
+        ...prev,
+        [file.name]: {
+          taskId: uploadId,
+          chunks: new Array(totalChunks).fill(false), // false表示未上传
+          file: file,
+          key: key
+        }
       }));
 
-      message.success('文件上传成功');
-      getFileList();
+      // 上传分片
+      for (let i = 0; i < totalChunks && !uploadPaused[file.name]; i++) {
+        const start = i * chunkSize;
+        const end = Math.min(start + chunkSize, file.size);
+        const blob = file.slice(start, end);
+
+        try {
+          const partNumber = i + 1;
+          const result = await uploadChunk(file.name, key, uploadId, blob, partNumber, totalChunks);
+          chunks.push({
+            PartNumber: partNumber,
+            ETag: result.ETag
+          });
+
+          // 更新分片状态
+          setUploadTasks(prev => ({
+            ...prev,
+            [file.name]: {
+              ...prev[file.name],
+              chunks: prev[file.name].chunks.map((chunk, index) => 
+                index === i ? true : chunk
+              )
+            }
+          }));
+        } catch (error) {
+          if (uploadPaused[file.name]) {
+            // 暂停时不视为错误
+            return;
+          }
+          throw error;
+        }
+      }
+
+      // 如果没有暂停，完成上传
+      if (!uploadPaused[file.name]) {
+        await completeMultipartUpload(file.name, key, uploadId, chunks);
+        
+        setUploadProgress(prev => ({
+          ...prev,
+          files: {
+            ...prev.files,
+            [file.name]: {
+              ...prev.files[file.name],
+              progress: 100,
+              status: 'completed',
+              speed: '0 KB/s'
+            }
+          },
+          completed: prev.completed + 1
+        }));
+      }
     } catch (error) {
-      message.error('部分文件上传失败');
-    } finally {
-      setUploading(false);
-      // 不要立即关闭弹窗，让用户可以查看结果
+      console.error('Upload error:', error);
+      setUploadProgress(prev => ({
+        ...prev,
+        files: {
+          ...prev.files,
+          [file.name]: {
+            ...prev.files[file.name],
+            status: 'error',
+            error: error.message
+          }
+        },
+        completed: prev.completed + 1
+      }));
+    }
+  };
+
+  // 上传单个分片
+  const uploadChunk = (fileName, key, uploadId, blob, partNumber, totalChunks) => {
+    return new Promise((resolve, reject) => {
+      cosInstance.multipartUpload({
+        Bucket: bucketName,
+        Region: region,
+        Key: key,
+        UploadId: uploadId,
+        PartNumber: partNumber,
+        Body: blob,
+        onProgress: function(progressData) {
+          // 计算单个分片的进度
+          const chunkProgress = progressData.percent;
+          const totalProgress = ((partNumber - 1 + chunkProgress) / totalChunks) * 100;
+          
+          // 计算速度
+          const currentTime = Date.now();
+          const startTime = uploadProgress.files[fileName].startTime;
+          const elapsedTime = (currentTime - startTime) / 1000;
+          const loaded = progressData.loaded;
+          const speed = loaded / elapsedTime;
+          
+          // 格式化速度
+          let formattedSpeed;
+          if (speed < 1024) {
+            formattedSpeed = `${speed.toFixed(1)} B/s`;
+          } else if (speed < 1024 * 1024) {
+            formattedSpeed = `${(speed / 1024).toFixed(1)} KB/s`;
+          } else {
+            formattedSpeed = `${(speed / (1024 * 1024)).toFixed(1)} MB/s`;
+          }
+
+          setUploadProgress(prev => ({
+            ...prev,
+            files: {
+              ...prev.files,
+              [fileName]: {
+                ...prev.files[fileName],
+                progress: totalProgress,
+                speed: formattedSpeed,
+                loaded: progressData.loaded,
+                status: 'uploading'
+              }
+            }
+          }));
+        }
+      }, function(err, data) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  };
+
+  // 完成分片上传
+  const completeMultipartUpload = (fileName, key, uploadId, parts) => {
+    return new Promise((resolve, reject) => {
+      cosInstance.multipartComplete({
+        Bucket: bucketName,
+        Region: region,
+        Key: key,
+        UploadId: uploadId,
+        Parts: parts
+      }, function(err, data) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  };
+
+  // 修改暂停处理函数
+  const handlePauseUpload = async (fileName, pause) => {
+    if (pause) {
+      // 暂停上传
+      setUploadPaused(prev => ({ ...prev, [fileName]: true }));
+      setUploadProgress(prev => ({
+        ...prev,
+        files: {
+          ...prev.files,
+          [fileName]: {
+            ...prev.files[fileName],
+            status: 'paused',
+            speed: '0 KB/s'
+          }
+        }
+      }));
+    } else {
+      // 继续上传
+      setUploadPaused(prev => ({ ...prev, [fileName]: false }));
+      const task = uploadTasks[fileName];
+      if (task) {
+        // 重新开始未完成的分片上传
+        const unfinishedChunks = task.chunks.map((isUploaded, index) => 
+          !isUploaded ? index : null
+        ).filter(index => index !== null);
+        
+        if (unfinishedChunks.length > 0) {
+          startMultipartUpload(task.file);
+        }
+      }
+    }
+  };
+
+  // 修改取消上传函数
+  const handleCancelUpload = async (fileName) => {
+    const task = uploadTasks[fileName];
+    if (task) {
+      // 取消分片上传
+      await new Promise((resolve, reject) => {
+        cosInstance.multipartAbort({
+          Bucket: bucketName,
+          Region: region,
+          Key: task.key,
+          UploadId: task.taskId
+        }, function(err, data) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(data);
+          }
+        });
+      });
+
+      // 更新状态
+      setUploadProgress(prev => ({
+        ...prev,
+        files: {
+          ...prev.files,
+          [fileName]: {
+            ...prev.files[fileName],
+            status: 'cancelled',
+            speed: '0 KB/s'
+          }
+        },
+        completed: prev.completed + 1
+      }));
+
+      // 清理任务信息
+      setUploadTasks(prev => {
+        const newTasks = { ...prev };
+        delete newTasks[fileName];
+        return newTasks;
+      });
     }
   };
 
@@ -525,24 +759,47 @@ const Cos = () => {
     );
   };
 
-  // 添加上传进度弹窗组件
+  // 修改上传进度弹窗组件
   const UploadProgressModal = () => {
-    const totalFiles = Object.keys(uploadProgress).length;
-    const completedFiles = Object.values(uploadProgress).filter(
-      p => p.percent === 100 || p.status === 'error'
-    ).length;
     const totalPercent = Math.round(
-      (Object.values(uploadProgress).reduce((sum, p) => sum + p.percent, 0) / (totalFiles * 100)) * 100
+      (uploadProgress.completed / uploadProgress.total) * 100
     );
+
+    // 处理全部取消
+    const handleCancelAll = () => {
+      Object.entries(uploadProgress.files).forEach(([fileName, progress]) => {
+        if (progress.status === 'uploading' || progress.status === 'paused') {
+          handleCancelUpload(fileName);
+        }
+      });
+    };
+
+    // 处理全部暂停/继续
+    const handlePauseAll = () => {
+      const hasRunning = Object.values(uploadProgress.files).some(
+        file => file.status === 'uploading'
+      );
+      
+      Object.entries(uploadProgress.files).forEach(([fileName, progress]) => {
+        if (progress.status === 'uploading' || progress.status === 'paused') {
+          handlePauseUpload(fileName, !hasRunning);
+        }
+      });
+    };
 
     return (
       <CModal 
         visible={uploadModalVisible} 
         onClose={() => {
-          // 只有在没有正在上传的文件时才允许关闭
           if (!uploading) {
             setUploadModalVisible(false);
-            setUploadProgress({});
+            setUploadProgress({
+              visible: false,
+              files: {},
+              total: 0,
+              completed: 0
+            });
+            setUploadPaused({});
           }
         }}
         size="lg"
@@ -552,9 +809,36 @@ const Cos = () => {
         </CModalHeader>
         <CModalBody>
           <div className="mb-3">
-            <div className="d-flex justify-content-between mb-2">
-              <span>总体进度</span>
-              <span>{completedFiles}/{totalFiles}</span>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <span>总体进度：{uploadProgress.completed}/{uploadProgress.total}</span>
+              </div>
+              <div>
+                <CButtonGroup size="sm">
+                  <CButton 
+                    color="warning" 
+                    variant="outline"
+                    onClick={handlePauseAll}
+                    disabled={uploadProgress.completed === uploadProgress.total}
+                  >
+                    <CIcon icon={Object.values(uploadProgress.files).some(
+                      file => file.status === 'uploading'
+                    ) ? cilPause : cilPlay} className="me-1" />
+                    {Object.values(uploadProgress.files).some(
+                      file => file.status === 'uploading'
+                    ) ? '全部暂停' : '全部继续'}
+                  </CButton>
+                  <CButton 
+                    color="danger" 
+                    variant="outline"
+                    onClick={handleCancelAll}
+                    disabled={uploadProgress.completed === uploadProgress.total}
+                  >
+                    <CIcon icon={cilX} className="me-1" />
+                    全部取消
+                  </CButton>
+                </CButtonGroup>
+              </div>
             </div>
             <CProgress value={totalPercent} className="mb-3">
               {totalPercent}%
@@ -562,24 +846,61 @@ const Cos = () => {
           </div>
           
           <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-            {Object.entries(uploadProgress).map(([fileName, progress]) => (
+            {Object.entries(uploadProgress.files).map(([fileName, progress]) => (
               <div key={fileName} className="mb-3">
                 <div className="d-flex justify-content-between align-items-center mb-1">
-                  <div className="text-truncate me-2" style={{ fontSize: '10px' }}>
+                  <div className="text-truncate me-2" style={{ fontSize: '12px' }}>
                     {fileName}
                   </div>
-                  <div style={{ fontSize: '10px' }}>
-                    {progress.size} - {progress.percent}%
+                  <div style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>
+                    {formatSize(progress.loaded)}/{formatSize(progress.total)} - {progress.speed}
                   </div>
                 </div>
-                <CProgress 
-                  value={progress.percent}
-                  color={progress.status === 'error' ? 'danger' : 
-                         progress.status === 'success' ? 'success' : 'primary'}
-                />
+                <div className="d-flex align-items-center">
+                  <CProgress 
+                    value={progress.progress}
+                    color={
+                      progress.status === 'error' ? 'danger' : 
+                      progress.status === 'completed' ? 'success' :
+                      progress.status === 'paused' ? 'warning' :
+                      progress.status === 'cancelled' ? 'secondary' : 'primary'
+                    }
+                    className="flex-grow-1 me-2"
+                  >
+                    {Math.round(progress.progress)}%
+                  </CProgress>
+                  {(progress.status === 'uploading' || progress.status === 'paused') && (
+                    <CButtonGroup size="sm">
+                      <CButton 
+                        color="warning" 
+                        variant="ghost"
+                        onClick={() => handlePauseUpload(fileName, !uploadPaused[fileName])}
+                      >
+                        <CIcon icon={uploadPaused[fileName] ? cilPlay : cilPause} size="sm" />
+                      </CButton>
+                      <CButton 
+                        color="danger" 
+                        variant="ghost"
+                        onClick={() => handleCancelUpload(fileName)}
+                      >
+                        <CIcon icon={cilX} size="sm" />
+                      </CButton>
+                    </CButtonGroup>
+                  )}
+                </div>
                 {progress.status === 'error' && (
-                  <div className="text-danger mt-1" style={{ fontSize: '10px' }}>
+                  <div className="text-danger mt-1" style={{ fontSize: '12px' }}>
                     {progress.error}
+                  </div>
+                )}
+                {progress.status === 'cancelled' && (
+                  <div className="text-secondary mt-1" style={{ fontSize: '12px' }}>
+                    已取消上传
+                  </div>
+                )}
+                {progress.status === 'paused' && (
+                  <div className="text-warning mt-1" style={{ fontSize: '12px' }}>
+                    已暂停上传
                   </div>
                 )}
               </div>
@@ -592,7 +913,13 @@ const Cos = () => {
             onClick={() => {
               if (!uploading) {
                 setUploadModalVisible(false);
-                setUploadProgress({});
+                setUploadProgress({
+                  visible: false,
+                  files: {},
+                  total: 0,
+                  completed: 0
+                });
+                setUploadPaused({});
               }
             }}
             disabled={uploading}
@@ -615,7 +942,7 @@ const Cos = () => {
     });
   };
 
-  // 添加全选处理函数
+  // 添加全选处理函
   const handleSelectAll = () => {
     if (selectedFiles.length === files.length) {
       setSelectedFiles([]);
@@ -734,40 +1061,39 @@ const Cos = () => {
             }
           }));
 
-          const response = await fetch(file.url);
-          const reader = response.body.getReader();
-          const contentLength = +response.headers.get('Content-Length');
-          let receivedLength = 0;
+          // 使用 XMLHttpRequest 来获取进度
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', file.url, true);
+          xhr.responseType = 'blob';
 
-          while(true) {
-            const {done, value} = await reader.read();
-            
-            if (done) {
+          // 处理下载进度
+          xhr.onprogress = (event) => {
+            if (event.lengthComputable) {
+              const progress = (event.loaded / event.total) * 100;
               setDownloadProgress(prev => ({
                 ...prev,
                 files: {
                   ...prev.files,
-                  [file.name]: { ...prev.files[file.name], progress: 100, status: 'completed' }
-                },
-                completed: prev.completed + 1
+                  [file.name]: { ...prev.files[file.name], progress }
+                }
               }));
-              break;
             }
-            
-            receivedLength += value.length;
-            const progress = (receivedLength / contentLength) * 100;
-            
-            setDownloadProgress(prev => ({
-              ...prev,
-              files: {
-                ...prev.files,
-                [file.name]: { ...prev.files[file.name], progress }
+          };
+
+          // 等待下载完成
+          const blob = await new Promise((resolve, reject) => {
+            xhr.onload = () => {
+              if (xhr.status === 200) {
+                resolve(xhr.response);
+              } else {
+                reject(new Error(`下载失败: ${xhr.status}`));
               }
-            }));
-          }
+            };
+            xhr.onerror = () => reject(new Error('网络错误'));
+            xhr.send();
+          });
 
           // 创建下载链接
-          const blob = await response.blob();
           const url = window.URL.createObjectURL(blob);
           const link = document.createElement('a');
           link.href = url;
@@ -776,6 +1102,16 @@ const Cos = () => {
           link.click();
           document.body.removeChild(link);
           window.URL.revokeObjectURL(url);
+
+          // 更新完成状态
+          setDownloadProgress(prev => ({
+            ...prev,
+            files: {
+              ...prev.files,
+              [file.name]: { ...prev.files[file.name], progress: 100, status: 'completed' }
+            },
+            completed: prev.completed + 1
+          }));
 
         } catch (error) {
           setDownloadProgress(prev => ({
@@ -977,129 +1313,56 @@ const Cos = () => {
                       </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                      {files.map((item) => (
-                        <CTableRow 
-                          key={item.key}
-                          active={selectedFiles.includes(item.key)}
-                        >
-                          <CTableDataCell>
-                            <CFormCheck
-                              checked={selectedFiles.includes(item.key)}
-                              onChange={() => handleSelect(item.key)}
-                            />
-                          </CTableDataCell>
-                          {item.isFolder ? (
-                            <>
-                              <CTableDataCell colSpan="5" style={{ padding: '4px 12px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                  <CIcon 
-                                    icon={cilFolder} 
-                                    size="sm" 
-                                    style={{ 
-                                      color: '#ffd700',
-                                      marginRight: '4px'
-                                    }} 
-                                  />
-                                  <CButton 
-                                    color="link"
-                                    className="p-0 text-decoration-none text-start"
-                                    onClick={() => handleFolderClick(item.key)}
-                                    style={{
-                                      fontSize: '10px',
-                                      width: 'fit-content',
-                                      minWidth: 'unset',
-                                      padding: '0',
-                                      margin: '0',
-                                      display: 'inline-block'
-                                    }}
-                                  >
-                                    {item.name}/
-                                  </CButton>
-                                </div>
-                              </CTableDataCell>
-                              <CTableDataCell style={{ padding: '4px 12px' }}>
-                                <CPopover
-                                  content={
-                                    <div>
-                                      <p>确定要删除这个文件夹吗？文件夹内的所有文件都会被删除。</p>
-                                      <CButton 
-                                        color="danger" 
-                                        size="sm"
-                                        onClick={() => handleDelete(item.key, true)}
-                                      >
-                                        确定删除
-                                      </CButton>
-                                    </div>
-                                  }
-                                  placement="left"
-                                >
-                                  <CButton color="danger" variant="ghost">
-                                    <CIcon icon={cilTrash} size="sm" /> 删除
-                                  </CButton>
-                                </CPopover>
-                              </CTableDataCell>
-                            </>
-                          ) : (
-                            <>
-                              <CTableDataCell style={{ padding: '4px 12px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                  <CIcon icon={cilFile} size="sm" />
-                                  <a 
-                                    href="#" 
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      handleFileClick(item);
-                                    }}
-                                    style={{ color: '#1890ff' }}
-                                  >
-                                    {item.name}
-                                  </a>
-                                  <CButton
-                                    color="link"
-                                    size="sm"
-                                    className="p-0"
-                                    onClick={() => handleCopy(item.url)}
-                                    title="复制链接"
-                                  >
-                                    <CIcon icon={cilCopy} size="sm" />
-                                  </CButton>
-                                </div>
-                              </CTableDataCell>
-                              <CTableDataCell style={{ padding: '4px 12px' }}>
-                                <CBadge color="info" shape="rounded-pill">
-                                  {item.size}
-                                </CBadge>
-                              </CTableDataCell>
-                              <CTableDataCell style={{ padding: '4px 12px' }}>
-                                <CBadge color="info" shape="rounded-pill">
-                                  {item.contentType}
-                                </CBadge>
-                              </CTableDataCell>
-                              <CTableDataCell style={{ padding: '4px 12px' }}>
-                                <CBadge color="success" shape="rounded-pill">
-                                  {item.storageClass}
-                                </CBadge>
-                              </CTableDataCell>
-                              <CTableDataCell style={{ padding: '4px 12px' }}>
-                                {item.lastModified}
-                              </CTableDataCell>
-                              <CTableDataCell style={{ padding: '4px 12px' }}>
-                                <CButtonGroup size="sm">
-                                  <CButton 
-                                    color="info" 
-                                    variant="ghost"
-                                    onClick={() => handleDownload(item)}
-                                  >
-                                    <CIcon icon={cilCloudDownload} size="sm" /> 下载
-                                  </CButton>
+                      {files.length > 0 ? (
+                        files.map((item) => (
+                          <CTableRow 
+                            key={item.key}
+                            active={selectedFiles.includes(item.key)}
+                          >
+                            <CTableDataCell>
+                              <CFormCheck
+                                checked={selectedFiles.includes(item.key)}
+                                onChange={() => handleSelect(item.key)}
+                              />
+                            </CTableDataCell>
+                            {item.isFolder ? (
+                              <>
+                                <CTableDataCell colSpan="5" style={{ padding: '4px 12px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <CIcon 
+                                      icon={cilFolder} 
+                                      size="sm" 
+                                      style={{ 
+                                        color: '#ffd700',
+                                        marginRight: '4px'
+                                      }} 
+                                    />
+                                    <CButton 
+                                      color="link"
+                                      className="p-0 text-decoration-none text-start"
+                                      onClick={() => handleFolderClick(item.key)}
+                                      style={{
+                                        fontSize: '10px',
+                                        width: 'fit-content',
+                                        minWidth: 'unset',
+                                        padding: '0',
+                                        margin: '0',
+                                        display: 'inline-block'
+                                      }}
+                                    >
+                                      {item.name}/
+                                    </CButton>
+                                  </div>
+                                </CTableDataCell>
+                                <CTableDataCell style={{ padding: '4px 12px' }}>
                                   <CPopover
                                     content={
                                       <div>
-                                        <p>确定要删除这个文件吗？</p>
+                                        <p>确定要删除这个文件夹吗？文件夹内的所有文件都会被删除。</p>
                                         <CButton 
                                           color="danger" 
                                           size="sm"
-                                          onClick={() => handleDelete(item.key, false)}
+                                          onClick={() => handleDelete(item.key, true)}
                                         >
                                           确定删除
                                         </CButton>
@@ -1111,12 +1374,199 @@ const Cos = () => {
                                       <CIcon icon={cilTrash} size="sm" /> 删除
                                     </CButton>
                                   </CPopover>
-                                </CButtonGroup>
-                              </CTableDataCell>
-                            </>
-                          )}
+                                </CTableDataCell>
+                              </>
+                            ) : (
+                              <>
+                                <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <CIcon icon={cilFile} size="sm" />
+                                    <a 
+                                      href="#" 
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleFileClick(item);
+                                      }}
+                                      style={{ color: '#1890ff' }}
+                                    >
+                                      {item.name}
+                                    </a>
+                                    <CButton
+                                      color="link"
+                                      size="sm"
+                                      className="p-0"
+                                      onClick={() => handleCopy(item.url)}
+                                      title="复制链接"
+                                    >
+                                      <CIcon icon={cilCopy} size="sm" />
+                                    </CButton>
+                                  </div>
+                                </CTableDataCell>
+                                <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <CBadge color="info" shape="rounded-pill">
+                                    {item.size}
+                                  </CBadge>
+                                </CTableDataCell>
+                                <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <CBadge color="info" shape="rounded-pill">
+                                    {item.contentType}
+                                  </CBadge>
+                                </CTableDataCell>
+                                <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <CBadge color="success" shape="rounded-pill">
+                                    {item.storageClass}
+                                  </CBadge>
+                                </CTableDataCell>
+                                <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  {item.lastModified}
+                                </CTableDataCell>
+                                <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <CButtonGroup size="sm">
+                                    <CButton 
+                                      color="info" 
+                                      variant="ghost"
+                                      onClick={() => handleDownload(item)}
+                                    >
+                                      <CIcon icon={cilCloudDownload} size="sm" /> 下载
+                                    </CButton>
+                                    <CPopover
+                                      content={
+                                        <div>
+                                          <p>确定要删除这个文件吗？</p>
+                                          <CButton 
+                                            color="danger" 
+                                            size="sm"
+                                            onClick={() => handleDelete(item.key, false)}
+                                          >
+                                            确定删除
+                                          </CButton>
+                                        </div>
+                                      }
+                                      placement="left"
+                                    >
+                                      <CButton color="danger" variant="ghost">
+                                        <CIcon icon={cilTrash} size="sm" /> 删除
+                                      </CButton>
+                                    </CPopover>
+                                  </CButtonGroup>
+                                </CTableDataCell>
+                              </>
+                            )}
+                          </CTableRow>
+                        ))
+                      ) : (
+                        <CTableRow>
+                          <CTableDataCell 
+                            colSpan="6" 
+                            className="text-center" 
+                            style={{ 
+                              padding: 0,  // 移除默认内边距
+                              backgroundColor: 'var(--cui-table-striped-bg)',
+                              position: 'relative',
+                              height: '200px'  // 设置固定高度
+                            }}
+                          >
+                            <div
+                              onDragOver={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                e.currentTarget.style.backgroundColor = 'var(--cui-table-hover-bg)';
+                              }}
+                              onDragLeave={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                e.currentTarget.style.backgroundColor = 'var(--cui-table-striped-bg)';
+                              }}
+                              onDrop={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                e.currentTarget.style.backgroundColor = 'var(--cui-table-striped-bg)';
+                                const files = Array.from(e.dataTransfer.files);
+                                if (files.length > 0) {
+                                  handleUpload(files);
+                                }
+                              }}
+                              style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                transition: 'background-color 0.2s ease',
+                                padding: '20px'  // 添加内边距
+                              }}
+                            >
+                              <div 
+                                style={{
+                                  width: '100%',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'center',
+                                  gap: '16px'  // 增加间距
+                                }}
+                              >
+                                <CIcon 
+                                  icon={cilFolder} 
+                                  size="xl" 
+                                  style={{ 
+                                    color: '#ffd700',
+                                    width: '48px',  // 增大图标
+                                    height: '48px'
+                                  }} 
+                                />
+                                <div className="text-medium-emphasis">
+                                  <div style={{ fontSize: '16px' }}>当前文件夹为空</div>
+                                  <div style={{ fontSize: '12px', marginTop: '8px' }}>
+                                    <CBadge color="var(--cui-table-striped-bg)" className="me-1">拖拽文件到此处上传</CBadge>
+                                  </div>
+                                </div>
+                                {currentPath && (
+                                  <div 
+                                    style={{
+                                      display: 'flex',
+                                      gap: '12px'
+                                    }}
+                                  >
+                                    <CButton 
+                                      color="primary" 
+                                      variant="outline" 
+                                      size="sm"
+                                      onClick={() => setIsCreateFolderVisible(true)}
+                                    >
+                                      <CIcon icon={cilFolder} className="me-1" />
+                                      新建文件夹
+                                    </CButton>
+                                    <Upload
+                                      customRequest={({ file }) => handleUpload(file)}
+                                      multiple={true}
+                                      showUploadList={false}
+                                      disabled={uploading}
+                                      directory={false}
+                                    >
+                                      <CTooltip
+                                        content="支持选择多个文件"
+                                        placement="bottom"
+                                      >
+                                        <CButton 
+                                          color="primary" 
+                                          size="sm" 
+                                          disabled={uploading}
+                                        >
+                                          <CIcon icon={cilCloudUpload} className="me-1" />
+                                          {uploading ? '上传中...' : '上传文件'}
+                                        </CButton>
+                                      </CTooltip>
+                                    </Upload>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </CTableDataCell>
                         </CTableRow>
-                      ))}
+                      )}
                     </CTableBody>
                   </CTable>
                 )}
