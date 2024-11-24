@@ -107,6 +107,8 @@ const ListSysWallets
 const ListSysCryptoCurrencies= React.lazy(() => import('./views/base/sysCryptoCurrencies/SysCryptoCurrencies'))
 
 
+const XAI = React.lazy(() => import('./views/base/ai/xai'))
+
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -278,6 +280,13 @@ const routes = [
     path: '/data/sysCryptoCurrencies', name: '[系统]加密货币管理', element: (
       <PrivateRoute>
         <ListSysCryptoCurrencies/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/data/ai', name: 'XAI', element: (
+      <PrivateRoute>
+        <XAI/>
       </PrivateRoute>
     )
   },

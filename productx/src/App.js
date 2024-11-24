@@ -4,6 +4,40 @@ import { useSelector } from 'react-redux'
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
 import TawkToChat from "src/TawkToChat";
+import styled, { createGlobalStyle } from 'styled-components';
+
+// 添加全局样式
+const GlobalStyle = createGlobalStyle`
+  #tawk-default-container {
+    left: 20px !important;
+    right: auto !important;
+    bottom: 20px !important;
+  }
+
+  .tawk-min-container {
+    left: 20px !important;
+    right: auto !important;
+    bottom: 20px !important;
+  }
+
+  .tawk-button {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 6px !important;
+  }
+
+  iframe#tawkId {
+    width: 280px !important;
+    height: 360px !important;
+    left: 20px !important;
+    right: auto !important;
+    bottom: 70px !important;
+  }
+
+  .tawk-custom-color {
+    background-color: #1890ff !important;
+  }
+`;
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -34,6 +68,7 @@ const App = () => {
 
   return (
     <HashRouter>
+      <GlobalStyle />
       <Suspense
         fallback={
           <div className="pt-3 text-center">
@@ -51,7 +86,6 @@ const App = () => {
       </Suspense>
       <TawkToChat />
     </HashRouter>
-
   )
 }
 
