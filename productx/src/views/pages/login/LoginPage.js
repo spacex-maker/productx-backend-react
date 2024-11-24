@@ -17,7 +17,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilLockUnlocked, cilUser, cilSettings } from '@coreui/icons';
 import LoginHeader from 'src/views/pages/login/LoginHeader';
-import axiosInstance, { API_BASE_URL, setBaseURL } from 'src/axiosInstance';
+import api, { API_BASE_URL, setBaseURL, API_CONFIG } from 'src/axiosInstance';
 import { message } from 'antd';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -136,8 +136,8 @@ const ApiInputGroup = styled.div`
   padding: 1px;
 `;
 
-const ProtocolSelect = styled(CFormSelect)`
-  width: 90px !important;
+const EnvSelect = styled(CFormSelect)`
+  width: 120px !important;
   border-radius: 4px 0 0 4px !important;
   border: none !important;
   background: rgba(30, 32, 47, 0.95) !important;
@@ -395,8 +395,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [captcha, setCaptcha] = useState();
-  const [apiBaseURL, setApiBaseURL] = useState('');
-  const [protocol, setProtocol] = useState('http');
+  const [selectedEnv, setSelectedEnv] = useState('PROD');
   const [loading, setLoading] = useState(false);
   const [showApiConfig, setShowApiConfig] = useState(false);
   const { t } = useTranslation(); // 获取 t 函数
@@ -415,12 +414,9 @@ const LoginPage = () => {
   };
 
   const handleSetBaseURL = () => {
-    if (apiBaseURL) {
-      const fullURL = `${protocol}://${apiBaseURL}`;
-      setBaseURL(fullURL);
-      console.log('设置的 API 基地址:', fullURL);
-    } else {
-      console.error('请输入有效的 API 基地址');
+    if (selectedEnv) {
+      setBaseURL(selectedEnv);
+      message.success(`已切换到${selectedEnv === 'PROD' ? '生产' : selectedEnv === 'TEST' ? '测试' : '本地'}环境`);
     }
   };
 
@@ -429,7 +425,8 @@ const LoginPage = () => {
     e.preventDefault();
     const formData = { username, password, verify };
     try {
-      await axiosInstance.post('/manage/manager/login', formData);
+      const token = await api.post('/manage/manager/login', formData);
+      localStorage.setItem('jwtManageToken',token);
       navigate('/dashboard');
       setNotice("登录成功");
     } catch (error) {
@@ -488,6 +485,20 @@ const LoginPage = () => {
     message.info(showApiConfig ? 'API 配置已隐藏' : 'API 配置已显示');
   };
 
+  // 在组件加载时自动设置当前环境
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    let initialEnv = 'PROD';
+
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      initialEnv = 'LOCAL';
+    } else if (hostname.includes('test')) {
+      initialEnv = 'TEST';
+    }
+
+    setSelectedEnv(initialEnv);
+  }, []);
+
   return (
     <PageWrapper>
       <WaveEffect onDoubleClick={handleWaveDoubleClick} />
@@ -516,20 +527,21 @@ const LoginPage = () => {
                           {t('apiConfig')}
                         </ApiTitle>
                         <ApiInputGroup>
-                          <ProtocolSelect
-                            value={protocol}
-                            onChange={(e) => setProtocol(e.target.value)}
+                          <EnvSelect
+                            value={selectedEnv}
+                            onChange={(e) => setSelectedEnv(e.target.value)}
                           >
-                            <option value="http">http</option>
-                            <option value="https">https</option>
-                          </ProtocolSelect>
+                            <option value="LOCAL">本地环境 ({API_CONFIG.LOCAL})</option>
+                            <option value="TEST">测试环境 ({API_CONFIG.TEST})</option>
+                            <option value="PROD">生产环境 ({API_CONFIG.PROD})</option>
+                          </EnvSelect>
                           <ApiInput
-                            placeholder={t('apiUrlPlaceholder')}
-                            value={apiBaseURL}
-                            onChange={(e) => setApiBaseURL(e.target.value)}
+                            value={API_CONFIG[selectedEnv]}
+                            disabled
+                            placeholder="API 地址将根据选择的环境自动设置"
                           />
                           <ApiButton onClick={handleSetBaseURL}>
-                            {t('setButton')}
+                            切换环境
                           </ApiButton>
                         </ApiInputGroup>
                       </ApiSection>
