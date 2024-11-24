@@ -18,6 +18,12 @@ import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 const _nav = [
   {
     component: CNavItem,
+    name: 'XAI',
+    to: '/data/ai',
+    icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: '控制台',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
