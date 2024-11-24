@@ -51,31 +51,31 @@ const StyledCard = styled(CCard)`
 
 const SearchWrapper = styled(CCard)`
   margin-bottom: 20px;
-  
+
   .card-body {
     padding: 12px;
   }
-  
+
   .input-group {
     width: 100%;
   }
-  
+
   .btn-group {
     .btn {
       padding: 4px 12px;
       display: flex;
       align-items: center;
-      
+
       svg {
         margin-right: 4px;
       }
     }
   }
-  
+
   @media (max-width: 768px) {
     .btn-group {
       width: 100%;
-      
+
       .btn {
         flex: 1;
         justify-content: center;
@@ -94,40 +94,40 @@ const TableWrapper = styled(CCard)`
 // 修改全局样式组件
 const GlobalStyle = styled.div`
   font-size: 10px !important;
-  
+
   // 表格样式优化
   .table {
     font-size: 10px !important;
     margin-bottom: 0;
-    
+
     th, td {
       padding: 8px 12px;
       vertical-align: middle;
     }
   }
-  
+
   // 按钮样式优化
   .btn {
     font-size: 10px !important;
     padding: 4px 8px;
-    
+
     &.btn-sm {
       padding: 2px 6px;
     }
   }
-  
+
   // Badge 样式优化
   .badge {
     font-size: 10px !important;
     font-weight: normal !important;
     padding: 4px 8px !important;
   }
-  
+
   // Space 组件间距优化
   .ant-space {
     gap: 4px !important;
   }
-  
+
   // 卡片内边距优化
   .card-body {
     padding: 12px;
@@ -137,20 +137,20 @@ const GlobalStyle = styled.div`
 // 添加样式组件，使用主题色变量
 const DetailModalWrapper = styled.div`
   font-size: 12px;
-  
+
   .modal-title {
     font-size: 14px;
     font-weight: 500;
     color: var(--cui-body-color);
   }
-  
+
   .section-title {
     font-size: 13px;
     font-weight: 500;
     color: var(--cui-body-color);
     margin-bottom: 12px;
   }
-  
+
   .detail-card {
     background: var(--cui-card-bg);
     border: 1px solid var(--cui-border-color);
@@ -158,106 +158,106 @@ const DetailModalWrapper = styled.div`
     padding: 16px;
     margin-bottom: 16px;
   }
-  
+
   .info-table {
     width: 100%;
     border-radius: var(--cui-border-radius);
     overflow: hidden;
-    
+
     td {
       padding: 8px 12px;
       border-bottom: 1px solid var(--cui-border-color);
-      
+
       &:first-child {
         width: 100px;
         color: var(--cui-body-color);
         background: var(--cui-tertiary-bg);
       }
-      
+
       &:last-child {
         background: var(--cui-card-bg);
       }
     }
-    
+
     tr:last-child td {
       border-bottom: none;
     }
   }
-  
+
   .badge {
     font-size: 11px;
     padding: 4px 8px;
     font-weight: normal;
     background: var(--cui-primary);
-    
+
     &.badge-info {
       background: var(--cui-info);
     }
-    
+
     &.badge-success {
       background: var(--cui-success);
     }
   }
-  
+
   .copy-button {
     font-size: 11px;
     padding: 4px 8px;
     color: var(--cui-primary);
     background: var(--cui-btn-ghost-bg);
     border-color: var(--cui-primary);
-    
+
     &:hover {
       color: var(--cui-white);
       background: var(--cui-primary);
     }
-    
+
     .icon {
       font-size: 11px;
       margin-right: 4px;
     }
   }
-  
+
   .link-section {
     background: var(--cui-card-bg);
     border: 1px solid var(--cui-border-color);
     border-radius: var(--cui-border-radius);
     padding: 12px;
-    
+
     .link-text {
       font-size: 11px;
       color: var(--cui-body-color);
       word-break: break-all;
     }
-    
+
     .hint-text {
       font-size: 11px;
       color: var(--cui-text-muted);
       margin-top: 8px;
     }
   }
-  
+
   .modal-footer {
     background: var(--cui-tertiary-bg);
     border-top: 1px solid var(--cui-border-color);
-    
+
     .btn {
       font-size: 12px;
       padding: 4px 12px;
-      
+
       &.btn-primary {
         background: var(--cui-primary);
         border-color: var(--cui-primary);
-        
+
         &:hover {
           background: var(--cui-primary-hover);
           border-color: var(--cui-primary-hover);
         }
       }
-      
+
       &.btn-secondary {
         background: var(--cui-secondary);
         border-color: var(--cui-secondary);
-        
+
         &:hover {
           background: var(--cui-secondary-hover);
           border-color: var(--cui-secondary-hover);
@@ -265,23 +265,23 @@ const DetailModalWrapper = styled.div`
       }
     }
   }
-  
+
   // 暗色主题适配
   [data-theme="dark"] & {
     .detail-card {
       background: var(--cui-dark);
     }
-    
+
     .info-table {
       td:first-child {
         background: var(--cui-dark);
       }
-      
+
       td:last-child {
         background: var(--cui-dark-bg);
       }
     }
-    
+
     .link-section {
       background: var(--cui-dark);
     }
@@ -291,13 +291,13 @@ const DetailModalWrapper = styled.div`
 // 修改下载进度弹窗样式
 const ProgressModalWrapper = styled.div`
   font-size: 12px;
-  
+
   .modal-title {
     font-size: 14px;
     font-weight: 500;
     color: var(--cui-body-color);
   }
-  
+
   .progress-card {
     background: var(--cui-card-bg);
     border: 1px solid var(--cui-border-color);
@@ -305,38 +305,38 @@ const ProgressModalWrapper = styled.div`
     padding: 12px;
     margin-bottom: 12px;
   }
-  
+
   .progress-bar {
     background-color: var(--cui-primary);
     height: 8px;
     border-radius: var(--cui-border-radius);
-    
+
     &.success {
       background-color: var(--cui-success);
     }
-    
+
     &.error {
       background-color: var(--cui-danger);
     }
   }
-  
+
   .text-speed {
     color: var(--cui-primary);
   }
-  
+
   .text-muted {
     color: var(--cui-text-muted) !important;
   }
-  
+
   .text-error {
     color: var(--cui-danger);
   }
-  
+
   .modal-footer {
     background: var(--cui-tertiary-bg);
     border-top: 1px solid var(--cui-border-color);
   }
-  
+
   // 暗色主题适配
   [data-theme="dark"] & {
     .progress-card {
@@ -434,7 +434,7 @@ const Cos = () => {
   const getFileList = async (cos, path = currentPath) => {
     setLoading(true);
     try {
-      const instance = cos || cosInstance;
+      let instance = cos || cosInstance;
       if (!instance) {
         const newCos = await initCOS();
         if (!newCos) {
@@ -474,7 +474,7 @@ const Cos = () => {
       const allFiles = [...folders, ...files];
       setFiles(allFiles);
       setFilteredFiles(allFiles);
-      
+
       // 更新分页信息
       setPagination(prev => ({
         ...prev,
@@ -545,7 +545,7 @@ const Cos = () => {
             Region: region,
             Key: item.Key
           });
-          
+
           setDeletingProgress(prev => ({
             ...prev,
             current: i + 1
@@ -758,17 +758,17 @@ const Cos = () => {
   // 搜索文件
   const handleSearch = (value) => {
     setSearchKey(value);
-    
+
     if (!value.trim()) {
       setFilteredFiles(files);
       return;
     }
 
     const searchText = value.toLowerCase();
-    const filtered = files.filter(file => 
+    const filtered = files.filter(file =>
       file.name.toLowerCase().includes(searchText)
     );
-    
+
     setFilteredFiles(filtered);
   };
 
@@ -789,8 +789,8 @@ const Cos = () => {
     const storageClass = selectedFile.storageClass || '标准存储';
 
     return (
-      <CModal 
-        visible={isFileDetailVisible} 
+      <CModal
+        visible={isFileDetailVisible}
         onClose={() => {
           setIsFileDetailVisible(false);
           setSelectedFile(null);
@@ -801,8 +801,8 @@ const Cos = () => {
           <CModalHeader>
             <CModalTitle>
               <div className="d-flex align-items-center">
-                <CIcon 
-                  icon={isFolder ? cilFolder : cilFile} 
+                <CIcon
+                  icon={isFolder ? cilFolder : cilFile}
                   className="me-2 text-primary"
                   size="lg"
                 />
@@ -818,7 +818,7 @@ const Cos = () => {
                 <div className="text-break flex-grow-1">
                   {selectedFile.name}
                 </div>
-                <CButton 
+                <CButton
                   color="ghost-primary"
                   size="sm"
                   className="copy-button ms-2"
@@ -841,7 +841,7 @@ const Cos = () => {
                   <tr>
                     <td>文件类型</td>
                     <td>
-                      <CBadge 
+                      <CBadge
                         color={isFolder ? 'info' : 'primary'}
                       >
                         {isFolder ? '文件夹' : fileType}
@@ -875,7 +875,7 @@ const Cos = () => {
                         <div className="text-break flex-grow-1">
                           {selectedFile.key}
                         </div>
-                        <CButton 
+                        <CButton
                           color="ghost-primary"
                           size="sm"
                           className="copy-button ms-2"
@@ -903,7 +903,7 @@ const Cos = () => {
                     <div className="link-text flex-grow-1">
                       {selectedFile.url}
                     </div>
-                    <CButton 
+                    <CButton
                       color="primary"
                       size="sm"
                       className="copy-button ms-2"
@@ -925,7 +925,7 @@ const Cos = () => {
           </CModalBody>
           <CModalFooter>
             {!isFolder && (
-              <CButton 
+              <CButton
                 color="primary"
                 size="sm"
                 onClick={() => window.open(selectedFile.url, '_blank')}
@@ -934,7 +934,7 @@ const Cos = () => {
                 下载文件
               </CButton>
             )}
-            <CButton 
+            <CButton
               color="secondary"
               size="sm"
               onClick={() => {
@@ -974,7 +974,7 @@ const Cos = () => {
     }
 
     try {
-      const folderKey = currentPath 
+      const folderKey = currentPath
         ? `${currentPath}${newFolderName.trim()}/`
         : `${newFolderName.trim()}/`;
 
@@ -1002,8 +1002,8 @@ const Cos = () => {
     const percent = Math.round((deletingProgress.current / deletingProgress.total) * 100);
 
     return (
-      <CModal 
-        visible={deletingProgress.visible} 
+      <CModal
+        visible={deletingProgress.visible}
         backdrop="static"
         keyboard={false}
       >
@@ -1030,8 +1030,8 @@ const Cos = () => {
 
   // 修改上传进度弹窗组件
   const UploadProgressModal = () => (
-    <CModal 
-      visible={uploadModalVisible} 
+    <CModal
+      visible={uploadModalVisible}
       onClose={() => {
         if (!uploading) {
           setUploadModalVisible(false);
@@ -1065,11 +1065,11 @@ const Cos = () => {
                   <span className="ms-1">- {progress.percent}%</span>
                 </div>
               </div>
-              <CProgress 
+              <CProgress
                 value={progress.percent}
                 color={
-                  progress.status === 'error' ? 'danger' : 
-                  progress.status === 'success' ? 'success' : 
+                  progress.status === 'error' ? 'danger' :
+                  progress.status === 'success' ? 'success' :
                   'primary'
                 }
               />
@@ -1083,8 +1083,8 @@ const Cos = () => {
         </div>
       </CModalBody>
       <CModalFooter>
-        <CButton 
-          color="secondary" 
+        <CButton
+          color="secondary"
           onClick={() => {
             if (!uploading) {
               setUploadModalVisible(false);
@@ -1125,11 +1125,11 @@ const Cos = () => {
     try {
       const folderKeys = selectedFiles.filter(key => files.find(f => f.key === key)?.isFolder);
       const fileKeys = selectedFiles.filter(key => !files.find(f => f.key === key)?.isFolder);
-      
+
       // 设置删除进度初始状态
       let totalFiles = fileKeys.length;
       let foldersContent = [];
-      
+
       // 获取文件夹内的文件
       for (const folderKey of folderKeys) {
         const result = await cosInstance.getBucket({
@@ -1141,7 +1141,7 @@ const Cos = () => {
         foldersContent = [...foldersContent, ...result.Contents];
         totalFiles += result.Contents.length;
       }
-      
+
       setDeletingProgress({
         visible: true,
         total: totalFiles,
@@ -1224,9 +1224,9 @@ const Cos = () => {
 
       while(true) {
         const {done, value} = await reader.read();
-        
+
         if (done) break;
-        
+
         chunks.push(value);
         receivedLength += value.length;
 
@@ -1329,7 +1329,7 @@ const Cos = () => {
 
     setDownloading(true);
     setDownloadModalVisible(true);
-    
+
     // 初始化下载进度
     const initialProgress = selectedFileList.reduce((acc, file) => {
       acc[file.name] = {
@@ -1341,7 +1341,7 @@ const Cos = () => {
       };
       return acc;
     }, {});
-    
+
     setDownloadProgress(initialProgress);
 
     try {
@@ -1363,8 +1363,8 @@ const Cos = () => {
 
   // 修改下载进度弹窗组件
   const DownloadProgressModal = () => (
-    <CModal 
-      visible={downloadModalVisible} 
+    <CModal
+      visible={downloadModalVisible}
       onClose={() => {
         if (!downloading) {
           setDownloadModalVisible(false);
@@ -1389,11 +1389,11 @@ const Cos = () => {
               <div key={fileName} className="mb-3 p-3 border rounded">
                 <div className="d-flex justify-content-between align-items-center mb-2">
                   <div className="d-flex align-items-center" style={{ maxWidth: '70%' }}>
-                    <CIcon 
-                      icon={cilFile} 
+                    <CIcon
+                      icon={cilFile}
                       className={`me-2 ${
-                        progress.status === 'success' ? 'text-success' : 
-                        progress.status === 'error' ? 'text-danger' : 
+                        progress.status === 'success' ? 'text-success' :
+                        progress.status === 'error' ? 'text-danger' :
                         'text-primary'
                       }`}
                     />
@@ -1412,18 +1412,18 @@ const Cos = () => {
                     )}
                   </div>
                 </div>
-                
-                <CProgress 
+
+                <CProgress
                   className="mb-1"
                   height={8}
                   value={progress.percent}
                   color={
-                    progress.status === 'error' ? 'danger' : 
-                    progress.status === 'success' ? 'success' : 
+                    progress.status === 'error' ? 'danger' :
+                    progress.status === 'success' ? 'success' :
                     'primary'
                   }
                 />
-                
+
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="small text-muted">
                     {progress.percent}%
@@ -1447,7 +1447,7 @@ const Cos = () => {
           <div className="small text-muted">
             已完成 {Object.values(downloadProgress).filter(p => p.status === 'success').length} / {Object.keys(downloadProgress).length} 个文件
           </div>
-          <CButton 
+          <CButton
             color={downloading ? 'secondary' : 'primary'}
             onClick={() => {
               if (!downloading) {
@@ -1488,8 +1488,8 @@ const Cos = () => {
                         onChange={(e) => handleSearch(e.target.value)}
                         className="border-end-0"
                       />
-                      <CButton 
-                        color="primary" 
+                      <CButton
+                        color="primary"
                         variant="outline"
                         onClick={() => getFileList()}
                       >
@@ -1517,7 +1517,7 @@ const Cos = () => {
                           return false;
                         }}
                       >
-                        <CButton 
+                        <CButton
                           color="primary"
                           disabled={uploading}
                           title="支持批量上传"
@@ -1526,7 +1526,7 @@ const Cos = () => {
                           上传
                         </CButton>
                       </Upload>
-                      <CButton 
+                      <CButton
                         color="primary"
                         variant="outline"
                         onClick={() => setIsCreateFolderVisible(true)}
@@ -1556,9 +1556,9 @@ const Cos = () => {
                   <div className="mb-2">
                     <CRow className="align-items-center g-2">
                       <CCol xs="auto">
-                        <CButton 
-                          color="primary" 
-                          variant="outline" 
+                        <CButton
+                          color="primary"
+                          variant="outline"
                           size="sm"
                           onClick={handleBackClick}
                         >
@@ -1604,7 +1604,7 @@ const Cos = () => {
                             pagination.current * pagination.pageSize
                           )
                           .map((item) => (
-                            <CTableRow 
+                            <CTableRow
                               key={item.key}
                               active={selectedFiles.includes(item.key)}
                             >
@@ -1618,15 +1618,15 @@ const Cos = () => {
                                 <CTableDataCell colSpan="6" style={{ padding: '4px 12px' }}>
                                   <CRow className="align-items-center g-0">
                                     <CCol style={{ display: 'flex', alignItems: 'center' }}>
-                                      <CIcon 
-                                        icon={cilFolder} 
-                                        size="sm" 
-                                        style={{ 
+                                      <CIcon
+                                        icon={cilFolder}
+                                        size="sm"
+                                        style={{
                                           color: '#ffd700',
                                           marginRight: '4px'
-                                        }} 
+                                        }}
                                       />
-                                      <CButton 
+                                      <CButton
                                         color="link"
                                         className="p-0 text-decoration-none text-start"
                                         onClick={() => handleFolderClick(item.key)}
@@ -1644,7 +1644,7 @@ const Cos = () => {
                                     </CCol>
                                     <CCol xs="auto">
                                       <CButtonGroup size="sm">
-                                        <CButton 
+                                        <CButton
                                           color="primary"
                                           variant="ghost"
                                           onClick={() => handleFolderClick(item.key)}
@@ -1655,8 +1655,8 @@ const Cos = () => {
                                           content={
                                             <div>
                                               <p>确定要删除这个文件夹吗？文件夹所有文件都会被删除。</p>
-                                              <CButton 
-                                                color="danger" 
+                                              <CButton
+                                                color="danger"
                                                 size="sm"
                                                 onClick={() => handleDelete(item.key, true)}
                                               >
@@ -1679,8 +1679,8 @@ const Cos = () => {
                                   <CTableDataCell style={{ padding: '4px 12px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                       <CIcon icon={cilFile} size="sm" />
-                                      <a 
-                                        href="#" 
+                                      <a
+                                        href="#"
                                         onClick={(e) => {
                                           e.preventDefault();
                                           handleFileClick(item);
@@ -1721,8 +1721,8 @@ const Cos = () => {
                                   <CTableDataCell style={{ padding: '4px 12px' }}>
                                     <CButtonGroup size="sm">
                                       {!item.isFolder && ( // 只为文件显下载按钮
-                                        <CButton 
-                                          color="primary" 
+                                        <CButton
+                                          color="primary"
                                           variant="ghost"
                                           onClick={() => handleDownload(item)}
                                           title="下载文件"
@@ -1732,8 +1732,8 @@ const Cos = () => {
                                           <span className="ms-1">下载</span>
                                         </CButton>
                                       )}
-                                      <CButton 
-                                        color="danger" 
+                                      <CButton
+                                        color="danger"
                                         variant="ghost"
                                         onClick={() => handleDelete(item.key, item.isFolder)}
                                         title={item.isFolder ? "删除文件夹" : "删除文件"}
@@ -1752,9 +1752,9 @@ const Cos = () => {
                         <CTableRow>
                           <CTableDataCell colSpan="7" className="text-center py-5">
                             <div className="d-flex flex-column align-items-center text-muted">
-                              <CIcon 
-                                icon={cilFolder} 
-                                size="3xl" 
+                              <CIcon
+                                icon={cilFolder}
+                                size="3xl"
                                 className="mb-3 text-muted"
                               />
                               {loading ? (
@@ -1792,8 +1792,8 @@ const Cos = () => {
                                             return false;
                                           }}
                                         >
-                                          <CButton 
-                                            color="link" 
+                                          <CButton
+                                            color="link"
                                             className="p-0 mx-1"
                                             disabled={uploading}
                                           >
@@ -1801,8 +1801,8 @@ const Cos = () => {
                                           </CButton>
                                         </Upload>
                                         或
-                                        <CButton 
-                                          color="link" 
+                                        <CButton
+                                          color="link"
                                           className="p-0 mx-1"
                                           onClick={() => setIsCreateFolderVisible(true)}
                                         >
@@ -1854,8 +1854,8 @@ const Cos = () => {
                 />
               </CModalBody>
               <CModalFooter>
-                <CButton 
-                  color="secondary" 
+                <CButton
+                  color="secondary"
                   onClick={() => {
                     setIsCreateFolderVisible(false);
                     setNewFolderName('');
@@ -1863,7 +1863,7 @@ const Cos = () => {
                 >
                   取消
                 </CButton>
-                <CButton 
+                <CButton
                   color="primary"
                   onClick={handleCreateFolder}
                 >
@@ -1886,8 +1886,8 @@ const Cos = () => {
                     const file = files.find(f => f.key === key);
                     return file && !file.isFolder;
                   }) && (
-                    <CButton 
-                      color="primary" 
+                    <CButton
+                      color="primary"
                       variant="outline"
                       onClick={handleBatchDownload}
                       disabled={downloading}
@@ -1902,8 +1902,8 @@ const Cos = () => {
                       {downloading && <CSpinner size="sm" className="ms-2" />}
                     </CButton>
                   )}
-                  <CButton 
-                    color="danger" 
+                  <CButton
+                    color="danger"
                     variant="outline"
                     onClick={() => {
                       if (window.confirm(`确定要删除选中的 ${selectedFiles.length} 个项目吗？`)) {
