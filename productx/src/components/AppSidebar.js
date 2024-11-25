@@ -109,8 +109,8 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <strong>{t('brand.name')}</strong>
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={20} />
+          <strong>Product X ADMIN</strong>
+          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={25} />
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"

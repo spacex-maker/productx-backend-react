@@ -113,6 +113,10 @@ const ListSysCryptoCurrencies= React.lazy(() => import('./views/base/sysCryptoCu
 
 const XAI = React.lazy(() => import('./views/base/ai/xai'))
 
+
+const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'))
+
+
 const routes = [
   {path: '/', exact: true, name: 'Home'},
   {path: '/login', name: '登录', element: LoginPage},
@@ -298,6 +302,13 @@ const routes = [
     path: '/data/cos', name: '[系统]对象存储管理', element: (
       <PrivateRoute>
         <SysCos/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/menu', name: '菜单管理', element: (
+      <PrivateRoute>
+        <SysMenu/>
       </PrivateRoute>
     )
   },

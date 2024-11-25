@@ -195,5 +195,30 @@
   "subdistrict": "Sottodistretto",
   "village": "Villaggio",
   "town": "Città",
-  "zone": "Zona"
+  "zone": "Zona",
+  "menu": {
+    "XAI": "XAI",
+    "控制台": "Console",
+    "用户": "Utente",
+    "管理": "Gestione",
+    "系统": "Sistema",
+    "系统支持货币": "Valute supportate",
+    "系统支持国家": "Paesi supportati",
+    "系统支持银行": "Banche supportate",
+    "客服": "Servizio clienti",
+    "工单系统": "Sistema di ticket",
+    "财务系统": "Sistema finanziario",
+    "[系统]钱包管理": "[Sistema] Gestione portafogli",
+    "[系统]加密货币管理": "[Sistema] Gestione criptovalute",
+    "[系统]对象存储管理": "[Sistema] Gestione dello storage oggetti",
+    "快递系统": "Sistema di spedizioni",
+    "快递平台": "Piattaforma di spedizioni",
+    "公司管理": "Gestione aziendale",
+    "部门管理": "Gestione dei dipartimenti",
+    "员工管理": "Gestione dei dipendenti",
+    "角色管理": "Gestione dei ruoli",
+    "权限管理": "Gestione delle autorizzazioni",
+    "订单管理": "Gestione ordini",
+    "用户管理": "Gestione utenti"
+  }
 }
