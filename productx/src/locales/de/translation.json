@@ -193,5 +193,14 @@
   "investors": "Investoren",
   "investorInfo": "Investoreninformationen",
   "fundingDate": "Finanzierungsdatum",
-  "totalInvestment": "Gesamtinvestition"
+  "totalInvestment": "Gesamtinvestition",
+  "localName": "Lokaler Name",
+  "area": "Fläche",
+  "population": "Bevölkerung",
+  "province": "Provinz",
+  "district": "Bezirk",
+  "subdistrict": "Unterbezirk",
+  "village": "Dorf",
+  "town": "Stadtteil",
+  "zone": "Zone"
 }

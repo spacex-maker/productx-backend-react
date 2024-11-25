@@ -193,5 +193,14 @@
   "investors": "투자자",
   "investorInfo": "투자자 정보",
   "fundingDate": "펀딩 날짜",
-  "totalInvestment": "총 투자"
+  "totalInvestment": "총 투자",
+  "localName": "로컬 이름",
+  "area": "면적",
+  "population": "인구",
+  "province": "도",
+  "district": "구",
+  "subdistrict": "하위구역",
+  "village": "마을",
+  "town": "읍",
+  "zone": "구역"
 }

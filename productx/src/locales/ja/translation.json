@@ -193,5 +193,14 @@
   "investors": "投資家",
   "investorInfo": "投資家情報",
   "fundingDate": "資金調達日",
-  "totalInvestment": "総投資額"
+  "totalInvestment": "総投資額",
+  "localName": "ローカル名",
+  "area": "面積",
+  "population": "人口",
+  "province": "州",
+  "district": "区",
+  "subdistrict": "小地域",
+  "village": "村",
+  "town": "町",
+  "zone": "ゾーン"
 }

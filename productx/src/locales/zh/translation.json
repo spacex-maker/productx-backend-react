@@ -194,5 +194,14 @@
   "investors": "投资人",
   "investorInfo": "投资信息",
   "fundingDate": "融资日期",
-  "totalInvestment": "总投资"
+  "totalInvestment": "总投资",
+  "localName": "本地名称",
+  "area": "面积",
+  "population": "人口",
+  "province": "省",
+  "district": "区",
+  "subdistrict": "街道",
+  "village": "村",
+  "town": "镇",
+  "zone": "区域"
 }

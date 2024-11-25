@@ -193,5 +193,14 @@
   "investors": "Инвесторы",
   "investorInfo": "Информация об инвесторах",
   "fundingDate": "Дата финансирования",
-  "totalInvestment": "Общая инвестиция"
+  "totalInvestment": "Общая инвестиция",
+  "localName": "Местное имя",
+  "area": "Площадь",
+  "population": "Население",
+  "province": "Провинция",
+  "district": "Район",
+  "subdistrict": "Подрайон",
+  "village": "Деревня",
+  "town": "Поселок",
+  "zone": "Зона"
 }

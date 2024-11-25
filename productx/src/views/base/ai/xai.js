@@ -58,37 +58,6 @@ const XAIChat = () => {
   const handleModelChange = (value) => {
     setCurrentModel(value);
   };
-
-  // 添加获取账户信息的函数
-  const fetchAccountInfo = async () => {
-    try {
-      const response = await fetch('https://api.x.ai/v1/account', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setAccountInfo({
-        remainingQuota: data.quota_remaining,
-        balance: data.balance
-      });
-    } catch (error) {
-      console.error('获取账户信息失败:', error);
-    }
-  };
-
-  // 在组件加载时获取账户信息
-  useEffect(() => {
-    fetchAccountInfo();
-  }, []);
-
   // 添加获取密钥的函数
   const fetchApiKey = async () => {
     try {
@@ -105,7 +74,40 @@ const XAIChat = () => {
     fetchApiKey();
   }, []);
 
-  // 发送消息到 XAI
+  // 优化历史消息处理
+  const getMessageHistory = (newMessage = null) => {
+    const messageHistory = [
+      {
+        role: "system",
+        content: "You are a helpful assistant."
+      },
+      ...messages.map(msg => ({
+        role: msg.type === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }))
+    ];
+
+    // 如果有新消息，添加到历史中
+    if (newMessage) {
+      // 如果新消息是图片消息
+      if (Array.isArray(newMessage) && newMessage[0]?.type === "image_url") {
+        messageHistory.push({
+          role: "user",
+          content: newMessage
+        });
+      } else {
+        // 文本消息
+        messageHistory.push({
+          role: "user",
+          content: newMessage
+        });
+      }
+    }
+
+    return messageHistory;
+  };
+
+  // 更新发送消息函数
   const handleSend = async () => {
     if (!inputValue.trim() || !apiKey) return;
 
@@ -120,22 +122,6 @@ const XAIChat = () => {
     setLoading(true);
 
     try {
-      // 构建消息历史
-      const messageHistory = [
-        {
-          role: "system",
-          content: "You are a helpful assistant."
-        },
-        ...messages.map(msg => ({
-          role: msg.type === 'user' ? 'user' : 'assistant',
-          content: msg.content
-        })),
-        {
-          role: "user",
-          content: inputValue
-        }
-      ];
-
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -143,7 +129,7 @@ const XAIChat = () => {
           'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          messages: messageHistory,
+          messages: getMessageHistory(inputValue),
           model: currentModel,
           stream: false,
           temperature: 0
@@ -155,7 +141,6 @@ const XAIChat = () => {
       }
 
       const data = await response.json();
-
       const aiMessage = {
         type: 'ai',
         content: data.choices[0].message.content,
@@ -163,7 +148,6 @@ const XAIChat = () => {
       };
 
       setMessages(prev => [...prev, aiMessage]);
-      await fetchAccountInfo(); // 更新账户信息
     } catch (error) {
       message.error('发送消息失败，请重试');
       console.error('Error:', error);
@@ -209,32 +193,19 @@ const XAIChat = () => {
     }
   };
 
-  // 发送带图片的消息
+  // 更新发送图片消息函数
   const sendMessageWithImage = async (base64Image) => {
     if (!apiKey) return;
 
     setLoading(true);
     try {
-      const messageHistory = [
+      const imageMessage = [
         {
-          role: "system",
-          content: "You are a helpful assistant."
-        },
-        ...messages.map(msg => ({
-          role: msg.type === 'user' ? 'user' : 'assistant',
-          content: msg.content
-        })),
-        {
-          role: "user",
-          content: [
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:image/jpeg;base64,${base64Image}`,
-                detail: "auto"
-              }
-            }
-          ]
+          type: "image_url",
+          image_url: {
+            url: `data:image/jpeg;base64,${base64Image}`,
+            detail: "auto"
+          }
         }
       ];
 
@@ -246,7 +217,7 @@ const XAIChat = () => {
           'x-api-version': '2024-03-01'
         },
         body: JSON.stringify({
-          messages: messageHistory,
+          messages: getMessageHistory(imageMessage),
           model: currentModel,
           max_tokens: 1000,
           stream: false,

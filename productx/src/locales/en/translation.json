@@ -193,5 +193,6 @@
   "investors": "Investors",
   "investorInfo": "Investor Information",
   "fundingDate": "Funding Date",
-  "totalInvestment": "Total Investment"
+  "totalInvestment": "Total Investment",
+  "localName": "Local Name"
 }
