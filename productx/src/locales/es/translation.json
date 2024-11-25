@@ -202,5 +202,30 @@
   "subdistrict": "Subdistrito",
   "village": "Aldea",
   "town": "Pueblo",
-  "zone": "Zona"
+  "zone": "Zona",
+  "menu": {
+    "XAI": "XAI",
+    "控制台": "Consola",
+    "用户": "Usuario",
+    "管理": "Gestión",
+    "系统": "Sistema",
+    "系统支持货币": "Monedas admitidas",
+    "系统支持国家": "Países admitidos",
+    "系统支持银行": "Bancos admitidos",
+    "客服": "Atención al cliente",
+    "工单系统": "Sistema de tickets",
+    "财务系统": "Sistema financiero",
+    "[系统]钱包管理": "[Sistema] Gestión de billeteras",
+    "[系统]加密货币管理": "[Sistema] Gestión de criptomonedas",
+    "[系统]对象存储管理": "[Sistema] Gestión de almacenamiento de objetos",
+    "快递系统": "Sistema de envíos",
+    "快递平台": "Plataforma de envíos",
+    "公司管理": "Gestión de empresas",
+    "部门管理": "Gestión de departamentos",
+    "员工管理": "Gestión de empleados",
+    "角色管理": "Gestión de roles",
+    "权限管理": "Gestión de permisos",
+    "订单管理": "Gestión de pedidos",
+    "用户管理": "Gestión de usuarios"
+  }
 }

@@ -202,5 +202,30 @@
   "subdistrict": "Unterbezirk",
   "village": "Dorf",
   "town": "Stadtteil",
-  "zone": "Zone"
+  "zone": "Zone",
+  "menu": {
+    "XAI": "XAI",
+    "控制台": "Konsole",
+    "用户": "Benutzer",
+    "管理": "Verwaltung",
+    "系统": "System",
+    "系统支持货币": "Unterstützte Währungen",
+    "系统支持国家": "Unterstützte Länder",
+    "系统支持银行": "Unterstützte Banken",
+    "客服": "Kundendienst",
+    "工单系统": "Ticketsystem",
+    "财务系统": "Finanzsystem",
+    "[系统]钱包管理": "[System] Wallet-Verwaltung",
+    "[系统]加密货币管理": "[System] Kryptowährungsverwaltung",
+    "[系统]对象存储管理": "[System] Objektspeicherverwaltung",
+    "快递系统": "Versandsystem",
+    "快递平台": "Versandplattform",
+    "公司管理": "Unternehmensverwaltung",
+    "部门管理": "Abteilungsverwaltung",
+    "员工管理": "Mitarbeiterverwaltung",
+    "角色管理": "Rollenverwaltung",
+    "权限管理": "Berechtigungsvergabe",
+    "订单管理": "Bestellverwaltung",
+    "用户管理": "Benutzerverwaltung"
+  }
 }
