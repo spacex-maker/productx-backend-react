@@ -2,6 +2,43 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm } from 'antd';
 import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
+import {useTranslation} from 'react-i18next'; // 引入 useTranslation
+import { Resizable } from 'react-resizable';
+import 'react-resizable/css/styles.css';
+
+// 添加可调整列宽的表头单元格组件
+const ResizableTitle = (props) => {
+  const { onResize, width, ...restProps } = props;
+
+  if (!width) {
+    return <th {...restProps} />;
+  }
+
+  return (
+    <Resizable
+      width={width}
+      height={0}
+      handle={
+        <span
+          className="react-resizable-handle"
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: 'absolute',
+            right: -5,
+            bottom: 0,
+            top: 0,
+            width: 10,
+            cursor: 'col-resize',
+          }}
+        />
+      }
+      onResize={onResize}
+      draggableOpts={{ enableUserSelectHack: false }}
+    >
+      <th {...restProps} />
+    </Resizable>
+  );
+};
 
 const CountryDetailModal = ({ visible, country, onCancel }) => {
   const [loading, setLoading] = useState(false);
@@ -14,6 +51,19 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
   const [editForm] = Form.useForm();
+  const {t} = useTranslation(); // 使用 t() 方法进行翻译
+  const [columnWidths, setColumnWidths] = useState({
+    localName: 100,
+    name: 130,
+    shortName: 60,
+    type: 60,
+    region: 60,
+    capital: 80,
+    population: 80,
+    areaKm2: 80,
+    status: 50,
+    action: 100,
+  });
 
   useEffect(() => {
     if (visible && country?.id) {
@@ -64,14 +114,14 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     return regions.filter(item => {
       return Object.entries(searchValues).every(([key, value]) => {
         if (!value) return true;
-        
+
         const itemValue = item[key];
         if (itemValue === null || itemValue === undefined) return false;
-        
+
         if (typeof itemValue === 'number') {
           return itemValue.toString().includes(value);
         }
-        
+
         return itemValue.toString().toLowerCase().includes(value);
       });
     });
@@ -79,8 +129,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
 
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: () => (
-      <div 
-        style={{ 
+      <div
+        style={{
           padding: '4px',
           background: '#fff',
           borderRadius: '2px',
@@ -92,8 +142,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       >
         <Input
           size="small"
-          style={{ 
-            width: 100, 
+          style={{
+            width: 100,
             fontSize: '8px',
             padding: '2px 4px',
             height: '20px',
@@ -178,14 +228,59 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     }
   };
 
+  const handleResize = (index) => (e, { size }) => {
+    const newColumnWidths = { ...columnWidths };
+    const key = columns[index].dataIndex;
+    newColumnWidths[key] = size.width;
+    setColumnWidths(newColumnWidths);
+  };
+
+  const getColumns = () => {
+    const resizableColumns = columns.map((col, index) => ({
+      ...col,
+      width: columnWidths[col.dataIndex],
+      onHeaderCell: (column) => ({
+        width: column.width,
+        onResize: handleResize(index),
+      }),
+    }));
+    return resizableColumns;
+  };
+
+  const components = {
+    header: {
+      cell: ResizableTitle,
+    },
+  };
+
+  const styles = {
+    '.react-resizable': {
+      position: 'relative',
+      backgroundClip: 'padding-box',
+    },
+    '.react-resizable-handle': {
+      position: 'absolute',
+      right: -5,
+      bottom: 0,
+      zIndex: 1,
+      width: 10,
+      height: '100%',
+      cursor: 'col-resize',
+      '&:hover': {
+        backgroundColor: 'var(--cui-primary)',
+        opacity: 0.1,
+      },
+    },
+  };
+
   const columns = [
     {
-      title: '名称',
-      dataIndex: 'name',
-      key: 'name',
-      width: 100,
+      title: t('localName'),
+      dataIndex: 'localName',
+      key: 'localName',
+      width: columnWidths.localName,
       fixed: 'left',
-      ...getColumnSearchProps('name'),
+      ...getColumnSearchProps('localName'),
       render: (text, record) => (
         <div>
           <div style={{ fontSize: '9px' }}>{text}</div>
@@ -194,111 +289,117 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       ),
     },
     {
-      title: '简称',
+      title: t('name'),
+      dataIndex: 'name',
+      key: 'name',
+      width: columnWidths.name,
+      fixed: 'left',
+      ...getColumnSearchProps('name'),
+      render: (text, record) => (
+        <div>
+          <div style={{ fontSize: '9px' }}>{text}</div>
+          <div style={{ fontSize: '8px', color: '#666' }}>{record.enName}</div>
+        </div>
+      ),
+    },
+    {
+      title: t('shortName'),
       dataIndex: 'shortName',
       key: 'shortName',
-      width: 60,
+      width: columnWidths.shortName,
       ...getColumnSearchProps('shortName'),
     },
     {
-      title: '类型',
+      title: t('type'),
       dataIndex: 'type',
       key: 'type',
-      width: 60,
+      width: columnWidths.type,
       ...getColumnSearchProps('type'),
     },
     {
-      title: '区域',
+      title: t('zone'),
       dataIndex: 'region',
       key: 'region',
-      width: 60,
+      width: columnWidths.region,
       ...getColumnSearchProps('region'),
     },
     {
-      title: '省会/首府',
+      title: t('capital'),
       dataIndex: 'capital',
       key: 'capital',
-      width: 80,
+      width: columnWidths.capital,
       ...getColumnSearchProps('capital'),
     },
     {
-      title: '人口',
+      title: t('population'),
       dataIndex: 'population',
       key: 'population',
-      width: 80,
+      width: columnWidths.population,
       ...getColumnSearchProps('population'),
       render: (val) => val ? `${(val / 10000).toFixed(2)}万` : '-',
     },
     {
-      title: '面积',
+      title: t('area'),
       dataIndex: 'areaKm2',
       key: 'areaKm2',
-      width: 80,
+      width: columnWidths.areaKm2,
       ...getColumnSearchProps('areaKm2'),
       render: (val) => val ? `${val.toLocaleString()} km²` : '-',
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-      width: 50,
-      render: (status, record) => (
-        <Switch
-          checked={status}
-          size="small"
-          onChange={(checked) => handleStatusChange(record, checked)}
-          style={{ 
-            transform: 'scale(0.8)',
-            marginTop: '-2px',
-            minWidth: '32px',
-            height: '16px'
-          }}
-        />
-      ),
-    },
-    {
-      title: '操作',
+      title: t('action'),
       key: 'action',
-      width: 100,
+      width: columnWidths.action,
       fixed: 'right',
       render: (_, record) => (
-        <div style={{ 
-          display: 'flex', 
+        <div style={{
+          display: 'flex',
           gap: '4px',
           alignItems: 'center',
           fontSize: '8px'
         }}>
+          <Switch
+            checked={record.status}
+            size="small"
+            onChange={(checked) => handleStatusChange(record, checked)}
+            style={{
+              transform: 'scale(0.8)',
+              marginTop: '-2px',
+              minWidth: '28px',
+              height: '16px'
+            }}
+          />
           <Button
             type="link"
             size="small"
-            style={{ 
-              fontSize: '8px', 
+            style={{
+              fontSize: '8px',
               padding: '0 4px',
               height: '16px',
               lineHeight: '16px'
             }}
             onClick={() => handleDrillDown(record)}
           >
-            详情
+            {t('detail')}
           </Button>
           <Button
             type="link"
             size="small"
-            style={{ 
-              fontSize: '8px', 
+            style={{
+              fontSize: '8px',
               padding: '0 4px',
               height: '16px',
               lineHeight: '16px'
             }}
             onClick={() => handleEdit(record)}
           >
-            修改
+            {t('edit')}
           </Button>
           <Popconfirm
-            title={<span style={{ fontSize: '8px' }}>确定要删除吗？</span>}
+            title={t('confirmDelete')}
             onConfirm={() => handleDelete(record.id)}
-            okText="确定"
-            cancelText="取消"
+            okText={t('confirm')}
+            cancelText={t('cancel')}
             okButtonProps={{ size: 'small', style: { fontSize: '8px' } }}
             cancelButtonProps={{ size: 'small', style: { fontSize: '8px' } }}
           >
@@ -307,8 +408,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               danger
               size="small"
               icon={<DeleteOutlined style={{ fontSize: '8px' }} />}
-              style={{ 
-                fontSize: '8px', 
+              style={{
+                fontSize: '8px',
                 padding: '0 4px',
                 height: '16px',
                 lineHeight: '16px'
@@ -327,7 +428,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         ...values,
         parentId: currentParentId
       };
-      
+
       await api.post('/manage/global-addresses/create', params);
       setAddModalVisible(false);
       addForm.resetFields();
@@ -342,9 +443,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   return (
     <Modal
       title={
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 4px',
           marginRight: '24px'
@@ -372,9 +473,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             type="primary"
             size="small"
             icon={<PlusOutlined />}
-            style={{ 
-              fontSize: '8px', 
-              padding: '0 4px', 
+            style={{
+              fontSize: '8px',
+              padding: '0 4px',
               height: '20px',
               marginRight: '8px'
             }}
@@ -386,7 +487,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       }
       open={visible}
       onCancel={onCancel}
-      width={750}
+      width={900}
       footer={null}
       bodyStyle={{ padding: '6px' }}
       closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
@@ -435,16 +536,18 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       <Spin spinning={loading}>
         {regions.length > 0 ? (
           <Table
-            columns={columns}
+            components={components}
+            columns={getColumns()}
             dataSource={filteredData}
             size="small"
-            scroll={{ x: 600, y: 300 }}
+            scroll={{ x: 'max-content', y: 300 }}
             pagination={false}
             rowKey="id"
             style={{ fontSize: '8px' }}
-            className="super-compact-table"
+            className="super-compact-table resizable-table"
             tableLayout="fixed"
             sticky={true}
+            bordered
           />
         ) : (
           <Empty description={<span style={{ fontSize: '8px' }}>暂无行政区划数据</span>} />
@@ -531,7 +634,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 label={<span style={{ fontSize: '8px' }}>区域</span>}
                 name="region"
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：华北、华南" />
+                <Input style={{ fontSize: '8px' }} placeholder="例如华北、华南" />
               </Form.Item>
             </Col>
           </Row>
@@ -542,9 +645,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 label={<span style={{ fontSize: '8px' }}>人口</span>}
                 name="population"
               >
-                <Input 
-                  type="number" 
-                  style={{ fontSize: '8px' }} 
+                <Input
+                  type="number"
+                  style={{ fontSize: '8px' }}
                   placeholder="单位：人"
                 />
               </Form.Item>
@@ -554,9 +657,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 label={<span style={{ fontSize: '8px' }}>面积</span>}
                 name="areaKm2"
               >
-                <Input 
-                  type="number" 
-                  style={{ fontSize: '8px' }} 
+                <Input
+                  type="number"
+                  style={{ fontSize: '8px' }}
                   placeholder="单位：平方公里"
                 />
               </Form.Item>
@@ -663,9 +766,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 label={<span style={{ fontSize: '8px' }}>人口</span>}
                 name="population"
               >
-                <Input 
-                  type="number" 
-                  style={{ fontSize: '8px' }} 
+                <Input
+                  type="number"
+                  style={{ fontSize: '8px' }}
                   placeholder="单位：人"
                 />
               </Form.Item>
@@ -675,9 +778,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 label={<span style={{ fontSize: '8px' }}>面积</span>}
                 name="areaKm2"
               >
-                <Input 
-                  type="number" 
-                  style={{ fontSize: '8px' }} 
+                <Input
+                  type="number"
+                  style={{ fontSize: '8px' }}
                   placeholder="单位：平方公里"
                 />
               </Form.Item>
@@ -692,6 +795,15 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           </Form.Item>
         </Form>
       </Modal>
+      <style jsx>{`
+        ${Object.entries(styles).map(([selector, rules]) =>
+          `${selector} {
+            ${Object.entries(rules).map(([prop, value]) =>
+              `${prop}: ${value};`
+            ).join('\n')}
+          }`
+        ).join('\n')}
+      `}</style>
     </Modal>
   );
 };
@@ -703,251 +815,251 @@ const styles = `
     font-size: 8px;
     line-height: 1.2;
   }
-  
+
   .super-compact-table .ant-table-tbody > tr > td {
     padding: 3px 6px;
     font-size: 8px;
     line-height: 1.2;
   }
-  
+
   .super-compact-table .ant-table-cell {
     font-size: 8px;
   }
-  
+
   .ant-modal-header {
     padding: 6px 8px;
   }
-  
+
   .ant-modal-close {
     top: 6px;
     right: 6px;
   }
-  
+
   .ant-modal-close-x {
     font-size: 12px;
     width: 20px;
     height: 20px;
     line-height: 20px;
   }
-  
+
   .ant-modal-body {
     padding: 6px;
   }
-  
+
   .ant-card-body {
     padding: 6px;
   }
-  
+
   .ant-statistic-title {
     margin-bottom: 1px;
     font-size: 8px;
     line-height: 1.2;
   }
-  
+
   .ant-statistic-content {
     font-size: 12px;
     line-height: 1.2;
   }
-  
+
   .ant-statistic-content-value {
     font-size: 12px;
   }
-  
+
   .ant-table {
     font-size: 8px;
   }
-  
+
   .ant-table-column-title {
     font-size: 8px;
   }
-  
+
   .ant-empty-description {
     font-size: 8px;
   }
-  
+
   .ant-spin-text {
     font-size: 8px;
   }
-  
+
   .ant-input-sm {
     font-size: 8px;
     padding: 2px 4px;
     line-height: 1.2;
   }
-  
+
   .ant-dropdown {
     font-size: 8px;
   }
-  
+
   .ant-dropdown-menu {
     padding: 2px;
   }
-  
+
   .ant-dropdown-menu-item {
     padding: 2px 4px;
     font-size: 8px;
     line-height: 1.2;
   }
-  
+
   .ant-btn-sm {
     font-size: 8px;
     padding: 2px 4px;
     height: auto;
     line-height: 1.2;
   }
-  
+
   .ant-table-filter-trigger {
     margin: 0;
     padding: 0 2px;
     height: auto;
     line-height: 1;
   }
-  
+
   .ant-table-filter-dropdown {
     min-width: auto !important;
     width: auto !important;
     padding: 0 !important;
     margin-top: -4px !important;
   }
-  
+
   .ant-input-sm {
     font-size: 8px;
     padding: 2px 4px;
     line-height: 1.2;
     height: 20px;
   }
-  
+
   .ant-table-thead > tr > th {
     position: relative;
   }
-  
+
   .ant-table-filter-column {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .ant-table-filter-column-title {
     flex: auto;
     padding-right: 2px;
   }
-  
+
   .ant-table-filter-trigger-container {
     position: static !important;
     margin: 0 !important;
   }
-  
+
   .ant-table-filter-trigger {
     color: #bfbfbf;
   }
-  
+
   .ant-table-filter-trigger:hover {
     color: #1890ff;
   }
-  
+
   .ant-dropdown {
     padding: 0;
   }
-  
+
   .ant-dropdown-menu {
     padding: 0;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
-  
+
   .ant-form-item {
     margin-bottom: 8px;
   }
-  
+
   .ant-form-item-label {
     padding: 0;
   }
-  
+
   .ant-form-item-label > label {
     font-size: 8px;
     height: 20px;
   }
-  
+
   .ant-input {
     font-size: 8px;
     padding: 2px 4px;
     height: 20px;
   }
-  
+
   .ant-form-item-explain {
     font-size: 8px;
     min-height: 16px;
   }
-  
+
   .ant-modal-footer {
     padding: 6px 8px;
   }
-  
+
   .ant-modal-footer .ant-btn {
     font-size: 8px;
     padding: 2px 8px;
     height: 20px;
   }
-  
+
   .ant-switch {
     min-width: 32px;
     height: 16px;
     line-height: 16px;
   }
-  
+
   .ant-switch-handle {
     width: 14px;
     height: 14px;
     top: 1px;
   }
-  
+
   .ant-switch-checked .ant-switch-handle {
     left: calc(100% - 15px);
   }
-  
+
   .ant-switch-small {
     min-width: 32px;
     height: 16px;
   }
-  
+
   .ant-switch-small .ant-switch-handle {
     width: 14px;
     height: 14px;
   }
-  
+
   .ant-switch-small.ant-switch-checked .ant-switch-handle {
     left: calc(100% - 15px);
   }
-  
+
   .ant-popover {
     font-size: 8px;
   }
-  
+
   .ant-popover-message {
     font-size: 8px;
     padding: 4px 0;
   }
-  
+
   .ant-popover-buttons {
     margin-top: 4px;
   }
-  
+
   .ant-popover-buttons .ant-btn {
     font-size: 8px;
     padding: 0 4px;
     height: 20px;
     line-height: 20px;
   }
-  
+
   .ant-popconfirm-buttons {
     display: flex;
     gap: 4px;
   }
-  
+
   .ant-popover-inner-content {
     padding: 4px 8px;
   }
-  
+
   .ant-popover-arrow {
     display: none;
   }

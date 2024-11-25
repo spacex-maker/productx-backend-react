@@ -186,5 +186,14 @@
   "fundingRound": "Round di finanziamento",
   "blockchainInfo": "Informazioni sulla blockchain",
   "blockchainType": "Tipo di blockchain",
-  "hashAlgorithm": "Algoritmo di hash"
+  "hashAlgorithm": "Algoritmo di hash",
+  "localName": "Nome locale",
+  "area": "Area",
+  "population": "Popolazione",
+  "province": "Provincia",
+  "district": "Distretto",
+  "subdistrict": "Sottodistretto",
+  "village": "Villaggio",
+  "town": "Città",
+  "zone": "Zona"
 }

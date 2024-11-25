@@ -193,5 +193,14 @@
   "investors": "المستثمرون",
   "investorInfo": "معلومات المستثمر",
   "fundingDate": "تاريخ التمويل",
-  "totalInvestment": "إجمالي الاستثمار"
+  "totalInvestment": "إجمالي الاستثمار",
+  "localName": "الاسم المحلي",
+  "area": "المساحة",
+  "population": "السكان",
+  "province": "المقاطعة",
+  "district": "الحي",
+  "subdistrict": "الحي الفرعي",
+  "village": "القرية",
+  "town": "البلدة",
+  "zone": "منطقة"
 }

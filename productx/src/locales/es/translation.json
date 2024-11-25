@@ -193,5 +193,14 @@
   "investors": "Inversores",
   "investorInfo": "Información del inversor",
   "fundingDate": "Fecha de financiación",
-  "totalInvestment": "Inversión total"
+  "totalInvestment": "Inversión total",
+  "localName": "Nombre local",
+  "area": "Área",
+  "population": "Población",
+  "province": "Provincia",
+  "district": "Distrito",
+  "subdistrict": "Subdistrito",
+  "village": "Aldea",
+  "town": "Pueblo",
+  "zone": "Zona"
 }
