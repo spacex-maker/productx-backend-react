@@ -1,41 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import Tree from 'react-animated-tree'
 import { Button, Form, Input, message, Select, Space, Tag, Switch, Spin, Modal } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusOutlined, CaretDownOutlined, CaretRightOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined, PlusOutlined, CaretRightOutlined } from '@ant-design/icons'
 import * as icons from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import api from 'src/axiosInstance'
 import styled from 'styled-components'
 
 const StyledTreeContainer = styled.div`
-  .tree-node {
-    position: relative;
-    padding: 8px 0;
-
-    // 连接线样式
-    &::before {
-      content: '';
-      position: absolute;
-      left: -15px;
-      top: 50%;
-      width: 15px;
-      height: 1px;
-      background: var(--cui-border-color);
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: -15px;
-      top: -8px;
-      bottom: 50%;
-      width: 1px;
-      background: var(--cui-border-color);
-    }
-
-    &:last-child::after {
-      bottom: auto;
-      height: 58%;
+  // 隐藏默认的 toggle 图标
+  .rst__tree {
+    .rst__toggle {
+      display: none;
     }
   }
 
@@ -45,7 +20,6 @@ const StyledTreeContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    margin-left: 8px;
     border-radius: 4px;
     background: var(--cui-card-bg);
     transition: all 0.3s;
@@ -53,7 +27,58 @@ const StyledTreeContainer = styled.div`
     &:hover {
       background: var(--cui-tertiary-bg);
     }
+  }
 
+  // 子菜单缩进样式
+  .children {
+    margin-left: 40px; // 增加子菜单的左边距
+  }
+
+  // 展开/折叠图标
+  .expand-icon {
+    font-size: 20px;
+    color: var(--cui-body-color);
+    cursor: pointer;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    
+    &.expanded {
+      transform: rotate(90deg);
+    }
+
+    &:hover {
+      color: var(--cui-primary);
+    }
+  }
+
+  // 左侧内容区域
+  .left-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    // 展开/折叠按钮
+    .expand-icon {
+      font-size: 20px;
+      color: var(--cui-body-color);
+      cursor: pointer;
+      transition: transform 0.3s;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      
+      &.expanded {
+        transform: rotate(90deg);
+      }
+
+      &:hover {
+        color: var(--cui-primary);
+      }
+    }
+
+    // 菜单信息
     .node-info {
       display: flex;
       align-items: center;
@@ -69,30 +94,61 @@ const StyledTreeContainer = styled.div`
         margin-left: 8px;
       }
     }
+  }
+
+  // 右侧操作区域
+  .right-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    // 状态开关样式
+    .status-switch {
+      &.ant-switch {
+        background-color: var(--cui-danger);
+        
+        &.ant-switch-checked {
+          background-color: var(--cui-success);
+        }
+      }
+    }
 
     .node-actions {
       opacity: 0;
       transition: opacity 0.2s;
+      
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+      }
     }
+  }
 
-    &:hover .node-actions {
-      opacity: 1;
-    }
+  &:hover .node-actions {
+    opacity: 1;
   }
 
   // 暗色主题适配
   [data-theme="dark"] & {
-    .tree-node {
-      &::before, &::after {
-        background: var(--cui-border-dark);
-      }
-    }
-
     .tree-content {
       background: var(--cui-dark);
 
       &:hover {
         background: var(--cui-dark-hover);
+      }
+
+      .expand-icon:hover {
+        color: var(--cui-primary-light);
+      }
+
+      .status-switch {
+        &.ant-switch {
+          background-color: var(--cui-danger-dark);
+          
+          &.ant-switch-checked {
+            background-color: var(--cui-success-dark);
+          }
+        }
       }
     }
   }
@@ -101,17 +157,18 @@ const StyledTreeContainer = styled.div`
 const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
   const [isOpen, setIsOpen] = useState(true)
 
-  // Tree 组件的动画配置
-  const treeConfig = {
-    type: "spring",
-    open: isOpen,
-    onClick: () => setIsOpen(!isOpen)
-  }
-
   return (
-    <Tree
-      content={
-        <div className="tree-content">
+    <div className="menu-node">
+      <div className="tree-content">
+        <div className="left-content">
+          {item.children?.length > 0 ? (
+            <CaretRightOutlined
+              className={`expand-icon ${isOpen ? 'expanded' : ''}`}
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          ) : (
+            <div style={{ width: 28 }} />
+          )}
           <div className="node-info">
             {item.icon && <CIcon icon={icons[item.icon]} className="menu-icon" />}
             <span>{item.name}</span>
@@ -126,34 +183,29 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
             )}
             <Tag color="purple">{item.path || '无路径'}</Tag>
           </div>
+        </div>
+        <div className="right-content">
+          <Switch
+            size="small"
+            checked={item.status}
+            onChange={(checked) => onStatusChange(item.id, checked)}
+            checkedChildren="启用"
+            unCheckedChildren="禁用"
+            className="status-switch"
+          />
           <div className="node-actions">
-            <Space>
-              <Switch
-                size="small"
-                checked={item.status}
-                onChange={(checked) => onStatusChange(item.id, checked)}
-                checkedChildren="启用"
-                unCheckedChildren="禁用"
-                className="custom-switch"
-                onClick={e => e.stopPropagation()}
-              />
+            <Space className="action-buttons">
               <Button
                 type="link"
                 icon={<PlusOutlined />}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onAdd(item)
-                }}
+                onClick={(e) => onAdd(item)}
               >
                 添加
               </Button>
               <Button
                 type="link"
                 icon={<EditOutlined />}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onEdit(item)
-                }}
+                onClick={(e) => onEdit(item)}
               >
                 编辑
               </Button>
@@ -161,30 +213,29 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
                 type="link"
                 danger
                 icon={<DeleteOutlined />}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onDelete(item.id)
-                }}
+                onClick={(e) => onDelete(item.id)}
               >
                 删除
               </Button>
             </Space>
           </div>
         </div>
-      }
-      {...treeConfig}
-    >
-      {item.children?.map(child => (
-        <MenuNode
-          key={child.id}
-          item={child}
-          onAdd={onAdd}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onStatusChange={onStatusChange}
-        />
-      ))}
-    </Tree>
+      </div>
+      {isOpen && item.children?.length > 0 && (
+        <div className="children">
+          {item.children.map(child => (
+            <MenuNode
+              key={child.id}
+              item={child}
+              onAdd={onAdd}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onStatusChange={onStatusChange}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -237,6 +288,7 @@ const MenuList = () => {
         status: checked
       })
       message.success('状态更新成功')
+      fetchMenuData()
     } catch (error) {
       message.error('状态更新失败')
     }
@@ -330,37 +382,34 @@ const MenuList = () => {
   };
 
   return (
-    <>
-      <div className="card">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <h5>菜单管理</h5>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => handleAdd()}
-          >
-            新建根菜单
-          </Button>
-        </div>
-        <div className="card-body">
-          <Spin spinning={loading}>
-            <StyledTreeContainer>
-              {menuData.map(item => (
-                <MenuNode
-                  key={item.id}
-                  item={item}
-                  onAdd={handleAdd}
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                  onStatusChange={handleStatusChange}
-                />
-              ))}
-            </StyledTreeContainer>
-          </Spin>
-        </div>
+    <div className="card">
+      <div className="card-header d-flex justify-content-between align-items-center">
+        <h5>菜单管理</h5>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => handleAdd()}
+        >
+          新建根菜单
+        </Button>
+      </div>
+      <div className="card-body">
+        <Spin spinning={loading}>
+          <StyledTreeContainer>
+            {menuData.map(item => (
+              <MenuNode
+                key={item.id}
+                item={item}
+                onAdd={handleAdd}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onStatusChange={handleStatusChange}
+              />
+            ))}
+          </StyledTreeContainer>
+        </Spin>
       </div>
 
-      {/* 添加菜单��窗 */}
       <Modal
         title={`${selectedParent ? '添加子菜单' : '添加根菜单'}`}
         open={isAddModalVisible}
@@ -499,7 +548,7 @@ const MenuList = () => {
             name="path"
             rules={[{ required: true, message: '请输入菜单路径' }]}
           >
-            <Input placeholder="请输入菜单路���，如：/data/menu" />
+            <Input placeholder="请输入菜单路，如：/data/menu" />
           </Form.Item>
 
           <Form.Item
@@ -568,7 +617,7 @@ const MenuList = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </>
+    </div>
   )
 }
 

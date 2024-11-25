@@ -553,8 +553,8 @@ const CodeBlock = styled.pre`
 
 const LanguageTag = styled.div`
   color: #6c757d;
-  font-size: 8px;
-  padding: 2px 4px;
+  font-size: 10px;
+  padding: 5px 10px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   margin-bottom: 4px;
@@ -661,7 +661,7 @@ const MessageImage = styled.img`
 `;
 
 const TimeStamp = styled.span`
-  font-size: 8px;
+  font-size: 10px;
   color: var(--cui-text-muted);
   margin-top: 2px;
 `;
@@ -739,11 +739,11 @@ const ModelToggleButton = styled(StyledButton)`
 `;
 
 const ModelBadge = styled.span`
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--cui-body-color);
   background: var(--cui-input-bg);
-  padding: 2px 4px;
+  padding: 5px 10px;
   border-radius: 4px;
 `;
 
@@ -808,8 +808,8 @@ const ModelOptionContent = styled.div`
 `;
 
 const ModelFeatureBadge = styled(CBadge)`
-  font-size: 8px;
-  padding: 2px 4px;
+  font-size: 10px;
+  padding: 5px 10px;
   background: ${props => props.selected ? 'var(--cui-primary)' : 'var(--cui-secondary)'};
   color: white;
   border-radius: 4px;
@@ -825,7 +825,7 @@ const QuotaInfo = styled.div`
 `;
 
 const QuotaBadge = styled(CBadge)`
-  font-size: 8px;
+  font-size: 10px;
   padding: 4px 8px;
   display: flex;
   align-items: center;

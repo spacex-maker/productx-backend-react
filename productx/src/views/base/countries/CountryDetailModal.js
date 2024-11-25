@@ -812,18 +812,18 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
 const styles = `
   .super-compact-table .ant-table-thead > tr > th {
     padding: 4px 6px;
-    font-size: 8px;
+    font-size: 10px;
     line-height: 1.2;
   }
 
   .super-compact-table .ant-table-tbody > tr > td {
     padding: 3px 6px;
-    font-size: 8px;
+    font-size: 10px;
     line-height: 1.2;
   }
 
   .super-compact-table .ant-table-cell {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ant-modal-header {
@@ -852,7 +852,7 @@ const styles = `
 
   .ant-statistic-title {
     margin-bottom: 1px;
-    font-size: 8px;
+    font-size: 10px;
     line-height: 1.2;
   }
 
@@ -866,29 +866,29 @@ const styles = `
   }
 
   .ant-table {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ant-table-column-title {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ant-empty-description {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ant-spin-text {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ant-input-sm {
-    font-size: 8px;
-    padding: 2px 4px;
+    font-size: 10px;
+    padding: 5px 10px;
     line-height: 1.2;
   }
 
   .ant-dropdown {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ant-dropdown-menu {
@@ -896,14 +896,14 @@ const styles = `
   }
 
   .ant-dropdown-menu-item {
-    padding: 2px 4px;
-    font-size: 8px;
+    padding: 5px 10px;
+    font-size: 10px;
     line-height: 1.2;
   }
 
   .ant-btn-sm {
-    font-size: 8px;
-    padding: 2px 4px;
+    font-size: 10px;
+    padding: 5px 10px;
     height: auto;
     line-height: 1.2;
   }
@@ -923,8 +923,8 @@ const styles = `
   }
 
   .ant-input-sm {
-    font-size: 8px;
-    padding: 2px 4px;
+    font-size: 10px;
+    padding: 5px 10px;
     line-height: 1.2;
     height: 20px;
   }
@@ -976,18 +976,18 @@ const styles = `
   }
 
   .ant-form-item-label > label {
-    font-size: 8px;
+    font-size: 10px;
     height: 20px;
   }
 
   .ant-input {
-    font-size: 8px;
-    padding: 2px 4px;
+    font-size: 10px;
+    padding: 5px 10px;
     height: 20px;
   }
 
   .ant-form-item-explain {
-    font-size: 8px;
+    font-size: 10px;
     min-height: 16px;
   }
 
@@ -996,7 +996,7 @@ const styles = `
   }
 
   .ant-modal-footer .ant-btn {
-    font-size: 8px;
+    font-size: 10px;
     padding: 2px 8px;
     height: 20px;
   }
@@ -1032,11 +1032,11 @@ const styles = `
   }
 
   .ant-popover {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ant-popover-message {
-    font-size: 8px;
+    font-size: 10px;
     padding: 4px 0;
   }
 
@@ -1045,7 +1045,7 @@ const styles = `
   }
 
   .ant-popover-buttons .ant-btn {
-    font-size: 8px;
+    font-size: 10px;
     padding: 0 4px;
     height: 20px;
     line-height: 20px;

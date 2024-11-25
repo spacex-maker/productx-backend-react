@@ -226,6 +226,9 @@
     "角色管理": "Rollenverwaltung",
     "权限管理": "Berechtigungsvergabe",
     "订单管理": "Bestellverwaltung",
-    "用户管理": "Benutzerverwaltung"
+    "用户管理": "Benutzerverwaltung",
+    "客服系统": "Kundendienstsystem",
+    "菜单管理": "Menüverwaltung",
+    "资源管理": "Ressourcenverwaltung"
   }
 }

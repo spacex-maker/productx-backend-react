@@ -98,7 +98,7 @@ const AppSidebar = () => {
 
   return (
     <CSidebar
-      className="border-end"
+      className="border-end custom-sidebar"
       colorScheme="dark"
       position="fixed"
       unfoldable={unfoldable}
@@ -107,6 +107,19 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
+      <style>
+        {`
+          /* 增加子菜单的左边距 */
+          .custom-sidebar .nav-group-items {
+            padding-left: 1rem !important;
+          }
+          
+          /* 如果侧边栏折叠时不需要缩进 */
+          .custom-sidebar.unfoldable .nav-group-items {
+            padding-left: 0 !important;
+          }
+        `}
+      </style>
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
           <strong>Product X ADMIN</strong>

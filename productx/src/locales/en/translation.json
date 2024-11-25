@@ -218,6 +218,9 @@
     "角色管理": "Role Management",
     "权限管理": "Permission Management",
     "订单管理": "Order Management",
-    "用户管理": "User Management"
+    "用户管理": "User Management",
+    "客服系统": "Customer Service System",
+    "菜单管理": "Menu Management",
+    "资源管理": "Resource Management"
   }
 }
