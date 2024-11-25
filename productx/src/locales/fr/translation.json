@@ -226,6 +226,9 @@
     "角色管理": "Gestion des rôles",
     "权限管理": "Gestion des autorisations",
     "订单管理": "Gestion des commandes",
-    "用户管理": "Gestion des utilisateurs"
+    "用户管理": "Gestion des utilisateurs",
+    "客服系统": "Système de Service Client",
+    "菜单管理": "Gestion des Menus",
+    "资源管理": "Gestion des Ressources"
   }
 }
