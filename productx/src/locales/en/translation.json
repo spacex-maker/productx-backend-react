@@ -194,5 +194,30 @@
   "investorInfo": "Investor Information",
   "fundingDate": "Funding Date",
   "totalInvestment": "Total Investment",
-  "localName": "Local Name"
+  "localName": "Local Name",
+  "menu": {
+    "XAI": "XAI",
+    "控制台": "Dashboard",
+    "用户": "Users",
+    "管理": "Management",
+    "系统": "System",
+    "系统支持货币": "System Currencies",
+    "系统支持国家": "System Countries",
+    "系统支持银行": "System Banks",
+    "客服": "Customer Service",
+    "工单系统": "Ticket System",
+    "财务系统": "Financial System",
+    "[系统]钱包管理": "[System] Wallet Management",
+    "[系统]加密货币管理": "[System] Crypto Management",
+    "[系统]对象存储管理": "[System] Object Storage",
+    "快递系统": "Express System",
+    "快递平台": "Express Platform",
+    "公司管理": "Company Management",
+    "部门管理": "Department Management",
+    "员工管理": "Staff Management",
+    "角色管理": "Role Management",
+    "权限管理": "Permission Management",
+    "订单管理": "Order Management",
+    "用户管理": "User Management"
+  }
 }

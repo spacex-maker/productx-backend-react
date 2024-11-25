@@ -10,22 +10,91 @@ import {
   CSidebarToggler,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
+import * as icons from '@coreui/icons'
 import { AppSidebarNav } from './AppSidebarNav'
 import { sygnet } from 'src/assets/brand/sygnet'
-import navigation from '../_nav'
+import api from 'src/axiosInstance'
+import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+
+// 组件映射
+const componentMap = {
+  CNavGroup,
+  CNavItem,
+  CNavTitle,
+}
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
-  const { t } = useTranslation()  // 通过 i18n 获取语言切换信息
-  const [translatedNav, setTranslatedNav] = useState(getNavWithTranslation(navigation, t))
+  const { t } = useTranslation()
+  const [menuItems, setMenuItems] = useState([])
 
-  // 每次语言切换时，重新计算翻译的导航
+  // 转换后端数据为导航配置
+  const transformNavData = (navItem) => {
+    const Component = componentMap[navItem.component]
+    if (!Component) return null
+
+    // 基础配置
+    const baseItem = {
+      component: Component,
+      name: t(`menu.${navItem.name}`), // 使用 t 函数，添加 menu 前缀
+    }
+
+    // 添加路径（如果存在）
+    if (navItem.path) {
+      baseItem.to = navItem.path
+    }
+
+    // 处理图标
+    if (navItem.icon) {
+      const icon = icons[navItem.icon]
+      if (icon) {
+        baseItem.icon = <CIcon icon={icon} customClassName="nav-icon" />
+      }
+    }
+
+    // 处理徽章
+    if (navItem.badgeText) {
+      baseItem.badge = {
+        color: navItem.badgeColor || 'info',
+        text: t(`badge.${navItem.badgeText}`), // 徽章文本也使用 t 函数
+      }
+    }
+
+    // 处理子菜单
+    if (navItem.children && navItem.children.length > 0) {
+      const childItems = navItem.children
+        .map(transformNavData)
+        .filter(Boolean)
+      if (childItems.length > 0) {
+        baseItem.items = childItems
+      }
+    }
+
+    return baseItem
+  }
+
+  // 获取菜单数据
   useEffect(() => {
-    setTranslatedNav(getNavWithTranslation(navigation, t))
-  }, [t])  // 在语言变化时重新计算导航翻译
+    const fetchMenuItems = async () => {
+      try {
+        const response = await api.get('/manage/sys-menu/tree')
+        if (response && Array.isArray(response)) {
+          // 按 id 排序
+          const sortedResponse = response.sort((a, b) => a.id - b.id)
+          const transformedItems = sortedResponse
+            .map(transformNavData)
+            .filter(Boolean)
+          setMenuItems(transformedItems)
+        }
+      } catch (error) {
+        console.error('获取菜单失败:', error)
+      }
+    }
+
+    fetchMenuItems()
+  }, [t]) // 添加 t 作为依赖，当语言改变时重新获取
 
   return (
     <CSidebar
@@ -40,7 +109,7 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <strong>Product X ADMIN</strong>
+          <strong>{t('brand.name')}</strong>
           <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={20} />
         </CSidebarBrand>
         <CCloseButton
@@ -49,8 +118,7 @@ const AppSidebar = () => {
           onClick={() => dispatch({ type: 'set', sidebarShow: false })}
         />
       </CSidebarHeader>
-      {/* 将更新后的 translatedNav 传递给 AppSidebarNav */}
-      <AppSidebarNav items={translatedNav} />
+      <AppSidebarNav items={menuItems} />
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
           onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
@@ -58,18 +126,6 @@ const AppSidebar = () => {
       </CSidebarFooter>
     </CSidebar>
   )
-}
-
-const getNavWithTranslation = (navigation, t) => {
-  return navigation.map(item => {
-    if (item.name) {
-      item.name = t(item.name)  // 使用传入的 t 函数翻译 name 字段
-    }
-    if (item.items) {
-      item.items = getNavWithTranslation(item.items, t)  // 递归翻译子菜单
-    }
-    return item
-  })
 }
 
 export default React.memo(AppSidebar)
