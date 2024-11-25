@@ -144,7 +144,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           size="small"
           style={{
             width: 100,
-            fontSize: '8px',
+            fontSize: '10px',
             padding: '2px 4px',
             height: '20px',
           }}
@@ -158,7 +158,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
-          fontSize: '8px',
+          fontSize: '10px',
           color: filtered ? '#1890ff' : undefined,
           position: 'relative',
           top: '-1px',
@@ -284,7 +284,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       render: (text, record) => (
         <div>
           <div style={{ fontSize: '9px' }}>{text}</div>
-          <div style={{ fontSize: '8px', color: '#666' }}>{record.code}</div>
+          <div style={{ fontSize: '10px', color: '#666' }}>{record.code}</div>
         </div>
       ),
     },
@@ -298,7 +298,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       render: (text, record) => (
         <div>
           <div style={{ fontSize: '9px' }}>{text}</div>
-          <div style={{ fontSize: '8px', color: '#666' }}>{record.enName}</div>
+          <div style={{ fontSize: '10px', color: '#666' }}>{record.enName}</div>
         </div>
       ),
     },
@@ -356,7 +356,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           display: 'flex',
           gap: '4px',
           alignItems: 'center',
-          fontSize: '8px'
+          fontSize: '10px'
         }}>
           <Switch
             checked={record.status}
@@ -373,7 +373,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             type="link"
             size="small"
             style={{
-              fontSize: '8px',
+              fontSize: '10px',
               padding: '0 4px',
               height: '16px',
               lineHeight: '16px'
@@ -386,7 +386,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             type="link"
             size="small"
             style={{
-              fontSize: '8px',
+              fontSize: '10px',
               padding: '0 4px',
               height: '16px',
               lineHeight: '16px'
@@ -400,16 +400,16 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             onConfirm={() => handleDelete(record.id)}
             okText={t('confirm')}
             cancelText={t('cancel')}
-            okButtonProps={{ size: 'small', style: { fontSize: '8px' } }}
-            cancelButtonProps={{ size: 'small', style: { fontSize: '8px' } }}
+            okButtonProps={{ size: 'small', style: { fontSize: '10px' } }}
+            cancelButtonProps={{ size: 'small', style: { fontSize: '10px' } }}
           >
             <Button
               type="link"
               danger
               size="small"
-              icon={<DeleteOutlined style={{ fontSize: '8px' }} />}
+              icon={<DeleteOutlined style={{ fontSize: '10px' }} />}
               style={{
-                fontSize: '8px',
+                fontSize: '10px',
                 padding: '0 4px',
                 height: '16px',
                 lineHeight: '16px'
@@ -474,7 +474,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             size="small"
             icon={<PlusOutlined />}
             style={{
-              fontSize: '8px',
+              fontSize: '10px',
               padding: '0 4px',
               height: '20px',
               marginRight: '8px'
@@ -498,7 +498,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Card size="small" bodyStyle={{ padding: '6px' }}>
             <Statistic
               title={
-                <span style={{ fontSize: '8px' }}>
+                <span style={{ fontSize: '10px' }}>
                   {currentRegion ? '下级行政区' : '行政区划'}数量
                 </span>
               }
@@ -511,7 +511,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         <Col span={8}>
           <Card size="small" bodyStyle={{ padding: '6px' }}>
             <Statistic
-              title={<span style={{ fontSize: '8px' }}>总人口</span>}
+              title={<span style={{ fontSize: '10px' }}>总人口</span>}
               value={regions.reduce((sum, region) => sum + (region.population || 0), 0)}
               prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
               valueStyle={{ fontSize: '12px' }}
@@ -522,7 +522,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         <Col span={8}>
           <Card size="small" bodyStyle={{ padding: '6px' }}>
             <Statistic
-              title={<span style={{ fontSize: '8px' }}>总面积</span>}
+              title={<span style={{ fontSize: '10px' }}>总面积</span>}
               value={regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0)}
               prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
               valueStyle={{ fontSize: '12px' }}
@@ -543,14 +543,14 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             scroll={{ x: 'max-content', y: 300 }}
             pagination={false}
             rowKey="id"
-            style={{ fontSize: '8px' }}
+            style={{ fontSize: '10px' }}
             className="super-compact-table resizable-table"
             tableLayout="fixed"
             sticky={true}
             bordered
           />
         ) : (
-          <Empty description={<span style={{ fontSize: '8px' }}>暂无行政区划数据</span>} />
+          <Empty description={<span style={{ fontSize: '10px' }}>暂无行政区划数据</span>} />
         )}
       </Spin>
 
@@ -576,25 +576,25 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           onFinish={handleAdd}
           layout="vertical"
           size="small"
-          style={{ fontSize: '8px' }}
+          style={{ fontSize: '10px' }}
         >
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>行政区划编码</span>}
+                label={<span style={{ fontSize: '10px' }}>行政区划编码</span>}
                 name="code"
                 rules={[{ required: true, message: '请输入编码' }]}
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：CN-BJ" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如：CN-BJ" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>国家码</span>}
+                label={<span style={{ fontSize: '10px' }}>国家码</span>}
                 name="countryCode"
                 rules={[{ required: true, message: '请输入国家码' }]}
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：CN" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如：CN" />
               </Form.Item>
             </Col>
           </Row>
@@ -602,19 +602,19 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>名称</span>}
+                label={<span style={{ fontSize: '10px' }}>名称</span>}
                 name="name"
                 rules={[{ required: true, message: '请输入名称' }]}
               >
-                <Input style={{ fontSize: '8px' }} />
+                <Input style={{ fontSize: '10px' }} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>简称</span>}
+                label={<span style={{ fontSize: '10px' }}>简称</span>}
                 name="shortName"
               >
-                <Input style={{ fontSize: '8px' }} />
+                <Input style={{ fontSize: '10px' }} />
               </Form.Item>
             </Col>
           </Row>
@@ -622,19 +622,19 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>类型</span>}
+                label={<span style={{ fontSize: '10px' }}>类型</span>}
                 name="type"
                 rules={[{ required: true, message: '请输入类型' }]}
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：省、市、区" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如：省、市、区" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>区域</span>}
+                label={<span style={{ fontSize: '10px' }}>区域</span>}
                 name="region"
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如华北、华南" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如华北、华南" />
               </Form.Item>
             </Col>
           </Row>
@@ -642,24 +642,24 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>人口</span>}
+                label={<span style={{ fontSize: '10px' }}>人口</span>}
                 name="population"
               >
                 <Input
                   type="number"
-                  style={{ fontSize: '8px' }}
+                  style={{ fontSize: '10px' }}
                   placeholder="单位：人"
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>面积</span>}
+                label={<span style={{ fontSize: '10px' }}>面积</span>}
                 name="areaKm2"
               >
                 <Input
                   type="number"
-                  style={{ fontSize: '8px' }}
+                  style={{ fontSize: '10px' }}
                   placeholder="单位：平方公里"
                 />
               </Form.Item>
@@ -667,10 +667,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           </Row>
 
           <Form.Item
-            label={<span style={{ fontSize: '8px' }}>省会/首府</span>}
+            label={<span style={{ fontSize: '10px' }}>省会/首府</span>}
             name="capital"
           >
-            <Input style={{ fontSize: '8px' }} />
+            <Input style={{ fontSize: '10px' }} />
           </Form.Item>
         </Form>
       </Modal>
@@ -693,7 +693,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           onFinish={handleUpdate}
           layout="vertical"
           size="small"
-          style={{ fontSize: '8px' }}
+          style={{ fontSize: '10px' }}
         >
           <Form.Item name="id" hidden>
             <Input />
@@ -702,20 +702,20 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>行政区划编码</span>}
+                label={<span style={{ fontSize: '10px' }}>行政区划编码</span>}
                 name="code"
                 rules={[{ required: true, message: '请输入编码' }]}
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：CN-BJ" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如：CN-BJ" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>国家码</span>}
+                label={<span style={{ fontSize: '10px' }}>国家码</span>}
                 name="countryCode"
                 rules={[{ required: true, message: '请输入国家码' }]}
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：CN" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如：CN" />
               </Form.Item>
             </Col>
           </Row>
@@ -723,19 +723,19 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>名称</span>}
+                label={<span style={{ fontSize: '10px' }}>名称</span>}
                 name="name"
                 rules={[{ required: true, message: '请输入名称' }]}
               >
-                <Input style={{ fontSize: '8px' }} />
+                <Input style={{ fontSize: '10px' }} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>简称</span>}
+                label={<span style={{ fontSize: '10px' }}>简称</span>}
                 name="shortName"
               >
-                <Input style={{ fontSize: '8px' }} />
+                <Input style={{ fontSize: '10px' }} />
               </Form.Item>
             </Col>
           </Row>
@@ -743,19 +743,19 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>类型</span>}
+                label={<span style={{ fontSize: '10px' }}>类型</span>}
                 name="type"
                 rules={[{ required: true, message: '请输入类型' }]}
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：省、市、区" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如：省、市、区" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>区域</span>}
+                label={<span style={{ fontSize: '10px' }}>区域</span>}
                 name="region"
               >
-                <Input style={{ fontSize: '8px' }} placeholder="例如：华北、华南" />
+                <Input style={{ fontSize: '10px' }} placeholder="例如：华北、华南" />
               </Form.Item>
             </Col>
           </Row>
@@ -763,24 +763,24 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>人口</span>}
+                label={<span style={{ fontSize: '10px' }}>人口</span>}
                 name="population"
               >
                 <Input
                   type="number"
-                  style={{ fontSize: '8px' }}
+                  style={{ fontSize: '10px' }}
                   placeholder="单位：人"
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '8px' }}>面积</span>}
+                label={<span style={{ fontSize: '10px' }}>面积</span>}
                 name="areaKm2"
               >
                 <Input
                   type="number"
-                  style={{ fontSize: '8px' }}
+                  style={{ fontSize: '10px' }}
                   placeholder="单位：平方公里"
                 />
               </Form.Item>
@@ -788,10 +788,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           </Row>
 
           <Form.Item
-            label={<span style={{ fontSize: '8px' }}>省会/首府</span>}
+            label={<span style={{ fontSize: '10px' }}>省会/首府</span>}
             name="capital"
           >
-            <Input style={{ fontSize: '8px' }} />
+            <Input style={{ fontSize: '10px' }} />
           </Form.Item>
         </Form>
       </Modal>

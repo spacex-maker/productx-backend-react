@@ -7,14 +7,14 @@ const { Title } = Typography;
 // 定义统一的样式
 const styles = {
   label: {
-    fontSize: '8px',
+    fontSize: '10px',
     height: '16px',
     lineHeight: '16px',
     marginBottom: '2px'
   },
   input: {
     height: '20px',
-    fontSize: '8px',
+    fontSize: '10px',
     padding: '0 4px',
     lineHeight: '20px'
   },
@@ -22,14 +22,14 @@ const styles = {
     marginBottom: '4px'
   },
   title: {
-    fontSize: '8px',
+    fontSize: '10px',
     marginBottom: '4px'
   },
   divider: {
     margin: '4px 0'
   },
   modal: {
-    title: { fontSize: '8px' },
+    title: { fontSize: '10px' },
     body: { padding: '8px' }
   }
 };
@@ -89,20 +89,20 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               rules={[{ required: true, message: t('nicknameRequired') }]}
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterNickname')} 
+              <Input
+                placeholder={t('enterNickname')}
                 style={styles.input}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item 
+            <Form.Item
               label={<span style={styles.label}>{t('fullName')}</span>}
-              name="fullName" 
+              name="fullName"
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterFullName')} 
+              <Input
+                placeholder={t('enterFullName')}
                 style={styles.input}
               />
             </Form.Item>
@@ -111,25 +111,25 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
 
         <Row gutter={8}>
           <Col span={12}>
-            <Form.Item 
+            <Form.Item
               label={<span style={styles.label}>{t('email')}</span>}
-              name="email" 
+              name="email"
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterEmail')} 
+              <Input
+                placeholder={t('enterEmail')}
                 style={styles.input}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item 
+            <Form.Item
               label={<span style={styles.label}>{t('phoneNumber')}</span>}
-              name="phoneNumber" 
+              name="phoneNumber"
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterPhoneNumber')} 
+              <Input
+                placeholder={t('enterPhoneNumber')}
                 style={styles.input}
               />
             </Form.Item>
@@ -138,36 +138,36 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
 
         <Row gutter={8}>
           <Col span={12}>
-            <Form.Item 
+            <Form.Item
               label={<span style={styles.label}>{t('description')}</span>}
-              name="description" 
+              name="description"
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterDescription')} 
+              <Input
+                placeholder={t('enterDescription')}
                 style={styles.input}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item 
+            <Form.Item
               label={<span style={styles.label}>{t('creditScore')}</span>}
-              name="creditScore" 
+              name="creditScore"
               style={styles.formItem}
             >
-              <Input 
-                type="number" 
-                placeholder={t('enterCreditScore')} 
+              <Input
+                type="number"
+                placeholder={t('enterCreditScore')}
                 style={styles.input}
               />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item 
+        <Form.Item
           label={<span style={styles.label}>{t('status')}</span>}
-          name="status" 
-          valuePropName="checked" 
+          name="status"
+          valuePropName="checked"
           style={styles.formItem}
         >
           <Checkbox>{t('active')}</Checkbox>
@@ -185,8 +185,8 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               rules={[{ required: true, message: t('countryRequired') }]}
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterCountry')} 
+              <Input
+                placeholder={t('enterCountry')}
                 style={styles.input}
               />
             </Form.Item>
@@ -198,8 +198,8 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               rules={[{ required: true, message: t('stateRequired') }]}
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterState')} 
+              <Input
+                placeholder={t('enterState')}
                 style={styles.input}
               />
             </Form.Item>
@@ -214,8 +214,8 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               rules={[{ required: true, message: t('cityRequired') }]}
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterCity')} 
+              <Input
+                placeholder={t('enterCity')}
                 style={styles.input}
               />
             </Form.Item>
@@ -227,8 +227,8 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               rules={[{ required: true, message: t('postalCodeRequired') }]}
               style={styles.formItem}
             >
-              <Input 
-                placeholder={t('enterPostalCode')} 
+              <Input
+                placeholder={t('enterPostalCode')}
                 style={styles.input}
               />
             </Form.Item>
@@ -241,20 +241,20 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
           rules={[{ required: true, message: t('addressDetailRequired') }]}
           style={styles.formItem}
         >
-          <Input 
-            placeholder={t('enterAddressDetail')} 
+          <Input
+            placeholder={t('enterAddressDetail')}
             style={styles.input}
           />
         </Form.Item>
 
-        <Form.Item 
+        <Form.Item
           label={<span style={styles.label}>{t('isActive')}</span>}
-          name="isActive" 
+          name="isActive"
           style={{ marginBottom: '0px' }}
         >
-          <Input 
-            disabled 
-            placeholder={t('isActive')} 
+          <Input
+            disabled
+            placeholder={t('isActive')}
             style={styles.input}
           />
         </Form.Item>
@@ -268,21 +268,21 @@ const globalStyles = `
   .ant-form-item {
     margin-bottom: 4px !important;
   }
-  
+
   .ant-form-item-label {
     padding-bottom: 0 !important;
   }
-  
+
   .ant-form-item-label > label {
     font-size: 8px !important;
     height: 14px !important;
     line-height: 14px !important;
   }
-  
+
   .ant-row {
     margin-bottom: 4px !important;
   }
-  
+
   .ant-form-item-explain {
     min-height: 12px !important;
     margin-top: 1px !important;
