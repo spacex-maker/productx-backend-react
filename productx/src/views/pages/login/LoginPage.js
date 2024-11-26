@@ -97,19 +97,16 @@ const CardBody = styled(CCardBody)`
 `;
 
 const ApiSection = styled.div`
-  margin-bottom: 16px;
-  padding: 16px;
+  margin-bottom: ${props => props.$visible ? '16px' : '0'};
+  padding: ${props => props.$visible ? '16px' : '0'};
   background: rgba(99, 102, 241, 0.05);
   border-radius: 12px;
   border: 1px solid rgba(99, 102, 241, 0.1);
   transition: all 0.3s ease;
-
-  opacity: ${props => props.visible ? 1 : 0};
-  transform: translateY(${props => props.visible ? '0' : '-20px'});
-  height: ${props => props.visible ? 'auto' : '0'};
-  margin: ${props => props.visible ? '0 0 16px 0' : '0'};
-  padding: ${props => props.visible ? '16px' : '0'};
-  pointer-events: ${props => props.visible ? 'all' : 'none'};
+  opacity: ${props => props.$visible ? 1 : 0};
+  transform: translateY(${props => props.$visible ? '0' : '-20px'});
+  height: ${props => props.$visible ? 'auto' : '0'};
+  pointer-events: ${props => props.$visible ? 'all' : 'none'};
 `;
 
 const ApiTitle = styled.div`
@@ -141,20 +138,12 @@ const EnvSelect = styled(CFormSelect)`
   border-radius: 4px 0 0 4px !important;
   border: none !important;
   background: rgba(30, 32, 47, 0.95) !important;
-  color: #e2e8f0 !important;
-  font-size: 14px;
-  height: 36px;
-  padding: 0 8px;
-  cursor: pointer;
-
+  color: #f1f5f9 !important;
+  font-size: 0.875rem !important;
+  
   &:focus {
     box-shadow: none !important;
-    background: rgba(30, 32, 47, 0.98) !important;
-  }
-
-  option {
-    background: #1e202f;
-    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.1) !important;
   }
 `;
 
@@ -162,41 +151,35 @@ const ApiInput = styled(CFormInput)`
   flex: 1;
   background: rgba(30, 32, 47, 0.95) !important;
   border: none !important;
-  color: #e2e8f0 !important;
-  font-size: 14px;
-  height: 36px;
-  padding: 0 12px;
-
-  &:focus {
-    box-shadow: none !important;
-    background: rgba(30, 32, 47, 0.98) !important;
+  color: #f1f5f9 !important;
+  font-size: 0.875rem !important;
+  border-radius: ${props => props.$isCustom ? '4px' : '0 4px 4px 0'} !important;
+  
+  &:disabled {
+    background: rgba(255, 255, 255, 0.02) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
   }
-
+  
   &::placeholder {
-    color: #64748b;
+    color: rgba(255, 255, 255, 0.3);
   }
 `;
 
 const ApiButton = styled(CButton)`
+  min-width: 80px;
   background: #6366f1 !important;
   border: none !important;
   color: white !important;
-  font-size: 14px;
-  padding: 0 16px;
-  height: 36px;
-  border-radius: 0 4px 4px 0 !important;
-  transition: all 0.3s ease;
-
+  font-size: 0.875rem !important;
+  border-radius: 4px !important;
+  margin-left: 1px !important;
+  
   &:hover {
     background: #4f46e5 !important;
   }
-
+  
   &:active {
-    background: #4338ca !important;
-  }
-
-  &:focus {
-    box-shadow: none !important;
+    transform: translateY(1px);
   }
 `;
 
@@ -387,6 +370,13 @@ const ApiConfigHint = styled.div`
   }
 `;
 
+const VerticalStack = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+`;
+
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -399,6 +389,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [showApiConfig, setShowApiConfig] = useState(false);
   const { t } = useTranslation(); // 获取 t 函数
+  const [isCustomEnv, setIsCustomEnv] = useState(false);
+  const [customUrl, setCustomUrl] = useState('');
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -414,9 +406,26 @@ const LoginPage = () => {
   };
 
   const handleSetBaseURL = () => {
-    if (selectedEnv) {
+    if (isCustomEnv) {
+      if (!isValidURL(customUrl)) {
+        message.error('请输入有效的URL地址（以 http:// 或 https:// 开头）');
+        return;
+      }
+      API_BASE_URL = customUrl;
+      axiosInstance.defaults.baseURL = customUrl;
+      message.success(`已切换到自定义环境: ${customUrl}`);
+    } else {
       setBaseURL(selectedEnv);
-      message.success(`已切换到${selectedEnv === 'PROD' ? '生产' : selectedEnv === 'TEST' ? '测试' : '本地'}环境`);
+    }
+    refreshCaptcha();
+  };
+
+  const isValidURL = (url) => {
+    try {
+      new URL(url);
+      return url.startsWith('http://') || url.startsWith('https://');
+    } catch (e) {
+      return false;
     }
   };
 
@@ -521,29 +530,55 @@ const LoginPage = () => {
 
                   <CardBody>
                     <motion.div variants={itemVariants} custom={1}>
-                      <ApiSection visible={showApiConfig}>
+                      <ApiSection $visible={showApiConfig}>
                         <ApiTitle>
                           <CIcon icon={cilSettings} />
-                          {t('apiConfig')}
+                          API 配置
                         </ApiTitle>
-                        <ApiInputGroup>
-                          <EnvSelect
-                            value={selectedEnv}
-                            onChange={(e) => setSelectedEnv(e.target.value)}
-                          >
-                            <option value="LOCAL">本地环境 ({API_CONFIG.LOCAL})</option>
-                            <option value="TEST">测试环境 ({API_CONFIG.TEST})</option>
-                            <option value="PROD">生产环境 ({API_CONFIG.PROD})</option>
-                          </EnvSelect>
-                          <ApiInput
-                            value={API_CONFIG[selectedEnv]}
-                            disabled
-                            placeholder="API 地址将根据选择的环境自动设置"
-                          />
-                          <ApiButton onClick={handleSetBaseURL}>
-                            切换环境
-                          </ApiButton>
-                        </ApiInputGroup>
+                        <VerticalStack>
+                          <ApiInputGroup>
+                            <EnvSelect
+                              value={isCustomEnv ? 'CUSTOM' : selectedEnv}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (value === 'CUSTOM') {
+                                  setIsCustomEnv(true);
+                                } else {
+                                  setIsCustomEnv(false);
+                                  setSelectedEnv(value);
+                                }
+                              }}
+                            >
+                              <option value="LOCAL">本地环境 ({API_CONFIG.LOCAL})</option>
+                              <option value="TEST">测试环境 ({API_CONFIG.TEST})</option>
+                              <option value="PROD">生产环境 ({API_CONFIG.PROD})</option>
+                              <option value="CUSTOM">自定义环境</option>
+                            </EnvSelect>
+                            <ApiInput
+                              $isCustom={isCustomEnv}
+                              value={isCustomEnv ? customUrl : API_CONFIG[selectedEnv]}
+                              onChange={(e) => isCustomEnv && setCustomUrl(e.target.value)}
+                              disabled={!isCustomEnv}
+                              placeholder={
+                                isCustomEnv 
+                                  ? "请输入自定义API地址，例如: http://example.com:8080"
+                                  : "API 地址将根据选择的环境自动设置"
+                              }
+                            />
+                            <ApiButton onClick={handleSetBaseURL}>
+                              {isCustomEnv ? '应用配置' : '切换环境'}
+                            </ApiButton>
+                          </ApiInputGroup>
+                          {isCustomEnv && (
+                            <div style={{ 
+                              fontSize: '12px', 
+                              color: '#64748b', 
+                              padding: '4px 8px'
+                            }}>
+                              请输入完整的URL地址，包含 http:// 或 https:// 前缀
+                            </div>
+                          )}
+                        </VerticalStack>
                       </ApiSection>
                     </motion.div>
 
