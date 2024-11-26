@@ -106,6 +106,7 @@
   "totalAmount": "Gesamtbetrag",
   "deliveryMethod": "Liefermethode",
   "createOrder": "Bestellung erstellen",
+  "batchDelete": "Massenlöschung",
   "sellerId": "Verkäufer-ID",
   "receiverName": "Empfängername",
   "paymentType": "Zahlungsart",
@@ -230,5 +231,18 @@
     "客服系统": "Kundendienstsystem",
     "菜单管理": "Menüverwaltung",
     "资源管理": "Ressourcenverwaltung"
-  }
+  },
+  "confirmDelete": "Löschen bestätigen",
+  "countryName": "Landname",
+  "countryCode": "Ländercode",
+  "selectContinent": "Kontinent auswählen",
+  "businessStatus": "Wurde das Geschäft aufgenommen",
+  "africa": "Afrika",
+  "asia": "Asien",
+  "europe": "Europa",
+  "northAmerica": "Nordamerika",
+  "southAmerica": "Südamerika",
+  "oceania": "Ozeanien",
+  "antarctica": "Antarktis",
+  "createCountry": "Neues Land erstellen"
 }

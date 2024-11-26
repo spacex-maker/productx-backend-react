@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Space } from 'antd';
 import { EyeOutlined, EditOutlined } from '@ant-design/icons';
 import CountryDetailModal from './CountryDetailModal';
+import { useTranslation } from 'react-i18next';
 
 const CountryTable = ({
                         allData,
@@ -13,6 +14,7 @@ const CountryTable = ({
                         handleStatusChange,
                         handleEditClick,
                       }) => {
+  const { t } = useTranslation();
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
@@ -20,6 +22,14 @@ const CountryTable = ({
     setSelectedCountry(country);
     setDetailVisible(true);
   };
+
+  const tableColumns = [
+    { key: 'name', label: t('countryName') },
+    { key: 'code', label: t('countryCode') },
+    { key: 'continent', label: t('continent') },
+    { key: 'status', label: t('status') },
+    { key: 'actions', label: t('actions') },
+  ];
 
   return (
     <>
@@ -38,8 +48,8 @@ const CountryTable = ({
                 <label className="custom-control-label" htmlFor="select_all"></label>
               </div>
             </th>
-            {['国家名称', '国家代码', '大陆', '状态', '操作'].map((field) => (
-              <th key={field}>{field}</th>
+            {tableColumns.map((column) => (
+              <th key={column.key}>{column.label}</th>
             ))}
           </tr>
         </thead>
@@ -80,7 +90,7 @@ const CountryTable = ({
                     icon={<EyeOutlined />}
                     onClick={() => showDetail(item)}
                   >
-                    详情
+                    {t('detail')}
                   </Button>
                   <Button
                     type="link"
@@ -88,7 +98,7 @@ const CountryTable = ({
                     icon={<EditOutlined />}
                     onClick={() => handleEditClick(item)}
                   >
-                    修改
+                    {t('edit')}
                   </Button>
                 </Space>
               </td>

@@ -106,6 +106,7 @@
   "totalAmount": "المبلغ الإجمالي",
   "deliveryMethod": "طريقة التوصيل",
   "createOrder": "إنشاء طلب",
+  "batchDelete": "حذف دفعة",
   "sellerId": "معرف البائع",
   "receiverName": "اسم المستلم",
   "paymentType": "نوع الدفع",
@@ -230,5 +231,18 @@
     "客服系统": "نظام خدمة العملاء",
     "菜单管理": "إدارة القائمة",
     "资源管理": "إدارة الموارد"
-  }
+  },
+  "confirmDelete": "تأكيد الحذف",
+  "countryName": "اسم الدولة",
+  "countryCode": "رمز الدولة",
+  "selectContinent": "اختر القارة",
+  "businessStatus": "هل بدأ النشاط التجاري",
+  "africa": "أفريقيا",
+  "asia": "آسيا",
+  "europe": "أوروبا",
+  "northAmerica": "أمريكا الشمالية",
+  "southAmerica": "أمريكا الجنوبية",
+  "oceania": "أوقيانوسيا",
+  "antarctica": "القطب الجنوبي",
+  "createCountry": "إضافة دولة جديدة"
 }

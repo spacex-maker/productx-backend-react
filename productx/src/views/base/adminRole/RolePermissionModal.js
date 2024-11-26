@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Table, message, Spin, Input, Space, Radio, Divider } from 'antd';
+import { Modal, Table, message, Spin, Input, Space, Radio } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
@@ -79,19 +79,19 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     {
       title: '权限名称',
       dataIndex: 'permissionName',
-      width: '15%',
+      width: '20%',
       ellipsis: true,
     },
     {
       title: '英文名称',
       dataIndex: 'permissionNameEn',
-      width: '15%',
+      width: '25%',
       ellipsis: true,
     },
     {
       title: '描述',
       dataIndex: 'description',
-      width: '30%',
+      width: '35%',
       ellipsis: true,
     },
     {
@@ -101,7 +101,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       render: (type) => (
         <span style={{
           color: type === 1 ? '#1890ff' : '#52c41a',
-          fontWeight: 500
+          fontSize: '10px'
         }}>
           {type === 1 ? '菜单' : '接口'}
         </span>
@@ -112,9 +112,9 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
   return (
     <Modal
       title={
-        <div style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 10 }}>
-          <div style={{ fontSize: '16px', fontWeight: 500 }}>配置权限</div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: 4 }}>
+        <div style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 8 }}>
+          <div style={{ fontSize: '12px', fontWeight: 500 }}>配置权限</div>
+          <div style={{ fontSize: '10px', color: '#666', marginTop: 2 }}>
             当前角色：{roleName}
           </div>
         </div>
@@ -122,25 +122,26 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       open={visible}
       onCancel={onCancel}
       onOk={handleOk}
-      width={1000}
+      width={700}
       confirmLoading={loading}
-      bodyStyle={{ padding: '12px 24px' }}
+      bodyStyle={{ padding: '8px 16px' }}
     >
       <Spin spinning={loading}>
-        <Space direction="vertical" style={{ width: '100%' }} size="middle">
+        <Space direction="vertical" style={{ width: '100%' }} size="small">
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 16
+            marginBottom: 8
           }}>
-            <Space>
+            <Space size="small">
               <Input
                 placeholder="搜索权限名称/描述"
-                prefix={<SearchOutlined />}
+                prefix={<SearchOutlined style={{ fontSize: '10px' }} />}
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
-                style={{ width: 200 }}
+                style={{ width: 180, fontSize: '10px' }}
+                size="small"
                 allowClear
               />
               <Radio.Group
@@ -149,13 +150,14 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 optionType="button"
                 buttonStyle="solid"
                 size="small"
+                style={{ fontSize: '10px' }}
               >
-                <Radio.Button value="all">全部</Radio.Button>
-                <Radio.Button value="menu">菜单权限</Radio.Button>
-                <Radio.Button value="api">接口权限</Radio.Button>
+                <Radio.Button value="all" style={{ fontSize: '10px', padding: '0 8px' }}>全部</Radio.Button>
+                <Radio.Button value="menu" style={{ fontSize: '10px', padding: '0 8px' }}>菜单权限</Radio.Button>
+                <Radio.Button value="api" style={{ fontSize: '10px', padding: '0 8px' }}>接口权限</Radio.Button>
               </Radio.Group>
             </Space>
-            <div style={{ color: '#666', fontSize: '12px' }}>
+            <div style={{ color: '#666', fontSize: '10px' }}>
               已选择 {selectedPermissions.length} 项权限
             </div>
           </div>
@@ -169,14 +171,26 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
             dataSource={filteredPermissions}
             rowKey="id"
             size="small"
-            scroll={{ y: 400 }}
+            scroll={{ y: 380 }}
             pagination={false}
             rowClassName={(record) => record.status ? '' : 'disabled-row'}
+            style={{ fontSize: '10px' }}
           />
         </Space>
       </Spin>
 
-      <style jsx>{`
+      <style jsx global>{`
+        .ant-table {
+          font-size: 10px !important;
+        }
+        .ant-table-thead > tr > th {
+          padding: 4px 8px !important;
+          font-size: 10px !important;
+        }
+        .ant-table-tbody > tr > td {
+          padding: 4px 8px !important;
+          font-size: 10px !important;
+        }
         .disabled-row {
           background-color: #fafafa;
           opacity: 0.7;
@@ -186,6 +200,24 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
         }
         .ant-table-row-selected {
           background-color: #e6f7ff;
+        }
+        .ant-modal-header {
+          padding: 8px 16px !important;
+        }
+        .ant-modal-footer {
+          padding: 8px 16px !important;
+        }
+        .ant-modal-footer .ant-btn {
+          font-size: 10px !important;
+          height: 24px !important;
+          padding: 0 8px !important;
+        }
+        .ant-checkbox-wrapper {
+          font-size: 10px !important;
+        }
+        .ant-radio-button-wrapper {
+          height: 24px !important;
+          line-height: 22px !important;
         }
       `}</style>
     </Modal>

@@ -105,7 +105,8 @@
   "paymentTime": "Payment Time",
   "totalAmount": "Total Amount",
   "deliveryMethod": "Delivery Method",
-  "createOrder": "Bestellung erstellen",
+  "createOrder": "Create Order",
+  "batchDelete": "Batch Delete",
   "sellerId": "Seller ID",
   "receiverName": "Receiver Name",
   "paymentType": "Payment Type",
@@ -222,5 +223,18 @@
     "客服系统": "Customer Service System",
     "菜单管理": "Menu Management",
     "资源管理": "Resource Management"
-  }
+  },
+  "confirmDelete": "Confirm Delete",
+  "countryName": "Country Name",
+  "countryCode": "Country Code",
+  "selectContinent": "Select Continent",
+  "businessStatus": "Business Status",
+  "africa": "Africa",
+  "asia": "Asia",
+  "europe": "Europe",
+  "northAmerica": "North America",
+  "southAmerica": "South America",
+  "oceania": "Oceania",
+  "antarctica": "Antarctica",
+  "createCountry": "Create Country"
 }

@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 // 定义环境配置
 export const API_CONFIG = {
+  TEST: 'http://34.92.193.186:8090',
   PROD: 'https://protx.cn',
-  TEST: 'https://test.protx.cn',
   LOCAL: 'http://localhost:8090'
 };
 

@@ -211,6 +211,9 @@ const UserOrder = () => {
         handleUpdateOrder={handleUpdateOrder}
         selectedOrder={selectedOrder} // 传递所选订单信息
       />
+      <style jsx global>{`
+
+      `}</style>
     </div>
   );
 };

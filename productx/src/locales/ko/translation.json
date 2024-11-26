@@ -106,6 +106,7 @@
   "totalAmount": "총 금액",
   "deliveryMethod": "배송 방법",
   "createOrder": "주문 만들기",
+  "batchDelete": "배치 삭제",
   "sellerId": "판매자 ID",
   "receiverName": "수취인 이름",
   "paymentType": "결제 방법",
@@ -230,5 +231,18 @@
     "客服系统": "고객 서비스 시스템",
     "菜单管理": "메뉴 관리",
     "资源管理": "자원 관리"
-  }
+  },
+  "confirmDelete": "삭제 확인",
+  "countryName": "국가 이름",
+  "countryCode": "국가 코드",
+  "selectContinent": "대륙 선택",
+  "businessStatus": "비즈니스 상태",
+  "africa": "아프리카",
+  "asia": "아시아",
+  "europe": "유럽",
+  "northAmerica": "북미",
+  "southAmerica": "남미",
+  "oceania": "오세아니아",
+  "antarctica": "남극",
+  "createCountry": "국가 만들기"
 }

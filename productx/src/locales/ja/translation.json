@@ -106,6 +106,7 @@
   "totalAmount": "合計金額",
   "deliveryMethod": "配達方法",
   "createOrder": "注文を作成",
+  "batchDelete": "バッチ削除",
   "sellerId": "販売者ID",
   "receiverName": "受取人名",
   "paymentType": "支払い方法",
@@ -230,5 +231,18 @@
     "客服系统": "カスタマーサービスシステム",
     "菜单管理": "メニュー管理",
     "资源管理": "リソース管理"
-  }
+  },
+  "confirmDelete": "削除の確認",
+  "countryName": "国名",
+  "countryCode": "国コード",
+  "selectContinent": "大陸を選択",
+  "businessStatus": "事業の状態",
+  "africa": "アフリカ",
+  "asia": "アジア",
+  "europe": "ヨーロッパ",
+  "northAmerica": "北アメリカ",
+  "southAmerica": "南アメリカ",
+  "oceania": "オセアニア",
+  "antarctica": "南極",
+  "createCountry": "国を作成"
 }

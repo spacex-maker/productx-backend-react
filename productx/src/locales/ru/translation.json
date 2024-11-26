@@ -106,6 +106,7 @@
   "totalAmount": "Общая сумма",
   "deliveryMethod": "Метод доставки",
   "createOrder": "Создать заказ",
+  "batchDelete": "Удаление пакетом",
   "sellerId": "ID продавца",
   "receiverName": "Имя получателя",
   "paymentType": "Способ оплаты",
@@ -230,5 +231,18 @@
     "客服系统": "Система обслуживания клиентов",
     "菜单管理": "Управление меню",
     "资源管理": "Управление ресурсами"
-  }
+  },
+  "confirmDelete": "Подтвердите удаление",
+  "countryName": "Название страны",
+  "countryCode": "Код страны",
+  "selectContinent": "Выберите континент",
+  "businessStatus": "Статус бизнеса",
+  "africa": "Африка",
+  "asia": "Азия",
+  "europe": "Европа",
+  "northAmerica": "Северная Америка",
+  "southAmerica": "Южная Америка",
+  "oceania": "Океания",
+  "antarctica": "Антарктида",
+  "createCountry": "Создать страну"
 }

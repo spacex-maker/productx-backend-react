@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import api from 'src/axiosInstance';
-import {Modal, Button, Form, Input, message, Spin, Select, Col, Row} from 'antd';
+import {Modal, Button, Form, Input, message, Spin, Select, Col, Row, Space} from 'antd';
 import {UseSelectableRows} from 'src/components/common/UseSelectableRows';
 import {HandleBatchDelete} from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
@@ -8,6 +8,7 @@ import CountryTable from 'src/views/base/countries/CountryTable'; // 你需要�
 import UpdateCountryModal from 'src/views/base/countries/UpdateCountryModal'; // 你需要创建这个更新模态框
 import CountryCreateFormModal from 'src/views/base/countries/CountryCreateFormModal'; // 你需要创建这个创建模态框
 import WorldMap from './WorldMap';
+import { useTranslation } from 'react-i18next';
 const updateCountryStatus = async (id, newStatus) => {
   await api.post('/manage/countries/change-status', {id, status: newStatus});
 };
@@ -21,6 +22,7 @@ const updateCountry = async (updateData) => {
 };
 
 const CountryList = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [allData, setAllData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
@@ -132,103 +134,94 @@ const CountryList = () => {
   const totalPages = Math.ceil(totalNum / pageSize);
 
   return (
-    <div>
-      <div className="mb-3">
+    <div className="country-list-wrapper">
+      <div className="search-wrapper">
         <div className="search-container">
-          <Row gutter={[16, 16]}>
-            <Col>
+          <Row gutter={[8, 8]} align="middle">
+            <Col flex="0 0 160px">
               <Input
                 size="small"
                 value={searchParams.name}
                 onChange={handleSearchChange}
                 name="name"
-                placeholder="搜索国家名称"
+                placeholder={t('countryName')}
                 allowClear
               />
             </Col>
-
-            <Col>
+            <Col flex="0 0 160px">
               <Input
                 size="small"
                 value={searchParams.code}
                 onChange={handleSearchChange}
                 name="code"
-                placeholder="搜索国家代码"
+                placeholder={t('countryCode')}
                 allowClear
               />
             </Col>
-
-            <Col>
+            <Col flex="0 0 160px">
               <Select
                 size="small"
                 name="continent"
                 onChange={(value) => handleSearchChange({target: {name: 'continent', value}})}
                 allowClear
-                placeholder="选择大陆"
-                style={{width: '100%'}}
-                popupMatchSelectWidth={false} // 确保下拉菜单宽度根据内容自适应
-                dropdownStyle={{minWidth: 150}} // 可调整此宽度以适应内容
+                placeholder={t('selectContinent')}
+                style={{ width: '100%' }}
               >
-                <Select.Option value="非洲">非洲 (Africa)</Select.Option>
-                <Select.Option value="亚洲">亚洲 (Asia)</Select.Option>
-                <Select.Option value="欧洲">欧洲 (Europe)</Select.Option>
-                <Select.Option value="北美洲">北美洲 (North America)</Select.Option>
-                <Select.Option value="南美洲">南美洲 (South America)</Select.Option>
-                <Select.Option value="大洋洲">大洋洲 (Oceania)</Select.Option>
-                <Select.Option value="南极洲">南极洲 (Antarctica)</Select.Option>
+                <Select.Option value="非洲">{t('africa')}</Select.Option>
+                <Select.Option value="亚洲">{t('asia')}</Select.Option>
+                <Select.Option value="欧洲">{t('europe')}</Select.Option>
+                <Select.Option value="北美洲">{t('northAmerica')}</Select.Option>
+                <Select.Option value="南美洲">{t('southAmerica')}</Select.Option>
+                <Select.Option value="大洋洲">{t('oceania')}</Select.Option>
+                <Select.Option value="南极洲">{t('antarctica')}</Select.Option>
               </Select>
             </Col>
-
-            <Col>
+            <Col flex="0 0 160px">
               <Select
                 size="small"
                 name="status"
                 onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
                 allowClear
-                placeholder="是否已开展业务"
-                style={{width: '100%'}}
+                placeholder={t('businessStatus')}
+                style={{ width: '100%' }}
               >
-                <Select.Option value="1">是</Select.Option>
-                <Select.Option value="0">否</Select.Option>
+                <Select.Option value="1">{t('yes')}</Select.Option>
+                <Select.Option value="0">{t('no')}</Select.Option>
               </Select>
             </Col>
-
-            <Col>
-              <Button
-                type="primary"
-                size="small"
-                onClick={fetchData}
-                disabled={isLoading}
-                style={{width: '100%', fontSize: '12px'}}
-              >
-                {isLoading ? <Spin size="small"/> : '查询'}
-              </Button>
+            <Col flex="none">
+              <Space size={8}>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin size="small"/> : t('search')}
+                </Button>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('createCountry')}
+                </Button>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/country/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>
-
-      </div>
-
-      <div className="mb-3">
-        <Button
-          type="primary"
-          onClick={() => setIsCreateModalVisible(true)}
-          size="small"
-        >
-          新增国家
-        </Button>
-        <Button
-          type="danger"
-          onClick={() => HandleBatchDelete({
-            url: '/manage/country/delete-batch',
-            selectedRows,
-            fetchData,
-          })}
-          disabled={selectedRows.length === 0}
-          size="small"
-        >
-          批量删除
-        </Button>
       </div>
 
       <div className="table-responsive">
@@ -269,6 +262,23 @@ const CountryList = () => {
         handleUpdateCountry={handleUpdateCountry}
         selectedCountry={selectedCountry}
       />
+
+      <style jsx global>{`
+        .country-list-wrapper {
+          padding: 16px;
+          background: var(--cui-body-bg);
+        }
+
+        .search-wrapper {
+          padding: 12px;
+          background: var(--cui-card-bg);
+          border: 1px solid var(--cui-border-color);
+          border-radius: 4px;
+          margin-bottom: 16px;
+        }
+
+
+      `}</style>
     </div>
   );
 };

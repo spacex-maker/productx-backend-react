@@ -845,7 +845,7 @@ const HeaderRightGroup = styled.div`
 
 const ConsoleButton = styled(CButton)`
   padding: 4px 8px;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
