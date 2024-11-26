@@ -304,5 +304,10 @@
   "coordinatesPlaceholder": "形式: 緯度,経度",
   "required": "必須項目",
   "invalidFormat": "無効な形式",
-  "numberRange": "数値範囲: {{min}}-{{max}}"
+  "numberRange": "数値範囲: {{min}}-{{max}}",
+  "borderingCountries": "隣接国",
+  "climateType": "気候タイプ",
+  "averageAnnualTemperature": "年平均気温",
+  "greenEconomyIndex": "グリーン経済指数",
+  "shortName": "略称"
 }

@@ -304,5 +304,10 @@
   "coordinatesPlaceholder": "Formato: Latitud, Longitud",
   "required": "Requerido",
   "invalidFormat": "Formato Incorrecto",
-  "numberRange": "Rango de Números: {{min}}-{{max}}"
+  "numberRange": "Rango de Números: {{min}}-{{max}}",
+  "borderingCountries": "Países limítrofes",
+  "climateType": "Tipo de clima",
+  "averageAnnualTemperature": "Temperatura media anual",
+  "greenEconomyIndex": "Índice de economía verde",
+  "shortName": "Nombre corto"
 }

@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Select, DatePicker, message } from 'antd';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect} from 'react';
+import {Modal, Form, Input, InputNumber, Select, DatePicker, message} from 'antd';
+import {useTranslation} from 'react-i18next';
 import dayjs from 'dayjs';
+import api from 'src/axiosInstance';
 
-const { TextArea } = Input;
+const {TextArea} = Input;
 
 const UpdateCountryModal = ({
-  isVisible,
-  onCancel,
-  onOk,
-  form,
-  selectedCountry
-}) => {
-  const { t } = useTranslation();
+                              isVisible,
+                              onCancel,
+                              onOk,
+                              form,
+                              handleUpdateCountry,
+                              selectedCountry
+                            }) => {
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (isVisible && selectedCountry) {
@@ -24,54 +26,7 @@ const UpdateCountryModal = ({
     }
   }, [isVisible, selectedCountry, form]);
 
-  const handleUpdateCountry = async (values) => {
-    try {
-      const response = await fetch('/manage/countries/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...values,
-          // 转换日期格式
-          independenceDay: values.independenceDay ? values.independenceDay.format('YYYY-MM-DD') : null,
-          // 确保数值类型正确
-          population: values.population ? Number(values.population) : null,
-          gdp: values.gdp ? Number(values.gdp) : null,
-          area: values.area ? Number(values.area) : null,
-          populationDensity: values.populationDensity ? Number(values.populationDensity) : null,
-          hdi: values.hdi ? Number(values.hdi) : null,
-          averageAnnualTemperature: values.averageAnnualTemperature ? Number(values.averageAnnualTemperature) : null,
-          nationalSecurityIndex: values.nationalSecurityIndex ? Number(values.nationalSecurityIndex) : null,
-          capitalPopulation: values.capitalPopulation ? Number(values.capitalPopulation) : null,
-          povertyRate: values.povertyRate ? Number(values.povertyRate) : null,
-          unemploymentRate: values.unemploymentRate ? Number(values.unemploymentRate) : null,
-          politicalStability: values.politicalStability ? Number(values.politicalStability) : null,
-          educationLevel: values.educationLevel ? Number(values.educationLevel) : null,
-          healthcareLevel: values.healthcareLevel ? Number(values.healthcareLevel) : null,
-          internetPenetrationRate: values.internetPenetrationRate ? Number(values.internetPenetrationRate) : null,
-          foreignExchangeReserves: values.foreignExchangeReserves ? Number(values.foreignExchangeReserves) : null,
-          energyConsumption: values.energyConsumption ? Number(values.energyConsumption) : null,
-          airQualityIndex: values.airQualityIndex ? Number(values.airQualityIndex) : null,
-          greenEconomyIndex: values.greenEconomyIndex ? Number(values.greenEconomyIndex) : null,
-          militaryStrengthIndex: values.militaryStrengthIndex ? Number(values.militaryStrengthIndex) : null,
-          linguisticDiversity: values.linguisticDiversity ? Number(values.linguisticDiversity) : null,
-          birthRate: values.birthRate ? Number(values.birthRate) : null,
-          deathRate: values.deathRate ? Number(values.deathRate) : null,
-          worldHeritageSites: values.worldHeritageSites ? Number(values.worldHeritageSites) : null,
-        }),
-      });
 
-      if (!response.ok) {
-        throw new Error('更新失败');
-      }
-
-      message.success('更新成功');
-      onCancel();
-    } catch (error) {
-      message.error('更新失败：' + error.message);
-    }
-  };
 
   return (
     <Modal
@@ -82,7 +37,7 @@ const UpdateCountryModal = ({
       okText={t('confirm')}
       cancelText={t('cancel')}
       width={900}
-      style={{ top: 20 }}
+      style={{top: 20}}
     >
       <Form
         form={form}
@@ -95,7 +50,7 @@ const UpdateCountryModal = ({
         }}
         size="small"
       >
-        <Form.Item name="id" hidden><Input /></Form.Item>
+        <Form.Item name="id" hidden><Input/></Form.Item>
 
         <h3 style={{
           fontSize: '13px',
@@ -112,15 +67,15 @@ const UpdateCountryModal = ({
           <Form.Item
             label={t('countryName')}
             name="name"
-            rules={[{ required: true }]}
-            style={{ marginBottom: '4px' }}
+            rules={[{required: true}]}
+            style={{marginBottom: '4px'}}
           >
-            <Input />
+            <Input/>
           </Form.Item>
-          <Form.Item label={t('countryCode')} name="code" rules={[{ required: true }]}>
-            <Input />
+          <Form.Item label={t('countryCode')} name="code" rules={[{required: true}]}>
+            <Input/>
           </Form.Item>
-          <Form.Item label={t('continent')} name="continent" rules={[{ required: true }]}>
+          <Form.Item label={t('continent')} name="continent" rules={[{required: true}]}>
             <Select>
               <Select.Option value="亚洲">{t('asia')}</Select.Option>
               <Select.Option value="欧洲">{t('europe')}</Select.Option>
@@ -132,18 +87,18 @@ const UpdateCountryModal = ({
             </Select>
           </Form.Item>
           <Form.Item label={t('capital')} name="capital">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('coordinates')} name="coordinates">
-            <Input placeholder="格式: 纬度,经度" />
+            <Input placeholder="格式: 纬度,经度"/>
           </Form.Item>
           <Form.Item label={t('timezone')} name="timezone">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item
             label={t('status')}
             name="status"
-            rules={[{ required: true }]}
+            rules={[{required: true}]}
           >
             <Select>
               <Select.Option value={true}>{t('enabled')}</Select.Option>
@@ -154,11 +109,11 @@ const UpdateCountryModal = ({
             label={t('borderingCountries')}
             name="borderingCountries"
           >
-            <Select mode="tags" style={{ width: '100%' }} />
+            <Select mode="tags" style={{width: '100%'}}/>
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('populationAndArea')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('populationAndArea')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -166,26 +121,26 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('population')} name="population">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('area')} name="area">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('populationDensity')} name="populationDensity">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('capitalPopulation')} name="capitalPopulation">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('birthRate')} name="birthRate">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('deathRate')} name="deathRate">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('economicIndicators')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('economicIndicators')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -193,19 +148,19 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('gdp')} name="gdp">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('currency')} name="currency">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('foreignExchangeReserves')} name="foreignExchangeReserves">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('unemploymentRate')} name="unemploymentRate">
-            <InputNumber min={0} max={100} style={{ width: '100%' }} />
+            <InputNumber min={0} max={100} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('povertyRate')} name="povertyRate">
-            <InputNumber min={0} max={100} style={{ width: '100%' }} />
+            <InputNumber min={0} max={100} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('incomeLevel')} name="incomeLevel">
             <Select>
@@ -217,7 +172,7 @@ const UpdateCountryModal = ({
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('socialDevelopment')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('socialDevelopment')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -225,26 +180,26 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('hdi')} name="hdi">
-            <InputNumber min={0} max={1} step={0.001} style={{ width: '100%' }} />
+            <InputNumber min={0} max={1} step={0.001} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('educationLevel')} name="educationLevel">
-            <InputNumber min={0} max={10} style={{ width: '100%' }} />
+            <InputNumber min={0} max={10} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('healthcareLevel')} name="healthcareLevel">
-            <InputNumber min={0} max={10} style={{ width: '100%' }} />
+            <InputNumber min={0} max={10} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('internetPenetrationRate')} name="internetPenetrationRate">
-            <InputNumber min={0} max={100} style={{ width: '100%' }} />
+            <InputNumber min={0} max={100} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('energyConsumption')} name="energyConsumption">
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('airQualityIndex')} name="airQualityIndex">
-            <InputNumber min={0} max={500} style={{ width: '100%' }} />
+            <InputNumber min={0} max={500} style={{width: '100%'}}/>
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('politicsAndSecurity')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('politicsAndSecurity')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -252,26 +207,26 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('governmentType')} name="governmentType">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('politicalStability')} name="politicalStability">
-            <InputNumber min={0} max={10} style={{ width: '100%' }} />
+            <InputNumber min={0} max={10} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('nationalSecurityIndex')} name="nationalSecurityIndex">
-            <InputNumber min={0} max={10} style={{ width: '100%' }} />
+            <InputNumber min={0} max={10} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('militaryStrengthIndex')} name="militaryStrengthIndex">
-            <InputNumber min={0} max={10} style={{ width: '100%' }} />
+            <InputNumber min={0} max={10} style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('foreignPolicy')} name="foreignPolicy">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('legalSystem')} name="legalSystem">
-            <Input />
+            <Input/>
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('cultureAndSociety')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('cultureAndSociety')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -279,20 +234,20 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('officialLanguages')} name="officialLanguages">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('majorReligions')} name="majorReligions">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('majorSports')} name="majorSports">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('linguisticDiversity')} name="linguisticDiversity">
-            <InputNumber min={0} max={1} step={0.01} style={{ width: '100%' }} />
+            <InputNumber min={0} max={1} step={0.01} style={{width: '100%'}}/>
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('infrastructureAndResources')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('infrastructureAndResources')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -300,20 +255,20 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('transportInfrastructure')} name="transportInfrastructure">
-            <TextArea rows={2} />
+            <TextArea rows={2}/>
           </Form.Item>
           <Form.Item label={t('naturalResources')} name="naturalResources">
-            <TextArea rows={2} />
+            <TextArea rows={2}/>
           </Form.Item>
           <Form.Item label={t('majorExports')} name="majorExports">
-            <TextArea rows={2} />
+            <TextArea rows={2}/>
           </Form.Item>
           <Form.Item label={t('majorImports')} name="majorImports">
-            <TextArea rows={2} />
+            <TextArea rows={2}/>
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('otherInformation')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('otherInformation')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -321,20 +276,20 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('historicalBackground')} name="historicalBackground">
-            <TextArea rows={3} />
+            <TextArea rows={3}/>
           </Form.Item>
           <Form.Item label={t('tourismIndustry')} name="tourismIndustry">
-            <TextArea rows={3} />
+            <TextArea rows={3}/>
           </Form.Item>
           <Form.Item label={t('socialSecurity')} name="socialSecurity">
-            <TextArea rows={2} />
+            <TextArea rows={2}/>
           </Form.Item>
           <Form.Item label={t('internationalOrganizationsMembership')} name="internationalOrganizationsMembership">
-            <TextArea rows={2} />
+            <TextArea rows={2}/>
           </Form.Item>
         </div>
 
-        <h3 style={{ fontSize: '14px', margin: '8px 0' }}>{t('additionalBasicInfo')}</h3>
+        <h3 style={{fontSize: '14px', margin: '8px 0'}}>{t('additionalBasicInfo')}</h3>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
@@ -342,22 +297,22 @@ const UpdateCountryModal = ({
           marginBottom: '8px'
         }}>
           <Form.Item label={t('flagImageUrl')} name="flagImageUrl">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('dialCode')} name="dialCode">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('isoCode')} name="isoCode">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('independenceDay')} name="independenceDay">
-            <DatePicker style={{ width: '100%' }} />
+            <DatePicker style={{width: '100%'}}/>
           </Form.Item>
           <Form.Item label={t('officialWebsite')} name="officialWebsite">
-            <Input />
+            <Input/>
           </Form.Item>
           <Form.Item label={t('worldHeritageSites')} name="worldHeritageSites">
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{width: '100%'}}/>
           </Form.Item>
         </div>
       </Form>
