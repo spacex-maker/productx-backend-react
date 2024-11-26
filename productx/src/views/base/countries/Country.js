@@ -17,6 +17,44 @@ const createCountry = async (countryData) => {
   await api.post('/manage/countries/create', countryData);
 };
 
+const updateCountry =  async (values) => {
+    try {
+      const response = await api.put('/manage/countries/update', {
+
+        ...values,
+        // 转换日期格式
+        independenceDay: values.independenceDay ? values.independenceDay.format('YYYY-MM-DD') : null,
+        // 确保数值类型正确
+        population: values.population ? Number(values.population) : null,
+        gdp: values.gdp ? Number(values.gdp) : null,
+        area: values.area ? Number(values.area) : null,
+        populationDensity: values.populationDensity ? Number(values.populationDensity) : null,
+        hdi: values.hdi ? Number(values.hdi) : null,
+        averageAnnualTemperature: values.averageAnnualTemperature ? Number(values.averageAnnualTemperature) : null,
+        nationalSecurityIndex: values.nationalSecurityIndex ? Number(values.nationalSecurityIndex) : null,
+        capitalPopulation: values.capitalPopulation ? Number(values.capitalPopulation) : null,
+        povertyRate: values.povertyRate ? Number(values.povertyRate) : null,
+        unemploymentRate: values.unemploymentRate ? Number(values.unemploymentRate) : null,
+        politicalStability: values.politicalStability ? Number(values.politicalStability) : null,
+        educationLevel: values.educationLevel ? Number(values.educationLevel) : null,
+        healthcareLevel: values.healthcareLevel ? Number(values.healthcareLevel) : null,
+        internetPenetrationRate: values.internetPenetrationRate ? Number(values.internetPenetrationRate) : null,
+        foreignExchangeReserves: values.foreignExchangeReserves ? Number(values.foreignExchangeReserves) : null,
+        energyConsumption: values.energyConsumption ? Number(values.energyConsumption) : null,
+        airQualityIndex: values.airQualityIndex ? Number(values.airQualityIndex) : null,
+        greenEconomyIndex: values.greenEconomyIndex ? Number(values.greenEconomyIndex) : null,
+        militaryStrengthIndex: values.militaryStrengthIndex ? Number(values.militaryStrengthIndex) : null,
+        linguisticDiversity: values.linguisticDiversity ? Number(values.linguisticDiversity) : null,
+        birthRate: values.birthRate ? Number(values.birthRate) : null,
+        deathRate: values.deathRate ? Number(values.deathRate) : null,
+        worldHeritageSites: values.worldHeritageSites ? Number(values.worldHeritageSites) : null,
+
+      });
+      message.success('更新成功');
+    } catch (error) {
+      message.error('更新失败：' + error.message);
+    }
+};
 
 const CountryList = () => {
   const { t } = useTranslation();
@@ -108,6 +146,13 @@ const CountryList = () => {
     await fetchAllData()
     await fetchData() // Re-fetch data after status update
   }
+  const handleUpdateCountry = async (values) => {
+    await updateCountry(values);
+    setIsUpdateModalVisible(false);
+    updateForm.resetFields();
+    await fetchAllData()
+    await fetchData();
+  };
 
   const handleEditClick = (country) => {
     updateForm.setFieldsValue({
@@ -249,6 +294,7 @@ const CountryList = () => {
         onCancel={() => setIsUpdateModalVisible(false)}
         onOk={() => updateForm.submit()}
         form={updateForm}
+        handleUpdateCountry={handleUpdateCountry}
         selectedCountry={selectedCountry}
       />
 

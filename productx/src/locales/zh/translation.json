@@ -305,5 +305,10 @@
   "coordinatesPlaceholder": "格式: 纬度,经度",
   "required": "必填项",
   "invalidFormat": "格式不正确",
-  "numberRange": "数值范围: {{min}}-{{max}}"
+  "numberRange": "数值范围: {{min}}-{{max}}",
+  "borderingCountries": "接壤国家",
+  "climateType": "气候类型",
+  "averageAnnualTemperature": "年均气温",
+  "greenEconomyIndex": "绿色经济指数",
+  "shortName": "简称"
 }

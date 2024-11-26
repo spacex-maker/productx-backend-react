@@ -296,5 +296,10 @@
   "coordinatesPlaceholder": "Format: Latitude, Longitude",
   "required": "Required",
   "invalidFormat": "Invalid Format",
-  "numberRange": "Number Range: {{min}}-{{max}}"
+  "numberRange": "Number Range: {{min}}-{{max}}",
+  "borderingCountries": "Bordering Countries",
+  "climateType": "Climate Type",
+  "averageAnnualTemperature": "Average Annual Temperature",
+  "greenEconomyIndex": "Green Economy Index",
+  "shortName": "Short Name"
 }

@@ -304,5 +304,10 @@
   "coordinatesPlaceholder": "Format: Latitude, Longitude",
   "required": "Champ Obligatoire",
   "invalidFormat": "Format Incorrect",
-  "numberRange": "Plage de Nombres: {{min}}-{{max}}"
+  "numberRange": "Plage de Nombres: {{min}}-{{max}}",
+  "borderingCountries": "Pays voisins",
+  "climateType": "Type de climat",
+  "averageAnnualTemperature": "Température moyenne annuelle",
+  "greenEconomyIndex": "Indice de l'économie verte",
+  "shortName": "Nom abrégé"
 }

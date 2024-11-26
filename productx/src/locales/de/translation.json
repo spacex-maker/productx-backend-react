@@ -304,5 +304,10 @@
   "coordinatesPlaceholder": "Format: Breitengrad, Längengrad",
   "required": "Pflichtfeld",
   "invalidFormat": "Ungültiges Format",
-  "numberRange": "Zahlenbereich: {{min}}-{{max}}"
+  "numberRange": "Zahlenbereich: {{min}}-{{max}}",
+  "borderingCountries": "Grenzländer",
+  "climateType": "Klimatyp",
+  "averageAnnualTemperature": "Durchschnittliche Jahrestemperatur",
+  "greenEconomyIndex": "Grünes Wirtschaftsinvestitionsindex",
+  "shortName": "Kurzname"
 }

@@ -304,5 +304,10 @@
   "coordinatesPlaceholder": "형식: 위도, 경도",
   "required": "필수 항목",
   "invalidFormat": "잘못된 형식",
-  "numberRange": "숫자 범위: {{min}}-{{max}}"
+  "numberRange": "숫자 범위: {{min}}-{{max}}",
+  "borderingCountries": "인접 국가",
+  "climateType": "기후 유형",
+  "averageAnnualTemperature": "연평균 기온",
+  "greenEconomyIndex": "녹색 경제 지수",
+  "shortName": "약어"
 }

@@ -304,5 +304,10 @@
   "coordinatesPlaceholder": "Формат: широта, долгота",
   "required": "Обязательное поле",
   "invalidFormat": "Неверный формат",
-  "numberRange": "Диапазон значений: {{min}}-{{max}}"
+  "numberRange": "Диапазон значений: {{min}}-{{max}}",
+  "borderingCountries": "Граничные страны",
+  "climateType": "Тип климата",
+  "averageAnnualTemperature": "Среднегодовая температура",
+  "greenEconomyIndex": "Индекс зеленой экономики",
+  "shortName": "Краткое название"
 }
