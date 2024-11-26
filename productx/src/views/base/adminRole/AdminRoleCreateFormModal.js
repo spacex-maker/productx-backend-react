@@ -23,7 +23,14 @@ const AdminRoleCreateFormModal = ({
         >
           <Input placeholder="请输入角色名称" />
         </Form.Item>
-
+        {/* 角色英文名称 */}
+        <Form.Item
+          label="角色英文名称 (Role Name En)"
+          name="roleNameEn"
+          rules={[{ required: true, message: '请输入角色英文名称' }]}
+        >
+          <Input placeholder="请输入角色名称" />
+        </Form.Item>
         {/* 角色描述 */}
         <Form.Item
           label="角色描述 (Role Description)"
