@@ -106,6 +106,7 @@
   "totalAmount": "Montant total",
   "deliveryMethod": "Méthode de livraison",
   "createOrder": "Créer une commande",
+  "batchDelete": "Suppression par lot",
   "sellerId": "ID du vendeur",
   "receiverName": "Nom du destinataire",
   "paymentType": "Type de paiement",
@@ -230,5 +231,18 @@
     "客服系统": "Système de Service Client",
     "菜单管理": "Gestion des Menus",
     "资源管理": "Gestion des Ressources"
-  }
+  },
+  "confirmDelete": "Confirmer la suppression",
+  "countryName": "Nom du pays",
+  "countryCode": "Code du pays",
+  "selectContinent": "Sélectionner le continent",
+  "businessStatus": "Statut commercial",
+  "africa": "Afrique",
+  "asia": "Asie",
+  "europe": "Europe",
+  "northAmerica": "Amérique du Nord",
+  "southAmerica": "Amérique du Sud",
+  "oceania": "Océanie",
+  "antarctica": "Antarctique",
+  "createCountry": "Créer un pays"
 }

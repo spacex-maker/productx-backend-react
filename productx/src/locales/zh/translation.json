@@ -232,5 +232,17 @@
     "菜单管理": "菜单管理",
     "资源管理": "资源管理"
   },
-  "confirmDelete": "确认删除"
+  "confirmDelete": "确认删除",
+  "countryName": "国家名称",
+  "countryCode": "国家代码",
+  "selectContinent": "选择大陆",
+  "businessStatus": "是否已开展业务",
+  "africa": "非洲",
+  "asia": "亚洲",
+  "europe": "欧洲",
+  "northAmerica": "北美洲",
+  "southAmerica": "南美洲",
+  "oceania": "大洋洲",
+  "antarctica": "南极洲",
+  "createCountry": "新增国家"
 }
