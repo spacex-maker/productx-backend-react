@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm } from 'antd';
+import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm, Descriptions } from 'antd';
 import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import {useTranslation} from 'react-i18next'; // 引入 useTranslation
@@ -443,46 +443,156 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   return (
     <Modal
       title={
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 4px',
-          marginRight: '24px'
-        }}>
+        <div>
+          {/* 国家详细信息统计卡片 */}
+          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>人口</span>}
+                  value={country?.population}
+                  prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `${(value / 10000).toFixed(2)}万`}
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>GDP</span>}
+                  value={country?.gdp}
+                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `$${(value/100000000).toFixed(2)}亿`}
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>面积</span>}
+                  value={country?.area}
+                  prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `${value?.toLocaleString()} km²`}
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>世界遗产</span>}
+                  value={country?.worldHeritageSites}
+                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `${value} 处`}
+                />
+              </Card>
+            </Col>
+          </Row>
+
+          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>失业率</span>}
+                  value={country?.unemploymentRate}
+                  prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `${value}%`}
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>教育水平</span>}
+                  value={country?.educationLevel}
+                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => value?.toFixed(1)}
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>医疗水平</span>}
+                  value={country?.healthcareLevel}
+                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => value?.toFixed(1)}
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>互联网普及率</span>}
+                  value={country?.internetPenetrationRate}
+                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `${value}%`}
+                />
+              </Card>
+            </Col>
+          </Row>
+
+          {/* 保持原有的行政区划统计卡片 */}
+          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
+            <Col span={8}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={
+                    <span style={{ fontSize: '10px' }}>
+                      {currentRegion ? '下级行政区' : '行政区划'}数量
+                    </span>
+                  }
+                  value={regions.length}
+                  prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                />
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>总人口</span>}
+                  value={regions.reduce((sum, region) => sum + (region.population || 0), 0)}
+                  prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `${(value / 10000).toFixed(2)}万`}
+                />
+              </Card>
+            </Col>
+            <Col span={8}>
+              <Card size="small" bodyStyle={{ padding: '6px' }}>
+                <Statistic
+                  title={<span style={{ fontSize: '10px' }}>总面积</span>}
+                  value={regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0)}
+                  prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
+                  valueStyle={{ fontSize: '12px' }}
+                  formatter={(value) => `${value.toLocaleString()} km²`}
+                />
+              </Card>
+            </Col>
+          </Row>
+
+          {/* 保持原有的面包屑导航 */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px' }}>
-            <GlobalOutlined style={{ fontSize: '10px' }} />
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              {breadcrumb.map((item, index) => (
-                <React.Fragment key={item.id}>
-                  {index > 0 && <span style={{ color: '#999' }}>/</span>}
-                  <span
-                    style={{
-                      cursor: index < breadcrumb.length - 1 ? 'pointer' : 'default',
-                      color: index < breadcrumb.length - 1 ? '#1890ff' : 'inherit',
-                    }}
-                    onClick={() => index < breadcrumb.length - 1 && handleGoBack(index)}
-                  >
-                    {item.name}
-                  </span>
-                </React.Fragment>
-              ))}
-            </div>
+            {breadcrumb.map((item, index) => (
+              <React.Fragment key={item.id}>
+                {index > 0 && <span>/</span>}
+                <span
+                  style={{ cursor: 'pointer', color: 'blue' }}
+                  onClick={() => handleGoBack(index)}
+                >
+                  {item.name}
+                </span>
+              </React.Fragment>
+            ))}
           </div>
-          <Button
-            type="primary"
-            size="small"
-            icon={<PlusOutlined />}
-            style={{
-              fontSize: '10px',
-              padding: '0 4px',
-              height: '20px',
-              marginRight: '8px'
-            }}
-            onClick={() => setAddModalVisible(true)}
-          >
-            新增
-          </Button>
         </div>
       }
       open={visible}
@@ -492,46 +602,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       bodyStyle={{ padding: '6px' }}
       closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
     >
-      {/* 统计信息 */}
-      <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-        <Col span={8}>
-          <Card size="small" bodyStyle={{ padding: '6px' }}>
-            <Statistic
-              title={
-                <span style={{ fontSize: '10px' }}>
-                  {currentRegion ? '下级行政区' : '行政区划'}数量
-                </span>
-              }
-              value={regions.length}
-              prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
-              valueStyle={{ fontSize: '12px' }}
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card size="small" bodyStyle={{ padding: '6px' }}>
-            <Statistic
-              title={<span style={{ fontSize: '10px' }}>总人口</span>}
-              value={regions.reduce((sum, region) => sum + (region.population || 0), 0)}
-              prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
-              valueStyle={{ fontSize: '12px' }}
-              formatter={(value) => `${(value / 10000).toFixed(2)}万`}
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card size="small" bodyStyle={{ padding: '6px' }}>
-            <Statistic
-              title={<span style={{ fontSize: '10px' }}>总面积</span>}
-              value={regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0)}
-              prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
-              valueStyle={{ fontSize: '12px' }}
-              formatter={(value) => `${value.toLocaleString()} km²`}
-            />
-          </Card>
-        </Col>
-      </Row>
-
       {/* 行政区划表格 */}
       <Spin spinning={loading}>
         {regions.length > 0 ? (

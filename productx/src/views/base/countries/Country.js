@@ -17,9 +17,6 @@ const createCountry = async (countryData) => {
   await api.post('/manage/countries/create', countryData);
 };
 
-const updateCountry = async (updateData) => {
-  await api.put(`/manage/countries/update`, updateData);
-};
 
 const CountryList = () => {
   const { t } = useTranslation();
@@ -111,13 +108,6 @@ const CountryList = () => {
     await fetchAllData()
     await fetchData() // Re-fetch data after status update
   }
-  const handleUpdateCountry = async (values) => {
-    await updateCountry(values);
-    setIsUpdateModalVisible(false);
-    updateForm.resetFields();
-    await fetchAllData()
-    await fetchData();
-  };
 
   const handleEditClick = (country) => {
     updateForm.setFieldsValue({
@@ -259,7 +249,6 @@ const CountryList = () => {
         onCancel={() => setIsUpdateModalVisible(false)}
         onOk={() => updateForm.submit()}
         form={updateForm}
-        handleUpdateCountry={handleUpdateCountry}
         selectedCountry={selectedCountry}
       />
 

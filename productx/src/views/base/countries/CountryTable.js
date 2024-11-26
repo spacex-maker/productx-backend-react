@@ -27,6 +27,18 @@ const CountryTable = ({
     { key: 'name', label: t('countryName') },
     { key: 'code', label: t('countryCode') },
     { key: 'continent', label: t('continent') },
+    { key: 'capital', label: t('capital') },
+    { key: 'population', label: t('population'), 
+      render: (val) => val ? `${(val / 10000).toFixed(2)}万` : '-' 
+    },
+    { key: 'area', label: t('area'),
+      render: (val) => val ? `${val.toLocaleString()} km²` : '-'
+    },
+    { key: 'gdp', label: t('gdp'),
+      render: (val) => val ? `$${(val/100000000).toFixed(2)}亿` : '-'
+    },
+    { key: 'officialLanguages', label: t('officialLanguages') },
+    { key: 'currency', label: t('currency') },
     { key: 'status', label: t('status') },
     { key: 'actions', label: t('actions') },
   ];
@@ -72,6 +84,12 @@ const CountryTable = ({
               <td className="text-truncate">{item.name}</td>
               <td className="text-truncate">{item.code}</td>
               <td className="text-truncate">{item.continent}</td>
+              <td className="text-truncate">{item.capital}</td>
+              <td className="text-truncate">{item.population ? `${(item.population / 10000).toFixed(2)}万` : '-'}</td>
+              <td className="text-truncate">{item.area ? `${item.area.toLocaleString()} km²` : '-'}</td>
+              <td className="text-truncate">{item.gdp ? `$${(item.gdp / 100000000).toFixed(2)}亿` : '-'}</td>
+              <td className="text-truncate">{item.officialLanguages}</td>
+              <td className="text-truncate">{item.currency}</td>
               <td>
                 <label className="toggle-switch">
                   <input
