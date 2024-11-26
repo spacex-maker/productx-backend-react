@@ -9,7 +9,7 @@ import RoleCreateFormModal from "src/views/base/adminRole/AdminRoleCreateFormMod
 import UpdateRoleModal from "src/views/base/adminRole/UpdateAdminRoleModal"; // 更新角色模态框
 
 const createRole = async (roleData) => {
-  await api.post('/manage/admin-roles/create', roleData);
+  await api.post('/manage/admin-roles/create-role', roleData);
 };
 
 const updateRole = async (updateData) => {
@@ -92,7 +92,7 @@ const AdminRole = () => {
   };
 
   const handleDeleteClick = async (id) => {
-    await api.post('/manage/admin-roles/remove', { id });
+    await api.post('/manage/admin-roles/remove-role', { id });
     await fetchData(); // 删除后重新获取数据
   };
 

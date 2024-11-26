@@ -274,7 +274,7 @@ const globalStyles = `
   }
 
   .ant-form-item-label > label {
-    font-size: 8px !important;
+    font-size: 10px !important;
     height: 14px !important;
     line-height: 14px !important;
   }
