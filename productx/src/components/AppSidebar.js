@@ -15,6 +15,7 @@ import { AppSidebarNav } from './AppSidebarNav'
 import { sygnet } from 'src/assets/brand/sygnet'
 import api from 'src/axiosInstance'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import styled, { keyframes } from 'styled-components'
 
 // 组件映射
 const componentMap = {
@@ -22,6 +23,53 @@ const componentMap = {
   CNavItem,
   CNavTitle,
 }
+
+const glowAnimation = keyframes`
+  0% {
+    text-shadow: 0 0 5px #fff,
+                 0 0 10px #fff,
+                 0 0 15px #0073e6,
+                 0 0 20px #0073e6;
+  }
+  50% {
+    text-shadow: 0 0 10px #fff,
+                 0 0 20px #fff,
+                 0 0 25px #0073e6,
+                 0 0 30px #0073e6;
+  }
+  100% {
+    text-shadow: 0 0 5px #fff,
+                 0 0 10px #fff,
+                 0 0 15px #0073e6,
+                 0 0 20px #0073e6;
+  }
+`;
+
+const BrandContainer = styled(CSidebarBrand)`
+  padding: 0 1rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BrandText = styled.div`
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  animation: ${glowAnimation} 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+  
+  .full-brand {
+    display: ${props => props.narrow ? 'none' : 'block'};
+  }
+  
+  .single-letter {
+    display: ${props => props.narrow ? 'block' : 'none'};
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+`;
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
@@ -104,6 +152,12 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
+      <BrandContainer>
+        <BrandText narrow={sidebarUnfoldable || !sidebarShow}>
+          <span className="full-brand">Product X ADMIN</span>
+          <span className="single-letter">P</span>
+        </BrandText>
+      </BrandContainer>
       <style>
         {`
           /* 增加子菜单的左边距 */
@@ -117,17 +171,6 @@ const AppSidebar = () => {
           }
         `}
       </style>
-      <CSidebarHeader className="border-bottom">
-        <CSidebarBrand to="/">
-          <strong>Product X ADMIN</strong>
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={25} />
-        </CSidebarBrand>
-        <CCloseButton
-          className="d-lg-none"
-          dark
-          onClick={() => dispatch({ type: 'set', sidebarShow: false })}
-        />
-      </CSidebarHeader>
       <AppSidebarNav items={menuItems} />
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
