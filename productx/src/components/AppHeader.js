@@ -31,6 +31,7 @@ import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import Icon from "@ant-design/icons";
 import styled from 'styled-components'
+import TimeDisplay from './header/TimeDisplay';  // 添加导入
 
 // 添加自定义样式
 const CompactHeader = styled(CHeader)`
@@ -104,24 +105,6 @@ const AppHeader = () => {
   const { show: sidebarShow } = useSelector((state) => state.sidebar)
   const currentUser = useSelector((state) => state.user?.currentUser)
 
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString())
-  const [siteViewCount, setSiteViewCount] = useState(null)
-
-  useEffect(() => {
-    const updateTime = () => setCurrentTime(new Date().toLocaleTimeString())
-    const timeInterval = setInterval(updateTime, 1000)
-    return () => clearInterval(timeInterval)
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      headerRef.current &&
-      headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
-    }
-    document.addEventListener('scroll', handleScroll)
-    return () => document.removeEventListener('scroll', handleScroll)
-  }, [])
-
   // 切换语言的方法
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang)
@@ -168,10 +151,7 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <div className="nav-link d-flex align-items-center">
-              <CIcon icon={cilSun} size="lg" className="me-2" />
-              <span>{currentTime}</span>
-            </div>
+            <TimeDisplay />  {/* 替换原来的时间显示 */}
           </CNavItem>
           <CNavItem>
             <div className="nav-link d-flex align-items-center">

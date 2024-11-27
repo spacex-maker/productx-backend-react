@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 // 定义环境配置
 export const API_CONFIG = {
-  TEST: 'http://34.92.193.186:8090',
+  TEST: 'http://34.92.193.186:18090',
   PROD: 'https://protx.cn',
   LOCAL: 'http://localhost:8090'
 };
@@ -21,8 +21,8 @@ const autoDetectEnvironment = () => {
   return 'PROD';
 };
 
-// 根据自动检测设置初始环境
-export var API_BASE_URL = API_CONFIG[autoDetectEnvironment()];
+// 将 const 改为 let，使其可以被修改
+export let API_BASE_URL = API_CONFIG[autoDetectEnvironment()];
 
 // 设置 API 基地址
 export const setBaseURL = (environment) => {
@@ -37,7 +37,7 @@ export const setBaseURL = (environment) => {
   // 更新环境提示信息
   const envNames = {
     PROD: '生产',
-    TEST: '测试',
+    TEST: '测试(推荐)',
     LOCAL: '本地'
   };
   message.success(`API 基地址已切换到${envNames[environment]}环境: ${API_BASE_URL}`);
@@ -120,7 +120,11 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-
-
+// 添加设置自定义基地址的函数
+export const setCustomBaseURL = (customUrl) => {
+  API_BASE_URL = customUrl;
+  axiosInstance.defaults.baseURL = customUrl;
+  message.success(`已切换到自定义环境: ${customUrl}`);
+};
 
 export default axiosInstance;
