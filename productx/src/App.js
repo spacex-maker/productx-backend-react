@@ -1,7 +1,8 @@
 import React, {Suspense, useEffect, useState} from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { CSpinner, useColorModes } from '@coreui/react'
+import { setCurrentUser } from './redux/userSlice'
 import './scss/style.scss'
 import TawkToChat from "src/TawkToChat";
 import styled, { createGlobalStyle } from 'styled-components';
@@ -50,7 +51,8 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-  const storedTheme = useSelector((state) => state.theme)
+  const storedTheme = useSelector((state) => state.theme?.currentTheme || 'light')
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.href.split('?')[1])
@@ -65,6 +67,20 @@ const App = () => {
 
     setColorMode(storedTheme)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    // 从 localStorage 恢复用户信息
+    const storedUser = localStorage.getItem('currentUser')
+    if (storedUser) {
+      try {
+        const userInfo = JSON.parse(storedUser)
+        dispatch(setCurrentUser(userInfo))
+      } catch (error) {
+        console.error('Failed to parse stored user info:', error)
+        localStorage.removeItem('currentUser') // 如果解析失败，清除存储的数据
+      }
+    }
+  }, [dispatch])
 
   return (
     <HashRouter>

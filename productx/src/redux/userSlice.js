@@ -1,16 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  currentUser: {
+    id: null,
+    username: null,
+    email: null,
+    phone: null,
+    roleId: null,
+    status: null,
+    isDeleted: false,
+    thirdUserAccountId: null,
+    createBy: null,
+    avatar: null
+  }
+};
+
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    currentUser: null,
-  },
+  initialState,
   reducers: {
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
     },
     clearCurrentUser: (state) => {
-      state.currentUser = null;
+      state.currentUser = initialState.currentUser;
     },
   },
 });

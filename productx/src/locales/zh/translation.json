@@ -333,5 +333,13 @@
   "diplomaticRelations": "外交关系",
   "specialNotes": "特别备注",
   "copySuccess": "复制成功",
-  "copyFailed": "复制失败"
+  "copyFailed": "复制失败",
+  "inviteCode": "邀请码",
+  "userDetail": "用户详情",
+  "scanQRCodeToRegister": "扫描二维码注册",
+  "notLoggedIn": "未登录",
+  "updates": "更新",
+  "messages": "消息",
+  "tasks": "任务",
+  "comments": "评论"
 }

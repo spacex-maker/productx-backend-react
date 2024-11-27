@@ -335,5 +335,10 @@
   "copyFailed": "복사 실패",
   "inviteCode": "초대 코드",
   "userDetail": "사용자 세부 정보",
-  "scanQRCodeToRegister": "QR 코드를 스캔하여 등록하세요"
+  "scanQRCodeToRegister": "QR 코드를 스캔하여 등록하세요",
+  "notLoggedIn": "로그인되지 않음",
+  "updates": "업데이트",
+  "messages": "메시지",
+  "tasks": "작업",
+  "comments": "댓글"
 }

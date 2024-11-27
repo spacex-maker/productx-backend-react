@@ -25,8 +25,7 @@ const componentMap = {
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
-  const unfoldable = useSelector((state) => state.sidebarUnfoldable)
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const { sidebarShow, sidebarUnfoldable } = useSelector((state) => state.sidebar)
   const { t } = useTranslation()
   const [menuItems, setMenuItems] = useState([])
 
@@ -98,11 +97,9 @@ const AppSidebar = () => {
 
   return (
     <CSidebar
-      className="border-end custom-sidebar"
-      colorScheme="dark"
       position="fixed"
-      unfoldable={unfoldable}
       visible={sidebarShow}
+      unfoldable={sidebarUnfoldable}
       onVisibleChange={(visible) => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
@@ -134,7 +131,7 @@ const AppSidebar = () => {
       <AppSidebarNav items={menuItems} />
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler
-          onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !unfoldable })}
+          onClick={() => dispatch({ type: 'set', sidebarUnfoldable: !sidebarUnfoldable })}
         />
       </CSidebarFooter>
     </CSidebar>

@@ -335,5 +335,10 @@
   "copyFailed": "Ошибка копирования",
   "inviteCode": "Код приглашения",
   "userDetail": "Детали пользователя",
-  "scanQRCodeToRegister": "Сканируйте QR-код для регистрации"
+  "scanQRCodeToRegister": "Сканируйте QR-код для регистрации",
+  "notLoggedIn": "Не вошли в систему",
+  "updates": "Обновления",
+  "messages": "Сообщения",
+  "tasks": "Задачи",
+  "comments": "Комментарии"
 }
