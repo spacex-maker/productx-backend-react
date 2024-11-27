@@ -309,5 +309,20 @@
   "climateType": "نوع المناخ",
   "averageAnnualTemperature": "متوسط درجة الحرارة السنوية",
   "greenEconomyIndex": "مؤشر الاقتصاد الأخضر",
-  "shortName": "الاسم المختصر"
+  "shortName": "الاسم المختصر",
+  "nationalFlag": "العَلَم الوطني",
+  "regionalManager": "مدير المنطقة",
+  "areaManager": "مدير المنطقة",
+  "addRegion": "إضافة تقسيم إداري",
+  "subRegion": "التقسيم الإداري الفرعي",
+  "regionCode": "رمز التقسيم الإداري",
+  "pleaseInputCode": "يرجى إدخال الرمز",
+  "pleaseInputName": "يرجى إدخال الاسم",
+  "enName": "الاسم بالإنجليزية",
+  "areaKm2": "المساحة (كم²)",
+  "region": "المنطقة",
+  "countryInfo": "معلومات البلد",
+  "internationalOrganizations": "المنظمات الدولية",
+  "averageTemperature": "متوسط درجة الحرارة",
+  "internetPenetration": "اختراق الإنترنت"
 }

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Space } from 'antd';
-import { EyeOutlined, EditOutlined } from '@ant-design/icons';
+import { GlobalOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons';
 import CountryDetailModal from './CountryDetailModal';
+import CountryInfoModal from './CountryInfoModal';
 import { useTranslation } from 'react-i18next';
 
 const CountryTable = ({
@@ -16,6 +17,7 @@ const CountryTable = ({
                       }) => {
   const { t } = useTranslation();
   const [detailVisible, setDetailVisible] = useState(false);
+  const [infoVisible, setInfoVisible] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
   const showDetail = (country) => {
@@ -24,7 +26,7 @@ const CountryTable = ({
   };
 
   const tableColumns = [
-    { 
+    {
       key: 'checkbox',
       width: '30px',
       align: 'center',
@@ -39,20 +41,20 @@ const CountryTable = ({
         </div>
       )
     },
-    { 
-      key: 'flagImageUrl', 
-      label: t('flag'),
+    {
+      key: 'flagImageUrl',
+      label: t('nationalFlag'),
       width: '40px',
       align: 'center',
       render: (url) => url ? (
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
           alignItems: 'center',
           padding: '2px 0'
         }}>
-          <img 
-            src={url} 
+          <img
+            src={url}
             alt="flag"
             style={{
               width: '24px',
@@ -70,25 +72,26 @@ const CountryTable = ({
       ) : '-'
     },
     { key: 'name', label: t('countryName'), align: 'left', width: '120px' },
+    { key: 'areaManager', label: t('areaManager'), align: 'left', width: '80px' },
     { key: 'code', label: t('countryCode'), align: 'left', width: '80px' },
     { key: 'continent', label: t('continent'), align: 'left', width: '100px' },
     { key: 'capital', label: t('capital'), align: 'left', width: '100px' },
-    { 
-      key: 'population', 
-      label: t('population'), 
+    {
+      key: 'population',
+      label: t('population'),
       align: 'right',
       width: '100px',
-      render: (val) => val ? `${(val / 10000).toFixed(2)}万` : '-' 
+      render: (val) => val ? `${(val / 10000).toFixed(2)}万` : '-'
     },
-    { 
-      key: 'area', 
+    {
+      key: 'area',
       label: t('area'),
       align: 'right',
       width: '120px',
       render: (val) => val ? `${val.toLocaleString()} km²` : '-'
     },
-    { 
-      key: 'gdp', 
+    {
+      key: 'gdp',
       label: t('gdp'),
       align: 'right',
       width: '120px',
@@ -96,9 +99,9 @@ const CountryTable = ({
     },
     { key: 'officialLanguages', label: t('officialLanguages'), align: 'left', width: '120px' },
     { key: 'currency', label: t('currency'), align: 'left', width: '100px' },
-    { 
-      key: 'status', 
-      label: t('status'), 
+    {
+      key: 'status',
+      label: t('status'),
       align: 'center',
       width: '80px',
       render: (status, item) => (
@@ -112,22 +115,55 @@ const CountryTable = ({
         </label>
       )
     },
-    { 
-      key: 'actions', 
-      label: t('actions'), 
+    {
+      key: 'actions',
+      label: t('actions'),
       align: 'center',
-      width: '180px',
+      width: '95px',
       render: (_, item) => (
-        <Space size={4}>
+        <Space 
+          direction="vertical" 
+          size={0}
+          style={{ 
+            width: '100%',
+            padding: '1px 0'
+          }}
+        >
+          <Button
+            type="text"
+            size="small"
+            icon={<GlobalOutlined />}
+            onClick={() => {
+              setSelectedCountry(item);
+              setInfoVisible(true);
+            }}
+            style={{
+              padding: '1px 2px',
+              height: '18px',
+              lineHeight: '16px',
+              fontSize: '10px',
+              width: '85px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {t('countryInfo')}
+          </Button>
           <Button
             type="text"
             size="small"
             icon={<EyeOutlined />}
             onClick={() => showDetail(item)}
-            style={{ 
-              padding: '2px 4px',
-              height: '24px',
-              lineHeight: '20px'
+            style={{
+              padding: '1px 2px',
+              height: '18px',
+              lineHeight: '16px',
+              fontSize: '10px',
+              width: '85px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             {t('detail')}
@@ -137,10 +173,15 @@ const CountryTable = ({
             size="small"
             icon={<EditOutlined />}
             onClick={() => handleEditClick(item)}
-            style={{ 
-              padding: '2px 4px',
-              height: '24px',
-              lineHeight: '20px'
+            style={{
+              padding: '1px 2px',
+              height: '18px',
+              lineHeight: '16px',
+              fontSize: '10px',
+              width: '85px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             {t('edit')}
@@ -157,9 +198,9 @@ const CountryTable = ({
           <thead>
             <tr>
               {tableColumns.slice(0, -1).map((column) => (
-                <th 
-                  key={column.key} 
-                  style={{ 
+                <th
+                  key={column.key}
+                  style={{
                     width: column.width,
                     textAlign: column.align,
                     padding: '8px'
@@ -168,11 +209,11 @@ const CountryTable = ({
                   {column.label}
                 </th>
               ))}
-              <th 
-                style={{ 
-                  width: '140px',
+              <th
+                style={{
+                  width: '95px',
                   textAlign: 'center',
-                  padding: '8px',
+                  padding: '8px 2px',
                   position: 'sticky',
                   right: 0,
                 }}
@@ -185,9 +226,9 @@ const CountryTable = ({
             {data.map((item) => (
               <tr key={item.id}>
                 {tableColumns.slice(0, -1).map((column) => (
-                  <td 
+                  <td
                     key={`${item.id}-${column.key}`}
-                    style={{ 
+                    style={{
                       width: column.width,
                       textAlign: column.align,
                       padding: '4px 8px',
@@ -199,11 +240,11 @@ const CountryTable = ({
                     {column.render ? column.render(item[column.key], item) : item[column.key]}
                   </td>
                 ))}
-                <td 
-                  style={{ 
-                    width: '140px',
+                <td
+                  style={{
+                    width: '95px',
                     textAlign: 'center',
-                    padding: '4px 8px',
+                    padding: '2px',
                     position: 'sticky',
                     right: 0,
                   }}
@@ -230,6 +271,12 @@ const CountryTable = ({
         visible={detailVisible}
         country={selectedCountry}
         onCancel={() => setDetailVisible(false)}
+      />
+      
+      <CountryInfoModal
+        visible={infoVisible}
+        country={selectedCountry}
+        onCancel={() => setInfoVisible(false)}
       />
     </>
   );

@@ -310,5 +310,20 @@
   "climateType": "气候类型",
   "averageAnnualTemperature": "年均气温",
   "greenEconomyIndex": "绿色经济指数",
-  "shortName": "简称"
+  "shortName": "简称",
+  "nationalFlag": "国旗",
+  "regionalManager": "区域负责人",
+  "areaManager": "区域负责人",
+  "addRegion": "新增行政区划",
+  "subRegion": "下级行政区划",
+  "regionCode": "行政区划编码",
+  "pleaseInputCode": "请输入编码",
+  "pleaseInputName": "请输入名称",
+  "enName": "英文名称",
+  "areaKm2": "面积(km²)",
+  "region": "区域",
+  "countryInfo": "国家信息",
+  "internationalOrganizations": "国际组织",
+  "averageTemperature": "平均温度",
+  "internetPenetration": "互联网普及率"
 }

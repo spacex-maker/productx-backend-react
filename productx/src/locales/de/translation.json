@@ -309,5 +309,20 @@
   "climateType": "Klimatyp",
   "averageAnnualTemperature": "Durchschnittliche Jahrestemperatur",
   "greenEconomyIndex": "Grünes Wirtschaftsinvestitionsindex",
-  "shortName": "Kurzname"
+  "shortName": "Kurzname",
+  "nationalFlag": "Nationalflagge",
+  "regionalManager": "Regionalleiter",
+  "areaManager": "Regionalleiter",
+  "addRegion": "Neue Verwaltungsregion hinzufügen",
+  "subRegion": "Untergeordnete Verwaltungsregion",
+  "regionCode": "Verwaltungseinheitscode",
+  "pleaseInputCode": "Bitte Code eingeben",
+  "pleaseInputName": "Bitte Namen eingeben",
+  "enName": "Englischer Name",
+  "areaKm2": "Fläche (km²)",
+  "region": "Region",
+  "countryInfo": "Länderinformation",
+  "internationalOrganizations": "Internationale Organisationen",
+  "averageTemperature": "Durchschnittstemperatur",
+  "internetPenetration": "Internetpenetration"
 }

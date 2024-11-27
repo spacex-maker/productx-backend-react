@@ -309,5 +309,20 @@
   "climateType": "Тип климата",
   "averageAnnualTemperature": "Среднегодовая температура",
   "greenEconomyIndex": "Индекс зеленой экономики",
-  "shortName": "Краткое название"
+  "shortName": "Краткое название",
+  "nationalFlag": "Национальный флаг",
+  "regionalManager": "Региональный менеджер",
+  "areaManager": "Региональный менеджер",
+  "addRegion": "Добавить регион",
+  "subRegion": "Подрегион",
+  "regionCode": "Код региона",
+  "pleaseInputCode": "Пожалуйста, введите код",
+  "pleaseInputName": "Пожалуйста, введите название",
+  "enName": "Английское название",
+  "areaKm2": "Площадь (км²)",
+  "region": "Регион",
+  "countryInfo": "Информация о стране",
+  "internationalOrganizations": "Международные организации",
+  "averageTemperature": "Средняя температура",
+  "internetPenetration": "Проникновение интернета"
 }

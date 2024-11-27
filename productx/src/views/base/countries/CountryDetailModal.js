@@ -5,6 +5,8 @@ import api from 'src/axiosInstance';
 import {useTranslation} from 'react-i18next'; // 引入 useTranslation
 import { Resizable } from 'react-resizable';
 import 'react-resizable/css/styles.css';
+import EditRegionModal from './EditRegionModal';
+import CountryStatisticsCard from './CountryStatisticsCard';
 
 // 添加可调整列宽的表头单元格组件
 const ResizableTitle = (props) => {
@@ -64,6 +66,31 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     status: 50,
     action: 100,
   });
+
+  // 修改表单样式定义
+  const formStyles = {
+    label: {
+      fontSize: '12px',
+      color: '#000000',
+      marginBottom: '2px'
+    },
+    input: {
+      fontSize: '12px',
+      height: '24px',
+      color: '#000000 !important',  // 添加 !important 确保不被覆盖
+      backgroundColor: '#ffffff !important',  // 确保背景色也是白色
+      '&::placeholder': {
+        color: '#999999'  // 保持 placeholder 颜色较浅
+      }
+    },
+    formItem: {
+      marginBottom: '4px'
+    },
+    modalTitle: {
+      fontSize: '12px',
+      color: '#000000'
+    }
+  };
 
   useEffect(() => {
     if (visible && country?.id) {
@@ -444,54 +471,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     <Modal
       title={
         <div>
-          {/* 国家详细信息统计卡片 */}
-          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>人口</span>}
-                  value={country?.population}
-                  prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${(value / 10000).toFixed(2)}万`}
-                />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>GDP</span>}
-                  value={country?.gdp}
-                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `$${(value/100000000).toFixed(2)}亿`}
-                />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>面积</span>}
-                  value={country?.area}
-                  prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${value?.toLocaleString()} km²`}
-                />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>世界遗产</span>}
-                  value={country?.worldHeritageSites}
-                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${value} 处`}
-                />
-              </Card>
-            </Col>
-          </Row>
+          {/* 国家统计卡片 */}
+          <CountryStatisticsCard country={country} />
 
+          {/* 四个指标统计卡片 */}
           <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
             <Col span={6}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
@@ -539,7 +522,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             </Col>
           </Row>
 
-          {/* 保持原有的行政区划统计卡片 */}
+          {/* 行政区划统计卡片 */}
           <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
             <Col span={8}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
@@ -579,27 +562,45 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             </Col>
           </Row>
 
-          {/* 保持原有的面包屑导航 */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px' }}>
-            {breadcrumb.map((item, index) => (
-              <React.Fragment key={item.id}>
-                {index > 0 && <span>/</span>}
-                <span
-                  style={{ cursor: 'pointer', color: 'blue' }}
-                  onClick={() => handleGoBack(index)}
-                >
-                  {item.name}
-                </span>
-              </React.Fragment>
-            ))}
+          {/* 面包屑和按钮 */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {/* 面包屑导航 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {breadcrumb.map((item, index) => (
+                <React.Fragment key={item.id}>
+                  {index > 0 && <span>/</span>}
+                  <span
+                    style={{ cursor: 'pointer', color: '#1890ff' }}
+                    onClick={() => handleGoBack(index)}
+                  >
+                    {item.name}
+                  </span>
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* 新增按钮 */}
+            <Button
+              type="primary"
+              size="small"
+              icon={<PlusOutlined />}
+              onClick={() => setAddModalVisible(true)}
+              style={{
+                fontSize: '10px',
+                height: '24px',
+                padding: '0 8px'
+              }}
+            >
+              {t('addRegion')}
+            </Button>
           </div>
         </div>
       }
       open={visible}
       onCancel={onCancel}
-      width={900}
+      width={800}
       footer={null}
-      bodyStyle={{ padding: '6px' }}
+      styles={{ padding: '6px' }}
       closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
     >
       {/* 行政区划表格 */}
@@ -627,8 +628,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       {/* 新增表单弹窗 */}
       <Modal
         title={
-          <div style={{ fontSize: '10px' }}>
-            新增{currentRegion ? '下级' : ''}行政区划
+          <div style={formStyles.modalTitle}>
+            {t('region', { type: currentRegion ? t('subRegion') : t('region') })}
           </div>
         }
         open={addModalVisible}
@@ -638,7 +639,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         }}
         onOk={() => addForm.submit()}
         width={400}
-        bodyStyle={{ padding: '8px' }}
+        style={{ padding: '8px' }}
         destroyOnClose
       >
         <Form
@@ -646,25 +647,32 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           onFinish={handleAdd}
           layout="vertical"
           size="small"
-          style={{ fontSize: '10px' }}
         >
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '10px' }}>行政区划编码</span>}
+                label={<span style={formStyles.label}>{t('regionCode')}</span>}
                 name="code"
-                rules={[{ required: true, message: '请输入编码' }]}
+                rules={[{ required: true, message: t('pleaseInputCode') }]}
+                style={formStyles.formItem}
               >
-                <Input style={{ fontSize: '10px' }} placeholder="例如：CN-BJ" />
+                <Input
+                  style={formStyles.input}
+                  placeholder={t('regionCodePlaceholder')}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '10px' }}>国家码</span>}
+                label={<span style={formStyles.label}>{t('countryCode')}</span>}
                 name="countryCode"
-                rules={[{ required: true, message: '请输入国家码' }]}
+                rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
+                style={formStyles.formItem}
               >
-                <Input style={{ fontSize: '10px' }} placeholder="例如：CN" />
+                <Input
+                  style={formStyles.input}
+                  placeholder={t('countryCodePlaceholder')}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -672,39 +680,54 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '10px' }}>名称</span>}
+                label={<span style={formStyles.label}>{t('localName')}</span>}
+                name="localName"
+                style={formStyles.formItem}
+              >
+                <Input
+                  style={formStyles.input}
+                  placeholder={t('localNamePlaceholder')}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={formStyles.label}>{t('name')}</span>}
                 name="name"
-                rules={[{ required: true, message: '请输入名称' }]}
+                rules={[{ required: true, message: t('pleaseInputName') }]}
+                style={formStyles.formItem}
               >
-                <Input style={{ fontSize: '10px' }} />
+                <Input
+                  style={formStyles.input}
+                  placeholder={t('namePlaceholder')}
+                />
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '10px' }}>简称</span>}
+                label={<span style={formStyles.label}>{t('shortName')}</span>}
                 name="shortName"
+                style={formStyles.formItem}
               >
-                <Input style={{ fontSize: '10px' }} />
+                <Input
+                  style={formStyles.input}
+                  placeholder={t('shortNamePlaceholder')}
+                />
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '10px' }}>类型</span>}
+                label={<span style={formStyles.label}>{t('type')}</span>}
                 name="type"
-                rules={[{ required: true, message: '请输入类型' }]}
+                style={formStyles.formItem}
               >
-                <Input style={{ fontSize: '10px' }} placeholder="例如：省、市、区" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>区域</span>}
-                name="region"
-              >
-                <Input style={{ fontSize: '10px' }} placeholder="例如华北、华南" />
+                <Input
+                  style={formStyles.input}
+                  placeholder={t('typePlaceholder')}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -712,159 +735,71 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '10px' }}>人口</span>}
-                name="population"
+                label={<span style={formStyles.label}>{t('capital')}</span>}
+                name="capital"
+                style={formStyles.formItem}
               >
                 <Input
-                  type="number"
-                  style={{ fontSize: '10px' }}
-                  placeholder="单位：人"
+                  style={formStyles.input}
+                  placeholder={t('capitalPlaceholder')}
                 />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                label={<span style={{ fontSize: '10px' }}>面积</span>}
-                name="areaKm2"
+                label={<span style={formStyles.label}>{t('population')}</span>}
+                name="population"
+                style={formStyles.formItem}
               >
                 <Input
                   type="number"
-                  style={{ fontSize: '10px' }}
-                  placeholder="单位：平方公里"
+                  style={formStyles.input}
+                  placeholder={t('populationPlaceholder')}
                 />
               </Form.Item>
             </Col>
           </Row>
 
-          <Form.Item
-            label={<span style={{ fontSize: '10px' }}>省会/首府</span>}
-            name="capital"
-          >
-            <Input style={{ fontSize: '10px' }} />
-          </Form.Item>
+          <Row gutter={8}>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={formStyles.label}>{t('areaKm2')}</span>}
+                name="areaKm2"
+                style={formStyles.formItem}
+              >
+                <Input
+                  type="number"
+                  style={formStyles.input}
+                  placeholder={t('areaPlaceholder')}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={<span style={formStyles.label}>{t('region')}</span>}
+                name="region"
+                style={formStyles.formItem}
+              >
+                <Input
+                  style={formStyles.input}
+                  placeholder={t('regionPlaceholder')}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
 
-      {/* 修改表单弹窗 */}
-      <Modal
-        title={<div style={{ fontSize: '10px' }}>修改行政区划</div>}
-        open={editModalVisible}
+      {/* 使用新的编辑弹窗组件 */}
+      <EditRegionModal
+        visible={editModalVisible}
         onCancel={() => {
           setEditModalVisible(false);
           editForm.resetFields();
         }}
-        onOk={() => editForm.submit()}
-        width={400}
-        bodyStyle={{ padding: '8px' }}
-        destroyOnClose
-      >
-        <Form
-          form={editForm}
-          onFinish={handleUpdate}
-          layout="vertical"
-          size="small"
-          style={{ fontSize: '10px' }}
-        >
-          <Form.Item name="id" hidden>
-            <Input />
-          </Form.Item>
-
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>行政区划编码</span>}
-                name="code"
-                rules={[{ required: true, message: '请输入编码' }]}
-              >
-                <Input style={{ fontSize: '10px' }} placeholder="例如：CN-BJ" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>国家码</span>}
-                name="countryCode"
-                rules={[{ required: true, message: '请输入国家码' }]}
-              >
-                <Input style={{ fontSize: '10px' }} placeholder="例如：CN" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>名称</span>}
-                name="name"
-                rules={[{ required: true, message: '请输入名称' }]}
-              >
-                <Input style={{ fontSize: '10px' }} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>简称</span>}
-                name="shortName"
-              >
-                <Input style={{ fontSize: '10px' }} />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>类型</span>}
-                name="type"
-                rules={[{ required: true, message: '请输入类型' }]}
-              >
-                <Input style={{ fontSize: '10px' }} placeholder="例如：省、市、区" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>区域</span>}
-                name="region"
-              >
-                <Input style={{ fontSize: '10px' }} placeholder="例如：华北、华南" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>人口</span>}
-                name="population"
-              >
-                <Input
-                  type="number"
-                  style={{ fontSize: '10px' }}
-                  placeholder="单位：人"
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={{ fontSize: '10px' }}>面积</span>}
-                name="areaKm2"
-              >
-                <Input
-                  type="number"
-                  style={{ fontSize: '10px' }}
-                  placeholder="单位：平方公里"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item
-            label={<span style={{ fontSize: '10px' }}>省会/首府</span>}
-            name="capital"
-          >
-            <Input style={{ fontSize: '10px' }} />
-          </Form.Item>
-        </Form>
-      </Modal>
+        onOk={handleUpdate}
+        form={editForm}
+      />
       <style jsx>{`
         ${Object.entries(styles).map(([selector, rules]) =>
           `${selector} {

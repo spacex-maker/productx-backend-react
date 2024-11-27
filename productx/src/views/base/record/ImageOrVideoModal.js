@@ -22,7 +22,7 @@ const ImageOrVideoModal = ({ isImageModalVisible, fullscreenImage, handleImageMo
         <Modal
             open={isImageModalVisible}
             footer={null}
-            bodyStyle={{ padding: '0' }} // 设置 Modal 内容区域的 padding
+            styles={{ padding: '0' }} // 设置 Modal 内容区域的 padding
             onCancel={handleCancel}
             style={{ width: '100%', maxHeight: '90vh' ,padding: '0px 0px'}}
             zIndex={2000}

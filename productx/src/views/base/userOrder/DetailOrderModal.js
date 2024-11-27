@@ -33,7 +33,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
   const UserDetailModal = useMemo(() => {
     return ({ visible, user, onCancel }) => {
       if (!user) return null;
-      
+
       return (
         <Modal
           title="用户详情"
@@ -41,11 +41,11 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
           onCancel={onCancel}
           footer={null}
           width={400}
-          bodyStyle={{ padding: '12px', fontSize: '12px' }}
+          styles={{ padding: '12px', fontSize: '12px' }}
         >
           {/* 用户基本信息 */}
-          <div style={{ 
-            display: 'flex', 
+          <div style={{
+            display: 'flex',
             alignItems: 'center',
             gap: '12px',
             padding: '8px',
@@ -53,8 +53,8 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
             background: '#fafafa',
             borderRadius: '2px'
           }}>
-            <Avatar 
-              size={48} 
+            <Avatar
+              size={48}
               src={user.avatar}
               icon={<UserOutlined />}
             />
@@ -65,7 +65,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
               <div style={{ fontSize: '12px', color: '#666' }}>
                 ID: {user.id}
               </div>
-              <div style={{ 
+              <div style={{
                 marginTop: '4px',
                 padding: '0 8px',
                 background: '#f6ffed',
@@ -83,26 +83,26 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
           <Descriptions
             size="small"
             column={1}
-            labelStyle={{ 
+            labelStyle={{
               width: '80px',
               fontSize: '11px',
               color: '#666'
             }}
-            contentStyle={{ 
+            contentStyle={{
               fontSize: '11px'
             }}
           >
-            <Descriptions.Item 
+            <Descriptions.Item
               label={<><MailOutlined style={{ marginRight: '4px' }} />邮箱</>}
             >
               {user.email || '-'}
             </Descriptions.Item>
-            <Descriptions.Item 
+            <Descriptions.Item
               label={<><PhoneOutlined style={{ marginRight: '4px' }} />电话</>}
             >
               {user.phoneNumber || '-'}
             </Descriptions.Item>
-            <Descriptions.Item 
+            <Descriptions.Item
               label={<><HomeOutlined style={{ marginRight: '4px' }} />地址</>}
             >
               {[user.country, user.state, user.city, user.address]
@@ -152,7 +152,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
       onCancel={onCancel}
       footer={null}
       width={580}
-      bodyStyle={{ padding: '12px', fontSize: '12px' }}
+      styles={{ padding: '12px', fontSize: '12px' }}
     >
       {/* 买家和卖家信息 */}
       <div style={{ marginBottom: '8px' }}>

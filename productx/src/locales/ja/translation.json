@@ -309,5 +309,20 @@
   "climateType": "気候タイプ",
   "averageAnnualTemperature": "年平均気温",
   "greenEconomyIndex": "グリーン経済指数",
-  "shortName": "略称"
+  "shortName": "略称",
+  "nationalFlag": "国旗",
+  "regionalManager": "地域担当者",
+  "areaManager": "地域担当者",
+  "addRegion": "地域の追加",
+  "subRegion": "下位地域",
+  "regionCode": "地域コード",
+  "pleaseInputCode": "コードを入力してください",
+  "pleaseInputName": "名前を入力してください",
+  "enName": "英語名",
+  "areaKm2": "面積 (km²)",
+  "region": "地域",
+  "countryInfo": "国の情報",
+  "internationalOrganizations": "国際機関",
+  "averageTemperature": "平均気温",
+  "internetPenetration": "インターネット普及率"
 }

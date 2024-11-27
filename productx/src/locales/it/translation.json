@@ -302,5 +302,20 @@
   "climateType": "Tipo di clima",
   "averageAnnualTemperature": "Temperatura media annuale",
   "greenEconomyIndex": "Indice di economia verde",
-  "shortName": "Nome breve"
+  "shortName": "Nome breve",
+  "nationalFlag": "Bandiera Nazionale",
+  "regionalManager": "Responsabile Regionale",
+  "areaManager": "Responsabile Regionale",
+  "addRegion": "Aggiungi regione",
+  "subRegion": "Sottoregione",
+  "regionCode": "Codice regione",
+  "pleaseInputCode": "Inserisci il codice",
+  "pleaseInputName": "Inserisci il nome",
+  "enName": "Nome in inglese",
+  "areaKm2": "Superficie (km²)",
+  "region": "Regione",
+  "countryInfo": "Informazioni sul paese",
+  "internationalOrganizations": "Organizzazioni internazionali",
+  "averageTemperature": "Temperatura media",
+  "internetPenetration": "Penetrazione di Internet"
 }
