@@ -91,6 +91,12 @@ const AppHeaderDropdown = () => {
       navigate('/login');
     } catch (error) {
       message.error('登出失败', 4);
+      localStorage.removeItem('jwtManageToken');
+      localStorage.removeItem('currentUser');
+      Cookies.remove('LOGIN_IDENTITY');
+      dispatch(clearCurrentUser());
+      setIsLoggedIn(false);
+      navigate('/login');
     }
   };
 

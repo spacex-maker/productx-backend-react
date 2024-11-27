@@ -161,13 +161,25 @@ const AppSidebar = () => {
       <style>
         {`
           /* 增加子菜单的左边距 */
-          .custom-sidebar .nav-group-items {
+          .nav-group-items .nav-item {
             padding-left: 1rem !important;
           }
           
-          /* 如果侧边栏折叠时不需要缩进 */
-          .custom-sidebar.unfoldable .nav-group-items {
+          /* 展开状态下的子菜单图标缩进 */
+          .nav-group-items .nav-item .nav-icon {
+            margin-left: 0.5rem;
+          }
+          
+          /* 折叠状态下重置缩进 */
+          .sidebar-narrow .nav-group-items .nav-item,
+          .sidebar-narrow-unfoldable .nav-group-items .nav-item {
             padding-left: 0 !important;
+          }
+          
+          /* 折叠状态下重置图标位置 */
+          .sidebar-narrow .nav-group-items .nav-item .nav-icon,
+          .sidebar-narrow-unfoldable .nav-group-items .nav-item .nav-icon {
+            margin-left: 0;
           }
         `}
       </style>
