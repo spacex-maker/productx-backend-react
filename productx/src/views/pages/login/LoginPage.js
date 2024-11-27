@@ -17,7 +17,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilLockUnlocked, cilUser, cilSettings } from '@coreui/icons';
 import LoginHeader from 'src/views/pages/login/LoginHeader';
-import api, { API_BASE_URL, setBaseURL, API_CONFIG } from 'src/axiosInstance';
+import api, { API_BASE_URL, setBaseURL, API_CONFIG, setCustomBaseURL } from 'src/axiosInstance';
 import { message } from 'antd';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -417,9 +417,7 @@ const LoginPage = () => {
         message.error('请输入有效的URL地址（以 http:// 或 https:// 开头）');
         return;
       }
-      API_BASE_URL = customUrl;
-      axiosInstance.defaults.baseURL = customUrl;
-      message.success(`已切换到自定义环境: ${customUrl}`);
+      setCustomBaseURL(customUrl);
     } else {
       setBaseURL(selectedEnv);
     }
