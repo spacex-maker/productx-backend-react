@@ -65,7 +65,11 @@ const UserTable = ({
           <td className="text-truncate">{item.username}</td>
           <td className="text-truncate">{item.nickname}</td>
           <td className="text-truncate">{item.email}</td>
-          <td className="text-truncate">{item.address}</td>
+          <td className="address-cell">
+            <div className="address-content" title={item.address}>
+              {item.address}
+            </div>
+          </td>
           <td>
             <label className="toggle-switch">
               <input

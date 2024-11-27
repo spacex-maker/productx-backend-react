@@ -324,5 +324,16 @@
   "countryInfo": "معلومات البلد",
   "internationalOrganizations": "المنظمات الدولية",
   "averageTemperature": "متوسط درجة الحرارة",
-  "internetPenetration": "اختراق الإنترنت"
+  "internetPenetration": "اختراق الإنترنت",
+  "geographyAndClimate": "الجغرافيا والمناخ",
+  "tradeAndDevelopment": "التجارة والتنمية",
+  "populationAndSociety": "السكان والمجتمع",
+  "militaryAlliances": "التحالفات العسكرية",
+  "diplomaticRelations": "العلاقات الدبلوماسية",
+  "specialNotes": "ملاحظات خاصة",
+  "copySuccess": "تم النسخ بنجاح",
+  "copyFailed": "فشل النسخ",
+  "inviteCode": "رمز الدعوة",
+  "userDetail": "تفاصيل المستخدم",
+  "scanQRCodeToRegister": "امسح رمز الاستجابة السريعة للتسجيل"
 }

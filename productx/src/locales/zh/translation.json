@@ -325,5 +325,13 @@
   "countryInfo": "国家信息",
   "internationalOrganizations": "国际组织",
   "averageTemperature": "平均温度",
-  "internetPenetration": "互联网普及率"
+  "internetPenetration": "互联网普及率",
+  "geographyAndClimate": "地理与气候",
+  "tradeAndDevelopment": "贸易与发展",
+  "populationAndSociety": "人口与社会",
+  "militaryAlliances": "军事同盟",
+  "diplomaticRelations": "外交关系",
+  "specialNotes": "特别备注",
+  "copySuccess": "复制成功",
+  "copyFailed": "复制失败"
 }

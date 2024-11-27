@@ -324,5 +324,16 @@
   "countryInfo": "Länderinformation",
   "internationalOrganizations": "Internationale Organisationen",
   "averageTemperature": "Durchschnittstemperatur",
-  "internetPenetration": "Internetpenetration"
+  "internetPenetration": "Internetpenetration",
+  "geographyAndClimate": "Geografie und Klima",
+  "tradeAndDevelopment": "Handel und Entwicklung",
+  "populationAndSociety": "Bevölkerung und Gesellschaft",
+  "militaryAlliances": "Militärische Allianzen",
+  "diplomaticRelations": "Diplomatische Beziehungen",
+  "specialNotes": "Besondere Hinweise",
+  "copySuccess": "Kopieren erfolgreich",
+  "copyFailed": "Kopieren fehlgeschlagen",
+  "inviteCode": "Einladungscode",
+  "userDetail": "Benutzerdetails",
+  "scanQRCodeToRegister": "QR-Code scannen, um sich zu registrieren"
 }

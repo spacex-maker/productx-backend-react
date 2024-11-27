@@ -23,6 +23,11 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import WaveEffect from 'src/components/WaveEffect';
 import {initReactI18next, useTranslation} from 'react-i18next';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser } from 'src/redux/userSlice';
+import { Select } from 'antd';
+const { Option } = Select;
+
 const breakpoints = {
   xs: '320px',
   sm: '576px',
@@ -133,14 +138,14 @@ const ApiInputGroup = styled.div`
   padding: 1px;
 `;
 
-const EnvSelect = styled(CFormSelect)`
+const EnvSelect = styled(Select)`
   width: 120px !important;
   border-radius: 4px 0 0 4px !important;
   border: none !important;
   background: rgba(30, 32, 47, 0.95) !important;
   color: #f1f5f9 !important;
   font-size: 0.875rem !important;
-  
+
   &:focus {
     box-shadow: none !important;
     background: rgba(255, 255, 255, 0.1) !important;
@@ -154,12 +159,12 @@ const ApiInput = styled(CFormInput)`
   color: #f1f5f9 !important;
   font-size: 0.875rem !important;
   border-radius: ${props => props.$isCustom ? '4px' : '0 4px 4px 0'} !important;
-  
+
   &:disabled {
     background: rgba(255, 255, 255, 0.02) !important;
     color: rgba(255, 255, 255, 0.5) !important;
   }
-  
+
   &::placeholder {
     color: rgba(255, 255, 255, 0.3);
   }
@@ -173,11 +178,11 @@ const ApiButton = styled(CButton)`
   font-size: 0.875rem !important;
   border-radius: 4px !important;
   margin-left: 1px !important;
-  
+
   &:hover {
     background: #4f46e5 !important;
   }
-  
+
   &:active {
     transform: translateY(1px);
   }
@@ -391,6 +396,7 @@ const LoginPage = () => {
   const { t } = useTranslation(); // 获取 t 函数
   const [isCustomEnv, setIsCustomEnv] = useState(false);
   const [customUrl, setCustomUrl] = useState('');
+  const dispatch = useDispatch();
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -433,13 +439,34 @@ const LoginPage = () => {
     setLoading(true);
     e.preventDefault();
     const formData = { username, password, verify };
+
     try {
+      // 1. 登录获取 token
       const token = await api.post('/manage/manager/login', formData);
-      localStorage.setItem('jwtManageToken',token);
-      navigate('/dashboard');
-      setNotice("登录成功");
+      localStorage.setItem('jwtManageToken', token);
+
+      // 2. 使用 token 获取管理员信息
+      try {
+        const response = await api.get('/manage/manager/get-by-token');
+
+          // 将管理员信息存储到 Redux store
+          dispatch(setCurrentUser(response));
+
+          // 可以选择性地将一些信息保存到 localStorage
+          localStorage.setItem('currentUser', JSON.stringify(response.data));
+
+          // 登录成功后跳转
+          navigate('/dashboard');
+          message.success(t('loginSuccess'));
+      } catch (userError) {
+        // 如果获取用户信息失败，清除 token 并提示错误
+        localStorage.removeItem('jwtManageToken');
+        message.error(t('failedToGetUserInfo') + ': ' + userError.message);
+        refreshCaptcha();
+      }
     } catch (error) {
-      message.error('登录失败: ' + error.message, 4);
+      message.error(t('loginFailed') + ': ' + error.message);
+      refreshCaptcha();
     } finally {
       setLoading(false);
     }
@@ -539,8 +566,7 @@ const LoginPage = () => {
                           <ApiInputGroup>
                             <EnvSelect
                               value={isCustomEnv ? 'CUSTOM' : selectedEnv}
-                              onChange={(e) => {
-                                const value = e.target.value;
+                              onChange={(value) => {
                                 if (value === 'CUSTOM') {
                                   setIsCustomEnv(true);
                                 } else {
@@ -549,10 +575,10 @@ const LoginPage = () => {
                                 }
                               }}
                             >
-                              <option value="LOCAL">本地环境 ({API_CONFIG.LOCAL})</option>
-                              <option value="TEST">测试环境 ({API_CONFIG.TEST})</option>
-                              <option value="PROD">生产环境 ({API_CONFIG.PROD})</option>
-                              <option value="CUSTOM">自定义环境</option>
+                              <Option value="LOCAL">本地环境 ({API_CONFIG.LOCAL})</Option>
+                              <Option value="TEST">测试环境 ({API_CONFIG.TEST})</Option>
+                              <Option value="PROD">生产环境 ({API_CONFIG.PROD})</Option>
+                              <Option value="CUSTOM">自定义环境</Option>
                             </EnvSelect>
                             <ApiInput
                               $isCustom={isCustomEnv}
@@ -560,7 +586,7 @@ const LoginPage = () => {
                               onChange={(e) => isCustomEnv && setCustomUrl(e.target.value)}
                               disabled={!isCustomEnv}
                               placeholder={
-                                isCustomEnv 
+                                isCustomEnv
                                   ? "请输入自定义API地址，例如: http://example.com:8080"
                                   : "API 地址将根据选择的环境自动设置"
                               }
@@ -570,9 +596,9 @@ const LoginPage = () => {
                             </ApiButton>
                           </ApiInputGroup>
                           {isCustomEnv && (
-                            <div style={{ 
-                              fontSize: '12px', 
-                              color: '#64748b', 
+                            <div style={{
+                              fontSize: '12px',
+                              color: '#64748b',
                               padding: '4px 8px'
                             }}>
                               请输入完整的URL地址，包含 http:// 或 https:// 前缀

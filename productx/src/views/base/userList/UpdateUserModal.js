@@ -16,7 +16,8 @@ const styles = {
     height: '20px',
     fontSize: '10px',
     padding: '0 4px',
-    lineHeight: '20px'
+    lineHeight: '20px',
+    color: '#000000 !important',
   },
   formItem: {
     marginBottom: '4px'
@@ -92,6 +93,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterNickname')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -104,6 +106,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterFullName')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -119,6 +122,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterEmail')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -131,6 +135,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterPhoneNumber')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -146,6 +151,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterDescription')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -159,6 +165,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
                 type="number"
                 placeholder={t('enterCreditScore')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -188,6 +195,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterCountry')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -201,6 +209,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterState')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -217,6 +226,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterCity')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -230,6 +240,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
               <Input
                 placeholder={t('enterPostalCode')}
                 style={styles.input}
+                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -244,6 +255,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
           <Input
             placeholder={t('enterAddressDetail')}
             style={styles.input}
+            className="custom-input"
           />
         </Form.Item>
 
@@ -256,6 +268,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
             disabled
             placeholder={t('isActive')}
             style={styles.input}
+            className="custom-input"
           />
         </Form.Item>
       </Form>
@@ -279,6 +292,22 @@ const globalStyles = `
     line-height: 14px !important;
   }
 
+  .ant-input {
+    color: #000000 !important;
+  }
+
+  .ant-input,
+  .ant-input-number-input,
+  .ant-select-selection-item {
+    color: #000000 !important;
+  }
+
+  .ant-input[disabled],
+  .ant-input-number-input[disabled],
+  .ant-select-disabled .ant-select-selection-item {
+    color: rgba(0, 0, 0, 0.65) !important;
+  }
+
   .ant-row {
     margin-bottom: 4px !important;
   }
@@ -289,9 +318,23 @@ const globalStyles = `
   }
 `;
 
-// 将全局样式添加到文档中
+// 添加特定的样式
+const additionalStyles = `
+  .custom-input,
+  .custom-input:hover,
+  .custom-input:focus {
+    color: #000000 !important;
+  }
+
+  .custom-input::placeholder {
+    color: #999999 !important;
+  }
+`;
+
+// 合并所有样式
+const allStyles = globalStyles + additionalStyles;
 const styleSheet = document.createElement('style');
-styleSheet.innerText = globalStyles;
+styleSheet.innerText = allStyles;
 document.head.appendChild(styleSheet);
 
 export default UpdateUserModal;
