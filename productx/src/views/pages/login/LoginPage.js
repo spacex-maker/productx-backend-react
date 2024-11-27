@@ -26,6 +26,7 @@ import {initReactI18next, useTranslation} from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from 'src/redux/userSlice';
 import { Select } from 'antd';
+import HealthCheck from 'src/components/common/HealthCheck';
 const { Option } = Select;
 
 const breakpoints = {
@@ -138,17 +139,86 @@ const ApiInputGroup = styled.div`
   padding: 1px;
 `;
 
-const EnvSelect = styled(Select)`
-  width: 120px !important;
-  border-radius: 4px 0 0 4px !important;
-  border: none !important;
-  background: rgba(30, 32, 47, 0.95) !important;
-  color: #f1f5f9 !important;
-  font-size: 0.875rem !important;
+const StyledEnvSelect = styled(Select)`
+  &&& {
+    width: 100px !important;
+    
+    .ant-select-selector {
+      background: rgba(30, 32, 47, 0.95) !important;
+      border: 1px solid rgba(99, 102, 241, 0.2) !important;
+      border-radius: 4px 0 0 4px !important;
+      height: 32px !important;
+      padding: 0 11px !important;
+      
+      .ant-select-selection-item {
+        line-height: 30px !important;
+        color: #e2e8f0 !important;
+        font-size: 12px !important;
+      }
+    }
+    
+    &:not(.ant-select-disabled):hover .ant-select-selector {
+      border-color: #8b5cf6 !important;
+    }
+    
+    &.ant-select-focused .ant-select-selector {
+      border-color: #8b5cf6 !important;
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
+    }
+    
+    .ant-select-arrow {
+      color: #8b5cf6 !important;
+    }
+  }
+`;
 
-  &:focus {
-    box-shadow: none !important;
-    background: rgba(255, 255, 255, 0.1) !important;
+const StyledEnvDropdown = styled.div`
+  .ant-select-dropdown {
+    background: rgba(30, 32, 47, 0.98) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    min-width: 280px !important;
+    width: auto !important;
+    max-width: 600px !important;
+    white-space: nowrap !important;
+    
+    .ant-select-item {
+      color: #e2e8f0 !important;
+      font-size: 12px !important;
+      min-height: 28px !important;
+      padding: 4px 8px !important;
+      
+      &:hover {
+        background: rgba(99, 102, 241, 0.1) !important;
+      }
+      
+      &.ant-select-item-option-selected {
+        background: rgba(99, 102, 241, 0.2) !important;
+        font-weight: 600;
+      }
+    }
+  }
+`;
+
+const EnvOption = styled(Option)`
+  &&& {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-right: 8px !important;
+    
+    .env-name {
+      font-weight: 500;
+      margin-right: 16px;
+      white-space: nowrap;
+    }
+    
+    .env-url {
+      font-size: 9px;
+      opacity: 0.7;
+      margin-right: 4px;
+      white-space: nowrap;
+    }
   }
 `;
 
@@ -393,7 +463,7 @@ const LoginPage = () => {
   const [selectedEnv, setSelectedEnv] = useState('PROD');
   const [loading, setLoading] = useState(false);
   const [showApiConfig, setShowApiConfig] = useState(false);
-  const { t } = useTranslation(); // 获取 t 函数
+  const { t } = useTranslation(); // 获取 t ���数
   const [isCustomEnv, setIsCustomEnv] = useState(false);
   const [customUrl, setCustomUrl] = useState('');
   const dispatch = useDispatch();
@@ -538,6 +608,35 @@ const LoginPage = () => {
     setSelectedEnv(initialEnv);
   }, []);
 
+  const getEnvDisplayName = (env) => {
+    switch(env) {
+      case 'TEST':
+        return '测试环境';
+      case 'PROD':
+        return '生产环境';
+      case 'LOCAL':
+        return '本地环境';
+      case 'CUSTOM':
+        return '自定义';
+      default:
+        return env;
+    }
+  };
+
+  const renderEnvironmentOption = (env, url) => (
+    <EnvOption value={env} key={env} label={getEnvDisplayName(env)}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span className="env-name">
+          {env === 'TEST' ? '测试环境(推荐)' : `${env.toLowerCase()}环境`}
+        </span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span className="env-url">{url}</span>
+          <HealthCheck url={url} />
+        </div>
+      </div>
+    </EnvOption>
+  );
+
   return (
     <PageWrapper>
       <WaveEffect onDoubleClick={handleWaveDoubleClick} />
@@ -567,22 +666,29 @@ const LoginPage = () => {
                         </ApiTitle>
                         <VerticalStack>
                           <ApiInputGroup>
-                            <EnvSelect
-                              value={isCustomEnv ? 'CUSTOM' : selectedEnv}
-                              onChange={(value) => {
-                                if (value === 'CUSTOM') {
-                                  setIsCustomEnv(true);
-                                } else {
-                                  setIsCustomEnv(false);
-                                  setSelectedEnv(value);
-                                }
-                              }}
-                            >
-                              <Option value="LOCAL">本地环境 ({API_CONFIG.LOCAL})</Option>
-                              <Option value="TEST">测试环境 ({API_CONFIG.TEST})</Option>
-                              <Option value="PROD">生产环境 ({API_CONFIG.PROD})</Option>
-                              <Option value="CUSTOM">自定义环境</Option>
-                            </EnvSelect>
+                            <StyledEnvDropdown>
+                              <StyledEnvSelect
+                                value={isCustomEnv ? 'CUSTOM' : selectedEnv}
+                                onChange={(value) => {
+                                  if (value === 'CUSTOM') {
+                                    setIsCustomEnv(true);
+                                    setCustomUrl('');
+                                  } else {
+                                    setIsCustomEnv(false);
+                                    setSelectedEnv(value);
+                                  }
+                                }}
+                                dropdownMatchSelectWidth={false}
+                                optionLabelProp="label"
+                              >
+                                {Object.entries(API_CONFIG).map(([env, url]) => renderEnvironmentOption(env, url))}
+                                <Option value="CUSTOM" label="自定义">
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span>自定义环境</span>
+                                  </div>
+                                </Option>
+                              </StyledEnvSelect>
+                            </StyledEnvDropdown>
                             <ApiInput
                               $isCustom={isCustomEnv}
                               value={isCustomEnv ? customUrl : API_CONFIG[selectedEnv]}
