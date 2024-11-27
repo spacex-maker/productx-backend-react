@@ -142,30 +142,30 @@ const ApiInputGroup = styled.div`
 const StyledEnvSelect = styled(Select)`
   &&& {
     width: 100px !important;
-    
+
     .ant-select-selector {
       background: rgba(30, 32, 47, 0.95) !important;
       border: 1px solid rgba(99, 102, 241, 0.2) !important;
       border-radius: 4px 0 0 4px !important;
       height: 32px !important;
       padding: 0 11px !important;
-      
+
       .ant-select-selection-item {
         line-height: 30px !important;
         color: #e2e8f0 !important;
         font-size: 12px !important;
       }
     }
-    
+
     &:not(.ant-select-disabled):hover .ant-select-selector {
       border-color: #8b5cf6 !important;
     }
-    
+
     &.ant-select-focused .ant-select-selector {
       border-color: #8b5cf6 !important;
       box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2) !important;
     }
-    
+
     .ant-select-arrow {
       color: #8b5cf6 !important;
     }
@@ -181,17 +181,17 @@ const StyledEnvDropdown = styled.div`
     width: auto !important;
     max-width: 600px !important;
     white-space: nowrap !important;
-    
+
     .ant-select-item {
       color: #e2e8f0 !important;
       font-size: 12px !important;
       min-height: 28px !important;
       padding: 4px 8px !important;
-      
+
       &:hover {
         background: rgba(99, 102, 241, 0.1) !important;
       }
-      
+
       &.ant-select-item-option-selected {
         background: rgba(99, 102, 241, 0.2) !important;
         font-weight: 600;
@@ -206,13 +206,13 @@ const EnvOption = styled(Option)`
     align-items: center !important;
     justify-content: space-between !important;
     padding-right: 8px !important;
-    
+
     .env-name {
       font-weight: 500;
       margin-right: 16px;
       white-space: nowrap;
     }
-    
+
     .env-url {
       font-size: 9px;
       opacity: 0.7;
@@ -507,14 +507,14 @@ const LoginPage = () => {
     setLoading(true);
     e.preventDefault();
     const formData = { username, password, verify };
-    
+
     try {
       const token = await api.post('/manage/manager/login', formData);
       localStorage.setItem('jwtManageToken', token);
-      
+
       try {
         const userInfo = await api.get('/manage/manager/get-by-token');
-        
+
         dispatch(setCurrentUser({
           id: userInfo.id,
           username: userInfo.username,
@@ -527,9 +527,9 @@ const LoginPage = () => {
           createBy: userInfo.createBy,
           avatar: userInfo.avatar
         }));
-        
+
         localStorage.setItem('currentUser', JSON.stringify(userInfo));
-        
+
         navigate('/dashboard');
         message.success(t('loginSuccess'));
       } catch (userError) {
@@ -612,6 +612,8 @@ const LoginPage = () => {
     switch(env) {
       case 'TEST':
         return '测试环境';
+      case 'TEST2':
+        return '测试环境2';
       case 'PROD':
         return '生产环境';
       case 'LOCAL':
@@ -627,7 +629,7 @@ const LoginPage = () => {
     <EnvOption value={env} key={env} label={getEnvDisplayName(env)}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span className="env-name">
-          {env === 'TEST' ? '测试环境(推荐)' : `${env.toLowerCase()}环境`}
+          {env === 'TEST' ? '测试环境(推荐)' : `${env}环境`}
         </span>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span className="env-url">{url}</span>

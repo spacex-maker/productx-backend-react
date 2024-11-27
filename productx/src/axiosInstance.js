@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 // 定义环境配置
 export const API_CONFIG = {
-  TEST: 'http://34.92.193.186:18090',
+  TEST: 'http://34.92.193.186:8090',
+  TEST2: 'http://34.92.218.25:18090',
   PROD: 'https://protx.cn',
   LOCAL: 'http://localhost:8090'
 };
@@ -36,8 +37,9 @@ export const setBaseURL = (environment) => {
 
   // 更新环境提示信息
   const envNames = {
-    PROD: '生产',
-    TEST: '测试(推荐)',
+    PROD: '生产(测试库1)，主机2c2g-谷歌云-香港',
+    TEST2: '测试(测试库1)，主机16c60g-内网-北京',
+    TEST: '测试(测试库1)，主机2c8g-谷歌云-香港',
     LOCAL: '本地'
   };
   message.success(`API 基地址已切换到${envNames[environment]}环境: ${API_BASE_URL}`);
