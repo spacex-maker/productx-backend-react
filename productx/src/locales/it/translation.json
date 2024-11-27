@@ -328,5 +328,10 @@
   "copyFailed": "Copia fallita",
   "inviteCode": "Codice di invito",
   "userDetail": "Dettaglio utente",
-  "scanQRCodeToRegister": "Scansiona il codice QR per registrarti"
+  "scanQRCodeToRegister": "Scansiona il codice QR per registrarti",
+  "notLoggedIn": "Non connesso",
+  "updates": "Aggiornamenti",
+  "messages": "Messaggi",
+  "tasks": "Compiti",
+  "comments": "Commenti"
 }

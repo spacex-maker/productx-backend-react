@@ -335,5 +335,10 @@
   "copyFailed": "فشل النسخ",
   "inviteCode": "رمز الدعوة",
   "userDetail": "تفاصيل المستخدم",
-  "scanQRCodeToRegister": "امسح رمز الاستجابة السريعة للتسجيل"
+  "scanQRCodeToRegister": "امسح رمز الاستجابة السريعة للتسجيل",
+  "notLoggedIn": "لم يتم تسجيل الدخول",
+  "updates": "التحديثات",
+  "messages": "الرسائل",
+  "tasks": "المهام",
+  "comments": "التعليقات"
 }

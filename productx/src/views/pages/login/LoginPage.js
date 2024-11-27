@@ -439,33 +439,38 @@ const LoginPage = () => {
     setLoading(true);
     e.preventDefault();
     const formData = { username, password, verify };
-
+    
     try {
-      // 1. 登录获取 token
       const token = await api.post('/manage/manager/login', formData);
       localStorage.setItem('jwtManageToken', token);
-
-      // 2. 使用 token 获取管理员信息
+      
       try {
-        const response = await api.get('/manage/manager/get-by-token');
-
-          // 将管理员信息存储到 Redux store
-          dispatch(setCurrentUser(response));
-
-          // 可以选择性地将一些信息保存到 localStorage
-          localStorage.setItem('currentUser', JSON.stringify(response.data));
-
-          // 登录成功后跳转
-          navigate('/dashboard');
-          message.success(t('loginSuccess'));
+        const userInfo = await api.get('/manage/manager/get-by-token');
+        
+        dispatch(setCurrentUser({
+          id: userInfo.id,
+          username: userInfo.username,
+          email: userInfo.email,
+          phone: userInfo.phone,
+          roleId: userInfo.roleId,
+          status: userInfo.status,
+          isDeleted: userInfo.isDeleted,
+          thirdUserAccountId: userInfo.thirdUserAccountId,
+          createBy: userInfo.createBy,
+          avatar: userInfo.avatar
+        }));
+        
+        localStorage.setItem('currentUser', JSON.stringify(userInfo));
+        
+        navigate('/dashboard');
+        message.success(t('loginSuccess'));
       } catch (userError) {
-        // 如果获取用户信息失败，清除 token 并提示错误
         localStorage.removeItem('jwtManageToken');
-        message.error(t('failedToGetUserInfo') + ': ' + userError.message);
+        message.error(t('failedToGetUserInfo'));
         refreshCaptcha();
       }
     } catch (error) {
-      message.error(t('loginFailed') + ': ' + error.message);
+      message.error(t('loginFailed'));
       refreshCaptcha();
     } finally {
       setLoading(false);

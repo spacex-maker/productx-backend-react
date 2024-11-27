@@ -335,5 +335,10 @@
   "copyFailed": "コピー失敗",
   "inviteCode": "招待コード",
   "userDetail": "ユーザー詳細",
-  "scanQRCodeToRegister": "QRコードをスキャンして登録"
+  "scanQRCodeToRegister": "QRコードをスキャンして登録",
+  "notLoggedIn": "未ログイン",
+  "updates": "更新",
+  "messages": "メッセージ",
+  "tasks": "タスク",
+  "comments": "コメント"
 }

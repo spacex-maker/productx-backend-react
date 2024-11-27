@@ -4,9 +4,15 @@ import { Provider } from 'react-redux'
 import 'core-js'
 import './i18n'; // 引入 i18n 配置
 import App from './App'
-import store from './store'
+import store from './redux/store'
 
-createRoot(document.getElementById('root')).render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+// 用于调试
+console.log('Initial Redux State:', store.getState());
+
+root.render(
   <Provider store={store}>
     <App />
   </Provider>,
