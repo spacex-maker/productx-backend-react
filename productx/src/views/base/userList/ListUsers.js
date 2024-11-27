@@ -28,6 +28,7 @@ const UserList = () => {
   const [current, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [searchParams, setSearchParams] = useState({
+    id: '',
     username: '',
     nickname: '',
     email: '',
@@ -59,8 +60,16 @@ const UserList = () => {
     setIsLoading(true)
     try {
       const filteredParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
+        Object.entries(searchParams).filter(([_, value]) => {
+          if (value === 0 || value === '0') return true;
+          return value !== '' && value !== null;
+        }),
       )
+
+      if (filteredParams.id) {
+        filteredParams.id = Number(filteredParams.id);
+      }
+
       const response = await api.get('/manage/user/list', {
         params: { currentPage:current, pageSize: pageSize, ...filteredParams },
       })
@@ -117,11 +126,25 @@ const UserList = () => {
               <Col>
                 <Input
                   size="small"
+                  value={searchParams.id}
+                  onChange={handleSearchChange}
+                  name="id"
+                  placeholder={t('userId')}
+                  allowClear
+                  style={{
+                    width: '100px',
+                    fontSize: '10px'
+                  }}
+                />
+              </Col>
+              <Col>
+                <Input
+                  size="small"
                   value={searchParams.username}
                   onChange={handleSearchChange}
                   name="username"
                   placeholder={t('username')}
-                  allowClear // 添加这个属性
+                  allowClear
                 />
               </Col>
               <Col>
@@ -131,7 +154,7 @@ const UserList = () => {
                   onChange={handleSearchChange}
                   name="nickname"
                   placeholder={t('nickname')}
-                  allowClear // 添加这个属性
+                  allowClear
                 />
               </Col>
               <Col>
@@ -141,7 +164,7 @@ const UserList = () => {
                   onChange={handleSearchChange}
                   name="email"
                   placeholder={t('email')}
-                  allowClear // 添加这个属性
+                  allowClear
                 />
               </Col>
               <Col>
@@ -151,7 +174,11 @@ const UserList = () => {
                   onChange={handleSearchChange}
                   name="address"
                   placeholder={t('address')}
-                  allowClear // 添加这个属性
+                  allowClear
+                  style={{
+                    maxWidth: '150px',
+                    minWidth: '100px'
+                  }}
                 />
               </Col>
               <Col>
@@ -160,7 +187,7 @@ const UserList = () => {
                   className="search-box"
                   name="status"
                   onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
-                  allowClear // 添加这个属性以允许清空选择
+                  allowClear
                   placeholder={t('status')}
                 >
                   <Option value="true">{t('enabled')}</Option>
@@ -238,13 +265,24 @@ const UserList = () => {
         onOk={() => updateForm.submit()}
         form={updateForm}
         handleUpdateUser={handleUpdateUser}
-        selectedUser={selectedUser} // 传递当前选中的用户信息
+        selectedUser={selectedUser}
       />
       <UserDetailModal
         isVisible={isDetailModalVisible}
         onCancel={() => setIsDetailModalVisible(false)}
         selectedUser={selectedUser}
       />
+      <style jsx>{`
+        .search-container {
+          margin-bottom: 10px;
+        }
+
+        .search-container .ant-input {
+          font-size: 10px;
+        }
+
+        // 其他现有样式...
+      `}</style>
     </div>
   )
 }

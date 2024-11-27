@@ -324,5 +324,16 @@
   "countryInfo": "Информация о стране",
   "internationalOrganizations": "Международные организации",
   "averageTemperature": "Средняя температура",
-  "internetPenetration": "Проникновение интернета"
+  "internetPenetration": "Проникновение интернета",
+  "geographyAndClimate": "География и климат",
+  "tradeAndDevelopment": "Торговля и развитие",
+  "populationAndSociety": "Население и общество",
+  "militaryAlliances": "Военные альянсы",
+  "diplomaticRelations": "Дипломатические отношения",
+  "specialNotes": "Особые примечания",
+  "copySuccess": "Копирование успешно",
+  "copyFailed": "Ошибка копирования",
+  "inviteCode": "Код приглашения",
+  "userDetail": "Детали пользователя",
+  "scanQRCodeToRegister": "Сканируйте QR-код для регистрации"
 }

@@ -78,7 +78,7 @@ const CountryStatisticsCard = ({ country }) => {
       ]
     },
     {
-      title: t('society'),
+      title: t('populationAndSociety'),
       items: [
         { label: t('population'), value: country?.population, icon: <TeamOutlined /> },
         { label: t('populationDensity'), value: country?.populationDensity, icon: <TeamOutlined />, suffix: '/km²' },
@@ -114,8 +114,8 @@ const CountryStatisticsCard = ({ country }) => {
     {
       title: t('otherInfo'),
       items: [
-        { label: t('internationalOrganizations'), value: country?.internationalOrganizations, icon: <GlobalOutlined /> },
-        { label: t('diplomaticRelations'), value: country?.diplomaticRelations, icon: <LinkOutlined /> },
+        { label: t('internationalOrganizations'), value: country?.internationalOrganizationsMembership, icon: <GlobalOutlined /> },
+        { label: t('foreignPolicy'), value: country?.foreignPolicy, icon: <LinkOutlined /> },
         { label: t('militaryAlliances'), value: country?.militaryAlliances, icon: <SafetyCertificateOutlined /> },
         { label: t('specialNotes'), value: country?.specialNotes, icon: <FlagOutlined /> }
       ]
