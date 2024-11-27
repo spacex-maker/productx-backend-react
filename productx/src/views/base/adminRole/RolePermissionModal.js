@@ -124,7 +124,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       onOk={handleOk}
       width={700}
       confirmLoading={loading}
-      bodyStyle={{ padding: '8px 16px' }}
+      styles={{ padding: '8px 16px' }}
     >
       <Spin spinning={loading}>
         <Space direction="vertical" style={{ width: '100%' }} size="small">

@@ -65,7 +65,7 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
       onCancel={onCancel}
       onOk={onOk}
       width={400}
-      bodyStyle={styles.modal.body}
+      styles={styles.modal.body}
     >
       <Form
         form={form}

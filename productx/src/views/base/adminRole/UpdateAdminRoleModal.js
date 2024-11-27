@@ -33,10 +33,10 @@ const UpdateRoleModal = ({
       okText="确认"
       cancelText="取消"
       width={480}
-      bodyStyle={{ padding: '12px 24px' }}
+      styles={{ padding: '12px 24px' }}
     >
-      <Form 
-        form={form} 
+      <Form
+        form={form}
         onFinish={handleUpdateRole}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
@@ -52,8 +52,8 @@ const UpdateRoleModal = ({
           rules={[{ required: true, message: '请输入角色名称' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input 
-            placeholder="请输入角色名称" 
+          <Input
+            placeholder="请输入角色名称"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
@@ -64,8 +64,8 @@ const UpdateRoleModal = ({
           rules={[{ required: true, message: '请输入英文角色名称' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input 
-            placeholder="请输入英文角色名称" 
+          <Input
+            placeholder="请输入英文角色名称"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
@@ -76,8 +76,8 @@ const UpdateRoleModal = ({
           rules={[{ required: true, message: '请输入角色描述' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input.TextArea 
-            placeholder="请输入角色描述" 
+          <Input.TextArea
+            placeholder="请输入角色描述"
             rows={3}
             style={{ fontSize: '10px' }}
           />
@@ -89,8 +89,8 @@ const UpdateRoleModal = ({
           valuePropName="checked"
           style={{ marginBottom: '8px' }}
         >
-          <Switch 
-            checkedChildren="启用" 
+          <Switch
+            checkedChildren="启用"
             unCheckedChildren="禁用"
             style={{ fontSize: '10px' }}
           />
@@ -102,7 +102,7 @@ const UpdateRoleModal = ({
           padding: 12px 24px !important;
           border-bottom: 1px solid #f0f0f0;
         }
-        
+
         .ant-modal-footer {
           padding: 8px 16px !important;
           border-top: 1px solid #f0f0f0;

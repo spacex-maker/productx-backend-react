@@ -309,5 +309,20 @@
   "climateType": "기후 유형",
   "averageAnnualTemperature": "연평균 기온",
   "greenEconomyIndex": "녹색 경제 지수",
-  "shortName": "약어"
+  "shortName": "약어",
+  "nationalFlag": "국기",
+  "regionalManager": "지역 관리자",
+  "areaManager": "지역 관리자",
+  "addRegion": "지역 추가",
+  "subRegion": "하위 지역",
+  "regionCode": "지역 코드",
+  "pleaseInputCode": "코드를 입력하세요",
+  "pleaseInputName": "이름을 입력하세요",
+  "enName": "영어 이름",
+  "areaKm2": "면적 (km²)",
+  "region": "지역",
+  "countryInfo": "국가 정보",
+  "internationalOrganizations": "국제 기구",
+  "averageTemperature": "평균 기온",
+  "internetPenetration": "인터넷 보급률"
 }

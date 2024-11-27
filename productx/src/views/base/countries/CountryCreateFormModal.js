@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form, Input, Select, Typography, Divider } from 'antd';
+import { Modal, Form, Input, Select, Typography, Divider, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const { Option } = Select;
@@ -24,63 +24,82 @@ const CountryCreateFormModal = ({
   ];
 
   return (
-    <>
-      <Modal
-        title={t('createCountry')}
-        open={isVisible}
-        onCancel={onCancel}
-        onOk={() => form.submit()}
-        okText={t('save')}
-        cancelText={t('cancel')}
-        width={500}
+    <Modal
+      title={t('createCountry')}
+      open={isVisible}
+      onCancel={onCancel}
+      onOk={() => form.submit()}
+      okText={t('save')}
+      cancelText={t('cancel')}
+      width={800}
+      styles={{
+        padding: '12px 24px',
+        maxHeight: '80vh',
+        overflow: 'auto'
+      }}
+    >
+      <Form
+        form={form}
+        onFinish={onFinish}
+        layout="vertical"
+        requiredMark={false}
       >
-        <Form 
-          form={form} 
-          onFinish={onFinish}
-          layout="vertical"
-          style={{ gap: '8px' }}
-        >
-          {/* 基本信息部分 */}
-          <Title level={5} style={{ marginBottom: '16px' }}>{t('basicInfo')}</Title>
+        <div style={{ marginBottom: '16px' }}>
+          <Title level={5} style={{ marginBottom: '8px' }}>{t('basicInfo')}</Title>
           <Divider style={{ margin: '8px 0' }} />
+        </div>
 
-          <Form.Item
-            label={t('countryName')}
-            name="countryName"
-            rules={[{ required: true, message: t('pleaseInputCountryName') }]}
-            style={{ marginBottom: '12px' }}
-          >
-            <Input placeholder={t('inputCountryNamePlaceholder')} />
-          </Form.Item>
-          
-          <Form.Item
-            label={t('countryCode')}
-            name="countryCode"
-            rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
-            style={{ marginBottom: '12px' }}
-          >
-            <Input placeholder={t('inputCountryCodePlaceholder')} />
-          </Form.Item>
-          
-          <Form.Item
-            label={t('continent')}
-            name="continent"
-            rules={[{ required: true, message: t('pleaseSelectContinent') }]}
-            style={{ marginBottom: '12px' }}
-          >
-            <Select placeholder={t('selectContinentPlaceholder')}>
-              {continentOptions.map(option => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        </Form>
-      </Modal>
+        <Row gutter={16}>
+          <Col span={8}>
+            <Form.Item
+              label={t('countryName')}
+              name="countryName"
+              rules={[{ required: true, message: t('pleaseInputCountryName') }]}
+              style={{ marginBottom: '12px' }}
+            >
+              <Input
+                placeholder={t('inputCountryNamePlaceholder')}
+                size="small"
+              />
+            </Form.Item>
+          </Col>
 
+          <Col span={8}>
+            <Form.Item
+              label={t('countryCode')}
+              name="countryCode"
+              rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
+              style={{ marginBottom: '12px' }}
+            >
+              <Input
+                placeholder={t('inputCountryCodePlaceholder')}
+                size="small"
+              />
+            </Form.Item>
+          </Col>
 
-    </>
+          <Col span={8}>
+            <Form.Item
+              label={t('continent')}
+              name="continent"
+              rules={[{ required: true, message: t('pleaseSelectContinent') }]}
+              style={{ marginBottom: '12px' }}
+            >
+              <Select
+                placeholder={t('selectContinentPlaceholder')}
+                size="small"
+              >
+                {continentOptions.map(option => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </Modal>
   );
 };
 
