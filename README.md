@@ -6,11 +6,12 @@
 
 ## 接口文档
 
-### C端文档
+### C端文档(失效)
+
 - 地址：[http://34.92.218.25:8080/doc.html](http://34.92.218.25:8080/doc.html)
 
 ### 后台管理系统文档
-- 地址：[https://protx.cn/doc.html](https://protx.cn/doc.html)
+- 地址：[https://protx.cn/manage/doc.html](https://protx.cn/manage/doc.html)
 
 ---
 
