@@ -66,9 +66,10 @@ const IssueTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['ID', '标题', '类型', '状态', '优先级', '报告人', '处理人', '操作'].map((field) => (
+          {['ID', '标题', '类型', '状态', '优先级', '报告人', '处理人'].map((field) => (
             <th key={field}>{field}</th>
           ))}
+          <th className="fixed-column">操作</th>
         </tr>
       </thead>
       <tbody>
@@ -90,9 +91,20 @@ const IssueTable = ({
               </div>
             </td>
             <td className="text-truncate">{item.id}</td>
-            <td className="text-truncate">
-              <div style={{ fontWeight: 500 }}>{item.title}</div>
-              <small style={{ color: '#666' }}>#{item.id}</small>
+            <td>
+              <Tooltip title={item.title}>
+                <div style={{ 
+                  maxWidth: '200px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  textAlign: 'center',
+                  margin: '0 auto'
+                }}>
+                  <div style={{ fontWeight: 500 }}>{item.title}</div>
+                  <small style={{ color: '#666' }}>#{item.id}</small>
+                </div>
+              </Tooltip>
             </td>
             <td>
               <CBadge color={getTypeColor(item.type)}>
