@@ -341,5 +341,26 @@
   "updates": "更新",
   "messages": "メッセージ",
   "tasks": "タスク",
-  "comments": "コメント"
+  "comments": "コメント",
+  "create": "作成",
+  "enterTitle": "タイトルを入力",
+  "issueType": "問題タイプ",
+  "priority": "優先度",
+  "startDate": "開始日",
+  "endDate": "終了日",
+  "confirmDeleteMessage": "選択した問題を削除してもよろしいですか？",
+  "deleteSuccess": "削除成功",
+  "deleteFailed": "削除失敗",
+  "statusOptions": {
+    "open": "未対応"
+  },
+  "inProgress": "進行中",
+  "resolved": "解決済み",
+  "closed": "クローズ",
+  "reopened": "再オープン",
+  "title": "コメント",
+  "placeholder": "コメントを入力してください",
+  "submitSuccess": "コメント成功",
+  "submitFailed": "コメント失敗",
+  "fetchFailed": "コメントの取得失敗"
 }

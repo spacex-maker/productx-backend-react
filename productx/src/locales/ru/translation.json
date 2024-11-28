@@ -341,5 +341,26 @@
   "updates": "Обновления",
   "messages": "Сообщения",
   "tasks": "Задачи",
-  "comments": "Комментарии"
+  "comments": "Комментарии",
+  "create": "Создать",
+  "enterTitle": "Введите заголовок",
+  "issueType": "Тип проблемы",
+  "priority": "Приоритет",
+  "startDate": "Дата начала",
+  "endDate": "Дата окончания",
+  "confirmDeleteMessage": "Вы уверены, что хотите удалить выбранные проблемы?",
+  "deleteSuccess": "Удаление успешно",
+  "deleteFailed": "Не удалось удалить",
+  "statusOptions": {
+    "open": "Открыто"
+  },
+  "inProgress": "В процессе",
+  "resolved": "Решено",
+  "closed": "Закрыто",
+  "reopened": "Переоткрыто",
+  "title": "Комментарий",
+  "placeholder": "Введите комментарий",
+  "submitSuccess": "Комментарий отправлен",
+  "submitFailed": "Не удалось отправить комментарий",
+  "fetchFailed": "Не удалось получить комментарии"
 }

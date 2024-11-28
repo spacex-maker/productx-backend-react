@@ -341,5 +341,26 @@
   "updates": "Aktualisierungen",
   "messages": "Nachrichten",
   "tasks": "Aufgaben",
-  "comments": "Kommentare"
+  "comments": "Kommentare",
+  "create": "Erstellen",
+  "enterTitle": "Titel eingeben",
+  "issueType": "Problemetyp",
+  "priority": "Priorität",
+  "startDate": "Startdatum",
+  "endDate": "Enddatum",
+  "confirmDeleteMessage": "Möchten Sie die ausgewählten Probleme wirklich löschen?",
+  "deleteSuccess": "Löschung erfolgreich",
+  "deleteFailed": "Löschung fehlgeschlagen",
+  "statusOptions": {
+    "open": "Offen"
+  },
+  "inProgress": "In Bearbeitung",
+  "resolved": "Gelöst",
+  "closed": "Geschlossen",
+  "reopened": "Wiedereröffnet",
+  "title": "Kommentar",
+  "placeholder": "Bitte Kommentar eingeben",
+  "submitSuccess": "Kommentar erfolgreich gesendet",
+  "submitFailed": "Kommentar konnte nicht gesendet werden",
+  "fetchFailed": "Fehler beim Abrufen der Kommentare"
 }

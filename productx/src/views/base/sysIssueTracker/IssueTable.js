@@ -3,6 +3,7 @@ import { Avatar, Tooltip, Button } from 'antd'
 import { CBadge } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { UserOutlined } from '@ant-design/icons'
 
 const getStatusColor = (status) => {
   const colorMap = {
@@ -116,20 +117,30 @@ const IssueTable = ({
               </CBadge>
             </td>
             <td>
-              <Tooltip title={item.reporterInfo.username}>
+              {item.reporterInfo ? (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar src={item.reporterInfo.avatar} size="small" />
-                  <span style={{ marginLeft: '8px' }}>{item.reporterInfo.username}</span>
+                  <Avatar 
+                    size={16} 
+                    src={item.reporterInfo.avatar} 
+                    icon={<UserOutlined />}
+                    style={{ marginRight: 4 }}
+                  />
+                  <span>{item.reporterInfo.username}</span>
                 </div>
-              </Tooltip>
+              ) : '-'}
             </td>
             <td>
-              <Tooltip title={item.assigneeInfo.username}>
+              {item.assigneeInfo ? (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar src={item.assigneeInfo.avatar} size="small" />
-                  <span style={{ marginLeft: '8px' }}>{item.assigneeInfo.username}</span>
+                  <Avatar 
+                    size={16} 
+                    src={item.assigneeInfo.avatar} 
+                    icon={<UserOutlined />}
+                    style={{ marginRight: 4 }}
+                  />
+                  <span>{item.assigneeInfo.username}</span>
                 </div>
-              </Tooltip>
+              ) : '-'}
             </td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>

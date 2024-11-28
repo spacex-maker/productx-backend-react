@@ -341,5 +341,26 @@
   "updates": "업데이트",
   "messages": "메시지",
   "tasks": "작업",
-  "comments": "댓글"
+  "comments": "댓글",
+  "create": "생성",
+  "enterTitle": "제목을 입력하세요",
+  "issueType": "문제 유형",
+  "priority": "우선순위",
+  "startDate": "시작 날짜",
+  "endDate": "종료 날짜",
+  "confirmDeleteMessage": "선택한 문제를 삭제하시겠습니까?",
+  "deleteSuccess": "삭제 성공",
+  "deleteFailed": "삭제 실패",
+  "statusOptions": {
+    "open": "대기 중"
+  },
+  "inProgress": "진행 중",
+  "resolved": "해결됨",
+  "closed": "닫힘",
+  "reopened": "재열기",
+  "title": "댓글",
+  "placeholder": "댓글을 입력하세요",
+  "submitSuccess": "댓글 성공",
+  "submitFailed": "댓글 실패",
+  "fetchFailed": "댓글 가져오기 실패"
 }
