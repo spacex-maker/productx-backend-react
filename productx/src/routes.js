@@ -116,6 +116,7 @@ const XAI = React.lazy(() => import('./views/base/ai/xai'))
 
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'))
 
+const SysIssueTracker = React.lazy(() => import('./views/base/sysIssueTracker/SysIssueTracker'))
 
 const routes = [
   {path: '/', exact: true, name: 'Home'},
@@ -309,6 +310,13 @@ const routes = [
     path: '/sys/menu', name: '菜单管理', element: (
       <PrivateRoute>
         <SysMenu/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/issueTracker', name: '问题跟踪', element: (
+      <PrivateRoute>
+        <SysIssueTracker/>
       </PrivateRoute>
     )
   },

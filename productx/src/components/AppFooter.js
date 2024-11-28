@@ -6,7 +6,7 @@ const AppFooter = () => {
     <CFooter className="px-4">
       <div>
         <a href="https://ProductX.cn" target="_blank" rel="noopener noreferrer">
-            <strong>ProductX</strong>
+          <strong>ProductX</strong>
         </a>
       </div>
       <div className="ms-auto">
@@ -14,14 +14,22 @@ const AppFooter = () => {
         <a href="https://coreui.io/react" target="_blank" rel="noopener noreferrer">
           CoreUI
         </a>
-          &
-          <a href="https://ProductX.cn" target="_blank" rel="noopener noreferrer">
-              ProductX
-          </a>
-          &
-          <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">
-              ChatGPT
-          </a>
+        &
+        <a href="https://ProductX.cn" target="_blank" rel="noopener noreferrer">
+          ProductX
+        </a>
+        &
+        <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">
+          ChatGPT
+        </a>
+        &
+        <a href="https://github.com/Anyuei" target="_blank" rel="noopener noreferrer">
+          AnakkiX
+        </a>
+        &
+        <a href="https://github.com/mini-blog" target="_blank" rel="noopener noreferrer">
+          BigBoy
+        </a>
       </div>
     </CFooter>
   )
