@@ -230,7 +230,8 @@
     "用户管理": "Benutzerverwaltung",
     "客服系统": "Kundendienstsystem",
     "菜单管理": "Menüverwaltung",
-    "资源管理": "Ressourcenverwaltung"
+    "资源管理": "Ressourcenverwaltung",
+    "问题跟踪": "Problemverfolgung"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",

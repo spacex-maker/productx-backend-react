@@ -222,7 +222,8 @@
     "用户管理": "User Management",
     "客服系统": "Customer Service System",
     "菜单管理": "Menu Management",
-    "资源管理": "Resource Management"
+    "资源管理": "Resource Management",
+    "问题跟踪": "Issue Tracking"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
