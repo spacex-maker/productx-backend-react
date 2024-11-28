@@ -19,7 +19,7 @@ import { cilLockLocked, cilLockUnlocked, cilUser, cilSettings } from '@coreui/ic
 import LoginHeader from 'src/views/pages/login/LoginHeader';
 import api, { API_BASE_URL, setBaseURL, API_CONFIG, setCustomBaseURL } from 'src/axiosInstance';
 import { message } from 'antd';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
 import WaveEffect from 'src/components/WaveEffect';
 import {initReactI18next, useTranslation} from 'react-i18next';
@@ -76,11 +76,92 @@ const ContentWrapper = styled(CContainer)`
 
 const LoginCard = styled(CCard)`
   background: rgba(30, 32, 47, 0.95);
+  border: 1px solid rgba(99, 102, 241, 0.2);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.1);
-  border-radius: 16px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: visible;
+  position: relative;
+
+  // 标语容器
+  .slogan-container {
+    position: absolute;
+    top: -60px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 10;
+  }
+
+  // 主标语样式
+  .slogan {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    white-space: nowrap;
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5),
+                 0 0 20px rgba(99, 102, 241, 0.3),
+                 0 0 30px rgba(99, 102, 241, 0.2);
+    animation: glow 2s ease-in-out infinite alternate;
+    margin-bottom: 8px;
+  }
+
+  // 副标语样式
+  .sub-slogan {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+    white-space: nowrap;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 10px rgba(99, 102, 241, 0.5),
+                   0 0 20px rgba(99, 102, 241, 0.3),
+                   0 0 30px rgba(99, 102, 241, 0.2);
+    }
+    to {
+      text-shadow: 0 0 20px rgba(99, 102, 241, 0.6),
+                   0 0 30px rgba(99, 102, 241, 0.4),
+                   0 0 40px rgba(99, 102, 241, 0.3);
+    }
+  }
+
+  // 渐变背景效果
+  .slogan::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+      rgba(99, 102, 241, 0.1),
+      rgba(139, 92, 246, 0.1),
+      rgba(99, 102, 241, 0.1));
+    filter: blur(10px);
+    z-index: -1;
+    animation: gradientMove 6s linear infinite;
+  }
+
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 `;
 
 const CardHeader = styled.div`
@@ -417,11 +498,32 @@ const CaptchaInputGroup = styled(StyledInputGroup)`
     background: rgba(99, 102, 241, 0.1);
     border: 1px solid rgba(99, 102, 241, 0.2);
     border-right: none;
+    position: relative;
 
     img {
       height: 28px;
       border-radius: 3px;
       cursor: pointer;
+    }
+
+    .captcha-tooltip {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30, 32, 47, 0.95);
+      padding: 0 16px;
+      color: #64748b;
+      font-size: 0.875rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    &:hover .captcha-tooltip {
+      opacity: 1;
     }
   }
 `;
@@ -463,10 +565,11 @@ const LoginPage = () => {
   const [selectedEnv, setSelectedEnv] = useState('PROD');
   const [loading, setLoading] = useState(false);
   const [showApiConfig, setShowApiConfig] = useState(false);
-  const { t } = useTranslation(); // 获取 t ���数
+  const { t } = useTranslation(); // 获取 t 数
   const [isCustomEnv, setIsCustomEnv] = useState(false);
   const [customUrl, setCustomUrl] = useState('');
   const dispatch = useDispatch();
+  const [showSlogan, setShowSlogan] = useState(false);
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -639,6 +742,16 @@ const LoginPage = () => {
     </EnvOption>
   );
 
+  // 鼠标移入处理函数
+  const handleMouseEnter = () => {
+    setShowSlogan(true);
+  };
+
+  // 鼠标移出处理函数
+  const handleMouseLeave = () => {
+    setShowSlogan(false);
+  };
+
   return (
     <PageWrapper>
       <WaveEffect onDoubleClick={handleWaveDoubleClick} />
@@ -653,6 +766,24 @@ const LoginPage = () => {
                 animate="visible"
               >
                 <LoginCard>
+                  <AnimatePresence>
+                    {showSlogan && (
+                      <motion.div 
+                        className="slogan-container"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="slogan">
+                          极致的用户体验，直达用户的内心
+                        </div>
+                        <div className="sub-slogan">
+                          ProductX - 让每一次使用都触及灵魂
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   <motion.div variants={itemVariants} custom={0}>
                     <CardHeader>
                       <h4>{t('login')} ProductX Admin</h4>
@@ -750,6 +881,9 @@ const LoginPage = () => {
                       <motion.div variants={itemVariants} custom={4}>
                         <CaptchaInputGroup>
                           <div className="captcha-wrapper">
+                            <div className="captcha-tooltip">
+                              {t('clickToChange')}
+                            </div>
                             <img
                               src={captcha}
                               alt={t('captcha')}
@@ -769,6 +903,8 @@ const LoginPage = () => {
                           type="submit"
                           className="w-100"
                           disabled={loading}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
                         >
                           {loading ? "登录中..." : t('loginButton')}
                         </StyledButton>
