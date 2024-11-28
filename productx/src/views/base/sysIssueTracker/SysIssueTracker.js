@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Input, Select, DatePicker, Space, Row, Col, Button, Spin, message } from 'antd'
+import { Form, Input, Select, DatePicker, Space, Row, Col, Button, Spin, message, Modal } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import api from 'src/axiosInstance'
 import IssueTable from './IssueTable'
@@ -11,9 +11,11 @@ import Pagination from 'src/components/common/Pagination'
 import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import IssueDetailModal from './IssueDetailModal'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
+const { confirm } = Modal
 
 const SysIssueTracker = () => {
   const navigate = useNavigate()
@@ -72,9 +74,9 @@ const SysIssueTracker = () => {
         current,
         pageSize,
         ...Object.fromEntries(
-          Object.entries(values || {}).filter(([_, value]) => 
-            value !== undefined && 
-            value !== null && 
+          Object.entries(values || {}).filter(([_, value]) =>
+            value !== undefined &&
+            value !== null &&
             value !== ''
           )
         )
@@ -137,131 +139,111 @@ const SysIssueTracker = () => {
     setIsDetailModalVisible(true)
   }
 
+  // 批量删除处理函数
+  const handleBatchDelete = () => {
+    confirm({
+      title: t('issueTracker.confirmDelete'),
+      icon: <ExclamationCircleOutlined />,
+      content: t('issueTracker.confirmDeleteMessage'),
+      okText: t('issueTracker.confirm'),
+      cancelText: t('issueTracker.cancel'),
+      onOk: async () => {
+        try {
+          await api.post('/manage/sys-issue-tracker/batch-delete', {
+            ids: selectedRows
+          })
+          message.success(t('issueTracker.deleteSuccess'))
+          // 重置选中状态
+          handleSelectRow([])
+          // 刷新列表
+          fetchIssues(form.getFieldsValue())
+        } catch (error) {
+          console.error('Failed to delete issues:', error)
+          message.error(t('issueTracker.deleteFailed'))
+        }
+      }
+    })
+  }
+
   return (
     <div className="issue-tracker-wrapper">
       <div className="search-wrapper">
         <div className="search-container">
-          <Form form={form} layout="inline">
-            <Row gutter={[8, 8]} align="middle">
-              <Col flex="0 0 160px">
+          <Form form={form} layout="inline" size="small">
+            <Row gutter={[16, 16]}>
+              <Col>
                 <Form.Item name="title">
                   <Input
-                    size="small"
-                    placeholder="问题标题"
-                    allowClear
+                    placeholder={t('enterTitle')}
+                    style={{ width: 200 }}
                   />
                 </Form.Item>
               </Col>
-              <Col flex="0 0 160px">
+              <Col>
                 <Form.Item name="type">
                   <Select
-                    size="small"
-                    placeholder="问题类型"
-                    style={{ width: '100%' }}
+                    placeholder={t('issueType')}
+                    style={{ width: 120 }}
                     allowClear
                   >
                     {issueTypes.map(type => (
-                      <Select.Option key={type.value} value={type.value}>
-                        {type.label}
-                      </Select.Option>
+                      <Option key={type.value} value={type.value}>{t(type.label)}</Option>
                     ))}
                   </Select>
                 </Form.Item>
               </Col>
-              <Col flex="0 0 160px">
-                <Form.Item name="status">
-                  <Select
-                    size="small"
-                    placeholder="状态"
-                    style={{ width: '100%' }}
-                    allowClear
-                  >
-                    {issueStatus.map(status => (
-                      <Select.Option key={status.value} value={status.value}>
-                        {status.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Col>
-              <Col flex="0 0 160px">
+              <Col>
                 <Form.Item name="priority">
                   <Select
-                    size="small"
-                    placeholder="优先级"
-                    style={{ width: '100%' }}
+                    placeholder={t('priority')}
+                    style={{ width: 120 }}
                     allowClear
                   >
                     {issuePriorities.map(priority => (
-                      <Select.Option key={priority.value} value={priority.value}>
-                        {priority.label}
-                      </Select.Option>
+                      <Option key={priority.value} value={priority.value}>{t(priority.label)}</Option>
                     ))}
                   </Select>
                 </Form.Item>
               </Col>
-              <Col flex="0 0 160px">
-                <Form.Item name="assignee">
-                  <Input
-                    size="small"
-                    placeholder="处理人"
+              <Col>
+                <Form.Item name="status">
+                  <Select
+                    placeholder={t('status')}
+                    style={{ width: 120 }}
                     allowClear
-                  />
+                  >
+                    <Option value="Open">{t('statusOptions.open')}</Option>
+                    <Option value="In Progress">{t('inProgress')}</Option>
+                    <Option value="Resolved">{t('resolved')}</Option>
+                    <Option value="Closed">{t('closed')}</Option>
+                    <Option value="Reopened">{t('reopened')}</Option>
+                  </Select>
                 </Form.Item>
               </Col>
-              <Col flex="0 0 160px">
-                <Form.Item name="reporter">
-                  <Input
-                    size="small"
-                    placeholder="报告人"
-                    allowClear
-                  />
-                </Form.Item>
-              </Col>
-              <Col flex="0 0 200px">
+              <Col>
                 <Form.Item name="dateRange">
                   <RangePicker
-                    size="small"
-                    style={{ width: '100%' }}
-                    showTime
-                    format="YYYY-MM-DD HH:mm:ss"
+                    placeholder={[t('startDate'), t('endDate')]}
                   />
                 </Form.Item>
               </Col>
-              <Col flex="none">
-                <Space size={8}>
-                  <Button
-                    size="small"
-                    type="primary"
-                    onClick={handleSearch}
-                    disabled={loading}
-                  >
-                    {loading ? <Spin size="small"/> : '搜索'}
+              <Col>
+                <Space>
+                  <Button type="primary" onClick={handleSearch}>
+                    {t('search')}
+                  </Button>
+                  <Button onClick={handleReset}>
+                    {t('reset')}
+                  </Button>
+                  <Button type="primary" onClick={() => setIsModalVisible(true)}>
+                    {t('create')}
                   </Button>
                   <Button
-                    size="small"
-                    onClick={handleReset}
-                  >
-                    重置
-                  </Button>
-                  <Button
-                    size="small"
-                    type="primary"
-                    onClick={() => setIsModalVisible(true)}
-                  >
-                    新建问题
-                  </Button>
-                  <Button
-                    size="small"
-                    type="primary"
-                    onClick={() => HandleBatchDelete({
-                      url: '/manage/sys-issue-tracker/batch-delete',
-                      selectedRows,
-                      fetchData: () => fetchIssues(form.getFieldsValue()),
-                    })}
+                    danger
                     disabled={selectedRows.length === 0}
+                    onClick={handleBatchDelete}
                   >
-                    批量删除
+                    {t('batchDelete')}
                   </Button>
                 </Space>
               </Col>

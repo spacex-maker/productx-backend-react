@@ -334,5 +334,26 @@
   "updates": "Aggiornamenti",
   "messages": "Messaggi",
   "tasks": "Compiti",
-  "comments": "Commenti"
+  "comments": "Commenti",
+  "create": "Crea",
+  "enterTitle": "Inserisci il titolo",
+  "issueType": "Tipo di problema",
+  "priority": "Priorità",
+  "startDate": "Data di inizio",
+  "endDate": "Data di fine",
+  "confirmDeleteMessage": "Sei sicuro di voler eliminare i problemi selezionati?",
+  "deleteSuccess": "Eliminazione riuscita",
+  "deleteFailed": "Eliminazione fallita",
+  "statusOptions": {
+    "open": "Aperto"
+  },
+  "inProgress": "In corso",
+  "resolved": "Risolto",
+  "closed": "Chiuso",
+  "reopened": "Riaperto",
+  "title": "Commento",
+  "placeholder": "Inserisci il commento",
+  "submitSuccess": "Commento inviato",
+  "submitFailed": "Invio del commento fallito",
+  "fetchFailed": "Impossibile recuperare i commenti"
 }

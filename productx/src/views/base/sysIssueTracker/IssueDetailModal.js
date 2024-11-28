@@ -2,6 +2,8 @@ import React from 'react'
 import { Modal, Descriptions, Tag, Avatar, Timeline } from 'antd'
 import dayjs from 'dayjs'
 import styled from 'styled-components'
+import IssueComments from './IssueComments'
+import { useTranslation } from 'react-i18next'
 
 const StyledDescriptions = styled(Descriptions)`
   .ant-descriptions-item-label {
@@ -14,7 +16,7 @@ const StyledDescriptions = styled(Descriptions)`
     padding: 4px 8px !important;
     font-size: 10px;
   }
-  .ant-descriptions-row > th, 
+  .ant-descriptions-row > th,
   .ant-descriptions-row > td {
     padding-bottom: 4px !important;
   }
@@ -65,17 +67,17 @@ const SectionTitle = styled.h4`
 
 const StyledTimeline = styled(Timeline)`
   margin-top: 4px !important;
-  
+
   .ant-timeline-item {
     padding-bottom: 8px;
-    
+
     &-content {
       font-size: 10px;
-      
+
       p {
         margin-bottom: 1px;
       }
-      
+
       small {
         color: #999;
       }
@@ -84,6 +86,8 @@ const StyledTimeline = styled(Timeline)`
 `
 
 const IssueDetailModal = ({ visible, issue, onCancel }) => {
+  const { t } = useTranslation()
+
   if (!issue) return null
 
   const getStatusColor = (status) => {
@@ -178,23 +182,10 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
         ))}
       </StyledTimeline>
 
-      <SectionTitle>评论记录</SectionTitle>
-      {issue.comments?.map((comment, index) => (
-        <CommentItem key={index}>
-          <CommentHeader>
-            <Avatar size={16} src={comment.user.avatar} />
-            <CommentAuthor>{comment.user.username}</CommentAuthor>
-            <CommentTime>
-              {dayjs(comment.createTime).format('YYYY-MM-DD HH:mm:ss')}
-            </CommentTime>
-          </CommentHeader>
-          <CommentContent>
-            {comment.content}
-          </CommentContent>
-        </CommentItem>
-      ))}
+      <SectionTitle>{t('评论')}</SectionTitle>
+      <IssueComments issueId={issue?.id} />
     </Modal>
   )
 }
 
-export default IssueDetailModal 
+export default IssueDetailModal

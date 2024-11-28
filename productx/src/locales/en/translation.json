@@ -333,5 +333,26 @@
   "updates": "Updates",
   "messages": "Messages",
   "tasks": "Tasks",
-  "comments": "Comments"
+  "comments": "Comments",
+  "create": "Create",
+  "enterTitle": "Enter title",
+  "issueType": "Issue Type",
+  "priority": "Priority",
+  "startDate": "Start Date",
+  "endDate": "End Date",
+  "confirmDeleteMessage": "Are you sure you want to delete the selected issues?",
+  "deleteSuccess": "Delete Successful",
+  "deleteFailed": "Delete Failed",
+  "statusOptions": {
+    "open": "Open"
+  },
+  "inProgress": "In Progress",
+  "resolved": "Resolved",
+  "closed": "Closed",
+  "reopened": "Reopened",
+  "title": "Comment",
+  "placeholder": "Enter your comment",
+  "submitSuccess": "Comment Submitted",
+  "submitFailed": "Comment Submission Failed",
+  "fetchFailed": "Failed to fetch comments"
 }

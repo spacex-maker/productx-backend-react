@@ -246,7 +246,6 @@
   "oceania": "大洋洲",
   "antarctica": "南极洲",
   "createCountry": "新增国家",
-
   "continent": "所属大洲",
   "capital": "首都",
   "coordinates": "地理坐标",
@@ -342,5 +341,25 @@
   "updates": "更新",
   "messages": "消息",
   "tasks": "任务",
-  "comments": "评论"
+  "comments": "评论",
+  "create": "新建",
+  "enterTitle": "请输入标题",
+  "issueType": "问题类型",
+  "priority": "优先级",
+  "startDate": "开始日期",
+  "endDate": "结束日期",
+  "confirmDeleteMessage": "确定要删除选中的问题吗？",
+  "deleteSuccess": "删除成功",
+  "deleteFailed": "删除失败",
+  "statusOptions": {
+    "open": "待处理"
+  },
+  "inProgress": "处理中",
+  "resolved": "已解决",
+  "closed": "已关闭",
+  "reopened": "重新打开",
+  "title": "标题",
+  "submitSuccess": "评论成功",
+  "submitFailed": "评论失败",
+  "fetchFailed": "获取评论失败"
 }
