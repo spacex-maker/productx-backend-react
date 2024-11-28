@@ -124,7 +124,7 @@ const IssueComments = ({ issueId }) => {
     try {
       const response = await api.get('/manage/sys-issue-comments/page-by-issueId', {
         params: {
-          current: page,
+          currentPage: page,
           size: pageSize,
           issueId
         }

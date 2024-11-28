@@ -25,7 +25,7 @@ const SysIssueTracker = () => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
-  const [current, setCurrent] = useState(1)
+  const [currentPage, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
@@ -71,7 +71,7 @@ const SysIssueTracker = () => {
     try {
       // 过滤掉空值
       const params = {
-        current,
+        currentPage,
         pageSize,
         ...Object.fromEntries(
           Object.entries(values || {}).filter(([_, value]) =>
@@ -104,14 +104,14 @@ const SysIssueTracker = () => {
     const values = await form.validateFields()
     fetchIssues({
       ...values,
-      current: 1
+      currentPage: 1
     })
   }
 
   const handleReset = () => {
     form.resetFields()
     setCurrent(1)
-    fetchIssues({ current: 1 })
+    fetchIssues({ currentPage: 1 })
   }
 
   // 处理页码变化
@@ -119,7 +119,7 @@ const SysIssueTracker = () => {
     setCurrent(newPage)
     fetchIssues({
       ...form.getFieldsValue(),
-      current: newPage
+      currentPage: newPage
     })
   }
 
@@ -273,7 +273,7 @@ const SysIssueTracker = () => {
         <Pagination
           size="small"
           totalPages={Math.ceil(totalNum / pageSize)}
-          current={current}
+          current={currentPage}
           onPageChange={handlePageChange}
           pageSize={pageSize}
           onPageSizeChange={(newSize) => {
@@ -281,7 +281,7 @@ const SysIssueTracker = () => {
             setCurrent(1)
             fetchIssues({
               ...form.getFieldsValue(),
-              current: 1,
+              currentPage: 1,
               pageSize: newSize
             })
           }}
