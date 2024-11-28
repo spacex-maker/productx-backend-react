@@ -142,24 +142,24 @@ const SysIssueTracker = () => {
   // 批量删除处理函数
   const handleBatchDelete = () => {
     confirm({
-      title: t('issueTracker.confirmDelete'),
+      title: t('confirmDelete'),
       icon: <ExclamationCircleOutlined />,
-      content: t('issueTracker.confirmDeleteMessage'),
-      okText: t('issueTracker.confirm'),
-      cancelText: t('issueTracker.cancel'),
+      content: t('confirmDelete'),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
       onOk: async () => {
         try {
           await api.post('/manage/sys-issue-tracker/batch-delete', {
             ids: selectedRows
           })
-          message.success(t('issueTracker.deleteSuccess'))
+          message.success(t('deleteSuccess'))
           // 重置选中状态
           handleSelectRow([])
           // 刷新列表
           fetchIssues(form.getFieldsValue())
         } catch (error) {
           console.error('Failed to delete issues:', error)
-          message.error(t('issueTracker.deleteFailed'))
+          message.error(t('deleteFailed'))
         }
       }
     })
