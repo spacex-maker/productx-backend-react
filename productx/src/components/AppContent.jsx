@@ -1,15 +1,16 @@
-import React, { Suspense } from 'react'
-import {BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { CContainer, CSpinner } from '@coreui/react'
+import React, { Suspense } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { CContainer, CSpinner } from '@coreui/react';
+import appContentStyle from './appContent.style.module.scss';
 
 // routes config
-import routes from '../routes'
-
+import routes from '../routes';
+console.log(appContentStyle);
 const AppContent = () => {
   return (
-    <CContainer className="px-4" lg>
+    <div className={appContentStyle.mianRootContainer}>
       <Suspense fallback={<CSpinner color="primary" />}>
-          <Routes>
+        <Routes>
           {routes.map((route, idx) => {
             return (
               route.element && (
@@ -21,13 +22,13 @@ const AppContent = () => {
                   element={route.element}
                 />
               )
-            )
+            );
           })}
           {/*<Route path="/" element={<Navigate to="login" replace />} />*/}
         </Routes>
       </Suspense>
-    </CContainer>
-  )
-}
+    </div>
+  );
+};
 
-export default React.memo(AppContent)
+export default React.memo(AppContent);
