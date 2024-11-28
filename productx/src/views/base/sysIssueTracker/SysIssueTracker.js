@@ -165,6 +165,11 @@ const SysIssueTracker = () => {
     })
   }
 
+  const handleUpdateSuccess = () => {
+    setIsUpdateModalVisible(false)  // 关闭模态框
+    fetchIssues()                 // 重新获取数据
+  }
+
   return (
     <div className="issue-tracker-wrapper">
       <div className="search-wrapper">
@@ -301,7 +306,7 @@ const SysIssueTracker = () => {
           setCurrentIssue(null)
           updateForm.resetFields()
         }}
-        onOk={() => updateForm.submit()}
+        onOk={handleUpdateSuccess}
         form={updateForm}
         issue={currentIssue}
         issueTypes={issueTypes}
