@@ -77,15 +77,12 @@ const EditMenuModal = ({
   onOk, 
   form,
   currentItem,
-  iconOptions = [
-    'cilSpeedometer', 'cilHeadphones', 'cilList', 'cilFolder', 'cilStorage',
-    'cilGlobeAlt', 'cilBuilding', 'cilPeople', 'cilGroup', 'cilShieldAlt',
-    'cilLockLocked', 'cilTruck', 'cilCalculator', 'cilMoney', 'cilBank',
-    'cilWallet', 'cilDevices', 'cilBasket', 'cilUser', 'cilSettings'
-  ],
   componentOptions = ['CNavGroup', 'CNavItem', 'CNavTitle']
 }) => {
   const { t } = useTranslation()
+
+  // 获取所有 CoreUI 图标
+  const allIconOptions = Object.keys(icons).filter(key => key.startsWith('cil'));
 
   return (
     <StyledModal
@@ -137,8 +134,9 @@ const EditMenuModal = ({
             showSearch
             optionFilterProp="children"
             dropdownMatchSelectWidth={false}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
           >
-            {iconOptions.map(icon => (
+            {allIconOptions.map(icon => (
               <Option key={icon} value={icon}>
                 <Space>
                   <CIcon icon={icons[icon]} className="menu-icon" />
