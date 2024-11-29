@@ -9,7 +9,8 @@ const ManagerTable = ({
                           handleSelectRow,
                           handleStatusChange,
                           handleEditClick,
-                          handleDeleteClick
+                          handleDeleteClick,
+                          handleDetailClick
                         }) => {
   // 处理全选
   const onSelectAll = (event) => {
@@ -85,6 +86,9 @@ const ManagerTable = ({
             </label>
           </td>
           <td className="fixed-column">
+            <Button type="link" onClick={() => handleDetailClick(item)}>
+              详情
+            </Button>
             <Button type="link" onClick={() => handleEditClick(item)}>
               修改
             </Button>

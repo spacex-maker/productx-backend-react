@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination";
 import ManagerTable from "src/views/base/manager/ManagerTable"; // 请确保你有相应的管理员表格组件
 import UpdateManagerModal from "src/views/base/manager/UpdateManagerModal"; // 更新管理员模态框
 import ManagerCreateFormModal from "src/views/base/manager/ManagerCreateFormModal"; // 新建管理员模态框
+import ManagerDetailModal from './ManagerDetailModal';
 
 const updateManagerStatus = async (id, newStatus) => {
   await api.post('/manage/manager/change-status', { id, status: newStatus });
@@ -39,6 +40,8 @@ const ManagerList = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedManager, setSelectedManager] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [selectedManagerId, setSelectedManagerId] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -115,6 +118,11 @@ const ManagerList = () => {
   const handleEditClick = (record) => {
     setSelectedManager(record);
     setIsUpdateModalVisible(true);
+  };
+
+  const handleDetailClick = (record) => {
+    setSelectedManagerId(record.id);
+    setIsDetailModalVisible(true);
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -214,6 +222,7 @@ const ManagerList = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             handleDeleteClick={handleDeleteClick}
+            handleDetailClick={handleDetailClick}
           />
         </Spin>
       </div>
@@ -240,6 +249,14 @@ const ManagerList = () => {
         form={updateForm}
         handleUpdateManager={handleUpdateManager}
         selectedManager={selectedManager}
+      />
+      <ManagerDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => {
+          setIsDetailModalVisible(false);
+          setSelectedManagerId(null);
+        }}
+        managerId={selectedManagerId}
       />
     </div>
   );
