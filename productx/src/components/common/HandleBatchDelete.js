@@ -1,6 +1,6 @@
 import { Modal, message } from 'antd';
 import { DeleteBatchButton } from 'src/components/common/DeleteBatchButton'
-const HandleBatchDelete = ({ url, selectedRows, fetchData }) => {
+const HandleBatchDelete = ({ url, selectedRows,resetSelection, fetchData }) => {
         if (selectedRows.length === 0) {
             message.warning('请选择要删除的用户');
             return;
@@ -14,6 +14,7 @@ const HandleBatchDelete = ({ url, selectedRows, fetchData }) => {
                     await DeleteBatchButton(url, selectedRows);
                     message.success('删除成功');
                     fetchData();
+                    resetSelection();
                 } catch (error) {
                     message.error('批量删除失败');
                 }

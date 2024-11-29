@@ -2,6 +2,85 @@ import React from 'react';
 import { Input, Modal, Form, Switch, DatePicker, Alert, Row, Col, Select, InputNumber } from 'antd';
 import api from 'src/axiosInstance';
 import { useTranslation } from "react-i18next";
+import styled from 'styled-components';
+
+const StyledModal = styled(Modal)`
+  .ant-modal-content {
+    padding: 12px;
+  }
+
+  .ant-modal-header {
+    margin-bottom: 8px;
+  }
+
+  .ant-modal-title {
+    font-size: 12px;
+    color: #000000;
+  }
+
+  .ant-form {
+    .ant-form-item {
+      margin-bottom: 4px;
+    }
+
+    .ant-form-item-label {
+      padding: 0;
+      
+      > label {
+        font-size: 10px;
+        color: #666;
+        height: 20px;
+      }
+    }
+
+    .ant-input,
+    .ant-input-number,
+    .ant-picker,
+    .ant-select-selector {
+      font-size: 10px;
+      height: 24px !important;
+      line-height: 24px;
+      padding: 0 8px;
+    }
+
+    .ant-input-number-input {
+      height: 22px;
+    }
+
+    .ant-select-selection-item {
+      line-height: 22px;
+    }
+
+    textarea.ant-input {
+      height: auto !important;
+      min-height: 48px;
+      padding: 4px 8px;
+    }
+  }
+
+  .ant-alert {
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .ant-form-item-explain {
+    font-size: 10px;
+    min-height: 16px;
+  }
+
+  .ant-modal-footer {
+    margin-top: 8px;
+    padding: 8px 0 0;
+    border-top: 1px solid #f0f0f0;
+
+    .ant-btn {
+      height: 24px;
+      padding: 0 12px;
+      font-size: 10px;
+    }
+  }
+`;
 
 const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
   const [form] = Form.useForm();
@@ -10,18 +89,17 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
   const handleAddOrderOk = async () => {
     try {
       const values = await form.validateFields();
-
       const requestData = {
         userId: values.userId,
         receiverName: values.receiverName,
         phoneNum: values.phoneNum,
         orderStatus: values.orderStatus,
         paymentType: values.paymentType,
-        payTime: values.payTime ? values.payTime.format('YYYY-MM-DD HH:mm:ss') : null,
+        payTime: values.payTime?.format('YYYY-MM-DD HH:mm:ss'),
         totalAmount: values.totalAmount,
         shippingMethod: values.shippingMethod,
         deliveryAddress: values.deliveryAddress,
-        status: values.status || true,
+        status: values.status ?? true,
       };
 
       await api.post('/manage/orders/create', requestData);
@@ -33,103 +111,72 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
     }
   };
 
-  const formItemStyle = {
-    marginBottom: '6px',
-    fontSize: '11px',
-  };
-
-  const inputStyle = {
-    fontSize: '11px',
-    height: '24px',
-  };
-
-  const labelStyle = {
-    fontSize: '11px',
-    color: '#666',
-  };
-
   return (
-    <Modal
+    <StyledModal
       title={t("addNewOrder")}
       open={isVisible}
       onCancel={onCancel}
       onOk={handleAddOrderOk}
       okText={t("submit")}
       cancelText={t("cancel")}
-      width={560}
-      styles={{ padding: '10px' }}
+      width={480}
+      maskClosable={false}
+      destroyOnClose
     >
       <Alert
         message={t("orderInfoWarning")}
         type="warning"
         showIcon
-        style={{ marginBottom: '10px', padding: '3px 8px', fontSize: '11px' }}
       />
 
       <Form
         form={form}
         layout="vertical"
         colon={false}
-        style={{ fontSize: '11px' }}
+        initialValues={{ status: true }}
+        preserve={false}
       >
-        <Row gutter={6}>
+        <Row gutter={8}>
           <Col span={12}>
             <Form.Item
               name="userId"
-              label={<span style={labelStyle}>{t("userId")}</span>}
+              label={t("userId")}
               rules={[{ required: true, message: t("enterUserId") }]}
-              style={formItemStyle}
             >
-              <Input
-                placeholder={t("enterUserId")}
-                size="small"
-                style={inputStyle}
-              />
+              <Input placeholder={t("enterUserId")} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               name="receiverName"
-              label={<span style={labelStyle}>{t("receiverName")}</span>}
+              label={t("receiverName")}
               rules={[{ required: true, message: t("enterReceiverName") }]}
-              style={formItemStyle}
             >
-              <Input
-                placeholder={t("enterReceiverName")}
-                size="small"
-                style={inputStyle}
-              />
+              <Input placeholder={t("enterReceiverName")} />
             </Form.Item>
           </Col>
         </Row>
 
-        <Row gutter={6}>
+        <Row gutter={8}>
           <Col span={12}>
             <Form.Item
               name="phoneNum"
-              label={<span style={labelStyle}>{t("phoneNumber")}</span>}
+              label={t("phoneNumber")}
               rules={[{ required: true, message: t("enterPhoneNumber") }]}
-              style={formItemStyle}
             >
-              <Input
-                placeholder={t("enterPhoneNumber")}
-                size="small"
-                style={inputStyle}
-              />
+              <Input placeholder={t("enterPhoneNumber")} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               name="orderStatus"
-              label={<span style={labelStyle}>{t("orderStatus")}</span>}
+              label={t("orderStatus")}
               rules={[{ required: true, message: t("selectOrderStatus") }]}
-              style={formItemStyle}
             >
               <Select
                 placeholder={t("selectOrderStatus")}
                 size="small"
-                style={{ ...inputStyle, width: '100%' }}
-                dropdownStyle={{ fontSize: '11px' }}
+                style={{ fontSize: '11px' }}
               >
                 <Select.Option value="PENDING">{t("pending")}</Select.Option>
                 <Select.Option value="PAID">{t("paid")}</Select.Option>
@@ -144,13 +191,12 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
           </Col>
         </Row>
 
-        <Row gutter={6}>
+        <Row gutter={8}>
           <Col span={12}>
             <Form.Item
               name="paymentType"
-              label={<span style={labelStyle}>{t("paymentType")}</span>}
+              label={t("paymentType")}
               rules={[{ required: true, message: t("selectPaymentMethod") }]}
-              style={formItemStyle}
             >
               <Select
                 placeholder={t("selectPaymentMethod")}
@@ -166,9 +212,8 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
           <Col span={12}>
             <Form.Item
               name="payTime"
-              label={<span style={labelStyle}>{t("paymentTime")}</span>}
+              label={t("paymentTime")}
               rules={[{ required: true, message: t("selectPaymentTime") }]}
-              style={formItemStyle}
             >
               <DatePicker
                 showTime
@@ -180,13 +225,12 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
           </Col>
         </Row>
 
-        <Row gutter={6}>
+        <Row gutter={8}>
           <Col span={12}>
             <Form.Item
               name="totalAmount"
-              label={<span style={labelStyle}>{t("totalAmount")}</span>}
+              label={t("totalAmount")}
               rules={[{ required: true, message: t("enterTotalAmount") }]}
-              style={formItemStyle}
             >
               <InputNumber
                 placeholder={t("enterTotalAmount")}
@@ -200,9 +244,8 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
           <Col span={12}>
             <Form.Item
               name="shippingMethod"
-              label={<span style={labelStyle}>{t("shippingMethod")}</span>}
+              label={t("shippingMethod")}
               rules={[{ required: true, message: t("selectShippingMethod") }]}
-              style={formItemStyle}
             >
               <Select
                 placeholder={t("selectShippingMethod")}
@@ -218,32 +261,28 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
 
         <Form.Item
           name="deliveryAddress"
-          label={<span style={labelStyle}>{t("deliveryAddress")}</span>}
+          label={t("deliveryAddress")}
           rules={[{ required: true, message: t("enterDeliveryAddress") }]}
-          style={formItemStyle}
         >
           <Input.TextArea
             placeholder={t("enterDeliveryAddress")}
             rows={2}
-            style={{ fontSize: '11px' }}
           />
         </Form.Item>
 
         <Form.Item
           name="status"
-          label={<span style={labelStyle}>{t("orderStatus")}</span>}
+          label={t("orderStatus")}
           valuePropName="checked"
-          style={{ marginBottom: 0 }}
         >
           <Switch
             size="small"
             checkedChildren={t("enabled")}
             unCheckedChildren={t("disabled")}
-            style={{ fontSize: '11px' }}
           />
         </Form.Item>
       </Form>
-    </Modal>
+    </StyledModal>
   );
 };
 

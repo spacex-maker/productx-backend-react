@@ -1,60 +1,121 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Select } from 'antd';
 import api from 'src/axiosInstance';
+import styled from 'styled-components';
 
-const RoleSelect = () => {
+const StyledSelect = styled(Select)`
+  // 选择框中已选项的文字
+  .ant-select-selection-item {
+    font-size: 10px !important;
+    color: #000000 !important;
+  }
+
+  // 下拉选项的文字
+  .ant-select-item {
+    font-size: 10px !important;
+    color: #000000 !important;
+
+    &-option-selected {
+      color: #000000 !important;
+      font-weight: 600;
+    }
+    
+    &-option-active {
+      color: #000000 !important;
+    }
+  }
+
+  // 多选模式下的标签文字
+  .ant-select-selection-item-content {
+    color: #000000 !important;
+    font-size: 10px !important;
+  }
+
+  // 占位符文字
+  .ant-select-selection-placeholder {
+    color: #999999 !important;
+    font-size: 10px !important;
+  }
+
+  // 搜索输入框
+  .ant-select-selection-search-input {
+    color: #000000 !important;
+    font-size: 10px !important;
+  }
+
+  // 下拉选项中的样式
+  .ant-select-item-option-content {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+
+    .role-name {
+      color: #000000 !important;
+      font-size: 10px !important;
+    }
+    
+    .role-id {
+      color: #999999 !important;
+      font-size: 10px !important;
+    }
+  }
+`;
+
+const RoleSelect = ({ value, onChange, mode = 'single', ...props }) => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 获取角色数据的函数
-  const fetchRoles = async (search) => {
+  useEffect(() => {
+    fetchRoles();
+  }, []);
+
+  const fetchRoles = async (searchText = '') => {
     setLoading(true);
     try {
-      const response = await api.get('/manage/admin-roles/list-all', {
-        params: { roleName: search }, // 传入角色名称搜索参数
+      const response = await api.get('/manage/admin-roles/list-all-enable', {
+        params: {
+          roleName: searchText,
+          currentPage: 1,
+          size: 10
+        }
       });
-
       if (response) {
-        setRoles(response); // 假设返回的数据在 data 字段中
-      } else {
-        console.error('Error fetching roles:', response.message);
+        setRoles(response);
       }
     } catch (error) {
-      console.error('Error fetching roles:', error);
+      console.error('Failed to fetch roles:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 搜索角色
   const handleSearch = (value) => {
-    if (value) {
-      fetchRoles(value);
-    } else {
-      setRoles([]); // 如果没有搜索内容，清空下拉框
-    }
+    fetchRoles(value);
   };
 
   return (
-    <Form.Item
-      label="角色ID (Role ID)"
-      name="roleId"
-      rules={[{ required: true, message: '请选择角色ID' }]}
+    <StyledSelect
+      value={value}
+      onChange={onChange}
+      loading={loading}
+      mode={mode}
+      showSearch
+      filterOption={false}
+      onSearch={handleSearch}
+      {...props}
     >
-      <Select
-        placeholder="请选择角色ID"
-        showSearch
-        filterOption={false} // 关闭默认过滤功能
-        onSearch={handleSearch} // 输入时触发搜索
-        loading={loading}
-      >
-        {roles.map(role => (
-          <Select.Option key={role.id} value={role.id}>
-            {role.roleName}
-          </Select.Option>
-        ))}
-      </Select>
-    </Form.Item>
+      {roles.map(role => (
+        <Select.Option 
+          key={role.id} 
+          value={role.id}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span className="role-name">{role.roleName}</span>
+            <span className="role-id">ID: {role.id}</span>
+          </div>
+        </Select.Option>
+      ))}
+    </StyledSelect>
   );
 };
 
