@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination";
 import RoleTable from "src/views/base/adminRole/AdminRoleTable"; // 请确保你有相应的角色表格组件
 import RoleCreateFormModal from "src/views/base/adminRole/AdminRoleCreateFormModal"; // 新建角色模态框
 import UpdateRoleModal from "src/views/base/adminRole/UpdateAdminRoleModal"; // 更新角色模态框
+import { SearchOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const createRole = async (roleData) => {
   await api.post('/manage/admin-roles/create-role', roleData);
@@ -153,7 +154,7 @@ const AdminRole = () => {
                 onClick={fetchData}
                 disabled={isLoading}
               >
-                {isLoading ? <Spin /> : '查询'}
+                <SearchOutlined /> {isLoading ? <Spin /> : '查询'}
               </Button>
             </Col>
             <Col>
@@ -162,13 +163,14 @@ const AdminRole = () => {
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
               >
-                新增角色
+                <PlusOutlined /> 新增角色
               </Button>
             </Col>
             <Col>
               <Button
                 size="small"
                 type="primary"
+                danger
                 onClick={() => HandleBatchDelete({
                   url: '/manage/admin-roles/delete-batch',
                   selectedRows,
@@ -176,7 +178,7 @@ const AdminRole = () => {
                 })}
                 disabled={selectedRows.length === 0}
               >
-                批量删除
+                <DeleteOutlined /> 批量删除
               </Button>
             </Col>
           </Row>

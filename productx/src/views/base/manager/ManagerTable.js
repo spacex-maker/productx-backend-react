@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Avatar, Tooltip } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 const ManagerTable = ({
                           data,
@@ -46,7 +47,7 @@ const ManagerTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', '用户名', '邮箱', '电话', '角色ID', '状态'].map((field) => (
+        {['头像', '用户名', '邮箱', '电话', '角色ID', '状态'].map((field) => (
           <th key={field}>{field}</th>
         ))}
         <th className="fixed-column" key='操作'>操作</th>
@@ -70,11 +71,22 @@ const ManagerTable = ({
               ></label>
             </div>
           </td>
-          <td className="text-truncate">{item.id}</td>
-          <td className="text-truncate">{item.username}</td>
-          <td className="text-truncate">{item.email || '无'}</td>
-          <td className="text-truncate">{item.phone || '无'}</td>
-          <td className="text-truncate">{item.roleId}</td>
+          <td>
+            <Avatar 
+              size={24} 
+              icon={<UserOutlined />} 
+              src={item.avatar} 
+              style={{ backgroundColor: '#87d068' }}
+            />
+          </td>
+          <td className="text-truncate">
+            <Tooltip title={`ID: ${item.id}`}>
+              {item.username || '—'}
+            </Tooltip>
+          </td>
+          <td className="text-truncate">{item.email || '—'}</td>
+          <td className="text-truncate">{item.phone || '—'}</td>
+          <td className="text-truncate">{item.roleId || '—'}</td>
           <td>
             <label className="toggle-switch">
               <input

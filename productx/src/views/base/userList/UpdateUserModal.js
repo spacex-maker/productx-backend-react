@@ -1,6 +1,22 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Checkbox, Row, Col, Divider, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { 
+  UserOutlined, 
+  IdcardOutlined, 
+  PhoneOutlined,
+  MailOutlined,
+  InfoCircleOutlined,
+  CheckCircleOutlined,
+  EnvironmentOutlined,
+  GlobalOutlined,
+  HomeOutlined,
+  NumberOutlined,
+  CheckSquareOutlined,
+  BankOutlined,
+  AimOutlined,
+  TagOutlined
+} from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -38,6 +54,19 @@ const styles = {
 const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, selectedUser }) => {
   const { t } = useTranslation();
 
+  // 统一的图标样式
+  const iconStyle = {
+    fontSize: '12px',
+    color: '#1890ff',
+    marginRight: '4px'
+  };
+
+  // 输入框前缀图标样式
+  const prefixIconStyle = {
+    color: 'rgba(0, 0, 0, 0.25)',
+    fontSize: '12px'
+  };
+
   useEffect(() => {
     if (isVisible && selectedUser) {
       form.setFieldsValue({
@@ -61,52 +90,53 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
 
   return (
     <Modal
-      title={<span style={styles.modal.title}>{t('editUserInfo')}</span>}
+      title={<>
+        <UserOutlined style={{ ...iconStyle, fontSize: '14px' }} />
+        {t('editUserInfo')}
+      </>}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
       width={400}
       styles={styles.modal.body}
     >
-      <Form
-        form={form}
-        onFinish={handleUpdateUser}
-        layout="vertical"
-        style={{ gap: '4px' }}
-      >
+      <Form form={form} onFinish={handleUpdateUser} layout="vertical">
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
 
         {/* 基本信息部分 */}
-        <Title level={5} style={styles.title}>{t('basicInfo')}</Title>
+        <Title level={5} style={styles.title}>
+          <IdcardOutlined style={iconStyle} />
+          <span style={{ marginLeft: '4px' }}>{t('basicInfo')}</span>
+        </Title>
         <Divider style={styles.divider} />
 
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('nickname')}</span>}
+              label={<><UserOutlined style={iconStyle} />{t('nickname')}</>}
               name="nickname"
               rules={[{ required: true, message: t('nicknameRequired') }]}
               style={styles.formItem}
             >
               <Input
+                prefix={<UserOutlined style={prefixIconStyle} />}
                 placeholder={t('enterNickname')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('fullName')}</span>}
+              label={<><IdcardOutlined style={iconStyle} />{t('fullName')}</>}
               name="fullName"
               style={styles.formItem}
             >
               <Input
+                prefix={<IdcardOutlined style={prefixIconStyle} />}
                 placeholder={t('enterFullName')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -115,27 +145,27 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('email')}</span>}
+              label={<><MailOutlined style={iconStyle} />{t('email')}</>}
               name="email"
               style={styles.formItem}
             >
               <Input
+                prefix={<MailOutlined style={prefixIconStyle} />}
                 placeholder={t('enterEmail')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('phoneNumber')}</span>}
+              label={<><PhoneOutlined style={iconStyle} />{t('phoneNumber')}</>}
               name="phoneNumber"
               style={styles.formItem}
             >
               <Input
+                prefix={<PhoneOutlined style={prefixIconStyle} />}
                 placeholder={t('enterPhoneNumber')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -144,35 +174,35 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('description')}</span>}
+              label={<><InfoCircleOutlined style={iconStyle} />{t('description')}</>}
               name="description"
               style={styles.formItem}
             >
               <Input
+                prefix={<InfoCircleOutlined style={prefixIconStyle} />}
                 placeholder={t('enterDescription')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('creditScore')}</span>}
+              label={<><NumberOutlined style={iconStyle} />{t('creditScore')}</>}
               name="creditScore"
               style={styles.formItem}
             >
               <Input
+                prefix={<NumberOutlined style={prefixIconStyle} />}
                 type="number"
                 placeholder={t('enterCreditScore')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
-          label={<span style={styles.label}>{t('status')}</span>}
+          label={<><CheckCircleOutlined style={iconStyle} />{t('status')}</>}
           name="status"
           valuePropName="checked"
           style={styles.formItem}
@@ -181,35 +211,38 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
         </Form.Item>
 
         {/* 地址信息部分 */}
-        <Title level={5} style={styles.title}>{t('addressInfo')}</Title>
+        <Title level={5} style={styles.title}>
+          <HomeOutlined style={iconStyle} />
+          <span style={{ marginLeft: '4px' }}>{t('addressInfo')}</span>
+        </Title>
         <Divider style={styles.divider} />
 
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('country')}</span>}
+              label={<><GlobalOutlined style={iconStyle} />{t('country')}</>}
               name="country"
               rules={[{ required: true, message: t('countryRequired') }]}
               style={styles.formItem}
             >
               <Input
+                prefix={<GlobalOutlined style={prefixIconStyle} />}
                 placeholder={t('enterCountry')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('state')}</span>}
+              label={<><BankOutlined style={iconStyle} />{t('state')}</>}
               name="state"
               rules={[{ required: true, message: t('stateRequired') }]}
               style={styles.formItem}
             >
               <Input
+                prefix={<BankOutlined style={prefixIconStyle} />}
                 placeholder={t('enterState')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
@@ -218,57 +251,57 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('city')}</span>}
+              label={<><AimOutlined style={iconStyle} />{t('city')}</>}
               name="city"
               rules={[{ required: true, message: t('cityRequired') }]}
               style={styles.formItem}
             >
               <Input
+                prefix={<AimOutlined style={prefixIconStyle} />}
                 placeholder={t('enterCity')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={<span style={styles.label}>{t('postalCode')}</span>}
+              label={<><TagOutlined style={iconStyle} />{t('postalCode')}</>}
               name="postalCode"
               rules={[{ required: true, message: t('postalCodeRequired') }]}
               style={styles.formItem}
             >
               <Input
+                prefix={<TagOutlined style={prefixIconStyle} />}
                 placeholder={t('enterPostalCode')}
                 style={styles.input}
-                className="custom-input"
               />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
-          label={<span style={styles.label}>{t('addressDetail')}</span>}
+          label={<><EnvironmentOutlined style={iconStyle} />{t('addressDetail')}</>}
           name="address"
           rules={[{ required: true, message: t('addressDetailRequired') }]}
           style={styles.formItem}
         >
           <Input
+            prefix={<EnvironmentOutlined style={prefixIconStyle} />}
             placeholder={t('enterAddressDetail')}
             style={styles.input}
-            className="custom-input"
           />
         </Form.Item>
 
         <Form.Item
-          label={<span style={styles.label}>{t('isActive')}</span>}
+          label={<><CheckSquareOutlined style={iconStyle} />{t('isActive')}</>}
           name="isActive"
           style={{ marginBottom: '0px' }}
         >
           <Input
+            prefix={<CheckSquareOutlined style={prefixIconStyle} />}
             disabled
             placeholder={t('isActive')}
             style={styles.input}
-            className="custom-input"
           />
         </Form.Item>
       </Form>

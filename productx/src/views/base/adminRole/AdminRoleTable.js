@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {Button, Popconfirm} from 'antd';
 import {formatDate} from "src/components/common/Common";
 import RolePermissionModal from './RolePermissionModal';
+import { EditOutlined, DeleteOutlined, SettingOutlined } from '@ant-design/icons';
 
 const AdminRoleTable = ({
                           data,
@@ -32,10 +33,10 @@ const AdminRoleTable = ({
     return (
       <td className="fixed-column">
         <Button type="link" onClick={() => handleEditClick(item)}>
-          修改
+          <EditOutlined /> 修改
         </Button>
         <Button type="link" onClick={() => handleConfigPermissions(item)}>
-          配置权限
+          <SettingOutlined /> 配置权限
         </Button>
         {!isSuper && (
           <Popconfirm
@@ -45,7 +46,7 @@ const AdminRoleTable = ({
             cancelText="否"
           >
             <Button type="link" danger>
-              删除
+              <DeleteOutlined /> 删除
             </Button>
           </Popconfirm>
         )}
