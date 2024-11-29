@@ -361,5 +361,25 @@
   "title": "标题",
   "submitSuccess": "评论成功",
   "submitFailed": "评论失败",
-  "fetchFailed": "获取评论失败"
+  "fetchFailed": "获取评论失败",
+
+  "addSubmenu": "添加子菜单",
+  "addRootMenu": "添加根菜单",
+  "menuName": "菜单名称",
+  "pleaseEnterMenuName": "请输入菜单名称",
+  "menuPath": "菜单路径",
+  "pleaseEnterMenuPath": "请输入菜单路径",
+  "menuPathPlaceholder": "请输入菜单路径，如：/data/menu",
+  "menuIcon": "图标",
+  "pleaseSelectIcon": "请选择图标",
+  "componentType": "组件类型",
+  "pleaseSelectComponentType": "请选择组件类型",
+  "cnavgroup": "目录",
+  "cnavitem": "菜单",
+  "cnavtitle": "标题",
+  "badgeText": "徽标文本",
+  "badgeTextPlaceholder": "请输入徽标文本（选填）",
+  "badgeColor": "徽标颜色",
+  "badgeColorPlaceholder": "请输入徽标颜色（选填）"
+
 }

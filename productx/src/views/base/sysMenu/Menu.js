@@ -5,6 +5,9 @@ import * as icons from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import api from 'src/axiosInstance'
 import styled from 'styled-components'
+import AddMenuModal from './AddMenuModal'
+import EditMenuModal from './EditMenuModal'
+import { useTranslation } from 'react-i18next'
 
 const StyledTreeContainer = styled.div`
   // 隐藏默认的 toggle 图标
@@ -185,14 +188,6 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
           </div>
         </div>
         <div className="right-content">
-          <Switch
-            size="small"
-            checked={item.status}
-            onChange={(checked) => onStatusChange(item.id, checked)}
-            checkedChildren="启用"
-            unCheckedChildren="禁用"
-            className="status-switch"
-          />
           <div className="node-actions">
             <Space className="action-buttons">
               <Button
@@ -219,7 +214,16 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
               </Button>
             </Space>
           </div>
+          <Switch
+            size="small"
+            checked={item.status}
+            onChange={(checked) => onStatusChange(item.id, checked)}
+            checkedChildren="启用"
+            unCheckedChildren="禁用"
+            className="status-switch"
+          />
         </div>
+        
       </div>
       {isOpen && item.children?.length > 0 && (
         <div className="children">
@@ -248,6 +252,7 @@ const MenuList = () => {
   const [isEditModalVisible, setIsEditModalVisible] = useState(false)
   const [editForm] = Form.useForm()
   const [currentItem, setCurrentItem] = useState(null)
+  const { t } = useTranslation()
 
   // 图标选项
   const iconOptions = [
@@ -299,17 +304,16 @@ const MenuList = () => {
     setSelectedParent(parentItem)
     addForm.resetFields()
 
-    // 如果有父级菜单，设置默认值
     if (parentItem) {
       addForm.setFieldsValue({
         parentId: parentItem.id,
-        component: 'CNavItem', // 子菜单默认为菜单项
+        component: 'CNavItem',
         status: true
       })
     } else {
       addForm.setFieldsValue({
         parentId: 0,
-        component: 'CNavGroup', // 根菜单默认为目录
+        component: 'CNavGroup',
         status: true
       })
     }
@@ -317,14 +321,14 @@ const MenuList = () => {
     setIsAddModalVisible(true)
   }
 
-  // 处理表单提交
+  // 处理添加表单提交
   const handleAddSubmit = async () => {
     try {
       const values = await addForm.validateFields()
       await api.post('/manage/sys-menu/create-menu', values)
       message.success('添加成功')
       setIsAddModalVisible(false)
-      fetchMenuData() // 刷新菜单数据
+      fetchMenuData()
     } catch (error) {
       message.error('添加失败：' + (error.message || '未知错误'))
     }
@@ -352,11 +356,11 @@ const MenuList = () => {
     try {
       const values = await editForm.validateFields()
       await api.post('/manage/sys-menu/update-menu', values)
-      message.success('修改成功')
+      message.success(t('updateSuccess'))
       setIsEditModalVisible(false)
-      fetchMenuData() // 刷新菜单数据
+      fetchMenuData()
     } catch (error) {
-      message.error('修改失败：' + (error.message || '未知错误'))
+      message.error(t('updateFailed') + ': ' + (error.message || t('unknownError')))
     }
   }
 
@@ -410,213 +414,21 @@ const MenuList = () => {
         </Spin>
       </div>
 
-      <Modal
-        title={`${selectedParent ? '添加子菜单' : '添加根菜单'}`}
-        open={isAddModalVisible}
-        onOk={handleAddSubmit}
+      <AddMenuModal
+        visible={isAddModalVisible}
         onCancel={() => setIsAddModalVisible(false)}
-        width={600}
-      >
-        <Form
-          form={addForm}
-          layout="vertical"
-          initialValues={{ status: true }}
-        >
-          <Form.Item
-            name="parentId"
-            hidden
-          >
-            <Input />
-          </Form.Item>
+        onOk={handleAddSubmit}
+        form={addForm}
+        selectedParent={selectedParent}
+      />
 
-          <Form.Item
-            label="菜单名称"
-            name="name"
-            rules={[{ required: true, message: '请输入菜单名称' }]}
-          >
-            <Input placeholder="请输入菜单名称" />
-          </Form.Item>
-
-          <Form.Item
-            label="菜单路径"
-            name="path"
-            rules={[{ required: true, message: '请输入菜单路径' }]}
-          >
-            <Input placeholder="请输入菜单路径，如：/data/menu" />
-          </Form.Item>
-
-          <Form.Item
-            label="图标"
-            name="icon"
-            rules={[{ required: true, message: '请选择图标' }]}
-          >
-            <Select
-              placeholder="请选择图标"
-              showSearch
-              optionFilterProp="children"
-            >
-              {iconOptions.map(icon => (
-                <Option key={icon} value={icon}>
-                  <Space>
-                    <CIcon icon={icons[icon]} className="menu-icon" />
-                    {icon}
-                  </Space>
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="组件类型"
-            name="component"
-            rules={[{ required: true, message: '请选择组件类型' }]}
-          >
-            <Select placeholder="请选择组件类型">
-              {componentOptions.map(component => (
-                <Option key={component} value={component}>
-                  {component === 'CNavGroup' && '目录'}
-                  {component === 'CNavItem' && '菜单'}
-                  {component === 'CNavTitle' && '标题'}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="徽章文本"
-            name="badgeText"
-          >
-            <Input placeholder="可选，如：NEW" />
-          </Form.Item>
-
-          <Form.Item
-            label="徽章颜色"
-            name="badgeColor"
-          >
-            <Input placeholder="可选，如：success" />
-          </Form.Item>
-
-          <Form.Item
-            label="状态"
-            name="status"
-            valuePropName="checked"
-          >
-            <Switch
-              checkedChildren="启用"
-              unCheckedChildren="禁用"
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      {/* 编辑菜单弹窗 */}
-      <Modal
-        title="编辑菜单"
-        open={isEditModalVisible}
-        onOk={handleEditSubmit}
+      <EditMenuModal
+        visible={isEditModalVisible}
         onCancel={() => setIsEditModalVisible(false)}
-        width={600}
-      >
-        <Form
-          form={editForm}
-          layout="vertical"
-        >
-          <Form.Item
-            name="id"
-            hidden
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="parentId"
-            hidden
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="菜单名称"
-            name="name"
-            rules={[{ required: true, message: '请输入菜单名称' }]}
-          >
-            <Input placeholder="请输入菜单名称" />
-          </Form.Item>
-
-          <Form.Item
-            label="菜单路径"
-            name="path"
-            rules={[{ required: true, message: '请输入菜单路径' }]}
-          >
-            <Input placeholder="请输入菜单路，如：/data/menu" />
-          </Form.Item>
-
-          <Form.Item
-            label="图标"
-            name="icon"
-            rules={[{ required: true, message: '请选择图标' }]}
-          >
-            <Select
-              placeholder="请选择图标"
-              showSearch
-              optionFilterProp="children"
-            >
-              {iconOptions.map(icon => (
-                <Option key={icon} value={icon}>
-                  <Space>
-                    <CIcon icon={icons[icon]} className="menu-icon" />
-                    {icon}
-                  </Space>
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="组件类型"
-            name="component"
-            rules={[{ required: true, message: '请选择组件类型' }]}
-          >
-            <Select
-              placeholder="请选择组件类型"
-              disabled={currentItem?.children?.length > 0} // 如果有子菜单则禁用修改
-            >
-              {componentOptions.map(component => (
-                <Option key={component} value={component}>
-                  {component === 'CNavGroup' && '目录'}
-                  {component === 'CNavItem' && '菜单'}
-                  {component === 'CNavTitle' && '标题'}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            label="徽章文本"
-            name="badgeText"
-          >
-            <Input placeholder="可选，如：NEW" />
-          </Form.Item>
-
-          <Form.Item
-            label="徽章颜色"
-            name="badgeColor"
-          >
-            <Input placeholder="可选，如：success" />
-          </Form.Item>
-
-          <Form.Item
-            label="状态"
-            name="status"
-            valuePropName="checked"
-          >
-            <Switch
-              checkedChildren="启用"
-              unCheckedChildren="禁用"
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+        onOk={handleEditSubmit}
+        form={editForm}
+        currentItem={currentItem}
+      />
     </div>
   )
 }

@@ -17,7 +17,7 @@ const createManager = async (managerData) => {
 }
 
 const updateManager = async (updateData) => {
-  await api.put(`/manage/manager/update`, updateData);
+  await api.post(`/manage/manager/update`, updateData);
 }
 
 const ManagerList = () => {
@@ -49,6 +49,7 @@ const ManagerList = () => {
     selectAll,
     handleSelectAll,
     handleSelectRow,
+    resetSelection
   } = UseSelectableRows();
 
   const fetchData = async () => {
@@ -85,10 +86,16 @@ const ManagerList = () => {
   };
 
   const handleUpdateManager = async (values) => {
-    await updateManager(values);
-    setIsUpdateModalVisible(false);
-    updateForm.resetFields();
-    await fetchData();
+    try {
+      await api.post('/manage/manager/update', values);
+      message.success('修改成功');
+      setIsUpdateModalVisible(false);
+      updateForm.resetFields();
+      fetchData(); // 刷新列表
+    } catch (error) {
+      console.error('Failed to update manager:', error);
+      message.error('修改失败');
+    }
   };
   const handleStatusChange = async (id, event) => {
     await updateManagerStatus(id, event)
@@ -96,18 +103,17 @@ const ManagerList = () => {
   }
 
   const handleDeleteClick = async (id) => {
-    await api.post(`/manage/manager/remove`, { id });
-    await fetchData() // 状态更新后重新获取数据
-  }
-  const handleEditClick = (manager) => {
-    updateForm.setFieldsValue({
-      id: manager.id,
-      username: manager.username,
-      email: manager.email,
-      phone: manager.phone,
-      roleId: manager.roleId,
-      status: manager.status,
-    });
+    try {
+      await api.post('/manage/manager/remove', { id });
+      message.success('删除成功');
+      await fetchData();
+    } catch (error) {
+      console.error('Failed to delete manager:', error);
+      message.error('删除失败');
+    }
+  };
+  const handleEditClick = (record) => {
+    setSelectedManager(record);
     setIsUpdateModalVisible(true);
   };
 
@@ -185,6 +191,7 @@ const ManagerList = () => {
                 onClick={() => HandleBatchDelete({
                   url: '/manage/manager/delete-batch',
                   selectedRows,
+                  resetSelection,
                   fetchData,
                 })}
                 disabled={selectedRows.length === 0}
@@ -225,11 +232,14 @@ const ManagerList = () => {
       />
       <UpdateManagerModal
         isVisible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
-        onOk={() => updateForm.submit()}
+        onCancel={() => {
+          setIsUpdateModalVisible(false);
+          setSelectedManager(null);
+          updateForm.resetFields();
+        }}
         form={updateForm}
         handleUpdateManager={handleUpdateManager}
-        selectedManager={selectedManager} // 传递所选管理员信息
+        selectedManager={selectedManager}
       />
     </div>
   );

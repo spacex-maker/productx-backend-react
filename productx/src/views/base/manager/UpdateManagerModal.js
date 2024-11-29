@@ -1,5 +1,42 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Select } from 'antd';
+import { Modal, Form, Input, Row, Col } from 'antd';
+import RoleSelect from "src/views/base/adminRole/RoleSelect";
+import styled from 'styled-components';
+import api from 'src/axiosInstance';
+
+const StyledModal = styled(Modal)`
+  .ant-modal-title {
+    font-size: 12px;
+    color: #000000;
+  }
+
+  .ant-form {
+    .ant-form-item-label > label {
+      font-size: 10px;
+      color: #666666;
+      height: 20px;
+    }
+
+    .ant-input,
+    .ant-select-selection-item,
+    .ant-select-item-option-content,
+    .ant-select-dropdown .ant-select-item,
+    .ant-input-password input {
+      font-size: 10px !important;
+      color: #000000 !important;
+    }
+
+    .ant-input::placeholder,
+    .ant-select-selection-placeholder {
+      color: #999999 !important;
+      font-size: 10px !important;
+    }
+
+    .ant-form-item {
+      margin-bottom: 8px;
+    }
+  }
+`
 
 const UpdateManagerModal = ({
                               isVisible,
@@ -7,32 +44,58 @@ const UpdateManagerModal = ({
                               onOk,
                               form,
                               handleUpdateManager,
-                              selectedManager // 用于传递选中的管理员信息
+                              selectedManager
                             }) => {
-  // 当模态框打开时，设置表单字段的值
   useEffect(() => {
     if (isVisible && selectedManager) {
-      form.setFieldsValue({
-        id: selectedManager.id,
-        username: selectedManager.username,
-        email: selectedManager.email,
-        phone: selectedManager.phone,
-        password: '', // 密码一般不显示
-        roleId: selectedManager.roleId,
-      });
+      fetchManagerData(selectedManager.id);
     }
-  }, [isVisible, selectedManager, form]);
+  }, [isVisible, selectedManager]);
+
+  const fetchManagerData = async (managerId) => {
+    try {
+      const managerData = await api.get('/manage/manager/get-by-id?id='+managerId);
+
+        form.setFieldsValue({
+          id: managerData.id,
+          username: managerData.username,
+          email: managerData.email,
+          phone: managerData.phone,
+          password: '', // 密码默认为空
+          confirmPassword: '', // 确认密码默认为空
+          roleIds: managerData.roles.map(role => role.roleId),
+          status: managerData.status
+        });
+    } catch (error) {
+      console.error('Failed to fetch manager data:', error);
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    try {
+      const formData = {
+        id: values.id,
+        password: values.password,
+        email: values.email,
+        phone: values.phone,
+        roleIds: values.roleIds,
+        status: values.status
+      };
+      await handleUpdateManager(formData);
+    } catch (error) {
+      console.error('Failed to update manager:', error);
+    }
+  };
 
   return (
-    <Modal
+    <StyledModal
       title="修改管理员用户"
       open={isVisible}
       onCancel={onCancel}
-      onOk={onOk}
-      okText="确认"
-      cancelText="取消"
+      onOk={() => form.submit()}
+      width={500}
     >
-      <Form form={form} onFinish={handleUpdateManager}>
+      <Form form={form} onFinish={handleSubmit} layout="vertical">
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
@@ -40,55 +103,82 @@ const UpdateManagerModal = ({
         <Form.Item
           label="用户名"
           name="username"
-          rules={[{ required: true, message: '请输入用户名' }]}
-          style={{ marginBottom: '8px' }} // 调整上下间距
         >
-          <Input />
+          <Input disabled style={{ backgroundColor: '#f5f5f5', cursor: 'not-allowed' }} />
         </Form.Item>
+
+        <Row gutter={8}>
+          <Col span={12}>
+            <Form.Item
+              label="新密码"
+              name="password"
+              rules={[{ required: false }]}
+            >
+              <Input.Password placeholder="请输入新密码" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="确认新密码"
+              name="confirmPassword"
+              dependencies={['password']}
+              rules={[
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    const password = getFieldValue('password');
+                    if (!password || !value) {
+                      return Promise.resolve();
+                    }
+                    if (password === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('两次输入的密码不一致'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="请再次输入新密码" />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item
           label="邮箱"
           name="email"
-          rules={[{ required: true, message: '请输入邮箱', type: 'email' }]}
-          style={{ marginBottom: '8px' }} // 调整上下间距
+          rules={[{ type: 'email', message: '请输入正确的邮箱格式' }]}
         >
-          <Input />
+          <Input placeholder="请输入邮箱" />
         </Form.Item>
 
         <Form.Item
-          label="电话"
+          label="手机号"
           name="phone"
-          rules={[{ required: true, message: '请输入电话' }]}
-          style={{ marginBottom: '8px' }} // 调整上下间距
+        >
+          <Input placeholder="请输入手机号" />
+        </Form.Item>
+
+        <Form.Item
+          label="角色"
+          name="roleIds"
+        >
+          <RoleSelect
+            mode="multiple"
+            placeholder="请选择角色"
+            showSearch
+            filterOption={false}
+            style={{ width: '100%' }}
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="status"
+          initialValue={true}
+          hidden
         >
           <Input />
-        </Form.Item>
-
-        <Form.Item
-          label="角色ID"
-          name="roleId"
-          rules={[{ required: true, message: '请选择角色ID' }]}
-          style={{ marginBottom: '8px' }} // 调整上下间距
-        >
-          <Select placeholder="请选择角色ID">
-            {/* 假设角色ID为数字类型，提供一些示例 */}
-            <Select.Option value={0}>普通用户</Select.Option>
-            <Select.Option value={1}>管理员</Select.Option>
-            <Select.Option value={2}>超级管理员</Select.Option>
-            <Select.Option value={3}>其他角色</Select.Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label="密码 (留空不修改)"
-          name="password"
-          rules={[{ required: false, message: '请输入新密码（如果需要修改）' }]}
-          style={{ marginBottom: '8px' }} // 调整上下间距
-        >
-          <Input.Password />
         </Form.Item>
       </Form>
-    </Modal>
+    </StyledModal>
   );
 };
 

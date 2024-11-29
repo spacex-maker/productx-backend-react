@@ -11,6 +11,24 @@ const ManagerTable = ({
                           handleEditClick,
                           handleDeleteClick
                         }) => {
+  // 处理全选
+  const onSelectAll = (event) => {
+    const checked = event.target.checked;
+    if (checked) {
+      // 如果是全选，传递所有数据的 id
+      const allIds = data.map(item => item.id);
+      handleSelectAll(event, allIds);
+    } else {
+      // 如果是取消全选，传递空数组
+      handleSelectAll(event, []);
+    }
+  };
+
+  // 处理单行选择
+  const onSelectRow = (id) => {
+    handleSelectRow(id);
+  };
+
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -22,7 +40,7 @@ const ManagerTable = ({
               className="custom-control-input"
               id="select_all"
               checked={selectAll}
-              onChange={(event) => handleSelectAll(event, data)}
+              onChange={onSelectAll}
             />
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
@@ -43,7 +61,7 @@ const ManagerTable = ({
                 className="custom-control-input"
                 id={`td_checkbox_${item.id}`}
                 checked={selectedRows.includes(item.id)}
-                onChange={() => handleSelectRow(item.id, data)}
+                onChange={() => onSelectRow(item.id)}
               />
               <label
                 className="custom-control-label"
