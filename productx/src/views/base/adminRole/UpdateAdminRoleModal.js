@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Switch } from 'antd';
+import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, EditOutlined } from '@ant-design/icons';
 
 const UpdateRoleModal = ({
                            isVisible,
@@ -25,7 +26,10 @@ const UpdateRoleModal = ({
   return (
     <Modal
       title={
-        <div style={{ fontSize: '12px', fontWeight: 500 }}>修改角色信息</div>
+        <div style={{ fontSize: '12px', fontWeight: 500 }}>
+          <EditOutlined style={{ marginRight: '4px' }} />
+          修改角色信息
+        </div>
       }
       open={isVisible}
       onCancel={onCancel}
@@ -47,31 +51,33 @@ const UpdateRoleModal = ({
         </Form.Item>
 
         <Form.Item
-          label="角色名称"
+          label={<span style={{ fontSize: '10px' }}>角色名称</span>}
           name="roleName"
           rules={[{ required: true, message: '请输入角色名称' }]}
           style={{ marginBottom: '8px' }}
         >
           <Input
+            prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
             placeholder="请输入角色名称"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
 
         <Form.Item
-          label="英文角色名称"
+          label={<span style={{ fontSize: '10px' }}>英文角色名称</span>}
           name="roleNameEn"
           rules={[{ required: true, message: '请输入英文角色名称' }]}
           style={{ marginBottom: '8px' }}
         >
           <Input
+            prefix={<TranslationOutlined style={{ color: '#bfbfbf' }} />}
             placeholder="请输入英文角色名称"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
 
         <Form.Item
-          label="角色描述"
+          label={<span style={{ fontSize: '10px' }}>角色描述</span>}
           name="description"
           rules={[{ required: true, message: '请输入角色描述' }]}
           style={{ marginBottom: '8px' }}
@@ -84,14 +90,14 @@ const UpdateRoleModal = ({
         </Form.Item>
 
         <Form.Item
-          label="启用状态"
+          label={<span style={{ fontSize: '10px' }}>启用状态</span>}
           name="status"
           valuePropName="checked"
           style={{ marginBottom: '8px' }}
         >
           <Switch
-            checkedChildren="启用"
-            unCheckedChildren="禁用"
+            checkedChildren={<CheckCircleOutlined />}
+            unCheckedChildren="×"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
@@ -126,11 +132,13 @@ const UpdateRoleModal = ({
         .ant-input {
           font-size: 10px !important;
           padding: 4px 8px !important;
+          color: rgba(0, 0, 0, 0.88) !important;
         }
 
         .ant-input-textarea textarea {
           font-size: 10px !important;
           padding: 4px 8px !important;
+          color: rgba(0, 0, 0, 0.88) !important;
         }
 
         .ant-switch {

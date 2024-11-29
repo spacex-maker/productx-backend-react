@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Input, Modal, Form, Switch } from 'antd';
 import api from 'src/axiosInstance';
 import ManagerSearchInput from "src/views/common/ManagerSearchInput";
+import { UserOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const AddDepartmentManagerModal = ({ isVisible, onClose, onAddSuccess, parentId }) => {
   const [form] = Form.useForm();
@@ -26,38 +27,64 @@ const AddDepartmentManagerModal = ({ isVisible, onClose, onAddSuccess, parentId 
     }
   };
 
+  // 添加自定义样式
+  const modalStyle = {
+    fontSize: '10px',
+  };
+
+  const formItemStyle = {
+    marginBottom: '8px',  // 减小表单项之间的间距
+  };
+
+  const labelStyle = {
+    fontSize: '10px',
+    marginBottom: '2px',  // 减小标签和输入框之间的间距
+  };
+
   return (
     <Modal
-      title="加入员工"
+      title={<><UserOutlined style={{ marginRight: '8px' }} />加入员工</>}
       open={isVisible}
       onCancel={onClose}
       onOk={handleOk}
-      okText="加入"
-      cancelText="取消"
+      okText={<><CheckCircleOutlined />加入</>}
+      cancelText={<><CloseCircleOutlined />取消</>}
+      bodyStyle={modalStyle}
+      width={300}
     >
       <Form
         form={form}
         layout="vertical"
+        size="small"
       >
         <Form.Item
           name="managerName"
-          label="员工名称"
+          label={<><UserOutlined style={{ marginRight: '4px' }} />员工名称</>}
           rules={[{ required: true, message: '请输入管理员名称' }]}
+          style={formItemStyle}
+          labelCol={{ style: labelStyle }}
         >
           <ManagerSearchInput
+            prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
             onSelect={(value) => {
               form.setFieldsValue({ managerName: value });
-              setManagerUsername(value); // 更新状态
+              setManagerUsername(value);
             }}
           />
         </Form.Item>
         <Form.Item
           name="status"
-          label="状态"
+          label={<><CheckCircleOutlined style={{ marginRight: '4px' }} />状态</>}
           valuePropName="checked"
-          initialValue={true} // 默认状态为 true
+          initialValue={true}
+          style={formItemStyle}
+          labelCol={{ style: labelStyle }}
         >
-          <Switch />
+          <Switch 
+            size="small"
+            checkedChildren={<CheckCircleOutlined />}
+            unCheckedChildren={<CloseCircleOutlined />}
+          />
         </Form.Item>
       </Form>
     </Modal>

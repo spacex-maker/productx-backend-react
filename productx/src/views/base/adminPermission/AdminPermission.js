@@ -98,6 +98,7 @@ const AdminPermission = () => {
   };
 
   const handleEditClick = (permission) => {
+    setSelectedPermission(permission);
     updateForm.setFieldsValue({
       id: permission.id,
       permissionName: permission.permissionName,
@@ -216,11 +217,14 @@ const AdminPermission = () => {
       />
       <UpdatePermissionModal
         isVisible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
+        onCancel={() => {
+          setIsUpdateModalVisible(false);
+          setSelectedPermission(null);
+        }}
         onOk={() => updateForm.submit()}
         form={updateForm}
         handleUpdatePermission={handleUpdatePermission}
-        selectedPermission={selectedPermission} // 传递所选权限信息
+        selectedPermission={selectedPermission}
       />
     </div>
   );

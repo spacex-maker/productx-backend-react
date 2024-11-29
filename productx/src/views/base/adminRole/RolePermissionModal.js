@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Table, message, Spin, Input, Space, Radio } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, MenuOutlined, ApiOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
 const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
@@ -103,7 +103,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
           color: type === 1 ? '#1890ff' : '#52c41a',
           fontSize: '10px'
         }}>
-          {type === 1 ? '菜单' : '接口'}
+          {type === 1 ? <><MenuOutlined /> 菜单</> : <><ApiOutlined /> 接口</>}
         </span>
       )
     },
@@ -152,9 +152,15 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 size="small"
                 style={{ fontSize: '10px' }}
               >
-                <Radio.Button value="all" style={{ fontSize: '10px', padding: '0 8px' }}>全部</Radio.Button>
-                <Radio.Button value="menu" style={{ fontSize: '10px', padding: '0 8px' }}>菜单权限</Radio.Button>
-                <Radio.Button value="api" style={{ fontSize: '10px', padding: '0 8px' }}>接口权限</Radio.Button>
+                <Radio.Button value="all" style={{ fontSize: '10px', padding: '0 8px' }}>
+                  全部
+                </Radio.Button>
+                <Radio.Button value="menu" style={{ fontSize: '10px', padding: '0 8px' }}>
+                  <MenuOutlined /> 菜单权限
+                </Radio.Button>
+                <Radio.Button value="api" style={{ fontSize: '10px', padding: '0 8px' }}>
+                  <ApiOutlined /> 接口权限
+                </Radio.Button>
               </Radio.Group>
             </Space>
             <div style={{ color: '#666', fontSize: '10px' }}>
