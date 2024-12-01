@@ -64,8 +64,7 @@ const CountryTable = ({
               borderRadius: '2px'
             }}
             onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = '/default-flag.png';
+              e.target.parentNode.innerHTML = '-';
             }}
           />
         </div>

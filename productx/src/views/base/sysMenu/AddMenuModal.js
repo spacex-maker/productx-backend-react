@@ -69,7 +69,37 @@ const StyledModal = styled(Modal)`
     width: 14px;
     height: 14px;
   }
+
+  .ant-select-dropdown {
+    .ant-select-item {
+      padding: 8px 12px;
+      
+      .menu-icon {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+      }
+      
+      .ant-space {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .ant-select-selection-item {
+    .menu-icon {
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+    }
+  }
 `
+
+// 获取所有 CoreUI 图标
+const getAllCoreUIIcons = () => {
+  return Object.keys(icons).filter(key => key.startsWith('cil'));
+};
 
 const AddMenuModal = ({ 
   visible, 
@@ -77,15 +107,12 @@ const AddMenuModal = ({
   onOk, 
   form, 
   selectedParent,
-  iconOptions = [
-    'cilSpeedometer', 'cilHeadphones', 'cilList', 'cilFolder', 'cilStorage',
-    'cilGlobeAlt', 'cilBuilding', 'cilPeople', 'cilGroup', 'cilShieldAlt',
-    'cilLockLocked', 'cilTruck', 'cilCalculator', 'cilMoney', 'cilBank',
-    'cilWallet', 'cilDevices', 'cilBasket', 'cilUser', 'cilSettings'
-  ],
   componentOptions = ['CNavGroup', 'CNavItem', 'CNavTitle']
 }) => {
   const { t } = useTranslation()
+
+  // 获取所有图标选项
+  const iconOptions = getAllCoreUIIcons();
 
   return (
     <StyledModal
@@ -137,14 +164,22 @@ const AddMenuModal = ({
             showSearch
             optionFilterProp="children"
             dropdownMatchSelectWidth={false}
+            dropdownStyle={{ 
+              maxHeight: '400px',
+              overflow: 'auto'
+            }}
           >
             {iconOptions.map(icon => (
-              <Option key={icon} value={icon}>
+              <Select.Option key={icon} value={icon}>
                 <Space>
-                  <CIcon icon={icons[icon]} className="menu-icon" />
-                  {icon}
+                  <CIcon 
+                    icon={icons[icon]} 
+                    className="menu-icon"
+                    style={{ width: '16px', height: '16px' }}
+                  />
+                  <span style={{ marginLeft: '8px' }}>{icon}</span>
                 </Space>
-              </Option>
+              </Select.Option>
             ))}
           </Select>
         </Form.Item>
