@@ -232,7 +232,8 @@
     "菜单管理": "Menüverwaltung",
     "资源管理": "Ressourcenverwaltung",
     "问题跟踪": "Problemverfolgung",
-    "商品管理": "Produktverwaltung"
+    "商品管理": "Produktverwaltung",
+    "商品分类管理": "Produktkategorienverwaltung"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -427,5 +428,10 @@
   "healthCare": "Gesundheitsversorgung",
   "addNewProduct": "Neues Produkt hinzufügen",
   "createProductWithJson": "Produkt mit JSON erstellen",
-  "createWithJson": "Mit JSON erstellen"
+  "createWithJson": "Mit JSON erstellen",
+  "currentCategory": "Aktuelle Kategorie",
+  "addCategory": "Kategorie hinzufügen",
+  "goBack": "Zurück",
+  "categoryName": "Kategoriename",
+  "parentCategory": "Übergeordnete Kategorie"
 }

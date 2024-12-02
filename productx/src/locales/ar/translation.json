@@ -232,7 +232,8 @@
     "菜单管理": "إدارة القائمة",
     "资源管理": "إدارة الموارد",
     "问题跟踪": "تتبع المشكلات",
-    "商品管理": "إدارة المنتج"
+    "商品管理": "إدارة المنتج",
+    "商品分类管理": "إدارة فئات المنتجات"
   },
   "confirmDelete": "تأكيد الحذف",
   "countryName": "اسم الدولة",
@@ -410,5 +411,10 @@
   "healthCare": "الرعاية الصحية",
   "addNewProduct": "إضافة منتج جديد",
   "createProductWithJson": "إنشاء منتج باستخدام JSON",
-  "createWithJson": "إنشاء باستخدام JSON"
+  "createWithJson": "إنشاء باستخدام JSON",
+  "currentCategory": "الفئة الحالية",
+  "addCategory": "إضافة فئة",
+  "goBack": "الرجوع",
+  "categoryName": "اسم الفئة",
+  "parentCategory": "الفئة الرئيسية"
 }

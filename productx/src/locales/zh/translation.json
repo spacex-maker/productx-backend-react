@@ -232,7 +232,8 @@
     "菜单管理": "菜单管理",
     "资源管理": "资源管理",
     "问题跟踪": "问题跟踪",
-    "商品管理": "商品管理"
+    "商品管理": "商品管理",
+    "商品分类管理": "商品分类管理"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -427,5 +428,10 @@
   "healthCare": "医疗保健",
   "addNewProduct": "添加新商品",
   "createProductWithJson": "通过 JSON 创建商品",
-  "createWithJson": "使用 JSON 创建"
+  "createWithJson": "使用 JSON 创建",
+  "currentCategory": "当前类别",
+  "addCategory": "新增类别",
+  "goBack": "返回",
+  "categoryName": "分类名称",
+  "parentCategory": "上级分类"
 }

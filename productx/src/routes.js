@@ -335,7 +335,7 @@ const routes = [
     )
   },
   {
-    path: '/sys/userProductCategory', name: '产品分类管理', element: (
+    path: '/sys/userProductCategory', name: '商品分类管理', element: (
       <PrivateRoute>
         <UserProductCategoryRouter/>
       </PrivateRoute>
