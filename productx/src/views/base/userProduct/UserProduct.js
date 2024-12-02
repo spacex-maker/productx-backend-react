@@ -104,8 +104,7 @@ const UserProduct = () => {
       originalPrice: product.originalPrice,
       stock: product.stock,
       category: product.category,
-      province: product.province,
-      city: product.city,
+      cityCode: product.cityCode,
       status: product.status === 1,
     });
     setIsUpdateModalVisible(true);
@@ -209,7 +208,10 @@ const UserProduct = () => {
 
       <UpdateUserProductModal
         isVisible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
+        onCancel={() => {
+          setIsUpdateModalVisible(false);
+          updateForm.resetFields();
+        }}
         onOk={() => updateForm.submit()}
         form={updateForm}
         handleUpdateProduct={handleUpdateProduct}

@@ -412,5 +412,17 @@
   "uploadProductImages": "상품 이미지를 업로드하세요",
   "errorAddingProduct": "상품 추가 오류",
   "errorUpdatingProduct": "상품 업데이트 오류",
-  "productDetails": "상품 세부 사항"
+  "productDetails": "상품 세부 사항",
+  "electronics": "전자 제품",
+  "homeAppliances": "가전 제품",
+  "clothingAndAccessories": "의류 및 액세서리",
+  "beautyAndPersonalCare": "미용 및 개인 관리",
+  "babyProducts": "유아용품",
+  "foodAndBeverages": "식품 및 음료",
+  "furnitureAndHomeDecor": "가구 및 홈데코",
+  "sportsAndOutdoors": "스포츠 및 야외 활동",
+  "booksAndMedia": "책 및 미디어",
+  "automotiveSupplies": "자동차 용품",
+  "petSupplies": "반려동물 용품",
+  "healthCare": "건강 관리"
 }

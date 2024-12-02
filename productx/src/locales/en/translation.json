@@ -404,5 +404,17 @@
   "uploadProductImages": "Please upload product images",
   "errorAddingProduct": "Error adding product",
   "errorUpdatingProduct": "Error updating product",
-  "productDetails": "Product Details"
+  "productDetails": "Product Details",
+  "electronics": "Electronics",
+  "homeAppliances": "Home Appliances",
+  "clothingAndAccessories": "Clothing and Accessories",
+  "beautyAndPersonalCare": "Beauty and Personal Care",
+  "babyProducts": "Baby Products",
+  "foodAndBeverages": "Food and Beverages",
+  "furnitureAndHomeDecor": "Furniture and Home Decor",
+  "sportsAndOutdoors": "Sports and Outdoors",
+  "booksAndMedia": "Books and Media",
+  "automotiveSupplies": "Automotive Supplies",
+  "petSupplies": "Pet Supplies",
+  "healthCare": "Healthcare"
 }

@@ -405,5 +405,17 @@
   "uploadProductImages": "Carica immagini del prodotto",
   "errorAddingProduct": "Errore nell'aggiungere il prodotto",
   "errorUpdatingProduct": "Errore nell'aggiornare il prodotto",
-  "productDetails": "Dettagli del prodotto"
+  "productDetails": "Dettagli del prodotto",
+  "electronics": "Elettronica",
+  "homeAppliances": "Elettrodomestici",
+  "clothingAndAccessories": "Abbigliamento e accessori",
+  "beautyAndPersonalCare": "Bellezza e cura personale",
+  "babyProducts": "Prodotti per bambini",
+  "foodAndBeverages": "Cibo e bevande",
+  "furnitureAndHomeDecor": "Mobili e arredamento",
+  "sportsAndOutdoors": "Sport e attività all'aperto",
+  "booksAndMedia": "Libri e media",
+  "automotiveSupplies": "Accessori per auto",
+  "petSupplies": "Prodotti per animali domestici",
+  "healthCare": "Cura della Salute"
 }
