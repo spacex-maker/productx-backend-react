@@ -46,6 +46,7 @@ const UserProductTable = ({
                 <label className="custom-control-label" htmlFor="select_all"></label>
               </div>
             </th>
+            <th style={{ width: '60px' }}>{t('coverImage')}</th>
             {[
               'productId',
               'userId',
@@ -81,6 +82,22 @@ const UserProductTable = ({
                     htmlFor={`td_checkbox_${item.id}`}
                   ></label>
                 </div>
+              </td>
+              <td style={{ padding: '4px' }}>
+                <Image
+                  width={50}
+                  height={50}
+                  src={item.imageCover}
+                  alt={item.productName}
+                  style={{ 
+                    objectFit: 'cover',
+                    borderRadius: '4px'
+                  }}
+                  preview={{
+                    mask: null,
+                    maskClassName: 'custom-mask'
+                  }}
+                />
               </td>
               <td className="text-truncate">{item.id}</td>
               <td className="text-truncate">{item.userId}</td>

@@ -142,7 +142,7 @@ const LoginCard = styled(CCard)`
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: linear-gradient(45deg, 
+    background: linear-gradient(45deg,
       rgba(99, 102, 241, 0.1),
       rgba(139, 92, 246, 0.1),
       rgba(99, 102, 241, 0.1));
@@ -388,7 +388,6 @@ const StyledInput = styled(CFormInput)`
   color: #e2e8f0;
   padding: 6px 10px;
   font-size: 14px;
-  height: 32px;
   line-height: 20px;
   transition: all 0.3s ease;
 
@@ -464,7 +463,6 @@ const ForgotPasswordLink = styled.a`
 `;
 
 const StyledFormSelect = styled(CFormSelect)`
-  height: 36px;
   background: rgba(30, 32, 47, 0.95);
   border: 1px solid rgba(99, 102, 241, 0.2);
   color: #e2e8f0;
@@ -768,7 +766,7 @@ const LoginPage = () => {
                 <LoginCard>
                   <AnimatePresence>
                     {showSlogan && (
-                      <motion.div 
+                      <motion.div
                         className="slogan-container"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}

@@ -412,6 +412,17 @@
   "uploadProductImages": "请上传商品图片",
   "errorAddingProduct": "添加商品失败",
   "errorUpdatingProduct": "更新商品失败",
-  "productDetails": "商品详情"
-
+  "productDetails": "商品详情",
+  "electronics": "电子产品",
+  "homeAppliances": "家用电器",
+  "clothingAndAccessories": "服装鞋帽",
+  "beautyAndPersonalCare": "美妆个护",
+  "babyProducts": "母婴用品",
+  "foodAndBeverages": "食品饮料",
+  "furnitureAndHomeDecor": "家具家居",
+  "sportsAndOutdoors": "运动户外",
+  "booksAndMedia": "图书音像",
+  "automotiveSupplies": "汽车用品",
+  "petSupplies": "宠物用品",
+  "healthCare": "医疗保健"
 }

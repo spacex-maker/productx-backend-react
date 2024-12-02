@@ -412,5 +412,17 @@
   "uploadProductImages": "Загрузите изображения товара",
   "errorAddingProduct": "Ошибка добавления товара",
   "errorUpdatingProduct": "Ошибка обновления товара",
-  "productDetails": "Детали товара"
+  "productDetails": "Детали товара",
+  "electronics": "Электроника",
+  "homeAppliances": "Бытовая техника",
+  "clothingAndAccessories": "Одежда и аксессуары",
+  "beautyAndPersonalCare": "Красота и уход",
+  "babyProducts": "Товары для детей",
+  "foodAndBeverages": "Еда и напитки",
+  "furnitureAndHomeDecor": "Мебель и декор",
+  "sportsAndOutdoors": "Спорт и отдых",
+  "booksAndMedia": "Книги и медиа",
+  "automotiveSupplies": "Автотовары",
+  "petSupplies": "Товары для питомцев",
+  "healthCare": "Здравоохранение"
 }

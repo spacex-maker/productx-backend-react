@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, Modal, Form, Switch, Alert, Row, Col, Select, InputNumber, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
-
+import COS from 'cos-js-sdk-v5';
+import { message } from 'antd';
+import api from 'src/axiosInstance';
 const StyledModal = styled(Modal)`
   .ant-modal-content {
-    padding: 12px;
+    padding: ${props => props.$narrow ? '8px' : '12px'};
   }
 
   .ant-modal-header {
@@ -88,9 +90,102 @@ const UpdateUserProductModal = ({
   onOk,
   form,
   handleUpdateProduct,
-  selectedProduct
+  selectedProduct,
+  narrow
 }) => {
   const { t } = useTranslation();
+  const [cosInstance, setCosInstance] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const bucketName = 'px-1258150206';
+  const region = 'ap-nanjing';
+
+  // 初始化 COS 实例
+  const initCOS = async () => {
+    try {
+      const response = await api.get(`/manage/tencent/cos-credential?bucketName=${bucketName}`);
+      const { secretId, secretKey, sessionToken, expiredTime } = response;
+
+      if (!secretId || !secretKey || !sessionToken) {
+        throw new Error('获取临时密钥失败：密钥信息不完整');
+      }
+
+      const cos = new COS({
+        getAuthorization: function (options, callback) {
+          callback({
+            TmpSecretId: secretId,
+            TmpSecretKey: secretKey,
+            SecurityToken: sessionToken,
+            ExpiredTime: expiredTime || Math.floor(Date.now() / 1000) + 1800,
+          });
+        },
+        Region: region,
+      });
+
+      setCosInstance(cos);
+      return cos;
+    } catch (error) {
+      message.error('初始化 COS 失败：' + error.message);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    initCOS();
+  }, []);
+
+  // 处理文件上传
+  const handleUpload = async (file) => {
+    try {
+      let instance = cosInstance;
+      if (!instance) {
+        instance = await initCOS();
+        if (!instance) {
+          throw new Error('COS 实例未初始化');
+        }
+      }
+
+      const key = `products/${Date.now()}-${file.name}`;
+      
+      const result = await instance.uploadFile({
+        Bucket: bucketName,
+        Region: region,
+        Key: key,
+        Body: file,
+        onProgress: (progressData) => {
+          const percent = Math.round(progressData.percent * 100);
+          file.onProgress({ percent });
+        }
+      });
+
+      return `https://${bucketName}.cos.${region}.myqcloud.com/${key}`;
+    } catch (error) {
+      message.error('上传失败：' + error.message);
+      throw error;
+    }
+  };
+
+  // 自定义上传方法
+  const customRequest = async ({ file, onSuccess, onError, onProgress }) => {
+    try {
+      file.onProgress = onProgress;
+      const url = await handleUpload(file);
+      onSuccess({ url });
+    } catch (error) {
+      onError(error);
+    }
+  };
+
+  // 处理文件列表变化
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    // 从上传结果中提取URL
+    return e?.fileList.map(file => ({
+      ...file,
+      url: file.response?.url || file.url
+    }));
+  };
 
   useEffect(() => {
     if (isVisible && selectedProduct) {
@@ -119,15 +214,9 @@ const UpdateUserProductModal = ({
     }
   }, [isVisible, selectedProduct, form]);
 
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
-
   return (
     <StyledModal
+      $narrow={narrow}
       title={t("updateProduct")}
       open={isVisible}
       onCancel={onCancel}
@@ -277,7 +366,8 @@ const UpdateUserProductModal = ({
           <Upload
             listType="picture-card"
             maxCount={1}
-            beforeUpload={() => false}
+            customRequest={customRequest}
+            onChange={({ fileList }) => form.setFieldsValue({ imageCover: fileList })}
           >
             <div>
               <PlusOutlined />
@@ -295,7 +385,8 @@ const UpdateUserProductModal = ({
           <Upload
             listType="picture-card"
             multiple
-            beforeUpload={() => false}
+            customRequest={customRequest}
+            onChange={({ fileList }) => form.setFieldsValue({ imageList: fileList })}
           >
             <div>
               <PlusOutlined />

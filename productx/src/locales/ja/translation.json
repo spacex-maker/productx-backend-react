@@ -412,5 +412,17 @@
   "uploadProductImages": "商品画像をアップロードしてください",
   "errorAddingProduct": "商品追加エラー",
   "errorUpdatingProduct": "商品更新エラー",
-  "productDetails": "商品詳細"
+  "productDetails": "商品詳細",
+  "electronics": "電子機器",
+  "homeAppliances": "家電",
+  "clothingAndAccessories": "衣類とアクセサリー",
+  "beautyAndPersonalCare": "美容とパーソナルケア",
+  "babyProducts": "ベビー用品",
+  "foodAndBeverages": "食品と飲料",
+  "furnitureAndHomeDecor": "家具とインテリア",
+  "sportsAndOutdoors": "スポーツとアウトドア",
+  "booksAndMedia": "書籍とメディア",
+  "automotiveSupplies": "車用品",
+  "petSupplies": "ペット用品",
+  "healthCare": "ヘルスケア"
 }

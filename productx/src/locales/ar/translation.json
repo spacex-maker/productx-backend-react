@@ -394,5 +394,18 @@
   "uploadProductImages": "يرجى تحميل صور المنتج",
   "errorAddingProduct": "فشل إضافة المنتج",
   "errorUpdatingProduct": "فشل تحديث المنتج",
-  "productDetails": "تفاصيل المنتج"
+  "productDetails": "تفاصيل المنتج",
+
+  "electronics": "الإلكترونيات",
+  "homeAppliances": "الأجهزة المنزلية",
+  "clothingAndAccessories": "الملابس والإكسسوارات",
+  "beautyAndPersonalCare": "الجمال والعناية الشخصية",
+  "babyProducts": "منتجات الأطفال",
+  "foodAndBeverages": "الأطعمة والمشروبات",
+  "furnitureAndHomeDecor": "الأثاث والديكور المنزلي",
+  "sportsAndOutdoors": "الرياضة والأنشطة الخارجية",
+  "booksAndMedia": "الكتب والإعلام",
+  "automotiveSupplies": "مستلزمات السيارات",
+  "petSupplies": "مستلزمات الحيوانات الأليفة",
+  "healthCare": "الرعاية الصحية"
 }
