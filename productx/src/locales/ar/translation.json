@@ -231,7 +231,8 @@
     "客服系统": "نظام خدمة العملاء",
     "菜单管理": "إدارة القائمة",
     "资源管理": "إدارة الموارد",
-    "问题跟踪": "تتبع المشكلات"
+    "问题跟踪": "تتبع المشكلات",
+    "商品管理": "إدارة المنتج"
   },
   "confirmDelete": "تأكيد الحذف",
   "countryName": "اسم الدولة",
@@ -359,5 +360,39 @@
   "badgeText": "نص الشارة",
   "badgeTextPlaceholder": "يرجى إدخال نص الشارة (اختياري)",
   "badgeColor": "لون الشارة",
-  "badgeColorPlaceholder": "يرجى إدخال لون الشارة (اختياري)"
+  "badgeColorPlaceholder": "يرجى إدخال لون الشارة (اختياري)",
+  "productManagement": "إدارة المنتج",
+  "productId": "معرف المنتج",
+  "productDescription": "وصف المنتج",
+  "originalPrice": "السعر الأصلي",
+  "stock": "المخزون",
+  "viewCount": "عدد المشاهدات",
+  "createTime": "وقت الإنشاء",
+  "updateTime": "وقت التحديث",
+
+  "computer": "كمبيوتر",
+  "phone": "هاتف",
+  "other": "آخر",
+  "productEnabled": "تم تفعيل المنتج",
+  "productDisabled": "تم تعطيل المنتج",
+  "productStatus": "حالة المنتج",
+
+  "createProduct": "إنشاء منتج",
+  "updateProduct": "تحديث منتج",
+  "deleteProduct": "حذف منتج",
+  "enterProductName": "أدخل اسم المنتج",
+  "enterProductDescription": "أدخل وصف المنتج",
+  "enterPrice": "أدخل السعر",
+  "enterOriginalPrice": "أدخل السعر الأصلي",
+  "enterStock": "أدخل المخزون",
+  "selectCategory": "اختر التصنيف",
+  "enterProvince": "أدخل المقاطعة",
+
+  "coverImage": "صورة الغلاف",
+  "productImages": "صور المنتج",
+  "uploadCoverImage": "يرجى تحميل صورة الغلاف",
+  "uploadProductImages": "يرجى تحميل صور المنتج",
+  "errorAddingProduct": "فشل إضافة المنتج",
+  "errorUpdatingProduct": "فشل تحديث المنتج",
+  "productDetails": "تفاصيل المنتج"
 }
