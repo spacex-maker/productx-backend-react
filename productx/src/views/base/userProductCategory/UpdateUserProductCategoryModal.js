@@ -6,10 +6,22 @@ import styled from 'styled-components';
 const StyledModal = styled(Modal)`
   .ant-modal-content {
     padding: 12px;
-  }
+    
+    .ant-modal-header {
+      margin-bottom: 8px;
+      border-bottom: none !important;
+      padding-bottom: 0;
+    }
 
-  .ant-modal-header {
-    margin-bottom: 8px;
+    .ant-modal-body {
+      padding: 8px 0;
+    }
+
+    .ant-modal-footer {
+      margin-top: 8px;
+      padding: 8px 0 0;
+      border-top: none !important;
+    }
   }
 
   .ant-modal-title {
@@ -47,16 +59,18 @@ const StyledModal = styled(Modal)`
     }
   }
 
-  .ant-modal-footer {
-    margin-top: 8px;
-    padding: 8px 0 0;
-    border-top: 1px solid #f0f0f0;
+  .ant-modal-footer .ant-btn {
+    height: 24px;
+    padding: 0 12px;
+    font-size: 10px;
+  }
 
-    .ant-btn {
-      height: 24px;
-      padding: 0 12px;
-      font-size: 10px;
-    }
+  .ant-modal-header::after {
+    display: none !important;
+  }
+
+  .ant-modal-footer::before {
+    display: none !important;
   }
 `;
 
@@ -169,3 +183,4 @@ const UpdateUserProductCategoryModal = ({
 };
 
 export default UpdateUserProductCategoryModal;
+

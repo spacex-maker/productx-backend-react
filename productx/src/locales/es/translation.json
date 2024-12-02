@@ -232,7 +232,8 @@
     "菜单管理": "Gestión de Menús",
     "资源管理": "Gestión de Recursos",
     "问题跟踪": "Seguimiento de Problemas",
-    "商品管理": "Gestión de productos"
+    "商品管理": "Gestión de productos",
+    "商品分类管理": "Gestión de categorías de productos"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",
@@ -427,5 +428,10 @@
   "healthCare": "Cuidado de la Salud",
   "addNewProduct": "Agregar nuevo producto",
   "createProductWithJson": "Crear producto con JSON",
-  "createWithJson": "Crear con JSON"
+  "createWithJson": "Crear con JSON",
+  "currentCategory": "Categoría Actual",
+  "addCategory": "Agregar Categoría",
+  "goBack": "Regresar",
+  "categoryName": "Nombre de categoría",
+  "parentCategory": "Categoría principal"
 }

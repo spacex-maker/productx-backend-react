@@ -232,7 +232,8 @@
     "菜单管理": "メニュー管理",
     "资源管理": "リソース管理",
     "问题跟踪": "問題追跡",
-    "商品管理": "商品管理"
+    "商品管理": "商品管理",
+    "商品分类管理": "商品カテゴリー管理"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -427,5 +428,10 @@
   "healthCare": "ヘルスケア",
   "addNewProduct": "新しい商品を追加",
   "createProductWithJson": "JSONで商品を作成",
-  "createWithJson": "JSONで作成"
+  "createWithJson": "JSONで作成",
+  "currentCategory": "現在のカテゴリ",
+  "addCategory": "カテゴリを追加",
+  "goBack": "戻る",
+  "categoryName": "カテゴリー名",
+  "parentCategory": "親カテゴリー"
 }
