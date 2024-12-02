@@ -407,5 +407,8 @@
   "booksAndMedia": "الكتب والإعلام",
   "automotiveSupplies": "مستلزمات السيارات",
   "petSupplies": "مستلزمات الحيوانات الأليفة",
-  "healthCare": "الرعاية الصحية"
+  "healthCare": "الرعاية الصحية",
+  "addNewProduct": "إضافة منتج جديد",
+  "createProductWithJson": "إنشاء منتج باستخدام JSON",
+  "createWithJson": "إنشاء باستخدام JSON"
 }

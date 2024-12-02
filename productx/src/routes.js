@@ -121,6 +121,9 @@ const SysIssueTracker = React.lazy(() => import('./views/base/sysIssueTracker/Sy
 
 const UserProductRouter = React.lazy(() => import('./views/base/userProduct/UserProduct'))
 
+const UserProductCategoryRouter = React.lazy(() => import('./views/base/userProductCategory/UserProductCategory'))
+
+
 
 const routes = [
   {path: '/', exact: true, name: 'Home'},
@@ -331,6 +334,14 @@ const routes = [
       </PrivateRoute>
     )
   },
+  {
+    path: '/sys/userProductCategory', name: '产品分类管理', element: (
+      <PrivateRoute>
+        <UserProductCategoryRouter/>
+      </PrivateRoute>
+    )
+  },
+
 ]
 
 export default routes
