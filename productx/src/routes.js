@@ -1,5 +1,6 @@
 import React from 'react'
 import PrivateRoute from "src/components/PrivateRoute";
+import UserProduct from "src/views/base/userProduct/UserProduct";
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -117,6 +118,9 @@ const XAI = React.lazy(() => import('./views/base/ai/xai'))
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'))
 
 const SysIssueTracker = React.lazy(() => import('./views/base/sysIssueTracker/SysIssueTracker'))
+
+const UserProductRouter = React.lazy(() => import('./views/base/userProduct/UserProduct'))
+
 
 const routes = [
   {path: '/', exact: true, name: 'Home'},
@@ -317,6 +321,13 @@ const routes = [
     path: '/sys/issueTracker', name: '问题跟踪', element: (
       <PrivateRoute>
         <SysIssueTracker/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/userProduct', name: '产品管理', element: (
+      <PrivateRoute>
+        <UserProductRouter/>
       </PrivateRoute>
     )
   },
