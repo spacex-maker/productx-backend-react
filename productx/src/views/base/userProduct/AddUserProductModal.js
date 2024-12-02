@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Modal, Form, Switch, Alert, Row, Col, Select, InputNumber, Upload, Spin } from 'antd';
-import { PlusOutlined, UserOutlined, TagOutlined, DollarOutlined, PictureOutlined, AppstoreOutlined, GlobalOutlined, EnvironmentOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { Input, Modal, Form, Switch, Alert, Row, Col, Select, InputNumber, Upload, Spin, Button } from 'antd';
+import { PlusOutlined, UserOutlined, TagOutlined, DollarOutlined, PictureOutlined, AppstoreOutlined, GlobalOutlined, EnvironmentOutlined, UnorderedListOutlined, CodeOutlined } from '@ant-design/icons';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import COS from 'cos-js-sdk-v5';
 import { message } from 'antd';
 import api from 'src/axiosInstance';
+import CreateProductJsonModal from './CreateProductJsonModal';
 const StyledModal = styled(Modal)`
   .ant-modal-content {
     padding: 12px;
@@ -138,6 +139,7 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [citySearchLoading, setCitySearchLoading] = useState(false);
+  const [jsonModalVisible, setJsonModalVisible] = useState(false);
 
   // 初始化 COS 实例
   const initCOS = async () => {
@@ -330,6 +332,11 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
     }
   };
 
+  // 处理 JSON 创建成功
+  const handleJsonCreateSuccess = () => {
+    onCancel(); // 关闭当前模态框
+  };
+
   return (
     <StyledModal
       title={t("addNewProduct")}
@@ -342,11 +349,16 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
       maskClosable={false}
       destroyOnClose
     >
-      <Alert
-        message={t("productInfoWarning")}
-        type="warning"
-        showIcon
-      />
+      <div style={{ marginBottom: '8px' }}>
+        <Button 
+          type="link" 
+          icon={<CodeOutlined />}
+          onClick={() => setJsonModalVisible(true)}
+          style={{ padding: 0, height: 'auto', fontSize: '10px' }}
+        >
+          {t('createWithJson')}
+        </Button>
+      </div>
 
       <Form
         form={form}
@@ -605,6 +617,12 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           </Upload>
         </Form.Item>
       </Form>
+
+      <CreateProductJsonModal
+        visible={jsonModalVisible}
+        onCancel={() => setJsonModalVisible(false)}
+        onSuccess={handleJsonCreateSuccess}
+      />
     </StyledModal>
   );
 };

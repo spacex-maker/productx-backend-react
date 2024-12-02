@@ -424,5 +424,8 @@
   "booksAndMedia": "책 및 미디어",
   "automotiveSupplies": "자동차 용품",
   "petSupplies": "반려동물 용품",
-  "healthCare": "건강 관리"
+  "healthCare": "건강 관리",
+  "addNewProduct": "새 제품 추가",
+  "createProductWithJson": "JSON으로 제품 만들기",
+  "createWithJson": "JSON으로 만들기"
 }

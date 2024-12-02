@@ -424,5 +424,8 @@
   "booksAndMedia": "图书音像",
   "automotiveSupplies": "汽车用品",
   "petSupplies": "宠物用品",
-  "healthCare": "医疗保健"
+  "healthCare": "医疗保健",
+  "addNewProduct": "添加新商品",
+  "createProductWithJson": "通过 JSON 创建商品",
+  "createWithJson": "使用 JSON 创建"
 }

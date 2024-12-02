@@ -424,5 +424,8 @@
   "booksAndMedia": "Livres et médias",
   "automotiveSupplies": "Fournitures automobiles",
   "petSupplies": "Articles pour animaux",
-  "healthCare": "Soins de Santé"
+  "healthCare": "Soins de Santé",
+  "addNewProduct": "Ajouter un nouveau produit",
+  "createProductWithJson": "Créer un produit avec JSON",
+  "createWithJson": "Créer avec JSON"
 }

@@ -424,5 +424,8 @@
   "booksAndMedia": "Книги и медиа",
   "automotiveSupplies": "Автотовары",
   "petSupplies": "Товары для питомцев",
-  "healthCare": "Здравоохранение"
+  "healthCare": "Здравоохранение",
+  "addNewProduct": "Добавить новый товар",
+  "createProductWithJson": "Создать товар с помощью JSON",
+  "createWithJson": "Создать с JSON"
 }
