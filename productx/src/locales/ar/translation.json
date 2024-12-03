@@ -416,5 +416,15 @@
   "addCategory": "إضافة فئة",
   "goBack": "الرجوع",
   "categoryName": "اسم الفئة",
-  "parentCategory": "الفئة الرئيسية"
+  "parentCategory": "الفئة الرئيسية",
+  "shipOrder": "شحن الطلب",
+  "ship": "اذهب للشحن",
+  "shipSuccess": "تم الشحن بنجاح",
+  "shipFailed": "فشل الشحن",
+  "expressNumber": "رقم الشحن",
+  "receiverNameRequired": "يرجى إدخال اسم المستلم",
+  "phoneNumberRequired": "يرجى إدخال رقم الهاتف",
+  "deliveryAddressRequired": "يرجى إدخال عنوان التسليم",
+  "expressNumberRequired": "يرجى إدخال رقم الشحن",
+  "enterExpressNumber": "يرجى إدخال رقم الشحن"
 }

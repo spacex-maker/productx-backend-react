@@ -433,5 +433,15 @@
   "addCategory": "Добавить категорию",
   "goBack": "Назад",
   "categoryName": "Название категории",
-  "parentCategory": "Родительская категория"
+  "parentCategory": "Родительская категория",
+  "shipOrder": "Отправить заказ",
+  "ship": "Перейти к отправке",
+  "shipSuccess": "Отправка успешна",
+  "shipFailed": "Отправка не удалась",
+  "expressNumber": "Номер отслеживания",
+  "receiverNameRequired": "Пожалуйста, введите имя получателя",
+  "phoneNumberRequired": "Пожалуйста, введите номер телефона",
+  "deliveryAddressRequired": "Пожалуйста, введите адрес доставки",
+  "expressNumberRequired": "Пожалуйста, введите номер отслеживания",
+  "enterExpressNumber": "Пожалуйста, введите номер отслеживания"
 }

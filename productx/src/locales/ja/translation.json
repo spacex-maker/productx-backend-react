@@ -433,5 +433,15 @@
   "addCategory": "カテゴリを追加",
   "goBack": "戻る",
   "categoryName": "カテゴリー名",
-  "parentCategory": "親カテゴリー"
+  "parentCategory": "親カテゴリー",
+  "shipOrder": "注文を発送する",
+  "ship": "発送する",
+  "shipSuccess": "発送に成功しました",
+  "shipFailed": "発送に失敗しました",
+  "expressNumber": "追跡番号",
+  "receiverNameRequired": "受取人の名前を入力してください",
+  "phoneNumberRequired": "電話番号を入力してください",
+  "deliveryAddressRequired": "配送先住所を入力してください",
+  "expressNumberRequired": "追跡番号を入力してください",
+  "enterExpressNumber": "追跡番号を入力してください"
 }

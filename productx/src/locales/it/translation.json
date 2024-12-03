@@ -426,5 +426,15 @@
   "addCategory": "Aggiungi Categoria",
   "goBack": "Torna Indietro",
   "categoryName": "Nome della categoria",
-  "parentCategory": "Categoria principale"
+  "parentCategory": "Categoria principale",
+  "shipOrder": "Spedisci ordine",
+  "ship": "Vai a spedire",
+  "shipSuccess": "Spedizione riuscita",
+  "shipFailed": "Spedizione fallita",
+  "expressNumber": "Numero di tracciamento",
+  "receiverNameRequired": "Per favore, inserisci il nome del destinatario",
+  "phoneNumberRequired": "Per favore, inserisci il numero di telefono",
+  "deliveryAddressRequired": "Per favore, inserisci l'indirizzo di consegna",
+  "expressNumberRequired": "Per favore, inserisci il numero di tracciamento",
+  "enterExpressNumber": "Per favore, inserisci il numero di tracciamento"
 }

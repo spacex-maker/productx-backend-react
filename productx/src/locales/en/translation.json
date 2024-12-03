@@ -425,5 +425,15 @@
   "addCategory": "Add Category",
   "goBack": "Go Back",
   "categoryName": "Category Name",
-  "parentCategory": "Parent Category"
+  "parentCategory": "Parent Category",
+  "shipOrder": "Ship Order",
+  "ship": "Go to Ship",
+  "shipSuccess": "Shipping Successful",
+  "shipFailed": "Shipping Failed",
+  "expressNumber": "Express Number",
+  "receiverNameRequired": "Please enter the receiver's name",
+  "phoneNumberRequired": "Please enter the phone number",
+  "deliveryAddressRequired": "Please enter the delivery address",
+  "expressNumberRequired": "Please enter the express number",
+  "enterExpressNumber": "Please enter the express number"
 }

@@ -433,5 +433,15 @@
   "addCategory": "Kategorie hinzufügen",
   "goBack": "Zurück",
   "categoryName": "Kategoriename",
-  "parentCategory": "Übergeordnete Kategorie"
+  "parentCategory": "Übergeordnete Kategorie",
+  "shipOrder": "Bestellung versenden",
+  "ship": "Zum Versenden",
+  "shipSuccess": "Versand erfolgreich",
+  "shipFailed": "Versand fehlgeschlagen",
+  "expressNumber": "Versandnummer",
+  "receiverNameRequired": "Bitte Empfängername eingeben",
+  "phoneNumberRequired": "Bitte Telefonnummer eingeben",
+  "deliveryAddressRequired": "Bitte Lieferadresse eingeben",
+  "expressNumberRequired": "Bitte Versandnummer eingeben",
+  "enterExpressNumber": "Bitte Versandnummer eingeben"
 }
