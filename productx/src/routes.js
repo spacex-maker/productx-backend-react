@@ -2,120 +2,97 @@ import React from 'react'
 import PrivateRoute from "src/components/PrivateRoute";
 import UserProduct from "src/views/base/userProduct/UserProduct";
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
-const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
+const Colors = React.lazy(() => import('./views/theme/colors/Colors'));
+const Typography = React.lazy(() => import('./views/theme/typography/Typography'));
 
 // Base
-const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
-const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
-const Cards = React.lazy(() => import('./views/base/cards/Cards'))
-const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'))
-const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'))
-const ListGroups = React.lazy(() => import('./views/base/list-groups/ListGroups'))
-const Navs = React.lazy(() => import('./views/base/navs/Navs'))
-const Paginations = React.lazy(() => import('./views/base/paginations/Paginations'))
-const Placeholders = React.lazy(() => import('./views/base/placeholders/Placeholders'))
-const Popovers = React.lazy(() => import('./views/base/popovers/Popovers'))
-const Progress = React.lazy(() => import('./views/base/progress/Progress'))
-const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'))
-const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'))
-const Tables = React.lazy(() => import('./views/base/tables/Tables'))
-const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
+const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'));
+const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
+const Cards = React.lazy(() => import('./views/base/cards/Cards'));
+const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'));
+const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'));
+const ListGroups = React.lazy(() => import('./views/base/list-groups/ListGroups'));
+const Navs = React.lazy(() => import('./views/base/navs/Navs'));
+const Paginations = React.lazy(() => import('./views/base/paginations/Paginations'));
+const Placeholders = React.lazy(() => import('./views/base/placeholders/Placeholders'));
+const Popovers = React.lazy(() => import('./views/base/popovers/Popovers'));
+const Progress = React.lazy(() => import('./views/base/progress/Progress'));
+const Spinners = React.lazy(() => import('./views/base/spinners/Spinners'));
+const Tabs = React.lazy(() => import('./views/base/tabs/Tabs'));
+const Tables = React.lazy(() => import('./views/base/tables/Tables'));
+const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'));
 
 // Buttons
-const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
-const ButtonGroups = React.lazy(() => import('./views/buttons/button-groups/ButtonGroups'))
-const Dropdowns = React.lazy(() => import('./views/buttons/dropdowns/Dropdowns'))
+const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'));
+const ButtonGroups = React.lazy(() => import('./views/buttons/button-groups/ButtonGroups'));
+const Dropdowns = React.lazy(() => import('./views/buttons/dropdowns/Dropdowns'));
 
 //Forms
-const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
-const FloatingLabels = React.lazy(() => import('./views/forms/floating-labels/FloatingLabels'))
-const FormControl = React.lazy(() => import('./views/forms/form-control/FormControl'))
-const InputGroup = React.lazy(() => import('./views/forms/input-group/InputGroup'))
-const Layout = React.lazy(() => import('./views/forms/layout/Layout'))
-const Range = React.lazy(() => import('./views/forms/range/Range'))
-const Select = React.lazy(() => import('./views/forms/select/Select'))
-const Validation = React.lazy(() => import('./views/forms/validation/Validation'))
+const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'));
+const FloatingLabels = React.lazy(() => import('./views/forms/floating-labels/FloatingLabels'));
+const FormControl = React.lazy(() => import('./views/forms/form-control/FormControl'));
+const InputGroup = React.lazy(() => import('./views/forms/input-group/InputGroup'));
+const Layout = React.lazy(() => import('./views/forms/layout/Layout'));
+const Range = React.lazy(() => import('./views/forms/range/Range'));
+const Select = React.lazy(() => import('./views/forms/select/Select'));
+const Validation = React.lazy(() => import('./views/forms/validation/Validation'));
 
-const Charts = React.lazy(() => import('./views/charts/Charts'))
+const Charts = React.lazy(() => import('./views/charts/Charts'));
 
 // Icons
-const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
-const Flags = React.lazy(() => import('./views/icons/flags/Flags'))
-const Brands = React.lazy(() => import('./views/icons/brands/Brands'))
+const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'));
+const Flags = React.lazy(() => import('./views/icons/flags/Flags'));
+const Brands = React.lazy(() => import('./views/icons/brands/Brands'));
 
 // Notifications
-const Alerts = React.lazy(() => import('./views/notifications/alerts/Alerts'))
-const Badges = React.lazy(() => import('./views/notifications/badges/Badges'))
-const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
-const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
+const Alerts = React.lazy(() => import('./views/notifications/alerts/Alerts'));
+const Badges = React.lazy(() => import('./views/notifications/badges/Badges'));
+const Modals = React.lazy(() => import('./views/notifications/modals/Modals'));
+const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'));
 
-const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
+const Widgets = React.lazy(() => import('./views/widgets/Widgets'));
 
-const ThreeScene = React.lazy(() => import('./views/base/threeJs/ThreeScene'))
+const ThreeScene = React.lazy(() => import('./views/base/threeJs/ThreeScene'));
 
-const ImageManage = React.lazy(() => import('./views/base/record/record'))
-const ResourceManage = React.lazy(() => import('./views/base/resource/resource'))
-const UserManage = React.lazy(() => import('./views/base/userList/ListUsers'))
-const CommentsManage = React.lazy(() => import('./views/base/comment/comment'))
-const SystemConfig
-  = React.lazy(() => import('./views/base/systemConfig/systemConfig'))
-const IpAddress
-  = React.lazy(() => import('./views/base/ipAddress/IpAddress'))
-const PathStatisticLog
-  = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'))
-const Chatroom
-  = React.lazy(() => import('./views/base/chatroom/Chatroom'))
+const ImageManage = React.lazy(() => import('./views/base/record/record'));
+const ResourceManage = React.lazy(() => import('./views/base/resource/resource'));
+const UserManage = React.lazy(() => import('./views/base/userList/ListUsers'));
+const CommentsManage = React.lazy(() => import('./views/base/comment/comment'));
+const SystemConfig = React.lazy(() => import('./views/base/systemConfig/systemConfig'));
+const IpAddress = React.lazy(() => import('./views/base/ipAddress/IpAddress'));
+const PathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'));
+const Chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'));
 
-const LoginPage
-  = React.lazy(() => import('./views/pages/login/LoginPage'))
-const ListCurrency
-  = React.lazy(() => import('./views/base/sysCurrencies/SysCurrencies'))
-const ListCountry
-  = React.lazy(() => import('./views/base/countries/Country'))
+const LoginPage = React.lazy(() => import('./views/pages/login/LoginPage'));
+const ListCurrency = React.lazy(() => import('./views/base/sysCurrencies/SysCurrencies'));
+const ListCountry = React.lazy(() => import('./views/base/countries/Country'));
 
-const ListExpress
-  = React.lazy(() => import('./views/base/express/Express'))
+const ListExpress = React.lazy(() => import('./views/base/express/Express'));
 
-const ListGlobalBank
-  = React.lazy(() => import('./views/base/globalBank/GlobalBank'))
+const ListGlobalBank = React.lazy(() => import('./views/base/globalBank/GlobalBank'));
 
-const ListWorkOrder
-  = React.lazy(() => import('./views/base/workOrder/WorkOrder'))
+const ListWorkOrder = React.lazy(() => import('./views/base/workOrder/WorkOrder'));
 
+const ListDepartment = React.lazy(() => import('./views/base/adminDepartment/AdminDepartment'));
 
-const ListDepartment
-  = React.lazy(() => import('./views/base/adminDepartment/AdminDepartment'))
+const ListManager = React.lazy(() => import('./views/base/manager/Manager'));
 
+const ListRole = React.lazy(() => import('./views/base/adminRole/AdminRole'));
 
-const ListManager
-  = React.lazy(() => import('./views/base/manager/Manager'))
+const ListPermission = React.lazy(() => import('./views/base/adminPermission/AdminPermission'));
 
+const ListUserOrder = React.lazy(() => import('./views/base/userOrder/UserOrder'));
 
-const ListRole
-  = React.lazy(() => import('./views/base/adminRole/AdminRole'))
+const ListSysWallets = React.lazy(() => import('./views/base/sysWallets/SysWallets'));
 
-const ListPermission
-  = React.lazy(() => import('./views/base/adminPermission/AdminPermission'))
+const SysCos = React.lazy(() => import('./views/base/cos/Cos'));
 
-const ListUserOrder
-  = React.lazy(() => import('./views/base/userOrder/UserOrder'))
+const ListSysCryptoCurrencies = React.lazy(
+  () => import('./views/base/sysCryptoCurrencies/SysCryptoCurrencies'),
+);
 
-const ListSysWallets
-  = React.lazy(() => import('./views/base/sysWallets/SysWallets'))
-
-const SysCos
-  = React.lazy(() => import('./views/base/cos/Cos'))
-
-
-const ListSysCryptoCurrencies= React.lazy(() => import('./views/base/sysCryptoCurrencies/SysCryptoCurrencies'))
-
-
-const XAI = React.lazy(() => import('./views/base/ai/xai'))
-
-
-const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'))
+const XAI = React.lazy(() => import('./views/base/ai/xai'));
 
 const SysIssueTracker = React.lazy(() => import('./views/base/sysIssueTracker/SysIssueTracker'))
 
@@ -123,202 +100,244 @@ const UserProductRouter = React.lazy(() => import('./views/base/userProduct/User
 
 const UserProductCategoryRouter = React.lazy(() => import('./views/base/userProductCategory/UserProductCategory'))
 
-
+const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'));
 
 const routes = [
-  {path: '/', exact: true, name: 'Home'},
-  {path: '/login', name: '登录', element: LoginPage},
+  { path: '/', exact: true, name: 'Home' },
+  { path: '/login', name: '登录', element: LoginPage },
   {
-    path: '/dashboard', name: '主页', element: (
+    path: '/dashboard',
+    name: '主页',
+    element: (
       <PrivateRoute>
-        <Dashboard/>
+        <Dashboard />
       </PrivateRoute>
     ),
   },
-  {path: '/theme', name: 'Theme', element: Colors, exact: true},
-  {path: '/theme/colors', name: 'Colors', element: Colors},
-  {path: '/theme/typography', name: 'Typography', element: Typography},
-  {path: '/base', name: 'Base', element: Cards, exact: true},
-  {path: '/base/accordion', name: 'Accordion', element: Accordion},
-  {path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs},
-  {path: '/base/cards', name: 'Cards', element: Cards},
-  {path: '/base/carousels', name: 'Carousel', element: Carousels},
-  {path: '/base/collapses', name: 'Collapse', element: Collapses},
-  {path: '/base/list-groups', name: 'List Groups', element: ListGroups},
-  {path: '/base/navs', name: 'Navs', element: Navs},
-  {path: '/base/paginations', name: 'Paginations', element: Paginations},
-  {path: '/base/placeholders', name: 'Placeholders', element: Placeholders},
-  {path: '/base/popovers', name: 'Popovers', element: Popovers},
-  {path: '/base/progress', name: 'Progress', element: Progress},
-  {path: '/base/spinners', name: 'Spinners', element: Spinners},
-  {path: '/base/tabs', name: 'Tabs', element: Tabs},
-  {path: '/base/tables', name: 'Tables', element: Tables},
-  {path: '/base/tooltips', name: 'Tooltips', element: Tooltips},
-  {path: '/buttons', name: 'Buttons', element: Buttons, exact: true},
-  {path: '/buttons/buttons', name: 'Buttons', element: Buttons},
-  {path: '/buttons/dropdowns', name: 'Dropdowns', element: Dropdowns},
-  {path: '/buttons/button-groups', name: 'Button Groups', element: ButtonGroups},
-  {path: '/charts', name: 'Charts', element: Charts},
-  {path: '/forms', name: 'Forms', element: FormControl, exact: true},
-  {path: '/forms/form-control', name: 'Form Control', element: FormControl},
-  {path: '/forms/select', name: 'Select', element: Select},
-  {path: '/forms/checks-radios', name: 'Checks & Radios', element: ChecksRadios},
-  {path: '/forms/range', name: 'Range', element: Range},
-  {path: '/forms/input-group', name: 'Input Group', element: InputGroup},
-  {path: '/forms/floating-labels', name: 'Floating Labels', element: FloatingLabels},
-  {path: '/forms/layout', name: 'Layout', element: Layout},
-  {path: '/forms/validation', name: 'Validation', element: Validation},
-  {path: '/icons', exact: true, name: 'Icons', element: CoreUIIcons},
-  {path: '/icons/coreui-icons', name: 'CoreUI Icons', element: CoreUIIcons},
-  {path: '/icons/flags', name: 'Flags', element: Flags},
-  {path: '/icons/brands', name: 'Brands', element: Brands},
-  {path: '/notifications', name: 'Notifications', element: Alerts, exact: true},
-  {path: '/notifications/alerts', name: 'Alerts', element: Alerts},
-  {path: '/notifications/badges', name: 'Badges', element: Badges},
-  {path: '/notifications/modals', name: 'Modals', element: Modals},
-  {path: '/notifications/toasts', name: 'Toasts', element: Toasts},
-  {path: '/widgets', name: 'Widgets', element: Widgets},
-  {path: '/threeJs', name: 'threeJs', element: ThreeScene},
+  { path: '/theme', name: 'Theme', element: Colors, exact: true },
+  { path: '/theme/colors', name: 'Colors', element: Colors },
+  { path: '/theme/typography', name: 'Typography', element: Typography },
+  { path: '/base', name: 'Base', element: Cards, exact: true },
+  { path: '/base/accordion', name: 'Accordion', element: Accordion },
+  { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
+  { path: '/base/cards', name: 'Cards', element: Cards },
+  { path: '/base/carousels', name: 'Carousel', element: Carousels },
+  { path: '/base/collapses', name: 'Collapse', element: Collapses },
+  { path: '/base/list-groups', name: 'List Groups', element: ListGroups },
+  { path: '/base/navs', name: 'Navs', element: Navs },
+  { path: '/base/paginations', name: 'Paginations', element: Paginations },
+  { path: '/base/placeholders', name: 'Placeholders', element: Placeholders },
+  { path: '/base/popovers', name: 'Popovers', element: Popovers },
+  { path: '/base/progress', name: 'Progress', element: Progress },
+  { path: '/base/spinners', name: 'Spinners', element: Spinners },
+  { path: '/base/tabs', name: 'Tabs', element: Tabs },
+  { path: '/base/tables', name: 'Tables', element: Tables },
+  { path: '/base/tooltips', name: 'Tooltips', element: Tooltips },
+  { path: '/buttons', name: 'Buttons', element: Buttons, exact: true },
+  { path: '/buttons/buttons', name: 'Buttons', element: Buttons },
+  { path: '/buttons/dropdowns', name: 'Dropdowns', element: Dropdowns },
+  { path: '/buttons/button-groups', name: 'Button Groups', element: ButtonGroups },
+  { path: '/charts', name: 'Charts', element: Charts },
+  { path: '/forms', name: 'Forms', element: FormControl, exact: true },
+  { path: '/forms/form-control', name: 'Form Control', element: FormControl },
+  { path: '/forms/select', name: 'Select', element: Select },
+  { path: '/forms/checks-radios', name: 'Checks & Radios', element: ChecksRadios },
+  { path: '/forms/range', name: 'Range', element: Range },
+  { path: '/forms/input-group', name: 'Input Group', element: InputGroup },
+  { path: '/forms/floating-labels', name: 'Floating Labels', element: FloatingLabels },
+  { path: '/forms/layout', name: 'Layout', element: Layout },
+  { path: '/forms/validation', name: 'Validation', element: Validation },
+  { path: '/icons', exact: true, name: 'Icons', element: CoreUIIcons },
+  { path: '/icons/coreui-icons', name: 'CoreUI Icons', element: CoreUIIcons },
+  { path: '/icons/flags', name: 'Flags', element: Flags },
+  { path: '/icons/brands', name: 'Brands', element: Brands },
+  { path: '/notifications', name: 'Notifications', element: Alerts, exact: true },
+  { path: '/notifications/alerts', name: 'Alerts', element: Alerts },
+  { path: '/notifications/badges', name: 'Badges', element: Badges },
+  { path: '/notifications/modals', name: 'Modals', element: Modals },
+  { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
+  { path: '/widgets', name: 'Widgets', element: Widgets },
+  { path: '/threeJs', name: 'threeJs', element: ThreeScene },
 
   {
-    path: '/data/userList', name: '用户管理', element: (
+    path: '/data/userList',
+    name: '用户管理',
+    element: (
       <PrivateRoute>
-        <UserManage/>
+        <UserManage />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/comments', name: '留言管理', element: (
+    path: '/data/comments',
+    name: '留言管理',
+    element: (
       <PrivateRoute>
-        <CommentsManage/>
+        <CommentsManage />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/systemConfig', name: '系统设置', element: (
+    path: '/data/systemConfig',
+    name: '系统设置',
+    element: (
       <PrivateRoute>
-        <SystemConfig/>
+        <SystemConfig />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/ipAddress', name: 'ip访问日志', element: (
+    path: '/data/ipAddress',
+    name: 'ip访问日志',
+    element: (
       <PrivateRoute>
-        <IpAddress/>
+        <IpAddress />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/chat/chatroom', name: '聊天室', element: (
+    path: '/chat/chatroom',
+    name: '聊天室',
+    element: (
       <PrivateRoute>
-        <Chatroom/>
+        <Chatroom />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/sysCurrency', name: '系统支持货币', element: (
+    path: '/data/sysCurrency',
+    name: '系统支持货币',
+    element: (
       <PrivateRoute>
-        <ListCurrency/>
+        <ListCurrency />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/country', name: '系统支持国家', element: (
+    path: '/data/country',
+    name: '系统支持国家',
+    element: (
       <PrivateRoute>
-        <ListCountry/>
+        <ListCountry />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/express', name: '系统支持快递', element: (
+    path: '/data/express',
+    name: '系统支持快递',
+    element: (
       <PrivateRoute>
-        <ListExpress/>
+        <ListExpress />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/globalBank', name: '系统支持银行', element: (
+    path: '/data/globalBank',
+    name: '系统支持银行',
+    element: (
       <PrivateRoute>
-        <ListGlobalBank/>
+        <ListGlobalBank />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/workOrder', name: '工单系统', element: (
+    path: '/data/workOrder',
+    name: '工单系统',
+    element: (
       <PrivateRoute>
-        <ListWorkOrder/>
+        <ListWorkOrder />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/department', name: '部门管理', element: (
+    path: '/data/department',
+    name: '部门管理',
+    element: (
       <PrivateRoute>
-        <ListDepartment/>
+        <ListDepartment />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/manager', name: '员工管理', element: (
+    path: '/data/manager',
+    name: '员工管理',
+    element: (
       <PrivateRoute>
-        <ListManager/>
+        <ListManager />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/role', name: '角色管理', element: (
+    path: '/data/role',
+    name: '角色管理',
+    element: (
       <PrivateRoute>
-        <ListRole/>
+        <ListRole />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/permission', name: '权限管理', element: (
+    path: '/data/permission',
+    name: '权限管理',
+    element: (
       <PrivateRoute>
-        <ListPermission/>
+        <ListPermission />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/userOrder', name: '订单管理', element: (
+    path: '/data/userOrder',
+    name: '订单管理',
+    element: (
       <PrivateRoute>
-        <ListUserOrder/>
+        <ListUserOrder />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/sysWallets', name: '[系统]钱包管理', element: (
+    path: '/data/sysWallets',
+    name: '[系统]钱包管理',
+    element: (
       <PrivateRoute>
-        <ListSysWallets/>
+        <ListSysWallets />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/sysCryptoCurrencies', name: '[系统]加密货币管理', element: (
+    path: '/data/sysCryptoCurrencies',
+    name: '[系统]加密货币管理',
+    element: (
       <PrivateRoute>
-        <ListSysCryptoCurrencies/>
+        <ListSysCryptoCurrencies />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/ai', name: 'XAI', element: (
+    path: '/data/ai',
+    name: 'XAI',
+    element: (
       <PrivateRoute>
-        <XAI/>
+        <XAI />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/data/cos', name: '[系统]对象存储管理', element: (
+    path: '/data/cos',
+    name: '[系统]对象存储管理',
+    element: (
       <PrivateRoute>
-        <SysCos/>
+        <SysCos />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/menu', name: '菜单管理', element: (
+    path: '/sys/menu',
+    name: '菜单管理',
+    element: (
       <PrivateRoute>
-        <SysMenu/>
+        <SysMenu />
       </PrivateRoute>
-    )
+    ),
   },
   {
     path: '/sys/issueTracker', name: '问题跟踪', element: (
@@ -344,4 +363,4 @@ const routes = [
 
 ]
 
-export default routes
+export default routes;
