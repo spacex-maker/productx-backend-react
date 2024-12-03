@@ -435,5 +435,13 @@
   "phoneNumberRequired": "Please enter the phone number",
   "deliveryAddressRequired": "Please enter the delivery address",
   "expressNumberRequired": "Please enter the express number",
-  "enterExpressNumber": "Please enter the express number"
+  "enterExpressNumber": "Please enter the express number",
+  "buyerPickup": "Buyer Pickup",
+  "sellerDelivery": "Seller Delivery",
+  "platformSpecialDelivery": "Platform Special Delivery",
+  "faceToFace": "Face-to-Face",
+  "logistics": "Logistics",
+  "express": "Express",
+  "courier": "Courier",
+  "noDelivery": "No Delivery Required"
 }

@@ -443,5 +443,13 @@
   "phoneNumberRequired": "전화번호를 입력하세요",
   "deliveryAddressRequired": "배송지 주소를 입력하세요",
   "expressNumberRequired": "운송장 번호를 입력하세요",
-  "enterExpressNumber": "운송장 번호를 입력하세요"
+  "enterExpressNumber": "운송장 번호를 입력하세요",
+  "buyerPickup": "구매자 픽업",
+  "sellerDelivery": "판매자 배송",
+  "platformSpecialDelivery": "플랫폼 전용 배송",
+  "faceToFace": "대면 거래",
+  "logistics": "물류",
+  "express": "급송",
+  "courier": "퀵서비스",
+  "noDelivery": "배송 불필요"
 }

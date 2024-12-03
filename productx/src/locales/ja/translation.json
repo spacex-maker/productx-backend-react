@@ -443,5 +443,13 @@
   "phoneNumberRequired": "電話番号を入力してください",
   "deliveryAddressRequired": "配送先住所を入力してください",
   "expressNumberRequired": "追跡番号を入力してください",
-  "enterExpressNumber": "追跡番号を入力してください"
+  "enterExpressNumber": "追跡番号を入力してください",
+  "buyerPickup": "購入者の受け取り",
+  "sellerDelivery": "出品者の配送",
+  "platformSpecialDelivery": "プラットフォーム専用配送",
+  "faceToFace": "対面取引",
+  "logistics": "物流",
+  "express": "速達",
+  "courier": "宅配",
+  "noDelivery": "配送不要"
 }

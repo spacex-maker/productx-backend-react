@@ -443,5 +443,13 @@
   "phoneNumberRequired": "Пожалуйста, введите номер телефона",
   "deliveryAddressRequired": "Пожалуйста, введите адрес доставки",
   "expressNumberRequired": "Пожалуйста, введите номер отслеживания",
-  "enterExpressNumber": "Пожалуйста, введите номер отслеживания"
+  "enterExpressNumber": "Пожалуйста, введите номер отслеживания",
+  "buyerPickup": "Самовывоз покупателя",
+  "sellerDelivery": "Доставка продавцом",
+  "platformSpecialDelivery": "Специальная доставка платформы",
+  "faceToFace": "Личная встреча",
+  "logistics": "Логистика",
+  "express": "Экспресс-доставка",
+  "courier": "Курьер",
+  "noDelivery": "Доставка не требуется"
 }

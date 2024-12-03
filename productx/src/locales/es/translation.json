@@ -443,5 +443,13 @@
   "phoneNumberRequired": "Por favor, ingrese el número de teléfono",
   "deliveryAddressRequired": "Por favor, ingrese la dirección de entrega",
   "expressNumberRequired": "Por favor, ingrese el número de seguimiento",
-  "enterExpressNumber": "Por favor, ingrese el número de seguimiento"
+  "enterExpressNumber": "Por favor, ingrese el número de seguimiento",
+  "buyerPickup": "Recogida por el comprador",
+  "sellerDelivery": "Entrega por el vendedor",
+  "platformSpecialDelivery": "Entrega especial de la plataforma",
+  "faceToFace": "Trato en persona",
+  "logistics": "Logística",
+  "express": "Entrega exprés",
+  "courier": "Mensajería",
+  "noDelivery": "No requiere entrega"
 }
