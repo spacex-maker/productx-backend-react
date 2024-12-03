@@ -3,6 +3,9 @@ import { Button, Popconfirm } from 'antd';
 import { formatDate } from 'src/components/common/Common';
 import DetailOrderModal from 'src/views/base/userOrder/DetailOrderModal';
 import { useTranslation } from 'react-i18next'; // 引入 useTranslation
+import OrderStatus from 'src/components/common/OrderStatus';
+import DeliveryMethod from 'src/components/common/DeliveryMethod';
+
 const OrderTable = ({
   data,
   selectAll,
@@ -94,11 +97,15 @@ const OrderTable = ({
               <td className="text-truncate">{item.userId}</td>
               <td className="text-truncate">{item.receiverName}</td>
               <td className="text-truncate">{item.phoneNum}</td>
-              <td className="text-truncate">{item.orderStatus}</td>
+              <td className="text-truncate">
+                <OrderStatus status={item.orderStatus} />
+              </td>
               <td className="text-truncate">{parsePaymentType(item.paymentType)}</td>
               <td className="text-truncate">{formatDate(item.payTime)}</td>
               <td className="text-truncate">{item.totalAmount}</td>
-              <td className="text-truncate">{item.shippingMethod}</td>
+              <td className="text-truncate">
+                <DeliveryMethod method={item.shippingMethod} />
+              </td>
               <td className="fixed-column">
                 <Button type="link" onClick={() => handleEditClick(item)}>
                   {t('edit')}

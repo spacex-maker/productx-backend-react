@@ -436,5 +436,13 @@
   "phoneNumberRequired": "Per favore, inserisci il numero di telefono",
   "deliveryAddressRequired": "Per favore, inserisci l'indirizzo di consegna",
   "expressNumberRequired": "Per favore, inserisci il numero di tracciamento",
-  "enterExpressNumber": "Per favore, inserisci il numero di tracciamento"
+  "enterExpressNumber": "Per favore, inserisci il numero di tracciamento",
+  "buyerPickup": "Ritiro dell'acquirente",
+  "sellerDelivery": "Consegna del venditore",
+  "platformSpecialDelivery": "Consegna speciale della piattaforma",
+  "faceToFace": "Transazione di persona",
+  "logistics": "Logistica",
+  "express": "Consegna espressa",
+  "courier": "Corriere",
+  "noDelivery": "Nessuna consegna necessaria"
 }

@@ -443,5 +443,13 @@
   "phoneNumberRequired": "Bitte Telefonnummer eingeben",
   "deliveryAddressRequired": "Bitte Lieferadresse eingeben",
   "expressNumberRequired": "Bitte Versandnummer eingeben",
-  "enterExpressNumber": "Bitte Versandnummer eingeben"
+  "enterExpressNumber": "Bitte Versandnummer eingeben",
+  "buyerPickup": "Abholung durch Käufer",
+  "sellerDelivery": "Lieferung durch Verkäufer",
+  "platformSpecialDelivery": "Plattformspeziallieferung",
+  "faceToFace": "Persönliches Geschäft",
+  "logistics": "Logistik",
+  "express": "Expresslieferung",
+  "courier": "Kurier",
+  "noDelivery": "Keine Lieferung erforderlich"
 }

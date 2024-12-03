@@ -6,6 +6,7 @@ import { formatDate } from "src/components/common/Common";
 import { UserOutlined, ShopOutlined, MailOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import ShipOrderModal from './ShipOrderModal';
+import OrderStatus from 'src/components/common/OrderStatus';
 
 const DetailOrderModal = ({ visible, orderId, onCancel }) => {
   // 所有的 hooks 必须在组件顶部声明
@@ -299,7 +300,9 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
               style={{ marginBottom: '8px' }}
             >
               <Descriptions.Item label={t('orderId')}>{userOrder.id}</Descriptions.Item>
-              <Descriptions.Item label={t('orderStatus')}>{userOrder.orderStatus}</Descriptions.Item>
+              <Descriptions.Item label={t('orderStatus')}>
+                <OrderStatus status={userOrder.orderStatus} />
+              </Descriptions.Item>
               <Descriptions.Item label={t('receiverName')}>{userOrder.receiverName}</Descriptions.Item>
               <Descriptions.Item label={t('phoneNumber')}>{userOrder.phoneNum}</Descriptions.Item>
               <Descriptions.Item label={t('paymentType')}>{parsePaymentType(userOrder.paymentType)}</Descriptions.Item>

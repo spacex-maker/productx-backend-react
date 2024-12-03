@@ -426,5 +426,13 @@
   "phoneNumberRequired": "يرجى إدخال رقم الهاتف",
   "deliveryAddressRequired": "يرجى إدخال عنوان التسليم",
   "expressNumberRequired": "يرجى إدخال رقم الشحن",
-  "enterExpressNumber": "يرجى إدخال رقم الشحن"
+  "enterExpressNumber": "يرجى إدخال رقم الشحن",
+  "buyerPickup": "استلام المشتري",
+  "sellerDelivery": "توصيل البائع",
+  "platformSpecialDelivery": "توصيل خاص من المنصة",
+  "faceToFace": "معاملة وجهاً لوجه",
+  "logistics": "لوجستيات",
+  "express": "توصيل سريع",
+  "courier": "خدمة البريد",
+  "noDelivery": "لا حاجة للتوصيل"
 }

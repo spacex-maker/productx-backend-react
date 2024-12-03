@@ -443,5 +443,13 @@
   "phoneNumberRequired": "请输入联系电话",
   "deliveryAddressRequired": "请输入收货地址",
   "expressNumberRequired": "请输入快递单号",
-  "enterExpressNumber": "请输入快递单号"
+  "enterExpressNumber": "请输入快递单号",
+  "buyerPickup": "买家自取",
+  "sellerDelivery": "卖家配送",
+  "platformSpecialDelivery": "平台专送",
+  "faceToFace": "见面交易",
+  "logistics": "物流",
+  "express": "快递",
+  "courier": "跑腿",
+  "noDelivery": "无需配送"
 }
