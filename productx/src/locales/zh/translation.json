@@ -433,5 +433,15 @@
   "addCategory": "新增类别",
   "goBack": "返回",
   "categoryName": "分类名称",
-  "parentCategory": "上级分类"
+  "parentCategory": "上级分类",
+  "shipOrder": "发货",
+  "ship": "去发货",
+  "shipSuccess": "发货成功",
+  "shipFailed": "发货失败",
+  "expressNumber": "快递单号",
+  "receiverNameRequired": "请输入收货人姓名",
+  "phoneNumberRequired": "请输入联系电话",
+  "deliveryAddressRequired": "请输入收货地址",
+  "expressNumberRequired": "请输入快递单号",
+  "enterExpressNumber": "请输入快递单号"
 }

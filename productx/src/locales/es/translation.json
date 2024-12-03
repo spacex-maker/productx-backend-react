@@ -433,5 +433,15 @@
   "addCategory": "Agregar Categoría",
   "goBack": "Regresar",
   "categoryName": "Nombre de categoría",
-  "parentCategory": "Categoría principal"
+  "parentCategory": "Categoría principal",
+  "shipOrder": "Enviar pedido",
+  "ship": "Ir a enviar",
+  "shipSuccess": "Envío exitoso",
+  "shipFailed": "Error en el envío",
+  "expressNumber": "Número de seguimiento",
+  "receiverNameRequired": "Por favor, ingrese el nombre del receptor",
+  "phoneNumberRequired": "Por favor, ingrese el número de teléfono",
+  "deliveryAddressRequired": "Por favor, ingrese la dirección de entrega",
+  "expressNumberRequired": "Por favor, ingrese el número de seguimiento",
+  "enterExpressNumber": "Por favor, ingrese el número de seguimiento"
 }

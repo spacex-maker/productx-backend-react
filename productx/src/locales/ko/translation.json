@@ -433,5 +433,15 @@
   "addCategory": "카테고리 추가",
   "goBack": "돌아가기",
   "categoryName": "카테고리 이름",
-  "parentCategory": "상위 카테고리"
+  "parentCategory": "상위 카테고리",
+  "shipOrder": "주문 배송",
+  "ship": "배송하기",
+  "shipSuccess": "배송 성공",
+  "shipFailed": "배송 실패",
+  "expressNumber": "운송장 번호",
+  "receiverNameRequired": "수취인 이름을 입력하세요",
+  "phoneNumberRequired": "전화번호를 입력하세요",
+  "deliveryAddressRequired": "배송지 주소를 입력하세요",
+  "expressNumberRequired": "운송장 번호를 입력하세요",
+  "enterExpressNumber": "운송장 번호를 입력하세요"
 }
