@@ -22,7 +22,7 @@ import { message } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
 import WaveEffect from 'src/components/WaveEffect';
-import {initReactI18next, useTranslation} from 'react-i18next';
+import { initReactI18next, useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from 'src/redux/userSlice';
 import { Select } from 'antd';
@@ -34,7 +34,7 @@ const breakpoints = {
   sm: '576px',
   md: '768px',
   lg: '992px',
-  xl: '1200px'
+  xl: '1200px',
 };
 
 const PageWrapper = styled.div`
@@ -184,16 +184,16 @@ const CardBody = styled(CCardBody)`
 `;
 
 const ApiSection = styled.div`
-  margin-bottom: ${props => props.$visible ? '16px' : '0'};
-  padding: ${props => props.$visible ? '16px' : '0'};
+  margin-bottom: ${(props) => (props.$visible ? '16px' : '0')};
+  padding: ${(props) => (props.$visible ? '16px' : '0')};
   background: rgba(99, 102, 241, 0.05);
   border-radius: 12px;
   border: 1px solid rgba(99, 102, 241, 0.1);
   transition: all 0.3s ease;
-  opacity: ${props => props.$visible ? 1 : 0};
-  transform: translateY(${props => props.$visible ? '0' : '-20px'});
-  height: ${props => props.$visible ? 'auto' : '0'};
-  pointer-events: ${props => props.$visible ? 'all' : 'none'};
+  opacity: ${(props) => (props.$visible ? 1 : 0)};
+  transform: translateY(${(props) => (props.$visible ? '0' : '-20px')});
+  height: ${(props) => (props.$visible ? 'auto' : '0')};
+  pointer-events: ${(props) => (props.$visible ? 'all' : 'none')};
 `;
 
 const ApiTitle = styled.div`
@@ -309,7 +309,7 @@ const ApiInput = styled(CFormInput)`
   border: none !important;
   color: #f1f5f9 !important;
   font-size: 0.875rem !important;
-  border-radius: ${props => props.$isCustom ? '4px' : '0 4px 4px 0'} !important;
+  border-radius: ${(props) => (props.$isCustom ? '4px' : '0 4px 4px 0')} !important;
 
   &:disabled {
     background: rgba(255, 255, 255, 0.02) !important;
@@ -559,7 +559,7 @@ const LoginPage = () => {
   const [notice, setNotice] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [captcha, setCaptcha] = useState();
+  const [captcha, setCaptcha] = useState("");
   const [selectedEnv, setSelectedEnv] = useState('PROD');
   const [loading, setLoading] = useState(false);
   const [showApiConfig, setShowApiConfig] = useState(false);
@@ -571,7 +571,7 @@ const LoginPage = () => {
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
 
   useEffect(() => {
@@ -616,18 +616,20 @@ const LoginPage = () => {
       try {
         const userInfo = await api.get('/manage/manager/get-by-token');
 
-        dispatch(setCurrentUser({
-          id: userInfo.id,
-          username: userInfo.username,
-          email: userInfo.email,
-          phone: userInfo.phone,
-          roleId: userInfo.roleId,
-          status: userInfo.status,
-          isDeleted: userInfo.isDeleted,
-          thirdUserAccountId: userInfo.thirdUserAccountId,
-          createBy: userInfo.createBy,
-          avatar: userInfo.avatar
-        }));
+        dispatch(
+          setCurrentUser({
+            id: userInfo.id,
+            username: userInfo.username,
+            email: userInfo.email,
+            phone: userInfo.phone,
+            roleId: userInfo.roleId,
+            status: userInfo.status,
+            isDeleted: userInfo.isDeleted,
+            thirdUserAccountId: userInfo.thirdUserAccountId,
+            createBy: userInfo.createBy,
+            avatar: userInfo.avatar,
+          }),
+        );
 
         localStorage.setItem('currentUser', JSON.stringify(userInfo));
 
@@ -647,7 +649,8 @@ const LoginPage = () => {
   };
 
   const handleGitHubLogin = () => {
-    window.location.href = 'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=https://protx.cn/manage/manager/github-callback';
+    window.location.href =
+      'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=https://protx.cn/manage/manager/github-callback';
   };
 
   // 定义随机初始位置
@@ -665,15 +668,15 @@ const LoginPage = () => {
       opacity: 1,
       transition: {
         delayChildren: 0.3,
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: (i) => ({
       ...getRandomPosition(),
-      opacity: 0
+      opacity: 0,
     }),
     visible: {
       x: 0,
@@ -682,16 +685,16 @@ const LoginPage = () => {
       scale: 1,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: 'spring',
         damping: 20,
         stiffness: 100,
-        duration: 1.5
-      }
-    }
+        duration: 1.5,
+      },
+    },
   };
 
   const handleWaveDoubleClick = () => {
-    setShowApiConfig(prev => !prev);
+    setShowApiConfig((prev) => !prev);
     message.info(showApiConfig ? 'API 配置已隐藏' : 'API 配置已显示');
   };
 
@@ -710,7 +713,7 @@ const LoginPage = () => {
   }, []);
 
   const getEnvDisplayName = (env) => {
-    switch(env) {
+    switch (env) {
       case 'TEST':
         return '测试环境';
       case 'TEST2':
@@ -729,9 +732,7 @@ const LoginPage = () => {
   const renderEnvironmentOption = (env, url) => (
     <EnvOption value={env} key={env} label={getEnvDisplayName(env)}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span className="env-name">
-          {env === 'TEST' ? '测试环境(推荐)' : `${env}环境`}
-        </span>
+        <span className="env-name">{env === 'TEST' ? '测试环境(推荐)' : `${env}环境`}</span>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span className="env-url">{url}</span>
           <HealthCheck url={url} />
@@ -758,11 +759,7 @@ const LoginPage = () => {
         <ContentWrapper>
           <CRow className="justify-content-center">
             <CCol xs={12} sm={10} md={8} lg={6} xl={5}>
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-              >
+              <motion.div variants={containerVariants} initial="hidden" animate="visible">
                 <LoginCard>
                   <AnimatePresence>
                     {showSlogan && (
@@ -812,9 +809,17 @@ const LoginPage = () => {
                                 dropdownMatchSelectWidth={false}
                                 optionLabelProp="label"
                               >
-                                {Object.entries(API_CONFIG).map(([env, url]) => renderEnvironmentOption(env, url))}
+                                {Object.entries(API_CONFIG).map(([env, url]) =>
+                                  renderEnvironmentOption(env, url),
+                                )}
                                 <Option value="CUSTOM" label="自定义">
-                                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      alignItems: 'center',
+                                    }}
+                                  >
                                     <span>自定义环境</span>
                                   </div>
                                 </Option>
@@ -827,8 +832,8 @@ const LoginPage = () => {
                               disabled={!isCustomEnv}
                               placeholder={
                                 isCustomEnv
-                                  ? "请输入自定义API地址，例如: http://example.com:8080"
-                                  : "API 地址将根据选择的环境自动设置"
+                                  ? '请输入自定义API地址，例如: http://example.com:8080'
+                                  : 'API 地址将根据选择的环境自动设置'
                               }
                             />
                             <ApiButton onClick={handleSetBaseURL}>
@@ -836,11 +841,13 @@ const LoginPage = () => {
                             </ApiButton>
                           </ApiInputGroup>
                           {isCustomEnv && (
-                            <div style={{
-                              fontSize: '12px',
-                              color: '#64748b',
-                              padding: '4px 8px'
-                            }}>
+                            <div
+                              style={{
+                                fontSize: '12px',
+                                color: '#64748b',
+                                padding: '4px 8px',
+                              }}
+                            >
                               请输入完整的URL地址，包含 http:// 或 https:// 前缀
                             </div>
                           )}
@@ -868,7 +875,7 @@ const LoginPage = () => {
                             <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} />
                           </CInputGroupText>
                           <StyledInput
-                            type={showPassword ? "text" : "password"}
+                            type={showPassword ? 'text' : 'password'}
                             placeholder={t('password')}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -913,21 +920,22 @@ const LoginPage = () => {
                       <motion.div variants={itemVariants} custom={6}>
                         <CRow>
                           <CCol xs={12} className="text-center mb-3">
-                            <GithubButton
-                              onClick={handleGitHubLogin}
-                              className="w-100"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                   className="bi bi-github me-2" viewBox="0 0 16 16">
-                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                            <GithubButton onClick={handleGitHubLogin} className="w-100">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                className="bi bi-github me-2"
+                                viewBox="0 0 16 16"
+                              >
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
                               </svg>
                               {t('githubLogin')}
                             </GithubButton>
                           </CCol>
                           <CCol xs={12} className="text-center">
-                            <ForgotPasswordLink>
-                              {t('forgetPassword')}
-                            </ForgotPasswordLink>
+                            <ForgotPasswordLink>{t('forgetPassword')}</ForgotPasswordLink>
                           </CCol>
                         </CRow>
                       </motion.div>
@@ -939,11 +947,7 @@ const LoginPage = () => {
           </CRow>
         </ContentWrapper>
       </div>
-      {!showApiConfig && (
-        <ApiConfigHint>
-          双击水面显示 API 配置！！！
-        </ApiConfigHint>
-      )}
+      {!showApiConfig && <ApiConfigHint>双击水面显示 API 配置！！！</ApiConfigHint>}
     </PageWrapper>
   );
 };

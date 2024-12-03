@@ -1,19 +1,25 @@
-import React from 'react'
-import styled from 'styled-components'
-import {motion} from 'framer-motion'
-import {Link} from 'react-router-dom'
-import {Button} from 'antd'
-import CIcon from '@coreui/icons-react'
-import {cilLanguage, cilSpeedometer} from '@coreui/icons'
-import {CContainer, CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle} from "@coreui/react";
+import React from 'react';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { Button } from 'antd';
+import CIcon from '@coreui/icons-react';
+import { cilLanguage, cilSpeedometer } from '@coreui/icons';
+import {
+  CContainer,
+  CDropdown,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
+} from '@coreui/react';
 
-import {useTranslation} from 'react-i18next'  // 引入 useTranslation
+import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 const breakpoints = {
   xs: '320px',
   sm: '576px',
   md: '768px',
   lg: '992px',
-  xl: '1200px'
+  xl: '1200px',
 };
 const HeaderWrapper = styled.header`
   position: fixed;
@@ -108,90 +114,79 @@ const RegisterButton = styled(Button)`
 
 const LoginHeader = () => {
   // 动画配置
-  const {t, i18n} = useTranslation()  // 获取 i18n 实例
+  const { t, i18n } = useTranslation(); // 获取 i18n 实例
   const logoVariants = {
-    hidden: {opacity: 0, x: -20},
+    hidden: { opacity: 0, x: -20 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: 'easeOut',
+      },
+    },
   };
 
   const buttonVariants = {
-    hidden: {opacity: 0, x: 20},
+    hidden: { opacity: 0, x: 20 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
         duration: 0.5,
         delay: 0.2,
-        ease: "easeOut"
-      }
+        ease: 'easeOut',
+      },
     },
     hover: {
       scale: 1.02,
       transition: {
-        duration: 0.2
-      }
-    }
+        duration: 0.2,
+      },
+    },
   };
   // 切换语言的方法
   const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang)
-  }
+    i18n.changeLanguage(lang);
+  };
 
   return (
     <HeaderWrapper>
-
-      <Link to="/" style={{textDecoration: 'none'}}>
+      <Link to="/" style={{ textDecoration: 'none' }}>
         <Logo
           variants={logoVariants}
           initial="hidden"
           animate="visible"
-          whileHover={{scale: 1.02}}
-          whileTap={{scale: 0.98}}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
-          <motion.div
-            whileHover={{rotate: 180}}
-            transition={{duration: 0.3}}
-          >
-            <CIcon icon={cilSpeedometer}/>
+          <motion.div whileHover={{ rotate: 180 }} transition={{ duration: 0.3 }}>
+            <CIcon icon={cilSpeedometer} />
           </motion.div>
           <LogoText>ProductX Admin</LogoText>
         </Logo>
       </Link>
-        <CDropdown variant="nav-item" placement="bottom-end" className="ms-2">
-          <CDropdownToggle caret={false}>
-            <CIcon icon={cilLanguage} size="lg"/>
-          </CDropdownToggle>
-          <CDropdownMenu>
-            <CDropdownItem onClick={() => changeLanguage('en')}>English</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('zh')}>中文</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('es')}>Español</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('fr')}>Français</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('ar')}>عربي</CDropdownItem> {/* 阿拉伯语 */}
-            <CDropdownItem onClick={() => changeLanguage('ru')}>Русский</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('de')}>Deutsch</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('ko')}>한국어</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('ja')}>日本語</CDropdownItem>
-            <CDropdownItem onClick={() => changeLanguage('it')}>Italiano</CDropdownItem>
-          </CDropdownMenu>
-        </CDropdown>
+      <CDropdown variant="nav-item" placement="bottom-end" className="ms-2">
+        <CDropdownToggle caret={false}>
+          <CIcon icon={cilLanguage} size="lg" />
+        </CDropdownToggle>
+        <CDropdownMenu>
+          <CDropdownItem onClick={() => changeLanguage('en')}>English</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('zh')}>中文</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('es')}>Español</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('fr')}>Français</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('ar')}>عربي</CDropdownItem> {/* 阿拉伯语 */}
+          <CDropdownItem onClick={() => changeLanguage('ru')}>Русский</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('de')}>Deutsch</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('ko')}>한국어</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('ja')}>日本語</CDropdownItem>
+          <CDropdownItem onClick={() => changeLanguage('it')}>Italiano</CDropdownItem>
+        </CDropdownMenu>
+      </CDropdown>
 
-      <motion.div
-        variants={buttonVariants}
-        initial="hidden"
-        animate="visible"
-        whileHover="hover"
-      >
+      <motion.div variants={buttonVariants} initial="hidden" animate="visible" whileHover="hover">
         <Link to="/register">
-          <RegisterButton>
-            注册账号
-          </RegisterButton>
+          <RegisterButton>注册账号</RegisterButton>
         </Link>
       </motion.div>
     </HeaderWrapper>
