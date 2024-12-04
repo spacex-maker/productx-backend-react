@@ -80,7 +80,7 @@ const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
             {selectedProfile.preferredPriceRange}
           </Descriptions.Item>
           <Descriptions.Item label={<><ShoppingCartOutlined /> {t('preferredCategories')}</>} span={3}>
-            {formatArrayString(selectedProfile.preferredCategories)}
+            {formatArrayToTags(selectedProfile.preferredCategories, 'purple')}
           </Descriptions.Item>
           <Descriptions.Item label={<><ShoppingCartOutlined /> {t('preferredBrands')}</>} span={3}>
             {formatArrayToTags(selectedProfile.preferredBrands, 'blue')}

@@ -25,6 +25,10 @@ import {
   cilUser,
   cilUserFemale,
 } from '@coreui/icons'
+import ReactECharts from 'echarts-for-react'
+import { Spin, DatePicker, Row, Col } from 'antd'
+import api from 'src/axiosInstance'
+import moment from 'moment'
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
@@ -33,10 +37,37 @@ import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
 
-const Dashboard = () => {
-  const [startDate, setStartDate] = useState('2024-01-01')
-  const [endDate, setEndDate] = useState('2024-08-01')
+const { RangePicker } = DatePicker
 
+const Dashboard = () => {
+  const [startDate, setStartDate] = useState(moment().subtract(7, 'days'))
+  const [endDate, setEndDate] = useState(moment())
+  const [growthStats, setGrowthStats] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    fetchGrowthStats()
+  }, [startDate, endDate])
+
+  const fetchGrowthStats = async () => {
+    setIsLoading(true)
+    try {
+      const response = await api.get('/manage/user-growth-stats/range', {
+        params: {
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD')
+        }
+      })
+
+      if (response) {
+        setGrowthStats(response.data)
+      }
+    } catch (error) {
+      console.error('获取用户增长数据失败:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const progressExample = [
     { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
@@ -159,86 +190,245 @@ const Dashboard = () => {
     },
   ]
 
-  return (
-      <>
-        <CRow>
-          <CCol sm={12}>
-            <CCard>
-              <CCardHeader>
-                Dashboard
-              </CCardHeader>
-              <CCardBody>
-                <CRow>
-                  {progressExample.map((item, index) => (
-                      <CCol key={index} sm={6} md={4} lg={3}>
-                        <CCard>
-                          <CCardBody>
-                            <h5>{item.title}</h5>
-                            <CProgress
-                                value={item.percent}
-                                color={item.color}
-                                size="sm"
-                            />
-                            <span>{item.value}</span>
-                          </CCardBody>
-                        </CCard>
-                      </CCol>
-                  ))}
-                </CRow>
+  const getUserGrowthOption = () => ({
+    title: {
+      text: '用户增长趋势'
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    legend: {
+      data: ['新增用户', '活跃用户', '总用户数']
+    },
+    xAxis: {
+      type: 'category',
+      data: growthStats?.map(item => item.date) || []
+    },
+    yAxis: [
+      {
+        type: 'value',
+        name: '用户数',
+      }
+    ],
+    series: [
+      {
+        name: '新增用户',
+        type: 'bar',
+        data: growthStats?.map(item => item.newUsers) || []
+      },
+      {
+        name: '活跃用户',
+        type: 'line',
+        data: growthStats?.map(item => item.activeUsers) || []
+      },
+      {
+        name: '总用户数',
+        type: 'line',
+        data: growthStats?.map(item => item.totalUsers) || []
+      }
+    ]
+  })
+
+  const getRegionDistributionOption = () => ({
+    title: {
+      text: '用户地域分布'
+    },
+    tooltip: {
+      trigger: 'item'
+    },
+    series: [
+      {
+        type: 'pie',
+        radius: '50%',
+        data: growthStats?.length > 0 ? 
+          Object.entries(JSON.parse(growthStats[growthStats.length - 1].regionDistribution || '{}'))
+            .map(([name, value]) => ({ name, value })) : []
+      }
+    ]
+  })
+
+  const getDeviceDistributionOption = () => ({
+    title: {
+      text: '设备使用分布'
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)'
+    },
+    series: [{
+      type: 'pie',
+      radius: ['50%', '70%'],
+      avoidLabelOverlap: false,
+      label: {
+        show: false,
+        position: 'center'
+      },
+      data: growthStats?.length > 0 ? 
+        Object.entries(JSON.parse(growthStats[growthStats.length - 1].deviceDistribution || '{}'))
+          .map(([name, value]) => ({ 
+            name: name === 'mobile' ? '移动端' : name === 'tablet' ? '平板' : '桌面端',
+            value 
+          })) : []
+    }]
+  })
+
+  const getUserSourceOption = () => ({
+    title: {
+      text: '新用户来源分析'
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: ['广告', '社交媒体', '自然搜索', '推荐']
+    },
+    yAxis: {
+      type: 'value',
+      name: '占比(%)'
+    },
+    series: [{
+      data: growthStats?.length > 0 ? 
+        Object.values(JSON.parse(growthStats[growthStats.length - 1].newUserSource || '{}')) : [],
+      type: 'bar',
+      showBackground: true,
+      backgroundStyle: {
+        color: 'rgba(180, 180, 180, 0.2)'
+      }
+    }]
+  })
+
+  const renderMetricsCards = () => {
+    if (!growthStats?.length) return null;
+    const latestStats = growthStats[growthStats.length - 1];
+    
+    const metrics = [
+      {
+        title: '用户留存率',
+        value: `${latestStats?.userRetentionRate || 0}%`,
+        color: 'info'
+      },
+      {
+        title: '用户参与度',
+        value: (latestStats?.userEngagementScore || 0).toFixed(1),
+        color: 'success'
+      },
+      {
+        title: '转化率',
+        value: `${latestStats?.conversionRate || 0}%`,
+        color: 'warning'
+      },
+      {
+        title: '平均会话时长',
+        value: `${Math.floor((latestStats?.avgSessionDuration || 0) / 60)}分${Math.floor((latestStats?.avgSessionDuration || 0) % 60)}秒`,
+        color: 'primary'
+      },
+      {
+        title: '跳出率',
+        value: `${latestStats?.bounceRate || 0}%`,
+        color: 'danger'
+      },
+      {
+        title: '平均订单金额',
+        value: `¥${(latestStats?.avgOrderValue || 0).toFixed(2)}`,
+        color: 'success'
+      }
+    ];
+
+    return (
+      <CRow>
+        {metrics.map((metric, index) => (
+          <CCol key={index} sm={6} lg={4} xl={2}>
+            <CCard className="mb-4">
+              <CCardBody className="text-center">
+                <div className="text-medium-emphasis small">{metric.title}</div>
+                <div className={`fs-4 fw-semibold text-${metric.color}`}>{metric.value}</div>
               </CCardBody>
             </CCard>
           </CCol>
-        </CRow>
-        <CRow>
-          <CCol sm={12}>
-            <CTable>
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell>Avatar</CTableHeaderCell>
-                  <CTableHeaderCell>User</CTableHeaderCell>
-                  <CTableHeaderCell>Country</CTableHeaderCell>
-                  <CTableHeaderCell>Usage</CTableHeaderCell>
-                  <CTableHeaderCell>Payment</CTableHeaderCell>
-                  <CTableHeaderCell>Activity</CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {tableExample.map((item, index) => (
-                    <CTableRow key={index}>
-                      <CTableDataCell>
-                        <CAvatar src={item.avatar.src} status={item.avatar.status} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>
-                          {item.user.name}
-                          {item.user.new && <CIcon icon={cilUser} />}
-                        </div>
-                        <div>{item.user.registered}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CIcon icon={item.country.flag} />
-                        {item.country.name}
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CProgress
-                            value={item.usage.value}
-                            color={item.usage.color}
-                            size="sm"
-                        />
-                        <span>{item.usage.period}</span>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <CIcon icon={item.payment.icon} />
-                        {item.payment.name}
-                      </CTableDataCell>
-                      <CTableDataCell>{item.activity}</CTableDataCell>
-                    </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CCol>
-        </CRow>
-      </>
+        ))}
+      </CRow>
+    )
+  }
+
+  const handleDateRangeChange = (dates) => {
+    if (dates) {
+      setStartDate(dates[0])
+      setEndDate(dates[1])
+    } else {
+      setStartDate(moment().subtract(7, 'days'))
+      setEndDate(moment())
+    }
+  }
+
+  return (
+    <>
+      <Row className="mb-4">
+        <Col>
+          <CCard>
+            <CCardBody>
+              <Row align="middle" gutter={16}>
+                <Col>
+                  <span>选择时间范围：</span>
+                </Col>
+                <Col>
+                  <RangePicker
+                    value={[startDate, endDate]}
+                    onChange={handleDateRangeChange}
+                    allowClear={false}
+                    style={{ width: '280px' }}
+                  />
+                </Col>
+              </Row>
+            </CCardBody>
+          </CCard>
+        </Col>
+      </Row>
+
+      {renderMetricsCards()}
+
+      <CRow className="mb-4">
+        <CCol sm={12}>
+          <CCard>
+            <CCardHeader>用户数据分析</CCardHeader>
+            <CCardBody>
+              <Spin spinning={isLoading}>
+                <CRow>
+                  <CCol sm={8}>
+                    <ReactECharts option={getUserGrowthOption()} style={{height: '400px'}}/>
+                  </CCol>
+                  <CCol sm={4}>
+                    <ReactECharts option={getRegionDistributionOption()} style={{height: '400px'}}/>
+                  </CCol>
+                </CRow>
+              </Spin>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+
+      <CRow>
+        <CCol sm={6}>
+          <CCard>
+            <CCardHeader>设备使用分析</CCardHeader>
+            <CCardBody>
+              <ReactECharts option={getDeviceDistributionOption()} style={{height: '300px'}}/>
+            </CCardBody>
+          </CCard>
+        </CCol>
+        <CCol sm={6}>
+          <CCard>
+            <CCardHeader>新用户来源分析</CCardHeader>
+            <CCardBody>
+              <ReactECharts option={getUserSourceOption()} style={{height: '300px'}}/>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    </>
   )
 }
 
