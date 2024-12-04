@@ -6,9 +6,9 @@
     "moduleResolution": "bundler",
     "target": "ES6",
     "checkJs": true,
-    "resolveJsonModule": true, // 解析 JSON 文件
-    "esModuleInterop": true,  // 允许默认导入非 ES 模块
-    "skipLibCheck": true,      // 跳过库的类型检查
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,      
     "strict": false,
     "paths": {
       "src/*": ["./src/*"]
