@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Modal, Form, Switch, Alert, Row, Col, Select, InputNumber, Upload } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Input, Modal, Form, Switch, Alert, Row, Col, Select, InputNumber, Upload, Tag } from 'antd';
+import { PlusOutlined, CheckCircleOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import COS from 'cos-js-sdk-v5';
@@ -175,21 +175,21 @@ const UpdateUserProductModal = ({
     }
   };
 
-  // 处理文件列表变化
+  // 修改 normFile 函数，在表单提交时转换格式
   const normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
     }
-    // 从上传结果中提取URL
-    return e?.fileList.map(file => ({
-      ...file,
-      url: file.response?.url || file.url
-    }));
+    // 对于 Upload 组件的 onChange 事件
+    if (e?.fileList && e.fileList.length > 0) {
+      // 返回 URL 字符串用于提交
+      return e.fileList[0].response?.url || e.fileList[0].url;
+    }
+    return '';
   };
 
   useEffect(() => {
     if (isVisible && selectedProduct) {
-      // 将已有图片转换为Upload组件需要的格式
       const coverImage = selectedProduct.imageCover ? [{
         uid: '-1',
         name: 'cover.jpg',
@@ -197,22 +197,42 @@ const UpdateUserProductModal = ({
         url: selectedProduct.imageCover,
       }] : [];
 
-      const productImages = selectedProduct.imageList ? 
-        selectedProduct.imageList.map((url, index) => ({
-          uid: `-${index + 1}`,
-          name: `product-${index + 1}.jpg`,
-          status: 'done',
-          url: url,
-        })) : [];
-
       form.setFieldsValue({
         ...selectedProduct,
-        status: selectedProduct.status === 1,
+        status: selectedProduct.status,
         imageCover: coverImage,
-        imageList: productImages,
+        imageList: selectedProduct.imageList || [],
       });
     }
   }, [isVisible, selectedProduct, form]);
+
+  // 添加状态配置对象
+  const statusOptions = [
+    {
+      value: 0,
+      label: 'normal',
+      icon: <CheckCircleOutlined />,
+      color: '#52c41a'
+    },
+    {
+      value: 1,
+      label: 'draft',
+      icon: <EditOutlined />,
+      color: '#faad14'
+    },
+    {
+      value: 2,
+      label: 'offShelf',
+      icon: <StopOutlined />,
+      color: '#ff4d4f'
+    },
+    {
+      value: 3,
+      label: 'deleted',
+      icon: <DeleteOutlined />,
+      color: '#d9d9d9'
+    }
+  ];
 
   return (
     <StyledModal
@@ -220,7 +240,7 @@ const UpdateUserProductModal = ({
       title={t("updateProduct")}
       open={isVisible}
       onCancel={onCancel}
-      onOk={onOk}
+      onOk={() => form.submit()}
       okText={t("submit")}
       cancelText={t("cancel")}
       width={480}
@@ -237,7 +257,16 @@ const UpdateUserProductModal = ({
         form={form}
         layout="vertical"
         colon={false}
-        onFinish={handleUpdateProduct}
+        onFinish={(values) => {
+          // 在这里处理数据，然后调用 props 中的 handleUpdateProduct
+          const formData = {
+            ...values,
+            imageCover: Array.isArray(values.imageCover) && values.imageCover.length > 0
+              ? (values.imageCover[0].response?.url || values.imageCover[0].url)
+              : values.imageCover,
+          };
+          handleUpdateProduct(formData);
+        }}
       >
         <Form.Item name="id" hidden>
           <Input />
@@ -398,12 +427,20 @@ const UpdateUserProductModal = ({
         <Form.Item
           name="status"
           label={t("productStatus")}
-          valuePropName="checked"
+          rules={[{ required: true, message: t("selectStatus") }]}
         >
-          <Switch
-            checkedChildren={t("enabled")}
-            unCheckedChildren={t("disabled")}
-          />
+          <Select placeholder={t("selectStatus")}>
+            {statusOptions.map(option => (
+              <Select.Option key={option.value} value={option.value}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {React.cloneElement(option.icon, { style: { color: option.color } })}
+                  <Tag color={option.color} style={{ margin: 0 }}>
+                    {t(option.label)}
+                  </Tag>
+                </div>
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
       </Form>
     </StyledModal>

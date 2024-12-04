@@ -257,8 +257,11 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
         category: values.category,
         countryCode: values.countryCode,
         city: values.city,
-        imageCover: values.imageCover?.[0]?.url || '',
-        imageList: values.imageList?.map(file => file.url) || [],
+        imageCover: Array.isArray(values.imageCover) && values.imageCover.length > 0
+          ? (values.imageCover[0].response?.url || values.imageCover[0].url)
+          : '',
+        imageList: (values.imageList || []).map(file => file.response?.url || file.url),
+        status: 0,
       };
 
       await onFinish(requestData);

@@ -443,5 +443,10 @@
   "logistics": "Logistics",
   "express": "Express",
   "courier": "Courier",
-  "noDelivery": "No Delivery Required"
+  "noDelivery": "No Delivery Required",
+  "normal": "Normal",
+  "draft": "Draft",
+  "offShelf": "Off Shelf",
+  "deleted": "Deleted",
+  "selectStatus": "Please select a status"
 }
