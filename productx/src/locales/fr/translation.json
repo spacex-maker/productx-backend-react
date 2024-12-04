@@ -233,7 +233,8 @@
     "资源管理": "Gestion des Ressources",
     "问题跟踪": "Suivi des Problèmes",
     "商品管理": "Gestion des produits",
-    "商品分类管理": "Gestion des catégories de produits"
+    "商品分类管理": "Gestion des catégories de produits",
+    "地址管理": "Gestion des adresses"
   },
   "confirmDelete": "Confirmer la suppression",
   "countryName": "Nom du pays",
@@ -481,5 +482,6 @@
   "searchByName": "Rechercher par nom de contact",
   "searchByPhone": "Rechercher par numéro de téléphone",
   "searchByAddress": "Rechercher par adresse",
-  "shippingAddressInfo": "Informations sur l'adresse de livraison"
+  "shippingAddressInfo": "Informations sur l'adresse de livraison",
+  "userAddressList": "Liste des adresses utilisateur"
 }

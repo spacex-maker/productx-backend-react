@@ -226,7 +226,8 @@
     "资源管理": "Gestione delle Risorse",
     "问题跟踪": "Tracciamento dei Problemi",
     "商品管理": "Gestione del prodotto",
-    "商品分类管理": "Gestione delle categorie di prodotti"
+    "商品分类管理": "Gestione delle categorie di prodotti",
+    "地址管理": "Gestione degli indirizzi"
   },
   "confirmDelete": "Conferma eliminazione",
   "countryName": "Nome del paese",
@@ -474,5 +475,6 @@
   "searchByName": "Cerca per nome del contatto",
   "searchByPhone": "Cerca per numero di telefono",
   "searchByAddress": "Cerca per indirizzo",
-  "shippingAddressInfo": "Informazioni sull'indirizzo di spedizione"
+  "shippingAddressInfo": "Informazioni sull'indirizzo di spedizione",
+  "userAddressList": "Elenco indirizzi utente"
 }

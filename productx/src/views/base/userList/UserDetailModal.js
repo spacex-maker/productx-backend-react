@@ -136,6 +136,17 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
       dataIndex: 'contactAddress',
       key: 'contactAddress',
       ellipsis: true,
+      render: (text) => (
+        <Space>
+          <span style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {text}
+          </span>
+          <CopyOutlined
+            style={{ fontSize: '10px', cursor: 'pointer' }}
+            onClick={() => handleCopy(text)}
+          />
+        </Space>
+      ),
     },
     {
       title: t('currentUse'),

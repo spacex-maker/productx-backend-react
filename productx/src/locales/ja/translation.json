@@ -233,7 +233,8 @@
     "资源管理": "リソース管理",
     "问题跟踪": "問題追跡",
     "商品管理": "商品管理",
-    "商品分类管理": "商品カテゴリー管理"
+    "商品分类管理": "商品カテゴリー管理",
+    "地址管理": "住所管理"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -481,5 +482,6 @@
   "searchByName": "連絡先名で検索",
   "searchByPhone": "電話番号で検索",
   "searchByAddress": "住所で検索",
-  "shippingAddressInfo": "配送先住所情報"
+  "shippingAddressInfo": "配送先住所情報",
+  "userAddressList": "ユーザー住所リスト"
 }

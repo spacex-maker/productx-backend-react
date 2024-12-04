@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Typography, Space, Row, Col, Card, Watermark } from 'antd';
+import { Modal, Typography, Space, Row, Col, Card, Watermark, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from 'src/components/common/Common';
 import {
@@ -10,7 +10,8 @@ import {
   GlobalOutlined,
   AimOutlined,
   ClockCircleOutlined,
-  NumberOutlined
+  NumberOutlined,
+  CopyOutlined
 } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
@@ -49,6 +50,18 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
       <Text style={styles.text}>{text}</Text>
     </Space>
   );
+
+  const handleCopy = (text) => {
+    if (!text) {
+      message.error(t('copyFailed'));
+      return;
+    }
+    navigator.clipboard.writeText(text).then(() => {
+      message.success(t('copySuccess'));
+    }).catch(() => {
+      message.error(t('copyFailed'));
+    });
+  };
 
   return (
     <Modal
@@ -122,7 +135,24 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
                 </Row>
                 <IconText
                   icon={<HomeOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('contactAddress')}: ${selectedAddress.contactAddress}`}
+                  text={
+                    <Space>
+                      <span style={{ 
+                        maxWidth: '300px', 
+                        overflow: 'hidden', 
+                        textOverflow: 'ellipsis', 
+                        whiteSpace: 'nowrap',
+                        display: 'inline-block',
+                        verticalAlign: 'bottom'
+                      }}>
+                        {`${t('contactAddress')}: ${selectedAddress.contactAddress}`}
+                      </span>
+                      <CopyOutlined
+                        style={{ fontSize: '10px', cursor: 'pointer' }}
+                        onClick={() => handleCopy(selectedAddress.contactAddress)}
+                      />
+                    </Space>
+                  }
                 />
               </Space>
             </Card>

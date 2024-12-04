@@ -225,7 +225,8 @@
     "资源管理": "Resource Management",
     "问题跟踪": "Issue Tracking",
     "商品管理": "Product Management",
-    "商品分类管理": "Product Category Management"
+    "商品分类管理": "Product Category Management",
+    "地址管理": "Address Management"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
@@ -473,5 +474,6 @@
   "searchByName": "Search by Contact Name",
   "searchByPhone": "Search by Phone Number",
   "searchByAddress": "Search by Address",
-  "shippingAddressInfo": "Shipping Address Information"
+  "shippingAddressInfo": "Shipping Address Information",
+  "userAddressList": "User Address List"
 }

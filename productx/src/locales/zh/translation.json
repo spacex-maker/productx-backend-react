@@ -233,7 +233,8 @@
     "资源管理": "资源管理",
     "问题跟踪": "问题跟踪",
     "商品管理": "商品管理",
-    "商品分类管理": "商品分类管理"
+    "商品分类管理": "商品分类管理",
+    "地址管理": "地址管理"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -481,5 +482,6 @@
   "searchByName": "按联系人搜索",
   "searchByPhone": "按联系电话搜索",
   "searchByAddress": "按地址搜索",
-  "shippingAddressInfo": "收货地址信息"
+  "shippingAddressInfo": "收货地址信息",
+  "userAddressList": "用户地址列表"
 }
