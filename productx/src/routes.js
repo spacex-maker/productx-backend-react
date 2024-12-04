@@ -100,6 +100,9 @@ const UserProductRouter = React.lazy(() => import('./views/base/userProduct/User
 
 const UserProductCategoryRouter = React.lazy(() => import('./views/base/userProductCategory/UserProductCategory'))
 
+const UserAddressRouter = React.lazy(() => import('./views/base/userAddress/ListUserAddress'))
+
+
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'));
 
 const routes = [
@@ -357,6 +360,13 @@ const routes = [
     path: '/sys/userProductCategory', name: '商品分类管理', element: (
       <PrivateRoute>
         <UserProductCategoryRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/userAddress', name: '用户地址管理', element: (
+      <PrivateRoute>
+        <UserAddressRouter/>
       </PrivateRoute>
     )
   },
