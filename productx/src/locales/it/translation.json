@@ -444,5 +444,10 @@
   "logistics": "Logistica",
   "express": "Consegna espressa",
   "courier": "Corriere",
-  "noDelivery": "Nessuna consegna necessaria"
+  "noDelivery": "Nessuna consegna necessaria",
+  "normal": "Normale",
+  "draft": "Bozza",
+  "offShelf": "Non disponibile",
+  "deleted": "Eliminato",
+  "selectStatus": "Si prega di selezionare uno stato"
 }

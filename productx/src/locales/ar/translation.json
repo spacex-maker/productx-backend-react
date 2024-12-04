@@ -434,5 +434,10 @@
   "logistics": "لوجستيات",
   "express": "توصيل سريع",
   "courier": "خدمة البريد",
-  "noDelivery": "لا حاجة للتوصيل"
+  "noDelivery": "لا حاجة للتوصيل",
+  "normal": "طبيعي",
+  "draft": "مسودة",
+  "offShelf": "غير معروض",
+  "deleted": "تم الحذف",
+  "selectStatus": "يرجى اختيار الحالة"
 }

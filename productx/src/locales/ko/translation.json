@@ -451,5 +451,10 @@
   "logistics": "물류",
   "express": "급송",
   "courier": "퀵서비스",
-  "noDelivery": "배송 불필요"
+  "noDelivery": "배송 불필요",
+  "normal": "정상",
+  "draft": "초안",
+  "offShelf": "판매 중지",
+  "deleted": "삭제됨",
+  "selectStatus": "상태를 선택하세요"
 }

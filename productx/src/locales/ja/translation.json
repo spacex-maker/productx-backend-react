@@ -451,5 +451,10 @@
   "logistics": "物流",
   "express": "速達",
   "courier": "宅配",
-  "noDelivery": "配送不要"
+  "noDelivery": "配送不要",
+  "normal": "正常",
+  "draft": "下書き",
+  "offShelf": "非表示",
+  "deleted": "削除済み",
+  "selectStatus": "ステータスを選択してください"
 }

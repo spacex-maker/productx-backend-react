@@ -451,5 +451,10 @@
   "logistics": "物流",
   "express": "快递",
   "courier": "跑腿",
-  "noDelivery": "无需配送"
+  "noDelivery": "无需配送",
+  "normal": "正常",
+  "draft": "草稿",
+  "offShelf": "下架",
+  "deleted": "删除",
+  "selectStatus": "请选择状态"
 }

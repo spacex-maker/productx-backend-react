@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Descriptions, Divider, Image, Space, Alert } from 'antd';
+import { Modal, Descriptions, Divider, Image, Space, Alert, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 import api from 'src/axiosInstance';
 import { formatDate } from 'src/components/common/Common';
 import styled from 'styled-components';
+import { CheckCircleOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const StyledModal = styled(Modal)`
   .ant-modal-content {
@@ -105,6 +106,41 @@ const DetailUserProductModal = ({ visible, productId, onCancel }) => {
     return null;
   }
 
+  const statusConfig = {
+    0: { 
+      icon: <CheckCircleOutlined />,
+      color: '#52c41a',
+      label: 'normal'
+    },
+    1: {
+      icon: <EditOutlined />,
+      color: '#faad14',
+      label: 'draft'
+    },
+    2: {
+      icon: <StopOutlined />,
+      color: '#ff4d4f',
+      label: 'offShelf'
+    },
+    3: {
+      icon: <DeleteOutlined />,
+      color: '#d9d9d9',
+      label: 'deleted'
+    }
+  };
+
+  const renderStatus = (status) => {
+    const config = statusConfig[status] || statusConfig[0];
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {React.cloneElement(config.icon, { style: { color: config.color } })}
+        <Tag color={config.color}>
+          {t(config.label)}
+        </Tag>
+      </div>
+    );
+  };
+
   return (
     <StyledModal
       title={t("productDetails")}
@@ -114,14 +150,10 @@ const DetailUserProductModal = ({ visible, productId, onCancel }) => {
       width={600}
       maskClosable={false}
     >
-      <Alert
-        message={productData.status === 1 ? t("productEnabled") : t("productDisabled")}
-        type={productData.status === 1 ? "success" : "warning"}
-        showIcon
-        style={{ marginBottom: '12px' }}
-      />
-
       <Descriptions column={2} size="small" bordered>
+        <Descriptions.Item label={t("productStatus")} span={2}>
+          {productData && renderStatus(productData.status)}
+        </Descriptions.Item>
         <Descriptions.Item label={t("productId")} span={2}>
           {productData.id}
         </Descriptions.Item>

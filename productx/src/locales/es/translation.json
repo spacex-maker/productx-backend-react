@@ -451,5 +451,10 @@
   "logistics": "Logística",
   "express": "Entrega exprés",
   "courier": "Mensajería",
-  "noDelivery": "No requiere entrega"
+  "noDelivery": "No requiere entrega",
+  "normal": "Normal",
+  "draft": "Borrador",
+  "offShelf": "Fuera de stock",
+  "deleted": "Eliminado",
+  "selectStatus": "Por favor, seleccione un estado"
 }
