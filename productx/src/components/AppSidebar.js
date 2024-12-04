@@ -59,11 +59,11 @@ const BrandText = styled.div`
   color: #fff;
   animation: ${glowAnimation} 2s ease-in-out infinite;
   transition: all 0.3s ease;
-  
+
   .full-brand {
     display: ${props => props.narrow ? 'none' : 'block'};
   }
-  
+
   .single-letter {
     display: ${props => props.narrow ? 'block' : 'none'};
     font-size: 1.5rem;
@@ -155,7 +155,7 @@ const AppSidebar = () => {
       <BrandContainer>
         <BrandText narrow={sidebarUnfoldable || !sidebarShow}>
           <span className="full-brand">Product X ADMIN</span>
-          <span className="single-letter">P</span>
+          <span className="single-letter">ProtX</span>
         </BrandText>
       </BrandContainer>
       <style>
@@ -164,18 +164,18 @@ const AppSidebar = () => {
           .nav-group-items .nav-item {
             padding-left: 1rem !important;
           }
-          
+
           /* 展开状态下的子菜单图标缩进 */
           .nav-group-items .nav-item .nav-icon {
             margin-left: 0.5rem;
           }
-          
+
           /* 折叠状态下重置缩进 */
           .sidebar-narrow .nav-group-items .nav-item,
           .sidebar-narrow-unfoldable .nav-group-items .nav-item {
             padding-left: 0 !important;
           }
-          
+
           /* 折叠状态下重置图标位置 */
           .sidebar-narrow .nav-group-items .nav-item .nav-icon,
           .sidebar-narrow-unfoldable .nav-group-items .nav-item .nav-icon {
