@@ -234,7 +234,8 @@
     "问题跟踪": "问题跟踪",
     "商品管理": "商品管理",
     "商品分类管理": "商品分类管理",
-    "地址管理": "地址管理"
+    "地址管理": "地址管理",
+    "银行账户管理": "银行账户管理"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -483,5 +484,31 @@
   "searchByPhone": "按联系电话搜索",
   "searchByAddress": "按地址搜索",
   "shippingAddressInfo": "收货地址信息",
-  "userAddressList": "用户地址列表"
+  "userAddressList": "用户地址列表",
+  "bankAccountManagement": "银行账户管理",
+  "accountList": "账户列表",
+  "createAccount": "新增账户",
+  "editAccount": "编辑账户",
+  "accountDetails": "账户详情",
+
+  "bankName": "银行名称",
+  "accountNumber": "账号",
+  "accountHolderName": "账户持有人",
+  "swiftCode": "SWIFT代码",
+  "currencyCode": "货币代码",
+  "isActive": "是否激活",
+  "enterBankName": "请输入银行名称",
+  "enterAccountNumber": "请输入账号",
+  "enterAccountHolderName": "请输入账户持有人姓名",
+  "enterSwiftCode": "请输入SWIFT代码",
+  "enterCurrencyCode": "请输入货币代码",
+  "pleaseEnterBankName": "请输入银行名称",
+  "pleaseEnterAccountNumber": "请输入账号",
+  "pleaseEnterAccountHolderName": "请输入账户持有人姓名",
+  "pleaseEnterSwiftCode": "请输入SWIFT代码",
+  "pleaseEnterCurrencyCode": "请输入货币代码",
+  "pleaseEnterUserId": "请输入用户ID",
+  "operationSuccess": "操作成功",
+  "operationFailed": "操作失败",
+  "remark": "备注"
 }

@@ -103,6 +103,9 @@ const UserProductCategoryRouter = React.lazy(() => import('./views/base/userProd
 const UserAddressRouter = React.lazy(() => import('./views/base/userAddress/ListUserAddress'))
 
 
+const UserAccountBankRouter = React.lazy(() => import('./views/base/userAccountBank/ListUserAccountBank'))
+
+
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'));
 
 const routes = [
@@ -370,7 +373,13 @@ const routes = [
       </PrivateRoute>
     )
   },
-
+  {
+    path: '/sys/userAccountBank', name: '银行账户管理', element: (
+      <PrivateRoute>
+        <UserAccountBankRouter/>
+      </PrivateRoute>
+    )
+  },
 ]
 
 export default routes;
