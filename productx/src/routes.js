@@ -106,6 +106,9 @@ const UserAddressRouter = React.lazy(() => import('./views/base/userAddress/List
 const UserAccountBankRouter = React.lazy(() => import('./views/base/userAccountBank/ListUserAccountBank'))
 
 
+const UserProfileRouter = React.lazy(() => import('./views/base/userProfile/ListUserProfile'))
+
+
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'));
 
 const routes = [
@@ -377,6 +380,13 @@ const routes = [
     path: '/sys/userAccountBank', name: '银行账户管理', element: (
       <PrivateRoute>
         <UserAccountBankRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/userProfile', name: '用户画像管理', element: (
+      <PrivateRoute>
+        <UserProfileRouter/>
       </PrivateRoute>
     )
   },
