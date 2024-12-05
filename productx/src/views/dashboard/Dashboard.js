@@ -26,9 +26,12 @@ import {
   cilUserFemale,
 } from '@coreui/icons'
 import ReactECharts from 'echarts-for-react'
-import { Spin, DatePicker, Row, Col } from 'antd'
+import { DatePicker, Spin, Row, Col, Card } from 'antd'
 import api from 'src/axiosInstance'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+import locale from 'antd/locale/zh_CN'
+import { ConfigProvider } from 'antd'
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
@@ -37,11 +40,13 @@ import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
 
+dayjs.locale('zh-cn')
+
 const { RangePicker } = DatePicker
 
 const Dashboard = () => {
-  const [startDate, setStartDate] = useState(moment().subtract(7, 'days'))
-  const [endDate, setEndDate] = useState(moment())
+  const [startDate, setStartDate] = useState(dayjs().subtract(7, 'days'))
+  const [endDate, setEndDate] = useState(dayjs())
   const [growthStats, setGrowthStats] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -60,7 +65,7 @@ const Dashboard = () => {
       })
 
       if (response) {
-        setGrowthStats(response.data)
+        setGrowthStats(response)
       }
     } catch (error) {
       console.error('获取用户增长数据失败:', error)
@@ -222,7 +227,7 @@ const Dashboard = () => {
         data: growthStats?.map(item => item.activeUsers) || []
       },
       {
-        name: '总用户数',
+        name: '总用户���',
         type: 'line',
         data: growthStats?.map(item => item.totalUsers) || []
       }
@@ -359,34 +364,25 @@ const Dashboard = () => {
       setStartDate(dates[0])
       setEndDate(dates[1])
     } else {
-      setStartDate(moment().subtract(7, 'days'))
-      setEndDate(moment())
+      setStartDate(dayjs().subtract(7, 'days'))
+      setEndDate(dayjs())
     }
   }
 
   return (
-    <>
-      <Row className="mb-4">
-        <Col>
-          <CCard>
-            <CCardBody>
-              <Row align="middle" gutter={16}>
-                <Col>
-                  <span>选择时间范围：</span>
-                </Col>
-                <Col>
-                  <RangePicker
-                    value={[startDate, endDate]}
-                    onChange={handleDateRangeChange}
-                    allowClear={false}
-                    style={{ width: '280px' }}
-                  />
-                </Col>
-              </Row>
-            </CCardBody>
-          </CCard>
-        </Col>
-      </Row>
+    <ConfigProvider locale={locale}>
+      <CCard className="mb-2">
+        <CCardBody className="d-flex align-items-center py-2">
+          <small className="text-medium-emphasis me-2">选择时间范围：</small>
+          <RangePicker
+            defaultValue={[startDate, endDate]}
+            onChange={handleDateRangeChange}
+            format="YYYY-MM-DD"
+            size="small"
+            style={{ fontSize: '12px' }}
+          />
+        </CCardBody>
+      </CCard>
 
       {renderMetricsCards()}
 
@@ -428,7 +424,7 @@ const Dashboard = () => {
           </CCard>
         </CCol>
       </CRow>
-    </>
+    </ConfigProvider>
   )
 }
 
