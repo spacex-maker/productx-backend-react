@@ -7,7 +7,7 @@ module.exports = defineConfig(() => {
   return {
     base: './',
     build: {
-      outDir: 'dist',
+      outDir: 'build',
     },
     css: {
       modules: {
