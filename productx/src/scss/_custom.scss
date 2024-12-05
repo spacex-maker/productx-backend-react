@@ -319,7 +319,7 @@ textarea::placeholder,
   margin-top: 1px !important;     // 减小错误提示的上边距
 }
 
-:where(.css-dev-only-do-not-override-1x0dypw) .ant-col {
+.ant-col {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-size: 10px; /* 修改为 10px */
   box-sizing: border-box;

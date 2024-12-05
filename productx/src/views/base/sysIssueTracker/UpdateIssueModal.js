@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Form, Input, Select, Upload, message, Button } from 'antd'
+import { Modal, Form, Input, Select, message, Button } from 'antd'
 import {
   BugOutlined,
   TagsOutlined,
@@ -7,8 +7,6 @@ import {
   FileTextOutlined,
   ExclamationCircleOutlined,
   ClockCircleOutlined,
-  PaperClipOutlined,
-  UploadOutlined
 } from '@ant-design/icons'
 import styled from 'styled-components'
 import api from 'src/axiosInstance'
@@ -19,25 +17,22 @@ const { Option } = Select
 const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, issuePriorities }) => {
   const handleSubmit = async (values) => {
     try {
-      // 处理标签数组
-      const tags = values.tags ? values.tags.join(',') : ''
-      
-      // 处理附件
-      const attachments = values.attachments ? 
-        JSON.stringify(values.attachments.map(file => file.url || file.response.url)) : ''
+      // 直接使用 tags 数组
+      const tags = Array.isArray(values.tags) ? values.tags : []
 
-      await api.put(`/manage/sys-issue-tracker/update`, {
+      const response = await api.put(`/manage/sys-issue-tracker/update`, {
         ...values,
         id: issue?.id,
-        tags,
-        attachments,
+        tags, // 传递数组
         updateBy: localStorage.getItem('username') || 'system'
       })
-      message.success('更新成功')
-      onOk()
-    } catch (error) {
-      console.error('Failed to update issue:', error)
-      message.error('更新失败')
+      
+        message.success('更新成功')
+        onOk()
+
+    } catch (err) {
+      console.error('Failed to update issue:', err)
+      message.error(err?.response?.data?.message || '更新失败，请稍后重试')
     }
   }
 
@@ -73,8 +68,7 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
         onFinish={handleSubmit}
         initialValues={{
           ...issue,
-          tags: issue?.tags ? issue.tags.split(',') : [],
-          attachments: issue?.attachments ? JSON.parse(issue.attachments) : []
+          tags: issue?.tags || [], // 直接使用返回的数组
         }}
         preserve={false}
       >
@@ -153,7 +147,7 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
         >
           <Select 
             mode="tags" 
-            placeholder="添加标签" 
+            placeholder="添加标签"
           />
         </Form.Item>
 
@@ -174,23 +168,6 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
               maxHeight: '96px'
             }}
           />
-        </Form.Item>
-
-        {/* 附件 */}
-        <Form.Item
-          name="attachments"
-          label={<><PaperClipOutlined style={{ fontSize: '11px' }} /> 附件</>}
-        >
-          <Upload
-            action="/api/upload"
-            listType="text"
-            multiple
-            maxCount={5}
-          >
-            <Button icon={<UploadOutlined />} size="small">
-              上传附件
-            </Button>
-          </Upload>
         </Form.Item>
       </Form>
 
