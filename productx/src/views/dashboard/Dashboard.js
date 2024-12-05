@@ -32,6 +32,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import locale from 'antd/locale/zh_CN'
 import { ConfigProvider } from 'antd'
+import * as echarts from 'echarts';
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
@@ -200,38 +201,73 @@ const Dashboard = () => {
       text: '用户增长趋势'
     },
     tooltip: {
-      trigger: 'axis'
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        animation: true,
+        label: {
+          backgroundColor: '#6a7985'
+        }
+      }
     },
     legend: {
-      data: ['新增用户', '活跃用户', '总用户数']
+      data: ['新增用户', '活跃用户', '总用户数'],
+      textStyle: { fontSize: 12 }
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
     },
     xAxis: {
       type: 'category',
-      data: growthStats?.map(item => item.date) || []
-    },
-    yAxis: [
-      {
-        type: 'value',
-        name: '用户数',
+      boundaryGap: true,
+      data: growthStats?.map(item => item.date) || [],
+      axisLine: {
+        lineStyle: { color: '#666' }
       }
-    ],
+    },
+    yAxis: [{
+      type: 'value',
+      name: '用户数',
+      splitLine: {
+        lineStyle: { type: 'dashed' }
+      }
+    }],
     series: [
       {
         name: '新增用户',
         type: 'bar',
-        data: growthStats?.map(item => item.newUsers) || []
+        data: growthStats?.map(item => item.newUsers) || [],
+        animationDelay: (idx) => idx * 100,
+        itemStyle: {
+          borderRadius: [4, 4, 0, 0]
+        }
       },
       {
         name: '活跃用户',
         type: 'line',
-        data: growthStats?.map(item => item.activeUsers) || []
+        smooth: true,
+        data: growthStats?.map(item => item.activeUsers) || [],
+        animationDelay: (idx) => idx * 100 + 300,
+        lineStyle: { width: 3 },
+        symbolSize: 8
       },
       {
-        name: '总用户���',
+        name: '总用户数',
         type: 'line',
-        data: growthStats?.map(item => item.totalUsers) || []
+        smooth: true,
+        data: growthStats?.map(item => item.totalUsers) || [],
+        animationDelay: (idx) => idx * 100 + 600,
+        lineStyle: { width: 3 },
+        symbolSize: 8
       }
-    ]
+    ],
+    animation: true,
+    animationThreshold: 2000,
+    animationDuration: 1000,
+    animationEasing: 'cubicInOut'
   })
 
   const getRegionDistributionOption = () => ({
@@ -239,17 +275,27 @@ const Dashboard = () => {
       text: '用户地域分布'
     },
     tooltip: {
-      trigger: 'item'
+      trigger: 'item',
+      formatter: '{b}: {c} ({d}%)'
     },
-    series: [
-      {
-        type: 'pie',
-        radius: '50%',
-        data: growthStats?.length > 0 ? 
-          Object.entries(JSON.parse(growthStats[growthStats.length - 1].regionDistribution || '{}'))
-            .map(([name, value]) => ({ name, value })) : []
-      }
-    ]
+    series: [{
+      type: 'pie',
+      radius: ['40%', '70%'],
+      center: ['50%', '60%'],
+      roseType: 'radius',
+      itemStyle: {
+        borderRadius: 8
+      },
+      label: {
+        formatter: '{b}: {d}%'
+      },
+      animationType: 'scale',
+      animationEasing: 'elasticOut',
+      animationDelay: (idx) => idx * 200,
+      data: growthStats?.length > 0 ? 
+        Object.entries(JSON.parse(growthStats[growthStats.length - 1].regionDistribution || '{}'))
+          .map(([name, value]) => ({ name, value })) : []
+    }]
   })
 
   const getDeviceDistributionOption = () => ({
@@ -264,10 +310,28 @@ const Dashboard = () => {
       type: 'pie',
       radius: ['50%', '70%'],
       avoidLabelOverlap: false,
-      label: {
-        show: false,
-        position: 'center'
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#fff',
+        borderWidth: 2
       },
+      label: {
+        show: false
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: '12',
+          fontWeight: 'bold'
+        },
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      },
+      animationType: 'scale',
+      animationEasing: 'elasticOut',
       data: growthStats?.length > 0 ? 
         Object.entries(JSON.parse(growthStats[growthStats.length - 1].deviceDistribution || '{}'))
           .map(([name, value]) => ({ 
@@ -287,13 +351,21 @@ const Dashboard = () => {
         type: 'shadow'
       }
     },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
     xAxis: {
       type: 'category',
-      data: ['广告', '社交媒体', '自然搜索', '推荐']
+      data: ['广告', '社交媒体', '自然搜索', '推荐'],
+      axisTick: { show: false }
     },
     yAxis: {
       type: 'value',
-      name: '占比(%)'
+      name: '占比(%)',
+      splitLine: { lineStyle: { type: 'dashed' } }
     },
     series: [{
       data: growthStats?.length > 0 ? 
@@ -302,8 +374,28 @@ const Dashboard = () => {
       showBackground: true,
       backgroundStyle: {
         color: 'rgba(180, 180, 180, 0.2)'
-      }
-    }]
+      },
+      itemStyle: {
+        borderRadius: [4, 4, 0, 0],
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: '#83bff6' },
+          { offset: 0.5, color: '#188df0' },
+          { offset: 1, color: '#188df0' }
+        ])
+      },
+      emphasis: {
+        itemStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: '#2378f7' },
+            { offset: 0.7, color: '#2378f7' },
+            { offset: 1, color: '#83bff6' }
+          ])
+        }
+      },
+      animationDelay: (idx) => idx * 100
+    }],
+    animationEasing: 'elasticOut',
+    animationDelayUpdate: (idx) => idx * 5
   })
 
   const renderMetricsCards = () => {
