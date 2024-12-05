@@ -111,6 +111,8 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
     return colorMap[priority] || 'default'
   }
 
+  const tags = Array.isArray(issue.tags) ? issue.tags : [];
+
   return (
     <Modal
       title={<span style={{ fontSize: '12px' }}>问题详情</span>}
@@ -151,8 +153,8 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
           {issue.type}
         </Descriptions.Item>
         <Descriptions.Item label="标签" span={2}>
-          {issue.tags?.split(',').map((tag, index) => (
-            <Tag key={index}>{tag}</Tag>
+          {tags.map(tag => (
+            <Tag key={tag}>{tag}</Tag>
           ))}
         </Descriptions.Item>
         <Descriptions.Item label="报告人">
