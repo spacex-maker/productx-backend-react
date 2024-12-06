@@ -111,6 +111,10 @@ const UserProfileRouter = React.lazy(() => import('./views/base/userProfile/List
 
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'));
 
+const PartnersRouter = React.lazy(() => import('./views/base/partners/Partners'));
+
+
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -387,6 +391,13 @@ const routes = [
     path: '/sys/userProfile', name: '用户画像管理', element: (
       <PrivateRoute>
         <UserProfileRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/partners', name: '合作伙伴管理', element: (
+      <PrivateRoute>
+        <PartnersRouter/>
       </PrivateRoute>
     )
   },
