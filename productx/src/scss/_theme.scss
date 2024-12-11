@@ -18,7 +18,14 @@ body {
 .sidebar-brand-full {
   margin-left: 3px;
 }
-
+.sidebar-nav {
+  --cui-sidebar-nav-link-padding-x: 10px;
+  --cui-sidebar-nav-link-icon-width: 20px;
+  --cui-sidebar-nav-link-icon-margin: 10px;
+  .nav-group-items .nav-link{
+    padding-left: 15px;
+  }
+}
 .sidebar-header {
   .nav-underline-border {
     --cui-nav-underline-border-link-padding-x: 1rem;
