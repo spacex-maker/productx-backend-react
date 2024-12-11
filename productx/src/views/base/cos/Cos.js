@@ -727,7 +727,7 @@ const Cos = () => {
   const handleCopy = (url) => {
     navigator.clipboard.writeText(url)
       .then(() => {
-        message.success('链接已复制到剪贴板');
+        message.success('链接已复制到剪切板');
       })
       .catch((err) => {
         console.error('复制失败:', err);
@@ -917,7 +917,7 @@ const Cos = () => {
                     </CButton>
                   </div>
                   <div className="hint-text">
-                    提示：文件链接长期有效，可直接访问或下载
+                    提示：文件链接长期有效，可直接访问或下载！
                   </div>
                 </div>
               </div>
@@ -1470,6 +1470,13 @@ const Cos = () => {
     </CModal>
   );
 
+  // 修改判断是否为图片URL的辅助函数
+  const isImageUrl = (key) => {
+    if (!key) return false;
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+    return imageExtensions.some(ext => key.toLowerCase().endsWith(ext));
+  }
+
   return (
     <GlobalStyle>
       <CContainer fluid>
@@ -1588,6 +1595,7 @@ const Cos = () => {
                             onChange={handleSelectAll}
                           />
                         </CTableHeaderCell>
+                        <CTableHeaderCell style={{ width: '10%' }}>预览</CTableHeaderCell>
                         <CTableHeaderCell style={{ width: '35%' }}>名称</CTableHeaderCell>
                         <CTableHeaderCell style={{ width: '10%' }}>大小</CTableHeaderCell>
                         <CTableHeaderCell style={{ width: '15%' }}>类型</CTableHeaderCell>
@@ -1613,6 +1621,15 @@ const Cos = () => {
                                   checked={selectedFiles.includes(item.key)}
                                   onChange={() => handleSelect(item.key)}
                                 />
+                              </CTableDataCell>
+                              <CTableDataCell>
+                                {!item.isFolder && isImageUrl(item.key) && (
+                                  <img
+                                    src={`https://${bucketName}.cos.${region}.myqcloud.com/${item.key}`}
+                                    alt={item.name}
+                                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                                  />
+                                )}
                               </CTableDataCell>
                               {item.isFolder ? (
                                 <CTableDataCell colSpan="6" style={{ padding: '4px 12px' }}>
