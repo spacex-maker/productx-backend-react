@@ -3,6 +3,7 @@ import { Modal, Form, Input, Upload, message, DatePicker, Select, Row, Col } fro
 import { useTranslation } from 'react-i18next';
 import { PlusOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
+import COS from 'cos-js-sdk-v5';
 
 const { TextArea } = Input;
 
@@ -13,79 +14,93 @@ const RepairServiceMerchantsCreateFormModal = ({
   form,
 }) => {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
   const [logoUrl, setLogoUrl] = useState('');
-  const [licenseUrl, setLicenseUrl] = useState('');
+  const [cosInstance, setCosInstance] = useState(null);
+  const bucketName = 'px-1258150206';
+  const region = 'ap-nanjing';
 
-  const getOssPolicy = async () => {
+  // 初始化 COS 实例
+  const initCOS = async () => {
     try {
-      const response = await api.get('/oss/policy');
-      return response.data;
+      const response = await api.get(`/manage/tencent/cos-credential?bucketName=${bucketName}`);
+      console.log('COS credentials response:', response);
+
+      const { secretId, secretKey, sessionToken, expiredTime } = response;
+
+      if (!secretId || !secretKey || !sessionToken) {
+        throw new Error('获取临时密钥失败：密钥信息不完整');
+      }
+
+      const cos = new COS({
+        getAuthorization: function (options, callback) {
+          callback({
+            TmpSecretId: secretId,
+            TmpSecretKey: secretKey,
+            SecurityToken: sessionToken,
+            ExpiredTime: expiredTime || Math.floor(Date.now() / 1000) + 1800,
+          });
+        },
+        Region: region,
+      });
+
+      setCosInstance(cos);
+      return cos;
     } catch (error) {
-      message.error(t('getOssPolicyFailed'));
+      console.error('初始化 COS 失败:', error);
+      message.error('初始化 COS 失败：' + error.message);
       return null;
     }
   };
 
   const beforeUpload = (file) => {
-    const isImage = file.type.startsWith('image/');
-    if (!isImage) {
-      message.error(t('pleaseUploadImageFile'));
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('只能上传 JPG/PNG 格式的图片！');
       return false;
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      message.error(t('imageMustSmallerThan2MB'));
+      message.error('图片大小不能超过 2MB！');
       return false;
     }
     return true;
   };
 
-  const customRequest = async ({ file, onSuccess, onError, field }) => {
+  const customRequest = async ({ file, onSuccess, onError, onProgress }) => {
     try {
-      setLoading(true);
-      const policy = await getOssPolicy();
-      if (!policy) {
-        throw new Error('Failed to get OSS policy');
+      let instance = cosInstance;
+      if (!instance) {
+        instance = await initCOS();
+        if (!instance) {
+          throw new Error('COS 实例未初始化');
+        }
       }
 
-      const formData = new FormData();
-      formData.append('key', policy.dir + file.name);
-      formData.append('policy', policy.policy);
-      formData.append('OSSAccessKeyId', policy.accessKeyId);
-      formData.append('success_action_status', '200');
-      formData.append('signature', policy.signature);
-      formData.append('file', file);
-
-      const response = await fetch(policy.host, {
-        method: 'POST',
-        body: formData,
+      const key = `merchants/${Date.now()}-${file.name}`;
+      await instance.uploadFile({
+        Bucket: bucketName,
+        Region: region,
+        Key: key,
+        Body: file,
+        onProgress: (progressData) => {
+          onProgress({ percent: Math.round(progressData.percent * 100) });
+        }
       });
 
-      if (response.ok) {
-        const url = `${policy.host}/${policy.dir}${file.name}`;
-        if (field === 'merchantLogo') {
-          setLogoUrl(url);
-          form.setFieldsValue({ merchantLogo: url });
-        } else {
-          setLicenseUrl(url);
-          form.setFieldsValue({ businessLicense: url });
-        }
-        onSuccess();
-      } else {
-        throw new Error('Upload failed');
-      }
+      const url = `https://${bucketName}.cos.${region}.myqcloud.com/${key}`;
+      setLogoUrl(url);
+      onSuccess({ url });
+      form.setFieldsValue({ merchantLogo: url });
     } catch (error) {
-      message.error(t('uploadFailed'));
+      console.error('上传失败:', error);
+      message.error('上传失败：' + error.message);
       onError(error);
-    } finally {
-      setLoading(false);
     }
   };
 
   const uploadButton = (
     <div style={{ fontSize: '10px' }}>
-      <PlusOutlined style={{ fontSize: '12px' }} />
+      <PlusOutlined />
     </div>
   );
 
@@ -95,7 +110,7 @@ const RepairServiceMerchantsCreateFormModal = ({
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
-      width={360}
+      width={480}
       okText={t('confirm')}
       cancelText={t('cancel')}
     >
@@ -106,223 +121,237 @@ const RepairServiceMerchantsCreateFormModal = ({
         labelCol={{ span: 24 }}
         wrapperCol={{ span: 24 }}
       >
-        <Row gutter={8}>
-          <Col span={16}>
-            <Form.Item
-              label={t('merchantName')}
-              name="merchantName"
-              rules={[{ required: true, message: t('pleaseInputMerchantName') }]}
-            >
-              <Input size="small" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              label={t('logo')}
-              name="merchantLogo"
-              rules={[{ required: true, message: t('pleaseUploadLogo') }]}
-            >
-              <Upload
-                name="file"
-                listType="picture-card"
-                className="avatar-uploader-small"
-                showUploadList={false}
-                beforeUpload={beforeUpload}
-                customRequest={({ file, onSuccess, onError }) => 
-                  customRequest({ file, onSuccess, onError, field: 'merchantLogo' })}
+        <div className="form-section">
+          <div className="section-title">{t('basicInfo')}</div>
+          <Row gutter={[16, 0]}>
+            <Col span={16}>
+              <Form.Item
+                label={t('merchantName')}
+                name="merchantName"
+                rules={[{ required: true }]}
               >
-                {logoUrl ? (
-                  <img 
-                    src={logoUrl} 
-                    alt="logo" 
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                  />
-                ) : uploadButton}
-              </Upload>
-            </Form.Item>
-          </Col>
-        </Row>
+                <Input size="small" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label={t('logo')}
+                name="merchantLogo"
+                rules={[{ required: true }]}
+              >
+                <Upload
+                  name="file"
+                  listType="picture-card"
+                  className="avatar-uploader-small"
+                  showUploadList={false}
+                  beforeUpload={beforeUpload}
+                  customRequest={customRequest}
+                >
+                  {logoUrl ? (
+                    <img src={logoUrl} alt="logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : uploadButton}
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
+        </div>
 
-        <Row gutter={8}>
-          <Col span={12}>
-            <Form.Item
-              label={t('contactPerson')}
-              name="contactPerson"
-              rules={[{ required: true, message: t('pleaseInputContactPerson') }]}
-            >
-              <Input size="small" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label={t('contactPhone')}
-              name="contactPhone"
-              rules={[{ required: true, message: t('pleaseInputContactPhone') }]}
-            >
-              <Input size="small" />
-            </Form.Item>
-          </Col>
-        </Row>
+        <div className="form-section">
+          <div className="section-title">{t('contactInfo')}</div>
+          <Row gutter={[16, 0]}>
+            <Col span={12}>
+              <Form.Item
+                label={t('contactPerson')}
+                name="contactPerson"
+                rules={[{ required: true }]}
+              >
+                <Input size="small" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={t('contactPhone')}
+                name="contactPhone"
+                rules={[{ required: true }]}
+              >
+                <Input size="small" />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label={t('contactEmail')}
+                name="contactEmail"
+                rules={[{ required: true, type: 'email' }]}
+              >
+                <Input size="small" />
+              </Form.Item>
+            </Col>
+          </Row>
+        </div>
 
-        <Row gutter={8}>
-          <Col span={12}>
-            <Form.Item
-              label={t('contactEmail')}
-              name="contactEmail"
-              rules={[
-                { required: true, message: t('pleaseInputEmail') },
-                { type: 'email', message: t('invalidEmail') }
-              ]}
-            >
-              <Input size="small" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label={t('workingHours')}
-              name="workingHours"
-              rules={[{ required: true }]}
-            >
-              <Input size="small" placeholder="9:00-18:00" />
-            </Form.Item>
-          </Col>
-        </Row>
+        <div className="form-section">
+          <div className="section-title">{t('addressInfo')}</div>
+          <Row gutter={[16, 0]}>
+            <Col span={8}>
+              <Form.Item
+                label={t('province')}
+                name="province"
+                rules={[{ required: true }]}
+              >
+                <Input size="small" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label={t('city')}
+                name="city"
+                rules={[{ required: true }]}
+              >
+                <Input size="small" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label={t('address')}
+                name="address"
+                rules={[{ required: true }]}
+              >
+                <Input size="small" />
+              </Form.Item>
+            </Col>
+          </Row>
+        </div>
 
-        <Row gutter={8}>
-          <Col span={8}>
-            <Form.Item
-              label={t('province')}
-              name="province"
-              rules={[{ required: true, message: t('pleaseInputProvince') }]}
-            >
-              <Input size="small" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              label={t('city')}
-              name="city"
-              rules={[{ required: true, message: t('pleaseInputCity') }]}
-            >
-              <Input size="small" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              label={t('address')}
-              name="address"
-              rules={[{ required: true, message: t('pleaseInputAddress') }]}
-            >
-              <Input size="small" />
-            </Form.Item>
-          </Col>
-        </Row>
+        <div className="form-section">
+          <div className="section-title">{t('businessInfo')}</div>
+          <Row gutter={[16, 0]}>
+            <Col span={12}>
+              <Form.Item
+                label={t('workingHours')}
+                name="workingHours"
+                rules={[{ required: true }]}
+              >
+                <Input size="small" placeholder="9:00-18:00" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={t('paymentMethods')}
+                name="paymentMethods"
+                rules={[{ required: true }]}
+              >
+                <Select
+                  size="small"
+                  mode="multiple"
+                  placeholder={t('pleaseSelect')}
+                  options={[
+                    { value: '支付宝', label: '支付宝' },
+                    { value: '微信', label: '微信' },
+                    { value: '现金', label: '现金' }
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label={t('serviceTypes')}
+                name="serviceTypes"
+                rules={[{ required: true }]}
+              >
+                <Select
+                  size="small"
+                  mode="tags"
+                  placeholder={t('pleaseSelect')}
+                  options={[
+                    { value: '手机维修', label: '手机维修' },
+                    { value: '电脑维修', label: '电脑维修' },
+                    { value: '家电维修', label: '家电维修' }
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </div>
 
-        <Row gutter={8}>
-          <Col span={12}>
-            <Form.Item
-              label={t('serviceTypes')}
-              name="serviceTypes"
-              rules={[{ required: true, message: t('pleaseSelectServiceTypes') }]}
-            >
-              <Select
-                size="small"
-                mode="tags"
-                style={{ width: '100%' }}
-                placeholder={t('pleaseSelect')}
-                options={[
-                  { value: '手机维修', label: '手机维修' },
-                  { value: '电脑维修', label: '电脑维修' },
-                  { value: '家电维修', label: '家电维修' }
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label={t('paymentMethods')}
-              name="paymentMethods"
-              rules={[{ required: true, message: t('pleaseSelectPaymentMethods') }]}
-            >
-              <Select
-                size="small"
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder={t('pleaseSelect')}
-                options={[
-                  { value: '支付宝', label: '支付宝' },
-                  { value: '微信', label: '微信' },
-                  { value: '现金', label: '现金' }
-                ]}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Form.Item
-          label={t('remark')}
-          name="remark"
-        >
-          <Input.TextArea size="small" rows={1} />
-        </Form.Item>
+        <div className="form-section">
+          <div className="section-title">{t('remarks')}</div>
+          <Form.Item name="remark">
+            <Input.TextArea size="small" rows={2} />
+          </Form.Item>
+        </div>
       </Form>
 
       <style jsx global>{`
-        /* 全局样式覆盖 */
-        .ant-modal-root .ant-form-item .ant-form-item-label > label,
-        .ant-modal-root .ant-form-item .ant-form-item-label > label.ant-form-item-required,
-        :where(.css-dev-only-do-not-override-1wwf28x).ant-form-item .ant-form-item-label > label,
-        :where(.css-dev-only-do-not-override-1wwf28x).ant-form-item .ant-form-item-label > label.ant-form-item-required,
-        .ant-form-vertical .ant-form-item-label > label,
-        .ant-form-vertical .ant-form-item-label > label.ant-form-item-required,
-        .ant-modal .ant-form-item-label > label,
-        .ant-modal .ant-form-item-label > label.ant-form-item-required,
-        div[class*='css-']:where(.ant-form-item) .ant-form-item-label > label {
+        .form-section {
+          margin-bottom: 12px;
+        }
+        .section-title {
+          font-size: 10px;
+          color: #262626;
+          font-weight: 500;
+          margin-bottom: 6px;
+          padding-left: 6px;
+          border-left: 2px solid #1890ff;
+        }
+        .avatar-uploader-small .ant-upload {
+          width: 40px !important;
+          height: 40px !important;
+          border-radius: 4px !important;
+        }
+        .ant-form-item {
+          margin-bottom: 6px;
+        }
+        .ant-form-item-label {
+          padding-bottom: 2px;
+        }
+        .ant-form-item-label > label {
           font-size: 10px !important;
-          height: 16px !important;
-          line-height: 16px !important;
+          height: 14px !important;
           color: #666 !important;
         }
-
-        /* 必填星号 */
-        .ant-modal-root .ant-form-item-required::before,
-        :where(.css-dev-only-do-not-override-1wwf28x).ant-form-item .ant-form-item-required::before,
-        .ant-form-vertical .ant-form-item-required::before,
-        .ant-modal .ant-form-item-required::before,
-        div[class*='css-']:where(.ant-form-item) .ant-form-item-required::before {
+        .ant-input, 
+        .ant-select-selector,
+        .ant-select-selection-item,
+        .ant-select-selection-placeholder {
           font-size: 10px !important;
-          line-height: 16px !important;
+          padding: 0 4px !important;
         }
-
-        /* 输入框和选择器文字大小 */
-        .ant-modal-root .ant-input,
-        .ant-modal-root .ant-select-selection-item,
-        .ant-modal-root .ant-select-selection-placeholder,
-        .ant-modal-root .ant-select-selection-search-input {
-          font-size: 10px !important;
+        .ant-input {
+          height: 22px !important;
         }
-
-        /* 错误提示文字 */
-        .ant-modal-root .ant-form-item-explain-error {
-          font-size: 10px !important;
+        .ant-select-selector {
+          height: 22px !important;
+          line-height: 22px !important;
         }
-
-        /* 下拉选项文字 */
-        .ant-select-dropdown {
-          font-size: 10px !important;
+        .ant-select-selection-item {
+          line-height: 20px !important;
         }
-        .ant-select-dropdown .ant-select-item {
-          font-size: 10px !important;
+        .ant-form-item-explain-error {
+          font-size: 10px;
+          margin-top: 1px;
         }
-
-        /* 按钮文字 */
-        .ant-modal-root .ant-btn {
-          font-size: 10px !important;
+        .ant-modal-header {
+          padding: 8px 12px;
         }
-
-        /* 模态框标题 */
+        .ant-modal-body {
+          padding: 12px;
+        }
+        .ant-modal-footer {
+          padding: 6px 12px;
+        }
+        .ant-modal-footer .ant-btn {
+          font-size: 10px;
+          height: 22px;
+          padding: 0 8px;
+        }
         .ant-modal-title {
-          font-size: 12px !important;
+          font-size: 11px;
+        }
+        .ant-row {
+          margin-bottom: 0 !important;
+        }
+        [class*='ant-col'] {
+          padding-bottom: 0 !important;
         }
       `}</style>
     </Modal>
