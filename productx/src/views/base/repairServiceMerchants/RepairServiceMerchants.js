@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Select, Col, Row } from 'antd';
+import { Button, Form, Input, message, Spin, Select, Col, Row, Space } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import RepairServiceMerchantsTable from './RepairServiceMerchantsTable';
 import UpdateRepairServiceMerchantsModal from './UpdateRepairServiceMerchantsModal';
 import RepairServiceMerchantsCreateFormModal from './RepairServiceMerchantsCreateFormModal';
+import RepairServiceMerchantsDetailModal from './RepairServiceMerchantsDetailModal';
 import { useTranslation } from 'react-i18next';
 
 const updateMerchantStatus = async (id, newStatus) => {
@@ -39,6 +40,7 @@ const RepairServiceMerchants = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedMerchant, setSelectedMerchant] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
 
   const {
     selectedRows,
@@ -120,6 +122,47 @@ const RepairServiceMerchants = () => {
     updateForm.setFieldsValue(merchant);
     setIsUpdateModalVisible(true);
   };
+
+  const handleViewDetail = (record) => {
+    setSelectedMerchant(record);
+    setIsDetailModalVisible(true);
+  };
+
+  const columns = [
+    {
+      title: t('operation'),
+      key: 'operation',
+      width: 120,
+      render: (_, record) => (
+        <Space size={4}>
+          <Button 
+            type="link" 
+            size="small"
+            style={{ padding: '4px', height: 'auto', fontSize: '10px' }}
+            onClick={() => handleViewDetail(record)}
+          >
+            {t('detail')}
+          </Button>
+          <Button 
+            type="link" 
+            size="small"
+            style={{ padding: '4px', height: 'auto', fontSize: '10px' }}
+            onClick={() => handleEditClick(record)}
+          >
+            {t('edit')}
+          </Button>
+          <Button 
+            type="link" 
+            size="small"
+            style={{ padding: '4px', height: 'auto', fontSize: '10px', color: record.status ? '#ff4d4f' : '#52c41a' }}
+            onClick={() => handleStatusChange(record)}
+          >
+            {record.status ? t('disable') : t('enable')}
+          </Button>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -221,6 +264,7 @@ const RepairServiceMerchants = () => {
             handleSelectRow={handleSelectRow}
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
+            handleViewDetail={handleViewDetail}
           />
         </Spin>
       </div>
@@ -239,6 +283,12 @@ const RepairServiceMerchants = () => {
         form={updateForm}
         handleUpdateMerchant={handleUpdateMerchant}
         selectedMerchant={selectedMerchant}
+      />
+
+      <RepairServiceMerchantsDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        merchantData={selectedMerchant}
       />
     </div>
   );

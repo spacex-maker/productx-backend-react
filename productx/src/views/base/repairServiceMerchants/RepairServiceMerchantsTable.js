@@ -10,6 +10,7 @@ const RepairServiceMerchantsTable = ({
   handleSelectRow,
   handleStatusChange,
   handleEditClick,
+  handleViewDetail,
 }) => {
   const { t } = useTranslation();
 
@@ -100,6 +101,9 @@ const RepairServiceMerchantsTable = ({
             <td>{item.createTime}</td>
             <td>{item.updateTime}</td>
             <td className="fixed-column">
+              <Button type="link" onClick={() => handleViewDetail(item)}>
+                {t('detail')}
+              </Button>
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}
               </Button>
