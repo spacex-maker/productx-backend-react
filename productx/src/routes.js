@@ -1,6 +1,7 @@
 import React from 'react'
 import PrivateRoute from "src/components/PrivateRoute";
 import UserProduct from "src/views/base/userProduct/UserProduct";
+import RepairServiceMerchants from "src/views/base/repairServiceMerchants/RepairServiceMerchants";
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'));
@@ -112,6 +113,8 @@ const UserProfileRouter = React.lazy(() => import('./views/base/userProfile/List
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'));
 
 const PartnersRouter = React.lazy(() => import('./views/base/partners/Partners'));
+
+const RepairServiceMerchantsRouter = React.lazy(() => import('./views/base/repairServiceMerchants/RepairServiceMerchants'));
 
 
 
@@ -398,6 +401,13 @@ const routes = [
     path: '/sys/partners', name: '合作伙伴管理', element: (
       <PrivateRoute>
         <PartnersRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/repairServiceMerchants', name: '维修商户管理', element: (
+      <PrivateRoute>
+        <RepairServiceMerchantsRouter/>
       </PrivateRoute>
     )
   },
