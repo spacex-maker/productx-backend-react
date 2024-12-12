@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Image, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
 
 const RepairServiceMerchantsTable = ({
   data,
@@ -13,6 +14,45 @@ const RepairServiceMerchantsTable = ({
   handleViewDetail,
 }) => {
   const { t } = useTranslation();
+
+  // 服务类型标签的颜色映射
+  const serviceTypeColors = useMemo(() => ({
+    'mobileRepair': 'blue',
+    'computerRepair': 'cyan',
+    'applianceRepair': 'purple',
+    'furnitureRepair': 'magenta',
+    'plumbing': 'green',
+    'electricalRepair': 'orange',
+    'carRepair': 'red',
+    'other': 'default'
+  }), []);
+
+  // 处理服务类型数据，确保它是数组
+  const getServiceTypes = (types) => {
+    if (!types) return [];
+    if (Array.isArray(types)) return types;
+    return [];
+  };
+
+  const columns = [
+    {
+      title: t('serviceTypes'),
+      dataIndex: 'serviceTypes',
+      render: (types) => (
+        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+          {getServiceTypes(types).map(type => (
+            <Tag 
+              key={type} 
+              color={serviceTypeColors[type]}
+              style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}
+            >
+              {t(type)}
+            </Tag>
+          ))}
+        </div>
+      )
+    },
+  ];
 
   return (
     <table className="table table-bordered table-striped">
@@ -79,9 +119,17 @@ const RepairServiceMerchantsTable = ({
               {item.province} {item.city} {item.address}
             </td>
             <td>
-              {item.serviceTypes?.split(',').map(type => (
-                <Tag key={type} color="blue">{type}</Tag>
-              ))}
+              <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                {getServiceTypes(item.serviceTypes).map(type => (
+                  <Tag 
+                    key={type} 
+                    color={serviceTypeColors[type]}
+                    style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}
+                  >
+                    {t(type)}
+                  </Tag>
+                ))}
+              </div>
             </td>
             <td>
               <label className="toggle-switch">

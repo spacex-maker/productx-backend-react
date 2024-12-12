@@ -1,6 +1,40 @@
-import React from 'react';
-import { Modal, Row, Col } from 'antd';
+import React, { useMemo } from 'react';
+import { Modal, Row, Col, Tag, Divider } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { 
+  MobileOutlined,
+  LaptopOutlined,
+  ToolOutlined,
+  TableOutlined,
+  ExperimentOutlined,
+  ThunderboltOutlined,
+  CarOutlined,
+  QuestionOutlined,
+  ShopOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  EnvironmentOutlined,
+  ClockCircleOutlined,
+  WalletOutlined,
+  FileTextOutlined,
+  StarOutlined,
+  CommentOutlined,
+  OrderedListOutlined,
+  FieldTimeOutlined,
+  SafetyCertificateOutlined,
+  GlobalOutlined,
+  LinkOutlined,
+  IeOutlined,
+  CrownOutlined,
+  TeamOutlined,
+  CalendarOutlined,
+  UserSwitchOutlined,
+  EditOutlined,
+  CheckCircleOutlined,
+  AppstoreOutlined
+} from '@ant-design/icons';
+import moment from 'moment';
 
 const RepairServiceMerchantsDetailModal = ({
   isVisible,
@@ -9,12 +43,97 @@ const RepairServiceMerchantsDetailModal = ({
 }) => {
   const { t } = useTranslation();
 
-  const renderDetailItem = (label, value) => (
+  // 服务类型标签的颜色映射
+  const serviceTypeColors = useMemo(() => ({
+    'mobileRepair': 'blue',
+    'computerRepair': 'cyan',
+    'applianceRepair': 'purple',
+    'furnitureRepair': 'magenta',
+    'plumbing': 'green',
+    'electricalRepair': 'orange',
+    'carRepair': 'red',
+    'other': 'default'
+  }), []);
+
+  // 服务类型图标映射
+  const serviceTypeIcons = useMemo(() => ({
+    'mobileRepair': <MobileOutlined />,
+    'computerRepair': <LaptopOutlined />,
+    'applianceRepair': <ToolOutlined />,
+    'furnitureRepair': <TableOutlined />,
+    'plumbing': <ExperimentOutlined />,
+    'electricalRepair': <ThunderboltOutlined />,
+    'carRepair': <CarOutlined />,
+    'other': <QuestionOutlined />
+  }), []);
+
+  const renderDetailItem = (label, value, icon) => (
     <div className="detail-item">
-      <span className="detail-label">{label}</span>
+      <span className="detail-label">
+        {icon && <span className="detail-icon">{icon}</span>}
+        {label}:
+      </span>
       <span className="detail-value">{value || '-'}</span>
     </div>
   );
+
+  const renderDateTime = (dateTime) => {
+    return dateTime ? moment(dateTime).format('YYYY-MM-DD HH:mm:ss') : '-';
+  };
+
+  const renderStatus = (status) => {
+    return status ? 
+      <Tag color="success" style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+        {t('operating')}
+      </Tag> : 
+      <Tag color="error" style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+        {t('closed')}
+      </Tag>;
+  };
+
+  const renderVipLevel = (isVip) => {
+    return isVip ? 
+      <Tag color="gold" icon={<CrownOutlined />} style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+        {t('vip')}
+      </Tag> : 
+      <Tag color="default" style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+        {t('regular')}
+      </Tag>;
+  };
+
+  const renderServiceTypes = (types) => {
+    if (!types || !types.length) return '-';
+    return (
+      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+        {types.map(type => (
+          <Tag 
+            key={type}
+            color={serviceTypeColors[type]}
+            style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}
+            icon={serviceTypeIcons[type]}
+          >
+            {t(type)}
+          </Tag>
+        ))}
+      </div>
+    );
+  };
+
+  const renderPaymentMethods = (methods) => {
+    if (!methods || !methods.length) return '-';
+    return (
+      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+        {methods.map(method => (
+          <Tag 
+            key={method}
+            style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}
+          >
+            {method}
+          </Tag>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <Modal
@@ -22,173 +141,115 @@ const RepairServiceMerchantsDetailModal = ({
       open={isVisible}
       onCancel={onCancel}
       footer={null}
-      width={480}
+      width={680}
     >
-      <div className="detail-container">
-        <div className="detail-header">
-          <div className="merchant-info">
-            <h3 className="merchant-name">{merchantData?.merchantName}</h3>
-            <div className="merchant-status">
-              <span className={`status-dot ${merchantData?.status ? 'active' : 'inactive'}`} />
-              {merchantData?.status ? t('operating') : t('closed')}
-            </div>
-          </div>
-          {merchantData?.merchantLogo && (
-            <div className="logo-wrapper">
-              <img src={merchantData.merchantLogo} alt="logo" />
-            </div>
-          )}
-        </div>
-
-        <div className="detail-section">
-          <div className="section-title">{t('basicInfo')}</div>
-          <Row gutter={[16, 8]}>
-            <Col span={12}>
-              {renderDetailItem(t('contactPerson'), merchantData?.contactPerson)}
-            </Col>
-            <Col span={12}>
-              {renderDetailItem(t('contactPhone'), merchantData?.contactPhone)}
-            </Col>
-            <Col span={24}>
-              {renderDetailItem(t('contactEmail'), merchantData?.contactEmail)}
-            </Col>
-          </Row>
-        </div>
-
-        <div className="detail-section">
-          <div className="section-title">{t('addressInfo')}</div>
-          <Row gutter={[16, 8]}>
-            <Col span={8}>
-              {renderDetailItem(t('province'), merchantData?.province)}
-            </Col>
-            <Col span={8}>
-              {renderDetailItem(t('city'), merchantData?.city)}
-            </Col>
-            <Col span={24}>
-              {renderDetailItem(t('address'), merchantData?.address)}
-            </Col>
-          </Row>
-        </div>
-
-        <div className="detail-section">
-          <div className="section-title">{t('businessInfo')}</div>
-          <Row gutter={[16, 8]}>
-            <Col span={12}>
-              {renderDetailItem(t('workingHours'), merchantData?.workingHours)}
-            </Col>
-            <Col span={24}>
-              {renderDetailItem(t('serviceTypes'), merchantData?.serviceTypes?.join(', '))}
-            </Col>
-            <Col span={24}>
-              {renderDetailItem(t('paymentMethods'), merchantData?.paymentMethods?.join(', '))}
-            </Col>
-          </Row>
-        </div>
-
-        {merchantData?.remark && (
+      <Row gutter={[8, 0]}>
+        <Col span={12}>
           <div className="detail-section">
-            <div className="section-title">{t('remarks')}</div>
-            <div className="remark-content">{merchantData.remark}</div>
+            <div className="section-title">{t('basicInfo')}</div>
+            {renderDetailItem(t('merchantName'), merchantData?.merchantName, <ShopOutlined />)}
+            {renderDetailItem(t('status'), renderStatus(merchantData?.status), <CheckCircleOutlined />)}
+            {renderDetailItem(t('vipLevel'), renderVipLevel(merchantData?.vipLevel), <CrownOutlined />)}
+            {renderDetailItem(t('joinedPartnerProgram'), merchantData?.joinedPartnerProgram ? t('yes') : t('no'), <TeamOutlined />)}
           </div>
-        )}
-      </div>
 
-      <style jsx global>{`
-        .detail-container {
-          padding: 0 16px;
-        }
-        .detail-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          padding-bottom: 16px;
-          margin-bottom: 16px;
-          border-bottom: 1px solid #f0f0f0;
-        }
-        .merchant-info {
-          flex: 1;
-        }
-        .merchant-name {
-          font-size: 14px;
-          font-weight: 500;
-          color: #262626;
-          margin: 0 0 8px;
-        }
-        .merchant-status {
-          font-size: 10px;
-          color: #8c8c8c;
-          display: flex;
-          align-items: center;
-        }
-        .status-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          margin-right: 6px;
-        }
-        .status-dot.active {
-          background-color: #52c41a;
-        }
-        .status-dot.inactive {
-          background-color: #ff4d4f;
-        }
-        .logo-wrapper {
-          width: 48px;
-          height: 48px;
-          border-radius: 4px;
-          overflow: hidden;
-          border: 1px solid #f0f0f0;
-          margin-left: 16px;
-        }
-        .logo-wrapper img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
+          <div className="detail-section">
+            <div className="section-title">{t('contactInfo')}</div>
+            {renderDetailItem(t('contactPerson'), merchantData?.contactPerson, <UserOutlined />)}
+            {renderDetailItem(t('contactPhone'), merchantData?.contactPhone, <PhoneOutlined />)}
+            {renderDetailItem(t('contactEmail'), merchantData?.contactEmail, <MailOutlined />)}
+          </div>
+
+          <div className="detail-section">
+            <div className="section-title">{t('addressInfo')}</div>
+            {renderDetailItem(t('province'), merchantData?.province, <EnvironmentOutlined />)}
+            {renderDetailItem(t('city'), merchantData?.city, <EnvironmentOutlined />)}
+            {renderDetailItem(t('address'), merchantData?.address, <EnvironmentOutlined />)}
+            {renderDetailItem(t('postalCode'), merchantData?.postalCode, <EnvironmentOutlined />)}
+          </div>
+        </Col>
+
+        <Col span={12}>
+          <div className="detail-section">
+            <div className="section-title">{t('businessInfo')}</div>
+            {renderDetailItem(t('workingHours'), merchantData?.workingHours, <ClockCircleOutlined />)}
+            {renderDetailItem(t('paymentMethods'), 
+              renderPaymentMethods(merchantData?.paymentMethods), 
+              <WalletOutlined />
+            )}
+            {renderDetailItem(t('serviceTypes'), 
+              renderServiceTypes(merchantData?.serviceTypes), 
+              <AppstoreOutlined />
+            )}
+          </div>
+
+          <div className="detail-section">
+            <div className="section-title">{t('performanceInfo')}</div>
+            {renderDetailItem(t('rating'), merchantData?.rating?.toFixed(1), <StarOutlined />)}
+            {renderDetailItem(t('totalReviews'), merchantData?.totalReviews, <CommentOutlined />)}
+            {renderDetailItem(t('completedOrders'), merchantData?.completedOrders, <OrderedListOutlined />)}
+            {renderDetailItem(t('pendingOrders'), merchantData?.pendingOrders, <OrderedListOutlined />)}
+            {renderDetailItem(t('avgCompletionTime'), merchantData?.avgCompletionTime, <FieldTimeOutlined />)}
+          </div>
+
+          <div className="detail-section">
+            <div className="section-title">{t('additionalInfo')}</div>
+            {renderDetailItem(t('certifications'), merchantData?.certifications, <SafetyCertificateOutlined />)}
+            {renderDetailItem(t('websiteUrl'), merchantData?.websiteUrl, <GlobalOutlined />)}
+            {renderDetailItem(t('socialMediaLinks'), merchantData?.socialMediaLinks, <LinkOutlined />)}
+            {renderDetailItem(t('registrationChannel'), merchantData?.registrationChannel, <IeOutlined />)}
+          </div>
+        </Col>
+      </Row>
+
+      <Divider style={{ margin: '8px 0' }} />
+
+      <Row>
+        <Col span={24}>
+          <div className="detail-section">
+            <div className="section-title">{t('systemInfo')}</div>
+            {renderDetailItem(t('createTime'), renderDateTime(merchantData?.createTime), <CalendarOutlined />)}
+            {renderDetailItem(t('updateTime'), renderDateTime(merchantData?.updateTime), <CalendarOutlined />)}
+            {renderDetailItem(t('createBy'), merchantData?.createBy, <UserSwitchOutlined />)}
+            {renderDetailItem(t('updateBy'), merchantData?.updateBy, <EditOutlined />)}
+            {renderDetailItem(t('remark'), merchantData?.remark, <FileTextOutlined />)}
+          </div>
+        </Col>
+      </Row>
+
+      <style jsx>{`
         .detail-section {
-          margin-bottom: 16px;
+          margin-bottom: 12px;
         }
         .section-title {
           font-size: 11px;
           color: #262626;
           font-weight: 500;
-          margin-bottom: 8px;
-          padding-left: 8px;
+          margin-bottom: 6px;
+          padding-left: 6px;
           border-left: 2px solid #1890ff;
         }
         .detail-item {
+          margin-bottom: 6px;
+          font-size: 10px;
           display: flex;
           align-items: flex-start;
         }
         .detail-label {
-          min-width: 70px;
-          font-size: 10px;
-          color: #8c8c8c;
-          margin-right: 8px;
+          color: #666;
+          width: 80px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+        .detail-icon {
+          color: #1890ff;
         }
         .detail-value {
           flex: 1;
-          font-size: 10px;
           color: #262626;
           word-break: break-all;
-        }
-        .remark-content {
-          font-size: 10px;
-          color: #595959;
-          background: #fafafa;
-          padding: 8px;
-          border-radius: 2px;
-        }
-        .ant-modal-header {
-          padding: 12px 16px;
-          border-bottom: 1px solid #f0f0f0;
-        }
-        .ant-modal-body {
-          padding: 16px 0;
-        }
-        .ant-modal-title {
-          font-size: 12px;
-          color: #262626;
+          padding-right: 4px;
         }
       `}</style>
     </Modal>
