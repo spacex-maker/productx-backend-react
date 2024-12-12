@@ -1,10 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Modal, Form, Input, DatePicker, Select, Upload, message, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import api from 'src/axiosInstance';
 import COS from 'cos-js-sdk-v5';
+import { 
+  MobileOutlined,
+  LaptopOutlined,
+  ToolOutlined,
+  TableOutlined,
+  ExperimentOutlined,
+  ThunderboltOutlined,
+  CarOutlined,
+  QuestionOutlined,
+  ShopOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  EnvironmentOutlined,
+  ClockCircleOutlined,
+  WalletOutlined,
+  FileTextOutlined
+} from '@ant-design/icons';
 
 const { TextArea } = Input;
 
@@ -16,7 +34,7 @@ const UpdateRepairServiceMerchantsModal = ({
   handleUpdateMerchant,
   selectedMerchant
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [logoUrl, setLogoUrl] = useState(selectedMerchant?.merchantLogo || '');
   const [cosInstance, setCosInstance] = useState(null);
   const bucketName = 'px-1258150206';
@@ -114,6 +132,18 @@ const UpdateRepairServiceMerchantsModal = ({
     </div>
   );
 
+  // 将选项定义移到组件内部，使其能够响应语言变化
+  const serviceTypeOptions = useMemo(() => [
+    { value: 'mobileRepair', label: t('mobileRepair'), icon: <MobileOutlined /> },
+    { value: 'computerRepair', label: t('computerRepair'), icon: <LaptopOutlined /> },
+    { value: 'applianceRepair', label: t('applianceRepair'), icon: <ToolOutlined /> },
+    { value: 'furnitureRepair', label: t('furnitureRepair'), icon: <TableOutlined /> },
+    { value: 'plumbing', label: t('plumbing'), icon: <ExperimentOutlined /> },
+    { value: 'electricalRepair', label: t('electricalRepair'), icon: <ThunderboltOutlined /> },
+    { value: 'carRepair', label: t('carRepair'), icon: <CarOutlined /> },
+    { value: 'other', label: t('other'), icon: <QuestionOutlined /> }
+  ], [t]); // 依赖t函数，当语言改变时重新生成选项
+
   return (
     <Modal
       title={t('updateMerchant')}
@@ -144,7 +174,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="merchantName"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<ShopOutlined />} />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -178,7 +208,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="contactPerson"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<UserOutlined />} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -187,7 +217,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="contactPhone"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<PhoneOutlined />} />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -196,7 +226,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="contactEmail"
                 rules={[{ required: true, type: 'email' }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<MailOutlined />} />
               </Form.Item>
             </Col>
           </Row>
@@ -211,7 +241,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="province"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<EnvironmentOutlined />} />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -220,7 +250,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="city"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<EnvironmentOutlined />} />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -229,7 +259,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="address"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<EnvironmentOutlined />} />
               </Form.Item>
             </Col>
           </Row>
@@ -244,7 +274,7 @@ const UpdateRepairServiceMerchantsModal = ({
                 name="workingHours"
                 rules={[{ required: true }]}
               >
-                <Input size="small" placeholder="9:00-18:00" />
+                <Input size="small" prefix={<ClockCircleOutlined />} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -262,6 +292,7 @@ const UpdateRepairServiceMerchantsModal = ({
                     { value: '微信', label: '微信' },
                     { value: '现金', label: '现金' }
                   ]}
+                  suffixIcon={<WalletOutlined />}
                 />
               </Form.Item>
             </Col>
@@ -273,13 +304,16 @@ const UpdateRepairServiceMerchantsModal = ({
               >
                 <Select
                   size="small"
-                  mode="tags"
+                  mode="multiple"
                   placeholder={t('pleaseSelect')}
-                  options={[
-                    { value: '手机维修', label: '手机维修' },
-                    { value: '电脑维修', label: '电脑维修' },
-                    { value: '家电维修', label: '家电维修' }
-                  ]}
+                  options={serviceTypeOptions}
+                  optionLabelProp="label"
+                  optionRender={(option) => (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      {option.data.icon}
+                      <span>{option.data.label}</span>
+                    </div>
+                  )}
                 />
               </Form.Item>
             </Col>
@@ -289,7 +323,11 @@ const UpdateRepairServiceMerchantsModal = ({
         <div className="form-section">
           <div className="section-title">{t('remarks')}</div>
           <Form.Item name="remark">
-            <Input.TextArea size="small" rows={2} />
+            <Input.TextArea 
+              size="small" 
+              rows={2} 
+              prefix={<FileTextOutlined />}
+            />
           </Form.Item>
         </div>
       </Form>

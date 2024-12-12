@@ -1,9 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Modal, Form, Input, Upload, message, DatePicker, Select, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { PlusOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import COS from 'cos-js-sdk-v5';
+import { 
+  MobileOutlined,
+  LaptopOutlined,
+  ToolOutlined,
+  TableOutlined,
+  ExperimentOutlined,
+  ThunderboltOutlined,
+  CarOutlined,
+  QuestionOutlined,
+  ShopOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  EnvironmentOutlined,
+  ClockCircleOutlined,
+  WalletOutlined,
+  FileTextOutlined
+} from '@ant-design/icons';
 
 const { TextArea } = Input;
 
@@ -13,7 +31,7 @@ const RepairServiceMerchantsCreateFormModal = ({
   onFinish,
   form,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [logoUrl, setLogoUrl] = useState('');
   const [cosInstance, setCosInstance] = useState(null);
   const bucketName = 'px-1258150206';
@@ -104,6 +122,28 @@ const RepairServiceMerchantsCreateFormModal = ({
     </div>
   );
 
+  // 服务类型选项 - 添加图标
+  const serviceTypeOptions = useMemo(() => [
+    { value: 'mobileRepair', label: t('mobileRepair'), icon: <MobileOutlined /> },
+    { value: 'computerRepair', label: t('computerRepair'), icon: <LaptopOutlined /> },
+    { value: 'applianceRepair', label: t('applianceRepair'), icon: <ToolOutlined /> },
+    { value: 'furnitureRepair', label: t('furnitureRepair'), icon: <TableOutlined /> },
+    { value: 'plumbing', label: t('plumbing'), icon: <ExperimentOutlined /> },
+    { value: 'electricalRepair', label: t('electricalRepair'), icon: <ThunderboltOutlined /> },
+    { value: 'carRepair', label: t('carRepair'), icon: <CarOutlined /> },
+    { value: 'other', label: t('other'), icon: <QuestionOutlined /> }
+  ], [t]);
+
+  // 处理表单提交
+  const handleFinish = (values) => {
+    // 确保 serviceTypes 是字符串
+    const formData = {
+      ...values,
+      serviceTypes: values.serviceTypes?.join(',')
+    };
+    onFinish(formData);
+  };
+
   return (
     <Modal
       title={t('createMerchant')}
@@ -116,7 +156,7 @@ const RepairServiceMerchantsCreateFormModal = ({
     >
       <Form
         form={form}
-        onFinish={onFinish}
+        onFinish={handleFinish}
         layout="vertical"
         labelCol={{ span: 24 }}
         wrapperCol={{ span: 24 }}
@@ -130,7 +170,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="merchantName"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<ShopOutlined />} />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -165,7 +205,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="contactPerson"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<UserOutlined />} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -174,7 +214,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="contactPhone"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<PhoneOutlined />} />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -183,7 +223,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="contactEmail"
                 rules={[{ required: true, type: 'email' }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<MailOutlined />} />
               </Form.Item>
             </Col>
           </Row>
@@ -198,7 +238,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="province"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<EnvironmentOutlined />} />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -207,7 +247,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="city"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<EnvironmentOutlined />} />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -216,7 +256,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="address"
                 rules={[{ required: true }]}
               >
-                <Input size="small" />
+                <Input size="small" prefix={<EnvironmentOutlined />} />
               </Form.Item>
             </Col>
           </Row>
@@ -231,7 +271,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                 name="workingHours"
                 rules={[{ required: true }]}
               >
-                <Input size="small" placeholder="9:00-18:00" />
+                <Input size="small" placeholder="9:00-18:00" prefix={<ClockCircleOutlined />} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -249,6 +289,7 @@ const RepairServiceMerchantsCreateFormModal = ({
                     { value: '微信', label: '微信' },
                     { value: '现金', label: '现金' }
                   ]}
+                  suffixIcon={<WalletOutlined />}
                 />
               </Form.Item>
             </Col>
@@ -256,17 +297,22 @@ const RepairServiceMerchantsCreateFormModal = ({
               <Form.Item
                 label={t('serviceTypes')}
                 name="serviceTypes"
-                rules={[{ required: true }]}
+                rules={[{ required: true, message: t('pleaseSelectServiceTypes') }]}
               >
                 <Select
                   size="small"
-                  mode="tags"
+                  mode="multiple"
                   placeholder={t('pleaseSelect')}
-                  options={[
-                    { value: '手机维修', label: '手机维修' },
-                    { value: '电脑维修', label: '电脑维修' },
-                    { value: '家电维修', label: '家电维修' }
-                  ]}
+                  options={serviceTypeOptions}
+                  optionLabelProp="label"
+                  optionRender={(option) => (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      {option.data.icon}
+                      <span>{option.data.label}</span>
+                    </div>
+                  )}
+                  maxTagCount={2}
+                  maxTagTextLength={10}
                 />
               </Form.Item>
             </Col>
@@ -276,7 +322,11 @@ const RepairServiceMerchantsCreateFormModal = ({
         <div className="form-section">
           <div className="section-title">{t('remarks')}</div>
           <Form.Item name="remark">
-            <Input.TextArea size="small" rows={2} />
+            <Input.TextArea 
+              size="small" 
+              rows={2} 
+              prefix={<FileTextOutlined />}
+            />
           </Form.Item>
         </div>
       </Form>
