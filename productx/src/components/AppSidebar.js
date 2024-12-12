@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useTranslation } from 'react-i18next'
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   CCloseButton,
   CSidebar,
@@ -8,21 +8,21 @@ import {
   CSidebarFooter,
   CSidebarHeader,
   CSidebarToggler,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import * as icons from '@coreui/icons'
-import { AppSidebarNav } from './AppSidebarNav'
-import { sygnet } from 'src/assets/brand/sygnet'
-import api from 'src/axiosInstance'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
-import styled, { keyframes } from 'styled-components'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import * as icons from '@coreui/icons';
+import { AppSidebarNav } from './AppSidebarNav';
+import { sygnet } from 'src/assets/brand/sygnet';
+import api from 'src/axiosInstance';
+import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react';
+import styled, { keyframes } from 'styled-components';
 
 // 组件映射
 const componentMap = {
   CNavGroup,
   CNavItem,
   CNavTitle,
-}
+};
 
 const glowAnimation = keyframes`
   0% {
@@ -51,6 +51,7 @@ const BrandContainer = styled(CSidebarBrand)`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #323a49;
 `;
 
 const BrandText = styled.div`
@@ -61,43 +62,43 @@ const BrandText = styled.div`
   transition: all 0.3s ease;
 
   .full-brand {
-    display: ${props => props.narrow ? 'none' : 'block'};
+    display: ${(props) => (props.narrow ? 'none' : 'block')};
   }
 
   .single-letter {
-    display: ${props => props.narrow ? 'block' : 'none'};
+    display: ${(props) => (props.narrow ? 'block' : 'none')};
     font-size: 1.5rem;
     font-weight: 800;
   }
 `;
 
 const AppSidebar = () => {
-  const dispatch = useDispatch()
-  const { sidebarShow, sidebarUnfoldable } = useSelector((state) => state.sidebar)
-  const { t } = useTranslation()
-  const [menuItems, setMenuItems] = useState([])
+  const dispatch = useDispatch();
+  const { sidebarShow, sidebarUnfoldable } = useSelector((state) => state.sidebar);
+  const { t } = useTranslation();
+  const [menuItems, setMenuItems] = useState([]);
 
   // 转换后端数据为导航配置
   const transformNavData = (navItem) => {
-    const Component = componentMap[navItem.component]
-    if (!Component) return null
+    const Component = componentMap[navItem.component];
+    if (!Component) return null;
 
     // 基础配置
     const baseItem = {
       component: Component,
       name: t(`menu.${navItem.name}`), // 使用 t 函数，添加 menu 前缀
-    }
+    };
 
     // 添加路径（如果存在）
     if (navItem.path) {
-      baseItem.to = navItem.path
+      baseItem.to = navItem.path;
     }
 
     // 处理图标
     if (navItem.icon) {
-      const icon = icons[navItem.icon]
+      const icon = icons[navItem.icon];
       if (icon) {
-        baseItem.icon = <CIcon icon={icon} customClassName="nav-icon" />
+        baseItem.icon = <CIcon icon={icon} customClassName="nav-icon" />;
       }
     }
 
@@ -106,42 +107,38 @@ const AppSidebar = () => {
       baseItem.badge = {
         color: navItem.badgeColor || 'info',
         text: t(`badge.${navItem.badgeText}`), // 徽章文本也使用 t 函数
-      }
+      };
     }
 
     // 处理子菜单
     if (navItem.children && navItem.children.length > 0) {
-      const childItems = navItem.children
-        .map(transformNavData)
-        .filter(Boolean)
+      const childItems = navItem.children.map(transformNavData).filter(Boolean);
       if (childItems.length > 0) {
-        baseItem.items = childItems
+        baseItem.items = childItems;
       }
     }
 
-    return baseItem
-  }
+    return baseItem;
+  };
 
   // 获取菜单数据
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await api.get('/manage/sys-menu/tree')
+        const response = await api.get('/manage/sys-menu/tree');
         if (response && Array.isArray(response)) {
           // 按 id 排序
-          const sortedResponse = response.sort((a, b) => a.id - b.id)
-          const transformedItems = sortedResponse
-            .map(transformNavData)
-            .filter(Boolean)
-          setMenuItems(transformedItems)
+          const sortedResponse = response.sort((a, b) => a.id - b.id);
+          const transformedItems = sortedResponse.map(transformNavData).filter(Boolean);
+          setMenuItems(transformedItems);
         }
       } catch (error) {
-        console.error('获取菜单失败:', error)
+        console.error('获取菜单失败:', error);
       }
-    }
+    };
 
-    fetchMenuItems()
-  }, [t]) // 添加 t 作为依赖，当语言改变时重新获取
+    fetchMenuItems();
+  }, [t]); // 添加 t 作为依赖，当语言改变时重新获取
 
   return (
     <CSidebar
@@ -149,7 +146,7 @@ const AppSidebar = () => {
       visible={sidebarShow}
       unfoldable={sidebarUnfoldable}
       onVisibleChange={(visible) => {
-        dispatch({ type: 'set', sidebarShow: visible })
+        dispatch({ type: 'set', sidebarShow: visible });
       }}
     >
       <BrandContainer>
@@ -160,10 +157,6 @@ const AppSidebar = () => {
       </BrandContainer>
       <style>
         {`
-          /* 增加子菜单的左边距 */
-          .nav-group-items .nav-item {
-            padding-left: 1rem !important;
-          }
 
           /* 展开状态下的子菜单图标缩进 */
           .nav-group-items .nav-item .nav-icon {
@@ -190,7 +183,7 @@ const AppSidebar = () => {
         />
       </CSidebarFooter>
     </CSidebar>
-  )
-}
+  );
+};
 
-export default React.memo(AppSidebar)
+export default React.memo(AppSidebar);

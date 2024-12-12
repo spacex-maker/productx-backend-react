@@ -27,22 +27,20 @@ import {
 } from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 // @ts-ignore
-import defaultAvatar from './../../assets/images/avatars/8.jpg';
+import defaultAvatar from '../../../assets/images/avatars/8.jpg';
 import Cookies from 'js-cookie';
 import axiosInstance from 'src/axiosInstance';
 import { message } from 'antd';
-import AdminDetailModal from './AdminDetailModal';
+import { AdminDetailModal } from './AdminDetailModal';
 
 // 添加自定义样式
 const CompactDropdownMenu = styled(CDropdownMenu)`
   min-width: 200px !important;
   padding: 4px !important;
-  font-size: 10px !important;
 `;
 
 const CompactDropdownItem = styled(CDropdownItem)`
   padding: 4px 8px !important;
-  font-size: 10px !important;
 
   .me-2 {
     width: 12px !important;
@@ -53,7 +51,6 @@ const CompactDropdownItem = styled(CDropdownItem)`
 
 const CompactDropdownHeader = styled(CDropdownHeader)`
   padding: 4px 8px !important;
-  font-size: 10px !important;
   margin-bottom: 4px !important;
 `;
 
@@ -68,7 +65,7 @@ const SmallAvatar = styled(CAvatar)`
   height: 28px !important;
 `;
 
-const AppHeaderDropdown = () => {
+export const AppHeaderDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -214,5 +211,3 @@ const AppHeaderDropdown = () => {
     </>
   );
 };
-
-export default AppHeaderDropdown;

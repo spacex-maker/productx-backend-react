@@ -208,7 +208,7 @@
 }
 
 :root {
-  --global-font-size: 10px;
+  --global-font-size: 14px;
 }
 
 body, .ant-typography, .ant-btn, .ant-input, .ant-select, .ant-table, .ant-modal {
@@ -423,3 +423,6 @@ textarea::placeholder,
   border-color: var(--cui-primary-hover) !important;
 }
 
+.dropdown-menu{
+  --cui-dropdown-font-size: 14px;
+}
