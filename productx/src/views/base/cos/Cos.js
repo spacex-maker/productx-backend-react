@@ -27,7 +27,7 @@ import {
   CTableDataCell,
   CFormCheck
 } from '@coreui/react';
-import {Upload, message, Progress} from 'antd';
+import {Upload, message, Progress, Image} from 'antd';
 import CIcon from '@coreui/icons-react';
 import {
   cilCloudUpload,
@@ -131,6 +131,26 @@ const GlobalStyle = styled.div`
   // 卡片内边距优化
   .card-body {
     padding: 12px;
+  }
+
+  // 图片预览遮罩样式
+  .custom-mask {
+    font-size: 12px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  // 预览modal样式优化
+  .ant-image-preview-root {
+    .ant-image-preview-wrap {
+      .ant-image-preview-img {
+        max-width: 90vw;
+        max-height: 90vh;
+      }
+    }
   }
 `;
 
@@ -1624,10 +1644,14 @@ const Cos = () => {
                               </CTableDataCell>
                               <CTableDataCell>
                                 {!item.isFolder && isImageUrl(item.key) && (
-                                  <img
+                                  <Image
                                     src={`https://${bucketName}.cos.${region}.myqcloud.com/${item.key}`}
                                     alt={item.name}
-                                    style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                                    style={{ width: '50px', height: '50px', objectFit: 'cover', cursor: 'pointer' }}
+                                    preview={{
+                                      mask: '预览',
+                                      maskClassName: 'custom-mask',
+                                    }}
                                   />
                                 )}
                               </CTableDataCell>
@@ -1948,7 +1972,7 @@ const Cos = () => {
                     onClick={() => handlePageChange(pagination.current - 1)}
                     disabled={pagination.current === 1}
                   >
-                    上一页
+                    上��页
                   </CButton>
                   <CButton color="primary" variant="outline" disabled>
                     {pagination.current} / {Math.ceil(filteredFiles.length / pagination.pageSize)}
