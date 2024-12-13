@@ -416,3 +416,156 @@ textarea::placeholder,
 .dropdown-menu{
   --cui-dropdown-font-size: 14px;
 }
+
+.ant-input-search {
+  .ant-input {
+    background-color: var(--cui-input-bg) !important;
+    color: var(--cui-body-color) !important;
+    border-color: var(--cui-border-color) !important;
+    
+    &::placeholder {
+      color: var(--cui-text-muted) !important;
+    }
+  }
+  
+  .ant-input-group-addon {
+    .ant-btn {
+      color: var(--cui-body-color) !important;
+      background-color: var(--cui-input-bg) !important;
+      border-color: var(--cui-border-color) !important;
+    }
+  }
+}
+
+// 暗色主题
+[data-theme='dark'] {
+  .ant-input-search {
+    .ant-input {
+      background-color: var(--cui-dark-input-bg, #1f1f1f) !important;
+      color: var(--cui-dark-body-color, #fff) !important;
+      border-color: var(--cui-dark-border-color, #444) !important;
+      
+      &::placeholder {
+        color: var(--cui-dark-text-muted, #666) !important;
+      }
+    }
+    
+    .ant-input-group-addon {
+      .ant-btn {
+        color: var(--cui-dark-body-color, #fff) !important;
+        background-color: var(--cui-dark-input-bg, #1f1f1f) !important;
+        border-color: var(--cui-dark-border-color, #444) !important;
+      }
+    }
+  }
+}
+
+/* 输入框样式 */
+.ant-input,
+:where(.css-dev-only-do-not-override-1wwf28x).ant-input,
+.css-dev-only-do-not-override-1wwf28x.ant-input {
+  color: var(--cui-body-color) !important;
+  background-color: var(--cui-input-bg) !important;
+  border-color: var(--cui-border-color) !important;
+  font-size: 10px !important;
+}
+
+/* 输入框占位符 */
+.ant-input::placeholder,
+:where(.css-dev-only-do-not-override-1wwf28x).ant-input::placeholder,
+.css-dev-only-do-not-override-1wwf28x.ant-input::placeholder {
+  color: var(--cui-text-muted) !important;
+}
+
+/* 暗色主题 */
+[data-theme='dark'] .ant-input,
+[data-theme='dark'] :where(.css-dev-only-do-not-override-1wwf28x).ant-input,
+[data-theme='dark'] .css-dev-only-do-not-override-1wwf28x.ant-input {
+  color: var(--cui-dark-body-color) !important;
+  background-color: var(--cui-dark-input-bg) !important;
+  border-color: var(--cui-dark-border-color) !important;
+}
+
+/* 模态框内的输入框样式 */
+.ant-modal {
+  .ant-input,
+  :where(.css-dev-only-do-not-override-1wwf28x).ant-input,
+  .css-dev-only-do-not-override-1wwf28x.ant-input {
+    color: rgba(0, 0, 0, 0.88) !important;  // 固定黑色
+    background-color: #ffffff !important;    // 固定白色背景
+    border-color: #d9d9d9 !important;       // antd 默认边框色
+    font-size: 10px !important;
+  }
+
+  .ant-input::placeholder,
+  :where(.css-dev-only-do-not-override-1wwf28x).ant-input::placeholder,
+  .css-dev-only-do-not-override-1wwf28x.ant-input::placeholder {
+    color: rgba(0, 0, 0, 0.25) !important;  // antd 默认占位符颜色
+  }
+
+  /* Select 下拉框样式 */
+  .ant-select-selector {
+    color: rgba(0, 0, 0, 0.88) !important;
+    background-color: #ffffff !important;
+    border-color: #d9d9d9 !important;
+  }
+
+  .ant-select-selection-placeholder {
+    color: rgba(0, 0, 0, 0.25) !important;
+  }
+}
+
+/* 全局图片圆角样式 */
+img {
+  border-radius: var(--cui-border-radius) !important;
+}
+
+/* 如果有特定的图片类不需要圆角，可以单独设置 */
+img.no-radius {
+  border-radius: 0 !important;
+}
+
+/* 按钮基础样式 */
+.ant-btn {
+  &:hover {
+    background-color: var(--cui-btn-hover-bg) !important;
+    border-color: var(--cui-btn-hover-border-color) !important;
+    color: var(--cui-btn-hover-color) !important;
+  }
+
+  &:active {
+    background-color: var(--cui-btn-active-bg) !important;
+    border-color: var(--cui-btn-active-border-color) !important;
+    color: var(--cui-btn-active-color) !important;
+  }
+}
+
+/* 主要按钮样式 */
+.ant-btn-primary {
+  &:hover {
+    background-color: var(--cui-btn-primary-hover-bg) !important;
+    border-color: var(--cui-btn-primary-hover-border-color) !important;
+    color: var(--cui-btn-primary-hover-color) !important;
+  }
+
+  &:active {
+    background-color: var(--cui-btn-primary-active-bg) !important;
+    border-color: var(--cui-btn-primary-active-border-color) !important;
+    color: var(--cui-btn-primary-active-color) !important;
+  }
+}
+
+/* 危险按钮样式 */
+.ant-btn-dangerous {
+  &:hover {
+    background-color: var(--cui-btn-danger-hover-bg) !important;
+    border-color: var(--cui-btn-danger-hover-border-color) !important;
+    color: var(--cui-btn-danger-hover-color) !important;
+  }
+
+  &:active {
+    background-color: var(--cui-btn-danger-active-bg) !important;
+    border-color: var(--cui-btn-danger-active-border-color) !important;
+    color: var(--cui-btn-danger-active-color) !important;
+  }
+}
