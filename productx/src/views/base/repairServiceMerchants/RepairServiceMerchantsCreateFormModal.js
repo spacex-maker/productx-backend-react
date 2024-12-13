@@ -1,27 +1,9 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Modal, Form, Input, Upload, message, DatePicker, Select, Row, Col, TimePicker, Spin, Button, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { PlusOutlined, GlobalOutlined } from '@ant-design/icons';
+import { PlusOutlined, GlobalOutlined, ShopOutlined, UserOutlined, PhoneOutlined, MailOutlined, EnvironmentOutlined, CompassOutlined, ClockCircleOutlined, WalletOutlined, AppstoreOutlined, FileOutlined, CalendarOutlined, NumberOutlined, FileTextOutlined, MobileOutlined, LaptopOutlined, ToolOutlined, TableOutlined, ExperimentOutlined, ThunderboltOutlined, CarOutlined, QuestionOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import COS from 'cos-js-sdk-v5';
-import { 
-  MobileOutlined,
-  LaptopOutlined,
-  ToolOutlined,
-  TableOutlined,
-  ExperimentOutlined,
-  ThunderboltOutlined,
-  CarOutlined,
-  QuestionOutlined,
-  ShopOutlined,
-  UserOutlined,
-  PhoneOutlined,
-  MailOutlined,
-  EnvironmentOutlined,
-  ClockCircleOutlined,
-  WalletOutlined,
-  FileTextOutlined
-} from '@ant-design/icons';
 import moment from 'moment';
 import { Divider } from 'antd';
 import dayjs from 'dayjs';
@@ -309,7 +291,7 @@ const RepairServiceMerchantsCreateFormModal = ({
     getCurrentLocation();
   }, []);
 
-  // MapPicker 组件���改
+  // MapPicker 组件改
   const MapPicker = ({ visible, onCancel, onSelect, mapType }) => {
     const mapContainerRef = useRef(null);
     const mapInstanceRef = useRef(null);
@@ -402,7 +384,7 @@ const RepairServiceMerchantsCreateFormModal = ({
               });
             });
 
-            // 如果有地址,则进行地理编码
+            // 如有地址,则进行地理编码
             if (fullAddress) {
               const geocoder = new window.google.maps.Geocoder();
               geocoder.geocode({ address: fullAddress }, (results, status) => {
@@ -547,11 +529,11 @@ const RepairServiceMerchantsCreateFormModal = ({
           <Row gutter={[16, 0]}>
             <Col span={16}>
               <Form.Item
-                label={t('merchantName')}
+                label={<span><ShopOutlined /> {t('merchantName')}</span>}
                 name="merchantName"
                 rules={[{ required: true }]}
               >
-                <Input size="small" prefix={<ShopOutlined />} />
+                <Input size="small" />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -588,29 +570,29 @@ const RepairServiceMerchantsCreateFormModal = ({
           <Row gutter={[16, 0]}>
             <Col span={8}>
               <Form.Item
-                label={t('contactPerson')}
+                label={<span><UserOutlined /> {t('contactPerson')}</span>}
                 name="contactPerson"
                 rules={[{ required: true }]}
               >
-                <Input size="small" prefix={<UserOutlined />} />
+                <Input size="small" />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item
-                label={t('contactPhone')}
+                label={<span><PhoneOutlined /> {t('contactPhone')}</span>}
                 name="contactPhone"
                 rules={[{ required: true }]}
               >
-                <Input size="small" prefix={<PhoneOutlined />} />
+                <Input size="small" />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item
-                label={t('contactEmail')}
+                label={<span><MailOutlined /> {t('contactEmail')}</span>}
                 name="contactEmail"
                 rules={[{ required: true, type: 'email' }]}
               >
-                <Input size="small" prefix={<MailOutlined />} />
+                <Input size="small" />
               </Form.Item>
             </Col>
           </Row>
@@ -714,7 +696,7 @@ const RepairServiceMerchantsCreateFormModal = ({
             </Col>
             <Col span={6}>
               <Form.Item
-                label={t('postalCode')}
+                label={<span><EnvironmentOutlined /> {t('postalCode')}</span>}
                 name="postalCode"
               >
                 <Input size="small" />
@@ -722,7 +704,7 @@ const RepairServiceMerchantsCreateFormModal = ({
             </Col>
             <Col span={24}>
               <Form.Item
-                label={t('address')}
+                label={<span><EnvironmentOutlined /> {t('address')}</span>}
                 name="address"
                 rules={[{ required: true }]}
               >
@@ -736,7 +718,7 @@ const RepairServiceMerchantsCreateFormModal = ({
           <div className="section-title">{t('locationAndOthers')}</div>
           <Row gutter={[16, 0]}>
             <Col span={24}>
-              <Form.Item label={t('location')}>
+              <Form.Item label={<span><EnvironmentOutlined /> {t('location')}</span>}>
                 <Space.Compact style={{ width: '100%' }}>
                   <Form.Item
                     name="latitude"
@@ -774,7 +756,7 @@ const RepairServiceMerchantsCreateFormModal = ({
             </Col>
             <Col span={12}>
               <Form.Item
-                label={t('serviceAreas')}
+                label={<span><CompassOutlined /> {t('serviceAreas')}</span>}
                 name="serviceAreas"
                 initialValue={[t('wholeCity')]}
               >
@@ -787,10 +769,10 @@ const RepairServiceMerchantsCreateFormModal = ({
             </Col>
             <Col span={12}>
               <Form.Item
-                label={t('websiteUrl')}
+                label={<span><GlobalOutlined /> {t('websiteUrl')}</span>}
                 name="websiteUrl"
               >
-                <Input size="small" prefix={<GlobalOutlined />} />
+                <Input size="small" />
               </Form.Item>
             </Col>
           </Row>
@@ -801,7 +783,7 @@ const RepairServiceMerchantsCreateFormModal = ({
           <Row gutter={[16, 0]}>
             <Col span={12}>
               <Form.Item
-                label={t('workingHours')}
+                label={<span><ClockCircleOutlined /> {t('workingHours')}</span>}
                 name="workingHours"
                 rules={[{ required: true }]}
                 initialValue="00:00-24:00"
@@ -830,25 +812,24 @@ const RepairServiceMerchantsCreateFormModal = ({
             </Col>
             <Col span={12}>
               <Form.Item
-                label={t('paymentMethods')}
+                label={<span><WalletOutlined /> {t('paymentMethods')}</span>}
                 name="paymentMethods"
               >
                 <Select
                   size="small"
                   mode="multiple"
-                  suffixIcon={<WalletOutlined />}
                   dropdownMatchSelectWidth={false}
                   options={[
                     { value: '支付宝', label: '支付宝' },
                     { value: '微信', label: '微信' },
-                    { value: '现', label: '现金' }
+                    { value: '现金', label: '现金' }
                   ]}
                 />
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item
-                label={t('serviceTypes')}
+                label={<span><AppstoreOutlined /> {t('serviceTypes')}</span>}
                 name="serviceTypes"
                 rules={[{ required: true, message: t('pleaseSelectServiceTypes') }]}
                 initialValue={['other']}
@@ -877,7 +858,7 @@ const RepairServiceMerchantsCreateFormModal = ({
           <Row gutter={[16, 0]}>
             <Col span={8}>
               <Form.Item
-                label={t('businessLicense')}
+                label={<span><FileOutlined /> {t('businessLicense')}</span>}
                 name="businessLicense"
               >
                 <Upload
@@ -904,7 +885,7 @@ const RepairServiceMerchantsCreateFormModal = ({
             </Col>
             <Col span={8}>
               <Form.Item
-                label={t('licenseExpiry')}
+                label={<span><CalendarOutlined /> {t('licenseExpiry')}</span>}
                 name="licenseExpiry"
               >
                 <DatePicker size="small" style={{ width: '100%' }} />
@@ -912,7 +893,7 @@ const RepairServiceMerchantsCreateFormModal = ({
             </Col>
             <Col span={8}>
               <Form.Item
-                label={t('taxNumber')}
+                label={<span><NumberOutlined /> {t('taxNumber')}</span>}
                 name="taxNumber"
               >
                 <Input size="small" />
@@ -923,12 +904,11 @@ const RepairServiceMerchantsCreateFormModal = ({
 
         <div className="form-section">
           <div className="section-title">{t('remarks')}</div>
-          <Form.Item name="remark">
-            <Input.TextArea 
-              size="small" 
-              rows={2} 
-              prefix={<FileTextOutlined />}
-            />
+          <Form.Item
+            label={<span><FileTextOutlined /> {t('remark')}</span>}
+            name="remark"
+          >
+            <Input.TextArea size="small" rows={2} />
           </Form.Item>
         </div>
       </Form>
