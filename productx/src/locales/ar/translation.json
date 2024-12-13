@@ -602,5 +602,21 @@
   "businessInfo": "معلومات الأعمال",
   "joinedPartnerProgram": "انضم إلى برنامج الشركاء",
   "vipLevel": "مستوى VIP",
-  "merchantDetail": "تفاصيل التاجر"
+  "merchantDetail": "تفاصيل التاجر",
+  "businessLicense": "رخصة الأعمال",
+  "licenseExpiry": "تاريخ انتهاء الترخيص",
+  "taxNumber": "رقم الضريبة",
+  "locationAndOthers": "الموقع والمعلومات الأخرى",
+  "latitude": "خط العرض",
+  "serviceAreas": "المناطق الخدمية",
+  "licenseInfo": "معلومات الترخيص",
+  "longitude": "خط الطول",
+  "selectLocation": "حدد الموقع",
+  "currentLocation": "الموقع الحالي",
+  "enterAddress": "أدخل العنوان",
+  "pleaseEnterAddressFirst": "يرجى إدخال العنوان أولاً",
+  "map": "الخريطة",
+  "satellite": "الأقمار الصناعية",
+  "selectOnMap": "اختيار على الخريطة",
+  "pleaseSelectCountryFirst": "يرجى اختيار الدولة أولاً"
 }

@@ -611,5 +611,21 @@
   "businessInfo": "Business Info",
   "joinedPartnerProgram": "Joined Partner Program",
   "vipLevel": "VIP Level",
-  "merchantDetail": "Merchant Detail"
+  "merchantDetail": "Merchant Detail",
+  "businessLicense": "Business License",
+  "licenseExpiry": "License Expiry",
+  "taxNumber": "Tax Number",
+  "locationAndOthers": "Location and Others",
+  "latitude": "Latitude",
+  "serviceAreas": "Service Areas",
+  "licenseInfo": "License Information",
+  "longitude": "Longitude",
+  "selectLocation": "Select Location",
+  "currentLocation": "Current Location",
+  "enterAddress": "Enter Address",
+  "pleaseEnterAddressFirst": "Please enter the address first",
+  "map": "Map",
+  "satellite": "Satellite",
+  "selectOnMap": "Select on Map",
+  "pleaseSelectCountryFirst": "Please select a country first"
 }

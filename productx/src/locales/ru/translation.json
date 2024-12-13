@@ -619,5 +619,21 @@
   "businessInfo": "Бизнес информация",
   "joinedPartnerProgram": "Присоединился к партнерской программе",
   "vipLevel": "VIP уровень",
-  "merchantDetail": "Детали продавца"
+  "merchantDetail": "Детали продавца",
+  "businessLicense": "Бизнес лицензия",
+  "licenseExpiry": "Дата истечения лицензии",
+  "taxNumber": "Номер налога",
+  "locationAndOthers": "Местоположение и другое",
+  "latitude": "Широта",
+  "serviceAreas": "Служебные зоны",
+  "licenseInfo": "Информация о лицензии",
+  "longitude": "Долгота",
+  "selectLocation": "Выбрать местоположение",
+  "currentLocation": "Текущее местоположение",
+  "enterAddress": "Введите адрес",
+  "pleaseEnterAddressFirst": "Пожалуйста, сначала введите адрес",
+  "map": "Карта",
+  "satellite": "Спутник",
+  "selectOnMap": "Выбрать на карте",
+  "pleaseSelectCountryFirst": "Пожалуйста, сначала выберите страну"
 }
