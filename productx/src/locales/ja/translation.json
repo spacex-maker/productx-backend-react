@@ -619,5 +619,21 @@
   "businessInfo": "ビジネス情報",
   "joinedPartnerProgram": "パートナープログラムに参加",
   "vipLevel": "VIPレベル",
-  "merchantDetail": "店舗詳細"
+  "merchantDetail": "店舗詳細",
+  "businessLicense": "事業ライセンス",
+  "licenseExpiry": "ライセンス有効期限",
+  "taxNumber": "税番号",
+  "locationAndOthers": "位置とその他の情報",
+  "latitude": "緯度",
+  "serviceAreas": "サービスエリア",
+  "licenseInfo": "ライセンス情報",
+  "longitude": "経度",
+  "selectLocation": "場所を選択",
+  "currentLocation": "現在地",
+  "enterAddress": "住所を入力",
+  "pleaseEnterAddressFirst": "まず住所を入力してください",
+  "map": "地図",
+  "satellite": "衛星",
+  "selectOnMap": "地図で選択",
+  "pleaseSelectCountryFirst": "まず国を選択してください"
 }

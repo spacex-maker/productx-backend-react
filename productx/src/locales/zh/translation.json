@@ -620,5 +620,21 @@
   "businessInfo": "商业信息",
   "joinedPartnerProgram": "已加入合作者计划",
   "vipLevel": "VIP等级",
-  "merchantDetail": "商户详情"
+  "merchantDetail": "商户详情",
+  "businessLicense": "营业执照",
+  "licenseExpiry": "营业执照到期日期",
+  "taxNumber": "税号",
+  "locationAndOthers": "位置和其他信息",
+  "latitude": "纬度",
+  "serviceAreas": "服务区域",
+  "licenseInfo": "许可证信息",
+  "longitude": "经度",
+  "selectLocation": "选择位置",
+  "currentLocation": "当前位置",
+  "enterAddress": "输入地址",
+  "pleaseEnterAddressFirst": "请先输入地址",
+  "map": "地图",
+  "satellite": "卫星",
+  "selectOnMap": "在地图上选择",
+  "pleaseSelectCountryFirst": "请先选择国家"
 }

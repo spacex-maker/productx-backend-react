@@ -358,16 +358,6 @@ textarea::placeholder,
   background-color: var(--cui-input-bg) !important;
 }
 
-/* Select 组件样式 */
-.ant-select-selector,
-:where(.css-dev-only-do-not-override-1x0dypw).ant-select .ant-select-selector,
-:where(.css-*).ant-select .ant-select-selector {
-  background-color: var(--cui-input-bg) !important;
-  border-color: var(--cui-border-color) !important;
-  color: var(--cui-body-color) !important;
-  height: 24px !important;
-  font-size: 10px !important;
-}
 
 /* Select 悬浮状态 */
 .ant-select:hover .ant-select-selector,

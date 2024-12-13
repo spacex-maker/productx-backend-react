@@ -619,5 +619,21 @@
   "businessInfo": "Geschäftsinformationen",
   "joinedPartnerProgram": "Dem Partnerprogramm beigetreten",
   "vipLevel": "VIP-Level",
-  "merchantDetail": "Händlerinformation"
+  "merchantDetail": "Händlerinformation",
+  "businessLicense": "Geschäftslizenz",
+  "licenseExpiry": "Lizenzablaufdatum",
+  "taxNumber": "Steuernummer",
+  "locationAndOthers": "Standort und andere Informationen",
+  "latitude": "Breitengrad",
+  "serviceAreas": "Servicegebiete",
+  "licenseInfo": "Lizenzinformation",
+  "longitude": "Längengrad",
+  "selectLocation": "Standort auswählen",
+  "currentLocation": "Aktueller Standort",
+  "enterAddress": "Adresse eingeben",
+  "pleaseEnterAddressFirst": "Bitte geben Sie zuerst die Adresse ein",
+  "map": "Karte",
+  "satellite": "Satellit",
+  "selectOnMap": "Auf der Karte auswählen",
+  "pleaseSelectCountryFirst": "Bitte wählen Sie zuerst ein Land aus"
 }
