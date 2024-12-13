@@ -33,6 +33,7 @@ const UserAddressTable = ({
           {[
             'id',
             'userId',
+            'username',
             'contactName',
             'phoneNum',
             'contactAddress',
@@ -66,6 +67,7 @@ const UserAddressTable = ({
             </td>
             <td className="text-truncate">{item.id}</td>
             <td className="text-truncate">{item.userId}</td>
+            <td className="text-truncate">{item.username}</td>
             <td className="text-truncate">{item.contactName}</td>
             <td className="text-truncate">{item.phoneNum}</td>
             <td className="address-cell">
@@ -118,6 +120,58 @@ const UserAddressTable = ({
         th {
           font-size: 10px;
           white-space: nowrap;
+        }
+        .ant-input-search .ant-input {
+          color: var(--text-color);
+        }
+
+        .ant-input-search .ant-input::placeholder {
+          color: var(--text-secondary-color);
+        }
+
+        .ant-input-search .ant-input-group-addon .ant-btn {
+          color: var(--text-color);
+        }
+
+        /* 暗色主题下的样式 */
+        [data-theme='dark'] .ant-input-search .ant-input {
+          background-color: var(--component-background);
+          color: var(--text-color);
+        }
+
+        [data-theme='dark'] .ant-input-search .ant-input::placeholder {
+          color: var(--text-secondary-color);
+        }
+
+        [data-theme='dark'] .ant-input-search .ant-input-group-addon .ant-btn {
+          color: var(--text-color);
+        }
+
+        /* 增加选择器优先级 */
+        .table-container .ant-input-search .ant-input {
+          color: var(--text-color) !important;
+        }
+
+        .table-container .ant-input-search .ant-input::placeholder {
+          color: var(--text-secondary-color) !important;
+        }
+
+        .table-container .ant-input-search .ant-input-group-addon .ant-btn {
+          color: var(--text-color) !important;
+        }
+
+        /* 暗色主题下的样式 */
+        .table-container[data-theme='dark'] .ant-input-search .ant-input {
+          background-color: var(--component-background) !important;
+          color: var(--text-color) !important;
+        }
+
+        .table-container[data-theme='dark'] .ant-input-search .ant-input::placeholder {
+          color: var(--text-secondary-color) !important;
+        }
+
+        .table-container[data-theme='dark'] .ant-input-search .ant-input-group-addon .ant-btn {
+          color: var(--text-color) !important;
         }
       `}</style>
     </table>
