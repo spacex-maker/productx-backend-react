@@ -1,9 +1,9 @@
-const { defineConfig } = require('vite')
-const react = require('@vitejs/plugin-react')
-const path = require('node:path')
-const autoprefixer = require('autoprefixer')
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'node:path';
+import autoprefixer from 'autoprefixer';
 
-module.exports = defineConfig(() => {
+export default defineConfig(() => {
   return {
     base: './',
     build: {
@@ -47,5 +47,5 @@ module.exports = defineConfig(() => {
       port: 3000,
       proxy: {},
     },
-  }
-})
+  };
+});
