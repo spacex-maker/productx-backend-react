@@ -1,11 +1,10 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { CContainer, CSpinner } from '@coreui/react';
-import appContentStyle from './appContent.style.module.scss';
+import { Route, Routes } from 'react-router-dom';
+import { CSpinner } from '@coreui/react';
 
-// routes config
-import routes from '../routes';
-console.log(appContentStyle);
+import routes from '../../routes';
+import appContentStyle from './index.module.scss';
+
 const AppContent = () => {
   return (
     <div className={appContentStyle.mianRootContainer}>
