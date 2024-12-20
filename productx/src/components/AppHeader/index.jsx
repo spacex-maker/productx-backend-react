@@ -17,8 +17,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import { cilContrast, cilEnvelopeOpen, cilLanguage, cilMenu, cilMoon, cilSun } from '@coreui/icons';
 
-import AppBreadcrumb from '../AppBreadcrumb';
-import { AppHeaderDropdown } from './component';
+import { AppHeaderDropdown, AppBreadcrumb } from './component';
 import appHeaderStyle from './index.module.scss';
 
 const AppHeader = () => {
