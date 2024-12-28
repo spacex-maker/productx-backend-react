@@ -668,5 +668,20 @@
   "pleaseEnterRegion": "지역을 입력하세요",
   "pleaseEnterBucketName": "버킷 이름을 입력하세요",
   "pleaseEnterEndpoint": "엔드포인트를 입력하세요",
-  "pleaseEnterAccountName": "계정 이름을 입력하세요"
+  "pleaseEnterAccountName": "계정 이름을 입력하세요",
+  "storageDetail": "스토리지 세부 정보",
+  "storageConfig": "스토리지 구성",
+  "securityConfig": "보안 구성",
+  "advancedConfig": "고급 구성",
+  "auditInfo": "감사 정보",
+
+  "compliance": "준수 사항",
+  "encryptionType": "암호화 유형",
+  "isEncrypted": "암호화됨",
+  "encryptionKey": "암호화 키",
+  "apiUrl": "API URL",
+  "apiVersion": "API 버전",
+  "maxStorageSize": "최대 스토리지 용량",
+  "maxRequestLimit": "최대 요청 제한",
+  "lastCheckedAt": "마지막 확인 시간"
 }

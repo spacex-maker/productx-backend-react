@@ -668,5 +668,20 @@
   "pleaseEnterRegion": "Пожалуйста, введите регион",
   "pleaseEnterBucketName": "Пожалуйста, введите имя ведра",
   "pleaseEnterEndpoint": "Пожалуйста, введите точку доступа",
-  "pleaseEnterAccountName": "Пожалуйста, введите имя аккаунта"
+  "pleaseEnterAccountName": "Пожалуйста, введите имя аккаунта",
+  "storageDetail": "Детали хранилища",
+  "storageConfig": "Конфигурация хранилища",
+  "securityConfig": "Конфигурация безопасности",
+  "advancedConfig": "Расширенная конфигурация",
+  "auditInfo": "Аудит информация",
+
+  "compliance": "Соответствие",
+  "encryptionType": "Тип шифрования",
+  "isEncrypted": "Зашифровано",
+  "encryptionKey": "Ключ шифрования",
+  "apiUrl": "URL API",
+  "apiVersion": "Версия API",
+  "maxStorageSize": "Максимальный размер хранилища",
+  "maxRequestLimit": "Максимальное ограничение запросов",
+  "lastCheckedAt": "Последняя проверка"
 }

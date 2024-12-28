@@ -651,5 +651,20 @@
   "pleaseEnterRegion": "يرجى إدخال المنطقة",
   "pleaseEnterBucketName": "يرجى إدخال اسم الدلو",
   "pleaseEnterEndpoint": "يرجى إدخال نقطة النهاية",
-  "pleaseEnterAccountName": "يرجى إدخال اسم الحساب"
+  "pleaseEnterAccountName": "يرجى إدخال اسم الحساب",
+  "storageDetail": "تفاصيل التخزين",
+  "storageConfig": "إعدادات التخزين",
+  "securityConfig": "إعدادات الأمان",
+  "advancedConfig": "إعدادات متقدمة",
+  "auditInfo": "معلومات التدقيق",
+
+  "compliance": "الامتثال",
+  "encryptionType": "نوع التشفير",
+  "isEncrypted": "مُشفر",
+  "encryptionKey": "مفتاح التشفير",
+  "apiUrl": "رابط API",
+  "apiVersion": "إصدار API",
+  "maxStorageSize": "أقصى حجم للتخزين",
+  "maxRequestLimit": "أقصى حد للطلبات",
+  "lastCheckedAt": "آخر وقت فحص"
 }

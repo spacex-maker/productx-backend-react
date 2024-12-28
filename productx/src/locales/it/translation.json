@@ -661,5 +661,20 @@
   "pleaseEnterRegion": "Per favore, inserisci la Regione",
   "pleaseEnterBucketName": "Per favore, inserisci il Nome del Bucket",
   "pleaseEnterEndpoint": "Per favore, inserisci l'Endpoint",
-  "pleaseEnterAccountName": "Per favore, inserisci il Nome Account"
+  "pleaseEnterAccountName": "Per favore, inserisci il Nome Account",
+  "storageDetail": "Dettagli dello Storage",
+  "storageConfig": "Configurazione dello Storage",
+  "securityConfig": "Configurazione della Sicurezza",
+  "advancedConfig": "Configurazione Avanzata",
+  "auditInfo": "Informazioni di Audit",
+
+  "compliance": "Conformità",
+  "encryptionType": "Tipo di Crittografia",
+  "isEncrypted": "È Crittografato",
+  "encryptionKey": "Chiave di Crittografia",
+  "apiUrl": "URL API",
+  "apiVersion": "Versione API",
+  "maxStorageSize": "Dimensione Massima di Archiviazione",
+  "maxRequestLimit": "Limite Massimo di Richieste",
+  "lastCheckedAt": "Ultima Verifica"
 }

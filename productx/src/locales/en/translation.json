@@ -660,5 +660,20 @@
   "pleaseEnterRegion": "Please enter Region",
   "pleaseEnterBucketName": "Please enter Bucket Name",
   "pleaseEnterEndpoint": "Please enter Endpoint",
-  "pleaseEnterAccountName": "Please enter Account Name"
+  "pleaseEnterAccountName": "Please enter Account Name",
+  "storageDetail": "Storage Detail",
+  "storageConfig": "Storage Config",
+  "securityConfig": "Security Config",
+  "advancedConfig": "Advanced Config",
+  "auditInfo": "Audit Info",
+
+  "compliance": "Compliance",
+  "encryptionType": "Encryption Type",
+  "isEncrypted": "Is Encrypted",
+  "encryptionKey": "Encryption Key",
+  "apiUrl": "API URL",
+  "apiVersion": "API Version",
+  "maxStorageSize": "Max Storage Size",
+  "maxRequestLimit": "Max Request Limit",
+  "lastCheckedAt": "Last Checked At"
 }
