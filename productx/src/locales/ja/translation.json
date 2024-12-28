@@ -668,5 +668,20 @@
   "pleaseEnterRegion": "リージョンを入力してください",
   "pleaseEnterBucketName": "バケット名を入力してください",
   "pleaseEnterEndpoint": "エンドポイントを入力してください",
-  "pleaseEnterAccountName": "アカウント名を入力してください"
+  "pleaseEnterAccountName": "アカウント名を入力してください",
+  "storageDetail": "ストレージ詳細",
+  "storageConfig": "ストレージ設定",
+  "securityConfig": "セキュリティ設定",
+  "advancedConfig": "高度な設定",
+  "auditInfo": "監査情報",
+
+  "compliance": "コンプライアンス",
+  "encryptionType": "暗号化タイプ",
+  "isEncrypted": "暗号化されている",
+  "encryptionKey": "暗号化キー",
+  "apiUrl": "API URL",
+  "apiVersion": "API バージョン",
+  "maxStorageSize": "最大ストレージサイズ",
+  "maxRequestLimit": "最大リクエスト制限",
+  "lastCheckedAt": "最終確認時間"
 }

@@ -668,5 +668,20 @@
   "pleaseEnterRegion": "Veuillez entrer la Région",
   "pleaseEnterBucketName": "Veuillez entrer le Nom du Panier",
   "pleaseEnterEndpoint": "Veuillez entrer le Point de Terminaison",
-  "pleaseEnterAccountName": "Veuillez entrer le Nom du Compte"
+  "pleaseEnterAccountName": "Veuillez entrer le Nom du Compte",
+  "storageDetail": "Détails du Stockage",
+  "storageConfig": "Configuration du Stockage",
+  "securityConfig": "Configuration de la Sécurité",
+  "advancedConfig": "Configuration Avancée",
+  "auditInfo": "Informations d'Audit",
+
+  "compliance": "Conformité",
+  "encryptionType": "Type de Cryptage",
+  "isEncrypted": "Est Crypté",
+  "encryptionKey": "Clé de Cryptage",
+  "apiUrl": "URL de l'API",
+  "apiVersion": "Version de l'API",
+  "maxStorageSize": "Taille Max de Stockage",
+  "maxRequestLimit": "Limite Max de Requêtes",
+  "lastCheckedAt": "Dernière Vérification"
 }

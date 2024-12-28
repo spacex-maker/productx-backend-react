@@ -636,5 +636,20 @@
   "map": "Karte",
   "satellite": "Satellit",
   "selectOnMap": "Auf der Karte auswählen",
-  "pleaseSelectCountryFirst": "Bitte wählen Sie zuerst ein Land aus"
+  "pleaseSelectCountryFirst": "Bitte wählen Sie zuerst ein Land aus",
+  "storageDetail": "Speicher Details",
+  "storageConfig": "Speicher Konfiguration",
+  "securityConfig": "Sicherheitskonfiguration",
+  "advancedConfig": "Erweiterte Konfiguration",
+  "auditInfo": "Prüfungsinformationen",
+
+  "compliance": "Compliance",
+  "encryptionType": "Verschlüsselungstyp",
+  "isEncrypted": "Verschlüsselt",
+  "encryptionKey": "Verschlüsselungsschlüssel",
+  "apiUrl": "API-URL",
+  "apiVersion": "API-Version",
+  "maxStorageSize": "Maximale Speicherkapazität",
+  "maxRequestLimit": "Maximale Anfragebegrenzung",
+  "lastCheckedAt": "Letzte Überprüfung"
 }
