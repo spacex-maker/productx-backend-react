@@ -116,6 +116,7 @@ const PartnersRouter = React.lazy(() => import('./views/base/partners/Partners')
 
 const RepairServiceMerchantsRouter = React.lazy(() => import('./views/base/repairServiceMerchants/RepairServiceMerchants'));
 
+const ObjectStorageListRouter = React.lazy(() => import('./views/base/objectStorage/ObjectStorageList'));
 
 
 const routes = [
@@ -408,6 +409,13 @@ const routes = [
     path: '/sys/repairServiceMerchants', name: '维修商户管理', element: (
       <PrivateRoute>
         <RepairServiceMerchantsRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/objectStorageConfigList', name: '对象存储配置管理', element: (
+      <PrivateRoute>
+        <ObjectStorageListRouter/>
       </PrivateRoute>
     )
   },
