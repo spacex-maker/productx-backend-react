@@ -91,7 +91,7 @@ const ObjectStorageList = () => {
 
   const handleUpdateStorage = async (values) => {
     try {
-      await api.put('/manage/object-storage-config/update', values);
+      await api.post('/manage/object-storage-config/update', values);
       message.success(t('updateSuccess'));
       setIsUpdateModalVisible(false);
       updateForm.resetFields();
