@@ -696,7 +696,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       }
       open={visible}
       onCancel={onCancel}
-      width={800}
+      width={900}
       footer={null}
       styles={{ padding: '6px' }}
       closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
