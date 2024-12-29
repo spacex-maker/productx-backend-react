@@ -651,5 +651,28 @@
   "apiVersion": "API-Version",
   "maxStorageSize": "Maximale Speicherkapazität",
   "maxRequestLimit": "Maximale Anfragebegrenzung",
-  "lastCheckedAt": "Letzte Überprüfung"
+  "lastCheckedAt": "Letzte Überprüfung",
+
+  "verifyConfig": "Konfiguration überprüfen",
+  "verifying": "Wird überprüft",
+  "verifySuccess": "Erfolgreich überprüft",
+  "verifyFailed": "Überprüfung fehlgeschlagen",
+  "configValid": "Konfiguration gültig",
+  "configInvalid": "Konfiguration ungültig",
+  "configStatus": "Konfigurationsstatus",
+  "notVerified": "Nicht überprüft",
+  "notVerifiedYet": "Konfiguration noch nicht überprüft",
+  "lastVerifyTime": "Letzte Überprüfungszeit: {time}",
+  "aesKey": "Verschlüsselungsschlüssel",
+  "pleaseEnterAesKey": "Bitte geben Sie den Verschlüsselungsschlüssel ein",
+  "enterAesKey": "Geben Sie den Verschlüsselungsschlüssel für AK/SK ein",
+  "aesKeyTooltip": "Dieser Schlüssel dient der Verschlüsselung und Speicherung von AccessKey und SecretKey",
+  "errorInfo": "Fehlerinformation",
+  "dataContributors": "Datenbeiträger",
+
+  "regionsCount": "Anzahl der Verwaltungsregionen",
+  "subRegionsCount": "Anzahl der untergeordneten Regionen",
+  "totalPopulation": "Gesamtbevölkerung",
+  "totalArea": "Gesamtfläche",
+  "tenThousand": "Zehntausend"
 }

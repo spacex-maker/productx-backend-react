@@ -683,5 +683,28 @@
   "apiVersion": "API 버전",
   "maxStorageSize": "최대 스토리지 용량",
   "maxRequestLimit": "최대 요청 제한",
-  "lastCheckedAt": "마지막 확인 시간"
+  "lastCheckedAt": "마지막 확인 시간",
+
+  "verifyConfig": "구성 확인",
+  "verifying": "확인 중",
+  "verifySuccess": "확인 성공",
+  "verifyFailed": "확인 실패",
+  "configValid": "구성 유효",
+  "configInvalid": "구성 무효",
+  "configStatus": "구성 상태",
+  "notVerified": "확인되지 않음",
+  "notVerifiedYet": "구성이 아직 확인되지 않음",
+  "lastVerifyTime": "마지막 확인 시간: {time}",
+  "aesKey": "암호화 키",
+  "pleaseEnterAesKey": "암호화 키를 입력하세요",
+  "enterAesKey": "AK/SK에 대한 암호화 키를 입력하세요",
+  "aesKeyTooltip": "이 키는 AccessKey 및 SecretKey를 암호화하여 저장하는 데 사용됩니다",
+  "errorInfo": "오류 정보",
+  "dataContributors": "데이터 기여자",
+
+  "regionsCount": "행정 구역 수",
+  "subRegionsCount": "하위 행정 구역 수",
+  "totalPopulation": "총 인구",
+  "totalArea": "총 면적",
+  "tenThousand": "만"
 }

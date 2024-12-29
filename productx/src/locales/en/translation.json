@@ -675,5 +675,28 @@
   "apiVersion": "API Version",
   "maxStorageSize": "Max Storage Size",
   "maxRequestLimit": "Max Request Limit",
-  "lastCheckedAt": "Last Checked At"
+  "lastCheckedAt": "Last Checked At",
+
+  "verifyConfig": "Verify Configuration",
+  "verifying": "Verifying",
+  "verifySuccess": "Verification Successful",
+  "verifyFailed": "Verification Failed",
+  "configValid": "Configuration Valid",
+  "configInvalid": "Configuration Invalid",
+  "configStatus": "Configuration Status",
+  "notVerified": "Not Verified",
+  "notVerifiedYet": "Configuration Not Verified Yet",
+  "lastVerifyTime": "Last Verification Time: {time}",
+  "aesKey": "Encryption Key",
+  "pleaseEnterAesKey": "Please enter the encryption key",
+  "enterAesKey": "Enter the encryption key for AK/SK",
+  "aesKeyTooltip": "This key is used to encrypt and store the AccessKey and SecretKey",
+  "errorInfo": "Error Information",
+  "dataContributors": "Data Contributors",
+
+  "regionsCount": "Number of Administrative Regions",
+  "subRegionsCount": "Number of Sub-Regions",
+  "totalPopulation": "Total Population",
+  "totalArea": "Total Area",
+  "tenThousand": "Ten Thousand"
 }

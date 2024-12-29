@@ -18,6 +18,8 @@ const ObjectStorageList = () => {
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
+  const [countries, setCountries] = useState([]);
   const [searchParams, setSearchParams] = useState({
     storageProvider: '',
     storageType: '',
@@ -27,15 +29,16 @@ const ObjectStorageList = () => {
     bucketName: '',
     region: '',
     timeRange: [],
+    country: undefined
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [createForm] = Form.useForm();
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedStorage, setSelectedStorage] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   const {
     selectedRows,
@@ -47,6 +50,21 @@ const ObjectStorageList = () => {
   useEffect(() => {
     fetchData();
   }, [currentPage, pageSize, searchParams]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);
+        }
+      } catch (error) {
+        console.error('Failed to fetch countries:', error);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -75,6 +93,11 @@ const ObjectStorageList = () => {
 
   const handleSearchChange = (name, value) => {
     setSearchParams(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSearch = () => {
+    setCurrent(1);
+    fetchData();
   };
 
   const handleCreateStorage = async (values) => {
@@ -161,6 +184,46 @@ const ObjectStorageList = () => {
               </Select>
             </Col>
             <Col>
+              <Select
+                size="small"
+                showSearch
+                allowClear
+                value={searchParams.country}
+                onChange={value => handleSearchChange('country', value)}
+                placeholder={t('country')}
+                style={{ minWidth: '150px' }}
+                filterOption={(input, option) => {
+                  const searchText = [
+                    option?.name,
+                    option?.code
+                  ].join('').toLowerCase();
+                  return searchText.includes(input.toLowerCase());
+                }}
+              >
+                {(countries || []).map(country => (
+                  <Select.Option 
+                    key={country.code} 
+                    value={country.code}
+                    name={country.name}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <img 
+                        src={country.flagImageUrl} 
+                        alt={country.name}
+                        style={{ 
+                          width: '16px', 
+                          height: '12px',
+                          objectFit: 'cover',
+                          borderRadius: '2px'
+                        }} 
+                      />
+                      {country.name} ({country.code})
+                    </div>
+                  </Select.Option>
+                ))}
+              </Select>
+            </Col>
+            <Col>
               <Input
                 size="small"
                 value={searchParams.bucketName}
@@ -190,7 +253,7 @@ const ObjectStorageList = () => {
               <Button
                 size="small"
                 type="primary"
-                onClick={fetchData}
+                onClick={handleSearch}
                 disabled={isLoading}
               >
                 {isLoading ? <Spin /> : t('search')}

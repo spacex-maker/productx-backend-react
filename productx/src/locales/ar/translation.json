@@ -666,5 +666,27 @@
   "apiVersion": "إصدار API",
   "maxStorageSize": "أقصى حجم للتخزين",
   "maxRequestLimit": "أقصى حد للطلبات",
-  "lastCheckedAt": "آخر وقت فحص"
+  "lastCheckedAt": "آخر وقت فحص",
+
+  "verifyConfig": "تكوين التحقق",
+  "verifying": "جارٍ التحقق",
+  "verifySuccess": "تم التحقق بنجاح",
+  "verifyFailed": "فشل التحقق",
+  "configValid": "التكوين صالح",
+  "configInvalid": "التكوين غير صالح",
+  "configStatus": "حالة التكوين",
+  "notVerified": "لم يتم التحقق",
+  "notVerifiedYet": "التكوين لم يتم التحقق منه بعد",
+  "lastVerifyTime": "آخر وقت تحقق: {time}",
+  "aesKey": "مفتاح التشفير",
+  "pleaseEnterAesKey": "يرجى إدخال مفتاح التشفير",
+  "enterAesKey": "أدخل مفتاح التشفير لـ AK/SK",
+  "aesKeyTooltip": "يُستخدم هذا المفتاح لتشفير وتخزين AccessKey و SecretKey",
+  "errorInfo": "معلومات الخطأ",
+  "dataContributors": "مساهمو البيانات",
+  "regionsCount": "عدد التقسيمات الإدارية",
+  "subRegionsCount": "عدد التقسيمات الإدارية الفرعية",
+  "totalPopulation": "إجمالي السكان",
+  "totalArea": "إجمالي المساحة",
+  "tenThousand": "عشرة آلاف"
 }

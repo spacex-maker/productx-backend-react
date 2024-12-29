@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm, Descriptions } from 'antd';
+import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm, Descriptions, Avatar, List, Tag } from 'antd';
 import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import {useTranslation} from 'react-i18next'; // 引入 useTranslation
@@ -66,6 +66,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     status: 50,
     action: 100,
   });
+  const [maintainers, setMaintainers] = useState([]);
+  const [maintainersLoading, setMaintainersLoading] = useState(false);
 
   // 修改表单样式定义
   const formStyles = {
@@ -465,12 +467,108 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     }
   };
 
+  // 获取维护人统计
+  useEffect(() => {
+    if (visible && country?.id) {
+      fetchMaintainers();
+    }
+  }, [visible, country]);
+
+  const fetchMaintainers = async () => {
+    setMaintainersLoading(true);
+    try {
+      const response = await api.get('/manage/global-addresses/list-proof-info');
+      if (response) {
+        setMaintainers(response);
+      }
+    } catch (error) {
+      console.error('Failed to fetch maintainers:', error);
+    } finally {
+      setMaintainersLoading(false);
+    }
+  };
+
   if (!country) return null;
 
   return (
     <Modal
       title={
         <div>
+
+          {/* 维护人统计卡片 */}
+          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
+            <Col span={24}>
+              <Card size="small" bodyStyle={{ padding: '4px' }}>
+                <div style={{ 
+                  fontSize: '9px', 
+                  marginBottom: '2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '2px',
+                  color: '#666'
+                }}>
+                  <TeamOutlined style={{ fontSize: '9px' }} />
+                  {t('dataContributors')}
+                </div>
+                <Spin spinning={maintainersLoading} size="small">
+                  <List
+                    size="small"
+                    grid={{ column: 6 }}
+                    dataSource={maintainers}
+                    style={{ margin: 0 }}
+                    renderItem={item => (
+                      <List.Item style={{ padding: '2px' }}>
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center',
+                          gap: '2px',
+                          fontSize: '9px'
+                        }}>
+                          <Avatar 
+                            src={item.avatar} 
+                            size={14}
+                            style={{ 
+                              backgroundColor: !item.avatar ? '#1890ff' : undefined,
+                              fontSize: '8px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flexShrink: 0
+                            }}
+                          >
+                            {!item.avatar ? item.username.charAt(0).toUpperCase() : null}
+                          </Avatar>
+                          <span style={{ 
+                            flex: '1',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            maxWidth: '40px'
+                          }}>
+                            {item.username}
+                          </span>
+                          <Tag 
+                            color="blue" 
+                            style={{ 
+                              fontSize: '8px',
+                              lineHeight: '12px',
+                              height: '14px',
+                              padding: '0 2px',
+                              margin: 0,
+                              flexShrink: 0
+                            }}
+                          >
+                            {item.count}
+                          </Tag>
+                        </div>
+                      </List.Item>
+                    )}
+                  />
+                </Spin>
+              </Card>
+            </Col>
+          </Row>
+          
           {/* 国家统计卡片 */}
           <CountryStatisticsCard country={country} />
 
@@ -479,7 +577,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Col span={6}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
                 <Statistic
-                  title={<span style={{ fontSize: '10px' }}>失业率</span>}
+                  title={<span style={{ fontSize: '10px' }}>{t('unemploymentRate')}</span>}
                   value={country?.unemploymentRate}
                   prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
                   valueStyle={{ fontSize: '12px' }}
@@ -490,7 +588,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Col span={6}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
                 <Statistic
-                  title={<span style={{ fontSize: '10px' }}>教育水平</span>}
+                  title={<span style={{ fontSize: '10px' }}>{t('educationLevel')}</span>}
                   value={country?.educationLevel}
                   prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
                   valueStyle={{ fontSize: '12px' }}
@@ -501,7 +599,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Col span={6}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
                 <Statistic
-                  title={<span style={{ fontSize: '10px' }}>医疗水平</span>}
+                  title={<span style={{ fontSize: '10px' }}>{t('healthcareLevel')}</span>}
                   value={country?.healthcareLevel}
                   prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
                   valueStyle={{ fontSize: '12px' }}
@@ -512,7 +610,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Col span={6}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
                 <Statistic
-                  title={<span style={{ fontSize: '10px' }}>互联网普及率</span>}
+                  title={<span style={{ fontSize: '10px' }}>{t('internetPenetration')}</span>}
                   value={country?.internetPenetrationRate}
                   prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
                   valueStyle={{ fontSize: '12px' }}
@@ -529,7 +627,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 <Statistic
                   title={
                     <span style={{ fontSize: '10px' }}>
-                      {currentRegion ? '下级行政区' : '行政区划'}数量
+                      {currentRegion ? t('subRegionsCount') : t('regionsCount')}
                     </span>
                   }
                   value={regions.length}
@@ -541,18 +639,18 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Col span={8}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
                 <Statistic
-                  title={<span style={{ fontSize: '10px' }}>总人口</span>}
+                  title={<span style={{ fontSize: '10px' }}>{t('totalPopulation')}</span>}
                   value={regions.reduce((sum, region) => sum + (region.population || 0), 0)}
                   prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
                   valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${(value / 10000).toFixed(2)}万`}
+                  formatter={(value) => `${(value / 10000).toFixed(2)}${t('tenThousand')}`}
                 />
               </Card>
             </Col>
             <Col span={8}>
               <Card size="small" bodyStyle={{ padding: '6px' }}>
                 <Statistic
-                  title={<span style={{ fontSize: '10px' }}>总面积</span>}
+                  title={<span style={{ fontSize: '10px' }}>{t('totalArea')}</span>}
                   value={regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0)}
                   prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
                   valueStyle={{ fontSize: '12px' }}
