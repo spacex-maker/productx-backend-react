@@ -1,6 +1,7 @@
-import React from 'react';
-import { Modal, Form, Input, Switch, Typography, Divider, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, Switch, Typography, Divider, Select, message, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
+import api from 'src/axiosInstance';
 import {
   CloudOutlined,
   KeyOutlined,
@@ -84,6 +85,28 @@ const ObjectStorageCreateModal = ({
 }) => {
   const { t } = useTranslation();
   const [selectedProvider, setSelectedProvider] = React.useState(null);
+  const [countries, setCountries] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // 获取国家列表
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);
+        }
+      } catch (error) {
+        console.error('Failed to fetch countries:', error);
+        message.error(t('failedToFetchCountries'));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [t]);
 
   // 处理提供商变化
   const handleProviderChange = (value) => {
@@ -201,50 +224,126 @@ const ObjectStorageCreateModal = ({
         </Title>
         <Divider style={{ margin: '8px 0' }} />
 
-        <Form.Item
-          label={t('storageProvider')}
-          name="storageProvider"
-          rules={[{ required: true, message: t('pleaseSelectStorageProvider') }]}
-          style={styles.formItem}
-        >
-          <Select 
-            placeholder={t('selectStorageProvider')}
-            style={styles.select}
-            onChange={handleProviderChange}
-            dropdownMatchSelectWidth={false}
-          >
-            {STORAGE_PROVIDERS.map(provider => (
-              <Option 
-                key={provider.value} 
-                value={provider.value}
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('storageProvider')}
+              name="storageProvider"
+              rules={[{ required: true, message: t('pleaseSelectStorageProvider') }]}
+              style={styles.formItem}
+            >
+              <Select 
+                placeholder={t('selectStorageProvider')}
                 style={styles.select}
+                onChange={handleProviderChange}
               >
-                {provider.label}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+                {STORAGE_PROVIDERS.map(provider => (
+                  <Option key={provider.value} value={provider.value}>
+                    {provider.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('storageType')}
+              name="storageType"
+              rules={[{ required: true, message: t('pleaseSelectStorageType') }]}
+              style={styles.formItem}
+            >
+              <Select
+                placeholder={t('selectStorageType')}
+                style={styles.select}
+                disabled={!selectedProvider}
+              >
+                {getStorageTypeOptions().map(type => (
+                  <Option key={type.value} value={type.value}>
+                    {type.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item
-          label={t('storageType')}
-          name="storageType"
-          rules={[{ required: true, message: t('pleaseSelectStorageType') }]}
+          label={t('country')}
+          name="country"
+          rules={[{ required: true, message: t('pleaseSelectCountry') }]}
           style={styles.formItem}
         >
           <Select
-            placeholder={t('selectStorageType')}
+            showSearch
+            loading={loading}
+            placeholder={t('selectCountry')}
             style={styles.select}
-            disabled={!selectedProvider}
             dropdownMatchSelectWidth={false}
+            optionLabelProp="label"
+            filterOption={(input, option) => {
+              const searchText = [
+                option?.name,
+                option?.code,
+                option?.continent,
+                option?.capital,
+                option?.officialLanguages
+              ].join('').toLowerCase();
+              return searchText.includes(input.toLowerCase());
+            }}
           >
-            {getStorageTypeOptions().map(type => (
-              <Option 
-                key={type.value} 
-                value={type.value}
-                style={styles.select}
+            {(countries || []).map(country => (
+              <Select.Option 
+                key={country.code} 
+                value={country.code}
+                label={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <img 
+                      src={country.flagImageUrl} 
+                      alt={country.name}
+                      style={{ 
+                        width: '16px', 
+                        height: '12px',
+                        objectFit: 'cover',
+                        borderRadius: '2px'
+                      }} 
+                    />
+                    {country.name} ({country.code})
+                  </div>
+                }
+                name={country.name}
+                {...country}
               >
-                {type.label}
-              </Option>
+                <div style={{ 
+                  fontSize: '10px',
+                  display: 'flex',
+                  gap: '8px'
+                }}>
+                  <img 
+                    src={country.flagImageUrl} 
+                    alt={country.name}
+                    style={{ 
+                      width: '24px', 
+                      height: '18px',
+                      objectFit: 'cover',
+                      borderRadius: '2px',
+                      alignSelf: 'center'
+                    }} 
+                  />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 'bold' }}>
+                      {country.name} ({country.code})
+                    </div>
+                    <div style={{ color: '#666' }}>
+                      {country.continent} | {country.capital} | {country.officialLanguages}
+                    </div>
+                    <div style={{ color: '#888' }}>
+                      {t('population')}: {country.population?.toLocaleString()} | 
+                      {t('timezone')}: {country.timezone} | 
+                      {t('currency')}: {country.currency}
+                    </div>
+                  </div>
+                </div>
+              </Select.Option>
             ))}
           </Select>
         </Form.Item>
@@ -273,47 +372,67 @@ const ObjectStorageCreateModal = ({
           <Input.Password style={styles.input} placeholder={t('enterSecretKey')} />
         </Form.Item>
 
+        <Form.Item
+          label={t('aesKey')}
+          name="aesKey"
+          tooltip={t('aesKeyTooltip')}
+          rules={[{ required: true, message: t('pleaseEnterAesKey') }]}
+          style={styles.formItem}
+        >
+          <Input.Password style={styles.input} placeholder={t('enterAesKey')} />
+        </Form.Item>
+
         <Title level={5} style={styles.sectionTitle}>
           <GlobalOutlined style={styles.icon} />
           {t('configuration')}
         </Title>
         <Divider style={{ margin: '8px 0' }} />
 
-        <Form.Item
-          label={t('region')}
-          name="region"
-          rules={[{ required: true, message: t('pleaseEnterRegion') }]}
-          style={styles.formItem}
-        >
-          <Input style={styles.input} placeholder={t('enterRegion')} />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('region')}
+              name="region"
+              rules={[{ required: true, message: t('pleaseEnterRegion') }]}
+              style={styles.formItem}
+            >
+              <Input style={styles.input} placeholder={t('enterRegion')} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('bucketName')}
+              name="bucketName"
+              rules={[{ required: true, message: t('pleaseEnterBucketName') }]}
+              style={styles.formItem}
+            >
+              <Input style={styles.input} placeholder={t('enterBucketName')} />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          label={t('bucketName')}
-          name="bucketName"
-          rules={[{ required: true, message: t('pleaseEnterBucketName') }]}
-          style={styles.formItem}
-        >
-          <Input style={styles.input} placeholder={t('enterBucketName')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('endpoint')}
-          name="endpoint"
-          rules={[{ required: true, message: t('pleaseEnterEndpoint') }]}
-          style={styles.formItem}
-        >
-          <Input style={styles.input} placeholder={t('enterEndpoint')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('accountName')}
-          name="accountName"
-          rules={[{ required: true, message: t('pleaseEnterAccountName') }]}
-          style={styles.formItem}
-        >
-          <Input style={styles.input} placeholder={t('enterAccountName')} />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('endpoint')}
+              name="endpoint"
+              rules={[{ required: true, message: t('pleaseEnterEndpoint') }]}
+              style={styles.formItem}
+            >
+              <Input style={styles.input} placeholder={t('enterEndpoint')} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('accountName')}
+              name="accountName"
+              rules={[{ required: true, message: t('pleaseEnterAccountName') }]}
+              style={styles.formItem}
+            >
+              <Input style={styles.input} placeholder={t('enterAccountName')} />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item
           label={t('description')}
@@ -331,29 +450,34 @@ const ObjectStorageCreateModal = ({
           <Input style={styles.input} placeholder={t('enterTags')} />
         </Form.Item>
 
-        <Form.Item
-          name="isActive"
-          label={t('isActive')}
-          style={styles.formItem}
-        >
-          <Switch 
-            style={styles.switch}
-            checkedChildren={t('yes')} 
-            unCheckedChildren={t('no')} 
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="isDefault"
-          label={t('isDefault')}
-          style={styles.formItem}
-        >
-          <Switch 
-            style={styles.switch}
-            checkedChildren={t('yes')} 
-            unCheckedChildren={t('no')} 
-          />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name="isActive"
+              label={t('isActive')}
+              style={styles.formItem}
+            >
+              <Switch 
+                style={styles.switch}
+                checkedChildren={t('yes')} 
+                unCheckedChildren={t('no')} 
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="isDefault"
+              label={t('isDefault')}
+              style={styles.formItem}
+            >
+              <Switch 
+                style={styles.switch}
+                checkedChildren={t('yes')} 
+                unCheckedChildren={t('no')} 
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

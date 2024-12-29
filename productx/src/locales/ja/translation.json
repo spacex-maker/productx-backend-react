@@ -683,5 +683,28 @@
   "apiVersion": "API バージョン",
   "maxStorageSize": "最大ストレージサイズ",
   "maxRequestLimit": "最大リクエスト制限",
-  "lastCheckedAt": "最終確認時間"
+  "lastCheckedAt": "最終確認時間",
+
+  "verifyConfig": "構成の確認",
+  "verifying": "確認中",
+  "verifySuccess": "確認成功",
+  "verifyFailed": "確認失敗",
+  "configValid": "構成は有効です",
+  "configInvalid": "構成は無効です",
+  "configStatus": "構成の状態",
+  "notVerified": "未確認",
+  "notVerifiedYet": "構成はまだ確認されていません",
+  "lastVerifyTime": "最終確認時間：{time}",
+  "aesKey": "暗号キー",
+  "pleaseEnterAesKey": "暗号キーを入力してください",
+  "enterAesKey": "AK/SK の暗号キーを入力してください",
+  "aesKeyTooltip": "このキーは、AccessKey と SecretKey を暗号化して保存するために使用されます",
+  "errorInfo": "エラー情報",
+  "dataContributors": "データ貢献者",
+
+  "regionsCount": "行政区画数",
+  "subRegionsCount": "下位行政区画数",
+  "totalPopulation": "総人口",
+  "totalArea": "総面積",
+  "tenThousand": "万"
 }

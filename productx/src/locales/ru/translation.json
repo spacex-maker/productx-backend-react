@@ -683,5 +683,28 @@
   "apiVersion": "Версия API",
   "maxStorageSize": "Максимальный размер хранилища",
   "maxRequestLimit": "Максимальное ограничение запросов",
-  "lastCheckedAt": "Последняя проверка"
+  "lastCheckedAt": "Последняя проверка",
+
+  "verifyConfig": "Проверить конфигурацию",
+  "verifying": "Проверка",
+  "verifySuccess": "Проверка успешна",
+  "verifyFailed": "Проверка не удалась",
+  "configValid": "Конфигурация действительна",
+  "configInvalid": "Конфигурация недействительна",
+  "configStatus": "Состояние конфигурации",
+  "notVerified": "Не проверено",
+  "notVerifiedYet": "Конфигурация еще не проверена",
+  "lastVerifyTime": "Последнее время проверки: {time}",
+  "aesKey": "Ключ шифрования",
+  "pleaseEnterAesKey": "Введите ключ шифрования",
+  "enterAesKey": "Введите ключ шифрования для AK/SK",
+  "aesKeyTooltip": "Этот ключ используется для шифрования и хранения AccessKey и SecretKey",
+  "errorInfo": "Информация об ошибке",
+  "dataContributors": "Участники данных",
+
+  "regionsCount": "Количество административных регионов",
+  "subRegionsCount": "Количество подчиненных регионов",
+  "totalPopulation": "Общая численность населения",
+  "totalArea": "Общая площадь",
+  "tenThousand": "Десять тысяч"
 }

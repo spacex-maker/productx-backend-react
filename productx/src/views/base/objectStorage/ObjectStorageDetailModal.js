@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal, Descriptions, Card, Tag, Typography, Divider } from 'antd';
+import React, { useState } from 'react';
+import { Modal, Descriptions, Card, Tag, Typography, Divider, Button, message, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
   CloudOutlined,
@@ -8,8 +8,13 @@ import {
   DatabaseOutlined,
   SecurityScanOutlined,
   SettingOutlined,
-  HistoryOutlined
+  HistoryOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  SyncOutlined,
+  QuestionCircleOutlined
 } from '@ant-design/icons';
+import api from 'src/axiosInstance';
 
 const { Title } = Typography;
 
@@ -19,6 +24,9 @@ const ObjectStorageDetailModal = ({
   selectedStorage
 }) => {
   const { t } = useTranslation();
+  const [verifying, setVerifying] = useState(false);
+  const [verifyStatus, setVerifyStatus] = useState(null);
+  const [lastVerifyTime, setLastVerifyTime] = useState(null);
 
   const styles = {
     card: {
@@ -56,6 +64,11 @@ const ObjectStorageDetailModal = ({
     },
     modalBody: {
       padding: '12px'
+    },
+    verifyButton: {
+      fontSize: '10px',
+      height: '20px',
+      padding: '0 8px'
     }
   };
 
@@ -66,6 +79,68 @@ const ObjectStorageDetailModal = ({
       'ERROR': 'error'
     };
     return colorMap[status] || 'default';
+  };
+
+  // 验证配置
+  const handleVerify = async () => {
+    if (!selectedStorage?.id) return;
+
+    setVerifying(true);
+    try {
+      const response = await api.post('/manage/object-storage-config/verify', {
+        id: selectedStorage.id
+      });
+
+      if (response) {
+        setVerifyStatus(response);
+        setLastVerifyTime(new Date());
+        message.success(t('verifySuccess'));
+      } else {
+        setVerifyStatus(false);
+        message.error(t('verifyFailed'));
+      }
+    } catch (error) {
+      console.error('Verify failed:', error);
+      setVerifyStatus(false);
+      message.error(t('verifyFailed'));
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  // 获取验证状态标签
+  const getVerifyStatusTag = () => {
+    if (verifying) {
+      return (
+        <Tag icon={<SyncOutlined spin />} color="processing">
+          {t('verifying')}
+        </Tag>
+      );
+    }
+
+    if (verifyStatus === null) {
+      return (
+        <Tooltip title={t('notVerifiedYet')}>
+          <Tag icon={<QuestionCircleOutlined />} color="default">
+            {t('notVerified')}
+          </Tag>
+        </Tooltip>
+      );
+    }
+
+    return verifyStatus ? (
+      <Tooltip title={lastVerifyTime ? t('lastVerifyTime', { time: lastVerifyTime.toLocaleString() }) : ''}>
+        <Tag icon={<CheckCircleOutlined />} color="success">
+          {t('configValid')}
+        </Tag>
+      </Tooltip>
+    ) : (
+      <Tooltip title={lastVerifyTime ? t('lastVerifyTime', { time: lastVerifyTime.toLocaleString() }) : ''}>
+        <Tag icon={<CloseCircleOutlined />} color="error">
+          {t('configInvalid')}
+        </Tag>
+      </Tooltip>
+    );
   };
 
   return (
@@ -112,8 +187,8 @@ const ObjectStorageDetailModal = ({
         `}
       </style>
 
-      <Card 
-        size="small" 
+      <Card
+        size="small"
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -123,9 +198,20 @@ const ObjectStorageDetailModal = ({
             {t('basicInfo')}
           </span>
         }
+        extra={
+          <Button
+            type="primary"
+            size="small"
+            onClick={handleVerify}
+            loading={verifying}
+            style={styles.verifyButton}
+          >
+            {t('verifyConfig')}
+          </Button>
+        }
       >
-        <Descriptions 
-          column={2} 
+        <Descriptions
+          column={2}
           size="small"
           bordered
           style={styles.descriptions}
@@ -142,11 +228,14 @@ const ObjectStorageDetailModal = ({
           <Descriptions.Item label={t('storageType')}>{selectedStorage?.storageType}</Descriptions.Item>
           <Descriptions.Item label={t('accountName')}>{selectedStorage?.accountName}</Descriptions.Item>
           <Descriptions.Item label={t('description')}>{selectedStorage?.description}</Descriptions.Item>
+          <Descriptions.Item label={t('configStatus')} span={2}>
+            {getVerifyStatusTag()}
+          </Descriptions.Item>
         </Descriptions>
       </Card>
 
-      <Card 
-        size="small" 
+      <Card
+        size="small"
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -157,8 +246,8 @@ const ObjectStorageDetailModal = ({
           </span>
         }
       >
-        <Descriptions 
-          column={2} 
+        <Descriptions
+          column={2}
           size="small"
           bordered
           style={styles.descriptions}
@@ -168,8 +257,8 @@ const ObjectStorageDetailModal = ({
         </Descriptions>
       </Card>
 
-      <Card 
-        size="small" 
+      <Card
+        size="small"
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -180,8 +269,8 @@ const ObjectStorageDetailModal = ({
           </span>
         }
       >
-        <Descriptions 
-          column={2} 
+        <Descriptions
+          column={2}
           size="small"
           bordered
           style={styles.descriptions}
@@ -203,8 +292,8 @@ const ObjectStorageDetailModal = ({
         </Descriptions>
       </Card>
 
-      <Card 
-        size="small" 
+      <Card
+        size="small"
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -215,8 +304,8 @@ const ObjectStorageDetailModal = ({
           </span>
         }
       >
-        <Descriptions 
-          column={2} 
+        <Descriptions
+          column={2}
           size="small"
           bordered
           style={styles.descriptions}
@@ -232,8 +321,8 @@ const ObjectStorageDetailModal = ({
         </Descriptions>
       </Card>
 
-      <Card 
-        size="small" 
+      <Card
+        size="small"
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -244,8 +333,8 @@ const ObjectStorageDetailModal = ({
           </span>
         }
       >
-        <Descriptions 
-          column={2} 
+        <Descriptions
+          column={2}
           size="small"
           bordered
           style={styles.descriptions}
@@ -258,8 +347,8 @@ const ObjectStorageDetailModal = ({
         </Descriptions>
       </Card>
 
-      <Card 
-        size="small" 
+      <Card
+        size="small"
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -270,8 +359,8 @@ const ObjectStorageDetailModal = ({
           </span>
         }
       >
-        <Descriptions 
-          column={2} 
+        <Descriptions
+          column={2}
           size="small"
           bordered
           style={styles.descriptions}
@@ -281,11 +370,11 @@ const ObjectStorageDetailModal = ({
           <Descriptions.Item label={t('updateTime')}>{selectedStorage?.updateTime}</Descriptions.Item>
           <Descriptions.Item label={t('updateBy')}>{selectedStorage?.updateBy || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('lastCheckedAt')}>{selectedStorage?.lastCheckedAt}</Descriptions.Item>
-          <Descriptions.Item label={t('errorMessage')}>{selectedStorage?.errorMessage || '-'}</Descriptions.Item>
+          <Descriptions.Item label={t('errorInfo')}>{selectedStorage?.errorMessage || '-'}</Descriptions.Item>
         </Descriptions>
       </Card>
     </Modal>
   );
 };
 
-export default ObjectStorageDetailModal; 
+export default ObjectStorageDetailModal;

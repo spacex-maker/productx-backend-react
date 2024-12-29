@@ -685,5 +685,28 @@
   "apiVersion": "API版本",
   "maxStorageSize": "最大存储容量",
   "maxRequestLimit": "最大请求限制",
-  "lastCheckedAt": "最后检查时间"
+  "lastCheckedAt": "最后检查时间",
+
+  "verifyConfig": "验证配置",
+  "verifying": "验证中",
+  "verifySuccess": "验证成功",
+  "verifyFailed": "验证失败",
+  "configValid": "配置有效",
+  "configInvalid": "配置无效",
+  "configStatus": "配置状态",
+  "notVerified": "未验证",
+  "notVerifiedYet": "配置尚未验证",
+  "lastVerifyTime": "最后验证时间：{time}",
+  "aesKey": "加密密钥",
+  "pleaseEnterAesKey": "请输入加密密钥",
+  "enterAesKey": "请输入用于加密 AK/SK 的密钥",
+  "aesKeyTooltip": "此密钥用于加密存储 AccessKey 和 SecretKey",
+  "errorInfo": "错误信息",
+  "dataContributors": "数据贡献者",
+
+  "regionsCount": "行政区划数量",
+  "subRegionsCount": "下级行政区数量",
+  "totalPopulation": "总人口",
+  "totalArea": "总面积",
+  "tenThousand": "万"
 }
