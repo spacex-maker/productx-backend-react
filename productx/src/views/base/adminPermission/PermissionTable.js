@@ -1,5 +1,41 @@
 import React from 'react';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Tag } from 'antd';
+import { MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
+
+const getTypeTag = (type) => {
+  switch (type) {
+    case 1:
+      return (
+        <Tag color="#1890ff" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+          <MenuOutlined style={{ marginRight: '4px' }} />菜单
+        </Tag>
+      );
+    case 2:
+      return (
+        <Tag color="#52c41a" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+          <ApiOutlined style={{ marginRight: '4px' }} />接口
+        </Tag>
+      );
+    case 3:
+      return (
+        <Tag color="#722ed1" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+          <ControlOutlined style={{ marginRight: '4px' }} />按钮
+        </Tag>
+      );
+    case 4:
+      return (
+        <Tag color="#fa8c16" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+          <AppstoreOutlined style={{ marginRight: '4px' }} />业务
+        </Tag>
+      );
+    default:
+      return (
+        <Tag color="#bfbfbf" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
+          未知
+        </Tag>
+      );
+  }
+};
 
 const PermissionTable = ({
                            data,
@@ -55,8 +91,8 @@ const PermissionTable = ({
           <td className="text-truncate">{item.permissionName}</td>
           <td className="text-truncate">{item.permissionNameEn}</td>
           <td className="text-truncate">{item.description}</td>
-          <td className="text-truncate">
-            {item.type === 1 ? '菜单' : '接口'}
+          <td className="text-truncate" style={{ textAlign: 'center' }}>
+            {getTypeTag(item.type)}
           </td>
           <td>
             <label className="toggle-switch">

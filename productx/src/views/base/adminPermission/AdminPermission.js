@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination";
 import PermissionTable from "src/views/base/adminPermission/PermissionTable"; // 请确保你有相应的权限表格组件
 import PermissionCreateFormModal from "src/views/base/adminPermission/AddPermissionModal"; // 新建权限模态框
 import UpdatePermissionModal from "src/views/base/adminPermission/UpdatePermissionModal"; // 更新权限模态框
+import { MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
 
 const createPermission = async (permissionData) => {
   await api.post('/manage/admin-permissions/create', permissionData);
@@ -146,9 +147,33 @@ const AdminPermission = () => {
                 onChange={(value) => handleSearchChange({ target: { name: 'type', value: value } })}
                 allowClear
                 placeholder="权限类型"
+                style={{ width: '100px', fontSize: '10px' }}
+                dropdownMatchSelectWidth={false}
               >
-                <Select.Option value={1}>菜单</Select.Option>
-                <Select.Option value={2}>接口</Select.Option>
+                <Select.Option value={1}>
+                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                    <MenuOutlined style={{ marginRight: '4px', color: '#1890ff' }} />
+                    <span style={{ color: '#1890ff' }}>菜单</span>
+                  </div>
+                </Select.Option>
+                <Select.Option value={2}>
+                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                    <ApiOutlined style={{ marginRight: '4px', color: '#52c41a' }} />
+                    <span style={{ color: '#52c41a' }}>接口</span>
+                  </div>
+                </Select.Option>
+                <Select.Option value={3}>
+                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                    <ControlOutlined style={{ marginRight: '4px', color: '#722ed1' }} />
+                    <span style={{ color: '#722ed1' }}>按钮</span>
+                  </div>
+                </Select.Option>
+                <Select.Option value={4}>
+                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                    <AppstoreOutlined style={{ marginRight: '4px', color: '#fa8c16' }} />
+                    <span style={{ color: '#fa8c16' }}>业务</span>
+                  </div>
+                </Select.Option>
               </Select>
             </Col>
             <Col>
@@ -226,6 +251,27 @@ const AdminPermission = () => {
         handleUpdatePermission={handleUpdatePermission}
         selectedPermission={selectedPermission}
       />
+      <style jsx global>{`
+        .ant-select-dropdown {
+          font-size: 10px !important;
+        }
+
+        .ant-select-item {
+          min-height: 24px !important;
+          line-height: 24px !important;
+          padding: 0 8px !important;
+        }
+
+        .ant-select-selection-item {
+          font-size: 10px !important;
+          display: flex !important;
+          align-items: center !important;
+        }
+
+        .ant-select-item-option-content {
+          font-size: 10px !important;
+        }
+      `}</style>
     </div>
   );
 };
