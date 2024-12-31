@@ -8,6 +8,7 @@ import RoleTable from "src/views/base/adminRole/AdminRoleTable"; // 请确保你
 import RoleCreateFormModal from "src/views/base/adminRole/AdminRoleCreateFormModal"; // 新建角色模态框
 import UpdateRoleModal from "src/views/base/adminRole/UpdateAdminRoleModal"; // 更新角色模态框
 import { SearchOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import RoleDetailModal from './RoleDetailModal';
 
 const createRole = async (roleData) => {
   await api.post('/manage/admin-roles/create-role', roleData);
@@ -33,6 +34,7 @@ const AdminRole = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedRole, setSelectedRole] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -106,6 +108,22 @@ const AdminRole = () => {
       description: role.description,
     });
     setIsUpdateModalVisible(true);
+  };
+
+  const handleViewDetail = async (role) => {
+    try {
+      // 获取角色的权限数量
+      const response = await api.get(`/manage/role-permissions/list/${role.id}`);
+      const roleWithPermissionCount = {
+        ...role,
+        permissionCount: response?.length || 0
+      };
+      setSelectedRole(roleWithPermissionCount);
+      setIsDetailModalVisible(true);
+    } catch (error) {
+      console.error('Failed to fetch role permissions:', error);
+      message.error('获取角色权限信息失败');
+    }
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -196,6 +214,7 @@ const AdminRole = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             handleDeleteClick={handleDeleteClick}
+            handleViewDetail={handleViewDetail}
           />
         </Spin>
       </div>
@@ -219,6 +238,11 @@ const AdminRole = () => {
         form={updateForm}
         handleUpdateRole={handleUpdateRole}
         selectedRole={selectedRole} // 传递所选角色信息
+      />
+      <RoleDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        roleDetail={selectedRole}
       />
     </div>
   );

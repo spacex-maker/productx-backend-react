@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {Button, Popconfirm} from 'antd';
 import {formatDate} from "src/components/common/Common";
 import RolePermissionModal from './RolePermissionModal';
-import { EditOutlined, DeleteOutlined, SettingOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EyeOutlined, SettingOutlined } from '@ant-design/icons';
 
 const AdminRoleTable = ({
                           data,
@@ -12,7 +12,8 @@ const AdminRoleTable = ({
                           handleSelectRow,
                           handleStatusChange,
                           handleEditClick,
-                          handleDeleteClick
+                          handleDeleteClick,
+                          handleViewDetail
                         }) => {
   const [isPermissionModalVisible, setIsPermissionModalVisible] = useState(false);
   const [currentRole, setCurrentRole] = useState(null);
@@ -32,10 +33,25 @@ const AdminRoleTable = ({
     
     return (
       <td className="fixed-column">
-        <Button type="link" onClick={() => handleEditClick(item)}>
+        <Button 
+          type="link" 
+          onClick={() => handleViewDetail(item)}
+          style={{ fontSize: '10px', padding: '4px 8px' }}
+        >
+          <EyeOutlined /> 详情
+        </Button>
+        <Button 
+          type="link" 
+          onClick={() => handleEditClick(item)}
+          style={{ fontSize: '10px', padding: '4px 8px' }}
+        >
           <EditOutlined /> 修改
         </Button>
-        <Button type="link" onClick={() => handleConfigPermissions(item)}>
+        <Button 
+          type="link" 
+          onClick={() => handleConfigPermissions(item)}
+          style={{ fontSize: '10px', padding: '4px 8px' }}
+        >
           <SettingOutlined /> 配置权限
         </Button>
         {!isSuper && (
@@ -45,7 +61,11 @@ const AdminRoleTable = ({
             okText="是"
             cancelText="否"
           >
-            <Button type="link" danger>
+            <Button 
+              type="link" 
+              danger
+              style={{ fontSize: '10px', padding: '4px 8px' }}
+            >
               <DeleteOutlined /> 删除
             </Button>
           </Popconfirm>
