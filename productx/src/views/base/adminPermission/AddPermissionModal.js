@@ -1,50 +1,8 @@
 import React from 'react';
-import { Input, Modal, Form, Switch, Alert, Select } from 'antd';
-import api from 'src/axiosInstance';
-import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { Input, Modal, Form, Switch, Tooltip } from 'antd';
+import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined, LockOutlined, UnlockOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
-const { Option } = Select;
-
-const AddPermissionModal = ({ isVisible, onCancel, onFinish, parentId }) => {
-  const [form] = Form.useForm();
-
-  const handleAddPermissionOk = async () => {
-    try {
-      const values = await form.validateFields();
-
-      const requestData = {
-        permissionName: values.permissionName,
-        permissionNameEn: values.permissionNameEn,
-        parentId: parentId,
-        description: values.description,
-        type: values.type || 1,
-        status: values.status || true,
-      };
-
-      await api.post('/manage/admin-permissions/create', requestData);
-      form.resetFields();
-      onFinish(parentId);
-      onCancel();
-    } catch (error) {
-      console.error('Error adding permission:', error);
-    }
-  };
-
-  const getTypeColor = (type) => {
-    switch (type) {
-      case 1:
-        return '#1890ff';  // 蓝色 - 菜单
-      case 2:
-        return '#52c41a';  // 绿色 - 接口
-      case 3:
-        return '#722ed1';  // 紫色 - 按钮
-      case 4:
-        return '#fa8c16';  // 橙色 - 业务
-      default:
-        return '#bfbfbf';
-    }
-  };
-
+const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
   return (
     <Modal
       title={
@@ -55,223 +13,124 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, parentId }) => {
       }
       open={isVisible}
       onCancel={onCancel}
-      onOk={handleAddPermissionOk}
-      okText="提交"
+      onOk={() => form.submit()}
+      okText="确认"
       cancelText="取消"
-      centered
-      width={480}
-      styles={{ padding: '12px 24px' }}
     >
-      <Alert
-        message="接口权限的新增一般由技术人员配置"
-        type="warning"
-        showIcon
-        style={{ marginBottom: '12px', fontSize: '10px' }}
-      />
-
       <Form 
-        form={form} 
+        form={form}
+        onFinish={onFinish}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
         size="small"
       >
+        {/* 权限名称 */}
         <Form.Item
-          label={<span style={{ fontSize: '10px' }}>权限名称</span>}
+          label={
+            <span style={{ fontSize: '10px' }}>
+              权限名称
+              <Tooltip title="权限的中文名称，用于显示">
+                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+              </Tooltip>
+            </span>
+          }
           name="permissionName"
           rules={[{ required: true, message: '请输入权限名称' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input 
+          <Input
             prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
-            placeholder="权限名称"
+            placeholder="请输入权限名称"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
+
+        {/* 英文权限名称 */}
         <Form.Item
-          label={<span style={{ fontSize: '10px' }}>权限英文名</span>}
+          label={
+            <span style={{ fontSize: '10px' }}>
+              英文权限名称
+              <Tooltip title="权限的英文标识，用于程序内部识别">
+                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+              </Tooltip>
+            </span>
+          }
           name="permissionNameEn"
-          rules={[{ required: true, message: '请输入权限英文名' }]}
+          rules={[{ required: true, message: '请输入英文权限名称' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input 
+          <Input
             prefix={<TranslationOutlined style={{ color: '#bfbfbf' }} />}
-            placeholder="权限英文名"
+            placeholder="请输入英文权限名称"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
+
+        {/* 权限描述 */}
         <Form.Item
-          label={<span style={{ fontSize: '10px' }}>描述</span>}
+          label={
+            <span style={{ fontSize: '10px' }}>
+              权限描述
+              <Tooltip title="详细描述该权限的用途和作用范围">
+                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+              </Tooltip>
+            </span>
+          }
           name="description"
           rules={[{ required: true, message: '请输入权限描述' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input 
-            prefix={<FileTextOutlined style={{ color: '#bfbfbf' }} />}
-            placeholder="描述"
+          <Input.TextArea
+            placeholder="请输入权限描述"
+            rows={3}
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
+
+        {/* 启用状态 */}
         <Form.Item
-          label={<span style={{ fontSize: '10px' }}>类型</span>}
-          name="type"
-          rules={[{ required: true, message: '请选择权限类型' }]}
-          style={{ marginBottom: '8px' }}
-          initialValue={1}
-        >
-          <Select
-            style={{ fontSize: '10px' }}
-            placeholder="请选择权限类型"
-          >
-            <Option value={1}>
-              <MenuOutlined style={{ marginRight: '4px', color: '#1890ff' }} />
-              <span style={{ color: '#1890ff' }}>菜单</span>
-            </Option>
-            <Option value={2}>
-              <ApiOutlined style={{ marginRight: '4px', color: '#52c41a' }} />
-              <span style={{ color: '#52c41a' }}>接口</span>
-            </Option>
-            <Option value={3}>
-              <ControlOutlined style={{ marginRight: '4px', color: '#722ed1' }} />
-              <span style={{ color: '#722ed1' }}>按钮</span>
-            </Option>
-            <Option value={4}>
-              <AppstoreOutlined style={{ marginRight: '4px', color: '#fa8c16' }} />
-              <span style={{ color: '#fa8c16' }}>业务</span>
-            </Option>
-          </Select>
-        </Form.Item>
-        <Form.Item
-          label={<span style={{ fontSize: '10px' }}>是否生效</span>}
+          label={
+            <span style={{ fontSize: '10px' }}>
+              启用状态
+              <Tooltip title="关闭权限状态后，所有拥有此权限的角色将无法使用此权限，为角色配置权限时，也无法查询到此权限">
+                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+              </Tooltip>
+            </span>
+          }
           name="status"
           valuePropName="checked"
+          initialValue={true}
           style={{ marginBottom: '8px' }}
         >
-          <Switch 
+          <Switch
             checkedChildren={<CheckCircleOutlined />}
             unCheckedChildren="×"
             style={{ fontSize: '10px' }}
           />
         </Form.Item>
+
+        {/* 系统权限 */}
+        <Form.Item
+          label={
+            <span style={{ fontSize: '10px' }}>
+              系统权限
+              <Tooltip title="系统权限创建后不可删除，且不能被批量删除">
+                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+              </Tooltip>
+            </span>
+          }
+          name="isSystem"
+          valuePropName="checked"
+          initialValue={false}
+          style={{ marginBottom: '8px' }}
+        >
+          <Switch
+            checkedChildren={<LockOutlined />}
+            unCheckedChildren={<UnlockOutlined />}
+            style={{ fontSize: '10px' }}
+          />
+        </Form.Item>
       </Form>
-
-      <style jsx global>{`
-        .ant-modal-header {
-          padding: 12px 24px !important;
-          border-bottom: 1px solid #f0f0f0;
-        }
-
-        .ant-modal-footer {
-          padding: 8px 16px !important;
-          border-top: 1px solid #f0f0f0;
-        }
-
-        .ant-modal-footer .ant-btn {
-          font-size: 10px !important;
-          height: 24px !important;
-          padding: 0 12px !important;
-        }
-
-        .ant-form-item-label > label {
-          font-size: 10px !important;
-          height: 24px !important;
-        }
-
-        .ant-form-item-explain-error {
-          font-size: 10px !important;
-        }
-
-        .ant-input {
-          font-size: 10px !important;
-          padding: 4px 8px !important;
-          color: rgba(0, 0, 0, 0.88) !important;
-        }
-
-        .ant-input-textarea textarea {
-          font-size: 10px !important;
-          padding: 4px 8px !important;
-          color: rgba(0, 0, 0, 0.88) !important;
-        }
-
-        .ant-switch {
-          min-width: 40px !important;
-          height: 16px !important;
-          line-height: 16px !important;
-        }
-
-        .ant-switch-inner {
-          font-size: 10px !important;
-        }
-
-        .ant-form-item {
-          margin-bottom: 8px !important;
-        }
-
-        .ant-input::placeholder {
-          font-size: 10px !important;
-          color: rgba(0, 0, 0, 0.25) !important;
-        }
-
-        .ant-form-item-required {
-          font-size: 10px !important;
-        }
-
-        .ant-modal-close {
-          height: 40px !important;
-          width: 40px !important;
-          line-height: 40px !important;
-        }
-
-        .ant-modal-close-x {
-          font-size: 10px !important;
-          width: 40px !important;
-          height: 40px !important;
-          line-height: 40px !important;
-        }
-
-        .ant-select {
-          font-size: 10px !important;
-        }
-
-        .ant-select-selector {
-          height: 24px !important;
-          padding: 0 8px !important;
-        }
-
-        .ant-select-selection-item {
-          line-height: 22px !important;
-          font-size: 10px !important;
-          display: flex !important;
-          align-items: center !important;
-        }
-
-        .ant-select-selection-item .anticon {
-          margin-right: 4px !important;
-        }
-
-        .ant-select-item {
-          min-height: 24px !important;
-          line-height: 24px !important;
-          font-size: 10px !important;
-          padding: 2px 8px !important;
-        }
-
-        .ant-select-item-option-content {
-          font-size: 10px !important;
-          display: flex !important;
-          align-items: center !important;
-        }
-
-        .ant-select-item-option-selected .anticon,
-        .ant-select-item-option-selected span {
-          color: inherit !important;
-        }
-
-        // 添加悬停效果
-        .ant-select-item-option:hover .anticon,
-        .ant-select-item-option:hover span {
-          color: inherit !important;
-        }
-      `}</style>
     </Modal>
   );
 };

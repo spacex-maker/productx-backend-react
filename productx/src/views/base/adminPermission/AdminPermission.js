@@ -7,7 +7,7 @@ import Pagination from "src/components/common/Pagination";
 import PermissionTable from "src/views/base/adminPermission/PermissionTable"; // 请确保你有相应的权限表格组件
 import PermissionCreateFormModal from "src/views/base/adminPermission/AddPermissionModal"; // 新建权限模态框
 import UpdatePermissionModal from "src/views/base/adminPermission/UpdatePermissionModal"; // 更新权限模态框
-import { MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined, SearchOutlined } from '@ant-design/icons';
 
 const createPermission = async (permissionData) => {
   await api.post('/manage/admin-permissions/create', permissionData);
@@ -23,9 +23,11 @@ const AdminPermission = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchParams, setSearchParams] = useState({
+    permissionName: '',
+    permissionNameEn: '',
     description: '',
-    status: undefined,
     type: undefined,
+    status: undefined,
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -121,24 +123,35 @@ const AdminPermission = () => {
             <Col>
               <Input
                 size="small"
-                value={searchParams.description}
+                name="permissionName"
+                placeholder="权限名称"
+                value={searchParams.permissionName}
                 onChange={handleSearchChange}
-                name="description"
-                placeholder="权限描述"
+                style={{ width: '120px', fontSize: '10px' }}
                 allowClear
               />
             </Col>
             <Col>
-              <Select
+              <Input
                 size="small"
-                name="status"
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value } })}
+                name="permissionNameEn"
+                placeholder="权限英文名称"
+                value={searchParams.permissionNameEn}
+                onChange={handleSearchChange}
+                style={{ width: '120px', fontSize: '10px' }}
                 allowClear
-                placeholder="选择状态"
-              >
-                <Select.Option value="true">启用</Select.Option>
-                <Select.Option value="false">禁用</Select.Option>
-              </Select>
+              />
+            </Col>
+            <Col>
+              <Input
+                size="small"
+                name="description"
+                placeholder="权限描述"
+                value={searchParams.description}
+                onChange={handleSearchChange}
+                style={{ width: '120px', fontSize: '10px' }}
+                allowClear
+              />
             </Col>
             <Col>
               <Select
@@ -177,13 +190,26 @@ const AdminPermission = () => {
               </Select>
             </Col>
             <Col>
+              <Select
+                size="small"
+                name="status"
+                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value } })}
+                allowClear
+                placeholder="状态"
+                style={{ width: '80px', fontSize: '10px' }}
+              >
+                <Select.Option value="true">启用</Select.Option>
+                <Select.Option value="false">禁用</Select.Option>
+              </Select>
+            </Col>
+            <Col>
               <Button
                 size="small"
                 type="primary"
                 onClick={fetchData}
                 disabled={isLoading}
               >
-                {isLoading ? <Spin /> : '查询'}
+                <SearchOutlined /> {isLoading ? <Spin /> : '查询'}
               </Button>
             </Col>
             <Col>

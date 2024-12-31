@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Table, message, Spin, Input, Space, Radio } from 'antd';
-import { SearchOutlined, MenuOutlined, ApiOutlined } from '@ant-design/icons';
+import { SearchOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
 const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
@@ -70,7 +70,9 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
 
     const matchType = filterType === 'all' ||
       (filterType === 'menu' && item.type === 1) ||
-      (filterType === 'api' && item.type === 2);
+      (filterType === 'api' && item.type === 2) ||
+      (filterType === 'button' && item.type === 3) ||
+      (filterType === 'business' && item.type === 4);
 
     return matchSearch && matchType;
   });
@@ -81,6 +83,23 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       dataIndex: 'permissionName',
       width: '20%',
       ellipsis: true,
+      render: (text, record) => (
+        <span>
+          {text}
+          {record.isSystem && (
+            <span style={{ 
+              marginLeft: '4px',
+              fontSize: '10px',
+              color: '#1890ff',
+              border: '1px solid #1890ff',
+              padding: '1px 4px',
+              borderRadius: '2px'
+            }}>
+              系统权限
+            </span>
+          )}
+        </span>
+      )
     },
     {
       title: '英文名称',
@@ -98,14 +117,36 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       title: '类型',
       dataIndex: 'type',
       width: '10%',
-      render: (type) => (
-        <span style={{
-          color: type === 1 ? '#1890ff' : '#52c41a',
-          fontSize: '10px'
-        }}>
-          {type === 1 ? <><MenuOutlined /> 菜单</> : <><ApiOutlined /> 接口</>}
-        </span>
-      )
+      render: (type) => {
+        switch (type) {
+          case 1:
+            return (
+              <span style={{ color: '#1890ff', fontSize: '10px' }}>
+                <MenuOutlined style={{ marginRight: '4px' }} />菜单
+              </span>
+            );
+          case 2:
+            return (
+              <span style={{ color: '#52c41a', fontSize: '10px' }}>
+                <ApiOutlined style={{ marginRight: '4px' }} />接口
+              </span>
+            );
+          case 3:
+            return (
+              <span style={{ color: '#722ed1', fontSize: '10px' }}>
+                <ControlOutlined style={{ marginRight: '4px' }} />按钮
+              </span>
+            );
+          case 4:
+            return (
+              <span style={{ color: '#fa8c16', fontSize: '10px' }}>
+                <AppstoreOutlined style={{ marginRight: '4px' }} />业务
+              </span>
+            );
+          default:
+            return '未知';
+        }
+      }
     },
   ];
 
@@ -156,10 +197,16 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                   全部
                 </Radio.Button>
                 <Radio.Button value="menu" style={{ fontSize: '10px', padding: '0 8px' }}>
-                  <MenuOutlined /> 菜单权限
+                  <MenuOutlined /> 菜单
                 </Radio.Button>
                 <Radio.Button value="api" style={{ fontSize: '10px', padding: '0 8px' }}>
-                  <ApiOutlined /> 接口权限
+                  <ApiOutlined /> 接口
+                </Radio.Button>
+                <Radio.Button value="button" style={{ fontSize: '10px', padding: '0 8px' }}>
+                  <ControlOutlined /> 按钮
+                </Radio.Button>
+                <Radio.Button value="business" style={{ fontSize: '10px', padding: '0 8px' }}>
+                  <AppstoreOutlined /> 业务
                 </Radio.Button>
               </Radio.Group>
             </Space>

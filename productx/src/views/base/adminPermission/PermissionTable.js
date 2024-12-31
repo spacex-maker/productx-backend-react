@@ -1,41 +1,5 @@
 import React from 'react';
-import { Button, Popconfirm, Tag } from 'antd';
-import { MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
-
-const getTypeTag = (type) => {
-  switch (type) {
-    case 1:
-      return (
-        <Tag color="#1890ff" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
-          <MenuOutlined style={{ marginRight: '4px' }} />菜单
-        </Tag>
-      );
-    case 2:
-      return (
-        <Tag color="#52c41a" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
-          <ApiOutlined style={{ marginRight: '4px' }} />接口
-        </Tag>
-      );
-    case 3:
-      return (
-        <Tag color="#722ed1" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
-          <ControlOutlined style={{ marginRight: '4px' }} />按钮
-        </Tag>
-      );
-    case 4:
-      return (
-        <Tag color="#fa8c16" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
-          <AppstoreOutlined style={{ marginRight: '4px' }} />业务
-        </Tag>
-      );
-    default:
-      return (
-        <Tag color="#bfbfbf" style={{ display: 'inline-flex', alignItems: 'center', fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
-          未知
-        </Tag>
-      );
-  }
-};
+import { Button, Popconfirm } from 'antd';
 
 const PermissionTable = ({
                            data,
@@ -47,6 +11,28 @@ const PermissionTable = ({
                            handleEditClick,
                            handleDeleteClick
                          }) => {
+  const renderActionButtons = (item) => {
+    return (
+      <td className="fixed-column">
+        <Button type="link" onClick={() => handleEditClick(item)}>
+          修改
+        </Button>
+        {!item.isSystem && (
+          <Popconfirm
+            title="确定要删除这个权限吗？"
+            onConfirm={() => handleDeleteClick(item.id)}
+            okText="是"
+            cancelText="否"
+          >
+            <Button type="link" danger>
+              删除
+            </Button>
+          </Popconfirm>
+        )}
+      </td>
+    );
+  };
+
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -80,6 +66,7 @@ const PermissionTable = ({
                 id={`td_checkbox_${item.id}`}
                 checked={selectedRows.includes(item.id)}
                 onChange={() => handleSelectRow(item.id, data)}
+                disabled={item.isSystem}
               />
               <label
                 className="custom-control-label"
@@ -88,11 +75,28 @@ const PermissionTable = ({
             </div>
           </td>
           <td className="text-truncate">{item.id}</td>
-          <td className="text-truncate">{item.permissionName}</td>
+          <td className="text-truncate">
+            {item.permissionName}
+            {item.isSystem && (
+              <span style={{ 
+                marginLeft: '4px',
+                fontSize: '10px',
+                color: '#1890ff',
+                border: '1px solid #1890ff',
+                padding: '1px 4px',
+                borderRadius: '2px'
+              }}>
+                系统权限
+              </span>
+            )}
+          </td>
           <td className="text-truncate">{item.permissionNameEn}</td>
           <td className="text-truncate">{item.description}</td>
-          <td className="text-truncate" style={{ textAlign: 'center' }}>
-            {getTypeTag(item.type)}
+          <td className="text-truncate">
+            {item.type === 1 ? '菜单' : 
+             item.type === 2 ? '接口' : 
+             item.type === 3 ? '按钮' :
+             item.type === 4 ? '业务' : '未知'}
           </td>
           <td>
             <label className="toggle-switch">
@@ -104,21 +108,7 @@ const PermissionTable = ({
               <span className="toggle-switch-slider"></span>
             </label>
           </td>
-          <td className="fixed-column">
-            <Button type="link" onClick={() => handleEditClick(item)}>
-              修改
-            </Button>
-            <Popconfirm
-              title="确定要删除这个权限吗？"
-              onConfirm={() => handleDeleteClick(item.id)}
-              okText="是"
-              cancelText="否"
-            >
-              <Button type="link" danger>
-                删除
-              </Button>
-            </Popconfirm>
-          </td>
+          {renderActionButtons(item)}
         </tr>
       ))}
       </tbody>
