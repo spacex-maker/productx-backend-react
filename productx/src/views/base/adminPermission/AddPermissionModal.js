@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Modal, Form, Switch, Alert, Select } from 'antd';
 import api from 'src/axiosInstance';
-import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined, MenuOutlined, ApiOutlined, ControlOutlined } from '@ant-design/icons';
+import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -38,6 +38,8 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, parentId }) => {
         return '#52c41a';  // 绿色 - 接口
       case 3:
         return '#722ed1';  // 紫色 - 按钮
+      case 4:
+        return '#fa8c16';  // 橙色 - 业务
       default:
         return '#bfbfbf';
     }
@@ -131,6 +133,10 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, parentId }) => {
             <Option value={3}>
               <ControlOutlined style={{ marginRight: '4px', color: '#722ed1' }} />
               <span style={{ color: '#722ed1' }}>按钮</span>
+            </Option>
+            <Option value={4}>
+              <AppstoreOutlined style={{ marginRight: '4px', color: '#fa8c16' }} />
+              <span style={{ color: '#fa8c16' }}>业务</span>
             </Option>
           </Select>
         </Form.Item>
