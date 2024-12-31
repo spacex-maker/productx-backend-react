@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { List, Avatar, Form, Button, Input, message } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
+import { UserOutlined, SendOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
 import api from 'src/axiosInstance'
 import { useTranslation } from 'react-i18next'
@@ -57,55 +57,70 @@ const StyledList = styled(List)`
   }
 `
 
-const CommentForm = styled(Form)`
-  margin-bottom: 8px;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+const CommentEditor = styled.div`
+  margin-bottom: 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  background: #fff;
+  transition: all 0.2s;
 
-  .ant-form-item {
-    margin-bottom: 4px;
+  &:hover {
+    border-color: #40a9ff;
   }
 
-  .comment-input-wrapper {
-    flex: 1;
-    max-width: 500px;
-  }
-
-  .ant-input {
-    font-size: 10px;
-    padding: 4px 8px;
-    resize: none;
-    color: rgba(0, 0, 0, 0.85) !important;
-
-    &::placeholder {
-      color: #bfbfbf;
-    }
-  }
-
-  .ant-btn {
-    font-size: 10px;
-    height: 22px;
-    padding: 0 8px;
-    margin-top: 1px;
-  }
-
-  .ant-form-item-explain {
-    font-size: 10px;
-    min-height: 16px;
-    padding-top: 2px;
+  &:focus-within {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
   }
 `
 
-const CommentWrapper = styled.div`
-  .ant-avatar {
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
+const EditorContent = styled.div`
+  .ant-input {
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 10px !important;
+    padding: 8px !important;
+    background: transparent !important;
+    resize: vertical !important;
+    min-height: 60px !important;
+    max-height: 200px !important;
 
-    .anticon {
-      font-size: 12px;
+    &:focus {
+      box-shadow: none !important;
     }
+
+    &::placeholder {
+      color: #bfbfbf !important;
+      font-size: 10px !important;
+    }
+  }
+`
+
+const EditorFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f0;
+
+  .counter {
+    font-size: 9px;
+    color: #999;
+  }
+`
+
+const SubmitButton = styled(Button)`
+  font-size: 10px !important;
+  height: 22px !important;
+  padding: 0 8px !important;
+  border-radius: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+
+  .anticon {
+    font-size: 10px !important;
   }
 `
 
@@ -173,36 +188,37 @@ const IssueComments = ({ issueId }) => {
   }
 
   return (
-    <CommentWrapper>
-      <CommentForm form={form}>
-        <div className="comment-input-wrapper">
-          <Form.Item
-            name="comment"
-            rules={[{ required: true, message: t('required') }]}
-            style={{ marginBottom: 0 }}
-          >
-            <TextArea
-              rows={2}
-              maxLength={500}
-              showCount={{
-                formatter: ({ count, maxLength }) => (
-                  <span style={{ fontSize: '9px', color: '#999' }}>{count}/{maxLength}</span>
-                )
-              }}
-            />
-          </Form.Item>
-        </div>
-        <Form.Item style={{ marginBottom: 0 }}>
-          <Button
-            type="primary"
-            onClick={handleSubmit}
-            loading={submitting}
-            size="small"
-          >
-            {t('submit')}
-          </Button>
-        </Form.Item>
-      </CommentForm>
+    <div>
+      <Form form={form}>
+        <CommentEditor>
+          <EditorContent>
+            <Form.Item
+              name="comment"
+              rules={[{ required: true, message: t('required') }]}
+              style={{ marginBottom: 0 }}
+            >
+              <TextArea
+                maxLength={2000}
+                placeholder={t('enterComment')}
+                autoSize={{ minRows: 3, maxRows: 8 }}
+              />
+            </Form.Item>
+          </EditorContent>
+          <EditorFooter>
+            <span className="counter">
+              {Form.useWatch('comment', form)?.length || 0}/2000
+            </span>
+            <SubmitButton
+              type="primary"
+              onClick={handleSubmit}
+              loading={submitting}
+              icon={<SendOutlined />}
+            >
+              {t('submit')}
+            </SubmitButton>
+          </EditorFooter>
+        </CommentEditor>
+      </Form>
 
       <StyledList
         loading={loading}
@@ -221,7 +237,7 @@ const IssueComments = ({ issueId }) => {
               <Avatar
                 size={20}
                 icon={<UserOutlined />}
-                src={item.commenterInfo.avatar}
+                src={item.commenterInfo?.avatar}
                 style={{ flexShrink: 0 }}
               />
               <div style={{ marginLeft: 6, flex: 1, overflow: 'hidden' }}>
@@ -239,7 +255,7 @@ const IssueComments = ({ issueId }) => {
           </StyledListItem>
         )}
       />
-    </CommentWrapper>
+    </div>
   )
 }
 
