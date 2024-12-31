@@ -1,6 +1,8 @@
 import React from 'react';
-import { Input, Modal, Form, Switch, Tooltip } from 'antd';
+import { Input, Modal, Form, Switch, Tooltip, Select } from 'antd';
 import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined, LockOutlined, UnlockOutlined, InfoCircleOutlined } from '@ant-design/icons';
+
+const { Option } = Select;
 
 const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
   return (
@@ -24,6 +26,49 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
         wrapperCol={{ span: 18 }}
         size="small"
       >
+        {/* 权限类型 */}
+        <Form.Item
+          label={
+            <span style={{ fontSize: '10px' }}>
+              权限类型
+              <Tooltip title="选择权限的类型，不同类型的权限用于不同的场景">
+                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+              </Tooltip>
+            </span>
+          }
+          name="type"
+          rules={[{ required: true, message: '请选择权限类型' }]}
+          style={{ marginBottom: '8px' }}
+          initialValue={1}
+        >
+          <Select style={{ fontSize: '10px' }}>
+            <Option value={1}>
+              <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                <MenuOutlined style={{ marginRight: '4px', color: '#1890ff' }} />
+                <span style={{ color: '#1890ff' }}>菜单权限</span>
+              </div>
+            </Option>
+            <Option value={2}>
+              <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                <ApiOutlined style={{ marginRight: '4px', color: '#52c41a' }} />
+                <span style={{ color: '#52c41a' }}>接口权限</span>
+              </div>
+            </Option>
+            <Option value={3}>
+              <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                <ControlOutlined style={{ marginRight: '4px', color: '#722ed1' }} />
+                <span style={{ color: '#722ed1' }}>按钮权限</span>
+              </div>
+            </Option>
+            <Option value={4}>
+              <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                <AppstoreOutlined style={{ marginRight: '4px', color: '#fa8c16' }} />
+                <span style={{ color: '#fa8c16' }}>业务权限</span>
+              </div>
+            </Option>
+          </Select>
+        </Form.Item>
+
         {/* 权限名称 */}
         <Form.Item
           label={
@@ -131,6 +176,32 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           />
         </Form.Item>
       </Form>
+
+      <style jsx global>{`
+        .ant-select-selector {
+          height: 24px !important;
+          padding: 0 8px !important;
+        }
+
+        .ant-select-selection-item {
+          line-height: 22px !important;
+          font-size: 10px !important;
+        }
+
+        .ant-select-item {
+          min-height: 24px !important;
+          line-height: 24px !important;
+          padding: 0 8px !important;
+        }
+
+        .ant-select-item-option-content {
+          font-size: 10px !important;
+        }
+
+        .ant-select-dropdown {
+          font-size: 10px !important;
+        }
+      `}</style>
     </Modal>
   );
 };
