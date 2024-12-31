@@ -10,11 +10,14 @@ import {
 } from '@ant-design/icons'
 import styled from 'styled-components'
 import api from 'src/axiosInstance'
+import { useTranslation } from 'react-i18next'
 
 const { TextArea } = Input
 const { Option } = Select
 
 const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, issuePriorities }) => {
+  const { t } = useTranslation()
+
   const handleSubmit = async (values) => {
     try {
       // 直接使用 tags 数组
@@ -154,14 +157,14 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
         {/* 描述 */}
         <Form.Item
           name="description"
-          label={<><FileTextOutlined style={{ fontSize: '11px' }} /> 描述</>}
-          rules={[{ required: true, message: '请输入描述' }]}
+          label={<><FileTextOutlined style={{ fontSize: '11px' }} /> {t('description')}</>}
+          rules={[{ required: true, message: t('pleaseEnterDescription') }]}
         >
           <TextArea 
             rows={4}
-            placeholder="请输入问题描述"
+            placeholder={t('enterDescription')}
             showCount
-            maxLength={500}
+            maxLength={2000}
             style={{
               height: '96px',
               minHeight: '96px',
