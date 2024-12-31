@@ -15,6 +15,124 @@ import { useTranslation } from 'react-i18next'
 const { TextArea } = Input
 const { Option } = Select
 
+const DescriptionEditor = styled.div`
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  background: #fff;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #40a9ff;
+  }
+
+  &:focus-within {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+  }
+`;
+
+const EditorContent = styled.div`
+  .ant-input {
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 10px !important;
+    padding: 8px !important;
+    background: transparent !important;
+    resize: vertical !important;
+    min-height: 60px !important;
+    max-height: 200px !important;
+
+    &:focus {
+      box-shadow: none !important;
+    }
+
+    &::placeholder {
+      color: #bfbfbf !important;
+      font-size: 10px !important;
+    }
+  }
+`;
+
+const EditorFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 4px 8px;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f0;
+
+  .counter {
+    font-size: 9px;
+    color: #999;
+  }
+`;
+
+const StyledSelect = styled(Select)`
+  &.ant-select-multiple .ant-select-selector {
+    display: flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 2px 4px;
+  }
+
+  &.ant-select-multiple .ant-select-selection-overflow {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    margin: 0 !important;
+  }
+
+  &.ant-select-multiple .ant-select-selection-overflow-item {
+    position: static;
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  &.ant-select-multiple .ant-select-selection-item {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    height: 16px;
+    line-height: 14px;
+    margin: 0;
+    padding: 0 4px;
+    font-size: 10px;
+
+    .ant-select-selection-item-content {
+      margin-right: 2px;
+    }
+
+    .ant-select-selection-item-remove {
+      display: flex;
+      align-items: center;
+      margin-left: 2px;
+      font-size: 10px;
+      
+      .anticon {
+        display: flex;
+        align-items: center;
+        font-size: 8px;
+      }
+    }
+  }
+
+  &.ant-select-multiple .ant-select-selection-search {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    height: 16px;
+    margin: 0;
+    
+    input {
+      height: 16px;
+      min-height: 16px;
+    }
+  }
+`;
+
 const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, issuePriorities }) => {
   const { t } = useTranslation()
 
@@ -148,9 +266,10 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
           name="tags"
           label={<><TagsOutlined style={{ fontSize: '11px' }} /> 标签</>}
         >
-          <Select 
-            mode="tags" 
+          <StyledSelect
+            mode="tags"
             placeholder="添加标签"
+            style={{ width: '100%' }}
           />
         </Form.Item>
 
@@ -160,17 +279,21 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
           label={<><FileTextOutlined style={{ fontSize: '11px' }} /> {t('description')}</>}
           rules={[{ required: true, message: t('pleaseEnterDescription') }]}
         >
-          <TextArea 
-            rows={4}
-            placeholder={t('enterDescription')}
-            showCount
-            maxLength={2000}
-            style={{
-              height: '96px',
-              minHeight: '96px',
-              maxHeight: '96px'
-            }}
-          />
+          <DescriptionEditor>
+            <EditorContent>
+              <TextArea
+                placeholder={t('enterDescription')}
+                autoSize={false}
+                style={{ height: '120px' }}
+                maxLength={2000}
+              />
+            </EditorContent>
+            <EditorFooter>
+              <span className="counter">
+                {form.getFieldValue('description')?.length || 0}/2000
+              </span>
+            </EditorFooter>
+          </DescriptionEditor>
         </Form.Item>
       </Form>
 
@@ -204,13 +327,9 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
         }
 
         .ant-input[id="description"] {
-          height: 96px !important;
-          min-height: 96px !important;
-          max-height: 96px !important;
-          padding: 4px !important;
-          font-size: 10px !important;
-          line-height: 1.5 !important;
-          resize: none !important;
+          height: auto !important;
+          min-height: auto !important;
+          max-height: none !important;
         }
 
         textarea.ant-input {
@@ -219,10 +338,16 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
         }
 
         .ant-input-textarea {
-          .ant-input {
-            height: auto;
-            min-height: auto;
-          }
+          display: block;
+        }
+
+        .ant-input-textarea-show-count::after {
+          display: none;
+        }
+
+        .ant-input::placeholder {
+          color: #bfbfbf !important;
+          font-size: 10px !important;
         }
 
         .ant-modal-header {
