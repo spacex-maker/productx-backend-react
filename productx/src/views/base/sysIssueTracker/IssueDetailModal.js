@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Descriptions, Tag, Avatar, Timeline } from 'antd'
+import { Modal, Descriptions, Tag, Avatar, Timeline, Button } from 'antd'
 import dayjs from 'dayjs'
 import styled from 'styled-components'
 import IssueComments from './IssueComments'
@@ -28,43 +28,6 @@ const StyledDescriptions = styled(Descriptions)`
   }
 `
 
-const CommentItem = styled.div`
-  margin-bottom: 4px;
-  padding: 4px 8px;
-  background: #f9f9f9;
-  border-radius: 2px;
-`
-
-const CommentHeader = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 2px;
-`
-
-const CommentAuthor = styled.span`
-  margin-left: 4px;
-  font-weight: 500;
-  font-size: 10px;
-`
-
-const CommentTime = styled.span`
-  margin-left: 4px;
-  color: #999;
-  font-size: 10px;
-`
-
-const CommentContent = styled.div`
-  margin-left: 20px;
-  font-size: 10px;
-`
-
-const SectionTitle = styled.h4`
-  font-size: 11px;
-  margin: 8px 0 4px 0;
-  font-weight: 500;
-  color: #666;
-`
-
 const StyledTimeline = styled(Timeline)`
   margin-top: 4px !important;
 
@@ -83,6 +46,13 @@ const StyledTimeline = styled(Timeline)`
       }
     }
   }
+`
+
+const SectionTitle = styled.h4`
+  font-size: 11px;
+  margin: 8px 0 4px 0;
+  font-weight: 500;
+  color: #666;
 `
 
 const IssueDetailModal = ({ visible, issue, onCancel }) => {
@@ -134,19 +104,12 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
         </Descriptions.Item>
         <Descriptions.Item label="状态">
           <Tag color={getStatusColor(issue.status)} style={{ margin: 0 }}>
-            {issue.status === 'Open' ? '待处理' :
-             issue.status === 'In Progress' ? '处理中' :
-             issue.status === 'Resolved' ? '已解决' :
-             issue.status === 'Closed' ? '已关闭' :
-             issue.status === 'Reopened' ? '重新打开' : issue.status}
+            {issue.status}
           </Tag>
         </Descriptions.Item>
         <Descriptions.Item label="优先级">
           <Tag color={getPriorityColor(issue.priority)} style={{ margin: 0 }}>
-            {issue.priority === 'Low' ? '低优先级' :
-             issue.priority === 'Medium' ? '中优先级' :
-             issue.priority === 'High' ? '高优先级' :
-             issue.priority === 'Critical' ? '紧急' : issue.priority}
+            {issue.priority}
           </Tag>
         </Descriptions.Item>
         <Descriptions.Item label="类型" span={2}>
@@ -175,10 +138,10 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
       </StyledDescriptions>
 
       <SectionTitle>问题时间线</SectionTitle>
-      <StyledTimeline style={{ marginTop: 4 }}>
+      <StyledTimeline>
         {issue.timeline?.map((item, index) => (
-          <Timeline.Item key={index} style={{ fontSize: '10px' }}>
-            <p style={{ marginBottom: 1 }}>{item.action}</p>
+          <Timeline.Item key={index}>
+            <p>{item.action}</p>
             <small>{dayjs(item.time).format('YYYY-MM-DD HH:mm:ss')}</small>
           </Timeline.Item>
         ))}
