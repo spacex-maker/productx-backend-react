@@ -8,6 +8,7 @@ import PermissionTable from "src/views/base/adminPermission/PermissionTable"; //
 import PermissionCreateFormModal from "src/views/base/adminPermission/AddPermissionModal"; // 新建权限模态框
 import UpdatePermissionModal from "src/views/base/adminPermission/UpdatePermissionModal"; // 更新权限模态框
 import { MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined, SearchOutlined } from '@ant-design/icons';
+import PermissionDetailModal from './PermissionDetailModal';
 
 const createPermission = async (permissionData) => {
   await api.post('/manage/admin-permissions/create', permissionData);
@@ -36,6 +37,7 @@ const AdminPermission = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedPermission, setSelectedPermission] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -111,6 +113,11 @@ const AdminPermission = () => {
       type: permission.type,
     });
     setIsUpdateModalVisible(true);
+  };
+
+  const handleViewDetail = (permission) => {
+    setSelectedPermission(permission);
+    setIsDetailModalVisible(true);
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -250,6 +257,7 @@ const AdminPermission = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             handleDeleteClick={handleDeleteClick}
+            handleViewDetail={handleViewDetail}
           />
         </Spin>
       </div>
@@ -276,6 +284,11 @@ const AdminPermission = () => {
         form={updateForm}
         handleUpdatePermission={handleUpdatePermission}
         selectedPermission={selectedPermission}
+      />
+      <PermissionDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        permissionDetail={selectedPermission}
       />
       <style jsx global>{`
         .ant-select-dropdown {
