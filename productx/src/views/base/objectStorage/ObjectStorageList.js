@@ -29,7 +29,7 @@ const ObjectStorageList = () => {
     bucketName: '',
     region: '',
     timeRange: [],
-    country: undefined
+    country: undefined,
   });
 
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -40,12 +40,7 @@ const ObjectStorageList = () => {
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
-  const {
-    selectedRows,
-    selectAll,
-    handleSelectAll,
-    handleSelectRow,
-  } = UseSelectableRows();
+  const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows();
 
   useEffect(() => {
     fetchData();
@@ -92,7 +87,7 @@ const ObjectStorageList = () => {
   };
 
   const handleSearchChange = (name, value) => {
-    setSearchParams(prev => ({ ...prev, [name]: value }));
+    setSearchParams((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSearch = () => {
@@ -145,7 +140,7 @@ const ObjectStorageList = () => {
               <Input
                 size="small"
                 value={searchParams.storageProvider}
-                onChange={e => handleSearchChange('storageProvider', e.target.value)}
+                onChange={(e) => handleSearchChange('storageProvider', e.target.value)}
                 placeholder={t('storageProvider')}
                 allowClear
               />
@@ -154,7 +149,7 @@ const ObjectStorageList = () => {
               <Input
                 size="small"
                 value={searchParams.storageType}
-                onChange={e => handleSearchChange('storageType', e.target.value)}
+                onChange={(e) => handleSearchChange('storageType', e.target.value)}
                 placeholder={t('storageType')}
                 allowClear
               />
@@ -163,7 +158,7 @@ const ObjectStorageList = () => {
               <Select
                 size="small"
                 value={searchParams.isActive}
-                onChange={value => handleSearchChange('isActive', value)}
+                onChange={(value) => handleSearchChange('isActive', value)}
                 placeholder={t('isActive')}
                 allowClear
               >
@@ -175,7 +170,7 @@ const ObjectStorageList = () => {
               <Select
                 size="small"
                 value={searchParams.isDefault}
-                onChange={value => handleSearchChange('isDefault', value)}
+                onChange={(value) => handleSearchChange('isDefault', value)}
                 placeholder={t('isDefault')}
                 allowClear
               >
@@ -189,33 +184,26 @@ const ObjectStorageList = () => {
                 showSearch
                 allowClear
                 value={searchParams.country}
-                onChange={value => handleSearchChange('country', value)}
+                onChange={(value) => handleSearchChange('country', value)}
                 placeholder={t('country')}
                 style={{ minWidth: '150px' }}
                 filterOption={(input, option) => {
-                  const searchText = [
-                    option?.name,
-                    option?.code
-                  ].join('').toLowerCase();
+                  const searchText = [option?.name, option?.code].join('').toLowerCase();
                   return searchText.includes(input.toLowerCase());
                 }}
               >
-                {(countries || []).map(country => (
-                  <Select.Option 
-                    key={country.code} 
-                    value={country.code}
-                    name={country.name}
-                  >
+                {(countries || []).map((country) => (
+                  <Select.Option key={country.code} value={country.code} name={country.name}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <img 
-                        src={country.flagImageUrl} 
+                      <img
+                        src={country.flagImageUrl}
                         alt={country.name}
-                        style={{ 
-                          width: '16px', 
+                        style={{
+                          width: '16px',
                           height: '12px',
                           objectFit: 'cover',
-                          borderRadius: '2px'
-                        }} 
+                          borderRadius: '2px',
+                        }}
                       />
                       {country.name} ({country.code})
                     </div>
@@ -227,7 +215,7 @@ const ObjectStorageList = () => {
               <Input
                 size="small"
                 value={searchParams.bucketName}
-                onChange={e => handleSearchChange('bucketName', e.target.value)}
+                onChange={(e) => handleSearchChange('bucketName', e.target.value)}
                 placeholder={t('bucketName')}
                 allowClear
               />
@@ -236,7 +224,7 @@ const ObjectStorageList = () => {
               <Input
                 size="small"
                 value={searchParams.region}
-                onChange={e => handleSearchChange('region', e.target.value)}
+                onChange={(e) => handleSearchChange('region', e.target.value)}
                 placeholder={t('region')}
                 allowClear
               />
@@ -245,26 +233,17 @@ const ObjectStorageList = () => {
               <RangePicker
                 size="small"
                 value={searchParams.timeRange}
-                onChange={value => handleSearchChange('timeRange', value)}
+                onChange={(value) => handleSearchChange('timeRange', value)}
                 showTime
               />
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={handleSearch}
-                disabled={isLoading}
-              >
+              <Button size="small" type="primary" onClick={handleSearch} disabled={isLoading}>
                 {isLoading ? <Spin /> : t('search')}
               </Button>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
+              <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
                 {t('createStorage')}
               </Button>
             </Col>

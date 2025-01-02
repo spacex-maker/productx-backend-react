@@ -1,8 +1,34 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm, Descriptions, Avatar, List, Tag } from 'antd';
-import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+  Modal,
+  Table,
+  Card,
+  Statistic,
+  Row,
+  Col,
+  Spin,
+  Empty,
+  Button,
+  Input,
+  Form,
+  Switch,
+  Popconfirm,
+  Descriptions,
+  Avatar,
+  List,
+  Tag,
+} from 'antd';
+import {
+  GlobalOutlined,
+  TeamOutlined,
+  EnvironmentOutlined,
+  SearchOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  CloseOutlined,
+} from '@ant-design/icons';
 import api from 'src/axiosInstance';
-import {useTranslation} from 'react-i18next'; // 引入 useTranslation
+import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 import { Resizable } from 'react-resizable';
 import 'react-resizable/css/styles.css';
 import EditRegionModal from './EditRegionModal';
@@ -53,7 +79,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
   const [editForm] = Form.useForm();
-  const {t} = useTranslation(); // 使用 t() 方法进行翻译
+  const { t } = useTranslation(); // 使用 t() 方法进行翻译
   const [columnWidths, setColumnWidths] = useState({
     localName: 100,
     name: 130,
@@ -74,24 +100,24 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     label: {
       fontSize: '12px',
       color: '#000000',
-      marginBottom: '2px'
+      marginBottom: '2px',
     },
     input: {
       fontSize: '12px',
       height: '24px',
-      color: '#000000 !important',  // 添加 !important 确保不被覆盖
-      backgroundColor: '#ffffff !important',  // 确保背景色也是白色
+      color: '#000000 !important', // 添加 !important 确保不被覆盖
+      backgroundColor: '#ffffff !important', // 确保背景色也是白色
       '&::placeholder': {
-        color: '#999999'  // 保持 placeholder 颜色较浅
-      }
+        color: '#999999', // 保持 placeholder 颜色较浅
+      },
     },
     formItem: {
-      marginBottom: '4px'
+      marginBottom: '4px',
     },
     modalTitle: {
       fontSize: '12px',
-      color: '#000000'
-    }
+      color: '#000000',
+    },
   };
 
   useEffect(() => {
@@ -106,7 +132,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     setLoading(true);
     try {
       const response = await api.get('/manage/global-addresses/list', {
-        params: { parentId }
+        params: { parentId },
       });
       if (response) {
         setRegions(response);
@@ -119,7 +145,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   };
 
   const handleDrillDown = (region) => {
-    setBreadcrumb(prev => [...prev, { id: region.id, name: region.name }]);
+    setBreadcrumb((prev) => [...prev, { id: region.id, name: region.name }]);
     setCurrentRegion(region);
     fetchRegions(region.id);
   };
@@ -133,14 +159,14 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   };
 
   const handleSearch = (value, dataIndex) => {
-    setSearchValues(prev => ({
+    setSearchValues((prev) => ({
       ...prev,
-      [dataIndex]: value.trim().toLowerCase()
+      [dataIndex]: value.trim().toLowerCase(),
     }));
   };
 
   const filteredData = useMemo(() => {
-    return regions.filter(item => {
+    return regions.filter((item) => {
       return Object.entries(searchValues).every(([key, value]) => {
         if (!value) return true;
 
@@ -206,7 +232,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     try {
       await api.post('/manage/global-addresses/change-status', {
         id: record.id,
-        status: checked
+        status: checked,
       });
       const currentParentId = currentRegion ? currentRegion.id : country.id;
       fetchRegions(currentParentId);
@@ -246,7 +272,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     try {
       await api.post('/manage/global-addresses/update', {
         ...values,
-        id: editingRecord.id
+        id: editingRecord.id,
       });
       setEditModalVisible(false);
       editForm.resetFields();
@@ -257,12 +283,14 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     }
   };
 
-  const handleResize = (index) => (e, { size }) => {
-    const newColumnWidths = { ...columnWidths };
-    const key = columns[index].dataIndex;
-    newColumnWidths[key] = size.width;
-    setColumnWidths(newColumnWidths);
-  };
+  const handleResize =
+    (index) =>
+    (e, { size }) => {
+      const newColumnWidths = { ...columnWidths };
+      const key = columns[index].dataIndex;
+      newColumnWidths[key] = size.width;
+      setColumnWidths(newColumnWidths);
+    };
 
   const getColumns = () => {
     const resizableColumns = columns.map((col, index) => ({
@@ -365,7 +393,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       key: 'population',
       width: columnWidths.population,
       ...getColumnSearchProps('population'),
-      render: (val) => val ? `${(val / 10000).toFixed(2)}万` : '-',
+      render: (val) => (val ? `${(val / 10000).toFixed(2)}万` : '-'),
     },
     {
       title: t('area'),
@@ -373,7 +401,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       key: 'areaKm2',
       width: columnWidths.areaKm2,
       ...getColumnSearchProps('areaKm2'),
-      render: (val) => val ? `${val.toLocaleString()} km²` : '-',
+      render: (val) => (val ? `${val.toLocaleString()} km²` : '-'),
     },
     {
       title: t('action'),
@@ -381,12 +409,14 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       width: columnWidths.action,
       fixed: 'right',
       render: (_, record) => (
-        <div style={{
-          display: 'flex',
-          gap: '4px',
-          alignItems: 'center',
-          fontSize: '10px'
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '4px',
+            alignItems: 'center',
+            fontSize: '10px',
+          }}
+        >
           <Switch
             checked={record.status}
             size="small"
@@ -395,7 +425,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               transform: 'scale(0.8)',
               marginTop: '-2px',
               minWidth: '28px',
-              height: '16px'
+              height: '16px',
             }}
           />
           <Button
@@ -405,7 +435,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               fontSize: '10px',
               padding: '0 4px',
               height: '16px',
-              lineHeight: '16px'
+              lineHeight: '16px',
             }}
             onClick={() => handleDrillDown(record)}
           >
@@ -418,7 +448,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               fontSize: '10px',
               padding: '0 4px',
               height: '16px',
-              lineHeight: '16px'
+              lineHeight: '16px',
             }}
             onClick={() => handleEdit(record)}
           >
@@ -441,7 +471,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 fontSize: '10px',
                 padding: '0 4px',
                 height: '16px',
-                lineHeight: '16px'
+                lineHeight: '16px',
               }}
             />
           </Popconfirm>
@@ -455,7 +485,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       const currentParentId = currentRegion ? currentRegion.id : country.id;
       const params = {
         ...values,
-        parentId: currentParentId
+        parentId: currentParentId,
       };
 
       await api.post('/manage/global-addresses/create', params);
@@ -494,19 +524,20 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     <Modal
       title={
         <div>
-
           {/* 维护人统计卡片 */}
           <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
             <Col span={24}>
               <Card size="small" bodyStyle={{ padding: '4px' }}>
-                <div style={{ 
-                  fontSize: '9px', 
-                  marginBottom: '2px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '2px',
-                  color: '#666'
-                }}>
+                <div
+                  style={{
+                    fontSize: '9px',
+                    marginBottom: '2px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '2px',
+                    color: '#666',
+                  }}
+                >
                   <TeamOutlined style={{ fontSize: '9px' }} />
                   {t('dataContributors')}
                 </div>
@@ -516,46 +547,50 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                     grid={{ column: 6 }}
                     dataSource={maintainers}
                     style={{ margin: 0 }}
-                    renderItem={item => (
+                    renderItem={(item) => (
                       <List.Item style={{ padding: '2px' }}>
-                        <div style={{ 
-                          display: 'flex', 
-                          alignItems: 'center',
-                          gap: '2px',
-                          fontSize: '9px'
-                        }}>
-                          <Avatar 
-                            src={item.avatar} 
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '2px',
+                            fontSize: '9px',
+                          }}
+                        >
+                          <Avatar
+                            src={item.avatar}
                             size={14}
-                            style={{ 
+                            style={{
                               backgroundColor: !item.avatar ? '#1890ff' : undefined,
                               fontSize: '8px',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              flexShrink: 0
+                              flexShrink: 0,
                             }}
                           >
                             {!item.avatar ? item.username.charAt(0).toUpperCase() : null}
                           </Avatar>
-                          <span style={{ 
-                            flex: '1',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            maxWidth: '40px'
-                          }}>
+                          <span
+                            style={{
+                              flex: '1',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              maxWidth: '40px',
+                            }}
+                          >
                             {item.username}
                           </span>
-                          <Tag 
-                            color="blue" 
-                            style={{ 
+                          <Tag
+                            color="blue"
+                            style={{
                               fontSize: '8px',
                               lineHeight: '12px',
                               height: '14px',
                               padding: '0 2px',
                               margin: 0,
-                              flexShrink: 0
+                              flexShrink: 0,
                             }}
                           >
                             {item.count}
@@ -568,7 +603,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               </Card>
             </Col>
           </Row>
-          
+
           {/* 国家统计卡片 */}
           <CountryStatisticsCard country={country} />
 
@@ -686,7 +721,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               style={{
                 fontSize: '10px',
                 height: '24px',
-                padding: '0 8px'
+                padding: '0 8px',
               }}
             >
               {t('addRegion')}
@@ -740,12 +775,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         style={{ padding: '8px' }}
         destroyOnClose
       >
-        <Form
-          form={addForm}
-          onFinish={handleAdd}
-          layout="vertical"
-          size="small"
-        >
+        <Form form={addForm} onFinish={handleAdd} layout="vertical" size="small">
           <Row gutter={8}>
             <Col span={12}>
               <Form.Item
@@ -754,10 +784,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 rules={[{ required: true, message: t('pleaseInputCode') }]}
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('regionCodePlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('regionCodePlaceholder')} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -767,10 +794,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('countryCodePlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('countryCodePlaceholder')} />
               </Form.Item>
             </Col>
           </Row>
@@ -782,10 +806,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="localName"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('localNamePlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('localNamePlaceholder')} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -795,10 +816,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 rules={[{ required: true, message: t('pleaseInputName') }]}
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('namePlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('namePlaceholder')} />
               </Form.Item>
             </Col>
           </Row>
@@ -810,10 +828,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="shortName"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('shortNamePlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('shortNamePlaceholder')} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -822,10 +837,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="type"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('typePlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('typePlaceholder')} />
               </Form.Item>
             </Col>
           </Row>
@@ -837,10 +849,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="capital"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('capitalPlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('capitalPlaceholder')} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -865,11 +874,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="areaKm2"
                 style={formStyles.formItem}
               >
-                <Input
-                  type="number"
-                  style={formStyles.input}
-                  placeholder={t('areaPlaceholder')}
-                />
+                <Input type="number" style={formStyles.input} placeholder={t('areaPlaceholder')} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -878,10 +883,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="region"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('regionPlaceholder')}
-                />
+                <Input style={formStyles.input} placeholder={t('regionPlaceholder')} />
               </Form.Item>
             </Col>
           </Row>
@@ -899,13 +901,16 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         form={editForm}
       />
       <style jsx>{`
-        ${Object.entries(styles).map(([selector, rules]) =>
-          `${selector} {
-            ${Object.entries(rules).map(([prop, value]) =>
-              `${prop}: ${value};`
-            ).join('\n')}
-          }`
-        ).join('\n')}
+        ${Object.entries(styles)
+          .map(
+            ([selector, rules]) =>
+              `${selector} {
+            ${Object.entries(rules)
+              .map(([prop, value]) => `${prop}: ${value};`)
+              .join('\n')}
+          }`,
+          )
+          .join('\n')}
       `}</style>
     </Modal>
   );
@@ -1001,13 +1006,6 @@ const styles = `
   .ant-dropdown-menu-item {
     padding: 5px 10px;
     font-size: 10px;
-    line-height: 1.2;
-  }
-
-  .ant-btn-sm {
-    font-size: 10px;
-    padding: 5px 10px;
-    height: auto;
     line-height: 1.2;
   }
 
