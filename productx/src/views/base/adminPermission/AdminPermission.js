@@ -3,11 +3,17 @@ import { Modal, Button, Form, Input, message, Spin, Select, Col, Row } from 'ant
 import api from 'src/axiosInstance';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
-import Pagination from "src/components/common/Pagination";
-import PermissionTable from "src/views/base/adminPermission/PermissionTable"; // 请确保你有相应的权限表格组件
-import PermissionCreateFormModal from "src/views/base/adminPermission/AddPermissionModal"; // 新建权限模态框
-import UpdatePermissionModal from "src/views/base/adminPermission/UpdatePermissionModal"; // 更新权限模态框
-import { MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined, SearchOutlined } from '@ant-design/icons';
+import Pagination from 'src/components/common/Pagination';
+import PermissionTable from 'src/views/base/adminPermission/PermissionTable'; // 请确保你有相应的权限表格组件
+import PermissionCreateFormModal from 'src/views/base/adminPermission/AddPermissionModal'; // 新建权限模态框
+import UpdatePermissionModal from 'src/views/base/adminPermission/UpdatePermissionModal'; // 更新权限模态框
+import {
+  MenuOutlined,
+  ApiOutlined,
+  ControlOutlined,
+  AppstoreOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
 import PermissionDetailModal from './PermissionDetailModal';
 
 const createPermission = async (permissionData) => {
@@ -43,18 +49,13 @@ const AdminPermission = () => {
     fetchData();
   }, [currentPage, pageSize, searchParams]);
 
-  const {
-    selectedRows,
-    selectAll,
-    handleSelectAll,
-    handleSelectRow,
-  } = UseSelectableRows();
+  const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows();
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const filteredParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null)
+        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       );
       const response = await api.get('/manage/admin-permissions/list', {
         params: { currentPage, size: pageSize, ...filteredParams },
@@ -64,7 +65,7 @@ const AdminPermission = () => {
         setData(response.data); // 更新数据结构
         setTotalNum(response.totalNum); // 获取总记录数
       } else {
-        message.info("暂无数据(No Data)");
+        message.info('暂无数据(No Data)');
       }
     } catch (error) {
       console.error('Failed to fetch permissions', error);
@@ -134,7 +135,6 @@ const AdminPermission = () => {
                 placeholder="权限名称"
                 value={searchParams.permissionName}
                 onChange={handleSearchChange}
-                style={{ width: '120px', fontSize: '10px' }}
                 allowClear
               />
             </Col>
@@ -145,7 +145,6 @@ const AdminPermission = () => {
                 placeholder="权限英文名称"
                 value={searchParams.permissionNameEn}
                 onChange={handleSearchChange}
-                style={{ width: '120px', fontSize: '10px' }}
                 allowClear
               />
             </Col>
@@ -156,7 +155,6 @@ const AdminPermission = () => {
                 placeholder="权限描述"
                 value={searchParams.description}
                 onChange={handleSearchChange}
-                style={{ width: '120px', fontSize: '10px' }}
                 allowClear
               />
             </Col>
@@ -167,7 +165,6 @@ const AdminPermission = () => {
                 onChange={(value) => handleSearchChange({ target: { name: 'type', value: value } })}
                 allowClear
                 placeholder="权限类型"
-                style={{ width: '100px', fontSize: '10px' }}
                 dropdownMatchSelectWidth={false}
               >
                 <Select.Option value={1}>
@@ -200,31 +197,23 @@ const AdminPermission = () => {
               <Select
                 size="small"
                 name="status"
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value } })}
+                onChange={(value) =>
+                  handleSearchChange({ target: { name: 'status', value: value } })
+                }
                 allowClear
                 placeholder="状态"
-                style={{ width: '80px', fontSize: '10px' }}
               >
                 <Select.Option value="true">启用</Select.Option>
                 <Select.Option value="false">禁用</Select.Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                disabled={isLoading}
-              >
+              <Button size="small" type="primary" onClick={fetchData} disabled={isLoading}>
                 <SearchOutlined /> {isLoading ? <Spin /> : '查询'}
               </Button>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
+              <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
                 新增权限
               </Button>
             </Col>
@@ -232,11 +221,13 @@ const AdminPermission = () => {
               <Button
                 size="small"
                 type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/admin-permissions/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
+                onClick={() =>
+                  HandleBatchDelete({
+                    url: '/manage/admin-permissions/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })
+                }
                 disabled={selectedRows.length === 0}
               >
                 批量删除
@@ -290,27 +281,6 @@ const AdminPermission = () => {
         onCancel={() => setIsDetailModalVisible(false)}
         permissionDetail={selectedPermission}
       />
-      <style jsx global>{`
-        .ant-select-dropdown {
-          font-size: 10px !important;
-        }
-
-        .ant-select-item {
-          min-height: 24px !important;
-          line-height: 24px !important;
-          padding: 0 8px !important;
-        }
-
-        .ant-select-selection-item {
-          font-size: 10px !important;
-          display: flex !important;
-          align-items: center !important;
-        }
-
-        .ant-select-item-option-content {
-          font-size: 10px !important;
-        }
-      `}</style>
     </div>
   );
 };

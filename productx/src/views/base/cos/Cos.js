@@ -25,9 +25,9 @@ import {
   CTableRow,
   CTableHeaderCell,
   CTableDataCell,
-  CFormCheck
+  CFormCheck,
 } from '@coreui/react';
-import {Upload, message, Progress, Image} from 'antd';
+import { Upload, message, Progress, Image } from 'antd';
 import CIcon from '@coreui/icons-react';
 import {
   cilCloudUpload,
@@ -37,15 +37,20 @@ import {
   cilFolder,
   cilCloudDownload,
   cilHistory,
-  cilCopy
+  cilCopy,
 } from '@coreui/icons';
 import COS from 'cos-js-sdk-v5';
 import api from 'src/axiosInstance';
 import styled from 'styled-components';
-import { CopyOutlined, CheckCircleOutlined, CloseCircleOutlined, HistoryOutlined } from '@ant-design/icons';
+import {
+  CopyOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  HistoryOutlined,
+} from '@ant-design/icons';
 
 const StyledCard = styled(CCard)`
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 `;
 
@@ -93,14 +98,12 @@ const TableWrapper = styled(CCard)`
 
 // 修改全局样式组件
 const GlobalStyle = styled.div`
-  font-size: 10px !important;
-
   // 表格样式优化
   .table {
-    font-size: 10px !important;
     margin-bottom: 0;
 
-    th, td {
+    th,
+    td {
       padding: 8px 12px;
       vertical-align: middle;
     }
@@ -108,9 +111,6 @@ const GlobalStyle = styled.div`
 
   // 按钮样式优化
   .btn {
-    font-size: 10px !important;
-    padding: 4px 8px;
-
     &.btn-sm {
       padding: 2px 6px;
     }
@@ -287,7 +287,7 @@ const DetailModalWrapper = styled.div`
   }
 
   // 暗色主题适配
-  [data-theme="dark"] & {
+  [data-theme='dark'] & {
     .detail-card {
       background: var(--cui-dark);
     }
@@ -358,7 +358,7 @@ const ProgressModalWrapper = styled.div`
   }
 
   // 暗色主题适配
-  [data-theme="dark"] & {
+  [data-theme='dark'] & {
     .progress-card {
       background: var(--cui-dark);
     }
@@ -386,14 +386,14 @@ const Cos = () => {
     visible: false,
     total: 0,
     current: 0,
-    folderName: ''
+    folderName: '',
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [filteredFiles, setFilteredFiles] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   });
   const [uploadSpeeds, setUploadSpeeds] = useState({});
   const prevUploadData = useRef({}); // 用于存储上一次的上传数据
@@ -468,19 +468,19 @@ const Cos = () => {
         Region: region,
         Prefix: path,
         Delimiter: '/',
-        MaxKeys: 1000 // 获取所有文件用于计算总数
+        MaxKeys: 1000, // 获取所有文件用于计算总数
       });
 
       // 处理文件夹和文件
-      const folders = (result.CommonPrefixes || []).map(prefix => ({
+      const folders = (result.CommonPrefixes || []).map((prefix) => ({
         key: prefix.Prefix,
         isFolder: true,
-        name: prefix.Prefix.slice(path.length).replace('/', '')
+        name: prefix.Prefix.slice(path.length).replace('/', ''),
       }));
 
       const files = (result.Contents || [])
-        .filter(item => !item.Key.endsWith('/'))
-        .map(item => ({
+        .filter((item) => !item.Key.endsWith('/'))
+        .map((item) => ({
           key: item.Key,
           isFolder: false,
           name: item.Key.slice(path.length),
@@ -488,7 +488,7 @@ const Cos = () => {
           lastModified: new Date(item.LastModified).toLocaleString(),
           url: `https://${bucketName}.cos.${region}.myqcloud.com/${item.Key}`,
           contentType: item.ContentType || '未知类型',
-          storageClass: item.StorageClass || '标准存储'
+          storageClass: item.StorageClass || '标准存储',
         }));
 
       const allFiles = [...folders, ...files];
@@ -496,11 +496,10 @@ const Cos = () => {
       setFilteredFiles(allFiles);
 
       // 更新分页信息
-      setPagination(prev => ({
+      setPagination((prev) => ({
         ...prev,
-        total: allFiles.length
+        total: allFiles.length,
       }));
-
     } catch (error) {
       console.error('获取文件列表失败:', error);
       message.error('获取文件列表失败：' + error.message);
@@ -546,7 +545,7 @@ const Cos = () => {
           Bucket: bucketName,
           Region: region,
           Prefix: key,
-          MaxKeys: 1000
+          MaxKeys: 1000,
         });
 
         const totalFiles = result.Contents.length;
@@ -554,7 +553,7 @@ const Cos = () => {
           visible: true,
           total: totalFiles,
           current: 0,
-          folderName: key.split('/').slice(-2)[0]
+          folderName: key.split('/').slice(-2)[0],
         });
 
         // 删除文件夹下的所有文件
@@ -563,29 +562,29 @@ const Cos = () => {
           await cosInstance.deleteObject({
             Bucket: bucketName,
             Region: region,
-            Key: item.Key
+            Key: item.Key,
           });
 
-          setDeletingProgress(prev => ({
+          setDeletingProgress((prev) => ({
             ...prev,
-            current: i + 1
+            current: i + 1,
           }));
         }
 
         message.success('文件夹删除成功');
-        setDeletingProgress(prev => ({ ...prev, visible: false }));
+        setDeletingProgress((prev) => ({ ...prev, visible: false }));
       } else {
         // 删除单个文件
         await cosInstance.deleteObject({
           Bucket: bucketName,
           Region: region,
-          Key: key
+          Key: key,
         });
         message.success('文件删除成功');
       }
       getFileList();
     } catch (error) {
-      setDeletingProgress(prev => ({ ...prev, visible: false }));
+      setDeletingProgress((prev) => ({ ...prev, visible: false }));
       message.error('删除失败：' + error.message);
     }
   };
@@ -598,9 +597,9 @@ const Cos = () => {
       fileSize: (file.size / 1024).toFixed(2) + ' KB',
       uploadTime: new Date().toLocaleString(),
       status: status,
-      path: path || '根目录'
+      path: path || '根目录',
     };
-    setUploadHistory(prev => [historyItem, ...prev].slice(0, 100)); // 只保留最近100条记录
+    setUploadHistory((prev) => [historyItem, ...prev].slice(0, 100)); // 只保留最近100条记录
   };
 
   // 修改上传文件函数
@@ -623,7 +622,7 @@ const Cos = () => {
         loaded: 0,
         name: file.name,
         error: null,
-        startTime: Date.now()
+        startTime: Date.now(),
       };
       return acc;
     }, {});
@@ -631,105 +630,106 @@ const Cos = () => {
     setUploadProgress(initialProgress);
 
     try {
-      await Promise.all(fileList.map(async file => {
-        const key = currentPath + file.name;
+      await Promise.all(
+        fileList.map(async (file) => {
+          const key = currentPath + file.name;
 
-        try {
-          await cosInstance.uploadFile({
-            Bucket: bucketName,
-            Region: region,
-            Key: key,
-            Body: file,
-            onProgress: (progressData) => {
-              const now = Date.now();
-              const loaded = progressData.loaded;
-              const fileName = file.name;
+          try {
+            await cosInstance.uploadFile({
+              Bucket: bucketName,
+              Region: region,
+              Key: key,
+              Body: file,
+              onProgress: (progressData) => {
+                const now = Date.now();
+                const loaded = progressData.loaded;
+                const fileName = file.name;
 
-              // 更新进度
-              setUploadProgress(prev => ({
-                ...prev,
-                [fileName]: {
-                  ...prev[fileName],
-                  percent: Math.round(progressData.percent * 100),
-                  status: 'active',
-                  loaded: loaded
-                }
-              }));
-
-              // 计算速度
-              const prevData = prevUploadData.current[fileName];
-              if (prevData) {
-                const timeDiff = (now - prevData.time) / 1000; // 转换为秒
-                const bytesDiff = loaded - prevData.loaded;
-                const speedBps = bytesDiff / timeDiff;
-
-                let speedText;
-                if (speedBps >= 1024 * 1024) {
-                  speedText = `${(speedBps / (1024 * 1024)).toFixed(2)} MB/s`;
-                } else if (speedBps >= 1024) {
-                  speedText = `${(speedBps / 1024).toFixed(2)} KB/s`;
-                } else {
-                  speedText = `${Math.round(speedBps)} B/s`;
-                }
-
-                // 计算剩余时间
-                const remainingBytes = file.size - loaded;
-                const remainingTime = remainingBytes / speedBps;
-                let remainingText;
-                if (remainingTime >= 3600) {
-                  remainingText = `${Math.round(remainingTime / 3600)}小时`;
-                } else if (remainingTime >= 60) {
-                  remainingText = `${Math.round(remainingTime / 60)}分钟`;
-                } else {
-                  remainingText = `${Math.round(remainingTime)}秒`;
-                }
-
-                setUploadSpeeds(prev => ({
+                // 更新进度
+                setUploadProgress((prev) => ({
                   ...prev,
                   [fileName]: {
-                    speed: speedText,
-                    remaining: remainingText
-                  }
+                    ...prev[fileName],
+                    percent: Math.round(progressData.percent * 100),
+                    status: 'active',
+                    loaded: loaded,
+                  },
                 }));
-              }
 
-              // 更新上一次的数据
-              prevUploadData.current[fileName] = {
-                loaded,
-                time: now
-              };
-            }
-          });
+                // 计算速度
+                const prevData = prevUploadData.current[fileName];
+                if (prevData) {
+                  const timeDiff = (now - prevData.time) / 1000; // 转换为秒
+                  const bytesDiff = loaded - prevData.loaded;
+                  const speedBps = bytesDiff / timeDiff;
 
-          // 更新上传成功状态
-          setUploadProgress(prev => ({
-            ...prev,
-            [file.name]: {
-              ...prev[file.name],
-              percent: 100,
-              status: 'success'
-            }
-          }));
+                  let speedText;
+                  if (speedBps >= 1024 * 1024) {
+                    speedText = `${(speedBps / (1024 * 1024)).toFixed(2)} MB/s`;
+                  } else if (speedBps >= 1024) {
+                    speedText = `${(speedBps / 1024).toFixed(2)} KB/s`;
+                  } else {
+                    speedText = `${Math.round(speedBps)} B/s`;
+                  }
 
-          // 清除该文件的速度显示
-          setUploadSpeeds(prev => {
-            const newSpeeds = { ...prev };
-            delete newSpeeds[file.name];
-            return newSpeeds;
-          });
+                  // 计算剩余时间
+                  const remainingBytes = file.size - loaded;
+                  const remainingTime = remainingBytes / speedBps;
+                  let remainingText;
+                  if (remainingTime >= 3600) {
+                    remainingText = `${Math.round(remainingTime / 3600)}小时`;
+                  } else if (remainingTime >= 60) {
+                    remainingText = `${Math.round(remainingTime / 60)}分钟`;
+                  } else {
+                    remainingText = `${Math.round(remainingTime)}秒`;
+                  }
 
-        } catch (error) {
-          console.error(`文件 ${file.name} 上传失败:`, error);
-          setUploadProgress(prev => ({
-            ...prev,
-            [file.name]: {
-              ...prev[file.name],
-              status: 'error',
-              error: error.message
-            }
-          }));
-        }
-      }));
+                  setUploadSpeeds((prev) => ({
+                    ...prev,
+                    [fileName]: {
+                      speed: speedText,
+                      remaining: remainingText,
+                    },
+                  }));
+                }
+
+                // 更新上一次的数据
+                prevUploadData.current[fileName] = {
+                  loaded,
+                  time: now,
+                };
+              },
+            });
+
+            // 更新上传成功状态
+            setUploadProgress((prev) => ({
+              ...prev,
+              [file.name]: {
+                ...prev[file.name],
+                percent: 100,
+                status: 'success',
+              },
+            }));
+
+            // 清除该文件的速度显示
+            setUploadSpeeds((prev) => {
+              const newSpeeds = { ...prev };
+              delete newSpeeds[file.name];
+              return newSpeeds;
+            });
+          } catch (error) {
+            console.error(`文件 ${file.name} 上传失败:`, error);
+            setUploadProgress((prev) => ({
+              ...prev,
+              [file.name]: {
+                ...prev[file.name],
+                status: 'error',
+                error: error.message,
+              },
+            }));
+          }
+        }),
+      );
 
       await getFileList();
       message.success(`成功上传 ${fileList.length} 个文件`);
@@ -745,7 +745,8 @@ const Cos = () => {
 
   // 复制到剪贴板的功能
   const handleCopy = (url) => {
-    navigator.clipboard.writeText(url)
+    navigator.clipboard
+      .writeText(url)
       .then(() => {
         message.success('链接已复制到剪切板');
       })
@@ -785,9 +786,7 @@ const Cos = () => {
     }
 
     const searchText = value.toLowerCase();
-    const filtered = files.filter(file =>
-      file.name.toLowerCase().includes(searchText)
-    );
+    const filtered = files.filter((file) => file.name.toLowerCase().includes(searchText));
 
     setFilteredFiles(filtered);
   };
@@ -835,9 +834,7 @@ const Cos = () => {
             <div className="detail-card">
               <div className="section-title">文件名称</div>
               <div className="d-flex align-items-center">
-                <div className="text-break flex-grow-1">
-                  {selectedFile.name}
-                </div>
+                <div className="text-break flex-grow-1">{selectedFile.name}</div>
                 <CButton
                   color="ghost-primary"
                   size="sm"
@@ -861,9 +858,7 @@ const Cos = () => {
                   <tr>
                     <td>文件类型</td>
                     <td>
-                      <CBadge
-                        color={isFolder ? 'info' : 'primary'}
-                      >
+                      <CBadge color={isFolder ? 'info' : 'primary'}>
                         {isFolder ? '文件夹' : fileType}
                       </CBadge>
                     </td>
@@ -877,9 +872,7 @@ const Cos = () => {
                       <tr>
                         <td>存储类型</td>
                         <td>
-                          <CBadge color="success">
-                            {storageClass}
-                          </CBadge>
+                          <CBadge color="success">{storageClass}</CBadge>
                         </td>
                       </tr>
                     </>
@@ -892,9 +885,7 @@ const Cos = () => {
                     <td>文件路径</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <div className="text-break flex-grow-1">
-                          {selectedFile.key}
-                        </div>
+                        <div className="text-break flex-grow-1">{selectedFile.key}</div>
                         <CButton
                           color="ghost-primary"
                           size="sm"
@@ -920,9 +911,7 @@ const Cos = () => {
                 <div className="section-title">文件链接</div>
                 <div className="link-section">
                   <div className="d-flex align-items-center">
-                    <div className="link-text flex-grow-1">
-                      {selectedFile.url}
-                    </div>
+                    <div className="link-text flex-grow-1">{selectedFile.url}</div>
                     <CButton
                       color="primary"
                       size="sm"
@@ -936,9 +925,7 @@ const Cos = () => {
                       复制链接
                     </CButton>
                   </div>
-                  <div className="hint-text">
-                    提示：文件链接长期有效，可直接访问或下载！
-                  </div>
+                  <div className="hint-text">提示：文件链接长期有效，可直接访问或下载！</div>
                 </div>
               </div>
             )}
@@ -972,17 +959,11 @@ const Cos = () => {
 
   // 上传历史记录弹窗
   const HistoryModal = () => (
-    <CModal
-      visible={isHistoryVisible}
-      onClose={() => setIsHistoryVisible(false)}
-      size="lg"
-    >
+    <CModal visible={isHistoryVisible} onClose={() => setIsHistoryVisible(false)} size="lg">
       <CModalHeader onClose={() => setIsHistoryVisible(false)}>
         <CModalTitle>上传历史</CModalTitle>
       </CModalHeader>
-      <CModalBody>
-        {/* 历史记录内容 */}
-      </CModalBody>
+      <CModalBody>{/* 历史记录内容 */}</CModalBody>
     </CModal>
   );
 
@@ -1002,7 +983,7 @@ const Cos = () => {
         Bucket: bucketName,
         Region: region,
         Key: folderKey,
-        Body: ''  // 创建空文件夹
+        Body: '', // 创建空文件夹
       });
 
       message.success('文件夹创建成功');
@@ -1022,27 +1003,19 @@ const Cos = () => {
     const percent = Math.round((deletingProgress.current / deletingProgress.total) * 100);
 
     return (
-      <CModal
-        visible={deletingProgress.visible}
-        backdrop="static"
-        keyboard={false}
-      >
+      <CModal visible={deletingProgress.visible} backdrop="static" keyboard={false}>
         <CModalHeader>
           <CModalTitle>正在删除文件夹</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <div className="mb-3">
-            正在删除文件夹 "{deletingProgress.folderName}"
-          </div>
+          <div className="mb-3">正在删除文件夹 "{deletingProgress.folderName}"</div>
           <div className="mb-2 text-center">
             {deletingProgress.current} / {deletingProgress.total}
           </div>
           <CProgress value={percent} className="mb-3">
             {percent}%
           </CProgress>
-          <div className="text-muted small">
-            请勿关闭窗口，删除过程中请耐心等待...
-          </div>
+          <div className="text-muted small">请勿关闭窗口，删除过程中请耐心等待...</div>
         </CModalBody>
       </CModal>
     );
@@ -1088,9 +1061,11 @@ const Cos = () => {
               <CProgress
                 value={progress.percent}
                 color={
-                  progress.status === 'error' ? 'danger' :
-                  progress.status === 'success' ? 'success' :
-                  'primary'
+                  progress.status === 'error'
+                    ? 'danger'
+                    : progress.status === 'success'
+                      ? 'success'
+                      : 'primary'
                 }
               />
               {progress.error && (
@@ -1122,9 +1097,9 @@ const Cos = () => {
 
   // 添加选择处理函数
   const handleSelect = (key) => {
-    setSelectedFiles(prev => {
+    setSelectedFiles((prev) => {
       if (prev.includes(key)) {
-        return prev.filter(k => k !== key);
+        return prev.filter((k) => k !== key);
       } else {
         return [...prev, key];
       }
@@ -1136,15 +1111,15 @@ const Cos = () => {
     if (selectedFiles.length === files.length) {
       setSelectedFiles([]);
     } else {
-      setSelectedFiles(files.map(file => file.key));
+      setSelectedFiles(files.map((file) => file.key));
     }
   };
 
   // 添加批量删除处理函数
   const handleBatchDelete = async () => {
     try {
-      const folderKeys = selectedFiles.filter(key => files.find(f => f.key === key)?.isFolder);
-      const fileKeys = selectedFiles.filter(key => !files.find(f => f.key === key)?.isFolder);
+      const folderKeys = selectedFiles.filter((key) => files.find((f) => f.key === key)?.isFolder);
+      const fileKeys = selectedFiles.filter((key) => !files.find((f) => f.key === key)?.isFolder);
 
       // 设置删除进度初始状态
       let totalFiles = fileKeys.length;
@@ -1156,7 +1131,7 @@ const Cos = () => {
           Bucket: bucketName,
           Region: region,
           Prefix: folderKey,
-          MaxKeys: 1000
+          MaxKeys: 1000,
         });
         foldersContent = [...foldersContent, ...result.Contents];
         totalFiles += result.Contents.length;
@@ -1166,7 +1141,7 @@ const Cos = () => {
         visible: true,
         total: totalFiles,
         current: 0,
-        folderName: '多个文件'
+        folderName: '多个文件',
       });
 
       // 删除文件
@@ -1174,11 +1149,11 @@ const Cos = () => {
         await cosInstance.deleteObject({
           Bucket: bucketName,
           Region: region,
-          Key: fileKeys[i]
+          Key: fileKeys[i],
         });
-        setDeletingProgress(prev => ({
+        setDeletingProgress((prev) => ({
           ...prev,
-          current: prev.current + 1
+          current: prev.current + 1,
         }));
       }
 
@@ -1187,11 +1162,11 @@ const Cos = () => {
         await cosInstance.deleteObject({
           Bucket: bucketName,
           Region: region,
-          Key: foldersContent[i].Key
+          Key: foldersContent[i].Key,
         });
-        setDeletingProgress(prev => ({
+        setDeletingProgress((prev) => ({
           ...prev,
-          current: prev.current + 1
+          current: prev.current + 1,
         }));
       }
 
@@ -1201,15 +1176,15 @@ const Cos = () => {
     } catch (error) {
       message.error('批量删除失败：' + error.message);
     } finally {
-      setDeletingProgress(prev => ({ ...prev, visible: false }));
+      setDeletingProgress((prev) => ({ ...prev, visible: false }));
     }
   };
 
   // 处理分页变化
   const handlePageChange = (page) => {
-    setPagination(prev => ({
+    setPagination((prev) => ({
       ...prev,
-      current: page
+      current: page,
     }));
   };
 
@@ -1219,17 +1194,17 @@ const Cos = () => {
       const startTime = Date.now();
       prevDownloadData.current[file.name] = {
         loaded: 0,
-        time: startTime
+        time: startTime,
       };
 
-      setDownloadProgress(prev => ({
+      setDownloadProgress((prev) => ({
         ...prev,
         [file.name]: {
           ...prev[file.name],
           status: 'active',
           percent: 0,
-          startTime
-        }
+          startTime,
+        },
       }));
 
       const response = await fetch(file.url);
@@ -1242,8 +1217,8 @@ const Cos = () => {
       const chunks = [];
       let receivedLength = 0;
 
-      while(true) {
-        const {done, value} = await reader.read();
+      while (true) {
+        const { done, value } = await reader.read();
 
         if (done) break;
 
@@ -1279,55 +1254,54 @@ const Cos = () => {
             remainingText = `${Math.round(remainingTime)}秒`;
           }
 
-          setDownloadSpeeds(prev => ({
+          setDownloadSpeeds((prev) => ({
             ...prev,
             [file.name]: {
               speed: speedText,
-              remaining: remainingText
-            }
+              remaining: remainingText,
+            },
           }));
         }
 
         // 更新进度
         const percent = Math.round((receivedLength / contentLength) * 100);
-        setDownloadProgress(prev => ({
+        setDownloadProgress((prev) => ({
           ...prev,
           [file.name]: {
             ...prev[file.name],
             percent,
-            status: 'active'
-          }
+            status: 'active',
+          },
         }));
 
         // 更新上一次的数据
         prevDownloadData.current[file.name] = {
           loaded: receivedLength,
-          time: now
+          time: now,
         };
       }
 
       // 更新下载成功状态
-      setDownloadProgress(prev => ({
+      setDownloadProgress((prev) => ({
         ...prev,
         [file.name]: {
           ...prev[file.name],
           percent: 100,
-          status: 'success'
-        }
+          status: 'success',
+        },
       }));
-
     } catch (error) {
       console.error(`文件 ${file.name} 下载失败:`, error);
-      setDownloadProgress(prev => ({
+      setDownloadProgress((prev) => ({
         ...prev,
         [file.name]: {
           ...prev[file.name],
           status: 'error',
-          error: error.message
-        }
+          error: error.message,
+        },
       }));
       // 清理速度数据
-      setDownloadSpeeds(prev => {
+      setDownloadSpeeds((prev) => {
         const newSpeeds = { ...prev };
         delete newSpeeds[file.name];
         return newSpeeds;
@@ -1339,8 +1313,8 @@ const Cos = () => {
   // 修改批量下载处理函数
   const handleBatchDownload = async () => {
     const selectedFileList = selectedFiles
-      .map(key => files.find(f => f.key === key))
-      .filter(file => file && !file.isFolder);
+      .map((key) => files.find((f) => f.key === key))
+      .filter((file) => file && !file.isFolder);
 
     if (selectedFileList.length === 0) {
       message.warning('请选择要下载的文件');
@@ -1357,7 +1331,7 @@ const Cos = () => {
         status: 'pending',
         size: file.size,
         name: file.name,
-        error: null
+        error: null,
       };
       return acc;
     }, {});
@@ -1369,7 +1343,7 @@ const Cos = () => {
       const batchSize = 3;
       for (let i = 0; i < selectedFileList.length; i += batchSize) {
         const batch = selectedFileList.slice(i, i + batchSize);
-        await Promise.all(batch.map(file => downloadFile(file)));
+        await Promise.all(batch.map((file) => downloadFile(file)));
       }
 
       message.success(`成功下载 ${selectedFileList.length} 个文件`);
@@ -1412,9 +1386,11 @@ const Cos = () => {
                     <CIcon
                       icon={cilFile}
                       className={`me-2 ${
-                        progress.status === 'success' ? 'text-success' :
-                        progress.status === 'error' ? 'text-danger' :
-                        'text-primary'
+                        progress.status === 'success'
+                          ? 'text-success'
+                          : progress.status === 'error'
+                            ? 'text-danger'
+                            : 'text-primary'
                       }`}
                     />
                     <div className="text-truncate" title={fileName}>
@@ -1422,13 +1398,9 @@ const Cos = () => {
                     </div>
                   </div>
                   <div className="text-end" style={{ minWidth: '120px' }}>
-                    <div className="small">
-                      {progress.size}
-                    </div>
+                    <div className="small">{progress.size}</div>
                     {downloadSpeeds[fileName] && progress.status === 'active' && (
-                      <div className="small text-primary">
-                        {downloadSpeeds[fileName].speed}
-                      </div>
+                      <div className="small text-primary">{downloadSpeeds[fileName].speed}</div>
                     )}
                   </div>
                 </div>
@@ -1438,9 +1410,11 @@ const Cos = () => {
                   height={8}
                   value={progress.percent}
                   color={
-                    progress.status === 'error' ? 'danger' :
-                    progress.status === 'success' ? 'success' :
-                    'primary'
+                    progress.status === 'error'
+                      ? 'danger'
+                      : progress.status === 'success'
+                        ? 'success'
+                        : 'primary'
                   }
                 />
 
@@ -1448,16 +1422,10 @@ const Cos = () => {
                   <div className="small text-muted">
                     {progress.percent}%
                     {downloadSpeeds[fileName] && progress.status === 'active' && (
-                      <span className="ms-2">
-                        剩余 {downloadSpeeds[fileName].remaining}
-                      </span>
+                      <span className="ms-2">剩余 {downloadSpeeds[fileName].remaining}</span>
                     )}
                   </div>
-                  {progress.error && (
-                    <div className="small text-danger">
-                      {progress.error}
-                    </div>
-                  )}
+                  {progress.error && <div className="small text-danger">{progress.error}</div>}
                 </div>
               </div>
             ))}
@@ -1465,7 +1433,8 @@ const Cos = () => {
         </CModalBody>
         <CModalFooter className="d-flex justify-content-between align-items-center">
           <div className="small text-muted">
-            已完成 {Object.values(downloadProgress).filter(p => p.status === 'success').length} / {Object.keys(downloadProgress).length} 个文件
+            已完成 {Object.values(downloadProgress).filter((p) => p.status === 'success').length} /{' '}
+            {Object.keys(downloadProgress).length} 个文件
           </div>
           <CButton
             color={downloading ? 'secondary' : 'primary'}
@@ -1483,7 +1452,9 @@ const Cos = () => {
                 <CSpinner size="sm" className="me-2" />
                 下载中...
               </div>
-            ) : '关闭'}
+            ) : (
+              '关闭'
+            )}
           </CButton>
         </CModalFooter>
       </ProgressModalWrapper>
@@ -1494,15 +1465,14 @@ const Cos = () => {
   const isImageUrl = (key) => {
     if (!key) return false;
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
-    return imageExtensions.some(ext => key.toLowerCase().endsWith(ext));
-  }
+    return imageExtensions.some((ext) => key.toLowerCase().endsWith(ext));
+  };
 
   return (
     <GlobalStyle>
       <CContainer fluid>
         <CRow>
           <CCol xs={12}>
-
             <SearchWrapper>
               <CCardBody>
                 <CRow className="align-items-center">
@@ -1515,11 +1485,7 @@ const Cos = () => {
                         onChange={(e) => handleSearch(e.target.value)}
                         className="border-end-0"
                       />
-                      <CButton
-                        color="primary"
-                        variant="outline"
-                        onClick={() => getFileList()}
-                      >
+                      <CButton color="primary" variant="outline" onClick={() => getFileList()}>
                         <CIcon icon={cilMagnifyingGlass} />
                       </CButton>
                     </CInputGroup>
@@ -1544,11 +1510,7 @@ const Cos = () => {
                           return false;
                         }}
                       >
-                        <CButton
-                          color="primary"
-                          disabled={uploading}
-                          title="支持批量上传"
-                        >
+                        <CButton color="primary" disabled={uploading} title="支持批量上传">
                           <CIcon icon={cilCloudUpload} className="me-1" />
                           上传
                         </CButton>
@@ -1611,7 +1573,9 @@ const Cos = () => {
                         <CTableHeaderCell style={{ width: '40px' }}>
                           <CFormCheck
                             checked={selectedFiles.length === files.length && files.length > 0}
-                            indeterminate={selectedFiles.length > 0 && selectedFiles.length < files.length}
+                            indeterminate={
+                              selectedFiles.length > 0 && selectedFiles.length < files.length
+                            }
                             onChange={handleSelectAll}
                           />
                         </CTableHeaderCell>
@@ -1629,13 +1593,10 @@ const Cos = () => {
                         filteredFiles
                           .slice(
                             (pagination.current - 1) * pagination.pageSize,
-                            pagination.current * pagination.pageSize
+                            pagination.current * pagination.pageSize,
                           )
                           .map((item) => (
-                            <CTableRow
-                              key={item.key}
-                              active={selectedFiles.includes(item.key)}
-                            >
+                            <CTableRow key={item.key} active={selectedFiles.includes(item.key)}>
                               <CTableDataCell>
                                 <CFormCheck
                                   checked={selectedFiles.includes(item.key)}
@@ -1647,7 +1608,12 @@ const Cos = () => {
                                   <Image
                                     src={`https://${bucketName}.cos.${region}.myqcloud.com/${item.key}`}
                                     alt={item.name}
-                                    style={{ width: '50px', height: '50px', objectFit: 'cover', cursor: 'pointer' }}
+                                    style={{
+                                      width: '50px',
+                                      height: '50px',
+                                      objectFit: 'cover',
+                                      cursor: 'pointer',
+                                    }}
                                     preview={{
                                       mask: '预览',
                                       maskClassName: 'custom-mask',
@@ -1664,21 +1630,13 @@ const Cos = () => {
                                         size="sm"
                                         style={{
                                           color: '#ffd700',
-                                          marginRight: '4px'
+                                          marginRight: '4px',
                                         }}
                                       />
                                       <CButton
                                         color="link"
                                         className="p-0 text-decoration-none text-start"
                                         onClick={() => handleFolderClick(item.key)}
-                                        style={{
-                                          fontSize: '10px',
-                                          width: 'fit-content',
-                                          minWidth: 'unset',
-                                          padding: '0',
-                                          margin: '0',
-                                          display: 'inline-block'
-                                        }}
                                       >
                                         {item.name}/
                                       </CButton>
@@ -1695,7 +1653,9 @@ const Cos = () => {
                                         <CPopover
                                           content={
                                             <div>
-                                              <p>确定要删除这个文件夹吗？文件夹所有文件都会被删除。</p>
+                                              <p>
+                                                确定要删除这个文件夹吗？文件夹所有文件都会被删除。
+                                              </p>
                                               <CButton
                                                 color="danger"
                                                 size="sm"
@@ -1718,7 +1678,9 @@ const Cos = () => {
                               ) : (
                                 <>
                                   <CTableDataCell style={{ padding: '4px 12px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <div
+                                      style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                                    >
                                       <CIcon icon={cilFile} size="sm" />
                                       <a
                                         href="#"
@@ -1726,7 +1688,6 @@ const Cos = () => {
                                           e.preventDefault();
                                           handleFileClick(item);
                                         }}
-                                        style={{ color: '#1890ff' }}
                                       >
                                         {item.name}
                                       </a>
@@ -1741,33 +1702,30 @@ const Cos = () => {
                                       </CButton>
                                     </div>
                                   </CTableDataCell>
-                                  <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <CTableDataCell>
                                     <CBadge color="info" shape="rounded-pill">
                                       {item.size}
                                     </CBadge>
                                   </CTableDataCell>
-                                  <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <CTableDataCell>
                                     <CBadge color="info" shape="rounded-pill">
                                       {item.contentType}
                                     </CBadge>
                                   </CTableDataCell>
-                                  <CTableDataCell style={{ padding: '4px 12px' }}>
+                                  <CTableDataCell>
                                     <CBadge color="success" shape="rounded-pill">
                                       {item.storageClass}
                                     </CBadge>
                                   </CTableDataCell>
-                                  <CTableDataCell style={{ padding: '4px 12px' }}>
-                                    {item.lastModified}
-                                  </CTableDataCell>
-                                  <CTableDataCell style={{ padding: '4px 12px' }}>
-                                    <CButtonGroup size="sm">
+                                  <CTableDataCell>{item.lastModified}</CTableDataCell>
+                                  <CTableDataCell>
+                                    <CButtonGroup style={{ width: '150px' }} size="sm">
                                       {!item.isFolder && ( // 只为文件显下载按钮
                                         <CButton
                                           color="primary"
                                           variant="ghost"
                                           onClick={() => handleDownload(item)}
                                           title="下载文件"
-                                          style={{ padding: '4px 8px' }}
                                         >
                                           <CIcon icon={cilCloudDownload} size="sm" />
                                           <span className="ms-1">下载</span>
@@ -1777,8 +1735,7 @@ const Cos = () => {
                                         color="danger"
                                         variant="ghost"
                                         onClick={() => handleDelete(item.key, item.isFolder)}
-                                        title={item.isFolder ? "删除文件夹" : "删除文件"}
-                                        style={{ padding: '4px 8px' }}
+                                        title={item.isFolder ? '删除文件夹' : '删除文件'}
                                       >
                                         <CIcon icon={cilTrash} size="sm" />
                                         <span className="ms-1">删除</span>
@@ -1793,11 +1750,7 @@ const Cos = () => {
                         <CTableRow>
                           <CTableDataCell colSpan="7" className="text-center py-5">
                             <div className="d-flex flex-column align-items-center text-muted">
-                              <CIcon
-                                icon={cilFolder}
-                                size="3xl"
-                                className="mb-3 text-muted"
-                              />
+                              <CIcon icon={cilFolder} size="3xl" className="mb-3 text-muted" />
                               {loading ? (
                                 <>
                                   <CSpinner size="sm" className="mb-2" />
@@ -1880,10 +1833,12 @@ const Cos = () => {
                 setNewFolderName('');
               }}
             >
-              <CModalHeader onClose={() => {
-                setIsCreateFolderVisible(false);
-                setNewFolderName('');
-              }}>
+              <CModalHeader
+                onClose={() => {
+                  setIsCreateFolderVisible(false);
+                  setNewFolderName('');
+                }}
+              >
                 <CModalTitle>新建文件夹</CModalTitle>
               </CModalHeader>
               <CModalBody>
@@ -1904,10 +1859,7 @@ const Cos = () => {
                 >
                   取消
                 </CButton>
-                <CButton
-                  color="primary"
-                  onClick={handleCreateFolder}
-                >
+                <CButton color="primary" onClick={handleCreateFolder}>
                   确定
                 </CButton>
               </CModalFooter>
@@ -1923,8 +1875,8 @@ const Cos = () => {
             {selectedFiles.length > 0 && (
               <div className="mt-2">
                 <CButtonGroup size="sm">
-                  {selectedFiles.some(key => {
-                    const file = files.find(f => f.key === key);
+                  {selectedFiles.some((key) => {
+                    const file = files.find((f) => f.key === key);
                     return file && !file.isFolder;
                   }) && (
                     <CButton
@@ -1934,13 +1886,14 @@ const Cos = () => {
                       disabled={downloading}
                     >
                       <CIcon icon={cilCloudDownload} className="me-1" />
-                      下载选中项 ({
-                        selectedFiles.filter(key => {
-                          const file = files.find(f => f.key === key);
+                      下载选中项 (
+                      {
+                        selectedFiles.filter((key) => {
+                          const file = files.find((f) => f.key === key);
                           return file && !file.isFolder;
                         }).length
-                      })
-                      {downloading && <CSpinner size="sm" className="ms-2" />}
+                      }
+                      ){downloading && <CSpinner size="sm" className="ms-2" />}
                     </CButton>
                   )}
                   <CButton
@@ -1962,9 +1915,7 @@ const Cos = () => {
             {/* 添加分页组件 */}
             {filteredFiles.length > 0 && (
               <div className="d-flex justify-content-between align-items-center mt-3">
-                <div className="small text-muted">
-                  共 {filteredFiles.length} 项
-                </div>
+                <div className="small text-muted">共 {filteredFiles.length} 项</div>
                 <CButtonGroup size="sm">
                   <CButton
                     color="primary"
@@ -1981,7 +1932,9 @@ const Cos = () => {
                     color="primary"
                     variant="outline"
                     onClick={() => handlePageChange(pagination.current + 1)}
-                    disabled={pagination.current >= Math.ceil(filteredFiles.length / pagination.pageSize)}
+                    disabled={
+                      pagination.current >= Math.ceil(filteredFiles.length / pagination.pageSize)
+                    }
                   >
                     下一页
                   </CButton>

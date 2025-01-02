@@ -1,7 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Modal, Form, Switch, Tooltip, Select, Tag } from 'antd';
-import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined, LockOutlined, UnlockOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import api from 'src/axiosInstance';
+import React from 'react';
+import { Input, Modal, Form, Switch, Tooltip, Select } from 'antd';
+import {
+  UserOutlined,
+  TranslationOutlined,
+  FileTextOutlined,
+  CheckCircleOutlined,
+  PlusOutlined,
+  MenuOutlined,
+  ApiOutlined,
+  ControlOutlined,
+  AppstoreOutlined,
+  LockOutlined,
+  UnlockOutlined,
+  InfoCircleOutlined,
+} from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -17,11 +29,11 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
       const response = await api.get('/manage/admin-permissions/list', {
         params: {
           currentPage: 1,
-          pageSize: 500,  // 获取所有菜单权限
-          type: 1     // 1表示菜单权限类型
-        }
+          pageSize: 500, // 获取所有菜单权限
+          type: 1, // 1表示菜单权限类型
+        },
       });
-      
+
       if (response && response.data) {
         setMenuPermissions(response.data);
       }
@@ -61,7 +73,7 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
       okText="确认"
       cancelText="取消"
     >
-      <Form 
+      <Form
         form={form}
         onFinish={onFinish}
         labelCol={{ span: 6 }}
@@ -71,10 +83,12 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
         {/* 权限类型 */}
         <Form.Item
           label={
-            <span style={{ fontSize: '10px' }}>
+            <span>
               权限类型
               <Tooltip title="选择权限的类型，不同类型的权限用于不同的场景">
-                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                <InfoCircleOutlined
+                  style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }}
+                />
               </Tooltip>
             </span>
           }
@@ -83,10 +97,7 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           style={{ marginBottom: '8px' }}
           initialValue={1}
         >
-          <Select 
-            style={{ fontSize: '10px' }}
-            onChange={handleTypeChange}
-          >
+          <Select>
             <Option value={1}>
               <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
                 <MenuOutlined style={{ marginRight: '4px', color: '#1890ff' }} />
@@ -120,45 +131,52 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
             label={
               <span style={{ fontSize: '10px' }}>
                 父级权限
-                <Tooltip title={selectedType === 1 ? "选择上级菜单权限" : "选择所属的菜单权限"}>
-                  <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                <Tooltip title={selectedType === 1 ? '选择上级菜单权限' : '选择所属的菜单权限'}>
+                  <InfoCircleOutlined
+                    style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }}
+                  />
                 </Tooltip>
               </span>
             }
             name="parentId"
             rules={[
-              { 
-                required: selectedType === 3, 
-                message: selectedType === 3 ? '按钮权限必须选择所属的菜单权限' : '' 
-              }
+              {
+                required: selectedType === 3,
+                message: selectedType === 3 ? '按钮权限必须选择所属的菜单权限' : '',
+              },
             ]}
             style={{ marginBottom: '8px' }}
           >
             <Select
               style={{ fontSize: '10px' }}
-              placeholder={selectedType === 1 ? "可选择上级菜单" : "请选择所属的菜单权限"}
+              placeholder={selectedType === 1 ? '可选择上级菜单' : '请选择所属的菜单权限'}
               allowClear={selectedType === 1}
               optionFilterProp="children"
               showSearch
               loading={loading}
             >
-              {menuPermissions.map(menu => (
+              {menuPermissions.map((menu) => (
                 <Option key={menu.id} value={menu.id}>
-                  <div style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    fontSize: '10px',
-                    color: menu.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)'
-                  }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      fontSize: '10px',
+                      color: menu.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
+                    }}
+                  >
                     <MenuOutlined style={{ marginRight: '4px' }} />
                     <span>{menu.permissionName}</span>
                     {menu.isSystem && (
-                      <Tag color="#1890ff" style={{ 
-                        marginLeft: '4px',
-                        fontSize: '10px',
-                        padding: '0 4px',
-                        lineHeight: '16px'
-                      }}>
+                      <Tag
+                        color="#1890ff"
+                        style={{
+                          marginLeft: '4px',
+                          fontSize: '10px',
+                          padding: '0 4px',
+                          lineHeight: '16px',
+                        }}
+                      >
                         系统
                       </Tag>
                     )}
@@ -172,10 +190,12 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
         {/* 权限名称 */}
         <Form.Item
           label={
-            <span style={{ fontSize: '10px' }}>
+            <span>
               权限名称
               <Tooltip title="权限的中文名称，用于显示">
-                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                <InfoCircleOutlined
+                  style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }}
+                />
               </Tooltip>
             </span>
           }
@@ -186,17 +206,18 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Input
             prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
             placeholder="请输入权限名称"
-            style={{ fontSize: '10px' }}
           />
         </Form.Item>
 
         {/* 英文权限名称 */}
         <Form.Item
           label={
-            <span style={{ fontSize: '10px' }}>
+            <span>
               英文权限名称
               <Tooltip title="权限的英文标识，用于程序内部识别">
-                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                <InfoCircleOutlined
+                  style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }}
+                />
               </Tooltip>
             </span>
           }
@@ -207,17 +228,18 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Input
             prefix={<TranslationOutlined style={{ color: '#bfbfbf' }} />}
             placeholder="请输入英文权限名称"
-            style={{ fontSize: '10px' }}
           />
         </Form.Item>
 
         {/* 权限描述 */}
         <Form.Item
           label={
-            <span style={{ fontSize: '10px' }}>
+            <span>
               权限描述
               <Tooltip title="详细描述该权限的用途和作用范围">
-                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                <InfoCircleOutlined
+                  style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }}
+                />
               </Tooltip>
             </span>
           }
@@ -225,20 +247,18 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           rules={[{ required: true, message: '请输入权限描述' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input.TextArea
-            placeholder="请输入权限描述"
-            rows={3}
-            style={{ fontSize: '10px' }}
-          />
+          <Input.TextArea placeholder="请输入权限描述" rows={3} />
         </Form.Item>
 
         {/* 启用状态 */}
         <Form.Item
           label={
-            <span style={{ fontSize: '10px' }}>
+            <span>
               启用状态
               <Tooltip title="关闭权限状态后，所有拥有此权限的角色将无法使用此权限，为角色配置权限时，也无法查询到此权限">
-                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                <InfoCircleOutlined
+                  style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }}
+                />
               </Tooltip>
             </span>
           }
@@ -247,20 +267,18 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           initialValue={true}
           style={{ marginBottom: '8px' }}
         >
-          <Switch
-            checkedChildren={<CheckCircleOutlined />}
-            unCheckedChildren="×"
-            style={{ fontSize: '10px' }}
-          />
+          <Switch checkedChildren={<CheckCircleOutlined />} unCheckedChildren="×" />
         </Form.Item>
 
         {/* 系统权限 */}
         <Form.Item
           label={
-            <span style={{ fontSize: '10px' }}>
+            <span>
               系统权限
               <Tooltip title="系统权限创建后不可删除，且不能被批量删除">
-                <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                <InfoCircleOutlined
+                  style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }}
+                />
               </Tooltip>
             </span>
           }
@@ -269,39 +287,9 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           initialValue={false}
           style={{ marginBottom: '8px' }}
         >
-          <Switch
-            checkedChildren={<LockOutlined />}
-            unCheckedChildren={<UnlockOutlined />}
-            style={{ fontSize: '10px' }}
-          />
+          <Switch checkedChildren={<LockOutlined />} unCheckedChildren={<UnlockOutlined />} />
         </Form.Item>
       </Form>
-
-      <style jsx global>{`
-        .ant-select-selector {
-          height: 24px !important;
-          padding: 0 8px !important;
-        }
-
-        .ant-select-selection-item {
-          line-height: 22px !important;
-          font-size: 10px !important;
-        }
-
-        .ant-select-item {
-          min-height: 24px !important;
-          line-height: 24px !important;
-          padding: 0 8px !important;
-        }
-
-        .ant-select-item-option-content {
-          font-size: 10px !important;
-        }
-
-        .ant-select-dropdown {
-          font-size: 10px !important;
-        }
-      `}</style>
     </Modal>
   );
 };

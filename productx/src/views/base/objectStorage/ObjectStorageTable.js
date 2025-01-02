@@ -16,9 +16,9 @@ const ObjectStorageTable = ({
   // 状态标签颜色映射
   const getStatusTagColor = (status) => {
     const colorMap = {
-      'ACTIVE': 'success',
-      'INACTIVE': 'warning',
-      'ERROR': 'error'
+      ACTIVE: 'success',
+      INACTIVE: 'warning',
+      ERROR: 'error',
     };
     return colorMap[status] || 'default';
   };
@@ -50,7 +50,7 @@ const ObjectStorageTable = ({
             'isDefault',
             'status',
             'createTime',
-            'updateTime'
+            'updateTime',
           ].map((field) => (
             <th key={field}>{t(field)}</th>
           ))}
@@ -78,35 +78,25 @@ const ObjectStorageTable = ({
             <td className="text-truncate">{item.bucketName}</td>
             <td className="text-truncate">{item.accountName}</td>
             <td className="text-center">
-              <Tag color={item.isActive ? "success" : "default"}>
+              <Tag color={item.isActive ? 'success' : 'default'}>
                 {item.isActive ? t('yes') : t('no')}
               </Tag>
             </td>
             <td className="text-center">
-              <Tag color={item.isDefault ? "blue" : "default"}>
+              <Tag color={item.isDefault ? 'blue' : 'default'}>
                 {item.isDefault ? t('yes') : t('no')}
               </Tag>
             </td>
             <td className="text-center">
-              <Tag color={getStatusTagColor(item.status)}>
-                {t(item.status)}
-              </Tag>
+              <Tag color={getStatusTagColor(item.status)}>{t(item.status)}</Tag>
             </td>
             <td className="text-truncate">{item.createTime}</td>
             <td className="text-truncate">{item.updateTime}</td>
             <td>
-              <Button
-                type="link"
-                size="small"
-                onClick={() => handleDetailClick(item)}
-              >
+              <Button type="link" size="small" onClick={() => handleDetailClick(item)}>
                 {t('detail')}
               </Button>
-              <Button
-                type="link"
-                size="small"
-                onClick={() => handleEditClick(item)}
-              >
+              <Button type="link" size="small" onClick={() => handleEditClick(item)}>
                 {t('edit')}
               </Button>
             </td>
@@ -117,4 +107,4 @@ const ObjectStorageTable = ({
   );
 };
 
-export default ObjectStorageTable; 
+export default ObjectStorageTable;

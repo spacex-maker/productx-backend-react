@@ -334,7 +334,6 @@ textarea::placeholder,
   border-style: solid !important;
   border-color: var(--cui-border-color) !important;
   transition: all 0.3s !important;
-  font-size: 10px !important;
   height: 24px !important;
 }
 
@@ -403,15 +402,15 @@ textarea::placeholder,
   padding: 0 12px !important;
 }
 
-.ant-btn-primary {
-  background: var(--cui-primary) !important;
-  border-color: var(--cui-primary) !important;
-}
+// .ant-btn-primary {
+//   background: var(--cui-primary) !important;
+//   border-color: var(--cui-primary) !important;
+// }
 
-.ant-btn-primary:hover {
-  background: var(--cui-primary-hover) !important;
-  border-color: var(--cui-primary-hover) !important;
-}
+// .ant-btn-primary:hover {
+//   background: var(--cui-primary-hover) !important;
+//   border-color: var(--cui-primary-hover) !important;
+// }
 
 .dropdown-menu{
   --cui-dropdown-font-size: 14px;
@@ -467,7 +466,6 @@ textarea::placeholder,
   color: var(--cui-body-color) !important;
   background-color: var(--cui-input-bg) !important;
   border-color: var(--cui-border-color) !important;
-  font-size: 10px !important;
 }
 
 /* 输入框占位符 */
@@ -526,34 +524,34 @@ img.no-radius {
 }
 
 /* 按钮基础样式 */
-.ant-btn {
-  &:hover {
-    background-color: var(--cui-btn-hover-bg) !important;
-    border-color: var(--cui-btn-hover-border-color) !important;
-    color: var(--cui-btn-hover-color) !important;
-  }
+// .ant-btn {
+//   &:hover {
+//     background-color: var(--cui-btn-hover-bg) !important;
+//     border-color: var(--cui-btn-hover-border-color) !important;
+//     color: var(--cui-btn-hover-color) !important;
+//   }
 
-  &:active {
-    background-color: var(--cui-btn-active-bg) !important;
-    border-color: var(--cui-btn-active-border-color) !important;
-    color: var(--cui-btn-active-color) !important;
-  }
-}
+//   &:active {
+//     background-color: var(--cui-btn-active-bg) !important;
+//     border-color: var(--cui-btn-active-border-color) !important;
+//     color: var(--cui-btn-active-color) !important;
+//   }
+// }
 
 /* 主要按钮样式 */
-.ant-btn-primary {
-  &:hover {
-    background-color: var(--cui-btn-primary-hover-bg) !important;
-    border-color: var(--cui-btn-primary-hover-border-color) !important;
-    color: var(--cui-btn-primary-hover-color) !important;
-  }
+// .ant-btn-primary {
+//   &:hover {
+//     background-color: var(--cui-btn-primary-hover-bg) !important;
+//     border-color: var(--cui-btn-primary-hover-border-color) !important;
+//     color: var(--cui-btn-primary-hover-color) !important;
+//   }
 
-  &:active {
-    background-color: var(--cui-btn-primary-active-bg) !important;
-    border-color: var(--cui-btn-primary-active-border-color) !important;
-    color: var(--cui-btn-primary-active-color) !important;
-  }
-}
+//   &:active {
+//     background-color: var(--cui-btn-primary-active-bg) !important;
+//     border-color: var(--cui-btn-primary-active-border-color) !important;
+//     color: var(--cui-btn-primary-active-color) !important;
+//   }
+// }
 
 /* 危险按钮样式 */
 .ant-btn-dangerous {

@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input, message, Tree, Modal, Switch, Space, Card, Spin, Popconfirm } from 'antd';
+import {
+  Button,
+  Form,
+  Input,
+  message,
+  Tree,
+  Modal,
+  Switch,
+  Space,
+  Card,
+  Spin,
+  Popconfirm,
+} from 'antd';
 import api from 'src/axiosInstance';
 import { useTranslation } from 'react-i18next';
-import { PlusOutlined, FolderOutlined, EditOutlined, DeleteOutlined, RollbackOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  FolderOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  RollbackOutlined,
+} from '@ant-design/icons';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import AddUserProductCategoryModal from './AddUserProductCategoryModal';
@@ -27,7 +45,7 @@ const StyledCard = styled(Card)`
       padding: 4px 8px;
       margin: 2px 0;
       border-radius: 4px;
-      
+
       // 悬停效果
       &:hover {
         background-color: rgba(var(--cui-primary-rgb), 0.1) !important;
@@ -40,12 +58,12 @@ const StyledCard = styled(Card)`
       &.ant-tree-node-selected {
         background-color: rgba(var(--cui-primary-rgb), 0.15) !important;
         box-shadow: 0 0 0 1px rgba(var(--cui-primary-rgb), 0.2);
-        
+
         .node-title {
           color: var(--cui-primary);
           font-weight: 500;
         }
-        
+
         .node-key {
           color: rgba(var(--cui-primary-rgb), 0.7);
         }
@@ -56,7 +74,7 @@ const StyledCard = styled(Card)`
     .ant-tree-switcher {
       color: var(--cui-body-color);
       transition: all 0.3s ease;
-      
+
       &:hover {
         color: var(--cui-primary);
       }
@@ -90,7 +108,7 @@ const StyledCard = styled(Card)`
       width: 16px;
       height: 20px;
       line-height: 20px;
-      
+
       .ant-tree-switcher-icon {
         font-size: 10px;
       }
@@ -128,9 +146,9 @@ const UserProductCategory = () => {
     setLoading(true);
     try {
       const response = await api.get('/manage/user-product-category/list', {
-        params: { parentId }
+        params: { parentId },
       });
-      
+
       setCategories(response);
       setCurrentParentId(parentId);
 
@@ -147,8 +165,8 @@ const UserProductCategory = () => {
         };
 
         const currentCategory = findCategory(categories, parentId);
-        if (currentCategory && !categoryPath.find(item => item.id === currentCategory.id)) {
-          setCategoryPath(prev => [...prev, currentCategory]);
+        if (currentCategory && !categoryPath.find((item) => item.id === currentCategory.id)) {
+          setCategoryPath((prev) => [...prev, currentCategory]);
         }
       }
     } catch (error) {
@@ -169,9 +187,9 @@ const UserProductCategory = () => {
   const handleAddCategory = () => {
     setSelectedCategory(null);
     form.resetFields();
-    form.setFieldsValue({ 
+    form.setFieldsValue({
       parentId: currentParentId,
-      status: true 
+      status: true,
     });
     setIsModalVisible(true);
   };
@@ -186,14 +204,14 @@ const UserProductCategory = () => {
       const submitData = {
         ...values,
         parentId: values.parentId || 0,
-        status: values.status ? 1 : 0
+        status: values.status ? 1 : 0,
       };
 
       await api.put('/manage/user-product-category/update', {
         ...submitData,
-        id: selectedCategory.id
+        id: selectedCategory.id,
       });
-      
+
       message.success(t('operationSuccess'));
       setIsUpdateModalVisible(false);
       fetchCategories(currentParentId);
@@ -217,30 +235,44 @@ const UserProductCategory = () => {
   const renderTreeNodes = (data) =>
     data.map((item) => ({
       title: (
-        <div style={{ 
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%'
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
           <Space>
-            <FolderOutlined style={{ 
-              color: 'var(--cui-primary)',
-              transition: 'transform 0.3s ease'
-            }} 
-            className="folder-icon" />
+            <FolderOutlined
+              style={{
+                color: 'var(--cui-primary)',
+                transition: 'transform 0.3s ease',
+              }}
+              className="folder-icon"
+            />
             <span className="node-title">{item.name}</span>
-            <span className="node-key" style={{ 
-              color: 'var(--cui-text-secondary)', 
-              fontSize: '12px',
-              transition: 'color 0.3s ease'
-            }}>({item.i18nKey})</span>
-            {item.description && (
-              <span className="node-description" style={{ 
-                color: 'var(--cui-text-secondary)', 
+            <span
+              className="node-key"
+              style={{
+                color: 'var(--cui-text-secondary)',
                 fontSize: '12px',
-                transition: 'color 0.3s ease'
-              }}>- {item.description}</span>
+                transition: 'color 0.3s ease',
+              }}
+            >
+              ({item.i18nKey})
+            </span>
+            {item.description && (
+              <span
+                className="node-description"
+                style={{
+                  color: 'var(--cui-text-secondary)',
+                  fontSize: '12px',
+                  transition: 'color 0.3s ease',
+                }}
+              >
+                - {item.description}
+              </span>
             )}
           </Space>
           <Space size={4} style={{ marginLeft: 8 }}>
@@ -251,10 +283,10 @@ const UserProductCategory = () => {
                 e.stopPropagation();
                 handleEditCategory(item);
               }}
-              style={{ 
+              style={{
                 color: 'var(--cui-primary)',
                 padding: '4px',
-                height: 'auto'
+                height: 'auto',
               }}
             />
             <Popconfirm
@@ -272,9 +304,9 @@ const UserProductCategory = () => {
                 danger
                 icon={<DeleteOutlined />}
                 onClick={(e) => e.stopPropagation()}
-                style={{ 
+                style={{
                   padding: '4px',
-                  height: 'auto'
+                  height: 'auto',
                 }}
               />
             </Popconfirm>
@@ -282,7 +314,8 @@ const UserProductCategory = () => {
         </div>
       ),
       key: item.id,
-      children: item.children && item.children.length > 0 ? renderTreeNodes(item.children) : undefined,
+      children:
+        item.children && item.children.length > 0 ? renderTreeNodes(item.children) : undefined,
     }));
 
   const handleGoBack = () => {
@@ -290,7 +323,7 @@ const UserProductCategory = () => {
       const newPath = [...categoryPath];
       newPath.pop();
       setCategoryPath(newPath);
-      
+
       const parentId = newPath.length > 0 ? newPath[newPath.length - 1].id : 0;
       fetchCategories(parentId);
     }
@@ -299,26 +332,34 @@ const UserProductCategory = () => {
   const renderModalTreeNodes = (data) =>
     data.map((item) => ({
       title: (
-        <div style={{ 
-          fontSize: '10px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          padding: '2px 0',
-          justifyContent: 'space-between',
-          width: '100%'
-        }}>
-          <div style={{ 
-            display: 'flex', 
+        <div
+          style={{
+            fontSize: '10px',
+            display: 'flex',
             alignItems: 'center',
-            gap: '4px'
-          }}>
+            gap: '4px',
+            padding: '2px 0',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+            }}
+          >
             <FolderOutlined style={{ fontSize: '10px', color: 'var(--cui-primary)' }} />
             <span>{item.name}</span>
-            <span style={{ 
-              color: 'var(--cui-text-secondary)',
-              fontSize: '9px'
-            }}>({item.i18nKey})</span>
+            <span
+              style={{
+                color: 'var(--cui-text-secondary)',
+                fontSize: '9px',
+              }}
+            >
+              ({item.i18nKey})
+            </span>
           </div>
           <Button
             type="link"
@@ -328,17 +369,18 @@ const UserProductCategory = () => {
               e.stopPropagation();
               handleEditCategory(item);
             }}
-            style={{ 
+            style={{
               padding: '0 4px',
               height: '16px',
               color: 'var(--cui-primary)',
-              opacity: 0.7
+              opacity: 0.7,
             }}
           />
         </div>
       ),
       key: item.id,
-      children: item.children && item.children.length > 0 ? renderModalTreeNodes(item.children) : undefined,
+      children:
+        item.children && item.children.length > 0 ? renderModalTreeNodes(item.children) : undefined,
     }));
 
   const handleSubmit = async (values) => {
@@ -346,11 +388,11 @@ const UserProductCategory = () => {
       const submitData = {
         ...values,
         parentId: values.parentId || 0,
-        status: values.status ? 1 : 0
+        status: values.status ? 1 : 0,
       };
 
       await api.post('/manage/user-product-category/add', submitData);
-      
+
       message.success(t('operationSuccess'));
       setIsModalVisible(false);
       fetchCategories(currentParentId);
@@ -365,16 +407,7 @@ const UserProductCategory = () => {
       <div style={{ marginBottom: 16 }}>
         <Space>
           {currentParentId !== 0 && (
-            <Button
-              icon={<RollbackOutlined />}
-              onClick={handleGoBack}
-              loading={loading}
-              style={{
-                backgroundColor: 'var(--cui-primary)',
-                borderColor: 'var(--cui-primary)',
-                color: 'var(--cui-btn-color)'
-              }}
-            >
+            <Button icon={<RollbackOutlined />} onClick={handleGoBack} loading={loading}>
               {loading ? t('loading') : t('goBack')}
             </Button>
           )}
@@ -383,22 +416,20 @@ const UserProductCategory = () => {
             icon={<PlusOutlined />}
             onClick={() => handleAddCategory(currentParentId)}
             disabled={loading}
-            style={{
-              backgroundColor: 'var(--cui-primary)',
-              borderColor: 'var(--cui-primary)',
-              color: 'var(--cui-btn-color)'
-            }}
           >
             {t('addCategory')}
           </Button>
         </Space>
         {categoryPath.length > 0 && (
-          <div style={{
-            marginTop: 8,
-            color: 'var(--cui-text-secondary)',
-            fontSize: '12px'
-          }}>
-            {t('currentCategory')}: {categoryPath.map((category, index) => (
+          <div
+            style={{
+              marginTop: 8,
+              color: 'var(--cui-text-secondary)',
+              fontSize: '12px',
+            }}
+          >
+            {t('currentCategory')}:{' '}
+            {categoryPath.map((category, index) => (
               <span key={category.id}>
                 {index > 0 && ' > '}
                 <span style={{ color: 'var(--cui-primary)' }}>{category.name}</span>
@@ -425,7 +456,7 @@ const UserProductCategory = () => {
             backgroundColor: 'var(--cui-card-bg)',
             border: '1px solid var(--cui-border-color)',
             borderRadius: 'var(--cui-border-radius)',
-            padding: 'var(--cui-card-spacer-y) var(--cui-card-spacer-x)'
+            padding: 'var(--cui-card-spacer-y) var(--cui-card-spacer-x)',
           }}
         />
       </Spin>
