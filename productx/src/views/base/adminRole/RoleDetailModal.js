@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
-import { Modal, Descriptions, Tag, Button, Table } from 'antd';
-import { InfoCircleOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
+import React, { useState, useMemo } from 'react';
+import { Modal, Descriptions, Tag, Button, Table, Input, Space, Radio } from 'antd';
+import { 
+  InfoCircleOutlined, 
+  MenuOutlined, 
+  ApiOutlined, 
+  ControlOutlined, 
+  AppstoreOutlined, 
+  SearchOutlined, 
+  LockOutlined 
+} from '@ant-design/icons';
 import { formatDate } from 'src/components/common/Common';
 import api from 'src/axiosInstance';
 
@@ -8,6 +16,8 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
   const [permissionModalVisible, setPermissionModalVisible] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [filterType, setFilterType] = useState('all');
 
   const getTypeTag = (type) => {
     switch (type) {
@@ -65,13 +75,41 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
       title: '权限名称',
       dataIndex: 'permissionName',
       width: '25%',
-      render: (text) => <span style={{ fontSize: '10px' }}>{text}</span>
+      render: (text, record) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span style={{ 
+            fontSize: '10px',
+            color: record.isSystem === true ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
+            fontWeight: record.isSystem === true ? 500 : 400
+          }}>
+            {text}
+          </span>
+          {record.isSystem === true && (
+            <Tag color="#1890ff" style={{ 
+              fontSize: '10px', 
+              padding: '0 4px',
+              margin: 0,
+              lineHeight: '16px'
+            }}>
+              系统权限
+            </Tag>
+          )}
+        </div>
+      )
     },
     {
       title: '英文名称',
       dataIndex: 'permissionNameEn',
       width: '25%',
-      render: (text) => <span style={{ fontSize: '10px' }}>{text}</span>
+      render: (text, record) => (
+        <span style={{ 
+          fontSize: '10px',
+          color: record.isSystem === true ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
+          fontWeight: record.isSystem === true ? 500 : 400
+        }}>
+          {text}
+        </span>
+      )
     },
     {
       title: '类型',
@@ -86,6 +124,24 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
       render: (text) => <span style={{ fontSize: '10px' }}>{text}</span>
     }
   ];
+
+  const filteredPermissions = useMemo(() => {
+    return permissions.filter(item => {
+      const matchSearch = (
+        item.permissionName?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.permissionNameEn?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchText.toLowerCase())
+      );
+
+      const matchType = filterType === 'all' ||
+        (filterType === 'menu' && item.type === 1) ||
+        (filterType === 'api' && item.type === 2) ||
+        (filterType === 'button' && item.type === 3) ||
+        (filterType === 'business' && item.type === 4);
+
+      return matchSearch && matchType;
+    });
+  }, [permissions, searchText, filterType]);
 
   return (
     <>
@@ -152,8 +208,69 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
         footer={null}
         width={800}
       >
+        <Space direction="vertical" style={{ width: '100%', marginBottom: '16px' }}>
+          <div style={{ 
+            padding: '8px 12px',
+            background: '#f6f6f6',
+            borderRadius: '4px',
+            fontSize: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <InfoCircleOutlined style={{ color: '#1890ff' }} />
+            <span>
+              标记为 <span style={{ color: '#1890ff', fontWeight: 500 }}>蓝色</span> 且带有 
+              <Tag color="#1890ff" style={{ 
+                fontSize: '10px', 
+                padding: '0 4px',
+                margin: '0 4px',
+                lineHeight: '16px'
+              }}>
+                系统权限
+              </Tag> 
+              标签的为系统内置权限
+            </span>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Input
+              placeholder="搜索权限名称、英文名称或描述"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              style={{ width: 300, marginRight: '16px', fontSize: '10px' }}
+              prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
+              allowClear
+            />
+            <Radio.Group 
+              value={filterType} 
+              onChange={(e) => setFilterType(e.target.value)}
+              size="small"
+            >
+              <Radio.Button value="all" style={{ fontSize: '10px', padding: '0 8px' }}>
+                全部
+              </Radio.Button>
+              <Radio.Button value="menu" style={{ fontSize: '10px', padding: '0 8px' }}>
+                <MenuOutlined /> 菜单
+              </Radio.Button>
+              <Radio.Button value="api" style={{ fontSize: '10px', padding: '0 8px' }}>
+                <ApiOutlined /> 接口
+              </Radio.Button>
+              <Radio.Button value="button" style={{ fontSize: '10px', padding: '0 8px' }}>
+                <ControlOutlined /> 按钮
+              </Radio.Button>
+              <Radio.Button value="business" style={{ fontSize: '10px', padding: '0 8px' }}>
+                <AppstoreOutlined /> 业务
+              </Radio.Button>
+            </Radio.Group>
+          </div>
+          <div style={{ fontSize: '10px', color: '#8c8c8c' }}>
+            共 {filteredPermissions.length} 条权限记录
+          </div>
+        </Space>
+
         <Table
-          dataSource={permissions}
+          dataSource={filteredPermissions}
           columns={permissionColumns}
           rowKey="permissionId"
           size="small"
@@ -207,6 +324,25 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
 
         .ant-table-tbody > tr:hover > td {
           background-color: #f5f5f5 !important;
+        }
+
+        .ant-radio-button-wrapper {
+          height: 24px !important;
+          line-height: 22px !important;
+          padding: 0 8px !important;
+        }
+
+        .ant-input-affix-wrapper {
+          height: 24px !important;
+          padding: 0 8px !important;
+        }
+
+        .ant-input-affix-wrapper input {
+          font-size: 10px !important;
+        }
+
+        .ant-input-affix-wrapper .ant-input-prefix {
+          margin-right: 4px !important;
         }
       `}</style>
     </>

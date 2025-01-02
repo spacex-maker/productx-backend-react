@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Table, message, Spin, Input, Space, Radio } from 'antd';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Modal, Table, message, Spin, Input, Space, Radio, Tree } from 'antd';
 import { SearchOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
@@ -29,7 +29,8 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       const response = await api.get(`/manage/role-permissions/list/${roleId}`);
       if (response) {
         setCurrentRolePermissions(response);
-        setSelectedPermissions(response.map(item => item.permissionId));
+        const actualPermissions = response.map(item => item.permissionId);
+        setSelectedPermissions(actualPermissions);
       }
     } catch (error) {
       message.error('获取角色权限失败');
@@ -47,9 +48,14 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
   const handleOk = async () => {
     try {
       setLoading(true);
+      // 确保 selectedPermissions 是一个数组，而不是包含 checked 和 halfChecked 的对象
+      const permissionIds = Array.isArray(selectedPermissions) 
+        ? selectedPermissions 
+        : selectedPermissions.checked;
+
       await api.post('/manage/role-permissions/configure', {
         roleId,
-        permissionIds: selectedPermissions
+        permissionIds // 直接发送权限ID数组
       });
       message.success('权限配置成功');
       onCancel();
@@ -60,95 +66,268 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     }
   };
 
-  // 处理搜索和筛选
-  const filteredPermissions = allPermissions.filter(item => {
+  // 将权限列表转换为树形结构
+  const convertToTree = (permissions) => {
+    // 首先过滤出菜单和按钮类型的权限
+    const filteredPermissions = permissions.filter(item => item.type === 1 || item.type === 3);
+    
+    const nodeMap = new Map();
+    
+    filteredPermissions.forEach(item => {
+      nodeMap.set(item.id, {
+        key: item.id,
+        id: item.id,
+        title: (
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'flex-start', 
+            gap: '4px',
+            padding: '2px 0'
+          }}>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '4px',
+                marginBottom: '1px'
+              }}>
+                <span style={{ 
+                  fontSize: '10px',
+                  color: item.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
+                  fontWeight: item.isSystem ? 500 : 400,
+                  lineHeight: '14px'
+                }}>
+                  {item.permissionName}
+                </span>
+                {item.isSystem && (
+                  <span style={{ 
+                    fontSize: '10px',
+                    color: '#1890ff',
+                    border: '1px solid #1890ff',
+                    padding: '0 4px',
+                    borderRadius: '2px',
+                    lineHeight: '14px',
+                    height: '14px',
+                    display: 'inline-flex',
+                    alignItems: 'center'
+                  }}>
+                    系统权限
+                  </span>
+                )}
+              </div>
+              <span style={{ 
+                fontSize: '9px',
+                color: '#999',
+                fontWeight: 400,
+                lineHeight: '12px'
+              }}>
+                {item.permissionNameEn}
+              </span>
+            </div>
+            <div style={{ 
+              fontSize: '10px',
+              color: getTypeColor(item.type),
+              minWidth: '60px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}>
+              {getTypeIcon(item.type)}
+              {getTypeName(item.type)}
+            </div>
+          </div>
+        ),
+        children: [],
+        ...item
+      });
+    });
+
+    // 构建树形结构
+    const tree = [];
+    nodeMap.forEach(node => {
+      if (node.parentId) {
+        const parent = nodeMap.get(node.parentId);
+        if (parent) {
+          parent.children.push(node);
+        }
+      } else {
+        tree.push(node);
+      }
+    });
+
+    // 移除空的children数组
+    const removeEmptyChildren = (nodes) => {
+      nodes.forEach(node => {
+        if (node.children.length === 0) {
+          delete node.children;
+        } else {
+          removeEmptyChildren(node.children);
+        }
+      });
+    };
+    removeEmptyChildren(tree);
+
+    return tree;
+  };
+
+  // 获取权限类型的颜色
+  const getTypeColor = (type) => {
+    switch (type) {
+      case 1: return '#1890ff';
+      case 2: return '#52c41a';
+      case 3: return '#722ed1';
+      case 4: return '#fa8c16';
+      default: return '#999';
+    }
+  };
+
+  // 获取权限类型的图标
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case 1: return <MenuOutlined />;
+      case 2: return <ApiOutlined />;
+      case 3: return <ControlOutlined />;
+      case 4: return <AppstoreOutlined />;
+      default: return null;
+    }
+  };
+
+  // 获取权限类型的名称
+  const getTypeName = (type) => {
+    switch (type) {
+      case 1: return '菜单';
+      case 2: return '接口';
+      case 3: return '按钮';
+      case 4: return '业务';
+      default: return '未知';
+    }
+  };
+
+  // 过滤树节点
+  const filterTreeNode = (node) => {
     const matchSearch = (
-      item.permissionName.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.permissionNameEn.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchText.toLowerCase())
+      node.permissionName?.toLowerCase().includes(searchText.toLowerCase()) ||
+      node.permissionNameEn?.toLowerCase().includes(searchText.toLowerCase()) ||
+      node.description?.toLowerCase().includes(searchText.toLowerCase())
     );
 
     const matchType = filterType === 'all' ||
-      (filterType === 'menu' && item.type === 1) ||
-      (filterType === 'api' && item.type === 2) ||
-      (filterType === 'button' && item.type === 3) ||
-      (filterType === 'business' && item.type === 4);
+      (filterType === 'menu' && node.type === 1) ||
+      (filterType === 'api' && node.type === 2) ||
+      (filterType === 'button' && node.type === 3) ||
+      (filterType === 'business' && node.type === 4);
 
     return matchSearch && matchType;
-  });
+  };
 
+  // 转换为树形结构的权限数据
+  const treeData = useMemo(() => {
+    return convertToTree(allPermissions);
+  }, [allPermissions]);
+
+  // 根据筛选类型决定是否显示树形结构
+  const showAsTree = filterType === 'all';
+
+  // 获取列表数据
+  const listData = useMemo(() => {
+    return allPermissions.filter(item => {
+      const matchSearch = (
+        item.permissionName?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.permissionNameEn?.toLowerCase().includes(searchText.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchText.toLowerCase())
+      );
+
+      const matchType = filterType === 'all' ||
+        (filterType === 'menu' && item.type === 1) ||
+        (filterType === 'api' && item.type === 2) ||
+        (filterType === 'button' && item.type === 3) ||
+        (filterType === 'business' && item.type === 4);
+
+      return matchSearch && matchType;
+    });
+  }, [allPermissions, searchText, filterType]);
+
+  // 表格列定义
   const columns = [
     {
       title: '权限名称',
       dataIndex: 'permissionName',
-      width: '20%',
-      ellipsis: true,
+      width: '45%',
       render: (text, record) => (
-        <span>
-          {text}
-          {record.isSystem && (
-            <span style={{ 
-              marginLeft: '4px',
-              fontSize: '10px',
-              color: '#1890ff',
-              border: '1px solid #1890ff',
-              padding: '1px 4px',
-              borderRadius: '2px'
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '4px',
+              marginBottom: '2px'
             }}>
-              系统权限
+              <span style={{ 
+                fontSize: '10px',
+                color: record.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
+                fontWeight: record.isSystem ? 500 : 400,
+              }}>
+                {text}
+              </span>
+              {record.isSystem && (
+                <span style={{ 
+                  fontSize: '10px',
+                  color: '#1890ff',
+                  border: '1px solid #1890ff',
+                  padding: '0 4px',
+                  borderRadius: '2px',
+                  lineHeight: '14px',
+                  height: '16px',
+                  display: 'inline-flex',
+                  alignItems: 'center'
+                }}>
+                  系统权限
+                </span>
+              )}
+            </div>
+            <span style={{ 
+              fontSize: '10px',
+              color: '#999',
+              fontWeight: 400
+            }}>
+              {record.permissionNameEn}
             </span>
-          )}
-        </span>
+          </div>
+        </div>
       )
-    },
-    {
-      title: '英文名称',
-      dataIndex: 'permissionNameEn',
-      width: '25%',
-      ellipsis: true,
     },
     {
       title: '描述',
       dataIndex: 'description',
       width: '35%',
       ellipsis: true,
+      render: (text) => (
+        <span style={{ fontSize: '10px' }}>{text}</span>
+      )
     },
     {
       title: '类型',
       dataIndex: 'type',
-      width: '10%',
-      render: (type) => {
-        switch (type) {
-          case 1:
-            return (
-              <span style={{ color: '#1890ff', fontSize: '10px' }}>
-                <MenuOutlined style={{ marginRight: '4px' }} />菜单
-              </span>
-            );
-          case 2:
-            return (
-              <span style={{ color: '#52c41a', fontSize: '10px' }}>
-                <ApiOutlined style={{ marginRight: '4px' }} />接口
-              </span>
-            );
-          case 3:
-            return (
-              <span style={{ color: '#722ed1', fontSize: '10px' }}>
-                <ControlOutlined style={{ marginRight: '4px' }} />按钮
-              </span>
-            );
-          case 4:
-            return (
-              <span style={{ color: '#fa8c16', fontSize: '10px' }}>
-                <AppstoreOutlined style={{ marginRight: '4px' }} />业务
-              </span>
-            );
-          default:
-            return '未知';
-        }
-      }
-    },
+      width: '20%',
+      render: (type) => (
+        <div style={{ 
+          fontSize: '10px',
+          color: getTypeColor(type),
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px'
+        }}>
+          {getTypeIcon(type)}
+          {getTypeName(type)}
+        </div>
+      )
+    }
   ];
+
+  // 阻止滚动传导
+  const handleWheel = (e) => {
+    e.stopPropagation();
+  };
 
   return (
     <Modal
@@ -173,7 +352,8 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 8
+            marginBottom: 8,
+            paddingRight: 8
           }}>
             <Space size="small">
               <Input
@@ -215,62 +395,112 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
             </div>
           </div>
 
-          <Table
-            rowSelection={{
-              selectedRowKeys: selectedPermissions,
-              onChange: (selectedRowKeys) => setSelectedPermissions(selectedRowKeys),
+          <div 
+            style={{ 
+              height: 400,
+              overflow: 'hidden',
+              paddingRight: 8
             }}
-            columns={columns}
-            dataSource={filteredPermissions}
-            rowKey="id"
-            size="small"
-            scroll={{ y: 380 }}
-            pagination={false}
-            rowClassName={(record) => record.status ? '' : 'disabled-row'}
-            style={{ fontSize: '10px' }}
-          />
+            onWheel={handleWheel}
+          >
+            {showAsTree ? (
+              <div style={{ height: '100%', overflow: 'auto' }}>
+                <Tree
+                  checkable
+                  checkedKeys={selectedPermissions}
+                  onCheck={(checkedKeys) => setSelectedPermissions(checkedKeys)}
+                  treeData={treeData}
+                  filterTreeNode={filterTreeNode}
+                  showLine={{ showLeafIcon: false }}
+                  style={{ 
+                    fontSize: '10px',
+                    padding: '4px 0'
+                  }}
+                  checkStrictly={true}
+                />
+              </div>
+            ) : (
+              <Table
+                rowSelection={{
+                  type: 'checkbox',
+                  selectedRowKeys: selectedPermissions,
+                  onChange: (selectedRowKeys) => setSelectedPermissions(selectedRowKeys)
+                }}
+                columns={columns}
+                dataSource={listData}
+                rowKey="id"
+                size="small"
+                pagination={false}
+                scroll={{ y: 400 }}
+                style={{ 
+                  fontSize: '10px'
+                }}
+              />
+            )}
+          </div>
         </Space>
       </Spin>
 
       <style jsx global>{`
+        /* 基础样式 */
+        .ant-tree {
+          font-size: 10px !important;
+        }
+        .ant-tree-node-content-wrapper {
+          display: flex !important;
+          align-items: center !important;
+          padding: 0 4px !important;
+          line-height: 24px !important;
+        }
+        .ant-tree-title {
+          flex: 1 !important;
+          line-height: 1.2 !important;
+        }
+        .ant-tree-checkbox {
+          margin: 4px 8px 0 0 !important;
+        }
+        
+        /* 表格样式 */
         .ant-table {
           font-size: 10px !important;
         }
-        .ant-table-thead > tr > th {
-          padding: 4px 8px !important;
-          font-size: 10px !important;
-        }
         .ant-table-tbody > tr > td {
-          padding: 4px 8px !important;
-          font-size: 10px !important;
+          padding: 8px !important;
         }
-        .disabled-row {
-          background-color: #fafafa;
-          opacity: 0.7;
+
+        /* 滚动条样式 */
+        div::-webkit-scrollbar {
+          width: 6px;
+          height: 6px;
         }
-        .ant-table-row:hover {
-          background-color: #f5f5f5;
+        
+        div::-webkit-scrollbar-thumb {
+          background: #ccc;
+          border-radius: 3px;
         }
-        .ant-table-row-selected {
-          background-color: #e6f7ff;
+        
+        div::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
         }
-        .ant-modal-header {
-          padding: 8px 16px !important;
+
+        /* 防止滚动传导 */
+        .ant-modal-body {
+          overflow: hidden;
         }
-        .ant-modal-footer {
-          padding: 8px 16px !important;
+
+        /* 移除多余的滚动条 */
+        .ant-tree-list {
+          height: auto !important;
         }
-        .ant-modal-footer .ant-btn {
-          font-size: 10px !important;
-          height: 24px !important;
-          padding: 0 8px !important;
+
+        .ant-tree-list-holder {
+          overflow: visible !important;
         }
-        .ant-checkbox-wrapper {
-          font-size: 10px !important;
-        }
-        .ant-radio-button-wrapper {
-          height: 24px !important;
-          line-height: 22px !important;
+
+        .ant-table-wrapper {
+          height: 400px !important;
+          overflow: hidden !important;
         }
       `}</style>
     </Modal>
