@@ -25,11 +25,11 @@ const autoDetectEnvironment = () => {
 // 将 const 改为 let，使其可以被修改
 export let API_BASE_URL = API_CONFIG[autoDetectEnvironment()];
 
-const API_BASE_URL_STORAGE_KEY = "__API_BASE_URL";
+const API_BASE_URL_STORAGE_KEY = '__API_BASE_URL';
 
-(function setBaseUrlByStorage(){
+(function setBaseUrlByStorage() {
   API_BASE_URL = localStorage.getItem(API_BASE_URL_STORAGE_KEY) ?? API_BASE_URL;
-})()
+})();
 
 // 设置 API 基地址
 export const setBaseURL = (environment) => {
@@ -76,7 +76,6 @@ const axiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-
     // 检查请求路径是否在白名单中
     const isWhitelisted = whiteList.some((path) => config.url.includes(path));
 
@@ -115,9 +114,6 @@ axiosInstance.interceptors.response.use(
       } else {
         message.error(`请求失败: ${message || errorType}`, 4);
       }
-    } else {
-      // 处理网络错误
-      message.error('请登录', 4);
     }
     return Promise.reject(error);
   },
