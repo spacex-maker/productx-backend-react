@@ -1,10 +1,52 @@
-import React from 'react';
-import { Input, Modal, Form, Switch, Tooltip, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Input, Modal, Form, Switch, Tooltip, Select, Tag } from 'antd';
 import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined, LockOutlined, UnlockOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import api from 'src/axiosInstance';
 
 const { Option } = Select;
 
 const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
+  const [menuPermissions, setMenuPermissions] = useState([]);
+  const [selectedType, setSelectedType] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  // 获取菜单类型的权限列表
+  const fetchMenuPermissions = async () => {
+    setLoading(true);
+    try {
+      const response = await api.get('/manage/admin-permissions/list', {
+        params: {
+          currentPage: 1,
+          pageSize: 500,  // 获取所有菜单权限
+          type: 1     // 1表示菜单权限类型
+        }
+      });
+      
+      if (response && response.data) {
+        setMenuPermissions(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch menu permissions:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isVisible) {
+      fetchMenuPermissions();
+    }
+  }, [isVisible]);
+
+  // 监听权限类型变化
+  const handleTypeChange = (value) => {
+    setSelectedType(value);
+    // 如果切换到非菜单或按钮类型，清空父级权限选择
+    if (value !== 1 && value !== 3) {
+      form.setFieldValue('parentId', undefined);
+    }
+  };
+
   return (
     <Modal
       title={
@@ -41,7 +83,10 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           style={{ marginBottom: '8px' }}
           initialValue={1}
         >
-          <Select style={{ fontSize: '10px' }}>
+          <Select 
+            style={{ fontSize: '10px' }}
+            onChange={handleTypeChange}
+          >
             <Option value={1}>
               <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
                 <MenuOutlined style={{ marginRight: '4px', color: '#1890ff' }} />
@@ -68,6 +113,61 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
             </Option>
           </Select>
         </Form.Item>
+
+        {/* 父级权限 - 仅在选择菜单或按钮权限时显示 */}
+        {(selectedType === 1 || selectedType === 3) && (
+          <Form.Item
+            label={
+              <span style={{ fontSize: '10px' }}>
+                父级权限
+                <Tooltip title={selectedType === 1 ? "选择上级菜单权限" : "选择所属的菜单权限"}>
+                  <InfoCircleOutlined style={{ marginLeft: '4px', color: '#1890ff', fontSize: '10px' }} />
+                </Tooltip>
+              </span>
+            }
+            name="parentId"
+            rules={[
+              { 
+                required: selectedType === 3, 
+                message: selectedType === 3 ? '按钮权限必须选择所属的菜单权限' : '' 
+              }
+            ]}
+            style={{ marginBottom: '8px' }}
+          >
+            <Select
+              style={{ fontSize: '10px' }}
+              placeholder={selectedType === 1 ? "可选择上级菜单" : "请选择所属的菜单权限"}
+              allowClear={selectedType === 1}
+              optionFilterProp="children"
+              showSearch
+              loading={loading}
+            >
+              {menuPermissions.map(menu => (
+                <Option key={menu.id} value={menu.id}>
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    fontSize: '10px',
+                    color: menu.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)'
+                  }}>
+                    <MenuOutlined style={{ marginRight: '4px' }} />
+                    <span>{menu.permissionName}</span>
+                    {menu.isSystem && (
+                      <Tag color="#1890ff" style={{ 
+                        marginLeft: '4px',
+                        fontSize: '10px',
+                        padding: '0 4px',
+                        lineHeight: '16px'
+                      }}>
+                        系统
+                      </Tag>
+                    )}
+                  </div>
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        )}
 
         {/* 权限名称 */}
         <Form.Item
