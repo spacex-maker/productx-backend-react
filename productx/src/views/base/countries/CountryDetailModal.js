@@ -512,6 +512,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     const historicalData = historicalInputs[type];
     if (historicalData) {
       console.log('Found historical data:', historicalData);
+      // 只排除 code、name、id 和 timestamp，保留 countryCode
       const { code, name, id, timestamp, ...autoFillData } = historicalData;
       addForm.setFieldsValue(autoFillData);
     }
@@ -547,10 +548,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       const lastData = historicalInputs[lastSubmittedType];
       console.log('Auto filling last submitted data:', lastData);
       
-      // 排除不需要自动填充的字段
+      // 只排除 code、name 和 id，保留 countryCode
       const { code, name, id, timestamp, ...autoFillData } = lastData;
       
-      // 设置类型和其他数据
+      // 设置类型和其他数据（包括 countryCode）
       addForm.setFieldsValue({
         type: lastSubmittedType,
         ...autoFillData
