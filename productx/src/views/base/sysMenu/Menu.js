@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Form, Input, message, Select, Space, Tag, Switch, Spin, Modal } from 'antd'
-import { EditOutlined, DeleteOutlined, PlusOutlined, CaretRightOutlined } from '@ant-design/icons'
-import * as icons from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import api from 'src/axiosInstance'
-import styled from 'styled-components'
-import AddMenuModal from './AddMenuModal'
-import EditMenuModal from './EditMenuModal'
-import { useTranslation } from 'react-i18next'
+import React, { useState, useEffect } from 'react';
+import { Button, Form, Input, message, Select, Space, Tag, Switch, Spin, Modal } from 'antd';
+import { EditOutlined, DeleteOutlined, PlusOutlined, CaretRightOutlined } from '@ant-design/icons';
+import * as icons from '@coreui/icons';
+import CIcon from '@coreui/icons-react';
+import api from 'src/axiosInstance';
+import styled from 'styled-components';
+import AddMenuModal from './AddMenuModal';
+import EditMenuModal from './EditMenuModal';
+import { useTranslation } from 'react-i18next';
 
 const StyledTreeContainer = styled.div`
   // 隐藏默认的 toggle 图标
@@ -46,7 +46,7 @@ const StyledTreeContainer = styled.div`
     display: flex;
     align-items: center;
     padding: 4px;
-    
+
     &.expanded {
       transform: rotate(90deg);
     }
@@ -71,7 +71,7 @@ const StyledTreeContainer = styled.div`
       display: flex;
       align-items: center;
       padding: 4px;
-      
+
       &.expanded {
         transform: rotate(90deg);
       }
@@ -109,7 +109,7 @@ const StyledTreeContainer = styled.div`
     .status-switch {
       &.ant-switch {
         background-color: var(--cui-danger);
-        
+
         &.ant-switch-checked {
           background-color: var(--cui-success);
         }
@@ -119,7 +119,7 @@ const StyledTreeContainer = styled.div`
     .node-actions {
       opacity: 0;
       transition: opacity 0.2s;
-      
+
       .action-buttons {
         display: flex;
         gap: 8px;
@@ -132,7 +132,7 @@ const StyledTreeContainer = styled.div`
   }
 
   // 暗色主题适配
-  [data-theme="dark"] & {
+  [data-theme='dark'] & {
     .tree-content {
       background: var(--cui-dark);
 
@@ -147,7 +147,7 @@ const StyledTreeContainer = styled.div`
       .status-switch {
         &.ant-switch {
           background-color: var(--cui-danger-dark);
-          
+
           &.ant-switch-checked {
             background-color: var(--cui-success-dark);
           }
@@ -155,10 +155,10 @@ const StyledTreeContainer = styled.div`
       }
     }
   }
-`
+`;
 
 const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="menu-node">
@@ -176,13 +176,19 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
             {item.icon && <CIcon icon={icons[item.icon]} className="menu-icon" />}
             <span>{item.name}</span>
             {item.component === 'CNavGroup' && (
-              <Tag color="blue" className="menu-tag">目录</Tag>
+              <Tag color="blue" className="menu-tag">
+                目录
+              </Tag>
             )}
             {item.component === 'CNavItem' && (
-              <Tag color="green" className="menu-tag">菜单</Tag>
+              <Tag color="green" className="menu-tag">
+                菜单
+              </Tag>
             )}
             {item.component === 'CNavTitle' && (
-              <Tag color="orange" className="menu-tag">标题</Tag>
+              <Tag color="orange" className="menu-tag">
+                标题
+              </Tag>
             )}
             <Tag color="purple">{item.path || '无路径'}</Tag>
           </div>
@@ -190,18 +196,10 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
         <div className="right-content">
           <div className="node-actions">
             <Space className="action-buttons">
-              <Button
-                type="link"
-                icon={<PlusOutlined />}
-                onClick={(e) => onAdd(item)}
-              >
+              <Button type="link" icon={<PlusOutlined />} onClick={(e) => onAdd(item)}>
                 添加
               </Button>
-              <Button
-                type="link"
-                icon={<EditOutlined />}
-                onClick={(e) => onEdit(item)}
-              >
+              <Button type="link" icon={<EditOutlined />} onClick={(e) => onEdit(item)}>
                 编辑
               </Button>
               <Button
@@ -223,11 +221,10 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
             className="status-switch"
           />
         </div>
-        
       </div>
       {isOpen && item.children?.length > 0 && (
         <div className="children">
-          {item.children.map(child => (
+          {item.children.map((child) => (
             <MenuNode
               key={child.id}
               item={child}
@@ -240,103 +237,119 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 const MenuList = () => {
-  const [menuData, setMenuData] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false)
-  const [selectedParent, setSelectedParent] = useState(null)
-  const [addForm] = Form.useForm()
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false)
-  const [editForm] = Form.useForm()
-  const [currentItem, setCurrentItem] = useState(null)
-  const { t } = useTranslation()
+  const [menuData, setMenuData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [selectedParent, setSelectedParent] = useState(null);
+  const [addForm] = Form.useForm();
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [editForm] = Form.useForm();
+  const [currentItem, setCurrentItem] = useState(null);
+  const { t } = useTranslation();
 
   // 图标选项
   const iconOptions = [
-    'cilSpeedometer', 'cilHeadphones', 'cilList', 'cilFolder', 'cilStorage',
-    'cilGlobeAlt', 'cilBuilding', 'cilPeople', 'cilGroup', 'cilShieldAlt',
-    'cilLockLocked', 'cilTruck', 'cilCalculator', 'cilMoney', 'cilBank',
-    'cilWallet', 'cilDevices', 'cilBasket', 'cilUser', 'cilSettings'
-  ]
+    'cilSpeedometer',
+    'cilHeadphones',
+    'cilList',
+    'cilFolder',
+    'cilStorage',
+    'cilGlobeAlt',
+    'cilBuilding',
+    'cilPeople',
+    'cilGroup',
+    'cilShieldAlt',
+    'cilLockLocked',
+    'cilTruck',
+    'cilCalculator',
+    'cilMoney',
+    'cilBank',
+    'cilWallet',
+    'cilDevices',
+    'cilBasket',
+    'cilUser',
+    'cilSettings',
+  ];
 
   // 组件类型选项
-  const componentOptions = ['CNavGroup', 'CNavItem', 'CNavTitle']
+  const componentOptions = ['CNavGroup', 'CNavItem', 'CNavTitle'];
 
   // 获取菜单数据
   const fetchMenuData = async () => {
     try {
-      setLoading(true)
-      const response = await api.get('/manage/sys-menu/tree')
+      setLoading(true);
+      const response = await api.get('/manage/sys-menu/tree');
       if (response) {
-        setMenuData(response)
+        setMenuData(response);
       }
     } catch (error) {
-      message.error('获取菜单失败')
+      message.error('获取菜单失败');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   // 在组件挂载时获取数据
   useEffect(() => {
-    fetchMenuData()
-  }, [])
+    fetchMenuData();
+  }, []);
 
   // 状态更新函数
   const handleStatusChange = async (id, checked) => {
     try {
       await api.post('/manage/sys-menu/change-status', {
         id,
-        status: checked
-      })
-      message.success('状态更新成功')
-      fetchMenuData()
+        status: checked,
+      });
+      message.success('状态更新成功');
+      fetchMenuData();
     } catch (error) {
-      message.error('状态更新失败')
+      message.error('状态更新失败');
     }
-  }
+  };
 
   // 处理添加菜单
   const handleAdd = (parentItem = null) => {
-    setSelectedParent(parentItem)
-    addForm.resetFields()
+    setSelectedParent(parentItem);
+    addForm.resetFields();
 
     if (parentItem) {
       addForm.setFieldsValue({
         parentId: parentItem.id,
         component: 'CNavItem',
-        status: true
-      })
+        status: true,
+      });
     } else {
       addForm.setFieldsValue({
         parentId: 0,
         component: 'CNavGroup',
-        status: true
-      })
+        status: true,
+      });
     }
 
-    setIsAddModalVisible(true)
-  }
+    setIsAddModalVisible(true);
+  };
 
   // 处理添加表单提交
   const handleAddSubmit = async () => {
     try {
-      const values = await addForm.validateFields()
-      await api.post('/manage/sys-menu/create-menu', values)
-      message.success('添加成功')
-      setIsAddModalVisible(false)
-      fetchMenuData()
+      const values = await addForm.validateFields();
+      await api.post('/manage/sys-menu/create-menu', values);
+      message.success('添加成功');
+      setIsAddModalVisible(false);
+      fetchMenuData();
     } catch (error) {
-      message.error('添加失败：' + (error.message || '未知错误'))
+      message.error('添加失败：' + (error.message || '未知错误'));
     }
-  }
+  };
 
   // 处理编辑菜单
   const handleEdit = (item) => {
-    setCurrentItem(item)
+    setCurrentItem(item);
     editForm.setFieldsValue({
       id: item.id,
       parentId: item.parentId,
@@ -346,23 +359,23 @@ const MenuList = () => {
       component: item.component,
       badgeText: item.badgeText,
       badgeColor: item.badgeColor,
-      status: item.status
-    })
-    setIsEditModalVisible(true)
-  }
+      status: item.status,
+    });
+    setIsEditModalVisible(true);
+  };
 
   // 处理编辑表单提交
   const handleEditSubmit = async () => {
     try {
-      const values = await editForm.validateFields()
-      await api.post('/manage/sys-menu/update-menu', values)
-      message.success(t('updateSuccess'))
-      setIsEditModalVisible(false)
-      fetchMenuData()
+      const values = await editForm.validateFields();
+      await api.post('/manage/sys-menu/update-menu', values);
+      message.success(t('updateSuccess'));
+      setIsEditModalVisible(false);
+      fetchMenuData();
     } catch (error) {
-      message.error(t('updateFailed') + ': ' + (error.message || t('unknownError')))
+      message.error(t('updateFailed') + ': ' + (error.message || t('unknownError')));
     }
-  }
+  };
 
   // 处理删除菜单
   const handleDelete = (id) => {
@@ -389,18 +402,14 @@ const MenuList = () => {
     <div className="card">
       <div className="card-header d-flex justify-content-between align-items-center">
         <h5>菜单管理</h5>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => handleAdd()}
-        >
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => handleAdd()}>
           新建根菜单
         </Button>
       </div>
       <div className="card-body">
         <Spin spinning={loading}>
           <StyledTreeContainer>
-            {menuData.map(item => (
+            {menuData.map((item) => (
               <MenuNode
                 key={item.id}
                 item={item}
@@ -430,7 +439,7 @@ const MenuList = () => {
         currentItem={currentItem}
       />
     </div>
-  )
-}
+  );
+};
 
-export default MenuList
+export default MenuList;

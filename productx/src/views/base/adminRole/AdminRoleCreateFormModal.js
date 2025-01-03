@@ -1,13 +1,14 @@
 import React from 'react';
 import { Modal, Form, Input, Switch } from 'antd';
-import { UserOutlined, TranslationOutlined, FileTextOutlined, CheckCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  TranslationOutlined,
+  FileTextOutlined,
+  CheckCircleOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 
-const AdminRoleCreateFormModal = ({
-  isVisible,
-  onCancel,
-  onFinish,
-  form,
-}) => {
+const AdminRoleCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
   return (
     <Modal
       title={
@@ -22,12 +23,7 @@ const AdminRoleCreateFormModal = ({
       width={480}
       styles={{ padding: '12px 24px' }}
     >
-      <Form 
-        form={form} 
-        onFinish={onFinish} 
-        layout="vertical"
-        size="small"
-      >
+      <Form form={form} onFinish={onFinish} layout="vertical" size="small">
         <Form.Item
           label={<span style={{ fontSize: '10px' }}>角色名称</span>}
           name="roleName"
@@ -60,11 +56,7 @@ const AdminRoleCreateFormModal = ({
           rules={[{ required: true, message: '请输入角色描述' }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input.TextArea
-            placeholder="请输入角色描述"
-            rows={3}
-            style={{ fontSize: '10px' }}
-          />
+          <Input.TextArea placeholder="请输入角色描述" rows={3} style={{ fontSize: '10px' }} />
         </Form.Item>
 
         <Form.Item
@@ -120,8 +112,6 @@ const AdminRoleCreateFormModal = ({
 
         .ant-switch {
           min-width: 40px !important;
-          height: 16px !important;
-          line-height: 16px !important;
         }
 
         .ant-switch-inner {

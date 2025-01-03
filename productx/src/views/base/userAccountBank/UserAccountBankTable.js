@@ -2,11 +2,7 @@ import React from 'react';
 import { Button, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 
-const UserAccountBankTable = ({
-  data,
-  handleEditClick,
-  handleDetailClick
-}) => {
+const UserAccountBankTable = ({ data, handleEditClick, handleDetailClick }) => {
   const { t } = useTranslation();
 
   return (
@@ -23,7 +19,7 @@ const UserAccountBankTable = ({
             'currencyCode',
             'isActive',
             'createTime',
-            'updateTime'
+            'updateTime',
           ].map((field) => (
             <th key={field}>{t(field)}</th>
           ))}
@@ -41,7 +37,7 @@ const UserAccountBankTable = ({
             <td className="text-truncate">{item.swiftCode}</td>
             <td className="text-truncate">{item.currencyCode}</td>
             <td className="text-center">
-              <Tag color={item.isActive ? "blue" : "default"}>
+              <Tag color={item.isActive ? 'blue' : 'default'}>
                 {item.isActive ? t('yes') : t('no')}
               </Tag>
             </td>
@@ -58,25 +54,6 @@ const UserAccountBankTable = ({
           </tr>
         ))}
       </tbody>
-      <style jsx>{`
-        .text-truncate {
-          max-width: 150px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .record-font {
-          font-size: 10px;
-        }
-        .fixed-column {
-          width: 120px;
-          white-space: nowrap;
-        }
-        th {
-          font-size: 10px;
-          white-space: nowrap;
-        }
-      `}</style>
     </table>
   );
 };
