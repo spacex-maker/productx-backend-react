@@ -9,7 +9,7 @@ const UserProfileTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
-  handleDetailClick
+  handleDetailClick,
 }) => {
   const { t } = useTranslation();
 
@@ -26,11 +26,7 @@ const UserProfileTable = ({
       <thead>
         <tr>
           <th>
-            <input
-              type="checkbox"
-              checked={selectAll}
-              onChange={handleSelectAll}
-            />
+            <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
           </th>
           {[
             'userId',
@@ -44,7 +40,7 @@ const UserProfileTable = ({
             'preferredCategories',
             'preferredBrands',
             'followersCount',
-            'followingCount'
+            'followingCount',
           ].map((field) => (
             <th key={field}>{t(field)}</th>
           ))}
@@ -57,7 +53,7 @@ const UserProfileTable = ({
             <td>
               <input
                 type="checkbox"
-                checked={selectedRows.some(row => row.userId === item.userId)}
+                checked={selectedRows.some((row) => row.userId === item.userId)}
                 onChange={(e) => handleSelectRow(e, item)}
               />
             </td>
@@ -65,7 +61,11 @@ const UserProfileTable = ({
             <td className="text-truncate">{item.name}</td>
             <td className="text-truncate">{item.age}</td>
             <td className="text-center">
-              <Tag color={item.gender === 'male' ? 'blue' : item.gender === 'female' ? 'pink' : 'default'}>
+              <Tag
+                color={
+                  item.gender === 'male' ? 'blue' : item.gender === 'female' ? 'pink' : 'default'
+                }
+              >
                 {t(item.gender)}
               </Tag>
             </td>
@@ -88,25 +88,6 @@ const UserProfileTable = ({
           </tr>
         ))}
       </tbody>
-      <style jsx>{`
-        .text-truncate {
-          max-width: 150px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .record-font {
-          font-size: 10px;
-        }
-        .fixed-column {
-          width: 120px;
-          white-space: nowrap;
-        }
-        th {
-          font-size: 10px;
-          white-space: nowrap;
-        }
-      `}</style>
     </table>
   );
 };

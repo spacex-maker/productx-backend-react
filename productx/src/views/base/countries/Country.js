@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import {Modal, Button, Form, Input, message, Spin, Select, Col, Row, Space} from 'antd';
-import {UseSelectableRows} from 'src/components/common/UseSelectableRows';
-import {HandleBatchDelete} from 'src/components/common/HandleBatchDelete';
+import { Modal, Button, Form, Input, message, Spin, Select, Col, Row, Space } from 'antd';
+import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
+import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
 import CountryTable from 'src/views/base/countries/CountryTable'; // 你需要创建这个表格组件
 import UpdateCountryModal from 'src/views/base/countries/UpdateCountryModal'; // 你需要创建这个更新模态框
@@ -10,50 +10,58 @@ import CountryCreateFormModal from 'src/views/base/countries/CountryCreateFormMo
 import WorldMap from './WorldMap';
 import { useTranslation } from 'react-i18next';
 const updateCountryStatus = async (id, newStatus) => {
-  await api.post('/manage/countries/change-status', {id, status: newStatus});
+  await api.post('/manage/countries/change-status', { id, status: newStatus });
 };
 
 const createCountry = async (countryData) => {
   await api.post('/manage/countries/create', countryData);
 };
 
-const updateCountry =  async (values) => {
-    try {
-      const response = await api.put('/manage/countries/update', {
-
-        ...values,
-        // 转换日期格式
-        independenceDay: values.independenceDay ? values.independenceDay.format('YYYY-MM-DD') : null,
-        // 确保数值类型正确
-        population: values.population ? Number(values.population) : null,
-        gdp: values.gdp ? Number(values.gdp) : null,
-        area: values.area ? Number(values.area) : null,
-        populationDensity: values.populationDensity ? Number(values.populationDensity) : null,
-        hdi: values.hdi ? Number(values.hdi) : null,
-        averageAnnualTemperature: values.averageAnnualTemperature ? Number(values.averageAnnualTemperature) : null,
-        nationalSecurityIndex: values.nationalSecurityIndex ? Number(values.nationalSecurityIndex) : null,
-        capitalPopulation: values.capitalPopulation ? Number(values.capitalPopulation) : null,
-        povertyRate: values.povertyRate ? Number(values.povertyRate) : null,
-        unemploymentRate: values.unemploymentRate ? Number(values.unemploymentRate) : null,
-        politicalStability: values.politicalStability ? Number(values.politicalStability) : null,
-        educationLevel: values.educationLevel ? Number(values.educationLevel) : null,
-        healthcareLevel: values.healthcareLevel ? Number(values.healthcareLevel) : null,
-        internetPenetrationRate: values.internetPenetrationRate ? Number(values.internetPenetrationRate) : null,
-        foreignExchangeReserves: values.foreignExchangeReserves ? Number(values.foreignExchangeReserves) : null,
-        energyConsumption: values.energyConsumption ? Number(values.energyConsumption) : null,
-        airQualityIndex: values.airQualityIndex ? Number(values.airQualityIndex) : null,
-        greenEconomyIndex: values.greenEconomyIndex ? Number(values.greenEconomyIndex) : null,
-        militaryStrengthIndex: values.militaryStrengthIndex ? Number(values.militaryStrengthIndex) : null,
-        linguisticDiversity: values.linguisticDiversity ? Number(values.linguisticDiversity) : null,
-        birthRate: values.birthRate ? Number(values.birthRate) : null,
-        deathRate: values.deathRate ? Number(values.deathRate) : null,
-        worldHeritageSites: values.worldHeritageSites ? Number(values.worldHeritageSites) : null,
-
-      });
-      message.success('更新成功');
-    } catch (error) {
-      message.error('更新失败：' + error.message);
-    }
+const updateCountry = async (values) => {
+  try {
+    const response = await api.put('/manage/countries/update', {
+      ...values,
+      // 转换日期格式
+      independenceDay: values.independenceDay ? values.independenceDay.format('YYYY-MM-DD') : null,
+      // 确保数值类型正确
+      population: values.population ? Number(values.population) : null,
+      gdp: values.gdp ? Number(values.gdp) : null,
+      area: values.area ? Number(values.area) : null,
+      populationDensity: values.populationDensity ? Number(values.populationDensity) : null,
+      hdi: values.hdi ? Number(values.hdi) : null,
+      averageAnnualTemperature: values.averageAnnualTemperature
+        ? Number(values.averageAnnualTemperature)
+        : null,
+      nationalSecurityIndex: values.nationalSecurityIndex
+        ? Number(values.nationalSecurityIndex)
+        : null,
+      capitalPopulation: values.capitalPopulation ? Number(values.capitalPopulation) : null,
+      povertyRate: values.povertyRate ? Number(values.povertyRate) : null,
+      unemploymentRate: values.unemploymentRate ? Number(values.unemploymentRate) : null,
+      politicalStability: values.politicalStability ? Number(values.politicalStability) : null,
+      educationLevel: values.educationLevel ? Number(values.educationLevel) : null,
+      healthcareLevel: values.healthcareLevel ? Number(values.healthcareLevel) : null,
+      internetPenetrationRate: values.internetPenetrationRate
+        ? Number(values.internetPenetrationRate)
+        : null,
+      foreignExchangeReserves: values.foreignExchangeReserves
+        ? Number(values.foreignExchangeReserves)
+        : null,
+      energyConsumption: values.energyConsumption ? Number(values.energyConsumption) : null,
+      airQualityIndex: values.airQualityIndex ? Number(values.airQualityIndex) : null,
+      greenEconomyIndex: values.greenEconomyIndex ? Number(values.greenEconomyIndex) : null,
+      militaryStrengthIndex: values.militaryStrengthIndex
+        ? Number(values.militaryStrengthIndex)
+        : null,
+      linguisticDiversity: values.linguisticDiversity ? Number(values.linguisticDiversity) : null,
+      birthRate: values.birthRate ? Number(values.birthRate) : null,
+      deathRate: values.deathRate ? Number(values.deathRate) : null,
+      worldHeritageSites: values.worldHeritageSites ? Number(values.worldHeritageSites) : null,
+    });
+    message.success('更新成功');
+  } catch (error) {
+    message.error('更新失败：' + error.message);
+  }
 };
 
 const CountryList = () => {
@@ -79,15 +87,10 @@ const CountryList = () => {
 
   useEffect(() => {
     fetchData();
-    fetchAllData()
+    fetchAllData();
   }, [currentPage, pageSize, searchParams]);
 
-  const {
-    selectedRows,
-    selectAll,
-    handleSelectAll,
-    handleSelectRow,
-  } = UseSelectableRows();
+  const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -96,7 +99,7 @@ const CountryList = () => {
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       );
       const response = await api.get('/manage/countries/list', {
-        params: {currentPage, pageSize: pageSize, ...filteredParams},
+        params: { currentPage, pageSize: pageSize, ...filteredParams },
       });
 
       if (response && response.data) {
@@ -129,28 +132,28 @@ const CountryList = () => {
     }
   };
   const handleSearchChange = (event) => {
-    const {name, value} = event.target;
-    setSearchParams((prevParams) => ({...prevParams, [name]: value}));
+    const { name, value } = event.target;
+    setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
   };
 
   const handleCreateCountry = async (values) => {
     await createCountry(values);
     setIsCreateModalVisible(false);
     createForm.resetFields();
-    await fetchAllData()
+    await fetchAllData();
     await fetchData();
   };
   const handleStatusChange = async (id, event) => {
-    const newStatus = event.target.checked
-    await updateCountryStatus(id, newStatus)
-    await fetchAllData()
-    await fetchData() // Re-fetch data after status update
-  }
+    const newStatus = event.target.checked;
+    await updateCountryStatus(id, newStatus);
+    await fetchAllData();
+    await fetchData(); // Re-fetch data after status update
+  };
   const handleUpdateCountry = async (values) => {
     await updateCountry(values);
     setIsUpdateModalVisible(false);
     updateForm.resetFields();
-    await fetchAllData()
+    await fetchAllData();
     await fetchData();
   };
 
@@ -197,7 +200,7 @@ const CountryList = () => {
               <Select
                 size="small"
                 name="continent"
-                onChange={(value) => handleSearchChange({target: {name: 'continent', value}})}
+                onChange={(value) => handleSearchChange({ target: { name: 'continent', value } })}
                 allowClear
                 placeholder={t('selectContinent')}
                 style={{ width: '100%' }}
@@ -215,7 +218,7 @@ const CountryList = () => {
               <Select
                 size="small"
                 name="status"
-                onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
+                onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
                 placeholder={t('businessStatus')}
                 style={{ width: '100%' }}
@@ -226,29 +229,22 @@ const CountryList = () => {
             </Col>
             <Col flex="none">
               <Space size={8}>
-                <Button
-                  size="small"
-                  type="primary"
-                  onClick={fetchData}
-                  disabled={isLoading}
-                >
-                  {isLoading ? <Spin size="small"/> : t('search')}
+                <Button size="small" type="primary" onClick={fetchData} disabled={isLoading}>
+                  {isLoading ? <Spin size="small" /> : t('search')}
                 </Button>
-                <Button
-                  size="small"
-                  type="primary"
-                  onClick={() => setIsCreateModalVisible(true)}
-                >
+                <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
                   {t('createCountry')}
                 </Button>
                 <Button
                   size="small"
                   type="primary"
-                  onClick={() => HandleBatchDelete({
-                    url: '/manage/country/delete-batch',
-                    selectedRows,
-                    fetchData,
-                  })}
+                  onClick={() =>
+                    HandleBatchDelete({
+                      url: '/manage/country/delete-batch',
+                      selectedRows,
+                      fetchData,
+                    })
+                  }
                   disabled={selectedRows.length === 0}
                 >
                   {t('batchDelete')}
@@ -311,8 +307,6 @@ const CountryList = () => {
           border-radius: 4px;
           margin-bottom: 16px;
         }
-
-
       `}</style>
     </div>
   );

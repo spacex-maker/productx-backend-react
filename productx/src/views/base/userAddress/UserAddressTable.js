@@ -10,7 +10,7 @@ const UserAddressTable = ({
   handleSelectRow,
   handleStatusChange,
   handleEditClick,
-  handleDetailClick
+  handleDetailClick,
 }) => {
   const { t } = useTranslation();
 
@@ -40,7 +40,7 @@ const UserAddressTable = ({
             'currentUse',
             'useCount',
             'createTime',
-            'updateTime'
+            'updateTime',
           ].map((field) => (
             <th key={field}>{t(field)}</th>
           ))}
@@ -59,10 +59,7 @@ const UserAddressTable = ({
                   checked={selectedRows.includes(item.id)}
                   onChange={() => handleSelectRow(item.id, data)}
                 />
-                <label
-                  className="custom-control-label"
-                  htmlFor={`td_checkbox_${item.id}`}
-                ></label>
+                <label className="custom-control-label" htmlFor={`td_checkbox_${item.id}`}></label>
               </div>
             </td>
             <td className="text-truncate">{item.id}</td>
@@ -76,7 +73,7 @@ const UserAddressTable = ({
               </div>
             </td>
             <td className="text-center">
-              <Tag color={item.currentUse ? "blue" : "default"}>
+              <Tag color={item.currentUse ? 'blue' : 'default'}>
                 {item.currentUse ? t('yes') : t('no')}
               </Tag>
             </td>
@@ -94,86 +91,6 @@ const UserAddressTable = ({
           </tr>
         ))}
       </tbody>
-      <style jsx>{`
-        .address-cell {
-          max-width: 200px;
-          overflow: hidden;
-        }
-        .address-content {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .text-truncate {
-          max-width: 150px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .record-font {
-          font-size: 10px;
-        }
-        .fixed-column {
-          width: 120px;
-          white-space: nowrap;
-        }
-        th {
-          font-size: 10px;
-          white-space: nowrap;
-        }
-        .ant-input-search .ant-input {
-          color: var(--text-color);
-        }
-
-        .ant-input-search .ant-input::placeholder {
-          color: var(--text-secondary-color);
-        }
-
-        .ant-input-search .ant-input-group-addon .ant-btn {
-          color: var(--text-color);
-        }
-
-        /* 暗色主题下的样式 */
-        [data-theme='dark'] .ant-input-search .ant-input {
-          background-color: var(--component-background);
-          color: var(--text-color);
-        }
-
-        [data-theme='dark'] .ant-input-search .ant-input::placeholder {
-          color: var(--text-secondary-color);
-        }
-
-        [data-theme='dark'] .ant-input-search .ant-input-group-addon .ant-btn {
-          color: var(--text-color);
-        }
-
-        /* 增加选择器优先级 */
-        .table-container .ant-input-search .ant-input {
-          color: var(--text-color) !important;
-        }
-
-        .table-container .ant-input-search .ant-input::placeholder {
-          color: var(--text-secondary-color) !important;
-        }
-
-        .table-container .ant-input-search .ant-input-group-addon .ant-btn {
-          color: var(--text-color) !important;
-        }
-
-        /* 暗色主题下的样式 */
-        .table-container[data-theme='dark'] .ant-input-search .ant-input {
-          background-color: var(--component-background) !important;
-          color: var(--text-color) !important;
-        }
-
-        .table-container[data-theme='dark'] .ant-input-search .ant-input::placeholder {
-          color: var(--text-secondary-color) !important;
-        }
-
-        .table-container[data-theme='dark'] .ant-input-search .ant-input-group-addon .ant-btn {
-          color: var(--text-color) !important;
-        }
-      `}</style>
     </table>
   );
 };

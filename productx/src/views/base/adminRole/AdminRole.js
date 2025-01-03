@@ -3,10 +3,10 @@ import { Modal, Button, Form, Input, message, Spin, Select, Col, Row } from 'ant
 import api from 'src/axiosInstance';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
-import Pagination from "src/components/common/Pagination";
-import RoleTable from "src/views/base/adminRole/AdminRoleTable"; // 请确保你有相应的角色表格组件
-import RoleCreateFormModal from "src/views/base/adminRole/AdminRoleCreateFormModal"; // 新建角色模态框
-import UpdateRoleModal from "src/views/base/adminRole/UpdateAdminRoleModal"; // 更新角色模态框
+import Pagination from 'src/components/common/Pagination';
+import RoleTable from 'src/views/base/adminRole/AdminRoleTable'; // 请确保你有相应的角色表格组件
+import RoleCreateFormModal from 'src/views/base/adminRole/AdminRoleCreateFormModal'; // 新建角色模态框
+import UpdateRoleModal from 'src/views/base/adminRole/UpdateAdminRoleModal'; // 更新角色模态框
 import { SearchOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import RoleDetailModal from './RoleDetailModal';
 
@@ -40,18 +40,13 @@ const AdminRole = () => {
     fetchData();
   }, [currentPage, pageSize, searchParams]);
 
-  const {
-    selectedRows,
-    selectAll,
-    handleSelectAll,
-    handleSelectRow,
-  } = UseSelectableRows();
+  const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows();
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const filteredParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null)
+        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       );
       const response = await api.get('/manage/admin-roles/list', {
         params: { currentPage, size: pageSize, ...filteredParams },
@@ -60,8 +55,8 @@ const AdminRole = () => {
       if (response && response.data) {
         setData(response.data); // 更新数据结构
         setTotalNum(response.totalNum); // 获取总记录数
-      }else{
-        message.info("暂无数据(No Data)")
+      } else {
+        message.info('暂无数据(No Data)');
       }
     } catch (error) {
       console.error('Failed to fetch roles', error);
@@ -116,7 +111,7 @@ const AdminRole = () => {
       const response = await api.get(`/manage/role-permissions/list/${role.id}`);
       const roleWithPermissionCount = {
         ...role,
-        permissionCount: response?.length || 0
+        permissionCount: response?.length || 0,
       };
       setSelectedRole(roleWithPermissionCount);
       setIsDetailModalVisible(true);
@@ -157,7 +152,9 @@ const AdminRole = () => {
               <Select
                 size="small"
                 name="status"
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value} })}
+                onChange={(value) =>
+                  handleSearchChange({ target: { name: 'status', value: value } })
+                }
                 allowClear
                 placeholder="选择状态"
               >
@@ -166,21 +163,12 @@ const AdminRole = () => {
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                disabled={isLoading}
-              >
+              <Button size="small" type="primary" onClick={fetchData} disabled={isLoading}>
                 <SearchOutlined /> {isLoading ? <Spin /> : '查询'}
               </Button>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
+              <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
                 <PlusOutlined /> 新增角色
               </Button>
             </Col>
@@ -189,11 +177,13 @@ const AdminRole = () => {
                 size="small"
                 type="primary"
                 danger
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/admin-roles/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
+                onClick={() =>
+                  HandleBatchDelete({
+                    url: '/manage/admin-roles/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })
+                }
                 disabled={selectedRows.length === 0}
               >
                 <DeleteOutlined /> 批量删除
