@@ -708,5 +708,15 @@
   "subRegionsCount": "下级行政区数量",
   "totalPopulation": "总人口",
   "totalArea": "总面积",
-  "tenThousand": "万"
+  "tenThousand": "万",
+  "regionCodeTip": "行政区划编码（国家、省市等）",
+  "countryCodeTip": "国家码（例如：中国为CN，美国为US）",
+  "localNameTip": "本国语言名称",
+  "nameTip": "行政区划名称",
+  "shortNameTip": "行政区划简称（可选）",
+  "typeTip": "类型（国家、省、市、区等）",
+  "capitalTip": "省会或首府（如果适用）",
+  "populationTip": "人口数量",
+  "areaKm2Tip": "面积（平方公里）",
+  "regionTip": "区域（如：华北、华南等）"
 }

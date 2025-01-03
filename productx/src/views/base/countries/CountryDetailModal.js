@@ -17,6 +17,7 @@ import {
   Avatar,
   List,
   Tag,
+  message,
 } from 'antd';
 import {
   GlobalOutlined,
@@ -26,6 +27,7 @@ import {
   PlusOutlined,
   DeleteOutlined,
   CloseOutlined,
+  InfoCircleOutlined,
 } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import { useTranslation } from 'react-i18next'; // 引入 useTranslation
@@ -94,6 +96,39 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   });
   const [maintainers, setMaintainers] = useState([]);
   const [maintainersLoading, setMaintainersLoading] = useState(false);
+  const [historicalInputs, setHistoricalInputs] = useState({});
+  const [lastSubmittedType, setLastSubmittedType] = useState(null);
+
+  // 在组件加载时获取历史记录
+  useEffect(() => {
+    const savedHistory = localStorage.getItem('regionFormHistory');
+    const lastType = localStorage.getItem('lastSubmittedType');
+    
+    if (savedHistory) {
+      const history = JSON.parse(savedHistory);
+      setHistoricalInputs(history);
+      if (lastType) {
+        setLastSubmittedType(lastType);
+      }
+    }
+  }, []);
+
+  // 监听模态框打开状态，自动填充数据
+  useEffect(() => {
+    if (addModalVisible && lastSubmittedType && historicalInputs[lastSubmittedType]) {
+      const lastData = historicalInputs[lastSubmittedType];
+      console.log('Auto filling last submitted data:', lastData);
+      
+      // 只排除 code、name 和 id，保留其他所有字段
+      const { code, name, id, timestamp, ...autoFillData } = lastData;
+      
+      // 设置类型和其他数据
+      addForm.setFieldsValue({
+        type: lastSubmittedType,
+        ...autoFillData
+      });
+    }
+  }, [addModalVisible, lastSubmittedType, historicalInputs]);
 
   // 修改表单样式定义
   const formStyles = {
@@ -118,6 +153,21 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       fontSize: '12px',
       color: '#000000',
     },
+  };
+
+  // 将 handleTypeChange 函数移到组件内部
+  const handleTypeChange = (e) => {
+    const type = e.target.value.trim();
+    console.log('Type input changed:', type);
+    
+    addForm.setFieldValue('type', type);
+    
+    const historicalData = historicalInputs[type];
+    if (historicalData) {
+      console.log('Found historical data:', historicalData);
+      const { code, name, id, timestamp, ...autoFillData } = historicalData;
+      addForm.setFieldsValue(autoFillData);
+    }
   };
 
   useEffect(() => {
@@ -480,20 +530,45 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     },
   ];
 
+  const handleAddModalOpen = () => {
+    addForm.resetFields(); // 先清空表单
+    setAddModalVisible(true);
+  };
+
   const handleAdd = async (values) => {
     try {
       const currentParentId = currentRegion ? currentRegion.id : country.id;
+      console.log('Form values before submit:', values);
+      
       const params = {
         ...values,
         parentId: currentParentId,
+        type: values.type ? values.type.trim() : 'ADMINISTRATIVE_DIVISION'
       };
 
       await api.post('/manage/global-addresses/create', params);
+      
+      if (values.type) {
+        const newHistory = {
+          ...historicalInputs,
+          [values.type]: {
+            ...values,
+            timestamp: Date.now()
+          }
+        };
+        localStorage.setItem('regionFormHistory', JSON.stringify(newHistory));
+        setHistoricalInputs(newHistory);
+        localStorage.setItem('lastSubmittedType', values.type);
+        setLastSubmittedType(values.type);
+      }
+
+      message.success(t('addSuccess'));
       setAddModalVisible(false);
       addForm.resetFields();
       fetchRegions(currentParentId);
     } catch (error) {
       console.error('新增失败:', error);
+      message.error(t('addFailed'));
     }
   };
 
@@ -518,401 +593,478 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     }
   };
 
+  // 添加 Retina 屏幕适配的样式
+  const retinaStyles = `
+    @media
+    (-webkit-min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi) {
+      .super-compact-table .ant-table-thead > tr > th {
+        font-size: 12px;
+      }
+
+      .super-compact-table .ant-table-tbody > tr > td {
+        font-size: 12px;
+      }
+
+      .ant-table-cell {
+        font-size: 12px;
+      }
+
+      .ant-statistic-title {
+        font-size: 12px;
+      }
+
+      .ant-statistic-content {
+        font-size: 14px;
+      }
+
+      .ant-empty-description {
+        font-size: 12px;
+      }
+
+      .ant-input {
+        font-size: 12px;
+      }
+
+      .ant-form-item-label > label {
+        font-size: 12px;
+      }
+
+      .ant-btn {
+        font-size: 12px;
+      }
+
+      .ant-modal-title {
+        font-size: 14px;
+      }
+
+      .ant-table-filter-trigger {
+        font-size: 12px;
+      }
+    }
+  `;
+
   if (!country) return null;
 
   return (
-    <Modal
-      title={
-        <div>
-          {/* 维护人统计卡片 */}
-          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-            <Col span={24}>
-              <Card size="small" bodyStyle={{ padding: '4px' }}>
-                <div
-                  style={{
-                    fontSize: '9px',
-                    marginBottom: '2px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '2px',
-                    color: '#666',
-                  }}
-                >
-                  <TeamOutlined style={{ fontSize: '9px' }} />
-                  {t('dataContributors')}
-                </div>
-                <Spin spinning={maintainersLoading} size="small">
-                  <List
-                    size="small"
-                    grid={{ column: 6 }}
-                    dataSource={maintainers}
-                    style={{ margin: 0 }}
-                    renderItem={(item) => (
-                      <List.Item style={{ padding: '2px' }}>
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '2px',
-                            fontSize: '9px',
-                          }}
-                        >
-                          <Avatar
-                            src={item.avatar}
-                            size={14}
-                            style={{
-                              backgroundColor: !item.avatar ? '#1890ff' : undefined,
-                              fontSize: '8px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              flexShrink: 0,
-                            }}
-                          >
-                            {!item.avatar ? item.username.charAt(0).toUpperCase() : null}
-                          </Avatar>
-                          <span
-                            style={{
-                              flex: '1',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                              maxWidth: '40px',
-                            }}
-                          >
-                            {item.username}
-                          </span>
-                          <Tag
-                            color="blue"
-                            style={{
-                              fontSize: '8px',
-                              lineHeight: '12px',
-                              height: '14px',
-                              padding: '0 2px',
-                              margin: 0,
-                              flexShrink: 0,
-                            }}
-                          >
-                            {item.count}
-                          </Tag>
-                        </div>
-                      </List.Item>
-                    )}
-                  />
-                </Spin>
-              </Card>
-            </Col>
-          </Row>
-
-          {/* 国家统计卡片 */}
-          <CountryStatisticsCard country={country} />
-
-          {/* 四个指标统计卡片 */}
-          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>{t('unemploymentRate')}</span>}
-                  value={country?.unemploymentRate}
-                  prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${value}%`}
-                />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>{t('educationLevel')}</span>}
-                  value={country?.educationLevel}
-                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => value?.toFixed(1)}
-                />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>{t('healthcareLevel')}</span>}
-                  value={country?.healthcareLevel}
-                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => value?.toFixed(1)}
-                />
-              </Card>
-            </Col>
-            <Col span={6}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>{t('internetPenetration')}</span>}
-                  value={country?.internetPenetrationRate}
-                  prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${value}%`}
-                />
-              </Card>
-            </Col>
-          </Row>
-
-          {/* 行政区划统计卡片 */}
-          <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-            <Col span={8}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={
-                    <span style={{ fontSize: '10px' }}>
-                      {currentRegion ? t('subRegionsCount') : t('regionsCount')}
-                    </span>
-                  }
-                  value={regions.length}
-                  prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                />
-              </Card>
-            </Col>
-            <Col span={8}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>{t('totalPopulation')}</span>}
-                  value={regions.reduce((sum, region) => sum + (region.population || 0), 0)}
-                  prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${(value / 10000).toFixed(2)}${t('tenThousand')}`}
-                />
-              </Card>
-            </Col>
-            <Col span={8}>
-              <Card size="small" bodyStyle={{ padding: '6px' }}>
-                <Statistic
-                  title={<span style={{ fontSize: '10px' }}>{t('totalArea')}</span>}
-                  value={regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0)}
-                  prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
-                  valueStyle={{ fontSize: '12px' }}
-                  formatter={(value) => `${value.toLocaleString()} km²`}
-                />
-              </Card>
-            </Col>
-          </Row>
-
-          {/* 面包屑和按钮 */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            {/* 面包屑导航 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              {breadcrumb.map((item, index) => (
-                <React.Fragment key={item.id}>
-                  {index > 0 && <span>/</span>}
-                  <span
-                    style={{ cursor: 'pointer', color: '#1890ff' }}
-                    onClick={() => handleGoBack(index)}
-                  >
-                    {item.name}
-                  </span>
-                </React.Fragment>
-              ))}
-            </div>
-
-            {/* 新增按钮 */}
-            <Button
-              type="primary"
-              size="small"
-              icon={<PlusOutlined />}
-              onClick={() => setAddModalVisible(true)}
-              style={{
-                fontSize: '10px',
-                height: '24px',
-                padding: '0 8px',
-              }}
-            >
-              {t('addRegion')}
-            </Button>
-          </div>
-        </div>
-      }
-      open={visible}
-      onCancel={onCancel}
-      width={900}
-      footer={null}
-      styles={{ padding: '6px' }}
-      closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
-    >
-      {/* 行政区划表格 */}
-      <Spin spinning={loading}>
-        {regions.length > 0 ? (
-          <Table
-            components={components}
-            columns={getColumns()}
-            dataSource={filteredData}
-            size="small"
-            scroll={{ x: 'max-content', y: 300 }}
-            pagination={false}
-            rowKey="id"
-            style={{ fontSize: '10px' }}
-            className="super-compact-table resizable-table"
-            tableLayout="fixed"
-            sticky={true}
-            bordered
-          />
-        ) : (
-          <Empty description={<span style={{ fontSize: '10px' }}>暂无行政区划数据</span>} />
-        )}
-      </Spin>
-
-      {/* 新增表单弹窗 */}
+    <>
       <Modal
         title={
-          <div style={formStyles.modalTitle}>
-            {t('region', { type: currentRegion ? t('subRegion') : t('region') })}
+          <div>
+            {/* 维护人统计卡片 */}
+            <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
+              <Col span={24}>
+                <Card size="small" bodyStyle={{ padding: '4px' }}>
+                  <div
+                    style={{
+                      fontSize: '9px',
+                      marginBottom: '2px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '2px',
+                      color: '#666',
+                    }}
+                  >
+                    <TeamOutlined style={{ fontSize: '9px' }} />
+                    {t('dataContributors')}
+                  </div>
+                  <Spin spinning={maintainersLoading} size="small">
+                    <List
+                      size="small"
+                      grid={{ column: 6 }}
+                      dataSource={maintainers}
+                      style={{ margin: 0 }}
+                      renderItem={(item) => (
+                        <List.Item style={{ padding: '2px' }}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '2px',
+                              fontSize: '9px',
+                            }}
+                          >
+                            <Avatar
+                              src={item.avatar}
+                              size={14}
+                              style={{
+                                backgroundColor: !item.avatar ? '#1890ff' : undefined,
+                                fontSize: '8px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                              }}
+                            >
+                              {!item.avatar ? item.username.charAt(0).toUpperCase() : null}
+                            </Avatar>
+                            <span
+                              style={{
+                                flex: '1',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                                maxWidth: '40px',
+                              }}
+                            >
+                              {item.username}
+                            </span>
+                            <Tag
+                              color="blue"
+                              style={{
+                                fontSize: '8px',
+                                lineHeight: '12px',
+                                height: '14px',
+                                padding: '0 2px',
+                                margin: 0,
+                                flexShrink: 0,
+                              }}
+                            >
+                              {item.count}
+                            </Tag>
+                          </div>
+                        </List.Item>
+                      )}
+                    />
+                  </Spin>
+                </Card>
+              </Col>
+            </Row>
+
+            {/* 国家统计卡片 */}
+            <CountryStatisticsCard country={country} />
+
+            {/* 四个指标统计卡片 */}
+            <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
+              <Col span={6}>
+                <Card size="small" bodyStyle={{ padding: '6px' }}>
+                  <Statistic
+                    title={<span style={{ fontSize: '10px' }}>{t('unemploymentRate')}</span>}
+                    value={country?.unemploymentRate}
+                    prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
+                    valueStyle={{ fontSize: '12px' }}
+                    formatter={(value) => `${value}%`}
+                  />
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card size="small" bodyStyle={{ padding: '6px' }}>
+                  <Statistic
+                    title={<span style={{ fontSize: '10px' }}>{t('educationLevel')}</span>}
+                    value={country?.educationLevel}
+                    prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                    valueStyle={{ fontSize: '12px' }}
+                    formatter={(value) => value?.toFixed(1)}
+                  />
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card size="small" bodyStyle={{ padding: '6px' }}>
+                  <Statistic
+                    title={<span style={{ fontSize: '10px' }}>{t('healthcareLevel')}</span>}
+                    value={country?.healthcareLevel}
+                    prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                    valueStyle={{ fontSize: '12px' }}
+                    formatter={(value) => value?.toFixed(1)}
+                  />
+                </Card>
+              </Col>
+              <Col span={6}>
+                <Card size="small" bodyStyle={{ padding: '6px' }}>
+                  <Statistic
+                    title={<span style={{ fontSize: '10px' }}>{t('internetPenetration')}</span>}
+                    value={country?.internetPenetrationRate}
+                    prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
+                    valueStyle={{ fontSize: '12px' }}
+                    formatter={(value) => `${value}%`}
+                  />
+                </Card>
+              </Col>
+            </Row>
+
+            {/* 行政区划统计卡片 */}
+            <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
+              <Col span={8}>
+                <Card size="small" bodyStyle={{ padding: '6px' }}>
+                  <Statistic
+                    title={
+                      <span style={{ fontSize: '10px' }}>
+                        {currentRegion ? t('subRegionsCount') : t('regionsCount')}
+                      </span>
+                    }
+                    value={regions.length}
+                    prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
+                    valueStyle={{ fontSize: '12px' }}
+                  />
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card size="small" bodyStyle={{ padding: '6px' }}>
+                  <Statistic
+                    title={<span style={{ fontSize: '10px' }}>{t('totalPopulation')}</span>}
+                    value={regions.reduce((sum, region) => sum + (region.population || 0), 0)}
+                    prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
+                    valueStyle={{ fontSize: '12px' }}
+                    formatter={(value) => `${(value / 10000).toFixed(2)}${t('tenThousand')}`}
+                  />
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card size="small" bodyStyle={{ padding: '6px' }}>
+                  <Statistic
+                    title={<span style={{ fontSize: '10px' }}>{t('totalArea')}</span>}
+                    value={regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0)}
+                    prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
+                    valueStyle={{ fontSize: '12px' }}
+                    formatter={(value) => `${value.toLocaleString()} km²`}
+                  />
+                </Card>
+              </Col>
+            </Row>
+
+            {/* 面包屑和按钮 */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {/* 面包屑导航 */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {breadcrumb.map((item, index) => (
+                  <React.Fragment key={item.id}>
+                    {index > 0 && <span>/</span>}
+                    <span
+                      style={{ cursor: 'pointer', color: '#1890ff' }}
+                      onClick={() => handleGoBack(index)}
+                    >
+                      {item.name}
+                    </span>
+                  </React.Fragment>
+                ))}
+              </div>
+
+              {/* 新增按钮 */}
+              <Button
+                type="primary"
+                size="small"
+                icon={<PlusOutlined />}
+                onClick={handleAddModalOpen}
+                style={{
+                  fontSize: '10px',
+                  height: '24px',
+                  padding: '0 8px',
+                }}
+              >
+                {t('addRegion')}
+              </Button>
+            </div>
           </div>
         }
-        open={addModalVisible}
-        onCancel={() => {
-          setAddModalVisible(false);
-          addForm.resetFields();
-        }}
-        onOk={() => addForm.submit()}
-        width={400}
-        style={{ padding: '8px' }}
-        destroyOnClose
+        open={visible}
+        onCancel={onCancel}
+        width={900}
+        footer={null}
+        styles={{ padding: '6px' }}
+        closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
       >
-        <Form form={addForm} onFinish={handleAdd} layout="vertical" size="small">
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('regionCode')}</span>}
-                name="code"
-                rules={[{ required: true, message: t('pleaseInputCode') }]}
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('regionCodePlaceholder')} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('countryCode')}</span>}
-                name="countryCode"
-                rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('countryCodePlaceholder')} />
-              </Form.Item>
-            </Col>
-          </Row>
+        {/* 行政区划表格 */}
+        <Spin spinning={loading}>
+          {regions.length > 0 ? (
+            <Table
+              components={components}
+              columns={getColumns()}
+              dataSource={filteredData}
+              size="small"
+              scroll={{ x: 'max-content', y: 300 }}
+              pagination={false}
+              rowKey="id"
+              style={{ fontSize: '10px' }}
+              className="super-compact-table resizable-table"
+              tableLayout="fixed"
+              sticky={true}
+              bordered
+            />
+          ) : (
+            <Empty description={<span style={{ fontSize: '10px' }}>暂无行政区划数据</span>} />
+          )}
+        </Spin>
 
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('localName')}</span>}
-                name="localName"
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('localNamePlaceholder')} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('name')}</span>}
-                name="name"
-                rules={[{ required: true, message: t('pleaseInputName') }]}
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('namePlaceholder')} />
-              </Form.Item>
-            </Col>
-          </Row>
+        {/* 新增表单弹窗 */}
+        <Modal
+          title={
+            <div style={formStyles.modalTitle}>
+              {t('region', { type: currentRegion ? t('subRegion') : t('region') })}
+            </div>
+          }
+          open={addModalVisible}
+          onCancel={() => {
+            setAddModalVisible(false);
+            addForm.resetFields();
+          }}
+          onOk={() => addForm.submit()}
+          width={400}
+          style={{ padding: '8px' }}
+          destroyOnClose
+        >
+          <Form
+            form={addForm}
+            onFinish={handleAdd}
+            layout="vertical"
+            size="small"
+          >
+            <Row gutter={8}>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('regionCode')}</span>}
+                  name="code"
+                  rules={[{ required: true, message: t('pleaseInputCode') }]}
+                  style={formStyles.formItem}
+                  tooltip={t('regionCodeTip')}
+                >
+                  <Input style={formStyles.input} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('countryCode')}</span>}
+                  name="countryCode"
+                  rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
+                  style={formStyles.formItem}
+                  tooltip={t('countryCodeTip')}
+                >
+                  <Input style={formStyles.input} />
+                </Form.Item>
+              </Col>
+            </Row>
 
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('shortName')}</span>}
-                name="shortName"
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('shortNamePlaceholder')} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('type')}</span>}
-                name="type"
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('typePlaceholder')} />
-              </Form.Item>
-            </Col>
-          </Row>
+            <Row gutter={8}>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('localName')}</span>}
+                  name="localName"
+                  style={formStyles.formItem}
+                  tooltip={t('localNameTip')}
+                >
+                  <Input style={formStyles.input} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('name')}</span>}
+                  name="name"
+                  rules={[{ required: true, message: t('pleaseInputName') }]}
+                  style={formStyles.formItem}
+                  tooltip={t('nameTip')}
+                >
+                  <Input style={formStyles.input} />
+                </Form.Item>
+              </Col>
+            </Row>
 
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('capital')}</span>}
-                name="capital"
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('capitalPlaceholder')} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('population')}</span>}
-                name="population"
-                style={formStyles.formItem}
-              >
-                <Input
-                  type="number"
-                  style={formStyles.input}
-                  placeholder={t('populationPlaceholder')}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
+            <Row gutter={8}>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('shortName')}</span>}
+                  name="shortName"
+                  style={formStyles.formItem}
+                  tooltip={t('shortNameTip')}
+                >
+                  <Input style={formStyles.input} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('type')}</span>}
+                  name="type"
+                  style={formStyles.formItem}
+                  tooltip={t('typeTip')}
+                >
+                  <Input
+                    style={formStyles.input}
+                    onChange={handleTypeChange}
+                    list="typeHistory"
+                    allowClear
+                  />
+                  <datalist id="typeHistory">
+                    {Object.keys(historicalInputs).map(type => (
+                      <option key={type} value={type} />
+                    ))}
+                  </datalist>
+                </Form.Item>
+              </Col>
+            </Row>
 
-          <Row gutter={8}>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('areaKm2')}</span>}
-                name="areaKm2"
-                style={formStyles.formItem}
-              >
-                <Input type="number" style={formStyles.input} placeholder={t('areaPlaceholder')} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span style={formStyles.label}>{t('region')}</span>}
-                name="region"
-                style={formStyles.formItem}
-              >
-                <Input style={formStyles.input} placeholder={t('regionPlaceholder')} />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
+            <Row gutter={8}>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('capital')}</span>}
+                  name="capital"
+                  style={formStyles.formItem}
+                  tooltip={t('capitalTip')}
+                >
+                  <Input style={formStyles.input} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('population')}</span>}
+                  name="population"
+                  style={formStyles.formItem}
+                  tooltip={t('populationTip')}
+                >
+                  <Input type="number" style={formStyles.input} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={8}>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('areaKm2')}</span>}
+                  name="areaKm2"
+                  style={formStyles.formItem}
+                  tooltip={t('areaKm2Tip')}
+                >
+                  <Input type="number" style={formStyles.input} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={<span style={formStyles.label}>{t('region')}</span>}
+                  name="region"
+                  style={formStyles.formItem}
+                  tooltip={t('regionTip')}
+                >
+                  <Input style={formStyles.input} />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </Modal>
+
+        {/* 使用新的编辑弹窗组件 */}
+        <EditRegionModal
+          visible={editModalVisible}
+          onCancel={() => {
+            setEditModalVisible(false);
+            editForm.resetFields();
+          }}
+          onOk={handleUpdate}
+          form={editForm}
+        />
+        <style jsx>{`
+          ${Object.entries(styles)
+            .map(
+              ([selector, rules]) =>
+                `${selector} {
+              ${Object.entries(rules)
+                .map(([prop, value]) => `${prop}: ${value};`)
+                .join('\n')}
+            }`,
+            )
+            .join('\n')}
+        `}</style>
       </Modal>
 
-      {/* 使用新的编辑弹窗组件 */}
-      <EditRegionModal
-        visible={editModalVisible}
-        onCancel={() => {
-          setEditModalVisible(false);
-          editForm.resetFields();
-        }}
-        onOk={handleUpdate}
-        form={editForm}
-      />
-      <style jsx>{`
-        ${Object.entries(styles)
-          .map(
-            ([selector, rules]) =>
-              `${selector} {
-            ${Object.entries(rules)
-              .map(([prop, value]) => `${prop}: ${value};`)
-              .join('\n')}
-          }`,
-          )
-          .join('\n')}
-      `}</style>
-    </Modal>
+      {/* 添加 Retina 适配样式 */}
+      <style jsx global>{retinaStyles}</style>
+    </>
   );
 };
 
