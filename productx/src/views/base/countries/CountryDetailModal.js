@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm, Descriptions, Avatar, List, Tag } from 'antd';
-import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined, DeleteOutlined, CloseOutlined } from '@ant-design/icons';
+import { Modal, Table, Card, Statistic, Row, Col, Spin, Empty, Button, Input, Form, Switch, Popconfirm, Descriptions, Avatar, List, Tag, message } from 'antd';
+import { GlobalOutlined, TeamOutlined, EnvironmentOutlined, SearchOutlined, PlusOutlined, DeleteOutlined, CloseOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import {useTranslation} from 'react-i18next'; // 引入 useTranslation
 import { Resizable } from 'react-resizable';
@@ -68,28 +68,42 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   });
   const [maintainers, setMaintainers] = useState([]);
   const [maintainersLoading, setMaintainersLoading] = useState(false);
+  const [historicalInputs, setHistoricalInputs] = useState({});
+  const [lastSubmittedType, setLastSubmittedType] = useState(null);
+
+  // 在组件加载时获取历史记录和最后提交的类型
+  useEffect(() => {
+    const savedHistory = localStorage.getItem('regionFormHistory');
+    const lastType = localStorage.getItem('lastSubmittedType');
+    
+    if (savedHistory) {
+      const history = JSON.parse(savedHistory);
+      setHistoricalInputs(history);
+      
+      if (lastType && history[lastType]) {
+        setLastSubmittedType(lastType);
+      }
+    }
+  }, []);
 
   // 修改表单样式定义
   const formStyles = {
     label: {
-      fontSize: '12px',
       color: '#000000',
       marginBottom: '2px'
     },
     input: {
-      fontSize: '12px',
       height: '24px',
-      color: '#000000 !important',  // 添加 !important 确保不被覆盖
-      backgroundColor: '#ffffff !important',  // 确保背景色也是白色
+      color: '#000000 !important',
+      backgroundColor: '#ffffff !important',
       '&::placeholder': {
-        color: '#999999'  // 保持 placeholder 颜色较浅
+        color: '#999999'
       }
     },
     formItem: {
       marginBottom: '4px'
     },
     modalTitle: {
-      fontSize: '12px',
       color: '#000000'
     }
   };
@@ -453,17 +467,53 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   const handleAdd = async (values) => {
     try {
       const currentParentId = currentRegion ? currentRegion.id : country.id;
+      console.log('Form values before submit:', values);
+      
       const params = {
         ...values,
-        parentId: currentParentId
+        parentId: currentParentId,
+        type: values.type ? values.type.trim() : 'ADMINISTRATIVE_DIVISION'
       };
 
       await api.post('/manage/global-addresses/create', params);
+      
+      if (values.type) {
+        const newHistory = {
+          ...historicalInputs,
+          [values.type]: {
+            ...values,
+            timestamp: Date.now()
+          }
+        };
+        localStorage.setItem('regionFormHistory', JSON.stringify(newHistory));
+        setHistoricalInputs(newHistory);
+        // 保存最后提交的类型
+        localStorage.setItem('lastSubmittedType', values.type);
+        setLastSubmittedType(values.type);
+      }
+
+      message.success(t('addSuccess'));
       setAddModalVisible(false);
       addForm.resetFields();
       fetchRegions(currentParentId);
     } catch (error) {
       console.error('新增失败:', error);
+      message.error(t('addFailed'));
+    }
+  };
+
+  // 修改类型变更处理函数
+  const handleTypeChange = (e) => {
+    const type = e.target.value.trim();
+    console.log('Type input changed:', type);
+    
+    addForm.setFieldValue('type', type);
+    
+    const historicalData = historicalInputs[type];
+    if (historicalData) {
+      console.log('Found historical data:', historicalData);
+      const { code, name, id, timestamp, ...autoFillData } = historicalData;
+      addForm.setFieldsValue(autoFillData);
     }
   };
 
@@ -486,6 +536,28 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     } finally {
       setMaintainersLoading(false);
     }
+  };
+
+  // 修改模态框打开处理函数
+  const handleAddModalOpen = () => {
+    addForm.resetFields(); // 先清空表单
+    
+    // 如果有最后提交的类型，自动填充相关数据
+    if (lastSubmittedType && historicalInputs[lastSubmittedType]) {
+      const lastData = historicalInputs[lastSubmittedType];
+      console.log('Auto filling last submitted data:', lastData);
+      
+      // 排除不需要自动填充的字段
+      const { code, name, id, timestamp, ...autoFillData } = lastData;
+      
+      // 设置类型和其他数据
+      addForm.setFieldsValue({
+        type: lastSubmittedType,
+        ...autoFillData
+      });
+    }
+    
+    setAddModalVisible(true);
   };
 
   if (!country) return null;
@@ -682,9 +754,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               type="primary"
               size="small"
               icon={<PlusOutlined />}
-              onClick={() => setAddModalVisible(true)}
+              onClick={handleAddModalOpen}
               style={{
-                fontSize: '10px',
                 height: '24px',
                 padding: '0 8px'
               }}
@@ -699,7 +770,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       width={900}
       footer={null}
       styles={{ padding: '6px' }}
-      closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
+      closeIcon={<CloseOutlined />}
     >
       {/* 行政区划表格 */}
       <Spin spinning={loading}>
@@ -727,14 +798,11 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       <Modal
         title={
           <div style={formStyles.modalTitle}>
-            {t('region', { type: currentRegion ? t('subRegion') : t('region') })}
+            {t('addRegion', { type: currentRegion ? t('subRegion') : t('region') })}
           </div>
         }
         open={addModalVisible}
-        onCancel={() => {
-          setAddModalVisible(false);
-          addForm.resetFields();
-        }}
+        onCancel={() => setAddModalVisible(false)}
         onOk={() => addForm.submit()}
         width={400}
         style={{ padding: '8px' }}
@@ -754,10 +822,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 rules={[{ required: true, message: t('pleaseInputCode') }]}
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('regionCodePlaceholder')}
-                />
+                <Input style={formStyles.input} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -767,10 +832,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('countryCodePlaceholder')}
-                />
+                <Input style={formStyles.input} />
               </Form.Item>
             </Col>
           </Row>
@@ -782,10 +844,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="localName"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('localNamePlaceholder')}
-                />
+                <Input style={formStyles.input} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -795,10 +854,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 rules={[{ required: true, message: t('pleaseInputName') }]}
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('namePlaceholder')}
-                />
+                <Input style={formStyles.input} />
               </Form.Item>
             </Col>
           </Row>
@@ -810,10 +866,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="shortName"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('shortNamePlaceholder')}
-                />
+                <Input style={formStyles.input} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -824,8 +877,15 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               >
                 <Input
                   style={formStyles.input}
-                  placeholder={t('typePlaceholder')}
+                  onChange={handleTypeChange}
+                  list="typeHistory"
+                  allowClear
                 />
+                <datalist id="typeHistory">
+                  {Object.keys(historicalInputs).map(type => (
+                    <option key={type} value={type} />
+                  ))}
+                </datalist>
               </Form.Item>
             </Col>
           </Row>
@@ -837,10 +897,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="capital"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('capitalPlaceholder')}
-                />
+                <Input style={formStyles.input} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -849,11 +906,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="population"
                 style={formStyles.formItem}
               >
-                <Input
-                  type="number"
-                  style={formStyles.input}
-                  placeholder={t('populationPlaceholder')}
-                />
+                <Input type="number" style={formStyles.input} />
               </Form.Item>
             </Col>
           </Row>
@@ -865,11 +918,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="areaKm2"
                 style={formStyles.formItem}
               >
-                <Input
-                  type="number"
-                  style={formStyles.input}
-                  placeholder={t('areaPlaceholder')}
-                />
+                <Input type="number" style={formStyles.input} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -878,10 +927,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                 name="region"
                 style={formStyles.formItem}
               >
-                <Input
-                  style={formStyles.input}
-                  placeholder={t('regionPlaceholder')}
-                />
+                <Input style={formStyles.input} />
               </Form.Item>
             </Col>
           </Row>
