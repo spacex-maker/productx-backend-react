@@ -131,10 +131,6 @@ const UserList = () => {
                   name="id"
                   placeholder={t('userId')}
                   allowClear
-                  style={{
-                    width: '100px',
-                    fontSize: '10px'
-                  }}
                 />
               </Col>
               <Col>
@@ -272,17 +268,6 @@ const UserList = () => {
         onCancel={() => setIsDetailModalVisible(false)}
         selectedUser={selectedUser}
       />
-      <style jsx>{`
-        .search-container {
-          margin-bottom: 10px;
-        }
-
-        .search-container .ant-input {
-          font-size: 10px;
-        }
-
-        // 其他现有样式...
-      `}</style>
     </div>
   )
 }

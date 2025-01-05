@@ -401,9 +401,12 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
                   />
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col flex="auto">
                 <Form.Item name="timeRange" label="时间范围">
-                  <RangePicker showTime style={{ width: '100%' }} />
+                  <RangePicker 
+                    showTime 
+                    style={{ width: '100%', minWidth: '360px' }} 
+                  />
                 </Form.Item>
               </Col>
               <Col>
