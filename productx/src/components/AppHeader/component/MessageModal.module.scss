@@ -149,4 +149,65 @@
     font-size: 13px;
     line-height: 1;
   }
+}
+
+.userOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  line-height: 1;
+
+  .avatar, .avatarPlaceholder {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .avatarPlaceholder {
+    background-color: #f0f0f0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+  }
+
+  span {
+    line-height: 20px;
+    vertical-align: middle;
+  }
+}
+
+:global {
+  .ant-select-selection-item {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    line-height: 20px !important;
+
+    img, .avatarPlaceholder {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+  }
+} 
+
+.loadingOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+} 
+
+.readStatus {
+  cursor: default;
+  
+  &:hover {
+    opacity: 0.8;
+  }
 } 

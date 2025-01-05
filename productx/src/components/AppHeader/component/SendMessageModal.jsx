@@ -1,12 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Select, DatePicker, message, Upload, Button } from 'antd';
-import { UploadOutlined, UserOutlined, FileTextOutlined, TagsOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { Modal, Form, Input, Select, DatePicker, message, Upload, Button, Spin } from 'antd';
+import { UploadOutlined, UserOutlined, FileTextOutlined, TagsOutlined, ClockCircleOutlined, LoadingOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
+import styles from './MessageModal.module.scss';
 
 const { TextArea } = Input;
 const { Option } = Select;
+
+const UserOption = ({ avatar, label }) => (
+  <div className={styles.userOption}>
+    {avatar ? (
+      <img src={avatar} alt="avatar" className={styles.avatar} />
+    ) : (
+      <div className={styles.avatarPlaceholder}>
+        <UserOutlined style={{ fontSize: '12px', color: '#999' }} />
+      </div>
+    )}
+    <span>{label}</span>
+  </div>
+);
+
+const LoadingOption = () => (
+  <div className={styles.loadingOption}>
+    <Spin 
+      indicator={<LoadingOutlined style={{ fontSize: 16 }} spin />} 
+      size="small"
+    />
+    <span>加载中...</span>
+  </div>
+);
 
 const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
   const [form] = Form.useForm();
@@ -14,8 +38,8 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
   const [managers, setManagers] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [fetching, setFetching] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
-  // 使用 debounce 优化搜索请求
   const debouncedFetchManagers = debounce(async (search) => {
     if (!search) {
       setManagers([]);
@@ -37,28 +61,30 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
       }
     } catch (error) {
       console.error('获取管理员列表失败:', error);
+      message.error('获取管理员列表失败');
     } finally {
       setFetching(false);
     }
   }, 500);
 
-  // 清理 debounce
   useEffect(() => {
     return () => {
       debouncedFetchManagers.cancel();
     };
   }, []);
 
-  // 模态框关闭时重置状态
   useEffect(() => {
     if (!visible) {
       form.resetFields();
       setFileList([]);
       setManagers([]);
+      setSearchText('');
+      setFetching(false);
     }
   }, [visible]);
 
   const handleSearch = (search) => {
+    setSearchText(search);
     debouncedFetchManagers(search);
   };
 
@@ -123,27 +149,27 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
             filterOption={false}
             onSearch={handleSearch}
             loading={fetching}
-            options={managers}
-            notFoundContent={fetching ? '加载中...' : (managers.length === 0 ? '未找到' : null)}
             allowClear
+            optionLabelProp="label"
+            notFoundContent={
+              fetching ? (
+                <LoadingOption />
+              ) : searchText && managers.length === 0 ? (
+                '未找到相关用户'
+              ) : null
+            }
+            onClear={() => {
+              setSearchText('');
+              setManagers([]);
+            }}
           >
             {managers.map(manager => (
-              <Select.Option key={manager.value} value={manager.value}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {manager.avatar && (
-                    <img 
-                      src={manager.avatar} 
-                      alt="avatar" 
-                      style={{ 
-                        width: '20px', 
-                        height: '20px', 
-                        borderRadius: '50%',
-                        objectFit: 'cover'
-                      }} 
-                    />
-                  )}
-                  <span>{manager.label}</span>
-                </div>
+              <Select.Option 
+                key={manager.value} 
+                value={manager.value}
+                label={manager.label}
+              >
+                <UserOption avatar={manager.avatar} label={manager.label} />
               </Select.Option>
             ))}
           </Select>

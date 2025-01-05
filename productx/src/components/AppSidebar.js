@@ -51,7 +51,6 @@ const BrandContainer = styled(CSidebarBrand)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #323a49;
 `;
 
 const BrandText = styled.div`
