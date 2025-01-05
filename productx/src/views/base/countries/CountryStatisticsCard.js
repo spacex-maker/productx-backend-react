@@ -166,7 +166,7 @@ const CountryStatisticsCard = ({ country }) => {
                       fontSize: '10px !important'
                     }}
                   >
-                    <span style={{ 
+                    <span style={{
                       fontSize: '10px !important',
                       whiteSpace: 'pre-wrap',
                       wordBreak: 'break-word'
@@ -221,7 +221,7 @@ const CountryStatisticsCard = ({ country }) => {
                     fontSize: '10px !important'
                   }}
                 >
-                  <span style={{ 
+                  <span style={{
                     fontSize: '10px !important',
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-word'

@@ -317,13 +317,7 @@ textarea::placeholder,
 
 
 
-/* 输入框悬浮状态 */
-.ant-input-outlined:hover,
-:where(.css-dev-only-do-not-override-1x0dypw).ant-input-outlined:hover,
-:where(.css-*).ant-input-outlined:hover {
-  border-color: var(--cui-primary) !important;
-  background-color: var(--cui-input-bg) !important;
-}
+
 
 /* 输入框聚焦状态 */
 .ant-input-outlined:focus,
@@ -471,3 +465,21 @@ img.no-radius {
     color: var(--cui-btn-danger-active-color) !important;
   }
 }
+
+// 让 Ant Design 的 Descriptions 组件继承 CoreUI 的主题
+.ant-descriptions {
+  @extend .text-body;
+}
+
+// 覆盖所有可能的 Ant Design 前缀
+[class*='ant-descriptions'] {
+  .ant-descriptions-item-label,
+  .ant-descriptions-item-content {
+    color: inherit !important;
+  }
+}
+
+
+
+
+

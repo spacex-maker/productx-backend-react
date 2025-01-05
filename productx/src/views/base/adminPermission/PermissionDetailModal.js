@@ -91,10 +91,6 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
           font-weight: 500 !important;
         }
 
-        .ant-descriptions-item-content {
-          color: rgba(0, 0, 0, 0.65) !important;
-        }
-
         .ant-modal-close {
           height: 40px !important;
           width: 40px !important;
@@ -112,4 +108,4 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
   );
 };
 
-export default PermissionDetailModal; 
+export default PermissionDetailModal;
