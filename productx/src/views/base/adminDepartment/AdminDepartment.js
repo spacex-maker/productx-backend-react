@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Button, List, Popconfirm, Switch, Col, Row, Modal, Form } from 'antd';
+import { Input, Button, List, Popconfirm, Switch, Col, Row, Modal, Form, Descriptions } from 'antd';
 import api from 'src/axiosInstance';
 import { CButton, CListGroup, CListGroupItem } from '@coreui/react';
 import Pagination from 'src/components/common/Pagination';
@@ -25,6 +25,7 @@ const AdminDepartments = () => {
   const [isGlobalSearch, setIsGlobalSearch] = useState(false);
   const [isAddDepartmentModalVisible, setIsAddDepartmentModalVisible] = useState(false);
   const [currentDepartmentName, setCurrentDepartmentName] = useState('总公司');
+  const [currentDepartment, setCurrentDepartment] = useState(null);
 
   const showAddDepartmentModal = () => setIsAddDepartmentModalVisible(true);
   const hideAddDepartmentModal = () => setIsAddDepartmentModalVisible(false);
@@ -50,12 +51,14 @@ const AdminDepartments = () => {
       });
       setDepartments(response);
 
-      // 如果不是根部门，获取当前部门名称
+      // 如果不是根部门，获取当前部门详情
       if (id !== 1) {
         const currentDept = await api.get(`/manage/admin-departments/detail?id=${id}`);
         setCurrentDepartmentName(currentDept.name);
+        setCurrentDepartment(currentDept);
       } else {
         setCurrentDepartmentName('总公司');
+        setCurrentDepartment(null);
       }
     } catch (error) {
       console.error('Error fetching departments:', error);
@@ -178,6 +181,24 @@ const AdminDepartments = () => {
           </CListGroup>
         </div>
         <div style={{ flex: 1, padding: '0px 10px' }}>
+          {currentDepartment && (
+            <div style={{ marginBottom: '16px', background: '#f5f5f5', padding: '12px', borderRadius: '4px' }}>
+              <Descriptions size="small" column={3} bordered>
+                <Descriptions.Item label="部门名称">{currentDepartment.name}</Descriptions.Item>
+                <Descriptions.Item label="部门经理">{currentDepartment.managerName}</Descriptions.Item>
+                <Descriptions.Item label="创建时间">{currentDepartment.createTime}</Descriptions.Item>
+                <Descriptions.Item label="联系电话">{currentDepartment.contactNumber || '-'}</Descriptions.Item>
+                <Descriptions.Item label="邮箱">{currentDepartment.email || '-'}</Descriptions.Item>
+                <Descriptions.Item label="位置">{currentDepartment.location || '-'}</Descriptions.Item>
+                {currentDepartment.description && (
+                  <Descriptions.Item label="描述" span={3}>
+                    {currentDepartment.description}
+                  </Descriptions.Item>
+                )}
+              </Descriptions>
+            </div>
+          )}
+
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
             <Row gutter={[16, 16]}>
               <Col>
