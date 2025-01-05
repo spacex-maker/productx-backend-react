@@ -688,5 +688,21 @@
   "subRegionsCount": "عدد التقسيمات الإدارية الفرعية",
   "totalPopulation": "إجمالي السكان",
   "totalArea": "إجمالي المساحة",
-  "tenThousand": "عشرة آلاف"
+  "tenThousand": "عشرة آلاف",
+
+  "regionCodeTip": "رمز المنطقة الإدارية (الدولة، المحافظة، المدينة، إلخ.)",
+  "countryCodeTip": "رمز الدولة (مثل: CN للصين، US للولايات المتحدة)",
+  "localNameTip": "الاسم باللغة المحلية",
+  "nameTip": "اسم المنطقة الإدارية",
+  "shortNameTip": "اسم مختصر للمنطقة الإدارية (اختياري)",
+  "typeTip": "النوع (الدولة، المحافظة، المدينة، المنطقة، إلخ.)",
+  "capitalTip": "العاصمة أو المدينة الرئيسية (إذا كانت تنطبق)",
+  "populationTip": "عدد السكان",
+  "areaKm2Tip": "المساحة (بالكيلومترات المربعة)",
+  "regionTip": "المنطقة (مثل: شمال الصين، جنوب الصين، إلخ.)",
+
+  "usersCanContactThemselves": "يمكن للمستخدمين التواصل بأنفسهم",
+  "callTheErrandRunnerToDeliver": "اتصل بالمرسال للتوصيل",
+  "expressDelivery": "توصيل سريع",
+  "logisticsDelivery": "توصيل لوجستي"
 }

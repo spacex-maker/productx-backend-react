@@ -699,5 +699,21 @@
   "subRegionsCount": "Numero di Sotto-Region",
   "totalPopulation": "Popolazione Totale",
   "totalArea": "Area Totale",
-  "tenThousand": "Diecimila"
+  "tenThousand": "Diecimila",
+
+  "regionCodeTip": "Codice della regione amministrativa (paese, provincia, città, ecc.)",
+  "countryCodeTip": "Codice paese (es.: CN per la Cina, US per gli Stati Uniti)",
+  "localNameTip": "Nome nella lingua locale",
+  "nameTip": "Nome della regione amministrativa",
+  "shortNameTip": "Nome breve della regione amministrativa (opzionale)",
+  "typeTip": "Tipo (paese, provincia, città, distretto, ecc.)",
+  "capitalTip": "Capitale o città principale (se applicabile)",
+  "populationTip": "Popolazione",
+  "areaKm2Tip": "Area (chilometri quadrati)",
+  "regionTip": "Regione (es.: Cina del Nord, Cina del Sud, ecc.)",
+
+  "usersCanContactThemselves": "Gli utenti possono contattarsi da soli",
+  "callTheErrandRunnerToDeliver": "Chiama il fattorino per consegnare",
+  "expressDelivery": "Consegna espressa",
+  "logisticsDelivery": "Consegna logistica"
 }

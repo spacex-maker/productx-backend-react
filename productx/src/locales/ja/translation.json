@@ -706,5 +706,21 @@
   "subRegionsCount": "下位行政区画数",
   "totalPopulation": "総人口",
   "totalArea": "総面積",
-  "tenThousand": "万"
+  "tenThousand": "万",
+
+  "regionCodeTip": "行政区画コード（国、都道府県、市区町村など）",
+  "countryCodeTip": "国コード（例：中国はCN、アメリカはUS）",
+  "localNameTip": "現地語の名称",
+  "nameTip": "行政区画の名称",
+  "shortNameTip": "行政区画の略称（任意）",
+  "typeTip": "種類（国、都道府県、市区町村など）",
+  "capitalTip": "首都または主要都市（該当する場合）",
+  "populationTip": "人口",
+  "areaKm2Tip": "面積（平方キロメートル）",
+  "regionTip": "地域（例：華北、華南など）",
+
+  "usersCanContactThemselves": "ユーザーは自分で連絡できます",
+  "callTheErrandRunnerToDeliver": "お使いランナーに配達を依頼する",
+  "expressDelivery": "速達配送",
+  "logisticsDelivery": "物流配送"
 }
