@@ -323,9 +323,7 @@ const ListUserProfile = () => {
         .search-container {
           margin-bottom: 10px;
         }
-        .search-container .ant-input {
-          font-size: 10px;
-        }
+
       `}</style>
     </div>
   );

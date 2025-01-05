@@ -129,12 +129,6 @@
   gap: 10px; /* 间隔 */
 }
 
-.search-box {
-  width: 200px;
-  font-size: 10px; /* 输入框字体大小 */
-  position: relative;
-}
-
 .search-box::placeholder {
   color: #999;
   font-size: 12px; /* placeholder 字体大小 */
@@ -319,23 +313,9 @@ textarea::placeholder,
   margin-top: 1px !important;     // 减小错误提示的上边距
 }
 
-.ant-col {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  font-size: 10px; /* 修改为 10px */
-  box-sizing: border-box;
-}
 
-/* 输入框主题样式 */
-.ant-input-outlined,
-:where(.css-dev-only-do-not-override-1x0dypw).ant-input-outlined,
-:where(.css-*).ant-input-outlined {
-  background-color: var(--cui-input-bg) !important;
-  border-width: 1px !important;
-  border-style: solid !important;
-  border-color: var(--cui-border-color) !important;
-  transition: all 0.3s !important;
-  height: 24px !important;
-}
+
+
 
 /* 输入框悬浮状态 */
 .ant-input-outlined:hover,
@@ -381,20 +361,6 @@ textarea::placeholder,
   color: var(--cui-dark-body-color, #fff) !important;
 }
 
-/* 占位符文本颜色 */
-.ant-input::placeholder,
-.ant-select-selection-placeholder {
-  color: var(--cui-text-muted) !important;
-  font-size: 10px !important;
-}
-
-/* 清除图标颜色 */
-.ant-input-clear-icon,
-.ant-select-clear {
-  color: var(--cui-text-muted) !important;
-  font-size: 10px !important;
-}
-
 
 
 .dropdown-menu{
@@ -424,15 +390,6 @@ textarea::placeholder,
 // 暗色主题
 [data-theme='dark'] {
   .ant-input-search {
-    .ant-input {
-      background-color: var(--cui-dark-input-bg, #1f1f1f) !important;
-      color: var(--cui-dark-body-color, #fff) !important;
-      border-color: var(--cui-dark-border-color, #444) !important;
-
-      &::placeholder {
-        color: var(--cui-dark-text-muted, #666) !important;
-      }
-    }
 
     .ant-input-group-addon {
       .ant-btn {
@@ -442,15 +399,6 @@ textarea::placeholder,
       }
     }
   }
-}
-
-/* 输入框样式 */
-.ant-input,
-:where(.css-dev-only-do-not-override-1wwf28x).ant-input,
-.css-dev-only-do-not-override-1wwf28x.ant-input {
-  color: var(--cui-body-color) !important;
-  background-color: var(--cui-input-bg) !important;
-  border-color: var(--cui-border-color) !important;
 }
 
 /* 输入框占位符 */
@@ -467,35 +415,6 @@ textarea::placeholder,
   color: var(--cui-dark-body-color) !important;
   background-color: var(--cui-dark-input-bg) !important;
   border-color: var(--cui-dark-border-color) !important;
-}
-
-/* 模态框内的输入框样式 */
-.ant-modal {
-  .ant-input,
-  :where(.css-dev-only-do-not-override-1wwf28x).ant-input,
-  .css-dev-only-do-not-override-1wwf28x.ant-input {
-    color: rgba(0, 0, 0, 0.88) !important;  // 固定黑色
-    background-color: #ffffff !important;    // 固定白色背景
-    border-color: #d9d9d9 !important;       // antd 默认边框色
-    font-size: 10px !important;
-  }
-
-  .ant-input::placeholder,
-  :where(.css-dev-only-do-not-override-1wwf28x).ant-input::placeholder,
-  .css-dev-only-do-not-override-1wwf28x.ant-input::placeholder {
-    color: rgba(0, 0, 0, 0.25) !important;  // antd 默认占位符颜色
-  }
-
-  /* Select 下拉框样式 */
-  .ant-select-selector {
-    color: rgba(0, 0, 0, 0.88) !important;
-    background-color: #ffffff !important;
-    border-color: #d9d9d9 !important;
-  }
-
-  .ant-select-selection-placeholder {
-    color: rgba(0, 0, 0, 0.25) !important;
-  }
 }
 
 /* 全局图片圆角样式 */
