@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Button, List, Popconfirm, Switch, Col, Row, Modal, Form, Descriptions } from 'antd';
+import { Input, Button, List, Popconfirm, Switch, Col, Row, Modal, Form, Descriptions, Badge, Tag, message } from 'antd';
 import api from 'src/axiosInstance';
 import { CButton, CListGroup, CListGroupItem } from '@coreui/react';
 import Pagination from 'src/components/common/Pagination';
@@ -10,6 +10,8 @@ import CIcon from '@coreui/icons-react';
 import { cilArrowLeft, cilCaretLeft, cilPlus } from '@coreui/icons';
 import ManagerCreateFormModal from 'src/views/base/manager/ManagerCreateFormModal';
 import AddDepartmentManagerModal from 'src/views/base/adminDepartment/AddDepartmentManagerModal';
+import ManagerSearchInput from "src/views/common/ManagerSearchInput";
+import { useSelector } from 'react-redux';
 
 const AdminDepartments = () => {
   const [departments, setDepartments] = useState([]);
@@ -26,6 +28,10 @@ const AdminDepartments = () => {
   const [isAddDepartmentModalVisible, setIsAddDepartmentModalVisible] = useState(false);
   const [currentDepartmentName, setCurrentDepartmentName] = useState('总公司');
   const [currentDepartment, setCurrentDepartment] = useState(null);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [editForm] = Form.useForm();
+  const [isCurrentUserManager, setIsCurrentUserManager] = useState(false);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   const showAddDepartmentModal = () => setIsAddDepartmentModalVisible(true);
   const hideAddDepartmentModal = () => setIsAddDepartmentModalVisible(false);
@@ -43,6 +49,13 @@ const AdminDepartments = () => {
   useEffect(() => {
     fetchEmployees(parentId, searchManagerTerm, isGlobalSearch).then((r) => {});
   }, [parentId, currentPage, pageSize, searchTerm, searchManagerTerm, isGlobalSearch]);
+
+  // 检查当前用户是否是部门经理
+  useEffect(() => {
+    if (currentDepartment && currentUser) {
+      setIsCurrentUserManager(currentUser.username === currentDepartment.managerUsername);
+    }
+  }, [currentDepartment, currentUser]);
 
   const fetchDepartments = async (id) => {
     try {
@@ -130,6 +143,38 @@ const AdminDepartments = () => {
     department.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
   const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows();
+
+  // 打开编辑模态框
+  const handleEdit = () => {
+    editForm.setFieldsValue({
+      name: currentDepartment.name,
+      description: currentDepartment.description,
+      managerName: currentDepartment.managerUsername,
+      contactNumber: currentDepartment.contactNumber,
+      email: currentDepartment.email,
+      location: currentDepartment.location,
+      status: currentDepartment.status
+    });
+    setIsEditModalVisible(true);
+  };
+
+  // 处理部门更新
+  const handleUpdate = async () => {
+    try {
+      const values = await editForm.validateFields();
+      await api.post('/manage/admin-departments/update', {
+        ...values,
+        id: currentDepartment.id
+      });
+      message.success('部门信息更新成功');
+      setIsEditModalVisible(false);
+      fetchDepartments(parentId);
+    } catch (error) {
+      console.error('Error updating department:', error);
+      message.error('更新失败：' + (error.response?.data?.message || error.message));
+    }
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', height: '100vh' }}>
@@ -182,20 +227,104 @@ const AdminDepartments = () => {
         </div>
         <div style={{ flex: 1, padding: '0px 10px' }}>
           {currentDepartment && (
-            <div style={{ marginBottom: '16px', background: '#f5f5f5', padding: '12px', borderRadius: '4px' }}>
-              <Descriptions size="small" column={3} bordered>
-                <Descriptions.Item label="部门名称">{currentDepartment.name}</Descriptions.Item>
-                <Descriptions.Item label="部门经理">{currentDepartment.managerName}</Descriptions.Item>
-                <Descriptions.Item label="创建时间">{currentDepartment.createTime}</Descriptions.Item>
-                <Descriptions.Item label="联系电话">{currentDepartment.contactNumber || '-'}</Descriptions.Item>
-                <Descriptions.Item label="邮箱">{currentDepartment.email || '-'}</Descriptions.Item>
-                <Descriptions.Item label="位置">{currentDepartment.location || '-'}</Descriptions.Item>
-                {currentDepartment.description && (
-                  <Descriptions.Item label="描述" span={3}>
-                    {currentDepartment.description}
-                  </Descriptions.Item>
-                )}
-              </Descriptions>
+            <div className="card mb-2">
+              <div className="card-body p-2">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                  <div className="text-medium-emphasis small">
+                    {isCurrentUserManager ? '您是当前部门的管理员' : ''}
+                  </div>
+                  {isCurrentUserManager && (
+                    <button 
+                      className="btn btn-primary btn-sm" 
+                      onClick={handleEdit}
+                    >
+                      编辑部门信息
+                    </button>
+                  )}
+                </div>
+                <div className="row g-2">
+                  <div className="col-12 col-md-3">
+                    <div className="p-1 border rounded d-flex flex-column">
+                      <div className="text-medium-emphasis small mb-1">部门名称</div>
+                      <div className="fw-semibold small">{currentDepartment.name}</div>
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-3">
+                    <div className="p-1 border rounded d-flex flex-column">
+                      <div className="text-medium-emphasis small mb-1">部门经理</div>
+                      <div className="fw-semibold small d-flex align-items-center gap-1">
+                        {currentDepartment.managerAvatar ? (
+                          <img 
+                            src={currentDepartment.managerAvatar} 
+                            alt="avatar" 
+                            className="rounded-circle"
+                            style={{ width: '20px', height: '20px' }} 
+                          />
+                        ) : null}
+                        {currentDepartment.managerUsername}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-3">
+                    <div className="p-1 border rounded d-flex flex-column">
+                      <div className="text-medium-emphasis small mb-1">员工数量</div>
+                      <div className="fw-semibold small">
+                        <span className="badge bg-primary">{currentDepartment.employeeCount}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-3">
+                    <div className="p-1 border rounded d-flex flex-column">
+                      <div className="text-medium-emphasis small mb-1">状态</div>
+                      <div className="fw-semibold small">
+                        <span className={`badge ${currentDepartment.status ? 'bg-success' : 'bg-secondary'}`}>
+                          {currentDepartment.status ? '启用' : '禁用'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {currentDepartment.contactNumber && (
+                    <div className="col-12 col-md-3">
+                      <div className="p-1 border rounded d-flex flex-column">
+                        <div className="text-medium-emphasis small mb-1">联系电话</div>
+                        <div className="fw-semibold small">{currentDepartment.contactNumber}</div>
+                      </div>
+                    </div>
+                  )}
+                  {currentDepartment.email && (
+                    <div className="col-12 col-md-3">
+                      <div className="p-1 border rounded d-flex flex-column">
+                        <div className="text-medium-emphasis small mb-1">邮箱</div>
+                        <div className="fw-semibold small">{currentDepartment.email}</div>
+                      </div>
+                    </div>
+                  )}
+                  {currentDepartment.location && (
+                    <div className="col-12 col-md-3">
+                      <div className="p-1 border rounded d-flex flex-column">
+                        <div className="text-medium-emphasis small mb-1">位置</div>
+                        <div className="fw-semibold small">{currentDepartment.location}</div>
+                      </div>
+                    </div>
+                  )}
+                  {currentDepartment.budget && (
+                    <div className="col-12 col-md-3">
+                      <div className="p-1 border rounded d-flex flex-column">
+                        <div className="text-medium-emphasis small mb-1">预算</div>
+                        <div className="fw-semibold small">{currentDepartment.budget}</div>
+                      </div>
+                    </div>
+                  )}
+                  {currentDepartment.description && (
+                    <div className="col-12">
+                      <div className="p-1 border rounded d-flex flex-column">
+                        <div className="text-medium-emphasis small mb-1">描述</div>
+                        <div className="fw-semibold small">{currentDepartment.description}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
@@ -310,6 +439,84 @@ const AdminDepartments = () => {
           />
         </div>
       </div>
+
+      <Modal
+        title="编辑部门信息"
+        open={isEditModalVisible}
+        onOk={handleUpdate}
+        onCancel={() => setIsEditModalVisible(false)}
+        okText="保存"
+        cancelText="取消"
+      >
+        <Form
+          form={editForm}
+          layout="vertical"
+        >
+          <Form.Item
+            name="name"
+            label="部门名称"
+            rules={[{ required: true, message: '请输入部门名称' }]}
+          >
+            <Input placeholder="请输入部门名称" />
+          </Form.Item>
+
+          <Form.Item
+            name="description"
+            label="部门描述"
+          >
+            <Input.TextArea placeholder="请输入部门描述" />
+          </Form.Item>
+
+          <Form.Item
+            name="managerName"
+            label="部门经理"
+            rules={[{ required: true, message: '请选择部门经理' }]}
+          >
+            <ManagerSearchInput
+              defaultValue={currentDepartment?.managerUsername}
+              onSelect={(value, manager) => {
+                editForm.setFieldsValue({ 
+                  managerName: value,
+                  // 如果需要保存其他管理员信息，可以在这里设置
+                });
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="contactNumber"
+            label="联系电话"
+          >
+            <Input placeholder="请输入联系电话" />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            label="邮箱"
+            rules={[{ type: 'email', message: '请输入有效的邮箱地址' }]}
+          >
+            <Input placeholder="请输入邮箱" />
+          </Form.Item>
+
+          <Form.Item
+            name="location"
+            label="位置"
+          >
+            <Input placeholder="请输入位置" />
+          </Form.Item>
+
+          <Form.Item
+            name="status"
+            label="状态"
+            valuePropName="checked"
+          >
+            <Switch 
+              checkedChildren="启用" 
+              unCheckedChildren="禁用"
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { Input, AutoComplete } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Input, AutoComplete, Avatar } from 'antd';
 import debounce from 'lodash.debounce';
 import api from 'src/axiosInstance';
 
-const ManagerSearchInput = ({ onSelect, inputStyle }) => {
+const ManagerSearchInput = ({ onSelect, inputStyle, defaultValue }) => {
   const [options, setOptions] = useState([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(defaultValue || "");
+
+  useEffect(() => {
+    if (defaultValue) {
+      setInputValue(defaultValue);
+    }
+  }, [defaultValue]);
 
   const handleSearch = debounce(async (searchValue) => {
     if (!searchValue) {
@@ -18,7 +24,19 @@ const ManagerSearchInput = ({ onSelect, inputStyle }) => {
       const managers = response.data;
       const newOptions = managers.map(manager => ({
         value: manager.username,
-        label: manager.username
+        label: (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Avatar 
+              src={manager.avatar} 
+              size="small" 
+              style={{ width: '24px', height: '24px' }}
+            >
+              {manager.username[0]?.toUpperCase()}
+            </Avatar>
+            <span>{manager.username}</span>
+          </div>
+        ),
+        manager: manager // 保存完整的管理员信息
       }));
       setOptions(newOptions);
     } catch (error) {
@@ -26,9 +44,9 @@ const ManagerSearchInput = ({ onSelect, inputStyle }) => {
     }
   }, 300);
 
-  const handleSelect = (value) => {
+  const handleSelect = (value, option) => {
     setInputValue(value);
-    onSelect(value);
+    onSelect(value, option?.manager);
   };
 
   return (

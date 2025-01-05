@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Form, Input, Select, Space } from 'antd'
+import { Modal, Form, Input, Select, Space, Alert } from 'antd'
 import { 
   MenuOutlined, 
   LinkOutlined, 
@@ -126,6 +126,18 @@ const AddMenuModal = ({
       okText={t('confirm')}
       cancelText={t('cancel')}
     >
+      <Alert
+        message="新建菜单后，系统会自动在权限列表中创建一条与菜单同名的权限"
+        type="info"
+        showIcon
+        banner
+        style={{ 
+          marginBottom: '8px',
+          padding: '4px 8px',
+          fontSize: '12px'
+        }}
+      />
+      
       <Form
         form={form}
         layout="vertical"

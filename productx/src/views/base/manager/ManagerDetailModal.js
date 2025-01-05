@@ -19,19 +19,14 @@ const StyledModal = styled(Modal)`
     color: #000000;
     font-weight: 500;
   }
-  
+
   .ant-descriptions-item-label {
     font-size: 10px;
     color: #666666;
     background-color: #fafafa;
     padding: 8px 12px !important;
   }
-  
-  .ant-descriptions-item-content {
-    font-size: 10px;
-    color: #262626;
-    padding: 8px 12px !important;
-  }
+
 
   .ant-descriptions-bordered .ant-descriptions-item-label {
     width: 100px;
@@ -98,7 +93,7 @@ const StyledModal = styled(Modal)`
   }
 
   .ant-descriptions.ant-descriptions-small {
-    .ant-descriptions-row > th, 
+    .ant-descriptions-row > th,
     .ant-descriptions-row > td {
       padding: 8px 12px;
     }
@@ -145,47 +140,47 @@ const ManagerDetailModal = ({ isVisible, onCancel, managerId }) => {
       <Spin spinning={loading}>
         {managerData && (
           <Descriptions column={1} bordered size="small">
-            <Descriptions.Item 
+            <Descriptions.Item
               label={<Space><IdcardOutlined className="description-icon" />ID</Space>}
             >
               {managerData.id}
             </Descriptions.Item>
-            
-            <Descriptions.Item 
+
+            <Descriptions.Item
               label={<Space><UserOutlined className="description-icon" />用户名</Space>}
             >
               {managerData.username}
             </Descriptions.Item>
-            
-            <Descriptions.Item 
+
+            <Descriptions.Item
               label={<Space><MailOutlined className="description-icon" />邮箱</Space>}
             >
               <span className={managerData.emailVerification ? 'email-verified' : 'email-unverified'}>
-                {managerData.email || '无'} 
+                {managerData.email || '无'}
                 {managerData.email && (
-                  <Badge 
-                    status={managerData.emailVerification ? 'success' : 'error'} 
-                    text={managerData.emailVerification ? '已验证' : '未验证'} 
+                  <Badge
+                    status={managerData.emailVerification ? 'success' : 'error'}
+                    text={managerData.emailVerification ? '已验证' : '未验证'}
                     style={{ marginLeft: '8px' }}
                   />
                 )}
               </span>
             </Descriptions.Item>
-            
-            <Descriptions.Item 
+
+            <Descriptions.Item
               label={<Space><PhoneOutlined className="description-icon" />手机号</Space>}
             >
               {managerData.phone || '无'}
             </Descriptions.Item>
-            
-            <Descriptions.Item 
+
+            <Descriptions.Item
               label={<Space><TeamOutlined className="description-icon" />角色</Space>}
             >
               <div className="roles-container">
-                {managerData.roles?.length > 0 
+                {managerData.roles?.length > 0
                   ? managerData.roles.map((role, index) => (
-                    <Tag 
-                      key={role.roleId} 
+                    <Tag
+                      key={role.roleId}
                       color={roleColors[index % roleColors.length]}
                       className="role-tag"
                       icon={<TeamOutlined />}
@@ -197,17 +192,17 @@ const ManagerDetailModal = ({ isVisible, onCancel, managerId }) => {
                 }
               </div>
             </Descriptions.Item>
-            
-            <Descriptions.Item 
+
+            <Descriptions.Item
               label={<Space><UserSwitchOutlined className="description-icon" />状态</Space>}
             >
-              <Badge 
-                status={managerData.status ? 'success' : 'error'} 
-                text={managerData.status ? '启用' : '禁用'} 
+              <Badge
+                status={managerData.status ? 'success' : 'error'}
+                text={managerData.status ? '启用' : '禁用'}
               />
             </Descriptions.Item>
-            
-            <Descriptions.Item 
+
+            <Descriptions.Item
               label={<Space><UserAddOutlined className="description-icon" />创建人</Space>}
             >
               {managerData.createBy || '无'}
@@ -219,4 +214,4 @@ const ManagerDetailModal = ({ isVisible, onCancel, managerId }) => {
   );
 };
 
-export default ManagerDetailModal; 
+export default ManagerDetailModal;

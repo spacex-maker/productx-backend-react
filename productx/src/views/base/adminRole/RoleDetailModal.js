@@ -1,13 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { Modal, Descriptions, Tag, Button, Table, Input, Space, Radio } from 'antd';
-import { 
-  InfoCircleOutlined, 
-  MenuOutlined, 
-  ApiOutlined, 
-  ControlOutlined, 
-  AppstoreOutlined, 
-  SearchOutlined, 
-  LockOutlined 
+import {
+  InfoCircleOutlined,
+  MenuOutlined,
+  ApiOutlined,
+  ControlOutlined,
+  AppstoreOutlined,
+  SearchOutlined,
+  LockOutlined
 } from '@ant-design/icons';
 import { formatDate } from 'src/components/common/Common';
 import api from 'src/axiosInstance';
@@ -77,7 +77,7 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
       width: '25%',
       render: (text, record) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <span style={{ 
+          <span style={{
             fontSize: '10px',
             color: record.isSystem === true ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
             fontWeight: record.isSystem === true ? 500 : 400
@@ -85,8 +85,8 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
             {text}
           </span>
           {record.isSystem === true && (
-            <Tag color="#1890ff" style={{ 
-              fontSize: '10px', 
+            <Tag color="#1890ff" style={{
+              fontSize: '10px',
               padding: '0 4px',
               margin: 0,
               lineHeight: '16px'
@@ -102,7 +102,7 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
       dataIndex: 'permissionNameEn',
       width: '25%',
       render: (text, record) => (
-        <span style={{ 
+        <span style={{
           fontSize: '10px',
           color: record.isSystem === true ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
           fontWeight: record.isSystem === true ? 500 : 400
@@ -179,8 +179,8 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
             </Tag>
           </Descriptions.Item>
           <Descriptions.Item label="权限数量">
-            <Button 
-              type="link" 
+            <Button
+              type="link"
               onClick={handleViewPermissions}
               style={{ fontSize: '10px', padding: '0' }}
             >
@@ -209,7 +209,7 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
         width={800}
       >
         <Space direction="vertical" style={{ width: '100%', marginBottom: '16px' }}>
-          <div style={{ 
+          <div style={{
             padding: '8px 12px',
             background: '#f6f6f6',
             borderRadius: '4px',
@@ -220,15 +220,15 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
           }}>
             <InfoCircleOutlined style={{ color: '#1890ff' }} />
             <span>
-              标记为 <span style={{ color: '#1890ff', fontWeight: 500 }}>蓝色</span> 且带有 
-              <Tag color="#1890ff" style={{ 
-                fontSize: '10px', 
+              标记为 <span style={{ color: '#1890ff', fontWeight: 500 }}>蓝色</span> 且带有
+              <Tag color="#1890ff" style={{
+                fontSize: '10px',
                 padding: '0 4px',
                 margin: '0 4px',
                 lineHeight: '16px'
               }}>
                 系统权限
-              </Tag> 
+              </Tag>
               标签的为系统内置权限
             </span>
           </div>
@@ -242,8 +242,8 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
               prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
               allowClear
             />
-            <Radio.Group 
-              value={filterType} 
+            <Radio.Group
+              value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
               size="small"
             >
@@ -295,9 +295,6 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
           font-weight: 500 !important;
         }
 
-        .ant-descriptions-item-content {
-          color: rgba(0, 0, 0, 0.65) !important;
-        }
 
         .ant-modal-close {
           height: 40px !important;
@@ -349,4 +346,4 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
   );
 };
 
-export default RoleDetailModal; 
+export default RoleDetailModal;

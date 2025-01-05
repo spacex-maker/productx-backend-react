@@ -40,7 +40,7 @@ const getSignedUrl = async (url) => {
 
     // 转换为 base64
     const base64Signature = btoa(String.fromCharCode(...new Uint8Array(signature)));
-    
+
     return `${url}&signature=${encodeURIComponent(base64Signature)}`;
   } catch (error) {
     console.error('URL signing error:', error);
@@ -128,7 +128,7 @@ const RepairServiceMerchantsCreateFormModal = ({
 
       const folder = fileType === 'license' ? 'licenses' : 'logos';
       const key = `${folder}/${Date.now()}-${file.name}`;
-      
+
       await instance.uploadFile({
         Bucket: bucketName,
         Region: region,
@@ -140,7 +140,7 @@ const RepairServiceMerchantsCreateFormModal = ({
       });
 
       const url = `https://${bucketName}.cos.${region}.myqcloud.com/${key}`;
-      
+
       if (fileType === 'license') {
         setLicenseUrl(url);
         form.setFieldsValue({ businessLicense: url });
@@ -148,7 +148,7 @@ const RepairServiceMerchantsCreateFormModal = ({
         setLogoUrl(url);
         form.setFieldsValue({ merchantLogo: url });
       }
-      
+
       onSuccess();
     } catch (error) {
       console.error('上传失败:', error);
@@ -257,23 +257,23 @@ const RepairServiceMerchantsCreateFormModal = ({
       // 使用 ipapi.co 服务获取位置信息
       const response = await fetch('https://ipapi.co/json/');
       const data = await response.json();
-      
+
       if (data.country_code) {
         // 设置国家
         form.setFieldValue('countryCode', data.country_code);
         setSelectedCountry(data.country_code);
         setMapType(data.country_code === 'CN' ? 'amap' : 'google');
-        
+
         // 如果有城市信息，也可以设置
         if (data.city) {
           form.setFieldValue('city', data.city);
         }
-        
+
         // 如果有省份/地区信息，也可以设置
         if (data.region) {
           form.setFieldValue('province', data.region);
         }
-        
+
         // 设置默认中心点
         setLocation({
           lat: parseFloat(data.latitude),
@@ -326,13 +326,13 @@ const RepairServiceMerchantsCreateFormModal = ({
             const city = form.getFieldValue('city');
             const province = form.getFieldValue('province');
             const country = countries.find(c => c.code === form.getFieldValue('countryCode'))?.name;
-            
+
             // 组合完整地址
             const fullAddress = [address, city, province, country].filter(Boolean).join(', ');
 
-            const defaultCenter = { 
-              lat: location?.lat || 22.396428, 
-              lng: location?.lng || 114.109497 
+            const defaultCenter = {
+              lat: location?.lat || 22.396428,
+              lng: location?.lng || 114.109497
             };
 
             const map = new window.google.maps.Map(mapContainer, {
@@ -361,7 +361,7 @@ const RepairServiceMerchantsCreateFormModal = ({
               const position = marker.getPosition();
               const lat = position.lat();
               const lng = position.lng();
-              
+
               // 不要自动关闭地图，只更新坐标
               onSelect({
                 lat,
@@ -375,7 +375,7 @@ const RepairServiceMerchantsCreateFormModal = ({
               const lat = e.latLng.lat();
               const lng = e.latLng.lng();
               marker.setPosition(e.latLng);
-              
+
               // 不要自动关闭地图，只更新坐标
               onSelect({
                 lat,
@@ -390,7 +390,7 @@ const RepairServiceMerchantsCreateFormModal = ({
               geocoder.geocode({ address: fullAddress }, (results, status) => {
                 if (status === 'OK' && results[0]) {
                   const location = results[0].geometry.location;
-                  
+
                   map.setCenter(location);
                   map.setZoom(17);
                   marker.setPosition(location);
@@ -424,9 +424,9 @@ const RepairServiceMerchantsCreateFormModal = ({
           <Button key="cancel" onClick={onCancel} size="small">
             {t('cancel')}
           </Button>,
-          <Button 
-            key="confirm" 
-            type="primary" 
+          <Button
+            key="confirm"
+            type="primary"
             onClick={onCancel}
             size="small"
           >
@@ -437,7 +437,7 @@ const RepairServiceMerchantsCreateFormModal = ({
         destroyOnClose={true}
       >
         <Spin spinning={loading} tip={t('loadingMap')}>
-          <div 
+          <div
             ref={mapContainerRef}
             style={{ height: '500px', width: '100%' }}
           />
@@ -462,19 +462,19 @@ const RepairServiceMerchantsCreateFormModal = ({
       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCedr_Evbf2ga-gThS0v3xbd8gIyd1roAg&libraries=places&callback=initMap`;
       script.async = true;
       script.defer = true;
-      
+
       // 添加全局回函数
       window.initMap = () => {
         console.log('Google Maps API loaded successfully');
       };
-      
+
       script.onerror = (error) => {
         console.error('Google Maps API loading failed:', error);
         message.error(t('mapLoadError'));
       };
-      
+
       document.head.appendChild(script);
-      
+
       return () => {
         document.head.removeChild(script);
         delete window.initMap;
@@ -625,15 +625,15 @@ const RepairServiceMerchantsCreateFormModal = ({
                   }}
                 >
                   {countries.map(country => (
-                    <Select.Option 
-                      key={country.code} 
+                    <Select.Option
+                      key={country.code}
                       value={country.code}
                       label={`${country.name} (${country.code})`}
                     >
                       <div style={{ fontSize: '10px', padding: '2px 0', display: 'flex', alignItems: 'center' }}>
-                        <img 
-                          src={country.flagImageUrl} 
-                          alt={`${country.name} flag`} 
+                        <img
+                          src={country.flagImageUrl}
+                          alt={`${country.name} flag`}
                           style={{ width: '20px', height: '15px', marginRight: '8px' }}
                         />
                         <div>
@@ -678,8 +678,8 @@ const RepairServiceMerchantsCreateFormModal = ({
                   dropdownStyle={{ width: '300px' }}
                 >
                   {cities.map(city => (
-                    <Select.Option 
-                      key={city.code} 
+                    <Select.Option
+                      key={city.code}
                       value={city.name}
                       label={`${city.name} (${city.enName})`}
                     >
@@ -724,27 +724,27 @@ const RepairServiceMerchantsCreateFormModal = ({
                     name="latitude"
                     noStyle
                   >
-                    <Input 
-                      style={{ width: '30%' }} 
-                      size="small" 
-                      prefix={t('lat')} 
-                      readOnly 
+                    <Input
+                      style={{ width: '30%' }}
+                      size="small"
+                      prefix={t('lat')}
+                      readOnly
                     />
                   </Form.Item>
                   <Form.Item
                     name="longitude"
                     noStyle
                   >
-                    <Input 
-                      style={{ width: '30%' }} 
-                      size="small" 
-                      prefix={t('lng')} 
-                      readOnly 
+                    <Input
+                      style={{ width: '30%' }}
+                      size="small"
+                      prefix={t('lng')}
+                      readOnly
                     />
                   </Form.Item>
-                  <Button 
-                    size="small" 
-                    type="primary" 
+                  <Button
+                    size="small"
+                    type="primary"
                     icon={<EnvironmentOutlined />}
                     onClick={handleOpenMap}  // 使用包装后的处理函数
                     style={{ width: '40%' }}
@@ -870,10 +870,10 @@ const RepairServiceMerchantsCreateFormModal = ({
                   customRequest={(options) => customRequest({ ...options, fileType: 'license' })}
                 >
                   {licenseUrl ? (
-                    <img 
-                      src={licenseUrl} 
-                      alt="license" 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    <img
+                      src={licenseUrl}
+                      alt="license"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   ) : (
                     <div style={{ fontSize: '10px' }}>
@@ -913,7 +913,7 @@ const RepairServiceMerchantsCreateFormModal = ({
         </div>
       </Form>
 
-      <MapPicker 
+      <MapPicker
         visible={mapVisible}
         mapType={mapType}
         onCancel={handleMapCancel}
@@ -1009,7 +1009,7 @@ const RepairServiceMerchantsCreateFormModal = ({
         .form-section .ant-row {
           align-items: flex-start !important;
         }
-        .ant-input, 
+        .ant-input,
         .ant-picker-input > input,
         .ant-select-selection-item {
           font-size: 10px !important;
@@ -1017,73 +1017,57 @@ const RepairServiceMerchantsCreateFormModal = ({
         .ant-picker-dropdown {
           font-size: 10px !important;
         }
-        
+
         .ant-picker-time-panel-column {
           width: 50px !important;
         }
-        
+
         .ant-picker-time-panel-column > li {
           padding: 0 0 !important;
           height: 20px !important;
           line-height: 20px !important;
         }
-        
+
         .ant-select-dropdown {
           font-size: 10px !important;
         }
-        
+
         .ant-picker {
           height: 22px !important;
         }
-        
+
         .ant-picker input {
           font-size: 10px !important;
         }
-        
-        // 使用完全相同的选择器结构
-        .ant-select-selector, 
-        :where(.css-dev-only-do-not-override-1x0dypw).ant-select .ant-select-selector, 
-        :where(.css-*).ant-select .ant-select-selector {
-          color: #000000 !important;
-        }
 
-        // 在模态框层级用相同的选择器结构
-        .ant-modal-wrap .ant-select-selector, 
-        .ant-modal-wrap :where(.css-dev-only-do-not-override-1x0dypw).ant-select .ant-select-selector, 
-        .ant-modal-wrap :where(.css-*).ant-select .ant-select-selector {
-          color: #000000 !important;
-        }
 
-        .ant-select.custom-class .ant-select-selector {
-          color: #000000 !important;
-          font-size: 10px !important;
-        }
+
 
         // 时间选择器样式优化
         .ant-picker {
           height: 22px !important;
         }
-        
+
         .ant-picker input {
           font-size: 10px !important;
           height: 22px !important;
           color: #000000 !important;
         }
-        
+
         .ant-picker-dropdown {
           font-size: 10px !important;
         }
-        
+
         .ant-picker-time-panel-column {
           width: 50px !important;
         }
-        
+
         .ant-picker-time-panel-column > li {
           padding: 0 0 !important;
           height: 20px !important;
           line-height: 20px !important;
         }
-        
+
         // 确保选中的时间显示为黑色
         .ant-picker-input > input,
         .ant-picker-input > input:hover {
