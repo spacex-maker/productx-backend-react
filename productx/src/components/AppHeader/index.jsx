@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,26 +16,56 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilContrast, cilEnvelopeOpen, cilLanguage, cilMenu, cilMoon, cilSun } from '@coreui/icons';
+import { Badge } from 'antd';
+import api from 'src/axiosInstance';
 
 import { AppHeaderDropdown, AppBreadcrumb } from './component';
+import MessageModal from './component/MessageModal';
 import appHeaderStyle from './index.module.scss';
 
 const AppHeader = () => {
   const headerRef = useRef(null);
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
-  const { t, i18n } = useTranslation(); // 获取 i18n 实例
+  const { t, i18n } = useTranslation();
+  const [messageModalVisible, setMessageModalVisible] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const dispatch = useDispatch();
-
   const currentUser = useSelector((state) => state.user?.currentUser);
 
-  // 切换语言的方法
+  // 获取未读消息数
+  const fetchUnreadCount = async () => {
+    try {
+      const response = await api.get('/manage/admin-messages/unread-count');
+      if (response) {
+        setUnreadCount(response);
+      }
+    } catch (error) {
+      console.error('获取未读消息数失败:', error);
+    }
+  };
+
+  // 组件加载和消息模态框关闭时获取未读消息数
+  useEffect(() => {
+    fetchUnreadCount();
+  }, []);
+
+  // 消息模态框关闭时刷新未读消息数
+  const handleModalClose = () => {
+    setMessageModalVisible(false);
+    fetchUnreadCount();
+  };
+
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
   };
 
   const toggleSidebar = () => {
     dispatch({ type: 'TOGGLE_SIDEBAR' });
+  };
+
+  const handleModalSuccess = () => {
+    fetchUnreadCount(); // 刷新未读消息数
   };
 
   return (
@@ -49,9 +79,11 @@ const AppHeader = () => {
         </CNavbar>
         <CHeaderNav>
           <CNavItem>
-            <CNavLink>
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
+            <Badge count={unreadCount || 0} offset={[-5, 5]}>
+              <CNavLink href="#" onClick={() => setMessageModalVisible(true)}>
+                <CIcon icon={cilEnvelopeOpen} size="lg" />
+              </CNavLink>
+            </Badge>
           </CNavItem>
           <CNavItem>
             <div className="nav-link d-flex align-items-center">
@@ -131,6 +163,12 @@ const AppHeader = () => {
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
+
+      <MessageModal
+        visible={messageModalVisible}
+        onCancel={() => setMessageModalVisible(false)}
+        onSuccess={handleModalSuccess}
+      />
     </CHeader>
   );
 };

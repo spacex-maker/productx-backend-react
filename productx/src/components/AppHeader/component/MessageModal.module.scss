@@ -1,0 +1,152 @@
+.listModal {
+  :global {
+    .ant-modal-body {
+      padding: 12px;
+    }
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalTitle {
+  font-size: 14px;
+}
+
+.searchSection {
+  margin-bottom: 12px;
+  background: #fafafa;
+  padding: 12px;
+  border-radius: 4px;
+
+  :global {
+    .ant-form-item {
+      margin-bottom: 0;
+    }
+    
+    .ant-form-item-label > label {
+      font-size: 13px;
+    }
+  }
+}
+
+.messageTable {
+  :global {
+    .ant-table-thead > tr > th {
+      background: #fafafa;
+      padding: 8px;
+    }
+    
+    .ant-table-tbody > tr > td {
+      padding: 8px;
+    }
+
+    .ant-table {
+      font-size: 13px;
+    }
+  }
+}
+
+.detailModal {
+  :global {
+    .ant-modal-body {
+      padding: 16px;
+    }
+  }
+}
+
+.detailTitle {
+  font-size: 14px;
+}
+
+.messageDetail {
+  .messageHeader {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+
+    .messageInfo {
+      .infoGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        font-size: 13px;
+        
+        .infoItem {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          
+          :global {
+            .ant-typography {
+              font-size: 13px;
+              line-height: 1.5;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .messageContent {
+    .messageTags {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #f0f0f0;
+    }
+
+    .messageText {
+      white-space: pre-wrap;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      background: #fafafa;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      min-height: 100px;
+    }
+
+    .attachments {
+      padding-top: 12px;
+      border-top: 1px dashed #f0f0f0;
+      font-size: 13px;
+
+      .attachmentList {
+        margin-top: 8px;
+      }
+    }
+  }
+}
+
+.avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.messageDetail {
+  .messageHeader {
+    .messageInfo {
+      .avatar {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  .username {
+    font-size: 13px;
+    line-height: 1;
+  }
+} 
