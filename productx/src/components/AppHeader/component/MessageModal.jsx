@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Table, Form, Select, DatePicker, Row, Col, Button, Tag, Badge, message, Typography, Space, Descriptions, Radio } from 'antd';
+import { Modal, Table, Form, Select, DatePicker, Row, Col, Button, Tag, Badge, message, Typography, Space, Descriptions, Radio, Tooltip } from 'antd';
 import { SearchOutlined, EyeOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import moment from 'moment';
@@ -207,19 +207,31 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
     {
       title: '状态',
       key: 'status',
-      width: 120,
+      width: 100,
       render: (_, record) => (
         <Space size={4}>
           {messageType === 'received' ? (
-            <Badge 
-              status={record.isRead ? 'default' : 'processing'} 
-              text={record.isRead ? '已读' : '未读'}
-            />
+            <Tooltip 
+              title={record.readAt ? `读取时间：${record.readAt}` : null}
+              mouseEnterDelay={0.5}
+            >
+              <Badge 
+                status={record.isRead ? 'default' : 'processing'} 
+                text={record.isRead ? '已读' : '未读'}
+                className={record.isRead ? styles.readStatus : ''}
+              />
+            </Tooltip>
           ) : (
-            <Badge 
-              status={record.isRead ? 'success' : 'default'} 
-              text={record.isRead ? '对方已读' : '对方未读'}
-            />
+            <Tooltip 
+              title={record.readAt ? `对方读取时间：${record.readAt}` : null}
+              mouseEnterDelay={0.5}
+            >
+              <Badge 
+                status={record.isRead ? 'success' : 'default'} 
+                text={record.isRead ? '对方已读' : '对方未读'}
+                className={record.isRead ? styles.readStatus : ''}
+              />
+            </Tooltip>
           )}
           {record.isRetracted && <Tag color="red">已撤回</Tag>}
           {record.createdBySystem && <Tag color="blue">系统</Tag>}
@@ -229,7 +241,7 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
     {
       title: messageType === 'received' ? '发送人' : '接收人',
       key: 'user',
-      width: 150,
+      width: 120,
       render: (_, record) => (
         messageType === 'received' ? (
           <UserInfo 
@@ -247,6 +259,8 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
     {
       title: '标题',
       key: 'title',
+      width: 200,
+      ellipsis: true,
       render: (_, record) => (
         <Space size={4}>
           <span>{record.title}</span>
@@ -256,30 +270,28 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
     },
     {
       title: '内容',
-      dataIndex: 'messageText',
+      key: 'messageText',
       ellipsis: true,
+      render: (_, record) => (
+        <Tooltip title={record.messageText}>
+          <span>{record.messageText?.slice(0, 10)}{record.messageText?.length > 10 ? '...' : ''}</span>
+        </Tooltip>
+      ),
     },
     {
       title: '时间',
       key: 'time',
-      width: 180,
+      width: 165,
       render: (_, record) => (
-        <Space direction="vertical" size={0}>
-          <Text type="secondary" style={{ fontSize: '12px' }}>
-            发送：{record.createTime}
-          </Text>
-          {record.readAt && (
-            <Text type="secondary" style={{ fontSize: '12px' }}>
-              已读：{record.readAt}
-            </Text>
-          )}
-        </Space>
+        <Text type="secondary" style={{ fontSize: '12px' }}>
+          {record.createTime}
+        </Text>
       ),
     },
     {
       title: '操作',
       key: 'action',
-      width: 120,
+      width: 100,
       render: (_, record) => (
         <Space>
           <Button
@@ -342,7 +354,7 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
         }
         open={visible}
         onCancel={onCancel}
-        width={1200}
+        width={900}
         className={styles.listModal}
         footer={null}
       >

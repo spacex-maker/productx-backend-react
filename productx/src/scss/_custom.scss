@@ -395,22 +395,7 @@ textarea::placeholder,
   font-size: 10px !important;
 }
 
-/* 按钮样式 */
-.ant-btn {
-  font-size: 10px !important;
-  height: 24px !important;
-  padding: 0 12px !important;
-}
 
-// .ant-btn-primary {
-//   background: var(--cui-primary) !important;
-//   border-color: var(--cui-primary) !important;
-// }
-
-// .ant-btn-primary:hover {
-//   background: var(--cui-primary-hover) !important;
-//   border-color: var(--cui-primary-hover) !important;
-// }
 
 .dropdown-menu{
   --cui-dropdown-font-size: 14px;
@@ -421,12 +406,12 @@ textarea::placeholder,
     background-color: var(--cui-input-bg) !important;
     color: var(--cui-body-color) !important;
     border-color: var(--cui-border-color) !important;
-    
+
     &::placeholder {
       color: var(--cui-text-muted) !important;
     }
   }
-  
+
   .ant-input-group-addon {
     .ant-btn {
       color: var(--cui-body-color) !important;
@@ -443,12 +428,12 @@ textarea::placeholder,
       background-color: var(--cui-dark-input-bg, #1f1f1f) !important;
       color: var(--cui-dark-body-color, #fff) !important;
       border-color: var(--cui-dark-border-color, #444) !important;
-      
+
       &::placeholder {
         color: var(--cui-dark-text-muted, #666) !important;
       }
     }
-    
+
     .ant-input-group-addon {
       .ant-btn {
         color: var(--cui-dark-body-color, #fff) !important;
