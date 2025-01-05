@@ -118,6 +118,9 @@ const RepairServiceMerchantsRouter = React.lazy(() => import('./views/base/repai
 
 const ObjectStorageListRouter = React.lazy(() => import('./views/base/objectStorage/ObjectStorageList'));
 
+const UserShippingMethodRouter = React.lazy(() => import('./views/base/userShippingMethod/UserShippingMethod'));
+
+
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -416,6 +419,13 @@ const routes = [
     path: '/sys/objectStorageConfigList', name: '对象存储配置管理', element: (
       <PrivateRoute>
         <ObjectStorageListRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/userShippingMethod', name: '用户交易方式管理', element: (
+      <PrivateRoute>
+        <UserShippingMethodRouter/>
       </PrivateRoute>
     )
   },

@@ -706,5 +706,21 @@
   "subRegionsCount": "하위 행정 구역 수",
   "totalPopulation": "총 인구",
   "totalArea": "총 면적",
-  "tenThousand": "만"
+  "tenThousand": "만",
+
+  "regionCodeTip": "행정 구역 코드(국가, 도/시, 시/군 등)",
+  "countryCodeTip": "국가 코드(예: 중국은 CN, 미국은 US)",
+  "localNameTip": "현지 언어 이름",
+  "nameTip": "행정 구역 이름",
+  "shortNameTip": "행정 구역 약칭(선택 사항)",
+  "typeTip": "유형(국가, 도, 시, 구 등)",
+  "capitalTip": "수도 또는 주요 도시(해당되는 경우)",
+  "populationTip": "인구 수",
+  "areaKm2Tip": "면적(제곱 킬로미터)",
+  "regionTip": "지역(예: 화북, 화남 등)",
+
+  "usersCanContactThemselves": "사용자가 직접 연락할 수 있습니다",
+  "callTheErrandRunnerToDeliver": "심부름꾼에게 배달 요청",
+  "expressDelivery": "특급 배송",
+  "logisticsDelivery": "물류 배송"
 }

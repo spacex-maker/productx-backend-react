@@ -698,5 +698,21 @@
   "subRegionsCount": "Number of Sub-Regions",
   "totalPopulation": "Total Population",
   "totalArea": "Total Area",
-  "tenThousand": "Ten Thousand"
+  "tenThousand": "Ten Thousand",
+
+  "regionCodeTip": "Administrative region code (country, province, city, etc.)",
+  "countryCodeTip": "Country code (e.g., CN for China, US for the United States)",
+  "localNameTip": "Local language name",
+  "nameTip": "Administrative region name",
+  "shortNameTip": "Short name of the administrative region (optional)",
+  "typeTip": "Type (country, province, city, district, etc.)",
+  "capitalTip": "Capital or main city (if applicable)",
+  "populationTip": "Population",
+  "areaKm2Tip": "Area (square kilometers)",
+  "regionTip": "Region (e.g., North China, South China, etc.)",
+
+  "usersCanContactThemselves": "Users can contact themselves",
+  "callTheErrandRunnerToDeliver": "Call the errand runner to deliver",
+  "expressDelivery": "Express delivery",
+  "logisticsDelivery": "Logistics delivery"
 }

@@ -706,5 +706,21 @@
   "subRegionsCount": "Cantidad de Subregiones",
   "totalPopulation": "Población Total",
   "totalArea": "Área Total",
-  "tenThousand": "Diez Mil"
+  "tenThousand": "Diez Mil",
+
+  "regionCodeTip": "Código de región administrativa (país, provincia, ciudad, etc.)",
+  "countryCodeTip": "Código del país (por ejemplo, CN para China, US para los Estados Unidos)",
+  "localNameTip": "Nombre en el idioma local",
+  "nameTip": "Nombre de la región administrativa",
+  "shortNameTip": "Nombre corto de la región administrativa (opcional)",
+  "typeTip": "Tipo (país, provincia, ciudad, distrito, etc.)",
+  "capitalTip": "Capital o ciudad principal (si aplica)",
+  "populationTip": "Población",
+  "areaKm2Tip": "Área (kilómetros cuadrados)",
+  "regionTip": "Región (por ejemplo, Norte de China, Sur de China, etc.)",
+
+  "usersCanContactThemselves": "Los usuarios pueden contactarse ellos mismos",
+  "callTheErrandRunnerToDeliver": "Llame al repartidor para entregar",
+  "expressDelivery": "Entrega exprés",
+  "logisticsDelivery": "Entrega logística"
 }
