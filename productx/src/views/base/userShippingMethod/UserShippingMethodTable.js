@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Tooltip } from 'antd';
+import { Switch, Tooltip, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import api from 'src/axiosInstance';
 
 const ShippingMethodTable = ({
   data,
@@ -9,9 +10,22 @@ const ShippingMethodTable = ({
   selectedRows,
   handleSelectAll,
   handleSelectRow,
-  handleEditClick,
+  onStatusChange,
 }) => {
   const { t } = useTranslation();
+
+  const handleStatusChange = async (ids, status) => {
+    try {
+      await api.post('/manage/user-shipping-method/change-status', {
+        ids: Array.isArray(ids) ? ids : [ids],
+        status
+      });
+      message.success('状态修改成功');
+      onStatusChange?.();
+    } catch (error) {
+      message.error('状态修改失败：' + (error.response?.data?.message || error.message));
+    }
+  };
 
   const columns = [
     'ID',
@@ -22,7 +36,7 @@ const ShippingMethodTable = ({
         <InfoCircleOutlined style={{ marginLeft: '4px' }} />
       </Tooltip>
     </span>,
-    '操作'
+    '状态',
   ];
 
   return (
@@ -65,10 +79,13 @@ const ShippingMethodTable = ({
             <td className="text-truncate">{item.id}</td>
             <td className="text-truncate">{item.shippingMethod}</td>
             <td className="text-truncate">{t(`${item.description}`)}</td>
-            <td className="fixed-column">
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
-              </Button>
+            <td>
+              <Switch
+                checked={item.status}
+                onChange={(checked) => handleStatusChange(item.id, checked)}
+                checkedChildren="启用"
+                unCheckedChildren="禁用"
+              />
             </td>
           </tr>
         ))}
