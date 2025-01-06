@@ -120,7 +120,7 @@ const ObjectStorageListRouter = React.lazy(() => import('./views/base/objectStor
 
 const UserShippingMethodRouter = React.lazy(() => import('./views/base/userShippingMethod/UserShippingMethod'));
 
-
+const RegionAgentsRouter = React.lazy(() => import('./views/base/regionAgents/RegionAgents'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -426,6 +426,13 @@ const routes = [
     path: '/sys/userShippingMethod', name: '用户交易方式管理', element: (
       <PrivateRoute>
         <UserShippingMethodRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/regionAgents', name: '区域代理管理', element: (
+      <PrivateRoute>
+        <RegionAgentsRouter/>
       </PrivateRoute>
     )
   },

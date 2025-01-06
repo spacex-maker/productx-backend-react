@@ -32,6 +32,8 @@ const AdminDepartments = () => {
   const [editForm] = Form.useForm();
   const [isCurrentUserManager, setIsCurrentUserManager] = useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [currentManager, setCurrentManager] = useState(null);
 
   const showAddDepartmentModal = () => setIsAddDepartmentModalVisible(true);
   const hideAddDepartmentModal = () => setIsAddDepartmentModalVisible(false);
@@ -172,6 +174,19 @@ const AdminDepartments = () => {
     } catch (error) {
       console.error('Error updating department:', error);
       message.error('更新失败：' + (error.response?.data?.message || error.message));
+    }
+  };
+
+  const handleDetailClick = async (managerId) => {
+    try {
+      const response = await api.get(`/manage/manager/get-by-id?id=${managerId}`);
+      if (response) {
+        setCurrentManager(response);
+        setIsDetailModalVisible(true);
+      }
+    } catch (error) {
+      console.error('Error fetching manager details:', error);
+      message.error('获取管理员详情失败');
     }
   };
 
@@ -370,10 +385,9 @@ const AdminDepartments = () => {
                     <label className="custom-control-label" htmlFor="select_all"></label>
                   </div>
                 </th>
-                {['管理员名称', '加入时间', '操作人', '状态'].map((field) => (
+                {['管理员信息', '加入时间', '操作人', '状态', '操作'].map((field) => (
                   <th key={field}>{field}</th>
                 ))}
-                <th className="fixed-column">操作</th>
               </tr>
             </thead>
             <tbody>
@@ -394,18 +408,44 @@ const AdminDepartments = () => {
                       ></label>
                     </div>
                   </td>
-                  <td>{item.managerName}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {item.avatar ? (
+                        <img 
+                          src={item.avatar} 
+                          alt="avatar" 
+                          className="rounded-circle"
+                          style={{ width: '24px', height: '24px', objectFit: 'cover' }} 
+                        />
+                      ) : (
+                        <div 
+                          className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                          style={{ width: '24px', height: '24px', color: 'white', fontSize: '12px' }}
+                        >
+                          {item.managerName?.charAt(0)?.toUpperCase()}
+                        </div>
+                      )}
+                      <span>{item.managerName}</span>
+                      <span className="text-muted">#{item.managerId}</span>
+                    </div>
+                  </td>
                   <td>{formatDate(item.createTime)}</td>
                   <td>{item.createBy}</td>
                   <td>
                     <Switch
-                      checked={item.status}
+                      checked={item.managerStatus}
                       onChange={(checked) => handleStatusChange(item.id, checked)}
                       checkedChildren="启用"
                       unCheckedChildren="禁用"
                     />
                   </td>
                   <td className="fixed-column">
+                    <Button 
+                      type="link" 
+                      onClick={() => handleDetailClick(item.managerId)}
+                    >
+                      详情
+                    </Button>
                     <Button type="link" onClick={() => handleEditClick(item)}>
                       修改
                     </Button>
@@ -516,6 +556,60 @@ const AdminDepartments = () => {
             />
           </Form.Item>
         </Form>
+      </Modal>
+
+      <Modal
+        title="管理员详情"
+        open={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        footer={null}
+        width={700}
+      >
+        {currentManager && (
+          <Descriptions bordered column={2}>
+            <Descriptions.Item label="ID">
+              {currentManager.id}
+            </Descriptions.Item>
+            <Descriptions.Item label="用户名">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {currentManager.username}
+                <Badge 
+                  status={currentManager.status ? 'success' : 'error'} 
+                  text={currentManager.status ? '启用' : '禁用'} 
+                />
+              </div>
+            </Descriptions.Item>
+            <Descriptions.Item label="邮箱" span={2}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {currentManager.email || '-'}
+                {currentManager.email && (
+                  <Badge 
+                    status={currentManager.emailVerification ? 'success' : 'warning'} 
+                    text={currentManager.emailVerification ? '已验证' : '未验证'} 
+                  />
+                )}
+              </div>
+            </Descriptions.Item>
+            <Descriptions.Item label="手机号">
+              {currentManager.phone || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item label="创建人">
+              {currentManager.createBy || '-'}
+            </Descriptions.Item>
+            <Descriptions.Item label="角色" span={2}>
+              {currentManager.roles?.map(role => (
+                <Tag 
+                  key={role.roleId} 
+                  color={role.managerRoleStatus ? 'blue' : 'default'}
+                  style={{ marginBottom: '4px' }}
+                >
+                  {role.roleName}
+                  {!role.managerRoleStatus && ' (已禁用)'}
+                </Tag>
+              ))}
+            </Descriptions.Item>
+          </Descriptions>
+        )}
       </Modal>
     </div>
   );
