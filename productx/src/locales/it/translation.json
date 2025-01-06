@@ -715,5 +715,18 @@
   "usersCanContactThemselves": "Gli utenti possono contattarsi da soli",
   "callTheErrandRunnerToDeliver": "Chiama il fattorino per consegnare",
   "expressDelivery": "Consegna espressa",
-  "logisticsDelivery": "Consegna logistica"
+  "logisticsDelivery": "Consegna logistica",
+
+  "agentName": "Nome dell'agente",
+  "agentType": "Tipo di agente",
+  "regionName": "Nome della regione",
+  "agentLevel": "Livello dell'agente",
+  "isExclusive": "È esclusivo",
+  "auditStatus": "Stato di revisione",
+  "createAgent": "Crea agente",
+  "primaryAgent": "Agente primario",
+  "secondaryAgent": "Agente secondario",
+  "tertiaryAgent": "Agente terziario",
+  "approved": "Approvato",
+  "rejected": "Rifiutato"
 }

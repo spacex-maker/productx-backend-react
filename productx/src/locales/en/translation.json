@@ -714,5 +714,18 @@
   "usersCanContactThemselves": "Users can contact themselves",
   "callTheErrandRunnerToDeliver": "Call the errand runner to deliver",
   "expressDelivery": "Express delivery",
-  "logisticsDelivery": "Logistics delivery"
+  "logisticsDelivery": "Logistics delivery",
+
+  "agentName": "Agent Name",
+  "agentType": "Agent Type",
+  "regionName": "Region Name",
+  "agentLevel": "Agent Level",
+  "isExclusive": "Is Exclusive",
+  "auditStatus": "Audit Status",
+  "createAgent": "Create Agent",
+  "primaryAgent": "Primary Agent",
+  "secondaryAgent": "Secondary Agent",
+  "tertiaryAgent": "Tertiary Agent",
+  "approved": "Approved",
+  "rejected": "Rejected"
 }

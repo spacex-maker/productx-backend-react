@@ -722,5 +722,18 @@
   "usersCanContactThemselves": "Les utilisateurs peuvent se contacter eux-mêmes",
   "callTheErrandRunnerToDeliver": "Appelez le coursier pour livrer",
   "expressDelivery": "Livraison express",
-  "logisticsDelivery": "Livraison logistique"
+  "logisticsDelivery": "Livraison logistique",
+
+  "agentName": "Nom de l'agent",
+  "agentType": "Type d'agent",
+  "regionName": "Nom de la région",
+  "agentLevel": "Niveau de l'agent",
+  "isExclusive": "Est exclusif",
+  "auditStatus": "Statut de l'audit",
+  "createAgent": "Créer un agent",
+  "primaryAgent": "Agent principal",
+  "secondaryAgent": "Agent secondaire",
+  "tertiaryAgent": "Agent tertiaire",
+  "approved": "Approuvé",
+  "rejected": "Rejeté"
 }

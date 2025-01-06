@@ -690,6 +690,19 @@
   "usersCanContactThemselves": "Benutzer können sich selbst kontaktieren",
   "callTheErrandRunnerToDeliver": "Rufen Sie den Kurier an, um zu liefern",
   "expressDelivery": "Expresslieferung",
-  "logisticsDelivery": "Logistiklieferung"
+  "logisticsDelivery": "Logistiklieferung",
+
+  "agentName": "Agentenname",
+  "agentType": "Agententyp",
+  "regionName": "Regionsname",
+  "agentLevel": "Agentenstufe",
+  "isExclusive": "Exklusivagent",
+  "auditStatus": "Prüfstatus",
+  "createAgent": "Agent hinzufügen",
+  "primaryAgent": "Primäragent",
+  "secondaryAgent": "Sekundäragent",
+  "tertiaryAgent": "Tertiäragent",
+  "approved": "Genehmigt",
+  "rejected": "Abgelehnt"
 
 }

@@ -722,5 +722,18 @@
   "usersCanContactThemselves": "사용자가 직접 연락할 수 있습니다",
   "callTheErrandRunnerToDeliver": "심부름꾼에게 배달 요청",
   "expressDelivery": "특급 배송",
-  "logisticsDelivery": "물류 배송"
+  "logisticsDelivery": "물류 배송",
+
+  "agentName": "에이전트 이름",
+  "agentType": "에이전트 유형",
+  "regionName": "지역 이름",
+  "agentLevel": "에이전트 레벨",
+  "isExclusive": "독점 에이전트 여부",
+  "auditStatus": "심사 상태",
+  "createAgent": "에이전트 생성",
+  "primaryAgent": "1차 에이전트",
+  "secondaryAgent": "2차 에이전트",
+  "tertiaryAgent": "3차 에이전트",
+  "approved": "승인됨",
+  "rejected": "거부됨"
 }

@@ -722,5 +722,18 @@
   "usersCanContactThemselves": "ユーザーは自分で連絡できます",
   "callTheErrandRunnerToDeliver": "お使いランナーに配達を依頼する",
   "expressDelivery": "速達配送",
-  "logisticsDelivery": "物流配送"
+  "logisticsDelivery": "物流配送",
+
+  "agentName": "エージェント名",
+  "agentType": "エージェントタイプ",
+  "regionName": "地域名",
+  "agentLevel": "エージェントレベル",
+  "isExclusive": "専属エージェントか",
+  "auditStatus": "監査ステータス",
+  "createAgent": "エージェントを作成",
+  "primaryAgent": "一次エージェント",
+  "secondaryAgent": "二次エージェント",
+  "tertiaryAgent": "三次エージェント",
+  "approved": "承認済み",
+  "rejected": "拒否されました"
 }
