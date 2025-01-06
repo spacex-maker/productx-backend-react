@@ -39,9 +39,9 @@ const SysConfig = () => {
         params: { currentPage, size: pageSize, ...filteredParams },
       })
 
-      if (response && response.data) {
-        setData(response.data.data)
-        setTotalNum(response.data.totalNum)
+      if (response) {
+        setData(response.data)
+        setTotalNum(response.totalNum)
       }
     } catch (error) {
       console.error('Failed to fetch data', error)
@@ -70,7 +70,7 @@ const SysConfig = () => {
 
   const handleUpdateConfig = async (values) => {
     try {
-      await api.put('/manage/sys-config/update', values)
+      await api.post('/manage/sys-config/update', values)
       message.success('更新成功')
       setIsUpdateModalVisible(false)
       updateForm.resetFields()
