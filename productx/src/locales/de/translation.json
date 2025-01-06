@@ -240,7 +240,9 @@
     "用户画像管理": "Benutzerprofilverwaltung",
     "合作伙伴管理": "Partnerverwaltung",
     "商户管理": "Händlerverwaltung",
-    "维修商户管理": "Reparaturhändlerverwaltung"
+    "维修商户管理": "Reparaturhändlerverwaltung",
+    "区域代理系统": "Regionalagentensystem",
+    "区域代理管理": "Verwaltung von Regionalagenten"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -763,5 +765,7 @@
   "pendingAudit": "Ausstehende Prüfung",
   "pleaseSelectStatus": "Status",
   "cooperationStartDate": "Kooperationsbeginn",
-  "cooperationEndDate": "Kooperationsende"
+  "cooperationEndDate": "Kooperationsende",
+
+  "validationTime": "Validierungszeit / Sekunden"
 }

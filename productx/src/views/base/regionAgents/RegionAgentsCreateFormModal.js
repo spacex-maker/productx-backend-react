@@ -542,18 +542,34 @@ const RegionAgentsCreateFormModal = ({
                       value={country.code}
                       label={`${country.name} (${country.code})`}
                     >
-                      <div style={{ fontSize: '10px', padding: '2px 0', display: 'flex', alignItems: 'center' }}>
+                      <div style={{ 
+                        fontSize: '12px', 
+                        padding: '4px 0', 
+                        display: 'flex', 
+                        alignItems: 'center',
+                        whiteSpace: 'nowrap'
+                      }}>
                         <img
                           src={country.flagImageUrl}
                           alt={`${country.name} ${t('flag')}`}
-                          style={{ width: '20px', height: '15px', marginRight: '8px' }}
+                          style={{ 
+                            width: '20px', 
+                            height: '15px', 
+                            marginRight: '8px',
+                            flexShrink: 0
+                          }}
                         />
-                        <div>
+                        <span style={{ marginRight: '8px', flexShrink: 0 }}>
                           {country.name} ({country.code})
-                        </div>
-                        <div style={{ color: '#666', marginTop: '2px' }}>
-                          {t('capital')}: {country.capital} | {t('officialLanguages')}: {country.officialLanguages} | {t('currency')}: {country.currency} | {t('continent')}: {country.continent}
-                        </div>
+                        </span>
+                        <span style={{ 
+                          color: '#666',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {country.capital} | {country.officialLanguages} | {country.currency} | {country.continent}
+                        </span>
                       </div>
                     </Select.Option>
                   ))}

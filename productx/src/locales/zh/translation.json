@@ -240,7 +240,10 @@
     "用户画像管理": "用户画像管理",
     "合作伙伴管理": "合作伙伴管理",
     "商户管理": "商户管理",
-    "维修商户管理": "维修商户管理"
+    "维修商户管理": "维修商户管理",
+    "区域代理系统": "区域代理系统",
+    "区域代理管理": "区域代理管理",
+    "用户交易方式管理": "用户交易方式管理"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -696,7 +699,7 @@
   "configStatus": "配置状态",
   "notVerified": "未验证",
   "notVerifiedYet": "配置尚未验证",
-  "lastVerifyTime": "最后验证时间：{time}",
+  "lastVerifyTime": "最后验证时间",
   "aesKey": "加密密钥",
   "pleaseEnterAesKey": "请输入加密密钥",
   "enterAesKey": "请输入用于加密 AK/SK 的密钥",
@@ -796,6 +799,7 @@
   "pendingAudit": "待审核",
   "pleaseSelectStatus": "状态",
   "cooperationStartDate": "合作开始日期",
-  "cooperationEndDate": "合作结束日期"
+  "cooperationEndDate": "合作结束日期",
 
+  "validationTime": "验证耗时/秒"
 }

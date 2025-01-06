@@ -233,7 +233,10 @@
     "用户画像管理": "Gestione del profilo utente",
     "合作伙伴管理": "Gestione Partner",
     "商户管理": "Gestione Commercianti",
-    "维修商户管理": "Gestione Commercianti di Riparazione"
+    "维修商户管理": "Gestione Commercianti di Riparazione",
+    "区域代理系统": "Sistema degli agenti regionali",
+    "区域代理管理": "Gestione degli agenti regionali",
+    "用户交易方式管理": "Gestione dei metodi di transazione dell'utente"
   },
   "confirmDelete": "Conferma eliminazione",
   "countryName": "Nome del paese",
@@ -788,5 +791,7 @@
   "pendingAudit": "Revisione in sospeso",
   "pleaseSelectStatus": "Stato",
   "cooperationStartDate": "Data di inizio cooperazione",
-  "cooperationEndDate": "Data di fine cooperazione"
+  "cooperationEndDate": "Data di fine cooperazione",
+
+  "validationTime": "Tempo di validazione / secondi"
 }

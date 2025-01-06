@@ -240,7 +240,10 @@
     "用户画像管理": "사용자 프로필 관리",
     "合作伙伴管理": "파트너 관리",
     "商户管理": "상인 관리",
-    "维修商户管理": "수리 상인 관리"
+    "维修商户管理": "수리 상인 관리",
+    "区域代理系统": "지역 에이전트 시스템",
+    "区域代理管理": "지역 에이전트 관리",
+    "用户交易方式管理": "사용자 거래 방식 관리"
   },
   "confirmDelete": "삭제 확인",
   "countryName": "국가 이름",
@@ -795,5 +798,7 @@
   "pendingAudit": "심사 대기 중",
   "pleaseSelectStatus": "상태",
   "cooperationStartDate": "협력 시작 날짜",
-  "cooperationEndDate": "협력 종료 날짜"
+  "cooperationEndDate": "협력 종료 날짜",
+
+  "validationTime": "검증 시간 / 초"
 }

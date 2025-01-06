@@ -232,7 +232,10 @@
     "用户画像管理": "User Profile Management",
     "合作伙伴管理": "Partner Management",
     "商户管理": "Merchant Management",
-    "维修商户管理": "Repair Merchant Management"
+    "维修商户管理": "Repair Merchant Management",
+    "区域代理系统": "Regional Agent System",
+    "区域代理管理": "Regional Agent Management",
+    "用户交易方式管理": "Verwaltung der Benutzertransaktionsmethoden"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
@@ -787,5 +790,8 @@
   "pendingAudit": "Pending Audit",
   "pleaseSelectStatus": "Status",
   "cooperationStartDate": "Cooperation Start Date",
-  "cooperationEndDate": "Cooperation End Date"
+  "cooperationEndDate": "Cooperation End Date",
+
+  "validationTime": "Validation Time / Seconds"
+
 }
