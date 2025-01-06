@@ -177,6 +177,7 @@ const RegionAgentsCreateFormModal = ({
   const [managers, setManagers] = useState([]);
   const [managerLoading, setManagerLoading] = useState(false);
   const [countries, setCountries] = useState([]);
+  const [countriesLoading, setCountriesLoading] = useState(false);
   const [cities, setCities] = useState([]);
   const [citySearchLoading, setCitySearchLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -216,14 +217,17 @@ const RegionAgentsCreateFormModal = ({
 
   // 获取国家列表
   const fetchCountries = async () => {
+    setCountriesLoading(true);
     try {
       const response = await api.get('/manage/countries/list-all-enable');
       if (response) {
         setCountries(response);
       }
     } catch (error) {
-      console.error('获取国家列表失败:', error);
-      message.error('获取国家列表失败');
+      console.error(t('getCountryListFailed'), error);
+      message.error(t('getCountryListFailed'));
+    } finally {
+      setCountriesLoading(false);
     }
   };
 
@@ -420,28 +424,51 @@ const RegionAgentsCreateFormModal = ({
 
         <StyledCard title={t('basicInfo')}>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item
                 label={<span><UserOutlined /> {t('agentId')}</span>}
                 name="agentId"
                 rules={[{ required: true, message: t('pleaseInputAgentId') }]}
               >
-                <StyledSelect placeholder={t('searchAgent')} />
+                <StyledSelect
+                  showSearch
+                  placeholder={t('searchAgent')}
+                  loading={managerLoading}
+                  filterOption={false}
+                  onSearch={debouncedManagerSearch}
+                  onChange={handleManagerSelect}
+                  optionLabelProp="label"
+                >
+                  {managers.map(manager => (
+                    <Select.Option
+                      key={manager.id}
+                      value={manager.id}
+                      label={manager.username}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Avatar
+                          size={16}
+                          src={manager.avatar}
+                          icon={<UserOutlined />}
+                          className="user-avatar"
+                        />
+                        <span style={{ marginLeft: 8 }}>{manager.username}</span>
+                      </div>
+                    </Select.Option>
+                  ))}
+                </StyledSelect>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item
                 label={<span><UserOutlined /> {t('agentName')}</span>}
                 name="agentName"
                 rules={[{ required: true, message: t('pleaseInputAgentName') }]}
               >
-                <Input placeholder={t('pleaseInputAgentName')} disabled />
+                <Input placeholder={t('pleaseInputAgentName')} />
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item
                 label={<span><AppstoreOutlined /> {t('agentType')}</span>}
                 name="agentType"
@@ -490,29 +517,61 @@ const RegionAgentsCreateFormModal = ({
             </Col>
           </Row>
 
-          {/* 区域信息 */}
           <Row gutter={16}>
-            <Col span={12}>
+            <Col span={8}>
               <Form.Item
-                label={<span><GlobalOutlined /> {t('country')}</span>}
                 name="countryCode"
+                label={<span><GlobalOutlined /> {t('country')}</span>}
                 rules={[{ required: true, message: t('pleaseSelectCountry') }]}
               >
-                <Select placeholder={t('pleaseSelectCountry')} />
+                <Select
+                  showSearch
+                  loading={countriesLoading}
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                  }
+                  optionLabelProp="label"
+                  dropdownMatchSelectWidth={false}
+                  dropdownStyle={{ width: '400px' }}
+                  onChange={handleCountryChange}
+                >
+                  {countries.map(country => (
+                    <Select.Option
+                      key={country.code}
+                      value={country.code}
+                      label={`${country.name} (${country.code})`}
+                    >
+                      <div style={{ fontSize: '10px', padding: '2px 0', display: 'flex', alignItems: 'center' }}>
+                        <img
+                          src={country.flagImageUrl}
+                          alt={`${country.name} ${t('flag')}`}
+                          style={{ width: '20px', height: '15px', marginRight: '8px' }}
+                        />
+                        <div>
+                          {country.name} ({country.code})
+                        </div>
+                        <div style={{ color: '#666', marginTop: '2px' }}>
+                          {t('capital')}: {country.capital} | {t('officialLanguages')}: {country.officialLanguages} | {t('currency')}: {country.currency} | {t('continent')}: {country.continent}
+                        </div>
+                      </div>
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             {selectedCountry === 'CN' && (
-              <Col span={12}>
+              <Col span={8}>
                 <Form.Item
                   label={<span><EnvironmentOutlined /> {t('province')}</span>}
                   name="province"
                   rules={[{ required: true, message: t('pleaseInputProvince') }]}
                 >
-                  <Input />
+                  <Input placeholder={t('pleaseInputProvince')} />
                 </Form.Item>
               </Col>
             )}
-            <Col span={12}>
+            <Col span={selectedCountry === 'CN' ? 8 : 16}>
               <Form.Item
                 label={<span><EnvironmentOutlined /> {t('city')}</span>}
                 name="city"
@@ -520,7 +579,6 @@ const RegionAgentsCreateFormModal = ({
               >
                 <Select
                   showSearch
-                  placeholder={t('pleaseSelectCity')}
                   disabled={!form.getFieldValue('countryCode')}
                   loading={citySearchLoading}
                   onSearch={handleCitySearch}
@@ -541,7 +599,7 @@ const RegionAgentsCreateFormModal = ({
                       <div style={{ fontSize: '10px', padding: '2px 0' }}>
                         <div>{city.name}</div>
                         <div style={{ color: '#666', marginTop: '2px' }}>
-                          {city.enName} | {city.type} | 人口: {(city.population/10000).toFixed(0)}万
+                          {city.enName} | {t('cityType')}: {city.type} | {t('population')}: {(city.population/10000).toFixed(0)}{t('tenThousand')}
                         </div>
                       </div>
                     </Select.Option>
