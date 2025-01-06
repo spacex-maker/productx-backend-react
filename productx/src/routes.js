@@ -123,6 +123,8 @@ const RegionAgentsRouter = React.lazy(() => import('./views/base/regionAgents/Re
 
 const SysConfigListRouter = React.lazy(() => import('./views/base/sysConfig/SysConfig'));
 
+const SysLanguageRouter = React.lazy(() => import('./views/base/sysLanguages/SysLanguage'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -432,6 +434,13 @@ const routes = [
     path: '/sys/sysConfig', name: '系统基础配置', element: (
       <PrivateRoute>
         <SysConfigListRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/sysLanguage', name: '系统语言管理', element: (
+      <PrivateRoute>
+        <SysLanguageRouter/>
       </PrivateRoute>
     )
   },
