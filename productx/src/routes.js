@@ -199,15 +199,6 @@ const routes = [
     ),
   },
   {
-    path: '/data/systemConfig',
-    name: '系统设置',
-    element: (
-      <PrivateRoute>
-        <SystemConfig />
-      </PrivateRoute>
-    ),
-  },
-  {
     path: '/data/ipAddress',
     name: 'ip访问日志',
     element: (
