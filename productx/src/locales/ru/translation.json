@@ -722,5 +722,18 @@
   "usersCanContactThemselves": "Пользователи могут связаться самостоятельно",
   "callTheErrandRunnerToDeliver": "Позвоните курьеру для доставки",
   "expressDelivery": "Экспресс-доставка",
-  "logisticsDelivery": "Логистическая доставка"
+  "logisticsDelivery": "Логистическая доставка",
+
+  "agentName": "Имя агента",
+  "agentType": "Тип агента",
+  "regionName": "Название региона",
+  "agentLevel": "Уровень агента",
+  "isExclusive": "Является ли эксклюзивным",
+  "auditStatus": "Статус проверки",
+  "createAgent": "Создать агента",
+  "primaryAgent": "Первичный агент",
+  "secondaryAgent": "Вторичный агент",
+  "tertiaryAgent": "Третичный агент",
+  "approved": "Одобрено",
+  "rejected": "Отклонено"
 }

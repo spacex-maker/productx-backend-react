@@ -724,5 +724,18 @@
   "usersCanContactThemselves": "用户自行联系",
   "callTheErrandRunnerToDeliver": "联系跑腿配送",
   "expressDelivery": "快递配送",
-  "logisticsDelivery": "物流配送"
+  "logisticsDelivery": "物流配送",
+
+  "agentName": "代理人名称",
+  "agentType": "代理类型",
+  "regionName": "区域名称",
+  "agentLevel": "代理层级",
+  "isExclusive": "是否独家代理",
+  "auditStatus": "审核状态",
+  "createAgent": "新增代理",
+  "primaryAgent": "一级代理",
+  "secondaryAgent": "二级代理",
+  "tertiaryAgent": "三级代理",
+  "approved": "已通过",
+  "rejected": "已拒绝"
 }

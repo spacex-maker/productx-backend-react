@@ -704,5 +704,18 @@
   "usersCanContactThemselves": "يمكن للمستخدمين التواصل بأنفسهم",
   "callTheErrandRunnerToDeliver": "اتصل بالمرسال للتوصيل",
   "expressDelivery": "توصيل سريع",
-  "logisticsDelivery": "توصيل لوجستي"
+  "logisticsDelivery": "توصيل لوجستي",
+
+  "agentName": "اسم الوكيل",
+  "agentType": "نوع الوكيل",
+  "regionName": "اسم المنطقة",
+  "agentLevel": "مستوى الوكيل",
+  "isExclusive": "هل هو وكيل حصري",
+  "auditStatus": "حالة التدقيق",
+  "createAgent": "إضافة وكيل جديد",
+  "primaryAgent": "وكيل أساسي",
+  "secondaryAgent": "وكيل ثانوي",
+  "tertiaryAgent": "وكيل ثالثي",
+  "approved": "تمت الموافقة",
+  "rejected": "تم الرفض"
 }
