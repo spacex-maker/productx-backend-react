@@ -27,6 +27,7 @@ const ObjectStorageDetailModal = ({
   const [verifying, setVerifying] = useState(false);
   const [verifyStatus, setVerifyStatus] = useState(null);
   const [lastVerifyTime, setLastVerifyTime] = useState(null);
+  const [validationTime, setValidationTime] = useState(null);
 
   const styles = {
     card: {
@@ -81,15 +82,19 @@ const ObjectStorageDetailModal = ({
     return colorMap[status] || 'default';
   };
 
-  // 验证配置
   const handleVerify = async () => {
     if (!selectedStorage?.id) return;
 
     setVerifying(true);
+    const startTime = Date.now();
+    
     try {
       const response = await api.post('/manage/object-storage-config/verify', {
         id: selectedStorage.id
       });
+
+      const endTime = Date.now();
+      setValidationTime(endTime - startTime);
 
       if (response) {
         setVerifyStatus(response);
@@ -108,7 +113,6 @@ const ObjectStorageDetailModal = ({
     }
   };
 
-  // 获取验证状态标签
   const getVerifyStatusTag = () => {
     if (verifying) {
       return (
@@ -128,14 +132,25 @@ const ObjectStorageDetailModal = ({
       );
     }
 
+    const tooltipContent = (
+      <div>
+        {lastVerifyTime && (
+          <div>{t('lastVerifyTime')}: {lastVerifyTime.toLocaleString()}</div>
+        )}
+        {validationTime && (
+          <div>{t('validationTime')}: {(validationTime / 1000).toFixed(2)}s</div>
+        )}
+      </div>
+    );
+
     return verifyStatus ? (
-      <Tooltip title={lastVerifyTime ? t('lastVerifyTime', { time: lastVerifyTime.toLocaleString() }) : ''}>
+      <Tooltip title={tooltipContent}>
         <Tag icon={<CheckCircleOutlined />} color="success">
           {t('configValid')}
         </Tag>
       </Tooltip>
     ) : (
-      <Tooltip title={lastVerifyTime ? t('lastVerifyTime', { time: lastVerifyTime.toLocaleString() }) : ''}>
+      <Tooltip title={tooltipContent}>
         <Tag icon={<CloseCircleOutlined />} color="error">
           {t('configInvalid')}
         </Tag>
