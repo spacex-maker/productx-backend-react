@@ -60,7 +60,6 @@ const ImageManage = React.lazy(() => import('./views/base/record/record'));
 const ResourceManage = React.lazy(() => import('./views/base/resource/resource'));
 const UserManage = React.lazy(() => import('./views/base/userList/ListUsers'));
 const CommentsManage = React.lazy(() => import('./views/base/comment/comment'));
-const SystemConfig = React.lazy(() => import('./views/base/systemConfig/systemConfig'));
 const IpAddress = React.lazy(() => import('./views/base/ipAddress/IpAddress'));
 const PathStatisticLog = React.lazy(() => import('./views/base/pathStatisticLog/PathStatisticLog'));
 const Chatroom = React.lazy(() => import('./views/base/chatroom/Chatroom'));
@@ -121,6 +120,8 @@ const ObjectStorageListRouter = React.lazy(() => import('./views/base/objectStor
 const UserShippingMethodRouter = React.lazy(() => import('./views/base/userShippingMethod/UserShippingMethod'));
 
 const RegionAgentsRouter = React.lazy(() => import('./views/base/regionAgents/RegionAgents'));
+
+const SysConfigListRouter = React.lazy(() => import('./views/base/sysConfig/SysConfig'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -433,6 +434,13 @@ const routes = [
     path: '/sys/regionAgents', name: '区域代理管理', element: (
       <PrivateRoute>
         <RegionAgentsRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/sysConfig', name: '系统基础配置', element: (
+      <PrivateRoute>
+        <SysConfigListRouter/>
       </PrivateRoute>
     )
   },
