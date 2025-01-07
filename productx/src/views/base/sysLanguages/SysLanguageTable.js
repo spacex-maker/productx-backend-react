@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from 'antd';
-import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { Button, Tooltip, Modal } from 'antd';
+import { CheckCircleFilled, CloseCircleFilled, InfoCircleOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 const SysLanguageTable = ({
@@ -13,6 +13,22 @@ const SysLanguageTable = ({
   handleEnableStatusChange,
 }) => {
   const { t } = useTranslation();
+
+  const handleStatusChange = (id, event) => {
+    const newStatus = event.target.checked;
+    Modal.confirm({
+      title: t('confirmStatusChange'),
+      content: t('confirmLanguageStatusChangeMessage'),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      onOk: () => {
+        handleEnableStatusChange(id, event);
+      },
+      onCancel() {
+        // 取消时不做任何操作，保持原状态
+      },
+    });
+  };
 
   return (
     <table className="table table-bordered table-striped">
@@ -30,7 +46,12 @@ const SysLanguageTable = ({
           <th>{t('chineseName')}</th>
           <th>{t('nativeName')}</th>
           <th>{t('developmentStatus')}</th>
-          <th>{t('enableStatus')}</th>
+          <th>
+            {t('enableStatus')}
+            <Tooltip title={t('modifyingEnableStatusWillAffectLanguageOptions')}>
+              <InfoCircleOutlined style={{ marginLeft: '4px' }} />
+            </Tooltip>
+          </th>
           <th>{t('operation')}</th>
         </tr>
       </thead>
@@ -60,7 +81,7 @@ const SysLanguageTable = ({
                 <input
                   type="checkbox"
                   checked={item.status}
-                  onChange={(e) => handleEnableStatusChange(item.id, e)}
+                  onChange={(e) => handleStatusChange(item.id, e)}
                 />
                 <span className="toggle-switch-slider"></span>
               </label>

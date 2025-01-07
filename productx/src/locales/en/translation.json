@@ -235,7 +235,9 @@
     "维修商户管理": "Repair Merchant Management",
     "区域代理系统": "Regional Agent System",
     "区域代理管理": "Regional Agent Management",
-    "用户交易方式管理": "Verwaltung der Benutzertransaktionsmethoden"
+    "用户交易方式管理": "Verwaltung der Benutzertransaktionsmethoden",
+    "系统语言管理": "System Language Management",
+    "系统基础配置": "System Basic Configuration"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
@@ -819,6 +821,22 @@
 
   "addTitle": "Add New Language",
   "editTitle": "Edit Language",
-  "selectRecord": "Please select records to modify"
+  "selectRecord": "Please select records to modify",
+
+  "modifyingEnableStatusWillAffectLanguageOptions": "Modifying enable status will affect language options in admin system and App",
+
+  "confirmStatusChange": "Confirm Status Change",
+  "confirmLanguageStatusChangeMessage": "Are you sure you want to change the language status? This will affect the language options available in the system.",
+
+  "addPaymentMethod": "Add Payment Method",
+  "editPaymentMethod": "Edit Payment Method",
+  "paymentMethodName": "Payment Method Name",
+  "englishDescription": "English Description",
+  "chineseDescription": "Chinese Description",
+  "pleaseInputPaymentMethodName": "Please input the payment method name",
+  "pleaseInputEnglishDescription": "Please input the English description",
+  "pleaseInputChineseDescription": "Please input the Chinese description",
+  "confirmPaymentMethodStatusChangeMessage": "Are you sure you want to change the payment method status? This will affect the available payment options in the system.",
+  "modifyingEnableStatusWillAffectPaymentOptions": "Modifying the enable status will affect payment options in the admin system and App"
 
 }

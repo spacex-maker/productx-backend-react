@@ -125,6 +125,8 @@ const SysConfigListRouter = React.lazy(() => import('./views/base/sysConfig/SysC
 
 const SysLanguageRouter = React.lazy(() => import('./views/base/sysLanguages/SysLanguage'));
 
+const SysPaymentMethodsRouter = React.lazy(() => import('./views/base/sysPaymentMethods/SysPaymentMethods'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -441,6 +443,13 @@ const routes = [
     path: '/sys/sysLanguage', name: '系统语言管理', element: (
       <PrivateRoute>
         <SysLanguageRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/sysPaymentMethods', name: '系统支付方式管理', element: (
+      <PrivateRoute>
+        <SysPaymentMethodsRouter/>
       </PrivateRoute>
     )
   },

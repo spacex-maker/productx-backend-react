@@ -242,7 +242,9 @@
     "商户管理": "Händlerverwaltung",
     "维修商户管理": "Reparaturhändlerverwaltung",
     "区域代理系统": "Regionalagentensystem",
-    "区域代理管理": "Verwaltung von Regionalagenten"
+    "区域代理管理": "Verwaltung von Regionalagenten",
+    "系统语言管理": "Systemsprachenverwaltung",
+    "系统基础配置": "Systemgrundkonfiguration"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -795,5 +797,23 @@
 
   "addTitle": "Neue Sprache hinzufügen",
   "editTitle": "Sprache bearbeiten",
-  "selectRecord": "Bitte wählen Sie die zu ändernden Datensätze aus"
+  "selectRecord": "Bitte wählen Sie die zu ändernden Datensätze aus",
+
+  "modifyingEnableStatusWillAffectLanguageOptions": "Das Ändern des Aktivierungsstatus wirkt sich auf die Sprachoptionen im Admin-System und in der App aus",
+
+  "confirmStatusChange": "Statusänderung bestätigen",
+  "confirmLanguageStatusChangeMessage": "Möchten Sie den Sprachstatus wirklich ändern? Dies wirkt sich auf die verfügbaren Sprachoptionen im System aus.",
+
+  "addPaymentMethod": "Neue Zahlungsmethode hinzufügen",
+  "editPaymentMethod": "Zahlungsmethode bearbeiten",
+  "paymentMethodName": "Name der Zahlungsmethode",
+  "englishDescription": "Beschreibung auf Englisch",
+  "chineseDescription": "Beschreibung auf Chinesisch",
+  "pleaseInputPaymentMethodName": "Bitte geben Sie den Namen der Zahlungsmethode ein",
+  "pleaseInputEnglishDescription": "Bitte geben Sie die Beschreibung auf Englisch ein",
+  "pleaseInputChineseDescription": "Bitte geben Sie die Beschreibung auf Chinesisch ein",
+  "confirmPaymentMethodStatusChangeMessage": "Möchten Sie den Status der Zahlungsmethode wirklich ändern? Dies wirkt sich auf die verfügbaren Zahlungsoptionen im System aus.",
+  "modifyingEnableStatusWillAffectPaymentOptions": "Das Ändern des Aktivierungsstatus wirkt sich auf die Zahlungsoptionen im Verwaltungssystem und in der App aus"
+
+
 }
