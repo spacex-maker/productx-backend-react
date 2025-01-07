@@ -845,7 +845,19 @@
   "pleaseInputEnglishDescription": "英語の説明を入力してください",
   "pleaseInputChineseDescription": "中国語の説明を入力してください",
   "confirmPaymentMethodStatusChangeMessage": "支払い方法のステータスを変更してもよろしいですか？ これにより、システムで利用可能な支払いオプションに影響します。",
-  "modifyingEnableStatusWillAffectPaymentOptions": "有効状態の変更は、管理システムおよびアプリケーション内の支払いオプションに影響を与えます"
+  "modifyingEnableStatusWillAffectPaymentOptions": "有効状態の変更は、管理システムおよびアプリケーション内の支払いオプションに影響を与えます",
+
+  "clientName": "クライアント名",
+  "privacyPolicyUrl": "プライバシーポリシーのURL",
+  "termsConditionsUrl": "利用規約のURL",
+  "supportEmail": "サポートメール",
+  "supportPhone": "サポート電話番号",
+  "appVersion": "アプリバージョン",
+  "downloadUrl": "ダウンロードURL",
+  "updateRequired": "アップデートが必要か",
+  "clientConfig": "クライアント設定",
+  "saving": "保存中...",
+  "pleaseInput": "入力してください"
 
 
 }

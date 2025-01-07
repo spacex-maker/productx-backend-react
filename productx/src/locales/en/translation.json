@@ -837,6 +837,18 @@
   "pleaseInputEnglishDescription": "Please input the English description",
   "pleaseInputChineseDescription": "Please input the Chinese description",
   "confirmPaymentMethodStatusChangeMessage": "Are you sure you want to change the payment method status? This will affect the available payment options in the system.",
-  "modifyingEnableStatusWillAffectPaymentOptions": "Modifying the enable status will affect payment options in the admin system and App"
+  "modifyingEnableStatusWillAffectPaymentOptions": "Modifying the enable status will affect payment options in the admin system and App",
+
+  "clientName": "Client Name",
+  "privacyPolicyUrl": "Privacy Policy URL",
+  "termsConditionsUrl": "Terms and Conditions URL",
+  "supportEmail": "Support Email",
+  "supportPhone": "Support Phone",
+  "appVersion": "App Version",
+  "downloadUrl": "Download URL",
+  "updateRequired": "Update Required",
+  "clientConfig": "Client Config",
+  "saving": "Saving...",
+  "pleaseInput": "Please input"
 
 }

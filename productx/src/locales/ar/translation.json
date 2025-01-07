@@ -828,6 +828,18 @@
   "pleaseInputEnglishDescription": "يرجى إدخال الوصف بالإنجليزية",
   "pleaseInputChineseDescription": "يرجى إدخال الوصف بالصينية",
   "confirmPaymentMethodStatusChangeMessage": "هل أنت متأكد من أنك تريد تغيير حالة طريقة الدفع؟ سيؤثر هذا على خيارات الدفع المتاحة في النظام.",
-  "modifyingEnableStatusWillAffectPaymentOptions": "سيؤثر تعديل حالة التمكين على خيارات الدفع في نظام الإدارة والتطبيق"
+  "modifyingEnableStatusWillAffectPaymentOptions": "سيؤثر تعديل حالة التمكين على خيارات الدفع في نظام الإدارة والتطبيق",
+
+  "clientName": "اسم العميل",
+  "privacyPolicyUrl": "رابط سياسة الخصوصية",
+  "termsConditionsUrl": "رابط الشروط والأحكام",
+  "supportEmail": "البريد الإلكتروني للدعم",
+  "supportPhone": "رقم هاتف الدعم",
+  "appVersion": "إصدار التطبيق",
+  "downloadUrl": "رابط تحميل التطبيق",
+  "updateRequired": "هل التحديث مطلوب",
+  "clientConfig": "إعدادات العميل",
+  "saving": "جارٍ الحفظ...",
+  "pleaseInput": "يرجى الإدخال"
 
 }

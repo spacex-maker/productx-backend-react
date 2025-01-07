@@ -839,7 +839,19 @@
   "pleaseInputEnglishDescription": "Inserisci la descrizione in inglese",
   "pleaseInputChineseDescription": "Inserisci la descrizione in cinese",
   "confirmPaymentMethodStatusChangeMessage": "Sei sicuro di voler cambiare lo stato del metodo di pagamento? Questo influirà sulle opzioni di pagamento disponibili nel sistema.",
-  "modifyingEnableStatusWillAffectPaymentOptions": "La modifica dello stato di abilitazione influirà sulle opzioni di pagamento nel sistema di amministrazione e nell'app"
+  "modifyingEnableStatusWillAffectPaymentOptions": "La modifica dello stato di abilitazione influirà sulle opzioni di pagamento nel sistema di amministrazione e nell'app",
+
+  "clientName": "Nome del cliente",
+  "privacyPolicyUrl": "URL dell'informativa sulla privacy",
+  "termsConditionsUrl": "URL dei termini e condizioni",
+  "supportEmail": "Email di supporto",
+  "supportPhone": "Telefono di supporto",
+  "appVersion": "Versione dell'app",
+  "downloadUrl": "URL di download",
+  "updateRequired": "Aggiornamento richiesto",
+  "clientConfig": "Configurazione del cliente",
+  "saving": "Salvataggio in corso...",
+  "pleaseInput": "Si prega di inserire"
 
 
 }

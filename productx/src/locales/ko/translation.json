@@ -846,7 +846,19 @@
   "pleaseInputEnglishDescription": "영어 설명을 입력하세요",
   "pleaseInputChineseDescription": "중국어 설명을 입력하세요",
   "confirmPaymentMethodStatusChangeMessage": "결제 방법 상태를 변경하시겠습니까? 이는 시스템에서 사용할 수 있는 결제 옵션에 영향을 미칩니다.",
-  "modifyingEnableStatusWillAffectPaymentOptions": "활성화 상태를 수정하면 관리 시스템 및 앱의 결제 옵션에 영향을 미칩니다"
+  "modifyingEnableStatusWillAffectPaymentOptions": "활성화 상태를 수정하면 관리 시스템 및 앱의 결제 옵션에 영향을 미칩니다",
+
+  "clientName": "클라이언트 이름",
+  "privacyPolicyUrl": "개인정보처리방침 URL",
+  "termsConditionsUrl": "이용약관 URL",
+  "supportEmail": "지원 이메일",
+  "supportPhone": "지원 전화번호",
+  "appVersion": "앱 버전",
+  "downloadUrl": "다운로드 URL",
+  "updateRequired": "업데이트 필요 여부",
+  "clientConfig": "클라이언트 구성",
+  "saving": "저장 중...",
+  "pleaseInput": "입력하세요"
 
 
 }

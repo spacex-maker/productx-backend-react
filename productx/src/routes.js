@@ -2,6 +2,7 @@ import React from 'react'
 import PrivateRoute from "src/components/PrivateRoute";
 import UserProduct from "src/views/base/userProduct/UserProduct";
 import RepairServiceMerchants from "src/views/base/repairServiceMerchants/RepairServiceMerchants";
+import ClientCountryConfig from './views/base/clientCountryConfig/ClientCountryConfig';
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'));
@@ -126,6 +127,8 @@ const SysConfigListRouter = React.lazy(() => import('./views/base/sysConfig/SysC
 const SysLanguageRouter = React.lazy(() => import('./views/base/sysLanguages/SysLanguage'));
 
 const SysPaymentMethodsRouter = React.lazy(() => import('./views/base/sysPaymentMethods/SysPaymentMethods'));
+
+const ClientCountryConfigRouter = React.lazy(() => import('./views/base/clientCountryConfig/ClientCountryConfig'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -450,6 +453,13 @@ const routes = [
     path: '/sys/sysPaymentMethods', name: '系统支付方式管理', element: (
       <PrivateRoute>
         <SysPaymentMethodsRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/clientCountryConfig', name: '客户端配置', element: (
+      <PrivateRoute>
+        <ClientCountryConfigRouter/>
       </PrivateRoute>
     )
   },
