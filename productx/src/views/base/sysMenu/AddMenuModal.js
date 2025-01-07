@@ -88,6 +88,34 @@ const StyledModal = styled(Modal)`
   }
 
   .ant-select-selection-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .menu-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ant-select-dropdown {
+    .ant-select-item {
+      padding: 8px 12px;
+      
+      .menu-icon {
+        width: 16px;
+        height: 16px;
+        vertical-align: middle;
+      }
+      
+      .ant-space {
+        width: 100%;
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .ant-select-selection-item {
     .menu-icon {
       width: 16px;
       height: 16px;
@@ -95,11 +123,6 @@ const StyledModal = styled(Modal)`
     }
   }
 `
-
-// 获取所有 CoreUI 图标
-const getAllCoreUIIcons = () => {
-  return Object.keys(icons).filter(key => key.startsWith('cil'));
-};
 
 const AddMenuModal = ({ 
   visible, 
@@ -111,8 +134,15 @@ const AddMenuModal = ({
 }) => {
   const { t } = useTranslation()
 
-  // 获取所有图标选项
-  const iconOptions = getAllCoreUIIcons();
+  // 获取所有 CoreUI 图标并添加搜索过滤功能
+  const getAllCoreUIIcons = () => {
+    return Object.keys(icons).filter(key => key.startsWith('cil'));
+  };
+
+  // 图标搜索过滤函数
+  const filterIconOption = (input, option) => {
+    return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  };
 
   return (
     <StyledModal
@@ -127,7 +157,7 @@ const AddMenuModal = ({
       cancelText={t('cancel')}
     >
       <Alert
-        message="新建菜单后，系统会自动在权限列表中创建一条与菜单同名的权限"
+        message={t('menuPermissionTip')}
         type="info"
         showIcon
         banner
@@ -172,24 +202,30 @@ const AddMenuModal = ({
           rules={[{ required: true, message: t('pleaseSelectIcon') }]}
         >
           <Select
+            suffixIcon={<AppstoreOutlined />}
             placeholder={t('pleaseSelectIcon')}
             showSearch
             optionFilterProp="children"
+            filterOption={filterIconOption}
             dropdownMatchSelectWidth={false}
             dropdownStyle={{ 
               maxHeight: '400px',
               overflow: 'auto'
             }}
+            // 自定义选中项的显示内容
+            menuItemSelectedIcon={null}
+            // 自定义选择框中显示的内容
+            value={form.getFieldValue('icon')}
           >
-            {iconOptions.map(icon => (
+            {getAllCoreUIIcons().map(icon => (
               <Select.Option key={icon} value={icon}>
-                <Space>
+                <Space align="center" style={{ width: '100%' }}>
                   <CIcon 
                     icon={icons[icon]} 
                     className="menu-icon"
                     style={{ width: '16px', height: '16px' }}
                   />
-                  <span style={{ marginLeft: '8px' }}>{icon}</span>
+                  <span style={{ flex: 1 }}>{icon}</span>
                 </Space>
               </Select.Option>
             ))}

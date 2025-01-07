@@ -243,7 +243,9 @@
     "维修商户管理": "إدارة تجار الصيانة",
     "区域代理系统": "نظام الوكلاء الإقليميين",
     "区域代理管理": "إدارة الوكلاء الإقليميين",
-    "用户交易方式管理": "إدارة طرق معاملات المستخدم"
+    "用户交易方式管理": "إدارة طرق معاملات المستخدم",
+    "系统语言管理": "إدارة لغات النظام",
+    "系统基础配置": "إعدادات النظام الأساسية"
   },
   "confirmDelete": "تأكيد الحذف",
   "countryName": "اسم الدولة",
@@ -810,5 +812,22 @@
 
   "addTitle": "إضافة لغة جديدة",
   "editTitle": "تعديل اللغة",
-  "selectRecord": "يرجى اختيار السجلات لتعديلها"
+  "selectRecord": "يرجى اختيار السجلات لتعديلها",
+
+  "modifyingEnableStatusWillAffectLanguageOptions": "تعديل حالة التمكين سيؤثر على خيارات اللغة في نظام الإدارة والتطبيق",
+
+  "confirmStatusChange": "تأكيد تغيير الحالة",
+  "confirmLanguageStatusChangeMessage": "هل أنت متأكد من أنك تريد تغيير حالة اللغة؟ سيؤثر هذا على خيارات اللغة المتاحة في النظام.",
+
+  "addPaymentMethod": "إضافة طريقة دفع جديدة",
+  "editPaymentMethod": "تعديل طريقة الدفع",
+  "paymentMethodName": "اسم طريقة الدفع",
+  "englishDescription": "الوصف بالإنجليزية",
+  "chineseDescription": "الوصف بالصينية",
+  "pleaseInputPaymentMethodName": "يرجى إدخال اسم طريقة الدفع",
+  "pleaseInputEnglishDescription": "يرجى إدخال الوصف بالإنجليزية",
+  "pleaseInputChineseDescription": "يرجى إدخال الوصف بالصينية",
+  "confirmPaymentMethodStatusChangeMessage": "هل أنت متأكد من أنك تريد تغيير حالة طريقة الدفع؟ سيؤثر هذا على خيارات الدفع المتاحة في النظام.",
+  "modifyingEnableStatusWillAffectPaymentOptions": "سيؤثر تعديل حالة التمكين على خيارات الدفع في نظام الإدارة والتطبيق"
+
 }

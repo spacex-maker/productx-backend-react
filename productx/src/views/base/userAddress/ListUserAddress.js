@@ -32,6 +32,7 @@ const ListUserAddress = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchParams, setSearchParams] = useState({
     userId: '',
+    username: '',
     receiverName: '',
     phone: '',
     detailAddress: '',
@@ -135,6 +136,16 @@ const ListUserAddress = () => {
                 onChange={handleSearchChange}
                 name="userId"
                 placeholder={t('userId')}
+                allowClear
+              />
+            </Col>
+            <Col>
+              <Input
+                size="small"
+                value={searchParams.username}
+                onChange={handleSearchChange}
+                name="username"
+                placeholder={t('username')}
                 allowClear
               />
             </Col>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Form, Input, message, Spin, Col, Row, Select } from 'antd'
+import { Button, Form, Input, message, Spin, Col, Row, Select, Modal } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
@@ -87,25 +87,36 @@ const SysLanguage = () => {
 
   const handleStatusChange = async (ids, status) => {
     if (!Array.isArray(ids)) {
-      ids = [ids]
+      ids = [ids];
     }
     
     if (ids.length === 0) {
-      message.warning(t('pleaseSelect'))
-      return
+      message.warning(t('pleaseSelect'));
+      return;
     }
 
-    try {
-      await api.post('/manage/sys-languages/change-status', {
-        ids: ids,
-        status: status
-      })
-      message.success(t('updateSuccess'))
-      await fetchData()
-    } catch (error) {
-      message.error(t('updateFailed'))
-    }
-  }
+    Modal.confirm({
+      title: t('confirmStatusChange'),
+      content: t('confirmLanguageStatusChangeMessage'),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      onOk: async () => {
+        try {
+          await api.post('/manage/sys-languages/change-status', {
+            ids: ids,
+            status: status
+          });
+          message.success(t('updateSuccess'));
+          await fetchData();
+        } catch (error) {
+          message.error(t('updateFailed'));
+        }
+      },
+      onCancel() {
+        // 取消时不做任何操作
+      },
+    });
+  };
 
   const handleEditClick = (language) => {
     setSelectedLanguage(language)
@@ -113,18 +124,31 @@ const SysLanguage = () => {
   }
 
   const handleEnableStatusChange = async (id, event) => {
-    try {
-      await api.post('/manage/sys-languages/update-status', {
-        ids: [id],
-        status: event.target.checked
-      })
-      message.success('状态更新成功')
-      await fetchData()
-    } catch (error) {
-      console.error('Failed to update status', error)
-      message.error('状态更新失败')
-    }
-  }
+    const newStatus = event.target.checked;
+    Modal.confirm({
+      title: t('confirmStatusChange'),
+      content: t('confirmLanguageStatusChangeMessage'),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      onOk: async () => {
+        try {
+          await api.post('/manage/sys-languages/update-status', {
+            ids: [id],
+            status: newStatus
+          });
+          message.success(t('updateSuccess'));
+          await fetchData();
+        } catch (error) {
+          console.error('Failed to update status', error);
+          message.error(t('updateFailed'));
+        }
+      },
+      onCancel() {
+        // 取消时恢复原状态
+        fetchData();
+      },
+    });
+  };
 
   const handleBatchUpdateStatus = async (status) => {
     if (selectedRows.length === 0) {

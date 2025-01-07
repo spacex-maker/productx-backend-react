@@ -236,7 +236,9 @@
     "维修商户管理": "Gestione Commercianti di Riparazione",
     "区域代理系统": "Sistema degli agenti regionali",
     "区域代理管理": "Gestione degli agenti regionali",
-    "用户交易方式管理": "Gestione dei metodi di transazione dell'utente"
+    "用户交易方式管理": "Gestione dei metodi di transazione dell'utente",
+    "系统语言管理": "Gestione della lingua di sistema",
+    "系统基础配置": "Configurazione di base del sistema"
   },
   "confirmDelete": "Conferma eliminazione",
   "countryName": "Nome del paese",
@@ -821,5 +823,23 @@
 
   "addTitle": "Aggiungi nuova lingua",
   "editTitle": "Modifica lingua",
-  "selectRecord": "Seleziona i record da modificare"
+  "selectRecord": "Seleziona i record da modificare",
+
+  "modifyingEnableStatusWillAffectLanguageOptions": "Modificare lo stato di abilitazione influirà sulle opzioni della lingua nel sistema di amministrazione e nell'app",
+
+  "confirmStatusChange": "Conferma cambio di stato",
+  "confirmLanguageStatusChangeMessage": "Sei sicuro di voler cambiare lo stato della lingua? Questo influirà sulle opzioni linguistiche disponibili nel sistema.",
+
+  "addPaymentMethod": "Aggiungi metodo di pagamento",
+  "editPaymentMethod": "Modifica metodo di pagamento",
+  "paymentMethodName": "Nome del metodo di pagamento",
+  "englishDescription": "Descrizione in inglese",
+  "chineseDescription": "Descrizione in cinese",
+  "pleaseInputPaymentMethodName": "Inserisci il nome del metodo di pagamento",
+  "pleaseInputEnglishDescription": "Inserisci la descrizione in inglese",
+  "pleaseInputChineseDescription": "Inserisci la descrizione in cinese",
+  "confirmPaymentMethodStatusChangeMessage": "Sei sicuro di voler cambiare lo stato del metodo di pagamento? Questo influirà sulle opzioni di pagamento disponibili nel sistema.",
+  "modifyingEnableStatusWillAffectPaymentOptions": "La modifica dello stato di abilitazione influirà sulle opzioni di pagamento nel sistema di amministrazione e nell'app"
+
+
 }

@@ -243,7 +243,9 @@
     "维修商户管理": "修理商人管理",
     "区域代理系统": "地域エージェントシステム",
     "区域代理管理": "地域エージェント管理",
-    "用户交易方式管理": "ユーザー取引方法管理"
+    "用户交易方式管理": "ユーザー取引方法管理",
+    "系统语言管理": "システム言語管理",
+    "系统基础配置": "システム基本設定"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -828,5 +830,22 @@
 
   "addTitle": "新しい言語を追加",
   "editTitle": "言語を編集",
-  "selectRecord": "変更するレコードを選択してください"
+  "selectRecord": "変更するレコードを選択してください",
+
+  "modifyingEnableStatusWillAffectLanguageOptions": "有効状態の変更は、管理システムおよびアプリ内の言語オプションに影響を与えます",
+
+  "confirmStatusChange": "ステータス変更の確認",
+  "confirmLanguageStatusChangeMessage": "言語ステータスを変更してもよろしいですか？ これにより、システムで利用可能な言語オプションに影響します。",
+  "addPaymentMethod": "支払い方法を追加",
+  "editPaymentMethod": "支払い方法を編集",
+  "paymentMethodName": "支払い方法名",
+  "englishDescription": "英語の説明",
+  "chineseDescription": "中国語の説明",
+  "pleaseInputPaymentMethodName": "支払い方法名を入力してください",
+  "pleaseInputEnglishDescription": "英語の説明を入力してください",
+  "pleaseInputChineseDescription": "中国語の説明を入力してください",
+  "confirmPaymentMethodStatusChangeMessage": "支払い方法のステータスを変更してもよろしいですか？ これにより、システムで利用可能な支払いオプションに影響します。",
+  "modifyingEnableStatusWillAffectPaymentOptions": "有効状態の変更は、管理システムおよびアプリケーション内の支払いオプションに影響を与えます"
+
+
 }

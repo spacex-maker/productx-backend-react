@@ -243,7 +243,9 @@
     "维修商户管理": "维修商户管理",
     "区域代理系统": "区域代理系统",
     "区域代理管理": "区域代理管理",
-    "用户交易方式管理": "用户交易方式管理"
+    "用户交易方式管理": "用户交易方式管理",
+    "系统语言管理": "系统语言管理",
+    "系统基础配置": "系统基础配置"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -829,5 +831,22 @@
 
   "addTitle": "新增语言",
   "editTitle": "修改语言",
-  "selectRecord": "请选择要修改的记录"
+  "selectRecord": "请选择要修改的记录",
+
+  "modifyingEnableStatusWillAffectLanguageOptions": "修改启用状态将影响管理系统和应用中的语言选项",
+
+  "confirmStatusChange": "确认状态变更",
+  "confirmLanguageStatusChangeMessage": "确定要更改语言状态吗？这将影响系统中可用的语言选项。",
+
+  "addPaymentMethod": "新增支付方式",
+  "editPaymentMethod": "修改支付方式",
+  "paymentMethodName": "支付方式名称",
+  "englishDescription": "英文描述",
+  "chineseDescription": "中文描述",
+  "pleaseInputPaymentMethodName": "请输入支付方式名称",
+  "pleaseInputEnglishDescription": "请输入英文描述",
+  "pleaseInputChineseDescription": "请输入中文描述",
+  "confirmPaymentMethodStatusChangeMessage": "确定要更改支付方式状态吗？这将影响系统中可用的支付选项。",
+  "modifyingEnableStatusWillAffectPaymentOptions": "修改启用状态将影响管理系统和应用中的支付选项"
+
 }
