@@ -468,7 +468,9 @@ img.no-radius {
 
 // 让 Ant Design 的 Descriptions 组件继承 CoreUI 的主题
 .ant-descriptions {
-  @extend .text-body;
+  color: var(--cui-body-color) !important;
+  font-size: var(--cui-body-font-size) !important;
+  line-height: var(--cui-body-line-height) !important;
 }
 
 // 覆盖所有可能的 Ant Design 前缀
