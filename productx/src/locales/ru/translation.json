@@ -846,7 +846,17 @@
   "pleaseInputEnglishDescription": "Введите описание на английском",
   "pleaseInputChineseDescription": "Введите описание на китайском",
   "confirmPaymentMethodStatusChangeMessage": "Вы уверены, что хотите изменить статус способа оплаты? Это повлияет на доступные параметры оплаты в системе.",
-  "modifyingEnableStatusWillAffectPaymentOptions": "Изменение статуса включения повлияет на параметры оплаты в системе администрирования и приложении"
+  "modifyingEnableStatusWillAffectPaymentOptions": "Изменение статуса включения повлияет на параметры оплаты в системе администрирования и приложении",
 
-
+  "clientName": "Имя клиента",
+  "privacyPolicyUrl": "URL политики конфиденциальности",
+  "termsConditionsUrl": "URL условий и положений",
+  "supportEmail": "Электронная почта поддержки",
+  "supportPhone": "Телефон поддержки",
+  "appVersion": "Версия приложения",
+  "downloadUrl": "Ссылка для скачивания",
+  "updateRequired": "Требуется обновление",
+  "clientConfig": "Конфигурация клиента",
+  "saving": "Сохранение...",
+  "pleaseInput": "Пожалуйста, введите"
 }

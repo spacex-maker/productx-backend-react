@@ -813,7 +813,17 @@
   "pleaseInputEnglishDescription": "Bitte geben Sie die Beschreibung auf Englisch ein",
   "pleaseInputChineseDescription": "Bitte geben Sie die Beschreibung auf Chinesisch ein",
   "confirmPaymentMethodStatusChangeMessage": "Möchten Sie den Status der Zahlungsmethode wirklich ändern? Dies wirkt sich auf die verfügbaren Zahlungsoptionen im System aus.",
-  "modifyingEnableStatusWillAffectPaymentOptions": "Das Ändern des Aktivierungsstatus wirkt sich auf die Zahlungsoptionen im Verwaltungssystem und in der App aus"
+  "modifyingEnableStatusWillAffectPaymentOptions": "Das Ändern des Aktivierungsstatus wirkt sich auf die Zahlungsoptionen im Verwaltungssystem und in der App aus",
 
-
+  "clientName": "Kundenname",
+  "privacyPolicyUrl": "Link zur Datenschutzrichtlinie",
+  "termsConditionsUrl": "Link zu den Nutzungsbedingungen",
+  "supportEmail": "Support-E-Mail",
+  "supportPhone": "Support-Telefonnummer",
+  "appVersion": "App-Version",
+  "downloadUrl": "Download-Link",
+  "updateRequired": "Update erforderlich",
+  "clientConfig": "Kundeneinstellungen",
+  "saving": "Speichern...",
+  "pleaseInput": "Bitte eingeben"
 }
