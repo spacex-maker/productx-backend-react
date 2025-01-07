@@ -801,5 +801,33 @@
   "cooperationStartDate": "合作开始日期",
   "cooperationEndDate": "合作结束日期",
 
-  "validationTime": "验证耗时/秒"
+  "validationTime": "验证耗时/秒",
+
+  "languageCode": "语言代码",
+  "englishName": "英文名称",
+  "nativeName": "本地名称",
+  "developmentStatus": "开发状态",
+  "enableStatus": "启用状态",
+
+  "developed": "已开发",
+  "notDeveloped": "未开发",
+  "addLanguage": "新增语言",
+  "batchEnable": "批量启用",
+  "batchDisable": "批量禁用",
+
+  "pleaseSelectRecords": "请选择要修改的记录",
+
+  "enterLanguageCode": "请输入语言代码",
+  "enterChineseName": "请输入中文名称",
+  "selectDevelopmentStatus": "请选择开发状态",
+  "selectEnableStatus": "请选择启用状态",
+
+  "inputLanguageCode": "请输入语言代码",
+  "inputEnglishName": "请输入英文名称",
+  "inputChineseName": "请输入中文名称",
+  "inputNativeName": "请输入本地名称",
+
+  "addTitle": "新增语言",
+  "editTitle": "修改语言",
+  "selectRecord": "请选择要修改的记录"
 }

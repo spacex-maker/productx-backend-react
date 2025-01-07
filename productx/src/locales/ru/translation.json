@@ -800,5 +800,33 @@
   "cooperationStartDate": "Дата начала сотрудничества",
   "cooperationEndDate": "Дата окончания сотрудничества",
 
-  "validationTime": "Время проверки / секунды"
+  "validationTime": "Время проверки / секунды",
+
+  "languageCode": "Код языка",
+  "englishName": "Английское название",
+  "nativeName": "Родное название",
+  "developmentStatus": "Статус разработки",
+  "enableStatus": "Статус включения",
+
+  "developed": "Разработано",
+  "notDeveloped": "Не разработано",
+  "addLanguage": "Добавить язык",
+  "batchEnable": "Массовое включение",
+  "batchDisable": "Массовое отключение",
+
+  "pleaseSelectRecords": "Выберите записи для изменения",
+
+  "enterLanguageCode": "Пожалуйста, введите код языка",
+  "enterChineseName": "Пожалуйста, введите китайское название",
+  "selectDevelopmentStatus": "Пожалуйста, выберите статус разработки",
+  "selectEnableStatus": "Пожалуйста, выберите статус включения",
+
+  "inputLanguageCode": "Пожалуйста, введите код языка",
+  "inputEnglishName": "Пожалуйста, введите английское название",
+  "inputChineseName": "Пожалуйста, введите китайское название",
+  "inputNativeName": "Пожалуйста, введите родное название",
+
+  "addTitle": "Добавить новый язык",
+  "editTitle": "Редактировать язык",
+  "selectRecord": "Пожалуйста, выберите записи для изменения"
 }

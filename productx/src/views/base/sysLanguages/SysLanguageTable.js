@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
+import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 const SysLanguageTable = ({
   data,
@@ -8,65 +10,64 @@ const SysLanguageTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
-  handleStatusChange,
+  handleEnableStatusChange,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <table className="table table-bordered table-striped">
       <thead>
         <tr>
           <th>
-            <div className="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="select_all"
-                checked={selectAll}
-                onChange={(event) => handleSelectAll(event, data)}
-              />
-              <label className="custom-control-label" htmlFor="select_all"></label>
-            </div>
+            <input
+              type="checkbox"
+              checked={selectAll}
+              onChange={handleSelectAll}
+            />
           </th>
-          {['语言代码', '英文名称', '中文名称', '本地名称', '开发状态'].map((field) => (
-            <th key={field}>{field}</th>
-          ))}
-          <th className="fixed-column">操作</th>
+          <th>{t('languageCode')}</th>
+          <th>{t('englishName')}</th>
+          <th>{t('chineseName')}</th>
+          <th>{t('nativeName')}</th>
+          <th>{t('developmentStatus')}</th>
+          <th>{t('enableStatus')}</th>
+          <th>{t('operation')}</th>
         </tr>
       </thead>
       <tbody>
         {data.map((item) => (
           <tr key={item.id} className="record-font">
             <td>
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  id={`td_checkbox_${item.id}`}
-                  checked={selectedRows.includes(item.id)}
-                  onChange={() => handleSelectRow(item.id, data)}
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor={`td_checkbox_${item.id}`}
-                ></label>
-              </div>
+              <input
+                type="checkbox"
+                checked={selectedRows.includes(item.id)}
+                onChange={() => handleSelectRow(item.id)}
+              />
             </td>
-            <td className="text-truncate">{item.languageCode}</td>
-            <td className="text-truncate">{item.languageNameEn}</td>
-            <td className="text-truncate">{item.languageNameZh}</td>
-            <td className="text-truncate">{item.languageNameNative}</td>
+            <td>{item.languageCode}</td>
+            <td>{item.languageNameEn}</td>
+            <td>{item.languageNameZh}</td>
+            <td>{item.languageNameNative}</td>
+            <td>
+              {item.isDeveloped ? (
+                <CheckCircleFilled style={{ color: '#52c41a', fontSize: '16px' }} />
+              ) : (
+                <CloseCircleFilled style={{ color: '#ff4d4f', fontSize: '16px' }} />
+              )}
+            </td>
             <td>
               <label className="toggle-switch">
                 <input
                   type="checkbox"
-                  checked={item.isDeveloped}
-                  onChange={(e) => handleStatusChange(item.id, e)}
+                  checked={item.status}
+                  onChange={(e) => handleEnableStatusChange(item.id, e)}
                 />
                 <span className="toggle-switch-slider"></span>
               </label>
             </td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
+                {t('edit')}
               </Button>
             </td>
           </tr>

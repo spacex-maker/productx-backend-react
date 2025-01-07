@@ -782,5 +782,33 @@
   "cooperationStartDate": "تاريخ بدء التعاون",
   "cooperationEndDate": "تاريخ انتهاء التعاون",
 
-  "validationTime": "وقت التحقق / ثانية"
+  "validationTime": "وقت التحقق / ثانية",
+
+  "languageCode": "رمز اللغة",
+  "englishName": "الاسم الإنجليزي",
+  "nativeName": "الاسم الأصلي",
+  "developmentStatus": "حالة التطوير",
+  "enableStatus": "حالة التمكين",
+
+  "developed": "تم التطوير",
+  "notDeveloped": "غير مطور",
+  "addLanguage": "إضافة لغة",
+  "batchEnable": "تمكين الدفعة",
+  "batchDisable": "تعطيل الدفعة",
+
+  "pleaseSelectRecords": "يرجى اختيار السجلات لتعديلها",
+
+  "enterLanguageCode": "يرجى إدخال رمز اللغة",
+  "enterChineseName": "يرجى إدخال الاسم الصيني",
+  "selectDevelopmentStatus": "يرجى اختيار حالة التطوير",
+  "selectEnableStatus": "يرجى اختيار حالة التمكين",
+
+  "inputLanguageCode": "يرجى إدخال رمز اللغة",
+  "inputEnglishName": "يرجى إدخال الاسم الإنجليزي",
+  "inputChineseName": "يرجى إدخال الاسم الصيني",
+  "inputNativeName": "يرجى إدخال الاسم الأصلي",
+
+  "addTitle": "إضافة لغة جديدة",
+  "editTitle": "تعديل اللغة",
+  "selectRecord": "يرجى اختيار السجلات لتعديلها"
 }

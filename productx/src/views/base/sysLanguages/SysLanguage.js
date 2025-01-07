@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Form, Input, message, Spin, Col, Row } from 'antd'
+import { Button, Form, Input, message, Spin, Col, Row, Select } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
 import SysLanguageTable from "./SysLanguageTable"
 import UpdateLanguageModal from "./UpdateLanguageModel"
 import SysLanguageCreateFormModal from "./SysLanguageCreateFormModel"
+import { useTranslation } from 'react-i18next'
 
 const SysLanguage = () => {
+  const { t } = useTranslation()
+  
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
   const [currentPage, setCurrent] = useState(1)
@@ -16,6 +19,8 @@ const SysLanguage = () => {
   const [searchParams, setSearchParams] = useState({
     languageCode: '',
     languageNameZh: '',
+    isDeveloped: '',
+    status: '',
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -36,7 +41,7 @@ const SysLanguage = () => {
         Object.entries(searchParams).filter(([_, value]) => value !== '')
       )
       const response = await api.get('/manage/sys-languages/page', {
-        params: { currentPage, size: pageSize, ...filteredParams },
+        params: { currentPage, pageSize: pageSize, ...filteredParams },
       })
 
       if (response) {
@@ -70,7 +75,7 @@ const SysLanguage = () => {
 
   const handleUpdateLanguage = async (values) => {
     try {
-      await api.put('/manage/sys-languages/update', values)
+      await api.post('/manage/sys-languages/update', values)
       message.success('更新成功')
       setIsUpdateModalVisible(false)
       updateForm.resetFields()
@@ -80,21 +85,64 @@ const SysLanguage = () => {
     }
   }
 
-  const handleStatusChange = async (id, event) => {
+  const handleStatusChange = async (ids, status) => {
+    if (!Array.isArray(ids)) {
+      ids = [ids]
+    }
+    
+    if (ids.length === 0) {
+      message.warning(t('pleaseSelect'))
+      return
+    }
+
     try {
-      await api.put(`/manage/sys-languages/update-status/${id}`, {
-        isDeveloped: event.target.checked
+      await api.post('/manage/sys-languages/change-status', {
+        ids: ids,
+        status: status
       })
-      message.success('状态更新成功')
+      message.success(t('updateSuccess'))
       await fetchData()
     } catch (error) {
-      message.error('状态更新失败')
+      message.error(t('updateFailed'))
     }
   }
 
   const handleEditClick = (language) => {
     setSelectedLanguage(language)
     setIsUpdateModalVisible(true)
+  }
+
+  const handleEnableStatusChange = async (id, event) => {
+    try {
+      await api.post('/manage/sys-languages/update-status', {
+        ids: [id],
+        status: event.target.checked
+      })
+      message.success('状态更新成功')
+      await fetchData()
+    } catch (error) {
+      console.error('Failed to update status', error)
+      message.error('状态更新失败')
+    }
+  }
+
+  const handleBatchUpdateStatus = async (status) => {
+    if (selectedRows.length === 0) {
+      message.warning('请选择要修改的记录')
+      return
+    }
+
+    try {
+      await api.post('/manage/sys-languages/update-status', {
+        ids: selectedRows,
+        status: status
+      })
+      message.success('批量修改状态成功')
+      await fetchData()
+    } catch (error) {
+      console.error('Failed to batch update status', error)
+      message.error('批量修改状态失败')
+    }
   }
 
   const totalPages = Math.ceil(totalNum / pageSize)
@@ -106,18 +154,31 @@ const SysLanguage = () => {
     handleSelectRow,
   } = UseSelectableRows()
 
+  const handlePageSizeChange = (newPageSize) => {
+    setPageSize(newPageSize)
+    setCurrent(1)
+  }
+
   return (
     <div>
       <div className="mb-3">
         <div className="search-container">
           <Row gutter={[16, 16]}>
             <Col>
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => setIsCreateModalVisible(true)}
+              >
+                {t('addLanguage')}
+              </Button>
+            </Col>
+            <Col>
               <Input
                 size="small"
                 value={searchParams.languageCode}
-                onChange={handleSearchChange}
-                name="languageCode"
-                placeholder="语言代码"
+                onChange={(e) => setSearchParams(prev => ({ ...prev, languageCode: e.target.value }))}
+                placeholder={t('languageCode')}
                 allowClear
               />
             </Col>
@@ -125,11 +186,38 @@ const SysLanguage = () => {
               <Input
                 size="small"
                 value={searchParams.languageNameZh}
-                onChange={handleSearchChange}
-                name="languageNameZh"
-                placeholder="中文名称"
+                onChange={(e) => setSearchParams(prev => ({ ...prev, languageNameZh: e.target.value }))}
+                placeholder={t('chineseName')}
                 allowClear
               />
+            </Col>
+            <Col>
+              <Select
+                size="small"
+                value={searchParams.isDeveloped}
+                onChange={(value) => setSearchParams(prev => ({ ...prev, isDeveloped: value }))}
+                placeholder={t('selectDevelopment')}
+                style={{ width: 120, minWidth: 120 }}
+                dropdownMatchSelectWidth={false}
+                allowClear
+              >
+                <Select.Option value={true}>{t('developed')}</Select.Option>
+                <Select.Option value={false}>{t('notDeveloped')}</Select.Option>
+              </Select>
+            </Col>
+            <Col>
+              <Select
+                size="small"
+                value={searchParams.status}
+                onChange={(value) => setSearchParams(prev => ({ ...prev, status: value }))}
+                placeholder={t('selectStatus')}
+                style={{ width: 120, minWidth: 120 }}
+                dropdownMatchSelectWidth={false}
+                allowClear
+              >
+                <Select.Option value={true}>{t('enabled')}</Select.Option>
+                <Select.Option value={false}>{t('disabled')}</Select.Option>
+              </Select>
             </Col>
             <Col>
               <Button
@@ -137,19 +225,28 @@ const SysLanguage = () => {
                 type="primary"
                 onClick={fetchData}
                 disabled={isLoading}
-                block
               >
-                {isLoading ? <Spin /> : '查询'}
+                {isLoading ? <Spin /> : t('search')}
               </Button>
             </Col>
             <Col>
               <Button
                 size="small"
                 type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-                block
+                onClick={() => handleStatusChange(selectedRows, true)}
+                disabled={selectedRows.length === 0}
               >
-                新增语言
+                {t('batchEnable')}
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                size="small"
+                type="primary"
+                onClick={() => handleStatusChange(selectedRows, false)}
+                disabled={selectedRows.length === 0}
+              >
+                {t('batchDisable')}
               </Button>
             </Col>
             <Col>
@@ -162,9 +259,8 @@ const SysLanguage = () => {
                   fetchData,
                 })}
                 disabled={selectedRows.length === 0}
-                block
               >
-                批量删除
+                {t('batchDelete')}
               </Button>
             </Col>
           </Row>
@@ -180,7 +276,7 @@ const SysLanguage = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
-            handleStatusChange={handleStatusChange}
+            handleEnableStatusChange={(id, event) => handleStatusChange(id, event.target.checked)}
           />
         </Spin>
       </div>
@@ -190,23 +286,22 @@ const SysLanguage = () => {
         current={currentPage}
         onPageChange={setCurrent}
         pageSize={pageSize}
-        onPageSizeChange={setPageSize}
+        onPageSizeChange={handlePageSizeChange}
       />
 
       <SysLanguageCreateFormModal
-        isVisible={isCreateModalVisible}
+        visible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
-        onFinish={handleCreateLanguage}
-        form={createForm}
+        onOk={handleCreateLanguage}
+        confirmLoading={isLoading}
       />
 
       <UpdateLanguageModal
-        isVisible={isUpdateModalVisible}
+        visible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
-        onOk={() => updateForm.submit()}
-        form={updateForm}
-        handleUpdateLanguage={handleUpdateLanguage}
-        selectedLanguage={selectedLanguage}
+        onOk={handleUpdateLanguage}
+        initialValues={selectedLanguage}
+        confirmLoading={isLoading}
       />
     </div>
   )
