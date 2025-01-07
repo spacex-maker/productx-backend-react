@@ -244,7 +244,9 @@
     "区域代理系统": "Regionalagentensystem",
     "区域代理管理": "Verwaltung von Regionalagenten",
     "系统语言管理": "Systemsprachenverwaltung",
-    "系统基础配置": "Systemgrundkonfiguration"
+    "系统基础配置": "Systemgrundkonfiguration",
+    "系统支付方式管理": "Zahlungsartenverwaltung",
+    "客户端配置": "Kundenkonfiguration"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -825,5 +827,18 @@
   "updateRequired": "Update erforderlich",
   "clientConfig": "Kundeneinstellungen",
   "saving": "Speichern...",
-  "pleaseInput": "Bitte eingeben"
+  "pleaseInput": "Bitte eingeben",
+  "getFailed": "Abrufen fehlgeschlagen",
+
+  "createCurrency": "Neue Währung hinzufügen",
+  "currencyName": "Währungsname",
+  "currencySymbol": "Währungssymbol",
+  "descriptionZh": "Chinesische Beschreibung",
+  "currencyCodeExample": "Beispiel: CNY, USD, EUR",
+  "currencyNameExample": "Beispiel: Chinese Yuan, US Dollar",
+  "currencySymbolExample": "Beispiel: ¥, $, €",
+  "currencyDescriptionTip": "Englische Beschreibung der Währung",
+  "currencyDescriptionPlaceholder": "Bitte geben Sie eine englische Währungsbeschreibung ein",
+  "currencyDescriptionZhTip": "Chinesische Beschreibung der Währung",
+  "currencyDescriptionZhPlaceholder": "Bitte geben Sie eine chinesische Währungsbeschreibung ein"
 }

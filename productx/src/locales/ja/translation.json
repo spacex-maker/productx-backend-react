@@ -245,7 +245,9 @@
     "区域代理管理": "地域エージェント管理",
     "用户交易方式管理": "ユーザー取引方法管理",
     "系统语言管理": "システム言語管理",
-    "系统基础配置": "システム基本設定"
+    "系统基础配置": "システム基本設定",
+    "系统支付方式管理": "システム支払い管理",
+    "客户端配置": "クライアント設定"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -857,7 +859,18 @@
   "updateRequired": "アップデートが必要か",
   "clientConfig": "クライアント設定",
   "saving": "保存中...",
-  "pleaseInput": "入力してください"
+  "pleaseInput": "入力してください",
+  "getFailed": "取得に失敗しました",
 
-
+  "createCurrency": "通貨を追加",
+  "currencyName": "通貨名",
+  "currencySymbol": "通貨記号",
+  "descriptionZh": "中国語の説明",
+  "currencyCodeExample": "例: CNY、USD、EUR",
+  "currencyNameExample": "例: Chinese Yuan、US Dollar",
+  "currencySymbolExample": "例: ¥、$、€",
+  "currencyDescriptionTip": "通貨の英語説明",
+  "currencyDescriptionPlaceholder": "英語で通貨の説明を入力してください",
+  "currencyDescriptionZhTip": "通貨の中国語説明",
+  "currencyDescriptionZhPlaceholder": "中国語で通貨の説明を入力してください"
 }

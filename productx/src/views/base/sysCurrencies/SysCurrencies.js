@@ -8,6 +8,8 @@ import CurrencyTable from "src/views/base/sysCurrencies/CurrencyTable"
 import UpdateCurrencyModal from "src/views/base/sysCurrencies/UpdateCurrencyModal"
 import CurrencyCreateFormModal from "src/views/base/sysCurrencies/CurrencyCreateFormModal"
 
+const { Option } = Select;
+
 const updateCurrencyStatus = async (id, newStatus) => {
   await api.post('/manage/sys-currencies/change-status', {id, status: newStatus})
 }
@@ -157,11 +159,11 @@ const CurrencyList = () => {
                 className="search-box"
                 name="status"
                 onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
-                allowClear // 添加这个属性以允许清空选择
+                allowClear
                 placeholder="是否启用"
               >
-                <Option value="true">启用</Option>
-                <Option value="false">禁用</Option>
+                <Select.Option value="true">启用</Select.Option>
+                <Select.Option value="false">禁用</Select.Option>
               </Select>
             </Col>
             <Col>

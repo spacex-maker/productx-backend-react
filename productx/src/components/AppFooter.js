@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { CFooter } from '@coreui/react'
-import styled, { keyframes } from 'styled-components'
+import React from 'react';
+import { CFooter } from '@coreui/react';
+import styled, { keyframes } from 'styled-components';
 
 const glowAndFade = keyframes`
   0% {
@@ -35,22 +35,22 @@ const glowAndFade = keyframes`
     text-shadow: none;
     background-position: 100% center;
   }
-`
+`;
 
 const Letter = styled.span`
   display: inline-block;
   opacity: ${props => {
-    if (props.isGlowing) return 1;
-    if (props.isAdjacent) return 0.6;
+    if (props.$isGlowing) return 1;
+    if (props.$isAdjacent) return 0.6;
     return 0.4;
   }};
-  animation: ${props => props.isGlowing ? glowAndFade : 'none'} 1s ease-in-out;
+  animation: ${props => props.$isGlowing ? glowAndFade : 'none'} 1s ease-in-out;
   transition: opacity 0.3s ease;
-  color: ${props => props.isGlowing ? '#1890ff' : 'inherit'};
-  text-shadow: ${props => props.isGlowing ? 
+  color: ${props => props.$isGlowing ? '#1890ff' : 'inherit'};
+  text-shadow: ${props => props.$isGlowing ? 
     '0 0 5px rgba(24, 144, 255, 0.5), 0 0 10px rgba(24, 144, 255, 0.3)' : 
     'none'};
-`
+`;
 
 const PartnerLink = styled.a`
   margin: 0 4px;
@@ -62,14 +62,39 @@ const PartnerLink = styled.a`
     text-shadow: 0 0 5px rgba(24, 144, 255, 0.5),
                  0 0 10px rgba(24, 144, 255, 0.3);
   }
-`
+`;
 
 const Separator = styled.span`
   margin: 0 4px;
-  opacity: ${props => props.isGlowing ? 0.8 : 0.4};
+  opacity: ${props => props.$isGlowing ? 0.8 : 0.4};
   transition: all 0.3s ease;
-  color: ${props => props.isGlowing ? '#1890ff' : 'inherit'};
-`
+  color: ${props => props.$isGlowing ? '#1890ff' : 'inherit'};
+`;
+
+const FooterLink = styled.a`
+  color: ${({ $isGlowing }) => ($isGlowing ? '#fff' : '#8a93a2')};
+  text-decoration: none;
+  margin: 0 10px;
+  position: relative;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: ${({ $isGlowing }) => ($isGlowing ? '#fff' : '#321fdb')};
+    text-shadow: ${({ $isGlowing }) =>
+      $isGlowing ? '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6' : 'none'};
+  }
+
+  ${({ $isAdjacent }) =>
+    $isAdjacent &&
+    `
+    &:after {
+      content: '•';
+      position: absolute;
+      right: -12px;
+      color: #8a93a2;
+    }
+  `}
+`;
 
 const AppFooter = () => {
   const partners = [
@@ -79,16 +104,24 @@ const AppFooter = () => {
     { name: 'Cursor', url: 'https://www.cursor.com/' },
     { name: 'AnakkiX', url: 'https://github.com/Anyuei' },
     { name: 'BigBoy', url: 'https://github.com/mini-blog' }
-  ]
+  ];
 
-  // 将所有合作伙伴名称转换为字母数组
+  const [glowingLetterIndex, setGlowingLetterIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setGlowingLetterIndex(prev => (prev + 1) % allLetters.length);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
+
   const allLetters = partners.reduce((acc, partner, index) => {
     const letters = partner.name.split('').map((letter, letterIndex) => ({
       letter,
       partnerIndex: index,
       letterIndex,
       globalIndex: acc.length
-    }))
+    }));
     if (index < partners.length - 1) {
       letters.push({
         letter: '&',
@@ -96,24 +129,14 @@ const AppFooter = () => {
         letterIndex: -1,
         globalIndex: acc.length + letters.length,
         isSeparator: true
-      })
+      });
     }
-    return [...acc, ...letters]
-  }, [])
-
-  const [glowingLetterIndex, setGlowingLetterIndex] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGlowingLetterIndex(prev => (prev + 1) % allLetters.length)
-    }, 100) // 每100ms切换一个字母
-
-    return () => clearInterval(interval)
-  }, [allLetters.length])
+    return [...acc, ...letters];
+  }, []);
 
   const isAdjacentLetter = (globalIndex) => {
-    return Math.abs(globalIndex - glowingLetterIndex) === 1
-  }
+    return Math.abs(globalIndex - glowingLetterIndex) === 1;
+  };
 
   return (
     <CFooter className="px-4">
@@ -138,21 +161,21 @@ const AppFooter = () => {
               {partner.name.split('').map((letter, letterIndex) => {
                 const globalIndex = allLetters.findIndex(
                   l => l.partnerIndex === partnerIndex && l.letterIndex === letterIndex
-                )
+                );
                 return (
                   <Letter
                     key={`${partnerIndex}-${letterIndex}`}
-                    isGlowing={globalIndex === glowingLetterIndex}
-                    isAdjacent={isAdjacentLetter(globalIndex)}
+                    $isGlowing={globalIndex === glowingLetterIndex}
+                    $isAdjacent={isAdjacentLetter(globalIndex)}
                   >
                     {letter}
                   </Letter>
-                )
+                );
               })}
             </PartnerLink>
             {partnerIndex < partners.length - 1 && (
               <Separator
-                isGlowing={allLetters[glowingLetterIndex]?.isSeparator && 
+                $isGlowing={allLetters[glowingLetterIndex]?.isSeparator && 
                           allLetters[glowingLetterIndex]?.partnerIndex === partnerIndex}
               >
                 &
@@ -162,7 +185,7 @@ const AppFooter = () => {
         ))}
       </div>
     </CFooter>
-  )
-}
+  );
+};
 
-export default React.memo(AppFooter)
+export default React.memo(AppFooter);

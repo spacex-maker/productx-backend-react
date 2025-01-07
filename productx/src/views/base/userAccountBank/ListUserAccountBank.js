@@ -240,14 +240,16 @@ const ListUserAccountBank = () => {
         selectedAccount={selectedAccount}
       />
 
-      <style jsx global>{`
-        .ant-input::placeholder {
-          color: #bfbfbf; /* 灰色 */
-        }
-        .ant-select-selection-placeholder {
-          color: #bfbfbf; /* 灰色 */
-        }
-      `}</style>
+      <style>
+        {`
+          .ant-input::placeholder {
+            color: #bfbfbf;
+          }
+          .ant-select-selection-placeholder {
+            color: #bfbfbf;
+          }
+        `}
+      </style>
     </div>
   );
 };
