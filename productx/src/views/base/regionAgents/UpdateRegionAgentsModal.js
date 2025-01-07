@@ -624,7 +624,6 @@ const UpdateRegionAgentsModal = ({
                   dropdownMatchSelectWidth={false}
                   dropdownStyle={{ width: '300px' }}
                   onChange={handleCitySelect}
-                  disabled
                 >
                   {cities.map(city => (
                     <Select.Option
