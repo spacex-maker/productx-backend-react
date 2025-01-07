@@ -19,7 +19,7 @@
     "start": "vite"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.4.0",
+    "@ant-design/icons": "^5.5.2",
     "@ant-design/pro-components": "^2.8.2",
     "@coreui/chartjs": "^4.0.0",
     "@coreui/coreui": "^5.0.2",

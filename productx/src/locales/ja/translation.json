@@ -800,5 +800,33 @@
   "cooperationStartDate": "協力開始日",
   "cooperationEndDate": "協力終了日",
 
-  "validationTime": "検証時間 / 秒"
+  "validationTime": "検証時間 / 秒",
+
+  "languageCode": "言語コード",
+  "englishName": "英語名",
+  "nativeName": "ネイティブ名",
+  "developmentStatus": "開発状況",
+  "enableStatus": "有効状態",
+
+  "developed": "開発済み",
+  "notDeveloped": "未開発",
+  "addLanguage": "言語を追加",
+  "batchEnable": "一括有効化",
+  "batchDisable": "一括無効化",
+
+  "pleaseSelectRecords": "変更するレコードを選択してください",
+
+  "enterLanguageCode": "言語コードを入力してください",
+  "enterChineseName": "中国語の名前を入力してください",
+  "selectDevelopmentStatus": "開発状況を選択してください",
+  "selectEnableStatus": "有効状態を選択してください",
+
+  "inputLanguageCode": "言語コードを入力してください",
+  "inputEnglishName": "英語名を入力してください",
+  "inputChineseName": "中国語名を入力してください",
+  "inputNativeName": "ネイティブ名を入力してください",
+
+  "addTitle": "新しい言語を追加",
+  "editTitle": "言語を編集",
+  "selectRecord": "変更するレコードを選択してください"
 }

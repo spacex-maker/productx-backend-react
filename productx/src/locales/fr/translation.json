@@ -800,6 +800,34 @@
   "cooperationStartDate": "Date de début de la coopération",
   "cooperationEndDate": "Date de fin de la coopération",
 
-  "validationTime": "Temps de validation / secondes"
+  "validationTime": "Temps de validation / secondes",
+
+  "languageCode": "Code de langue",
+  "englishName": "Nom anglais",
+  "nativeName": "Nom natif",
+  "developmentStatus": "Statut de développement",
+  "enableStatus": "Statut d'activation",
+
+  "developed": "Développé",
+  "notDeveloped": "Non développé",
+  "addLanguage": "Ajouter une langue",
+  "batchEnable": "Activer par lot",
+  "batchDisable": "Désactiver par lot",
+
+  "pleaseSelectRecords": "Veuillez sélectionner les enregistrements à modifier",
+
+  "enterLanguageCode": "Veuillez entrer le code de langue",
+  "enterChineseName": "Veuillez entrer le nom chinois",
+  "selectDevelopmentStatus": "Veuillez sélectionner le statut de développement",
+  "selectEnableStatus": "Veuillez sélectionner le statut d'activation",
+
+  "inputLanguageCode": "Veuillez entrer le code de langue",
+  "inputEnglishName": "Veuillez entrer le nom anglais",
+  "inputChineseName": "Veuillez entrer le nom chinois",
+  "inputNativeName": "Veuillez entrer le nom natif",
+
+  "addTitle": "Ajouter une nouvelle langue",
+  "editTitle": "Modifier la langue",
+  "selectRecord": "Veuillez sélectionner les enregistrements à modifier"
 
 }

@@ -800,5 +800,33 @@
   "cooperationStartDate": "협력 시작 날짜",
   "cooperationEndDate": "협력 종료 날짜",
 
-  "validationTime": "검증 시간 / 초"
+  "validationTime": "검증 시간 / 초",
+
+  "languageCode": "언어 코드",
+  "englishName": "영문 이름",
+  "nativeName": "원어 이름",
+  "developmentStatus": "개발 상태",
+  "enableStatus": "활성화 상태",
+
+  "developed": "개발됨",
+  "notDeveloped": "미개발",
+  "addLanguage": "언어 추가",
+  "batchEnable": "일괄 활성화",
+  "batchDisable": "일괄 비활성화",
+
+  "pleaseSelectRecords": "수정할 레코드를 선택하세요",
+
+  "enterLanguageCode": "언어 코드를 입력하세요",
+  "enterChineseName": "중국어 이름을 입력하세요",
+  "selectDevelopmentStatus": "개발 상태를 선택하세요",
+  "selectEnableStatus": "활성화 상태를 선택하세요",
+
+  "inputLanguageCode": "언어 코드를 입력하세요",
+  "inputEnglishName": "영문 이름을 입력하세요",
+  "inputChineseName": "중국어 이름을 입력하세요",
+  "inputNativeName": "원어 이름을 입력하세요",
+
+  "addTitle": "새 언어 추가",
+  "editTitle": "언어 수정",
+  "selectRecord": "수정할 레코드를 선택하세요"
 }

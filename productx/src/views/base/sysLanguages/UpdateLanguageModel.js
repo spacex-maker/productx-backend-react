@@ -1,83 +1,76 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input, Switch } from 'antd';
+import React from 'react'
+import { Modal, Form, Input, Switch } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 const UpdateLanguageModal = ({
-  isVisible,
+  visible,
   onCancel,
   onOk,
-  form,
-  handleUpdateLanguage,
-  selectedLanguage,
+  initialValues,
+  confirmLoading
 }) => {
-  useEffect(() => {
-    if (isVisible && selectedLanguage) {
-      form.setFieldsValue({
-        id: selectedLanguage.id,
-        languageCode: selectedLanguage.languageCode,
-        languageNameEn: selectedLanguage.languageNameEn,
-        languageNameZh: selectedLanguage.languageNameZh,
-        languageNameNative: selectedLanguage.languageNameNative,
-        isDeveloped: selectedLanguage.isDeveloped,
-      });
-    }
-  }, [isVisible, selectedLanguage, form]);
+  const [form] = Form.useForm()
+  const { t } = useTranslation()
 
   return (
     <Modal
-      title="修改语言"
-      open={isVisible}
+      title={t('editTitle')}
+      open={visible}
       onCancel={onCancel}
-      onOk={onOk}
-      okText="确认"
-      cancelText="取消"
+      onOk={() => {
+        form.validateFields()
+          .then((values) => {
+            onOk(values)
+          })
+          .catch((info) => {
+            console.log('Validate Failed:', info)
+          })
+      }}
+      confirmLoading={confirmLoading}
     >
-      <Form form={form} onFinish={handleUpdateLanguage}>
-        <Form.Item name="id" hidden>
-          <Input />
-        </Form.Item>
-
+      <Form
+        form={form}
+        initialValues={initialValues}
+        layout="vertical"
+      >
         <Form.Item
-          label="语言代码"
           name="languageCode"
-          rules={[{ required: true, message: '请输入语言代码' }]}
+          label={t('languageCode')}
+          rules={[{ required: true, message: t('inputLanguageCode') }]}
         >
           <Input disabled />
         </Form.Item>
-
         <Form.Item
-          label="英文名称"
           name="languageNameEn"
-          rules={[{ required: true, message: '请输入英文名称' }]}
+          label={t('englishName')}
+          rules={[{ required: true, message: t('inputEnglishName') }]}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
-          label="中文名称"
           name="languageNameZh"
-          rules={[{ required: true, message: '请输入中文名称' }]}
+          label={t('chineseName')}
+          rules={[{ required: true, message: t('inputChineseName') }]}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
-          label="本地名称"
           name="languageNameNative"
-          rules={[{ required: true, message: '请输入本地名称' }]}
+          label={t('nativeName')}
+          rules={[{ required: true, message: t('inputNativeName') }]}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
-          label="开发状态"
           name="isDeveloped"
+          label={t('developmentStatus')}
           valuePropName="checked"
         >
           <Switch />
         </Form.Item>
       </Form>
     </Modal>
-  );
-};
+  )
+}
 
-export default UpdateLanguageModal;
+export default UpdateLanguageModal

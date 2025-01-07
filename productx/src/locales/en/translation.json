@@ -792,6 +792,33 @@
   "cooperationStartDate": "Cooperation Start Date",
   "cooperationEndDate": "Cooperation End Date",
 
-  "validationTime": "Validation Time / Seconds"
+  "validationTime": "Validation Time / Seconds",
+  "languageCode": "Language Code",
+  "englishName": "English Name",
+  "nativeName": "Native Name",
+  "developmentStatus": "Development Status",
+  "enableStatus": "Enable Status",
+
+  "developed": "Developed",
+  "notDeveloped": "Not Developed",
+  "addLanguage": "Add Language",
+  "batchEnable": "Batch Enable",
+  "batchDisable": "Batch Disable",
+
+  "pleaseSelectRecords": "Please select records to modify",
+
+  "enterLanguageCode": "Please enter the language code",
+  "enterChineseName": "Please enter the Chinese name",
+  "selectDevelopmentStatus": "Please select the development status",
+  "selectEnableStatus": "Please select the enable status",
+
+  "inputLanguageCode": "Please enter the language code",
+  "inputEnglishName": "Please enter the English name",
+  "inputChineseName": "Please enter the Chinese name",
+  "inputNativeName": "Please enter the native name",
+
+  "addTitle": "Add New Language",
+  "editTitle": "Edit Language",
+  "selectRecord": "Please select records to modify"
 
 }

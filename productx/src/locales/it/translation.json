@@ -793,5 +793,33 @@
   "cooperationStartDate": "Data di inizio cooperazione",
   "cooperationEndDate": "Data di fine cooperazione",
 
-  "validationTime": "Tempo di validazione / secondi"
+  "validationTime": "Tempo di validazione / secondi",
+
+  "languageCode": "Codice lingua",
+  "englishName": "Nome inglese",
+  "nativeName": "Nome nativo",
+  "developmentStatus": "Stato di sviluppo",
+  "enableStatus": "Stato di abilitazione",
+
+  "developed": "Sviluppato",
+  "notDeveloped": "Non sviluppato",
+  "addLanguage": "Aggiungi lingua",
+  "batchEnable": "Abilita batch",
+  "batchDisable": "Disabilita batch",
+
+  "pleaseSelectRecords": "Seleziona i record da modificare",
+
+  "enterLanguageCode": "Inserisci il codice della lingua",
+  "enterChineseName": "Inserisci il nome cinese",
+  "selectDevelopmentStatus": "Seleziona lo stato di sviluppo",
+  "selectEnableStatus": "Seleziona lo stato di abilitazione",
+
+  "inputLanguageCode": "Inserisci il codice della lingua",
+  "inputEnglishName": "Inserisci il nome inglese",
+  "inputChineseName": "Inserisci il nome cinese",
+  "inputNativeName": "Inserisci il nome nativo",
+
+  "addTitle": "Aggiungi nuova lingua",
+  "editTitle": "Modifica lingua",
+  "selectRecord": "Seleziona i record da modificare"
 }
