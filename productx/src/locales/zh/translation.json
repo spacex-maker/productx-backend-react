@@ -245,7 +245,9 @@
     "区域代理管理": "区域代理管理",
     "用户交易方式管理": "用户交易方式管理",
     "系统语言管理": "系统语言管理",
-    "系统基础配置": "系统基础配置"
+    "系统基础配置": "系统基础配置",
+    "系统支付方式管理": "系统支付方式管理",
+    "客户端配置": "客户端配置"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -859,6 +861,21 @@
   "updateRequired": "是否强制更新",
   "clientConfig": "客户端配置",
   "saving": "保存中...",
-  "pleaseInput": "请输入"
+  "pleaseInput": "请输入",
+  "getFailed": "获取失败",
 
+  "createCurrency": "新增货币",
+  "currencyName": "货币名称",
+  "currencySymbol": "货币符号",
+  "descriptionZh": "中文描述",
+  "currencyCodeExample": "例如：CNY、USD、EUR",
+  "currencyNameExample": "例如：Chinese Yuan、US Dollar",
+  "currencySymbolExample": "例如：¥、$、€",
+  "currencyDescriptionTip": "货币的英文描述信息",
+  "currencyDescriptionPlaceholder": "请输入货币的英文描述",
+  "currencyDescriptionZhTip": "货币的中文描述信息",
+  "currencyDescriptionZhPlaceholder": "请输入货币的中文描述",
+
+  "versionFormatError": "版本号格式必须为 x.y.z（如：1.0.0）",
+  "versionFormatTip": "版本号格式：主版本号.次版本号.修订号"
 }

@@ -245,7 +245,9 @@
     "区域代理管理": "지역 에이전트 관리",
     "用户交易方式管理": "사용자 거래 방식 관리",
     "系统语言管理": "시스템 언어 관리",
-    "系统基础配置": "시스템 기본 설정"
+    "系统基础配置": "시스템 기본 설정",
+    "系统支付方式管理": "시스템 결제 관리",
+    "客户端配置": "클라이언트 구성"
   },
   "confirmDelete": "삭제 확인",
   "countryName": "국가 이름",
@@ -858,7 +860,18 @@
   "updateRequired": "업데이트 필요 여부",
   "clientConfig": "클라이언트 구성",
   "saving": "저장 중...",
-  "pleaseInput": "입력하세요"
+  "pleaseInput": "입력하세요",
+  "getFailed": "가져오기 실패",
 
-
+  "createCurrency": "통화 추가",
+  "currencyName": "통화 이름",
+  "currencySymbol": "통화 기호",
+  "descriptionZh": "중국어 설명",
+  "currencyCodeExample": "예: CNY, USD, EUR",
+  "currencyNameExample": "예: Chinese Yuan, US Dollar",
+  "currencySymbolExample": "예: ¥, $, €",
+  "currencyDescriptionTip": "통화에 대한 영어 설명",
+  "currencyDescriptionPlaceholder": "통화의 영어 설명을 입력하세요",
+  "currencyDescriptionZhTip": "통화에 대한 중국어 설명",
+  "currencyDescriptionZhPlaceholder": "통화의 중국어 설명을 입력하세요"
 }

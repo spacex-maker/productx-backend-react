@@ -245,7 +245,9 @@
     "区域代理管理": "إدارة الوكلاء الإقليميين",
     "用户交易方式管理": "إدارة طرق معاملات المستخدم",
     "系统语言管理": "إدارة لغات النظام",
-    "系统基础配置": "إعدادات النظام الأساسية"
+    "系统基础配置": "إعدادات النظام الأساسية",
+    "systemPaymentManagement": "إدارة طرق الدفع",
+    "clientConfiguration": "إعدادات العميل"
   },
   "confirmDelete": "تأكيد الحذف",
   "countryName": "اسم الدولة",
@@ -840,6 +842,19 @@
   "updateRequired": "هل التحديث مطلوب",
   "clientConfig": "إعدادات العميل",
   "saving": "جارٍ الحفظ...",
-  "pleaseInput": "يرجى الإدخال"
+  "pleaseInput": "يرجى الإدخال",
+  "getFailed": "فشل الحصول",
+
+  "createCurrency": "إضافة عملة جديدة",
+  "currencyName": "اسم العملة",
+  "currencySymbol": "رمز العملة",
+  "descriptionZh": "الوصف الصيني",
+  "currencyCodeExample": "مثال: CNY، USD، EUR",
+  "currencyNameExample": "مثال: Chinese Yuan، US Dollar",
+  "currencySymbolExample": "مثال: ¥، $، €",
+  "currencyDescriptionTip": "وصف العملة باللغة الإنجليزية",
+  "currencyDescriptionPlaceholder": "يرجى إدخال وصف العملة باللغة الإنجليزية",
+  "currencyDescriptionZhTip": "وصف العملة باللغة الصينية",
+  "currencyDescriptionZhPlaceholder": "يرجى إدخال وصف العملة باللغة الصينية"
 
 }

@@ -61,11 +61,11 @@ const BrandText = styled.div`
   transition: all 0.3s ease;
 
   .full-brand {
-    display: ${(props) => (props.narrow ? 'none' : 'block')};
+    display: ${({ $narrow }) => ($narrow ? 'none' : 'block')};
   }
 
   .single-letter {
-    display: ${(props) => (props.narrow ? 'block' : 'none')};
+    display: ${({ $narrow }) => ($narrow ? 'block' : 'none')};
     font-size: 1.5rem;
     font-weight: 800;
   }
@@ -149,7 +149,7 @@ const AppSidebar = () => {
       }}
     >
       <BrandContainer>
-        <BrandText narrow={sidebarUnfoldable || !sidebarShow}>
+        <BrandText $narrow={sidebarUnfoldable || !sidebarShow}>
           <span className="full-brand">Product X ADMIN</span>
           <span className="single-letter">ProtX</span>
         </BrandText>
