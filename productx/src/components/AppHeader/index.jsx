@@ -29,6 +29,7 @@ const AppHeader = () => {
   const { t, i18n } = useTranslation();
   const [messageModalVisible, setMessageModalVisible] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [supportedLanguages, setSupportedLanguages] = useState([]);
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user?.currentUser);
@@ -67,6 +68,22 @@ const AppHeader = () => {
   const handleModalSuccess = () => {
     fetchUnreadCount(); // 刷新未读消息数
   };
+
+  // 获取系统支持的语言列表
+  const fetchSupportedLanguages = async () => {
+    try {
+      const response = await api.get('/manage/sys-languages/enabled');
+      if (response) {
+        setSupportedLanguages(response);
+      }
+    } catch (error) {
+      console.error('获取支持的语言列表失败:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSupportedLanguages();
+  }, []);
 
   return (
     <CHeader position="sticky" className={appHeaderStyle.rootHeaderContainer} ref={headerRef}>
@@ -148,16 +165,14 @@ const AppHeader = () => {
               <CIcon icon={cilLanguage} size="lg" />
             </CDropdownToggle>
             <CDropdownMenu>
-              <CDropdownItem onClick={() => changeLanguage('en')}>English</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('zh')}>中文</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('fr')}>Français</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('es')}>Español</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('de')}>Deutsch</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('it')}>Italiano</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('ja')}>日本語</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('ko')}>한국어</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('ru')}>Русский</CDropdownItem>
-              <CDropdownItem onClick={() => changeLanguage('ar')}>عربي</CDropdownItem>
+              {supportedLanguages.map((lang) => (
+                <CDropdownItem 
+                  key={lang.id}
+                  onClick={() => changeLanguage(lang.languageCode)}
+                >
+                  {lang.languageNameNative}
+                </CDropdownItem>
+              ))}
             </CDropdownMenu>
           </CDropdown>
           <AppHeaderDropdown />
