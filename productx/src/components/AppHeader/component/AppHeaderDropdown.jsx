@@ -171,7 +171,7 @@ export const AppHeaderDropdown = () => {
           <CompactDropdownHeader className="bg-body-secondary fw-semibold">
             {t('settings')}
           </CompactDropdownHeader>
-          <CompactDropdownItem href="#" onClick={handleShowProfile}>
+          <CompactDropdownItem onClick={handleShowProfile}>
             <CIcon icon={cilUser} className="me-2" />
             {t('profile')}
           </CompactDropdownItem>
