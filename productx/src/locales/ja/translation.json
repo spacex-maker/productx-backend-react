@@ -872,5 +872,18 @@
   "currencyDescriptionTip": "通貨の英語説明",
   "currencyDescriptionPlaceholder": "英語で通貨の説明を入力してください",
   "currencyDescriptionZhTip": "通貨の中国語説明",
-  "currencyDescriptionZhPlaceholder": "中国語で通貨の説明を入力してください"
+  "currencyDescriptionZhPlaceholder": "中国語で通貨の説明を入力してください",
+
+  "basicInformation": "基本情報",
+  "addressInformation": "住所情報",
+  "selectUser": "ユーザーを選択",
+  "pleaseSelectUser": "ユーザーを選択してください",
+  "searchUserPlaceholder": "ユーザーIDまたは名前を入力して検索",
+  "pleaseEnterPhoneNumber": "電話番号を入力してください",
+  "enterDetailedAddress": "詳細な住所を入力してください",
+  "setAsDefaultAddress": "デフォルトの住所として設定",
+  "systemUser": "システムユーザー",
+  "usageCount": "使用回数",
+  "copySuccessful": "コピー成功",
+  "invalidPhoneNumber": "無効な電話番号"
 }

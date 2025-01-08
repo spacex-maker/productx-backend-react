@@ -11,6 +11,7 @@ const UserAddressTable = ({
   handleStatusChange,
   handleEditClick,
   handleDetailClick,
+  handleDelete,
 }) => {
   const { t } = useTranslation();
 
@@ -86,6 +87,17 @@ const UserAddressTable = ({
               </Button>
               <Button type="link" onClick={() => handleDetailClick(item)}>
                 {t('detail')}
+              </Button>
+              <Button 
+                type="link" 
+                danger 
+                onClick={() => {
+                  if (window.confirm(t('confirmDelete'))) {
+                    handleDelete(item.id);
+                  }
+                }}
+              >
+                {t('delete')}
               </Button>
             </td>
           </tr>

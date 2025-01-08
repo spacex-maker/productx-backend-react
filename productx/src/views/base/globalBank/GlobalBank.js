@@ -55,13 +55,21 @@ const BankList = () => {
     setIsLoading(true);
     try {
       const filteredParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null)
+        Object.entries(searchParams).filter(([_, value]) => {
+          if (value === false) return true;
+          return value !== '' && value !== null && value !== undefined;
+        })
       );
+
       const response = await api.get('/manage/global-bank/list', {
-        params: { currentPage, size: pageSize, ...filteredParams },
+        params: { 
+          currentPage, 
+          size: pageSize, 
+          ...filteredParams 
+        },
       });
 
-      if (response && response.data) {
+      if (response) {
         setData(response.data);
         setTotalNum(response.totalNum);
       }
@@ -78,6 +86,7 @@ const BankList = () => {
   };
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
+    setCurrent(1);
     setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
   };
 
@@ -151,7 +160,11 @@ const BankList = () => {
               <Select
                 size="small"
                 name="supported"
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
+                value={searchParams.status}
+                onChange={(value) => {
+                  setCurrent(1);
+                  setSearchParams(prev => ({ ...prev, status: value }));
+                }}
                 allowClear
                 placeholder="是否支持"
               >

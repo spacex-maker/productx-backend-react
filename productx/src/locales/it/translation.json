@@ -866,5 +866,18 @@
   "currencyDescriptionTip": "Descrizione della valuta in inglese",
   "currencyDescriptionPlaceholder": "Si prega di inserire la descrizione della valuta in inglese",
   "currencyDescriptionZhTip": "Descrizione della valuta in cinese",
-  "currencyDescriptionZhPlaceholder": "Si prega di inserire la descrizione della valuta in cinese"
+  "currencyDescriptionZhPlaceholder": "Si prega di inserire la descrizione della valuta in cinese",
+
+  "basicInformation": "Informazioni di base",
+  "addressInformation": "Informazioni sull'indirizzo",
+  "selectUser": "Seleziona utente",
+  "pleaseSelectUser": "Seleziona un utente",
+  "searchUserPlaceholder": "Inserisci ID utente o nome utente per cercare",
+  "pleaseEnterPhoneNumber": "Inserisci un numero di telefono",
+  "enterDetailedAddress": "Inserisci un indirizzo dettagliato",
+  "setAsDefaultAddress": "Imposta come indirizzo predefinito",
+  "systemUser": "Utente di sistema",
+  "usageCount": "Conteggio utilizzo",
+  "copySuccessful": "Copia riuscita",
+  "invalidPhoneNumber": "Numero di telefono non valido"
 }
