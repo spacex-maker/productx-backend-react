@@ -1,7 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Modal, Form, Switch, Alert, Row, Col, Select, InputNumber, Upload, Spin, Button } from 'antd';
-import { PlusOutlined, UserOutlined, TagOutlined, DollarOutlined, PictureOutlined, AppstoreOutlined, GlobalOutlined, EnvironmentOutlined, UnorderedListOutlined, CodeOutlined } from '@ant-design/icons';
-import { useTranslation } from "react-i18next";
+import {
+  Input,
+  Modal,
+  Form,
+  Switch,
+  Alert,
+  Row,
+  Col,
+  Select,
+  InputNumber,
+  Upload,
+  Spin,
+  Button,
+} from 'antd';
+import {
+  PlusOutlined,
+  UserOutlined,
+  TagOutlined,
+  DollarOutlined,
+  PictureOutlined,
+  AppstoreOutlined,
+  GlobalOutlined,
+  EnvironmentOutlined,
+  UnorderedListOutlined,
+  CodeOutlined,
+} from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import COS from 'cos-js-sdk-v5';
 import { message } from 'antd';
@@ -17,7 +41,6 @@ const StyledModal = styled(Modal)`
   }
 
   .ant-modal-title {
-    font-size: 12px;
     color: #000000;
   }
 
@@ -30,7 +53,6 @@ const StyledModal = styled(Modal)`
       padding: 0;
 
       > label {
-        font-size: 10px;
         color: #666;
         height: 20px;
       }
@@ -40,20 +62,18 @@ const StyledModal = styled(Modal)`
     .ant-input-number,
     .ant-picker,
     .ant-select-selector {
-      font-size: 10px;
       height: 24px !important;
       line-height: 24px !important;
       padding: 0 8px !important;
     }
 
     .ant-select-single {
-      font-size: 10px !important;
       height: 24px !important;
 
       .ant-select-selector {
         height: 24px !important;
         line-height: 24px !important;
-        
+
         .ant-select-selection-search-input {
           height: 22px !important;
           line-height: 22px !important;
@@ -91,7 +111,6 @@ const StyledModal = styled(Modal)`
 
     .ant-select-dropdown {
       .ant-select-item {
-        font-size: 10px;
         color: #000000 !important;
       }
 
@@ -105,11 +124,9 @@ const StyledModal = styled(Modal)`
   .ant-alert {
     margin-bottom: 8px;
     padding: 4px 8px;
-    font-size: 10px;
   }
 
   .ant-form-item-explain {
-    font-size: 10px;
     min-height: 16px;
   }
 
@@ -121,14 +138,15 @@ const StyledModal = styled(Modal)`
     .ant-btn {
       height: 24px;
       padding: 0 12px;
-      font-size: 10px;
     }
   }
 `;
 
 const { Option } = Select;
 
-const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
+const AddUserProductModal = (props) => {
+  // eslint-disable-next-line react/prop-types
+  const { form, ...modalProps } = props;
   const { t } = useTranslation();
   const [cosInstance, setCosInstance] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -210,7 +228,7 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
         onProgress: (progressData) => {
           const percent = Math.round(progressData.percent * 100);
           file.onProgress({ percent });
-        }
+        },
       });
 
       return `https://${bucketName}.cos.${region}.myqcloud.com/${key}`;
@@ -237,37 +255,10 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
       return e;
     }
     // 从上传结果中提取URL
-    return e?.fileList.map(file => ({
+    return e?.fileList.map((file) => ({
       ...file,
-      url: file.response?.url || file.url
+      url: file.response?.url || file.url,
     }));
-  };
-
-  const handleAddProductOk = async () => {
-    try {
-      const values = await form.validateFields();
-      const requestData = {
-        userId: values.userId,
-        productName: values.productName,
-        productDescription: values.productDescription,
-        price: values.price,
-        originalPrice: values.originalPrice,
-        currencyCode: 'CNY',
-        stock: values.stock,
-        category: values.category,
-        countryCode: values.countryCode,
-        city: values.city,
-        imageCover: Array.isArray(values.imageCover) && values.imageCover.length > 0
-          ? (values.imageCover[0].response?.url || values.imageCover[0].url)
-          : '',
-        imageList: (values.imageList || []).map(file => file.response?.url || file.url),
-        status: 0,
-      };
-
-      await onFinish(requestData);
-    } catch (error) {
-      console.error(t('errorAddingProduct'), error);
-    }
   };
 
   // 搜索用户
@@ -284,14 +275,14 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           currentPage: 1,
           pageSize: 10,
           isBelongSystem: true,
-          username: value
-        }
+          username: value,
+        },
       });
 
       if (response) {
-        const options = response.map(user => ({
+        const options = response.map((user) => ({
           label: `${user.username} (ID: ${user.id})`,
-          value: user.id
+          value: user.id,
         }));
         setUserOptions(options);
       }
@@ -320,8 +311,8 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
       const response = await api.get('/manage/global-addresses/list-all', {
         params: {
           code: countryCode,
-          search
-        }
+          search,
+        },
       });
 
       if (response) {
@@ -342,19 +333,17 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
 
   return (
     <StyledModal
-      title={t("addNewProduct")}
-      open={isVisible}
-      onCancel={onCancel}
-      onOk={handleAddProductOk}
-      okText={t("submit")}
-      cancelText={t("cancel")}
-      width={480}
+      title={t('addNewProduct')}
+      {...modalProps}
+      okText={t('submit')}
+      cancelText={t('cancel')}
+      width={600}
       maskClosable={false}
       destroyOnClose
     >
       <div style={{ marginBottom: '8px' }}>
-        <Button 
-          type="link" 
+        <Button
+          type="link"
           icon={<CodeOutlined />}
           onClick={() => setJsonModalVisible(true)}
           style={{ padding: 0, height: 'auto', fontSize: '10px' }}
@@ -374,30 +363,33 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Col span={12}>
             <Form.Item
               name="userId"
-              label={<span><UserOutlined /> {t("userId")}</span>}
-              rules={[{ required: true, message: t("enterUserId") }]}
+              label={
+                <span>
+                  <UserOutlined /> {t('userId')}
+                </span>
+              }
+              rules={[{ required: true, message: t('enterUserId') }]}
             >
               <Select
                 showSearch
-                placeholder={t("searchUserPlaceholder")}
+                placeholder={t('searchUserPlaceholder')}
                 loading={userSearchLoading}
                 onSearch={handleUserSearch}
                 filterOption={false}
                 notFoundContent={userSearchLoading ? <Spin size="small" /> : null}
                 style={{ width: '100%' }}
               >
-                {userOptions.map(option => (
-                  <Option 
-                    key={option.value} 
-                    value={option.value}
-                  >
-                    <div style={{ 
-                      fontSize: '10px',
-                      lineHeight: '24px',
-                      height: '24px',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}>
+                {userOptions.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    <div
+                      style={{
+                        fontSize: '10px',
+                        lineHeight: '24px',
+                        height: '24px',
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
                       {option.label}
                     </div>
                   </Option>
@@ -408,20 +400,24 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Col span={12}>
             <Form.Item
               name="productName"
-              label={<span><TagOutlined /> {t("productName")}</span>}
+              label={
+                <span>
+                  <TagOutlined /> {t('productName')}
+                </span>
+              }
               rules={[
-                { required: true, message: t("enterProductName") },
-                { max: 20, message: t("productNameMaxLength") }
+                { required: true, message: t('enterProductName') },
+                { max: 20, message: t('productNameMaxLength') },
               ]}
             >
-              <Input 
-                placeholder={t("enterProductName")} 
+              <Input
+                placeholder={t('enterProductName')}
                 maxLength={20}
                 showCount
-                style={{ 
+                style={{
                   height: '24px',
                   lineHeight: '22px',
-                  padding: '0 8px'
+                  padding: '0 8px',
                 }}
               />
             </Form.Item>
@@ -430,24 +426,29 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
 
         <Form.Item
           name="productDescription"
-          label={<span><UnorderedListOutlined /> {t("productDescription")}</span>}
-          rules={[{ required: true, message: t("enterProductDescription") }]}
+          label={
+            <span>
+              <UnorderedListOutlined /> {t('productDescription')}
+            </span>
+          }
+          rules={[{ required: true, message: t('enterProductDescription') }]}
         >
-          <Input.TextArea
-            placeholder={t("enterProductDescription")}
-            rows={3}
-          />
+          <Input.TextArea placeholder={t('enterProductDescription')} rows={3} />
         </Form.Item>
 
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
               name="price"
-              label={<span><DollarOutlined /> {t("price")}</span>}
-              rules={[{ required: true, message: t("enterPrice") }]}
+              label={
+                <span>
+                  <DollarOutlined /> {t('price')}
+                </span>
+              }
+              rules={[{ required: true, message: t('enterPrice') }]}
             >
               <InputNumber
-                placeholder={t("enterPrice")}
+                placeholder={t('enterPrice')}
                 style={{ width: '100%' }}
                 precision={2}
                 min={0}
@@ -457,11 +458,15 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Col span={12}>
             <Form.Item
               name="originalPrice"
-              label={<span><DollarOutlined /> {t("originalPrice")}</span>}
-              rules={[{ required: true, message: t("enterOriginalPrice") }]}
+              label={
+                <span>
+                  <DollarOutlined /> {t('originalPrice')}
+                </span>
+              }
+              rules={[{ required: true, message: t('enterOriginalPrice') }]}
             >
               <InputNumber
-                placeholder={t("enterOriginalPrice")}
+                placeholder={t('enterOriginalPrice')}
                 style={{ width: '100%' }}
                 precision={2}
                 min={0}
@@ -474,26 +479,30 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Col span={8}>
             <Form.Item
               name="stock"
-              label={<span><AppstoreOutlined /> {t("stock")}</span>}
-              rules={[{ required: true, message: t("enterStock") }]}
+              label={
+                <span>
+                  <AppstoreOutlined /> {t('stock')}
+                </span>
+              }
+              rules={[{ required: true, message: t('enterStock') }]}
             >
-              <InputNumber
-                placeholder={t("enterStock")}
-                style={{ width: '100%' }}
-                min={0}
-              />
+              <InputNumber placeholder={t('enterStock')} style={{ width: '100%' }} min={0} />
             </Form.Item>
           </Col>
           <Col span={16}>
             <Form.Item
               name="category"
-              label={<span><AppstoreOutlined /> {t("category")}</span>}
-              rules={[{ required: true, message: t("selectCategory") }]}
+              label={
+                <span>
+                  <AppstoreOutlined /> {t('category')}
+                </span>
+              }
+              rules={[{ required: true, message: t('selectCategory') }]}
             >
-              <Select placeholder={t("selectCategory")}>
-                <Select.Option value="电脑">{t("computer")}</Select.Option>
-                <Select.Option value="手机">{t("phone")}</Select.Option>
-                <Select.Option value="其他">{t("other")}</Select.Option>
+              <Select placeholder={t('selectCategory')}>
+                <Select.Option value="电脑">{t('computer')}</Select.Option>
+                <Select.Option value="手机">{t('phone')}</Select.Option>
+                <Select.Option value="其他">{t('other')}</Select.Option>
               </Select>
             </Form.Item>
           </Col>
@@ -503,12 +512,16 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Col span={12}>
             <Form.Item
               name="countryCode"
-              label={<span><GlobalOutlined /> {t("country")}</span>}
-              rules={[{ required: true, message: t("selectCountry") }]}
+              label={
+                <span>
+                  <GlobalOutlined /> {t('country')}
+                </span>
+              }
+              rules={[{ required: true, message: t('selectCountry') }]}
             >
               <Select
                 showSearch
-                placeholder={t("selectCountry")}
+                placeholder={t('selectCountry')}
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -519,23 +532,31 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
                   setCities([]);
                 }}
               >
-                {countries.map(country => (
-                  <Option 
-                    key={country.code} 
+                {countries.map((country) => (
+                  <Option
+                    key={country.code}
                     value={country.code}
                     label={`${country.name} (${country.code})`}
                   >
-                    <div style={{ fontSize: '10px', padding: '2px 0', display: 'flex', alignItems: 'center' }}>
-                      <img 
-                        src={country.flagImageUrl} 
-                        alt={`${country.name} flag`} 
+                    <div
+                      style={{
+                        fontSize: '10px',
+                        padding: '2px 0',
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <img
+                        src={country.flagImageUrl}
+                        alt={`${country.name} flag`}
                         style={{ width: '20px', height: '15px', marginRight: '8px' }}
                       />
                       <div>
                         {country.name} ({country.code})
                       </div>
                       <div style={{ color: '#666', marginTop: '2px' }}>
-                        {country.capital} | {country.officialLanguages} | {country.currency} | {country.continent}
+                        {country.capital} | {country.officialLanguages} | {country.currency} |{' '}
+                        {country.continent}
                       </div>
                     </div>
                   </Option>
@@ -546,12 +567,20 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           <Col span={12}>
             <Form.Item
               name="city"
-              label={<span><EnvironmentOutlined /> {t("city")}</span>}
-              rules={[{ required: true, message: t("enterCity") }]}
+              label={
+                <span>
+                  <EnvironmentOutlined /> {t('city')}
+                </span>
+              }
+              rules={[{ required: true, message: t('enterCity') }]}
             >
               <Select
                 showSearch
-                placeholder={form.getFieldValue('countryCode') ? t("searchCityPlaceholder") : t("pleaseSelectCountryFirst")}
+                placeholder={
+                  form.getFieldValue('countryCode')
+                    ? t('searchCityPlaceholder')
+                    : t('pleaseSelectCountryFirst')
+                }
                 disabled={!form.getFieldValue('countryCode')}
                 loading={citySearchLoading}
                 onSearch={handleCitySearch}
@@ -559,16 +588,12 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
                 notFoundContent={citySearchLoading ? <Spin size="small" /> : null}
                 optionLabelProp="label"
               >
-                {cities.map(city => (
-                  <Option 
-                    key={city.code} 
-                    value={city.name}
-                    label={`${city.name} (${city.enName})`}
-                  >
+                {cities.map((city) => (
+                  <Option key={city.code} value={city.name} label={`${city.name} (${city.enName})`}>
                     <div style={{ fontSize: '10px', padding: '2px 0' }}>
                       <div>{city.name}</div>
                       <div style={{ color: '#666', marginTop: '2px' }}>
-                        {city.enName} | {city.type} | 人口: {(city.population/10000).toFixed(0)}万
+                        {city.enName} | {city.type} | 人口: {(city.population / 10000).toFixed(0)}万
                       </div>
                     </div>
                   </Option>
@@ -580,10 +605,14 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
 
         <Form.Item
           name="imageCover"
-          label={<span><PictureOutlined /> {t("coverImage")}</span>}
+          label={
+            <span>
+              <PictureOutlined /> {t('coverImage')}
+            </span>
+          }
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          rules={[{ required: true, message: t("uploadCoverImage") }]}
+          rules={[{ required: true, message: t('uploadCoverImage') }]}
         >
           <Upload
             listType="picture-card"
@@ -595,7 +624,7 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
             {(form.getFieldValue('imageCover') || []).length < 1 && (
               <div>
                 <PlusOutlined />
-                <div style={{ marginTop: 8 }}>{t("upload")}</div>
+                <div style={{ marginTop: 8 }}>{t('upload')}</div>
               </div>
             )}
           </Upload>
@@ -603,7 +632,11 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
 
         <Form.Item
           name="imageList"
-          label={<span><PictureOutlined /> {t("productImages")}</span>}
+          label={
+            <span>
+              <PictureOutlined /> {t('productImages')}
+            </span>
+          }
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
@@ -615,7 +648,7 @@ const AddUserProductModal = ({ isVisible, onCancel, onFinish, form }) => {
           >
             <div>
               <PlusOutlined />
-              <div style={{ marginTop: 8 }}>{t("upload")}</div>
+              <div style={{ marginTop: 8 }}>{t('upload')}</div>
             </div>
           </Upload>
         </Form.Item>

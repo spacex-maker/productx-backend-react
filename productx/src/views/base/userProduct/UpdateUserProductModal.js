@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Modal, Form, Switch, Alert, Row, Col, Select, InputNumber, Upload, Tag } from 'antd';
-import { PlusOutlined, CheckCircleOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
-import { useTranslation } from "react-i18next";
+import { Input, Modal, Form, Alert, Row, Col, Select, InputNumber, Upload, Tag } from 'antd';
+import {
+  PlusOutlined,
+  CheckCircleOutlined,
+  EditOutlined,
+  StopOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import COS from 'cos-js-sdk-v5';
 import { message } from 'antd';
 import api from 'src/axiosInstance';
 const StyledModal = styled(Modal)`
   .ant-modal-content {
-    padding: ${props => props.$narrow ? '8px' : '12px'};
+    padding: ${(props) => (props.narrow ? '8px' : '12px')};
   }
 
   .ant-modal-header {
@@ -16,7 +22,6 @@ const StyledModal = styled(Modal)`
   }
 
   .ant-modal-title {
-    font-size: 12px;
     color: #000000;
   }
 
@@ -27,9 +32,8 @@ const StyledModal = styled(Modal)`
 
     .ant-form-item-label {
       padding: 0;
-      
+
       > label {
-        font-size: 10px;
         color: #666;
         height: 20px;
       }
@@ -39,7 +43,6 @@ const StyledModal = styled(Modal)`
     .ant-input-number,
     .ant-picker,
     .ant-select-selector {
-      font-size: 10px;
       height: 24px !important;
       line-height: 24px;
       padding: 0 8px;
@@ -63,11 +66,9 @@ const StyledModal = styled(Modal)`
   .ant-alert {
     margin-bottom: 8px;
     padding: 4px 8px;
-    font-size: 10px;
   }
 
   .ant-form-item-explain {
-    font-size: 10px;
     min-height: 16px;
   }
 
@@ -79,23 +80,24 @@ const StyledModal = styled(Modal)`
     .ant-btn {
       height: 24px;
       padding: 0 12px;
-      font-size: 10px;
     }
   }
 `;
-
-const UpdateUserProductModal = ({
-  isVisible,
-  onCancel,
-  onOk,
-  form,
-  handleUpdateProduct,
-  selectedProduct,
-  narrow
-}) => {
+/**
+ *
+ * @param {{
+ * form: import("antd").FormInstance;
+ * narrow?: boolean;
+ * selectedProduct: any;
+ * open: boolean;
+ * }} props
+ * @returns
+ */
+const UpdateUserProductModal = (props) => {
+  // eslint-disable-next-line react/prop-types
+  const { narrow, form, selectedProduct, ...modalProps } = props;
   const { t } = useTranslation();
   const [cosInstance, setCosInstance] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const bucketName = 'px-1258150206';
   const region = 'ap-nanjing';
 
@@ -145,7 +147,7 @@ const UpdateUserProductModal = ({
       }
 
       const key = `products/${Date.now()}-${file.name}`;
-      
+
       const result = await instance.uploadFile({
         Bucket: bucketName,
         Region: region,
@@ -154,7 +156,7 @@ const UpdateUserProductModal = ({
         onProgress: (progressData) => {
           const percent = Math.round(progressData.percent * 100);
           file.onProgress({ percent });
-        }
+        },
       });
 
       return `https://${bucketName}.cos.${region}.myqcloud.com/${key}`;
@@ -189,13 +191,17 @@ const UpdateUserProductModal = ({
   };
 
   useEffect(() => {
-    if (isVisible && selectedProduct) {
-      const coverImage = selectedProduct.imageCover ? [{
-        uid: '-1',
-        name: 'cover.jpg',
-        status: 'done',
-        url: selectedProduct.imageCover,
-      }] : [];
+    if (modalProps.open && selectedProduct) {
+      const coverImage = selectedProduct.imageCover
+        ? [
+            {
+              uid: '-1',
+              name: 'cover.jpg',
+              status: 'done',
+              url: selectedProduct.imageCover,
+            },
+          ]
+        : [];
 
       form.setFieldsValue({
         ...selectedProduct,
@@ -204,7 +210,7 @@ const UpdateUserProductModal = ({
         imageList: selectedProduct.imageList || [],
       });
     }
-  }, [isVisible, selectedProduct, form]);
+  }, [modalProps.open, selectedProduct, form]);
 
   // 添加状态配置对象
   const statusOptions = [
@@ -212,62 +218,42 @@ const UpdateUserProductModal = ({
       value: 0,
       label: 'normal',
       icon: <CheckCircleOutlined />,
-      color: '#52c41a'
+      color: '#52c41a',
     },
     {
       value: 1,
       label: 'draft',
       icon: <EditOutlined />,
-      color: '#faad14'
+      color: '#faad14',
     },
     {
       value: 2,
       label: 'offShelf',
       icon: <StopOutlined />,
-      color: '#ff4d4f'
+      color: '#ff4d4f',
     },
     {
       value: 3,
       label: 'deleted',
       icon: <DeleteOutlined />,
-      color: '#d9d9d9'
-    }
+      color: '#d9d9d9',
+    },
   ];
 
   return (
     <StyledModal
-      $narrow={narrow}
-      title={t("updateProduct")}
-      open={isVisible}
-      onCancel={onCancel}
-      onOk={() => form.submit()}
-      okText={t("submit")}
-      cancelText={t("cancel")}
-      width={480}
+      narrow={narrow}
+      title={t('updateProduct')}
+      {...modalProps}
+      okText={t('submit')}
+      cancelText={t('cancel')}
+      width={600}
       maskClosable={false}
       destroyOnClose
     >
-      <Alert
-        message={t("updateProductWarning")}
-        type="warning"
-        showIcon
-      />
+      <Alert message={t('updateProductWarning')} type="warning" showIcon />
 
-      <Form
-        form={form}
-        layout="vertical"
-        colon={false}
-        onFinish={(values) => {
-          // 在这里处理数据，然后调用 props 中的 handleUpdateProduct
-          const formData = {
-            ...values,
-            imageCover: Array.isArray(values.imageCover) && values.imageCover.length > 0
-              ? (values.imageCover[0].response?.url || values.imageCover[0].url)
-              : values.imageCover,
-          };
-          handleUpdateProduct(formData);
-        }}
-      >
+      <Form form={form} layout="vertical" colon={false}>
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
@@ -276,43 +262,40 @@ const UpdateUserProductModal = ({
           <Col span={12}>
             <Form.Item
               name="userId"
-              label={t("userId")}
-              rules={[{ required: true, message: t("enterUserId") }]}
+              label={t('userId')}
+              rules={[{ required: true, message: t('enterUserId') }]}
             >
-              <Input placeholder={t("enterUserId")} />
+              <Input placeholder={t('enterUserId')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               name="productName"
-              label={t("productName")}
-              rules={[{ required: true, message: t("enterProductName") }]}
+              label={t('productName')}
+              rules={[{ required: true, message: t('enterProductName') }]}
             >
-              <Input placeholder={t("enterProductName")} />
+              <Input placeholder={t('enterProductName')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
           name="productDescription"
-          label={t("productDescription")}
-          rules={[{ required: true, message: t("enterProductDescription") }]}
+          label={t('productDescription')}
+          rules={[{ required: true, message: t('enterProductDescription') }]}
         >
-          <Input.TextArea
-            placeholder={t("enterProductDescription")}
-            rows={3}
-          />
+          <Input.TextArea placeholder={t('enterProductDescription')} rows={3} />
         </Form.Item>
 
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
               name="price"
-              label={t("price")}
-              rules={[{ required: true, message: t("enterPrice") }]}
+              label={t('price')}
+              rules={[{ required: true, message: t('enterPrice') }]}
             >
               <InputNumber
-                placeholder={t("enterPrice")}
+                placeholder={t('enterPrice')}
                 style={{ width: '100%' }}
                 precision={2}
                 min={0}
@@ -322,11 +305,11 @@ const UpdateUserProductModal = ({
           <Col span={12}>
             <Form.Item
               name="originalPrice"
-              label={t("originalPrice")}
-              rules={[{ required: true, message: t("enterOriginalPrice") }]}
+              label={t('originalPrice')}
+              rules={[{ required: true, message: t('enterOriginalPrice') }]}
             >
               <InputNumber
-                placeholder={t("enterOriginalPrice")}
+                placeholder={t('enterOriginalPrice')}
                 style={{ width: '100%' }}
                 precision={2}
                 min={0}
@@ -339,26 +322,22 @@ const UpdateUserProductModal = ({
           <Col span={8}>
             <Form.Item
               name="stock"
-              label={t("stock")}
-              rules={[{ required: true, message: t("enterStock") }]}
+              label={t('stock')}
+              rules={[{ required: true, message: t('enterStock') }]}
             >
-              <InputNumber
-                placeholder={t("enterStock")}
-                style={{ width: '100%' }}
-                min={0}
-              />
+              <InputNumber placeholder={t('enterStock')} style={{ width: '100%' }} min={0} />
             </Form.Item>
           </Col>
           <Col span={16}>
             <Form.Item
               name="category"
-              label={t("category")}
-              rules={[{ required: true, message: t("selectCategory") }]}
+              label={t('category')}
+              rules={[{ required: true, message: t('selectCategory') }]}
             >
-              <Select placeholder={t("selectCategory")}>
-                <Select.Option value="电脑">{t("computer")}</Select.Option>
-                <Select.Option value="手机">{t("phone")}</Select.Option>
-                <Select.Option value="其他">{t("other")}</Select.Option>
+              <Select placeholder={t('selectCategory')}>
+                <Select.Option value="电脑">{t('computer')}</Select.Option>
+                <Select.Option value="手机">{t('phone')}</Select.Option>
+                <Select.Option value="其他">{t('other')}</Select.Option>
               </Select>
             </Form.Item>
           </Col>
@@ -368,29 +347,29 @@ const UpdateUserProductModal = ({
           <Col span={12}>
             <Form.Item
               name="province"
-              label={t("province")}
-              rules={[{ required: true, message: t("enterProvince") }]}
+              label={t('province')}
+              rules={[{ required: true, message: t('enterProvince') }]}
             >
-              <Input placeholder={t("enterProvince")} />
+              <Input placeholder={t('enterProvince')} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               name="city"
-              label={t("city")}
-              rules={[{ required: true, message: t("enterCity") }]}
+              label={t('city')}
+              rules={[{ required: true, message: t('enterCity') }]}
             >
-              <Input placeholder={t("enterCity")} />
+              <Input placeholder={t('enterCity')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
           name="imageCover"
-          label={t("coverImage")}
+          label={t('coverImage')}
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          rules={[{ required: true, message: t("uploadCoverImage") }]}
+          rules={[{ required: true, message: t('uploadCoverImage') }]}
         >
           <Upload
             listType="picture-card"
@@ -400,14 +379,14 @@ const UpdateUserProductModal = ({
           >
             <div>
               <PlusOutlined />
-              <div style={{ marginTop: 8 }}>{t("upload")}</div>
+              <div style={{ marginTop: 8 }}>{t('upload')}</div>
             </div>
           </Upload>
         </Form.Item>
 
         <Form.Item
           name="imageList"
-          label={t("productImages")}
+          label={t('productImages')}
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
@@ -419,18 +398,18 @@ const UpdateUserProductModal = ({
           >
             <div>
               <PlusOutlined />
-              <div style={{ marginTop: 8 }}>{t("upload")}</div>
+              <div style={{ marginTop: 8 }}>{t('upload')}</div>
             </div>
           </Upload>
         </Form.Item>
 
         <Form.Item
           name="status"
-          label={t("productStatus")}
-          rules={[{ required: true, message: t("selectStatus") }]}
+          label={t('productStatus')}
+          rules={[{ required: true, message: t('selectStatus') }]}
         >
-          <Select placeholder={t("selectStatus")}>
-            {statusOptions.map(option => (
+          <Select placeholder={t('selectStatus')}>
+            {statusOptions.map((option) => (
               <Select.Option key={option.value} value={option.value}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {React.cloneElement(option.icon, { style: { color: option.color } })}
