@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input, Checkbox, Typography, Divider } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Form, Input, Checkbox, Typography, Divider, Select, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
   UserOutlined,
@@ -7,8 +7,10 @@ import {
   HomeOutlined,
   EnvironmentOutlined,
 } from '@ant-design/icons';
+import api from 'src/axiosInstance';
 
 const { Title } = Typography;
+const { Option } = Select;
 
 const UpdateUserAddressModal = ({
   isVisible,
@@ -19,112 +21,186 @@ const UpdateUserAddressModal = ({
   selectedAddress
 }) => {
   const { t } = useTranslation();
+  const [countries, setCountries] = useState([]);
 
-  // 统一的样式配置
-  const styles = {
-    label: {
-      fontSize: '10px',
-      height: '16px',
-      lineHeight: '16px',
-      marginBottom: '2px'
-    },
-    input: {
-      height: '24px',
-      fontSize: '10px',
-      padding: '0 8px'
-    },
-    formItem: {
-      marginBottom: '8px'
-    },
-    icon: {
-      fontSize: '12px',
-      color: '#1890ff',
-      marginRight: '4px'
-    }
-  };
+  // 获取国家列表
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);
+        }
+      } catch (error) {
+        console.error('Failed to fetch countries:', error);
+      }
+    };
+    fetchCountries();
+  }, []);
 
+  // 设置表单初始值
   useEffect(() => {
     if (isVisible && selectedAddress) {
       form.setFieldsValue({
         id: selectedAddress.id,
         contactName: selectedAddress.contactName,
-        phoneNum: selectedAddress.phoneNum,
+        phoneAreaCode: `+${selectedAddress.areaCode}`,
+        phoneNumber: selectedAddress.phoneNum,
         contactAddress: selectedAddress.contactAddress,
-        currentUse: selectedAddress.currentUse
+        currentUse: selectedAddress.currentUse,
+        countryCode: selectedAddress.countryCode
       });
     }
   }, [isVisible, selectedAddress, form]);
 
+  const areaCodeOption = (country) => (
+    <Option key={country.id} value={country.dialCode}>
+      <Space>
+        <img 
+          src={country.flagImageUrl} 
+          alt={country.name}
+          style={{ 
+            width: 30, 
+            height: 20, 
+            objectFit: 'cover',
+            borderRadius: 2,
+            border: '1px solid #f0f0f0'
+          }}
+        />
+        <span>{country.name}</span>
+        <span style={{ color: '#999' }}>({country.isoCode})</span>
+        <span style={{ color: '#999' }}>{country.dialCode}</span>
+      </Space>
+    </Option>
+  );
+
   return (
     <Modal
       title={
-        <span style={{ fontSize: '12px' }}>
-          <HomeOutlined style={styles.icon} />
+        <span>
+          <HomeOutlined style={{ marginRight: 4 }} />
           {t('editAddress')}
         </span>
       }
       open={isVisible}
       onCancel={onCancel}
-      onOk={onOk}
+      onOk={() => form.submit()}
       width={500}
       maskClosable={false}
     >
-      <Form form={form} onFinish={handleUpdateAddress} layout="vertical">
+      <Form 
+        form={form} 
+        onFinish={(values) => {
+          const submitData = {
+            id: values.id,
+            countryCode: values.countryCode,
+            areaCode: values.phoneAreaCode?.replace('+', ''),
+            phoneNum: values.phoneNumber,
+            contactAddress: values.contactAddress,
+            contactName: values.contactName,
+            currentUse: values.currentUse
+          };
+          handleUpdateAddress(submitData);
+        }} 
+        layout="vertical"
+      >
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
 
-        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
-          <UserOutlined style={styles.icon} />
-          {t('basicInfo')}
+        <Title level={5}>
+          <UserOutlined style={{ marginRight: 4 }} />
+          {t('basicInformation')}
         </Title>
-        <Divider style={{ margin: '8px 0' }} />
+        <Divider />
 
         <Form.Item
           label={t('contactName')}
           name="contactName"
           rules={[{ required: true, message: t('pleaseEnterContactName') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<UserOutlined />}
-            style={styles.input}
             placeholder={t('enterContactName')}
           />
         </Form.Item>
 
-        <Form.Item
-          label={t('phoneNum')}
-          name="phoneNum"
-          rules={[{ required: true, message: t('pleaseEnterPhoneNum') }]}
-          style={styles.formItem}
-        >
-          <Input
-            prefix={<PhoneOutlined />}
-            style={styles.input}
-            placeholder={t('enterPhoneNum')}
-          />
+        <Form.Item label={t('phoneNumber')} required style={{ marginBottom: 0 }}>
+          <Space.Compact style={{ width: '100%' }}>
+            <Form.Item
+              name="phoneAreaCode"
+              noStyle
+              rules={[{ required: true, message: t('pleaseSelectAreaCode') }]}
+            >
+              <Select 
+                style={{ width: 220 }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) => {
+                  const country = countries.find(c => c.dialCode === option.value);
+                  return (
+                    country?.name.toLowerCase().includes(input.toLowerCase()) ||
+                    country?.dialCode.includes(input)
+                  );
+                }}
+                onChange={(value) => {
+                  const country = countries.find(c => c.dialCode === value);
+                  form.setFieldsValue({
+                    countryCode: country?.code || null
+                  });
+                }}
+                dropdownMatchSelectWidth={false}
+                popupMatchSelectWidth={false}
+                listHeight={256}
+                dropdownStyle={{ 
+                  minWidth: 300,
+                  maxWidth: 400
+                }}
+              >
+                {countries.map(country => areaCodeOption(country))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="phoneNumber"
+              noStyle
+              rules={[
+                { required: true, message: t('pleaseEnterPhoneNumber') },
+                { pattern: /^[0-9]{5,}$/, message: t('invalidPhoneNumber') }
+              ]}
+            >
+              <Input
+                prefix={<PhoneOutlined />}
+                placeholder={t('enterPhoneNumber')}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '');
+                  form.setFieldValue('phoneNumber', value);
+                }}
+                style={{ flex: 1, minWidth: 200 }}
+              />
+            </Form.Item>
+          </Space.Compact>
         </Form.Item>
 
         <Form.Item
           label={t('contactAddress')}
           name="contactAddress"
           rules={[{ required: true, message: t('pleaseEnterContactAddress') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<EnvironmentOutlined />}
-            style={styles.input}
-            placeholder={t('enterContactAddress')}
+            placeholder={t('enterDetailedAddress')}
           />
         </Form.Item>
 
         <Form.Item
           name="currentUse"
           valuePropName="checked"
-          style={styles.formItem}
         >
-          <Checkbox>{t('setAsDefault')}</Checkbox>
+          <Checkbox>{t('setAsDefaultAddress')}</Checkbox>
+        </Form.Item>
+
+        <Form.Item name="countryCode">
+          <Input type="hidden" />
         </Form.Item>
       </Form>
     </Modal>

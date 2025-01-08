@@ -1,6 +1,7 @@
-import React from 'react';
-import { Modal, Form, Input, Select, Checkbox, Typography, Divider } from 'antd';
+import React, { useState } from 'react';
+import { Modal, Form, Input, Select, Checkbox, Typography, Divider, Space, Avatar, Tag, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
+import debounce from 'lodash/debounce';
 import {
   UserOutlined,
   BankOutlined,
@@ -9,6 +10,7 @@ import {
   SafetyCertificateOutlined,
   DollarOutlined
 } from '@ant-design/icons';
+import api from 'src/axiosInstance';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -20,34 +22,75 @@ const UserAccountBankCreateFormModal = ({
   form
 }) => {
   const { t } = useTranslation();
+  const [users, setUsers] = useState([]);
+  const [fetching, setFetching] = useState(false);
 
-  const styles = {
-    label: {
-      fontSize: '10px',
-      height: '16px',
-      lineHeight: '16px',
-      marginBottom: '2px'
-    },
-    input: {
-      height: '24px',
-      fontSize: '10px',
-      padding: '0 8px'
-    },
-    formItem: {
-      marginBottom: '8px'
-    },
-    icon: {
-      fontSize: '12px',
-      color: '#1890ff',
-      marginRight: '4px'
+  const fetchUsers = debounce(async (searchText) => {
+    if (!searchText) {
+      setUsers([]);
+      return;
     }
-  };
+
+    setFetching(true);
+    try {
+      const params = {};
+      if (/^\d+$/.test(searchText)) {
+        params.id = parseInt(searchText);
+      } else {
+        params.username = searchText;
+      }
+
+      const response = await api.get('/manage/user/list-all-summary', { params });
+      if (response) {
+        setUsers(response);
+      }
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+    } finally {
+      setFetching(false);
+    }
+  }, 500);
+
+  const userOption = (user) => (
+    <Select.Option 
+      key={user.id} 
+      value={user.id}
+      label={
+        <Space>
+          <Avatar size="small" src={user.avatar} />
+          <span>{user.username}</span>
+        </Space>
+      }
+    >
+      <Space align="center">
+        <Avatar 
+          size="small" 
+          src={user.avatar}
+          style={{ marginRight: 8 }}
+        />
+        <span style={{ flex: 1 }}>{user.username}</span>
+        <Space size={4}>
+          {user.isBelongSystem && (
+            <Tag color="blue">
+              {t('systemUser')}
+            </Tag>
+          )}
+          <Tag color={user.status ? 'success' : 'error'}>
+            {user.status ? t('active') : t('inactive')}
+          </Tag>
+          <span style={{ color: '#999' }}>
+            ID: {user.id}
+          </span>
+        </Space>
+      </Space>
+    </Select.Option>
+  );
 
   return (
     <Modal
       title={
         <span style={{ fontSize: '12px' }}>
-          <BankOutlined style={styles.icon} />
+          <BankOutlined style={{ marginRight: '4px' }} />
           {t('createAccount')}
         </span>
       }
@@ -59,33 +102,47 @@ const UserAccountBankCreateFormModal = ({
     >
       <Form form={form} onFinish={onFinish} layout="vertical">
         <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
-          <UserOutlined style={styles.icon} />
-          {t('basicInfo')}
+          <UserOutlined style={{ marginRight: '4px' }} />
+          {t('userInfo')}
         </Title>
         <Divider style={{ margin: '8px 0' }} />
 
         <Form.Item
-          label={t('userId')}
+          label={t('selectUser')}
           name="userId"
-          rules={[{ required: true, message: t('pleaseEnterUserId') }]}
-          style={styles.formItem}
+          rules={[{ required: true, message: t('pleaseSelectUser') }]}
         >
-          <Input
-            prefix={<UserOutlined />}
-            style={styles.input}
-            placeholder={t('enterUserId')}
-          />
+          <Select
+            showSearch
+            allowClear
+            placeholder={t('searchUserPlaceholder')}
+            onSearch={fetchUsers}
+            loading={fetching}
+            filterOption={false}
+            notFoundContent={fetching ? <Spin size="small" /> : null}
+            optionLabelProp="label"
+            dropdownStyle={{ 
+              padding: 4,
+              minWidth: 300
+            }}
+          >
+            {users.map(user => userOption(user))}
+          </Select>
         </Form.Item>
+
+        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
+          <BankOutlined style={{ marginRight: '4px' }} />
+          {t('bankInfo')}
+        </Title>
+        <Divider style={{ margin: '8px 0' }} />
 
         <Form.Item
           label={t('bankName')}
           name="bankName"
           rules={[{ required: true, message: t('pleaseEnterBankName') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<BankOutlined />}
-            style={styles.input}
             placeholder={t('enterBankName')}
           />
         </Form.Item>
@@ -94,11 +151,9 @@ const UserAccountBankCreateFormModal = ({
           label={t('accountNumber')}
           name="accountNumber"
           rules={[{ required: true, message: t('pleaseEnterAccountNumber') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<NumberOutlined />}
-            style={styles.input}
             placeholder={t('enterAccountNumber')}
           />
         </Form.Item>
@@ -107,11 +162,9 @@ const UserAccountBankCreateFormModal = ({
           label={t('accountHolderName')}
           name="accountHolderName"
           rules={[{ required: true, message: t('pleaseEnterAccountHolderName') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<UserOutlined />}
-            style={styles.input}
             placeholder={t('enterAccountHolderName')}
           />
         </Form.Item>
@@ -120,11 +173,9 @@ const UserAccountBankCreateFormModal = ({
           label={t('swiftCode')}
           name="swiftCode"
           rules={[{ required: true, message: t('pleaseEnterSwiftCode') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<SafetyCertificateOutlined />}
-            style={styles.input}
             placeholder={t('enterSwiftCode')}
           />
         </Form.Item>
@@ -133,11 +184,9 @@ const UserAccountBankCreateFormModal = ({
           label={t('currencyCode')}
           name="currencyCode"
           rules={[{ required: true, message: t('pleaseEnterCurrencyCode') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<DollarOutlined />}
-            style={styles.input}
             placeholder={t('enterCurrencyCode')}
           />
         </Form.Item>
@@ -145,7 +194,6 @@ const UserAccountBankCreateFormModal = ({
         <Form.Item
           name="isActive"
           valuePropName="checked"
-          style={styles.formItem}
         >
           <Checkbox>{t('isActive')}</Checkbox>
         </Form.Item>

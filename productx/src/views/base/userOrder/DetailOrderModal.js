@@ -303,15 +303,47 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
               <Descriptions.Item label={t('orderStatus')}>
                 <OrderStatus status={userOrder.orderStatus} />
               </Descriptions.Item>
-              <Descriptions.Item label={t('receiverName')}>{userOrder.receiverName}</Descriptions.Item>
-              <Descriptions.Item label={t('phoneNumber')}>{userOrder.phoneNum}</Descriptions.Item>
               <Descriptions.Item label={t('paymentType')}>{parsePaymentType(userOrder.paymentType)}</Descriptions.Item>
               <Descriptions.Item label={t('payTime')}>{formatDate(userOrder.payTime)}</Descriptions.Item>
               <Descriptions.Item label={t('totalAmount')} span={2}>{userOrder.totalAmount} CNY</Descriptions.Item>
-              <Descriptions.Item label={t('shippingMethod')} span={2}>{userOrder.shippingMethod}</Descriptions.Item>
-              <Descriptions.Item label={t('deliveryAddress')} span={2}>{userOrder.deliveryAddress}</Descriptions.Item>
-              <Descriptions.Item label={t('notes')} span={2}>{userOrder.notes || t('noNotes')}</Descriptions.Item>
             </Descriptions>
+
+            {/* 收货信息 */}
+            <div style={{ marginBottom: '8px' }}>
+              <div style={{
+                backgroundColor: '#fafafa',
+                padding: '4px 8px',
+                fontWeight: '500',
+                fontSize: '12px',
+                marginBottom: '4px',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <HomeOutlined style={{ marginRight: '4px' }} />
+                {t('deliveryInfo')}
+              </div>
+              <Descriptions
+                bordered
+                size="small"
+                column={2}
+                labelStyle={{
+                  width: '90px',
+                  padding: '4px 8px',
+                  fontSize: '11px',
+                  backgroundColor: '#fafafa'
+                }}
+                contentStyle={{
+                  padding: '4px 8px',
+                  fontSize: '11px'
+                }}
+              >
+                <Descriptions.Item label={t('receiverName')}>{userOrder.receiverName}</Descriptions.Item>
+                <Descriptions.Item label={t('phoneNumber')}>{userOrder.phoneNum}</Descriptions.Item>
+                <Descriptions.Item label={t('shippingMethod')}>{userOrder.shippingMethod}</Descriptions.Item>
+                <Descriptions.Item label={t('notes')}>{userOrder.notes || t('noNotes')}</Descriptions.Item>
+                <Descriptions.Item label={t('deliveryAddress')} span={2}>{userOrder.deliveryAddress}</Descriptions.Item>
+              </Descriptions>
+            </div>
 
             {/* 商品信息 */}
             <div style={{ marginBottom: '8px' }}>

@@ -1,113 +1,57 @@
-import React from 'react';
-import { Modal, Form, Input, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Form, Input, message, Space, Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 import api from 'src/axiosInstance';
-import styled from 'styled-components';
 import { UserOutlined, PhoneOutlined, HomeOutlined, BarcodeOutlined } from '@ant-design/icons';
 
-// 添加样式组件
-const StyledModal = styled(Modal)`
-  .ant-modal-content {
-    padding: 12px;
-  }
-
-  .ant-modal-header {
-    margin-bottom: 8px;
-  }
-
-  .ant-modal-title {
-    font-size: 13px;
-    color: #000 !important;
-  }
-
-  .ant-form {
-    .ant-form-item {
-      margin-bottom: 8px;
-    }
-
-    .ant-form-item-label {
-      padding: 0;
-      
-      > label {
-        font-size: 12px;
-        color: #000 !important;
-        height: 24px;
-      }
-    }
-
-    .ant-input,
-    .ant-input-number,
-    .ant-picker,
-    .ant-select-selector {
-      font-size: 12px;
-      height: 28px;
-      padding: 0 8px;
-      color: #000 !important;
-      line-height: 28px;
-    }
-
-    .ant-input-affix-wrapper {
-      padding: 0 8px;
-      height: 28px;
-      line-height: 28px;
-
-      .ant-input {
-        height: 26px;
-        line-height: 26px;
-      }
-
-      .anticon {
-        color: var(--cui-primary);
-        font-size: 14px;
-      }
-    }
-
-    .ant-input-number-input {
-      height: 26px;
-      line-height: 26px;
-    }
-
-    .ant-select-selection-item {
-      line-height: 26px;
-    }
-
-    textarea.ant-input {
-      height: auto !important;
-      min-height: 56px;
-      padding: 4px 8px;
-      color: #000 !important;
-      line-height: 1.5;
-    }
-  }
-
-  .ant-form-item-explain {
-    font-size: 11px;
-    min-height: 18px;
-    color: #000 !important;
-  }
-
-  .ant-modal-footer {
-    margin-top: 12px;
-    padding: 8px 0 0;
-    border-top: 1px solid var(--cui-border-color);
-
-    .ant-btn {
-      height: 28px;
-      padding: 0 12px;
-      font-size: 12px;
-    }
-  }
-`;
+const { Option } = Select;
 
 const ShipOrderModal = ({ visible, onCancel, orderData }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
+  const [countries, setCountries] = useState([]);
 
-  React.useEffect(() => {
+  // 获取国家列表
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);
+          // 设置默认区号为中国(+86)
+          const defaultCountry = response.find(c => c.dialCode === '+86');
+          if (defaultCountry) {
+            form.setFieldsValue({
+              phoneAreaCode: defaultCountry.dialCode
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch countries:', error);
+      }
+    };
+    fetchCountries();
+  }, [form]);
+
+  // 设置表单初始值
+  useEffect(() => {
     if (visible && orderData) {
+      const phoneNum = orderData.userOrder.phoneNum || '';
+      let areaCode = '+86';
+      let number = phoneNum;
+
+      // 如果电话号码包含区号，则分离
+      if (phoneNum.startsWith('+')) {
+        const match = phoneNum.match(/^(\+\d+)(.*)$/);
+        if (match) {
+          [, areaCode, number] = match;
+        }
+      }
+
       form.setFieldsValue({
         receiverName: orderData.userOrder.receiverName,
-        phoneNum: orderData.userOrder.phoneNum,
+        phoneAreaCode: areaCode,
+        phoneNumber: number.trim(),
         deliveryAddress: orderData.userOrder.deliveryAddress,
         expressNumber: orderData.userOrder.expressNumber || '',
       });
@@ -119,7 +63,10 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
       const values = await form.validateFields();
       await api.post('/manage/user-order/ship', {
         orderId: orderData.userOrder.id,
-        ...values
+        receiverName: values.receiverName,
+        phoneNum: `${values.phoneAreaCode}${values.phoneNumber}`,
+        deliveryAddress: values.deliveryAddress,
+        expressNumber: values.expressNumber
       });
       
       message.success(t('shipSuccess'));
@@ -130,15 +77,36 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
     }
   };
 
+  const areaCodeOption = (country) => (
+    <Option key={country.id} value={country.dialCode}>
+      <Space>
+        <img 
+          src={country.flagImageUrl} 
+          alt={country.name}
+          style={{ 
+            width: 30, 
+            height: 20, 
+            objectFit: 'cover',
+            borderRadius: 2,
+            border: '1px solid #f0f0f0'
+          }}
+        />
+        <span>{country.name}</span>
+        <span style={{ color: '#999' }}>({country.isoCode})</span>
+        <span style={{ color: '#999' }}>{country.dialCode}</span>
+      </Space>
+    </Option>
+  );
+
   return (
-    <StyledModal
+    <Modal
       title={t('shipOrder')}
       open={visible}
       onCancel={() => onCancel(false)}
       onOk={handleSubmit}
       okText={t('confirm')}
       cancelText={t('cancel')}
-      width={380}
+      width={480}
       maskClosable={false}
       centered
     >
@@ -158,15 +126,39 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="phoneNum"
-          label={t('phoneNumber')}
-          rules={[{ required: true, message: t('phoneNumberRequired') }]}
-        >
-          <Input
-            placeholder={t('enterPhoneNumber')}
-            prefix={<PhoneOutlined />}
-          />
+        <Form.Item label={t('phoneNumber')} required style={{ marginBottom: 0 }}>
+          <Space.Compact style={{ width: '100%' }}>
+            <Form.Item
+              name="phoneAreaCode"
+              rules={[{ required: true, message: t('pleaseSelectAreaCode') }]}
+              style={{ width: '50%', marginBottom: 0 }}
+            >
+              <Select
+                showSearch
+                optionFilterProp="children"
+                placeholder={t('areaCode')}
+                dropdownMatchSelectWidth={false}
+                popupMatchSelectWidth={false}
+                listHeight={256}
+                dropdownStyle={{ 
+                  minWidth: 300,
+                  maxWidth: 400
+                }}
+              >
+                {countries.map(country => areaCodeOption(country))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="phoneNumber"
+              rules={[{ required: true, message: t('pleaseEnterPhoneNumber') }]}
+              style={{ width: '50%', marginBottom: 0 }}
+            >
+              <Input
+                placeholder={t('enterPhoneNumber')}
+                prefix={<PhoneOutlined />}
+              />
+            </Form.Item>
+          </Space.Compact>
         </Form.Item>
 
         <Form.Item
@@ -192,7 +184,7 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
           />
         </Form.Item>
       </Form>
-    </StyledModal>
+    </Modal>
   );
 };
 

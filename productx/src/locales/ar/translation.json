@@ -869,6 +869,19 @@
   "systemUser": "مستخدم النظام",
   "usageCount": "عدد الاستخدامات",
   "copySuccessful": "تم النسخ بنجاح",
-  "invalidPhoneNumber": "رقم الهاتف غير صالح"
+  "invalidPhoneNumber": "رقم الهاتف غير صالح",
+
+  "userInfo": "معلومات المستخدم",
+  "bankInfo": "معلومات البنك",
+  "deliveryInfo": "معلومات التوصيل",
+  "deliveryTime": "وقت التوصيل",
+  "deliveryStatus": "حالة التوصيل",
+  "recipientName": "اسم المستلم",
+  "contactNumber": "رقم الاتصال",
+  "trackingNumber": "رقم التتبع",
+  "expectedDeliveryDate": "تاريخ التسليم المتوقع",
+  "delivered": "تم التوصيل",
+  "inTransit": "قيد النقل",
+  "deliveryFailed": "فشل التوصيل"
 
 }

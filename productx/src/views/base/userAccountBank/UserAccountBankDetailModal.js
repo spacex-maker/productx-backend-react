@@ -1,17 +1,15 @@
-import React from 'react';
-import { Modal, Typography, Space, Row, Col, Card, Watermark } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Typography, Space, Card, Watermark, Avatar, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { formatDate } from 'src/components/common/Common';
 import {
   UserOutlined,
   BankOutlined,
   NumberOutlined,
   GlobalOutlined,
   SafetyCertificateOutlined,
-  DollarOutlined,
-  ClockCircleOutlined
+  DollarOutlined
 } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import api from 'src/axiosInstance';
 
 const { Text } = Typography;
 
@@ -25,33 +23,27 @@ const IconText = ({ icon, text }) => (
 
 const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) => {
   const { t } = useTranslation();
+  const [userInfo, setUserInfo] = useState(null);
 
-  const currentUser = useSelector((state) => state.user?.currentUser || {});
-  const watermarkContent = `ID: ${currentUser?.id || ''} ${currentUser?.username || ''}`;
+  // 获取用户信息
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (selectedAccount?.userId) {
+        try {
+          const response = await api.get(`/manage/user/summary?id=${selectedAccount.userId}`);
+          if (response) {
+            setUserInfo(response);
+          }
+        } catch (error) {
+          console.error('获取用户信息失败:', error);
+        }
+      }
+    };
 
-  const styles = {
-    text: {
-      fontSize: '10px',
-      color: 'rgba(0, 0, 0, 0.85)'
-    },
-    card: {
-      marginBottom: '8px',
-      borderRadius: '4px',
-    },
-    cardBody: {
-      padding: '8px',
-    },
-    cardHead: {
-      minHeight: '24px',
-      padding: '0 8px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
-    row: {
-      marginBottom: '4px'
+    if (isVisible) {
+      fetchUserInfo();
     }
-  };
+  }, [isVisible, selectedAccount]);
 
   return (
     <Modal
@@ -67,35 +59,58 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
       width={500}
       maskClosable={false}
     >
-      {selectedAccount && (
-        <Watermark content={watermarkContent}>
-          <div style={{ padding: '8px' }}>
-            {/* 基本信息卡片 */}
+      <Watermark content={`ID: ${userInfo?.id || ''} ${userInfo?.username || ''}`}>
+        <div style={{ padding: '8px' }}>
+          {/* 用户信息卡片 */}
+          <Card
+            size="small"
+            title={<Text style={{ fontSize: '10px' }}><UserOutlined /> {t('userInfo')}</Text>}
+            style={{ marginBottom: 8 }}
+          >
+            {userInfo && (
+              <div style={{ marginBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar src={userInfo.avatar} icon={<UserOutlined />} size={40} />
+                  <div style={{ marginLeft: '12px', flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{userInfo.username}</span>
+                      {userInfo.isBelongSystem && (
+                        <Tag color="blue" style={{ marginRight: '8px' }}>
+                          {t('systemUser')}
+                        </Tag>
+                      )}
+                      <Tag color={userInfo.isActive ? 'success' : 'error'}>
+                        {userInfo.isActive ? t('active') : t('inactive')}
+                      </Tag>
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#666' }}>
+                      {userInfo.nickname && `${userInfo.nickname} - `}
+                      {[userInfo.city, userInfo.state, userInfo.country].filter(Boolean).join(', ')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Card>
+
+          {/* 银行账户信息卡片 */}
+          {selectedAccount && (
             <Card
               size="small"
-              title={<Text style={styles.text}><UserOutlined /> {t('basicInfo')}</Text>}
-              style={styles.card}
-              bodyStyle={styles.cardBody}
-              headStyle={styles.cardHead}
+              title={<Text style={{ fontSize: '10px' }}><BankOutlined /> {t('bankInfo')}</Text>}
             >
               <Space direction="vertical" size={2} style={{ width: '100%' }}>
-                <Row gutter={[8, 4]}>
-                  <Col span={12}>
-                    <IconText
-                      icon={<UserOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('accountHolderName')}: ${selectedAccount.accountHolderName}`}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <IconText
-                      icon={<NumberOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('accountNumber')}: ${selectedAccount.accountNumber}`}
-                    />
-                  </Col>
-                </Row>
                 <IconText
                   icon={<BankOutlined style={{ fontSize: '10px' }} />}
                   text={`${t('bankName')}: ${selectedAccount.bankName}`}
+                />
+                <IconText
+                  icon={<NumberOutlined style={{ fontSize: '10px' }} />}
+                  text={`${t('accountNumber')}: ${selectedAccount.accountNumber}`}
+                />
+                <IconText
+                  icon={<UserOutlined style={{ fontSize: '10px' }} />}
+                  text={`${t('accountHolderName')}: ${selectedAccount.accountHolderName}`}
                 />
                 <IconText
                   icon={<SafetyCertificateOutlined style={{ fontSize: '10px' }} />}
@@ -105,49 +120,15 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
                   icon={<DollarOutlined style={{ fontSize: '10px' }} />}
                   text={`${t('currencyCode')}: ${selectedAccount.currencyCode}`}
                 />
+                <IconText
+                  icon={<GlobalOutlined style={{ fontSize: '10px' }} />}
+                  text={`${t('isActive')}: ${selectedAccount.isActive ? t('yes') : t('no')}`}
+                />
               </Space>
             </Card>
-
-            {/* 其他信息卡片 */}
-            <Card
-              size="small"
-              title={<Text style={styles.text}><ClockCircleOutlined /> {t('otherInfo')}</Text>}
-              style={{ ...styles.card, marginBottom: 0 }}
-              bodyStyle={styles.cardBody}
-              headStyle={styles.cardHead}
-            >
-              <Row gutter={[8, 4]}>
-                <Col span={12}>
-                  <IconText
-                    icon={<ClockCircleOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('createTime')}: ${formatDate(selectedAccount.createTime)}`}
-                  />
-                </Col>
-                <Col span={12}>
-                  <IconText
-                    icon={<ClockCircleOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('updateTime')}: ${formatDate(selectedAccount.updateTime)}`}
-                  />
-                </Col>
-              </Row>
-              <Row gutter={[8, 4]} style={{ marginTop: '4px' }}>
-                <Col span={12}>
-                  <IconText
-                    icon={<NumberOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('userId')}: ${selectedAccount.userId}`}
-                  />
-                </Col>
-                <Col span={12}>
-                  <IconText
-                    icon={<GlobalOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('isActive')}: ${selectedAccount.isActive ? t('yes') : t('no')}`}
-                  />
-                </Col>
-              </Row>
-            </Card>
-          </div>
-        </Watermark>
-      )}
+          )}
+        </div>
+      </Watermark>
     </Modal>
   );
 };

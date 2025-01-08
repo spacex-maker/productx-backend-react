@@ -885,5 +885,18 @@
   "systemUser": "システムユーザー",
   "usageCount": "使用回数",
   "copySuccessful": "コピー成功",
-  "invalidPhoneNumber": "無効な電話番号"
+  "invalidPhoneNumber": "無効な電話番号",
+
+  "userInfo": "ユーザー情報",
+  "bankInfo": "銀行情報",
+  "deliveryInfo": "配送情報",
+  "deliveryTime": "配送時間",
+  "deliveryStatus": "配送状況",
+  "recipientName": "受取人名",
+  "contactNumber": "連絡先番号",
+  "trackingNumber": "追跡番号",
+  "expectedDeliveryDate": "配達予定日",
+  "delivered": "配達済み",
+  "inTransit": "輸送中",
+  "deliveryFailed": "配送失敗"
 }

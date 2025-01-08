@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Popconfirm } from 'antd';
 import { formatDate } from 'src/components/common/Common';
 import DetailOrderModal from 'src/views/base/userOrder/DetailOrderModal';
-import { useTranslation } from 'react-i18next'; // 引入 useTranslation
+import { useTranslation } from 'react-i18next';
 import OrderStatus from 'src/components/common/OrderStatus';
 import DeliveryMethod from 'src/components/common/DeliveryMethod';
 
@@ -18,28 +18,31 @@ const OrderTable = ({
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [orderId, setOrderId] = useState(null);
+  const [loadingDetails, setLoadingDetails] = useState(null);
+  const { t } = useTranslation();
 
-  // 解析支付方式为 USDT(ERC20) 格式
   const parsePaymentType = (paymentType) => {
     if (paymentType && paymentType.includes('##')) {
       const [currency, network] = paymentType.split('##');
       return `${network}`;
     }
-    return paymentType; // 如果没有符合的格式，则返回原支付方式
+    return paymentType;
   };
 
   // 显示订单详情的模态框
   const handleViewDetails = (order) => {
-    setOrderId(order); // 设置当前查看的订单
-    setIsModalVisible(true); // 打开模态框
+    setLoadingDetails(order);
+    setOrderId(order);
+    setIsModalVisible(true);
   };
 
   // 关闭订单详情模态框
   const handleCloseModal = () => {
     setIsModalVisible(false);
     setOrderId(null);
+    setLoadingDetails(null);
   };
-  const { t } = useTranslation(); // 使用 t() 方法进行翻译
+
   return (
     <div>
       <table className="table table-bordered table-striped">
@@ -110,7 +113,11 @@ const OrderTable = ({
                 <Button type="link" onClick={() => handleEditClick(item)}>
                   {t('edit')}
                 </Button>
-                <Button type="link" onClick={() => handleViewDetails(item.id)}>
+                <Button 
+                  type="link" 
+                  onClick={() => handleViewDetails(item.id)}
+                  loading={loadingDetails === item.id}
+                >
                   {t('detail')}
                 </Button>
                 <Popconfirm
@@ -129,7 +136,12 @@ const OrderTable = ({
         </tbody>
       </table>
 
-      <DetailOrderModal visible={isModalVisible} orderId={orderId} onCancel={handleCloseModal} />
+      <DetailOrderModal 
+        visible={isModalVisible} 
+        orderId={orderId} 
+        onCancel={handleCloseModal}
+        afterClose={() => setLoadingDetails(null)}
+      />
     </div>
   );
 };
