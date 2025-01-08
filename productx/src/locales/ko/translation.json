@@ -886,5 +886,18 @@
   "systemUser": "시스템 사용자",
   "usageCount": "사용 횟수",
   "copySuccessful": "복사 성공",
-  "invalidPhoneNumber": "유효하지 않은 전화번호"
+  "invalidPhoneNumber": "유효하지 않은 전화번호",
+
+  "userInfo": "사용자 정보",
+  "bankInfo": "은행 정보",
+  "deliveryInfo": "배송 정보",
+  "deliveryTime": "배송 시간",
+  "deliveryStatus": "배송 상태",
+  "recipientName": "수령인 이름",
+  "contactNumber": "연락처 번호",
+  "trackingNumber": "추적 번호",
+  "expectedDeliveryDate": "예상 배송일",
+  "delivered": "배송됨",
+  "inTransit": "배송 중",
+  "deliveryFailed": "배송 실패"
 }

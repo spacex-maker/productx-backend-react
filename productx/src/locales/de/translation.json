@@ -853,5 +853,18 @@
   "systemUser": "Systembenutzer",
   "usageCount": "Nutzungsanzahl",
   "copySuccessful": "Kopieren erfolgreich",
-  "invalidPhoneNumber": "Ungültige Telefonnummer"
+  "invalidPhoneNumber": "Ungültige Telefonnummer",
+
+  "userInfo": "Benutzerinformationen",
+  "bankInfo": "Bankinformationen",
+  "deliveryInfo": "Lieferinformationen",
+  "deliveryTime": "Lieferzeit",
+  "deliveryStatus": "Lieferstatus",
+  "recipientName": "Empfängername",
+  "contactNumber": "Kontaktnummer",
+  "trackingNumber": "Sendungsnummer",
+  "expectedDeliveryDate": "Voraussichtliches Lieferdatum",
+  "delivered": "Zugestellt",
+  "inTransit": "Unterwegs",
+  "deliveryFailed": "Lieferung fehlgeschlagen"
 }

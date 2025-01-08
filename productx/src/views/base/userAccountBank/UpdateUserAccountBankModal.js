@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select, Checkbox, Typography, Divider } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, Select, Checkbox, Typography, Divider, Avatar, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
   UserOutlined,
@@ -9,6 +9,7 @@ import {
   SafetyCertificateOutlined,
   DollarOutlined
 } from '@ant-design/icons';
+import api from 'src/axiosInstance';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -22,28 +23,27 @@ const UpdateUserAccountBankModal = ({
   selectedAccount
 }) => {
   const { t } = useTranslation();
+  const [userInfo, setUserInfo] = useState(null);
 
-  const styles = {
-    label: {
-      fontSize: '10px',
-      height: '16px',
-      lineHeight: '16px',
-      marginBottom: '2px'
-    },
-    input: {
-      height: '24px',
-      fontSize: '10px',
-      padding: '0 8px'
-    },
-    formItem: {
-      marginBottom: '8px'
-    },
-    icon: {
-      fontSize: '12px',
-      color: '#1890ff',
-      marginRight: '4px'
+  // 获取用户信息
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (selectedAccount?.userId) {
+        try {
+          const response = await api.get(`/manage/user/summary?id=${selectedAccount.userId}`);
+          if (response) {
+            setUserInfo(response);
+          }
+        } catch (error) {
+          console.error('获取用户信息失败:', error);
+        }
+      }
+    };
+
+    if (isVisible) {
+      fetchUserInfo();
     }
-  };
+  }, [isVisible, selectedAccount]);
 
   useEffect(() => {
     if (isVisible && selectedAccount) {
@@ -64,7 +64,7 @@ const UpdateUserAccountBankModal = ({
     <Modal
       title={
         <span style={{ fontSize: '12px' }}>
-          <BankOutlined style={styles.icon} />
+          <BankOutlined style={{ marginRight: '8px' }} />
           {t('editAccount')}
         </span>
       }
@@ -79,34 +79,54 @@ const UpdateUserAccountBankModal = ({
           <Input />
         </Form.Item>
 
+        <Form.Item name="userId" hidden>
+          <Input />
+        </Form.Item>
+
         <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
-          <UserOutlined style={styles.icon} />
-          {t('basicInfo')}
+          <UserOutlined style={{ marginRight: '8px' }} />
+          {t('userInfo')}
         </Title>
         <Divider style={{ margin: '8px 0' }} />
 
-        <Form.Item
-          label={t('userId')}
-          name="userId"
-          rules={[{ required: true, message: t('pleaseEnterUserId') }]}
-          style={styles.formItem}
-        >
-          <Input
-            prefix={<UserOutlined />}
-            style={styles.input}
-            placeholder={t('enterUserId')}
-          />
-        </Form.Item>
+        {userInfo && (
+          <div style={{ marginBottom: '16px', padding: '12px', background: '#f5f5f5', borderRadius: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+              <Avatar src={userInfo.avatar} icon={<UserOutlined />} size={40} />
+              <div style={{ marginLeft: '12px', flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                  <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{userInfo.username}</span>
+                  {userInfo.isBelongSystem && (
+                    <Tag color="blue" style={{ marginRight: '8px' }}>
+                      {t('systemUser')}
+                    </Tag>
+                  )}
+                  <Tag color={userInfo.isActive ? 'success' : 'error'}>
+                    {userInfo.isActive ? t('active') : t('inactive')}
+                  </Tag>
+                </div>
+                <div style={{ fontSize: '12px', color: '#666' }}>
+                  {userInfo.nickname && `${userInfo.nickname} - `}
+                  {[userInfo.city, userInfo.state, userInfo.country].filter(Boolean).join(', ')}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px', marginTop: '16px' }}>
+          <BankOutlined style={{ marginRight: '8px' }} />
+          {t('bankInfo')}
+        </Title>
+        <Divider style={{ margin: '8px 0' }} />
 
         <Form.Item
           label={t('bankName')}
           name="bankName"
           rules={[{ required: true, message: t('pleaseEnterBankName') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<BankOutlined />}
-            style={styles.input}
             placeholder={t('enterBankName')}
           />
         </Form.Item>
@@ -115,11 +135,9 @@ const UpdateUserAccountBankModal = ({
           label={t('accountNumber')}
           name="accountNumber"
           rules={[{ required: true, message: t('pleaseEnterAccountNumber') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<NumberOutlined />}
-            style={styles.input}
             placeholder={t('enterAccountNumber')}
           />
         </Form.Item>
@@ -128,11 +146,9 @@ const UpdateUserAccountBankModal = ({
           label={t('accountHolderName')}
           name="accountHolderName"
           rules={[{ required: true, message: t('pleaseEnterAccountHolderName') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<UserOutlined />}
-            style={styles.input}
             placeholder={t('enterAccountHolderName')}
           />
         </Form.Item>
@@ -141,11 +157,9 @@ const UpdateUserAccountBankModal = ({
           label={t('swiftCode')}
           name="swiftCode"
           rules={[{ required: true, message: t('pleaseEnterSwiftCode') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<SafetyCertificateOutlined />}
-            style={styles.input}
             placeholder={t('enterSwiftCode')}
           />
         </Form.Item>
@@ -154,11 +168,9 @@ const UpdateUserAccountBankModal = ({
           label={t('currencyCode')}
           name="currencyCode"
           rules={[{ required: true, message: t('pleaseEnterCurrencyCode') }]}
-          style={styles.formItem}
         >
           <Input
             prefix={<DollarOutlined />}
-            style={styles.input}
             placeholder={t('enterCurrencyCode')}
           />
         </Form.Item>
@@ -166,7 +178,6 @@ const UpdateUserAccountBankModal = ({
         <Form.Item
           name="isActive"
           valuePropName="checked"
-          style={styles.formItem}
         >
           <Checkbox>{t('isActive')}</Checkbox>
         </Form.Item>

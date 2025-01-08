@@ -890,5 +890,19 @@
   "systemUser": "系统用户",
   "usageCount": "使用次数",
   "copySuccessful": "复制成功",
-  "invalidPhoneNumber": "无效的电话号码"
+  "invalidPhoneNumber": "无效的电话号码",
+
+  "userInfo": "用户信息",
+  "bankInfo": "银行信息",
+  "deliveryInfo": "配送信息",
+  "deliveryTime": "配送时间",
+  "deliveryStatus": "配送状态",
+  "recipientName": "收件人姓名",
+  "contactNumber": "联系电话",
+  "trackingNumber": "追踪号码",
+  "expectedDeliveryDate": "预计送达日期",
+  "delivered": "已送达",
+  "inTransit": "运输中",
+  "deliveryFailed": "配送失败"
+
 }

@@ -879,5 +879,18 @@
   "systemUser": "Utente di sistema",
   "usageCount": "Conteggio utilizzo",
   "copySuccessful": "Copia riuscita",
-  "invalidPhoneNumber": "Numero di telefono non valido"
+  "invalidPhoneNumber": "Numero di telefono non valido",
+
+  "userInfo": "Informazioni utente",
+  "bankInfo": "Informazioni bancarie",
+  "deliveryInfo": "Informazioni sulla consegna",
+  "deliveryTime": "Orario di consegna",
+  "deliveryStatus": "Stato della consegna",
+  "recipientName": "Nome del destinatario",
+  "contactNumber": "Numero di contatto",
+  "trackingNumber": "Numero di tracciamento",
+  "expectedDeliveryDate": "Data di consegna prevista",
+  "delivered": "Consegnato",
+  "inTransit": "In transito",
+  "deliveryFailed": "Consegna fallita"
 }

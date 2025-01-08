@@ -886,5 +886,18 @@
   "systemUser": "Системный пользователь",
   "usageCount": "Количество использований",
   "copySuccessful": "Копирование успешно",
-  "invalidPhoneNumber": "Неверный номер телефона"
+  "invalidPhoneNumber": "Неверный номер телефона",
+
+  "userInfo": "Информация о пользователе",
+  "bankInfo": "Банковская информация",
+  "deliveryInfo": "Информация о доставке",
+  "deliveryTime": "Время доставки",
+  "deliveryStatus": "Статус доставки",
+  "recipientName": "Имя получателя",
+  "contactNumber": "Контактный номер",
+  "trackingNumber": "Номер отслеживания",
+  "expectedDeliveryDate": "Ожидаемая дата доставки",
+  "delivered": "Доставлено",
+  "inTransit": "В пути",
+  "deliveryFailed": "Доставка не удалась"
 }

@@ -65,10 +65,35 @@ const UserAddressTable = ({
             </td>
             <td className="text-truncate">{item.id}</td>
             <td className="text-truncate">{item.userId}</td>
-            <td className="text-truncate">{item.username}</td>
-            <td className="text-truncate">{item.contactName}</td>
-            <td className="text-truncate">{item.phoneNum}</td>
-            <td className="address-cell">
+            <td className="text-truncate">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {item.avatar && (
+                  <img 
+                    src={item.avatar} 
+                    alt="用户头像"
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      marginRight: '8px'
+                    }}
+                  />
+                )}
+                {item.username}
+                {item.isBelongSystem && (
+                  <Tag color="blue" style={{ marginLeft: '8px' }}>
+                    {t('systemUser')}
+                  </Tag>
+                )}
+              </div>
+            </td>
+            <td className="text-truncate" style={{ backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>
+              {item.contactName}
+            </td>
+            <td className="text-truncate" style={{ backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>
+              {item.phoneNum}
+            </td>
+            <td className="address-cell" style={{ backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>
               <div className="address-content" title={item.contactAddress}>
                 {item.contactAddress}
               </div>

@@ -877,5 +877,18 @@
   "systemUser": "System User",
   "usageCount": "Usage Count",
   "copySuccessful": "Copy Successful",
-  "invalidPhoneNumber": "Invalid phone number"
+  "invalidPhoneNumber": "Invalid phone number",
+
+  "userInfo": "User Information",
+  "bankInfo": "Bank Information",
+  "deliveryInfo": "Delivery Information",
+  "deliveryTime": "Delivery Time",
+  "deliveryStatus": "Delivery Status",
+  "recipientName": "Recipient Name",
+  "contactNumber": "Contact Number",
+  "trackingNumber": "Tracking Number",
+  "expectedDeliveryDate": "Expected Delivery Date",
+  "delivered": "Delivered",
+  "inTransit": "In Transit",
+  "deliveryFailed": "Delivery Failed"
 }
