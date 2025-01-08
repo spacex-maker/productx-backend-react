@@ -873,6 +873,19 @@
   "currencyDescriptionTip": "Description de la devise en anglais",
   "currencyDescriptionPlaceholder": "Veuillez entrer la description de la devise en anglais",
   "currencyDescriptionZhTip": "Description de la devise en chinois",
-  "currencyDescriptionZhPlaceholder": "Veuillez entrer la description de la devise en chinois"
+  "currencyDescriptionZhPlaceholder": "Veuillez entrer la description de la devise en chinois",
+
+  "basicInformation": "Informations de base",
+  "addressInformation": "Informations d'adresse",
+  "selectUser": "Sélectionner un utilisateur",
+  "pleaseSelectUser": "Veuillez sélectionner un utilisateur",
+  "searchUserPlaceholder": "Entrez l'ID utilisateur ou le nom pour rechercher",
+  "pleaseEnterPhoneNumber": "Veuillez entrer un numéro de téléphone",
+  "enterDetailedAddress": "Veuillez entrer une adresse détaillée",
+  "setAsDefaultAddress": "Définir comme adresse par défaut",
+  "systemUser": "Utilisateur du système",
+  "usageCount": "Nombre d'utilisations",
+  "copySuccessful": "Copie réussie",
+  "invalidPhoneNumber": "Numéro de téléphone invalide"
 
 }

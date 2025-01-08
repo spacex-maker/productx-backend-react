@@ -36,7 +36,7 @@ const ListUserAccountBank = () => {
 
   useEffect(() => {
     fetchData();
-  }, [current, pageSize, searchParams]);
+  }, [searchParams]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -53,7 +53,11 @@ const ListUserAccountBank = () => {
       }
 
       const response = await api.get('/manage/user-account-bank/list-user-bank', {
-        params: { currentPage: current, pageSize, ...filteredParams },
+        params: { 
+          currentPage: current, 
+          pageSize, 
+          ...filteredParams 
+        },
       });
 
       if (response) {
@@ -69,6 +73,7 @@ const ListUserAccountBank = () => {
 
   const handleSearchChange = (event) => {
     const { name, value } = event.target;
+    setCurrent(1);
     setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
   };
 
@@ -168,7 +173,11 @@ const ListUserAccountBank = () => {
                 size="small"
                 className="search-box"
                 name="isActive"
-                onChange={(value) => handleSearchChange({target: {name: 'isActive', value}})}
+                value={searchParams.isActive}
+                onChange={(value) => {
+                  setCurrent(1);
+                  setSearchParams(prev => ({ ...prev, isActive: value }));
+                }}
                 allowClear
                 placeholder={t('isActive')}
               >

@@ -877,5 +877,18 @@
   "currencyDescriptionZhPlaceholder": "请输入货币的中文描述",
 
   "versionFormatError": "版本号格式必须为 x.y.z（如：1.0.0）",
-  "versionFormatTip": "版本号格式：主版本号.次版本号.修订号"
+  "versionFormatTip": "版本号格式：主版本号.次版本号.修订号",
+
+  "basicInformation": "基本信息",
+  "addressInformation": "地址信息",
+  "selectUser": "选择用户",
+  "pleaseSelectUser": "请选择用户",
+  "searchUserPlaceholder": "输入用户ID或用户名搜索",
+  "pleaseEnterPhoneNumber": "请输入联系电话",
+  "enterDetailedAddress": "请输入详细地址",
+  "setAsDefaultAddress": "设为默认地址",
+  "systemUser": "系统用户",
+  "usageCount": "使用次数",
+  "copySuccessful": "复制成功",
+  "invalidPhoneNumber": "无效的电话号码"
 }

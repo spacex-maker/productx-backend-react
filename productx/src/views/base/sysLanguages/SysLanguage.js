@@ -57,9 +57,15 @@ const SysLanguage = () => {
   }
 
   const handleSearchChange = (event) => {
-    const { name, value } = event.target
-    setSearchParams((prevParams) => ({ ...prevParams, [name]: value }))
-  }
+    const { name, value } = event.target;
+    setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
+    setCurrent(1);
+  };
+
+  const handleSelectChange = (value, field) => {
+    setSearchParams(prev => ({ ...prev, [field]: value }));
+    setCurrent(1);
+  };
 
   const handleCreateLanguage = async (values) => {
     try {
@@ -177,7 +183,10 @@ const SysLanguage = () => {
               <Input
                 size="small"
                 value={searchParams.languageCode}
-                onChange={(e) => setSearchParams(prev => ({ ...prev, languageCode: e.target.value }))}
+                onChange={(e) => {
+                  setSearchParams(prev => ({ ...prev, languageCode: e.target.value }));
+                  setCurrent(1);
+                }}
                 placeholder={t('languageCode')}
                 allowClear
               />
@@ -186,7 +195,10 @@ const SysLanguage = () => {
               <Input
                 size="small"
                 value={searchParams.languageNameZh}
-                onChange={(e) => setSearchParams(prev => ({ ...prev, languageNameZh: e.target.value }))}
+                onChange={(e) => {
+                  setSearchParams(prev => ({ ...prev, languageNameZh: e.target.value }));
+                  setCurrent(1);
+                }}
                 placeholder={t('chineseName')}
                 allowClear
               />
@@ -213,7 +225,10 @@ const SysLanguage = () => {
               <Select
                 size="small"
                 value={searchParams.status}
-                onChange={(value) => setSearchParams(prev => ({ ...prev, status: value }))}
+                onChange={(value) => {
+                  setSearchParams(prev => ({ ...prev, status: value }));
+                  setCurrent(1);
+                }}
                 placeholder={t('selectStatus')}
                 style={{ width: 120, minWidth: 120 }}
                 dropdownMatchSelectWidth={false}

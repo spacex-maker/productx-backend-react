@@ -864,5 +864,18 @@
   "currencyDescriptionTip": "Description of the currency in English",
   "currencyDescriptionPlaceholder": "Please enter the currency description in English",
   "currencyDescriptionZhTip": "Description of the currency in Chinese",
-  "currencyDescriptionZhPlaceholder": "Please enter the currency description in Chinese"
+  "currencyDescriptionZhPlaceholder": "Please enter the currency description in Chinese",
+
+  "basicInformation": "Basic Information",
+  "addressInformation": "Address Information",
+  "selectUser": "Select User",
+  "pleaseSelectUser": "Please select a user",
+  "searchUserPlaceholder": "Enter User ID or username to search",
+  "pleaseEnterPhoneNumber": "Please enter a phone number",
+  "enterDetailedAddress": "Please enter detailed address",
+  "setAsDefaultAddress": "Set as Default Address",
+  "systemUser": "System User",
+  "usageCount": "Usage Count",
+  "copySuccessful": "Copy Successful",
+  "invalidPhoneNumber": "Invalid phone number"
 }

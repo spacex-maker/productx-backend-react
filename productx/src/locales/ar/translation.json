@@ -855,6 +855,20 @@
   "currencyDescriptionTip": "وصف العملة باللغة الإنجليزية",
   "currencyDescriptionPlaceholder": "يرجى إدخال وصف العملة باللغة الإنجليزية",
   "currencyDescriptionZhTip": "وصف العملة باللغة الصينية",
-  "currencyDescriptionZhPlaceholder": "يرجى إدخال وصف العملة باللغة الصينية"
+  "currencyDescriptionZhPlaceholder": "يرجى إدخال وصف العملة باللغة الصينية",
+
+
+  "basicInformation": "المعلومات الأساسية",
+  "addressInformation": "معلومات العنوان",
+  "selectUser": "اختر المستخدم",
+  "pleaseSelectUser": "يرجى اختيار المستخدم",
+  "searchUserPlaceholder": "أدخل معرف المستخدم أو اسم المستخدم للبحث",
+  "pleaseEnterPhoneNumber": "يرجى إدخال رقم الهاتف",
+  "enterDetailedAddress": "يرجى إدخال العنوان التفصيلي",
+  "setAsDefaultAddress": "تعيين كعنوان افتراضي",
+  "systemUser": "مستخدم النظام",
+  "usageCount": "عدد الاستخدامات",
+  "copySuccessful": "تم النسخ بنجاح",
+  "invalidPhoneNumber": "رقم الهاتف غير صالح"
 
 }

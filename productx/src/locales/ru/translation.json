@@ -873,5 +873,18 @@
   "currencyDescriptionTip": "Описание валюты на английском",
   "currencyDescriptionPlaceholder": "Введите описание валюты на английском",
   "currencyDescriptionZhTip": "Описание валюты на китайском",
-  "currencyDescriptionZhPlaceholder": "Введите описание валюты на китайском"
+  "currencyDescriptionZhPlaceholder": "Введите описание валюты на китайском",
+
+  "basicInformation": "Основная информация",
+  "addressInformation": "Информация об адресе",
+  "selectUser": "Выбрать пользователя",
+  "pleaseSelectUser": "Пожалуйста, выберите пользователя",
+  "searchUserPlaceholder": "Введите ID пользователя или имя для поиска",
+  "pleaseEnterPhoneNumber": "Пожалуйста, введите номер телефона",
+  "enterDetailedAddress": "Пожалуйста, введите подробный адрес",
+  "setAsDefaultAddress": "Установить как адрес по умолчанию",
+  "systemUser": "Системный пользователь",
+  "usageCount": "Количество использований",
+  "copySuccessful": "Копирование успешно",
+  "invalidPhoneNumber": "Неверный номер телефона"
 }

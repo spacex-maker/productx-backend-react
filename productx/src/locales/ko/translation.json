@@ -873,5 +873,18 @@
   "currencyDescriptionTip": "통화에 대한 영어 설명",
   "currencyDescriptionPlaceholder": "통화의 영어 설명을 입력하세요",
   "currencyDescriptionZhTip": "통화에 대한 중국어 설명",
-  "currencyDescriptionZhPlaceholder": "통화의 중국어 설명을 입력하세요"
+  "currencyDescriptionZhPlaceholder": "통화의 중국어 설명을 입력하세요",
+
+  "basicInformation": "기본 정보",
+  "addressInformation": "주소 정보",
+  "selectUser": "사용자 선택",
+  "pleaseSelectUser": "사용자를 선택하세요",
+  "searchUserPlaceholder": "사용자 ID 또는 이름을 입력하여 검색",
+  "pleaseEnterPhoneNumber": "전화번호를 입력하세요",
+  "enterDetailedAddress": "상세 주소를 입력하세요",
+  "setAsDefaultAddress": "기본 주소로 설정",
+  "systemUser": "시스템 사용자",
+  "usageCount": "사용 횟수",
+  "copySuccessful": "복사 성공",
+  "invalidPhoneNumber": "유효하지 않은 전화번호"
 }

@@ -873,5 +873,18 @@
   "currencyDescriptionTip": "Descripción de la moneda en inglés",
   "currencyDescriptionPlaceholder": "Por favor, introduzca la descripción de la moneda en inglés",
   "currencyDescriptionZhTip": "Descripción de la moneda en chino",
-  "currencyDescriptionZhPlaceholder": "Por favor, introduzca la descripción de la moneda en chino"
+  "currencyDescriptionZhPlaceholder": "Por favor, introduzca la descripción de la moneda en chino",
+
+  "basicInformation": "Información básica",
+  "addressInformation": "Información de la dirección",
+  "selectUser": "Seleccionar usuario",
+  "pleaseSelectUser": "Por favor, seleccione un usuario",
+  "searchUserPlaceholder": "Ingrese ID de usuario o nombre para buscar",
+  "pleaseEnterPhoneNumber": "Por favor, ingrese un número de teléfono",
+  "enterDetailedAddress": "Por favor, ingrese una dirección detallada",
+  "setAsDefaultAddress": "Establecer como dirección predeterminada",
+  "systemUser": "Usuario del sistema",
+  "usageCount": "Recuento de uso",
+  "copySuccessful": "Copia exitosa",
+  "invalidPhoneNumber": "Número de teléfono no válido"
 }

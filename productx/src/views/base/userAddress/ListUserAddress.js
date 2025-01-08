@@ -24,6 +24,10 @@ const updateAddress = async (updateData) => {
   await api.put(`/manage/user-address/update`, updateData);
 };
 
+const deleteAddress = async (id) => {
+  await api.delete('/manage/user-address/remove', { data: { id } });
+};
+
 const ListUserAddress = () => {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
@@ -120,6 +124,15 @@ const ListUserAddress = () => {
   const handleDetailClick = (address) => {
     setSelectedAddress(address);
     setIsDetailModalVisible(true);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteAddress(id);
+      await fetchData();
+    } catch (error) {
+      console.error('删除地址失败', error);
+    }
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -242,6 +255,7 @@ const ListUserAddress = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             handleDetailClick={handleDetailClick}
+            handleDelete={handleDelete}
           />
         </Spin>
       </div>

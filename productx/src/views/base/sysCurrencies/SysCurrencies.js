@@ -88,6 +88,7 @@ const CurrencyList = () => {
   const handleSearchChange = (event) => {
     const {name, value} = event.target
     setSearchParams((prevParams) => ({...prevParams, [name]: value}))
+    setCurrent(1) // 重置页码到第一页
   }
 
   const handleCreateCurrency = async (values) => {

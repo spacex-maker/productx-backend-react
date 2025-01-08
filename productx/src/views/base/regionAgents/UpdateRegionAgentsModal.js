@@ -211,6 +211,7 @@ const UpdateRegionAgentsModal = ({
     form.setFieldsValue({
       agentName: option.label
     });
+    setCurrentPage(1); // 重置页码
   };
 
   // 防抖处理代理人搜索
@@ -266,6 +267,7 @@ const UpdateRegionAgentsModal = ({
       regionName: undefined
     });
     setCities([]);
+    setCurrentPage(1); // 重置页码
   };
 
   // 处理城市选择
@@ -280,6 +282,7 @@ const UpdateRegionAgentsModal = ({
         regionName: selectedCity.name
       });
     }
+    setCurrentPage(1); // 重置页码
   };
 
   // 组件加载时获取国家列表
