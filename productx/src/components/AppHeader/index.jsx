@@ -16,7 +16,7 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilContrast, cilEnvelopeOpen, cilLanguage, cilMenu, cilMoon, cilSun } from '@coreui/icons';
-import { Badge } from 'antd';
+import { Badge, Button } from 'antd';
 import api from 'src/axiosInstance';
 
 import { AppHeaderDropdown, AppBreadcrumb } from './component';
@@ -33,7 +33,6 @@ const AppHeader = () => {
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user?.currentUser);
-
   // 获取未读消息数
   const fetchUnreadCount = async () => {
     try {
@@ -63,6 +62,10 @@ const AppHeader = () => {
 
   const toggleSidebar = () => {
     dispatch({ type: 'TOGGLE_SIDEBAR' });
+  };
+
+  const onChangeTheme = (theme) => {
+    setColorMode(theme);
   };
 
   const handleModalSuccess = () => {
@@ -97,9 +100,9 @@ const AppHeader = () => {
         <CHeaderNav>
           <CNavItem>
             <Badge count={unreadCount || 0} offset={[-5, 5]}>
-              <CNavLink href="#" onClick={() => setMessageModalVisible(true)}>
+              <Button color="primary" onClick={() => setMessageModalVisible(true)} variant="link">
                 <CIcon icon={cilEnvelopeOpen} size="lg" />
-              </CNavLink>
+              </Button>
             </Badge>
           </CNavItem>
           <CNavItem>
@@ -133,7 +136,7 @@ const AppHeader = () => {
                 className="d-flex align-items-center"
                 as="button"
                 type="button"
-                onClick={() => setColorMode('light')}
+                onClick={onChangeTheme.bind(null, 'light')}
               >
                 <CIcon className="me-2" icon={cilSun} size="lg" />
                 明亮
@@ -143,7 +146,7 @@ const AppHeader = () => {
                 className="d-flex align-items-center"
                 as="button"
                 type="button"
-                onClick={() => setColorMode('dark')}
+                onClick={onChangeTheme.bind(null, 'dark')}
               >
                 <CIcon className="me-2" icon={cilMoon} size="lg" />
                 暗黑
@@ -153,7 +156,7 @@ const AppHeader = () => {
                 className="d-flex align-items-center"
                 as="button"
                 type="button"
-                onClick={() => setColorMode('auto')}
+                onClick={onChangeTheme.bind(null, 'auto')}
               >
                 <CIcon className="me-2" icon={cilContrast} size="lg" />
                 自动
@@ -166,10 +169,7 @@ const AppHeader = () => {
             </CDropdownToggle>
             <CDropdownMenu>
               {supportedLanguages.map((lang) => (
-                <CDropdownItem 
-                  key={lang.id}
-                  onClick={() => changeLanguage(lang.languageCode)}
-                >
+                <CDropdownItem key={lang.id} onClick={() => changeLanguage(lang.languageCode)}>
                   {lang.languageNameNative}
                 </CDropdownItem>
               ))}

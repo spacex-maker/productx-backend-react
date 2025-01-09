@@ -11,8 +11,8 @@ const initialState = {
     isDeleted: false,
     thirdUserAccountId: null,
     createBy: null,
-    avatar: null
-  }
+    avatar: null,
+  },
 };
 
 const userSlice = createSlice({
@@ -29,4 +29,4 @@ const userSlice = createSlice({
 });
 
 export const { setCurrentUser, clearCurrentUser } = userSlice.actions;
-export default userSlice.reducer; 
+export default userSlice.reducer;
