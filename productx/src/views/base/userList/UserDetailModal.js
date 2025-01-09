@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Typography, Space, Row, Col, Card, Watermark, Table, Tag } from 'antd';
+import { Modal, Button, Typography, Space, Row, Col, Card, Watermark, Table, Tag, Descriptions } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from 'src/components/common/Common';
 import api from 'src/axiosInstance';
@@ -33,41 +33,8 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
   const [addressList, setAddressList] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const currentUser = useSelector((state) => {
-    console.log('完整的 Redux 状态：', state);
-    return state.user?.currentUser || {};
-  });
+  const currentUser = useSelector((state) => state.user?.currentUser || {});
   const watermarkContent = `ID: ${currentUser?.id || ''} ${currentUser?.username || ''}`;
-
-  const styles = {
-    text: {
-      fontSize: '10px',
-      color: 'rgba(0, 0, 0, 0.85)'
-    },
-    card: {
-      marginBottom: '8px',
-      borderRadius: '4px',
-    },
-    cardBody: {
-      padding: '8px',
-    },
-    cardHead: {
-      minHeight: '24px',
-      padding: '0 8px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
-    row: {
-      marginBottom: '4px'
-    },
-    addressButton: {
-      fontSize: '10px',
-      padding: '0px 4px',
-      height: '20px',
-      lineHeight: '20px'
-    }
-  };
 
   const getInviteLink = (inviteCode) => {
     return `${window.location.origin}/register?inviteCode=${inviteCode}`;
@@ -76,7 +43,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
   const IconText = ({ icon, text }) => (
     <Space size={4}>
       {icon}
-      <Text style={styles.text}>{text}</Text>
+      <Typography.Text type="secondary">{text}</Typography.Text>
     </Space>
   );
 
@@ -94,16 +61,12 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
     });
   };
 
-  // 获取用户地址列表
   const fetchUserAddresses = async () => {
     if (!selectedUser?.id) return;
-    
     setLoading(true);
     try {
       const response = await api.get(`/manage/user-address/list/${selectedUser.id}`);
-
-        setAddressList(response);
-    
+      setAddressList(response);
     } catch (error) {
       console.error('Failed to fetch addresses:', error);
     } finally {
@@ -111,13 +74,11 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
     }
   };
 
-  // 打开地址列表弹窗
   const handleShowAddresses = async () => {
     await fetchUserAddresses();
     setAddressModalVisible(true);
   };
 
-  // 地址列表表格列配置
   const columns = [
     {
       title: t('contactName'),
@@ -129,7 +90,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
       title: t('phoneNum'),
       dataIndex: 'phoneNum',
       key: 'phoneNum',
-      width: 100,
+      width: 120,
     },
     {
       title: t('contactAddress'),
@@ -138,13 +99,8 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
       ellipsis: true,
       render: (text) => (
         <Space>
-          <span style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {text}
-          </span>
-          <CopyOutlined
-            style={{ fontSize: '10px', cursor: 'pointer' }}
-            onClick={() => handleCopy(text)}
-          />
+          <Typography.Text ellipsis>{text}</Typography.Text>
+          <CopyOutlined onClick={() => handleCopy(text)} />
         </Space>
       ),
     },
@@ -154,7 +110,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
       key: 'currentUse',
       width: 80,
       render: (currentUse) => (
-        <Tag color={currentUse ? 'blue' : 'default'} style={{ fontSize: '10px', padding: '0 4px' }}>
+        <Tag color={currentUse ? 'blue' : 'default'}>
           {currentUse ? t('yes') : t('no')}
         </Tag>
       ),
@@ -164,14 +120,19 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
       dataIndex: 'createTime',
       key: 'createTime',
       width: 120,
-      render: (text) => <span style={{ fontSize: '10px' }}>{text}</span>
+      render: (text) => formatDate(text)
     },
   ];
 
   return (
     <>
       <Modal
-        title={<Text style={{ fontSize: '12px', fontWeight: 'bold' }}>{t('userDetail')}</Text>}
+        title={
+          <Space>
+            <UserOutlined />
+            {t('userDetail')}
+          </Space>
+        }
         open={isVisible}
         onCancel={onCancel}
         footer={[
@@ -179,175 +140,127 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
             {t('close')}
           </Button>
         ]}
-        width={600}
-        bodyStyle={{ padding: '12px' }}
+        width={700}
+        maskClosable={false}
       >
         {selectedUser && (
           <Watermark content={watermarkContent}>
-            <div style={{ minHeight: '100%' }}>
-              {/* 用户基本信息卡片（包含邀请信息） */}
-              <Card
-                size="small"
-                style={styles.card}
-                bodyStyle={styles.cardBody}
-                headStyle={styles.cardHead}
-                title={
-                  <Text style={styles.text}>
-                    <UserOutlined /> {t('basicInfo')}
-                  </Text>
-                }
-              >
-                <Row gutter={[8, 4]}>
+            <Space direction="vertical" size={8} style={{ width: '100%' }}>
+              {/* 用户基本信息卡片 */}
+              <Card size="small" title={
+                <Space>
+                  <UserOutlined />
+                  {t('basicInfo')}
+                </Space>
+              }>
+                <Row gutter={[16, 8]}>
                   <Col span={4}>
                     <img
                       src={selectedUser.avatar}
-                      alt={`${selectedUser.nickname}`}
-                      style={{ width: '50px', height: '50px', borderRadius: '4px' }}
+                      alt={selectedUser.nickname}
+                      style={{ width: '100%', borderRadius: 4 }}
                     />
                   </Col>
                   <Col span={12}>
-                    <Space direction="vertical" size={4} style={{ width: '100%' }}>
-                      <Space size={4}>
-                        <Text strong style={styles.text}>{selectedUser.username}</Text>
-                        <Text type={selectedUser.status ? 'success' : 'danger'} style={styles.text}>
-                          {selectedUser.status ? t('statusActive') : t('statusInactive')}
-                        </Text>
+                    <Space direction="vertical" size={4}>
+                      <Space>
+                        <Typography.Text strong>{selectedUser.username}</Typography.Text>
+                        <Tag color={selectedUser.status ? 'success' : 'error'}>
+                          {selectedUser.status ? t('active') : t('inactive')}
+                        </Tag>
                       </Space>
-                      <IconText
-                        icon={<UserOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('nickname')}: ${selectedUser.nickname}`}
-                      />
-                      <IconText
-                        icon={<IdcardOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('fullName')}: ${selectedUser.fullName}`}
-                      />
-                      <IconText
-                        icon={<PhoneOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('phoneNumber')}: ${selectedUser.phoneNumber}`}
-                      />
-                      <IconText
-                        icon={<QrcodeOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('inviteCode')}: ${selectedUser.inviteCode}`}
-                      />
+                      <IconText icon={<UserOutlined />} text={`${t('nickname')}: ${selectedUser.nickname}`} />
+                      <IconText icon={<IdcardOutlined />} text={`${t('fullName')}: ${selectedUser.fullName}`} />
+                      <IconText icon={<PhoneOutlined />} text={`${t('phoneNumber')}: ${selectedUser.phoneNumber}`} />
+                      <IconText icon={<QrcodeOutlined />} text={`${t('inviteCode')}: ${selectedUser.inviteCode}`} />
                     </Space>
                   </Col>
-                  <Col span={8} style={{ textAlign: 'center' }}>
+                  <Col span={8}>
                     {selectedUser.inviteCode && (
-                      <div>
+                      <Space direction="vertical" align="center" style={{ width: '100%' }}>
                         <QRCodeSVG
                           value={getInviteLink(selectedUser.inviteCode)}
-                          size={70}
+                          size={80}
                           level="H"
                           includeMargin={true}
                         />
-                        <Text style={{ ...styles.text, display: 'block', marginTop: '2px' }}>
+                        <Typography.Text type="secondary">
                           {t('scanQRCodeToRegister')}
-                        </Text>
-                      </div>
+                        </Typography.Text>
+                      </Space>
                     )}
                   </Col>
                 </Row>
               </Card>
 
-              <Row gutter={8}>
+              <Row gutter={16}>
                 {/* 地址信息卡片 */}
-                <Col span={8}>
+                <Col span={12}>
                   <Card
                     size="small"
                     title={
-                      <div style={styles.cardHead}>
-                        <Text style={styles.text}>
-                          <EnvironmentOutlined /> {t('addressInfo')}
-                        </Text>
-                        <Button 
-                          type="link" 
-                          size="small" 
-                          icon={<HomeOutlined />}
-                          onClick={handleShowAddresses}
-                          style={styles.addressButton}
-                        >
-                          {t('shippingAddressInfo')}
-                        </Button>
-                      </div>
+                      <Space>
+                        <EnvironmentOutlined />
+                        {t('addressInfo')}
+                      </Space>
                     }
-                    style={styles.card}
-                    bodyStyle={styles.cardBody}
-                    headStyle={styles.cardHead}
+                    extra={
+                      <Button type="link" size="small" onClick={handleShowAddresses}>
+                        {t('shippingAddressInfo')}
+                      </Button>
+                    }
                   >
-                    <Space direction="vertical" size={2} style={{ width: '100%' }}>
-                      <IconText
-                        icon={<GlobalOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('country')}: ${selectedUser.country}`}
-                      />
-                      <IconText
-                        icon={<EnvironmentOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('state')}: ${selectedUser.state}`}
-                      />
-                      <IconText
-                        icon={<HomeOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('city')}: ${selectedUser.city}`}
-                      />
-                      <IconText
-                        icon={<EnvironmentOutlined style={{ fontSize: '10px' }} />}
-                        text={
-                          <Space>
-                            {`${t('defaultAddress')}: ${maskAddress(selectedUser.address)}`}
-                            <CopyOutlined
-                              style={{ fontSize: '10px', cursor: 'pointer' }}
-                              onClick={() => handleCopy(selectedUser.address)}
-                            />
-                          </Space>
-                        }
-                      />
-                      <IconText
-                        icon={<NumberOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('postalCode')}: ${selectedUser.postalCode}`}
-                      />
+                    <Space direction="vertical" size={4}>
+                      <IconText icon={<GlobalOutlined />} text={`${t('country')}: ${selectedUser.country}`} />
+                      <IconText icon={<EnvironmentOutlined />} text={`${t('state')}: ${selectedUser.state}`} />
+                      <IconText icon={<HomeOutlined />} text={`${t('city')}: ${selectedUser.city}`} />
+                      <Space>
+                        <IconText icon={<EnvironmentOutlined />} text={`${t('defaultAddress')}: ${maskAddress(selectedUser.address)}`} />
+                        <CopyOutlined onClick={() => handleCopy(selectedUser.address)} />
+                      </Space>
+                      <IconText icon={<NumberOutlined />} text={`${t('postalCode')}: ${selectedUser.postalCode}`} />
                     </Space>
                   </Card>
                 </Col>
 
                 {/* 财务信息卡片 */}
-                <Col span={16}>
+                <Col span={12}>
                   <Card
                     size="small"
-                    title={<Text style={styles.text}><WalletOutlined /> {t('financialInfo')}</Text>}
-                    style={styles.card}
-                    bodyStyle={styles.cardBody}
-                    headStyle={styles.cardHead}
+                    title={
+                      <Space>
+                        <WalletOutlined />
+                        {t('financialInfo')}
+                      </Space>
+                    }
                   >
-                    <Space direction="vertical" size={2} style={{ width: '100%' }}>
-                      <Row gutter={[8, 4]}>
-                        <Col span={12}>
-                          <IconText
-                            icon={<BankOutlined style={{ fontSize: '10px' }} />}
-                            text={`${t('balance')}: ${selectedUser.balance}`}
-                          />
-                        </Col>
-                        <Col span={12}>
-                          <IconText
-                            icon={<DollarOutlined style={{ fontSize: '10px' }} />}
-                            text={`${t('usdtAmount')}: ${selectedUser.usdtAmount}`}
-                          />
-                        </Col>
-                      </Row>
-                      <IconText
-                        icon={<CreditCardOutlined style={{ fontSize: '10px' }} />}
-                        text={
-                          <Space>
-                            {`${t('usdtAddress')}: ${maskAddress(selectedUser.usdtAddress)}`}
-                            <CopyOutlined
-                              style={{ fontSize: '10px', cursor: 'pointer' }}
-                              onClick={() => handleCopy(selectedUser.usdtAddress)}
-                            />
-                          </Space>
-                        }
-                      />
-                      <IconText
-                        icon={<LockOutlined style={{ fontSize: '10px' }} />}
-                        text={`${t('usdtFrozenAmount')}: ${selectedUser.usdtFrozenAmount}`}
-                      />
-                    </Space>
+                    <Descriptions size="small" column={1}>
+                      <Descriptions.Item label={t('balance')}>
+                        <Space>
+                          <BankOutlined />
+                          {selectedUser.balance}
+                        </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item label={t('usdtAmount')}>
+                        <Space>
+                          <DollarOutlined />
+                          {selectedUser.usdtAmount}
+                        </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item label={t('usdtAddress')}>
+                        <Space>
+                          <CreditCardOutlined />
+                          <Typography.Text ellipsis>{maskAddress(selectedUser.usdtAddress)}</Typography.Text>
+                          <CopyOutlined onClick={() => handleCopy(selectedUser.usdtAddress)} />
+                        </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item label={t('usdtFrozenAmount')}>
+                        <Space>
+                          <LockOutlined />
+                          {selectedUser.usdtFrozenAmount}
+                        </Space>
+                      </Descriptions.Item>
+                    </Descriptions>
                   </Card>
                 </Col>
               </Row>
@@ -355,27 +268,23 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
               {/* 其他信息卡片 */}
               <Card
                 size="small"
-                title={<Text style={styles.text}><UserOutlined /> {t('otherInfo')}</Text>}
-                style={{ ...styles.card, marginBottom: 0 }}
-                bodyStyle={styles.cardBody}
-                headStyle={styles.cardHead}
+                title={
+                  <Space>
+                    <UserOutlined />
+                    {t('otherInfo')}
+                  </Space>
+                }
               >
-                <Row gutter={[8, 4]}>
+                <Row gutter={16}>
                   <Col span={12}>
-                    <IconText
-                      icon={<SafetyCertificateOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('creditScore')}: ${selectedUser.creditScore}`}
-                    />
+                    <IconText icon={<SafetyCertificateOutlined />} text={`${t('creditScore')}: ${selectedUser.creditScore}`} />
                   </Col>
                   <Col span={12}>
-                    <IconText
-                      icon={<ClockCircleOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('registrationTime')}: ${formatDate(selectedUser.createTime)}`}
-                    />
+                    <IconText icon={<ClockCircleOutlined />} text={`${t('registrationTime')}: ${formatDate(selectedUser.createTime)}`} />
                   </Col>
                 </Row>
               </Card>
-            </div>
+            </Space>
           </Watermark>
         )}
       </Modal>
@@ -383,10 +292,10 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
       {/* 地址列表弹窗 */}
       <Modal
         title={
-          <span style={{ fontSize: '12px' }}>
-            <HomeOutlined style={{ marginRight: '4px' }} />
+          <Space>
+            <HomeOutlined />
             {t('userAddressList')}
-          </span>
+          </Space>
         }
         open={addressModalVisible}
         onCancel={() => setAddressModalVisible(false)}
@@ -395,8 +304,8 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
             {t('close')}
           </Button>
         ]}
-        width={700}
-        bodyStyle={{ padding: '8px' }}
+        width={800}
+        maskClosable={false}
       >
         <Table
           columns={columns}
@@ -406,18 +315,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
           loading={loading}
           pagination={false}
           scroll={{ y: 400 }}
-          style={{ fontSize: '10px' }}
         />
-        <style jsx global>{`
-          .ant-table-thead > tr > th {
-            padding: 4px 8px;
-            font-size: 10px;
-          }
-          .ant-table-tbody > tr > td {
-            padding: 4px 8px;
-            font-size: 10px;
-          }
-        `}</style>
       </Modal>
     </>
   );
