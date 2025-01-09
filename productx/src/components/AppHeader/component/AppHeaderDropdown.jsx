@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCurrentUser, setCurrentUser } from 'src/redux/userSlice';
+import { clearCurrentUser, setCurrentUser } from 'src/store/user';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import {

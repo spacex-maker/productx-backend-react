@@ -1,11 +1,12 @@
-import React, {Suspense, useEffect, useState} from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { CSpinner, useColorModes } from '@coreui/react'
-import { setCurrentUser } from './redux/userSlice'
-import './scss/style.scss'
-import TawkToChat from "src/TawkToChat";
+import React, { Suspense, useEffect } from 'react';
+import { HashRouter, Route, Routes } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { CSpinner, useColorModes } from '@coreui/react';
+import { setCurrentUser } from './store/user';
+import './scss/style.scss';
 import styled, { createGlobalStyle } from 'styled-components';
+import { ConfigProvider } from 'antd';
+import { CustomTheme } from './config/theme';
 
 // 添加全局样式
 const GlobalStyle = createGlobalStyle`
@@ -41,68 +42,71 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 // Containers
-const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
+const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'));
 
 // Pages
-const Login = React.lazy(() => import('./views/pages/login/LoginPage'))
-const Register = React.lazy(() => import('./views/pages/register/Register'))
-const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
-const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
+const Login = React.lazy(() => import('./views/pages/login/LoginPage'));
+const Register = React.lazy(() => import('./views/pages/register/Register'));
+const Page404 = React.lazy(() => import('./views/pages/page404/Page404'));
+const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 
+const defaultTheme = 'light';
+const themeLocalStorageKey = 'coreui-free-react-admin-template-theme';
 const App = () => {
-  const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
-  const storedTheme = useSelector((state) => state.theme?.currentTheme || 'light')
-  const dispatch = useDispatch()
+  const { colorMode, isColorModeSet, setColorMode } = useColorModes(themeLocalStorageKey);
+  const dispatch = useDispatch();
+  const theme = isColorModeSet() ? CustomTheme[colorMode] : CustomTheme[defaultTheme];
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.href.split('?')[1])
-    const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0]
-    if (theme) {
-      setColorMode(theme)
-    }
+    const handleColorSchemeChange = () => {
+      const colorMode = localStorage.getItem('coreui-free-react-admin-template-theme');
+      setColorMode(colorMode ?? defaultTheme);
+    };
 
-    if (isColorModeSet()) {
-      return
-    }
+    document.documentElement.addEventListener('ColorSchemeChange', handleColorSchemeChange);
 
-    setColorMode(storedTheme)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    return () => {
+      document.documentElement.removeEventListener('ColorSchemeChange', handleColorSchemeChange);
+    };
+  }, []);
 
   useEffect(() => {
     // 从 localStorage 恢复用户信息
-    const storedUser = localStorage.getItem('currentUser')
+    const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       try {
-        const userInfo = JSON.parse(storedUser)
-        dispatch(setCurrentUser(userInfo))
+        const userInfo = JSON.parse(storedUser);
+        dispatch(setCurrentUser(userInfo));
       } catch (error) {
-        console.error('Failed to parse stored user info:', error)
-        localStorage.removeItem('currentUser') // 如果解析失败，清除存储的数据
+        console.error('Failed to parse stored user info:', error);
+        localStorage.removeItem('currentUser'); // 如果解析失败，清除存储的数据
       }
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
-    <HashRouter>
-      <GlobalStyle />
-      <Suspense
-        fallback={
-          <div className="pt-3 text-center">
-            <CSpinner color="primary" variant="grow" />
-          </div>
-        }
-      >
-        <Routes>
-          <Route exact path="/login" name="登录" element={<Login />} />
-          <Route exact path="/register" name="注册" element={<Register />} />
-          <Route exact path="/404" name="Page 404" element={<Page404 />} />
-          <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route path="*" name="Home" element={<DefaultLayout />} />
-        </Routes>
-      </Suspense>
-      {/*<TawkToChat />*/}
-    </HashRouter>
-  )
-}
+    <ConfigProvider theme={theme}>
+      <HashRouter>
+        <GlobalStyle />
+        <Suspense
+          fallback={
+            <div className="pt-3 text-center">
+              <CSpinner color="primary" variant="grow" />
+            </div>
+          }
+        >
+          <Routes>
+            <Route exact path="/login" name="登录" element={<Login />} />
+            <Route exact path="/register" name="注册" element={<Register />} />
+            <Route exact path="/404" name="Page 404" element={<Page404 />} />
+            <Route exact path="/500" name="Page 500" element={<Page500 />} />
+            <Route path="*" name="Home" element={<DefaultLayout />} />
+          </Routes>
+        </Suspense>
+        {/*<TawkToChat />*/}
+      </HashRouter>
+    </ConfigProvider>
+  );
+};
 
-export default App
+export default App;
