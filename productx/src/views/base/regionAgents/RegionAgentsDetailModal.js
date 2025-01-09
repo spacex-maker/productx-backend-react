@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Descriptions, Card, Tag, Row, Col, Spin, Tooltip } from 'antd';
+import { Modal, Descriptions, Card, Tag, Row, Col, Spin, Tooltip, Space, Typography } from 'antd';
 import { 
   UserOutlined, 
   EnvironmentOutlined, 
@@ -13,42 +13,9 @@ import {
   LockOutlined,
   CalendarOutlined
 } from '@ant-design/icons';
-import styled from 'styled-components';
 import dayjs from 'dayjs';
 import api from 'src/axiosInstance';
 import { message } from 'antd';
-
-const StyledCard = styled(Card)`
-  .ant-card-head {
-    min-height: 36px;
-    padding: 0 12px;
-    
-    .ant-card-head-title {
-      padding: 8px 0;
-      font-size: 13px;
-    }
-  }
-  
-  .ant-card-body {
-    padding: 12px;
-  }
-
-  & + & {
-    margin-top: 8px;
-  }
-`;
-
-const StyledDescriptions = styled(Descriptions)`
-  .ant-descriptions-item-label {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.65);
-  }
-  
-  .ant-descriptions-item-content {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.85);
-  }
-`;
 
 const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
   const [agentTypes, setAgentTypes] = useState([]);
@@ -70,14 +37,12 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
     }
   };
 
-  // 在弹窗显示时获取代理类型数据
   useEffect(() => {
     if (isVisible) {
       fetchAgentTypes();
     }
   }, [isVisible]);
 
-  // 获取代理类型名称
   const getAgentTypeName = (code) => {
     const agentType = agentTypes.find(type => type.code === code);
     return agentType ? (
@@ -118,106 +83,152 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
       footer={null}
     >
       <Spin spinning={loading}>
-        <Row gutter={[0, 8]}>
-          <Col span={24}>
-            <StyledCard title="基本信息">
-              <Descriptions column={3}>
-                <Descriptions.Item label={<><UserOutlined /> 代理人ID</>}>
+        <Space direction="vertical" size={8} style={{ width: '100%' }}>
+          <Card size="small" title={
+            <Space>
+              <UserOutlined />
+              基本信息
+            </Space>
+          }>
+            <Descriptions size="small" column={3}>
+              <Descriptions.Item label="代理人ID">
+                <Space>
+                  <UserOutlined />
                   {data.agentId || '-'}
-                </Descriptions.Item>
-                <Descriptions.Item label={<><UserOutlined /> 代理人名称</>}>
+                </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label="代理人名称">
+                <Space>
+                  <UserOutlined />
                   {data.agentName || '-'}
-                </Descriptions.Item>
-                <Descriptions.Item label={<><AppstoreOutlined /> 代理类型</>}>
+                </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label="代理类型">
+                <Space>
+                  <AppstoreOutlined />
                   {getAgentTypeName(data.agentType)}
-                </Descriptions.Item>
-                <Descriptions.Item label={<><LockOutlined /> 是否独家代理</>}>
+                </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label="是否独家代理">
+                <Space>
+                  <LockOutlined />
                   <Tag color={data.isExclusive ? 'green' : 'default'}>
                     {data.isExclusive ? '是' : '否'}
                   </Tag>
-                </Descriptions.Item>
-                <Descriptions.Item 
-                  label={<><CalendarOutlined /> 合作时间</>} 
-                  span={3}
-                >
-                  {`${dayjs(data.startDate).format('YYYY-MM-DD HH:mm:ss')} ~ ${dayjs(data.endDate).format('YYYY-MM-DD HH:mm:ss')}`}
-                </Descriptions.Item>
-              </Descriptions>
-            </StyledCard>
-          </Col>
+                </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label="合作时间" span={2}>
+                <Space>
+                  <CalendarOutlined />
+                  {`${dayjs(data.startDate).format('YYYY-MM-DD')} ~ ${dayjs(data.endDate).format('YYYY-MM-DD')}`}
+                </Space>
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
 
-          <Col span={24}>
-            <StyledCard title={<><EnvironmentOutlined /> 区域信息</>}>
-              <StyledDescriptions column={3} size="small">
-                <Descriptions.Item label="区域ID">{data.regionId}</Descriptions.Item>
-                <Descriptions.Item label="区域编码">{data.regionCode}</Descriptions.Item>
-                <Descriptions.Item label="区域名称">{data.regionName}</Descriptions.Item>
-                <Descriptions.Item label="父区域ID">{data.parentRegionId || '-'}</Descriptions.Item>
-                <Descriptions.Item label="代理层级">{data.agentLevel}</Descriptions.Item>
-                <Descriptions.Item label="是否独家">{data.isExclusive ? '是' : '否'}</Descriptions.Item>
-              </StyledDescriptions>
-            </StyledCard>
-          </Col>
+          <Card size="small" title={
+            <Space>
+              <EnvironmentOutlined />
+              区域信息
+            </Space>
+          }>
+            <Descriptions size="small" column={3}>
+              <Descriptions.Item label="区域ID">{data.regionId}</Descriptions.Item>
+              <Descriptions.Item label="区域编码">{data.regionCode}</Descriptions.Item>
+              <Descriptions.Item label="区域名称">{data.regionName}</Descriptions.Item>
+              <Descriptions.Item label="父区域ID">{data.parentRegionId || '-'}</Descriptions.Item>
+              <Descriptions.Item label="代理层级">{data.agentLevel}</Descriptions.Item>
+              <Descriptions.Item label="是否独家">
+                <Tag color={data.isExclusive ? 'green' : 'default'}>
+                  {data.isExclusive ? '是' : '否'}
+                </Tag>
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
 
-          <Col span={24}>
-            <StyledCard title="合同信息">
-              <Descriptions column={3}>
-                <Descriptions.Item label={<><ContainerOutlined /> 合同编号</>}>
+          <Card size="small" title={
+            <Space>
+              <ContainerOutlined />
+              合同信息
+            </Space>
+          }>
+            <Descriptions size="small" column={3}>
+              <Descriptions.Item label="合同编号">
+                <Space>
+                  <ContainerOutlined />
                   {data.contractNo || '-'}
-                </Descriptions.Item>
-                <Descriptions.Item label={<><DollarOutlined /> 合同金额</>}>
-                  {data.contractAmount ? `¥${data.contractAmount}` : '-'}
-                </Descriptions.Item>
-                <Descriptions.Item label={<><ClockCircleOutlined /> 合同期限</>}>
+                </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label="合同金额">
+                <Space>
+                  <DollarOutlined />
+                  {data.contractAmount ? formatMoney(data.contractAmount) : '-'}
+                </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label="合同期限">
+                <Space>
+                  <ClockCircleOutlined />
                   {data.contractStartDate && data.contractEndDate 
                     ? `${data.contractStartDate} ~ ${data.contractEndDate}`
                     : '-'}
-                </Descriptions.Item>
-                <Descriptions.Item label={<><FileTextOutlined /> 合同备注</>} span={3}>
+                </Space>
+              </Descriptions.Item>
+              <Descriptions.Item label="合同备注" span={3}>
+                <Space>
+                  <FileTextOutlined />
                   {data.contractRemarks || '-'}
-                </Descriptions.Item>
-              </Descriptions>
-            </StyledCard>
-          </Col>
+                </Space>
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
 
-          <Col span={24}>
-            <StyledCard title={<><DollarOutlined /> 业务信息</>}>
-              <StyledDescriptions column={2} size="small">
-                <Descriptions.Item label="销售任务额度">{formatMoney(data.salesQuota, data.currency)}</Descriptions.Item>
-                <Descriptions.Item label="佣金比例">{data.commissionRate}%</Descriptions.Item>
-                <Descriptions.Item label="累计销售额">{formatMoney(data.totalSales, data.currency)}</Descriptions.Item>
-                <Descriptions.Item label="累计佣金">{formatMoney(data.totalCommission, data.currency)}</Descriptions.Item>
-                <Descriptions.Item label="运营预算">{formatMoney(data.operatingBudget, data.currency)}</Descriptions.Item>
-                <Descriptions.Item label="代理产品">
-                  {assignedProducts.categories?.map(category => (
-                    <Tag key={category}>{category}</Tag>
-                  ))}
-                </Descriptions.Item>
-              </StyledDescriptions>
-            </StyledCard>
-          </Col>
+          <Card size="small" title={
+            <Space>
+              <DollarOutlined />
+              业务信息
+            </Space>
+          }>
+            <Descriptions size="small" column={2}>
+              <Descriptions.Item label="销售任务额度">{formatMoney(data.salesQuota, data.currency)}</Descriptions.Item>
+              <Descriptions.Item label="佣金比例">{data.commissionRate}%</Descriptions.Item>
+              <Descriptions.Item label="累计销售额">{formatMoney(data.totalSales, data.currency)}</Descriptions.Item>
+              <Descriptions.Item label="累计佣金">{formatMoney(data.totalCommission, data.currency)}</Descriptions.Item>
+              <Descriptions.Item label="运营预算">{formatMoney(data.operatingBudget, data.currency)}</Descriptions.Item>
+              <Descriptions.Item label="代理产品">
+                {assignedProducts.categories?.map(category => (
+                  <Tag key={category}>{category}</Tag>
+                ))}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
 
-          <Col span={24}>
-            <StyledCard title={<><TeamOutlined /> 团队表现</>}>
-              <StyledDescriptions column={3} size="small">
-                <Descriptions.Item label="团队规模">{data.teamSize}人</Descriptions.Item>
-                <Descriptions.Item label="绩效评分">{data.performanceRating}</Descriptions.Item>
-                <Descriptions.Item label="工作时间">{data.workingHours}</Descriptions.Item>
-                <Descriptions.Item label="奖励积分">{data.rewardPoints}</Descriptions.Item>
-                <Descriptions.Item label="处罚积分">{data.penaltyPoints}</Descriptions.Item>
-                <Descriptions.Item label="审核状态">{getAuditStatusTag(data.auditStatus)}</Descriptions.Item>
-              </StyledDescriptions>
-            </StyledCard>
-          </Col>
+          <Card size="small" title={
+            <Space>
+              <TeamOutlined />
+              团队表现
+            </Space>
+          }>
+            <Descriptions size="small" column={3}>
+              <Descriptions.Item label="团队规模">{data.teamSize}人</Descriptions.Item>
+              <Descriptions.Item label="绩效评分">{data.performanceRating}</Descriptions.Item>
+              <Descriptions.Item label="工作时间">{data.workingHours}</Descriptions.Item>
+              <Descriptions.Item label="奖励积分">{data.rewardPoints}</Descriptions.Item>
+              <Descriptions.Item label="处罚积分">{data.penaltyPoints}</Descriptions.Item>
+              <Descriptions.Item label="审核状态">{getAuditStatusTag(data.auditStatus)}</Descriptions.Item>
+            </Descriptions>
+          </Card>
 
           {data.remarks && (
-            <Col span={24}>
-              <StyledCard title="备注">
-                <p style={{ margin: 0, fontSize: '12px' }}>{data.remarks}</p>
-              </StyledCard>
-            </Col>
+            <Card size="small" title={
+              <Space>
+                <FileTextOutlined />
+                备注
+              </Space>
+            }>
+              <Typography.Text>{data.remarks}</Typography.Text>
+            </Card>
           )}
-        </Row>
+        </Space>
       </Spin>
     </Modal>
   );
