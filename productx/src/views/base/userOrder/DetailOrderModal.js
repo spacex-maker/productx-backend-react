@@ -59,7 +59,6 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
             gap: '12px',
             padding: '8px',
             marginBottom: '12px',
-            background: '#fafafa',
             borderRadius: '2px'
           }}>
             <Avatar
@@ -77,7 +76,6 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
               <div style={{
                 marginTop: '4px',
                 padding: '0 8px',
-                background: '#f6ffed',
                 color: '#52c41a',
                 fontSize: '11px',
                 borderRadius: '10px',
@@ -178,23 +176,10 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
           <>
             {/* 买家和卖家信息 */}
             <div style={{ marginBottom: '8px' }}>
-              <div style={{
-                display: 'flex',
-                gap: '12px',
-                padding: '8px',
-                background: '#fafafa',
-                borderRadius: '2px'
-              }}>
+              <div style={{ display: 'flex', gap: '12px', padding: '8px' }}>
                 {/* 买家信息 */}
                 <div style={{ flex: 1 }}>
-                  <div style={{
-                    fontSize: '11px',
-                    color: '#666',
-                    marginBottom: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
+                  <div style={{ fontSize: '11px', color: '#666', marginBottom: '4px' }}>
                     <UserOutlined style={{ fontSize: '11px' }}/>
                     {t('buyerInfo')}
                   </div>
@@ -231,19 +216,11 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
                   </div>
                 </div>
 
-                {/* 分隔线 */}
                 <Divider type="vertical" style={{ height: 'auto', margin: '0' }} />
 
                 {/* 卖家信息 */}
                 <div style={{ flex: 1 }}>
-                  <div style={{
-                    fontSize: '11px',
-                    color: '#666',
-                    marginBottom: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
+                  <div style={{ fontSize: '11px', color: '#666', marginBottom: '4px' }}>
                     <ShopOutlined style={{ fontSize: '11px' }}/>
                     {t('sellerInfo')}
                   </div>
@@ -290,8 +267,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
               labelStyle={{
                 width: '90px',
                 padding: '4px 8px',
-                fontSize: '11px',
-                backgroundColor: '#fafafa'
+                fontSize: '11px'
               }}
               contentStyle={{
                 padding: '4px 8px',
@@ -311,7 +287,6 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
             {/* 收货信息 */}
             <div style={{ marginBottom: '8px' }}>
               <div style={{
-                backgroundColor: '#fafafa',
                 padding: '4px 8px',
                 fontWeight: '500',
                 fontSize: '12px',
@@ -329,8 +304,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
                 labelStyle={{
                   width: '90px',
                   padding: '4px 8px',
-                  fontSize: '11px',
-                  backgroundColor: '#fafafa'
+                  fontSize: '11px'
                 }}
                 contentStyle={{
                   padding: '4px 8px',
@@ -348,7 +322,6 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
             {/* 商品信息 */}
             <div style={{ marginBottom: '8px' }}>
               <div style={{
-                backgroundColor: '#fafafa',
                 padding: '4px 8px',
                 fontWeight: '500',
                 fontSize: '12px',
@@ -451,7 +424,6 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
                                 left: 0,
                                 width: '100%',
                                 height: '100%',
-                                background: 'rgba(0,0,0,0.5)',
                                 color: '#fff',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -474,7 +446,6 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
             {/* 订单状态历史 */}
             <div style={{ marginBottom: '8px' }}>
               <div style={{
-                backgroundColor: '#fafafa',
                 padding: '4px 8px',
                 fontWeight: '500',
                 fontSize: '12px',
