@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Typography, Space, Row, Col, Card, Watermark, message } from 'antd';
+import { Modal, Typography, Space, Row, Col, Card, Watermark, message, Descriptions } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from 'src/components/common/Common';
 import {
@@ -23,31 +23,10 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
   const currentUser = useSelector((state) => state.user?.currentUser || {});
   const watermarkContent = `ID: ${currentUser?.id || ''} ${currentUser?.username || ''}`;
 
-  const styles = {
-    text: {
-      fontSize: '10px',
-      color: 'rgba(0, 0, 0, 0.85)'
-    },
-    card: {
-      marginBottom: '8px',
-      borderRadius: '4px',
-    },
-    cardBody: {
-      padding: '8px',
-    },
-    cardHead: {
-      minHeight: '24px',
-      padding: '0 8px',
-    },
-    row: {
-      marginBottom: '4px'
-    }
-  };
-
   const IconText = ({ icon, text }) => (
     <Space size={4}>
       {icon}
-      <Text style={styles.text}>{text}</Text>
+      <Typography.Text>{text}</Typography.Text>
     </Space>
   );
 
@@ -66,135 +45,98 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
   return (
     <Modal
       title={
-        <span style={{ fontSize: '12px' }}>
-          <HomeOutlined style={{ fontSize: '12px', color: '#1890ff', marginRight: '4px' }} />
+        <Space>
+          <HomeOutlined />
           {t('addressDetails')}
-        </span>
+        </Space>
       }
       open={isVisible}
       onCancel={onCancel}
       footer={null}
-      width={500}
+      width={700}
       maskClosable={false}
     >
       {selectedAddress && (
         <Watermark content={watermarkContent}>
-          <div style={{ padding: '8px' }}>
+          <Space direction="vertical" size={8}>
             {/* 基本信息卡片 */}
-            <Card
-              size="small"
-              title={<Text style={styles.text}><UserOutlined /> {t('basicInfo')}</Text>}
-              style={styles.card}
-              bodyStyle={styles.cardBody}
-              headStyle={styles.cardHead}
+            <Card 
+              size="small" 
+              title={
+                <Space>
+                  <UserOutlined />
+                  {t('basicInfo')}
+                </Space>
+              }
             >
-              <Space direction="vertical" size={2} style={{ width: '100%' }}>
-                <Row gutter={[8, 4]}>
-                  <Col span={12}>
-                    <IconText
-                      icon={<UserOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('contactName')}: ${selectedAddress.contactName}`}
-                    />
-                  </Col>
-                  <Col span={12}>
-                    <IconText
-                      icon={<PhoneOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('phoneNum')}: ${selectedAddress.phoneNum}`}
-                    />
-                  </Col>
-                </Row>
-                <IconText
-                  icon={<NumberOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('userId')}: ${selectedAddress.userId}`}
-                />
-              </Space>
+              <Descriptions size="small" column={2}>
+                <Descriptions.Item label={t('contactName')}>
+                  <IconText icon={<UserOutlined />} text={selectedAddress.contactName} />
+                </Descriptions.Item>
+                <Descriptions.Item label={t('phoneNum')}>
+                  <IconText icon={<PhoneOutlined />} text={selectedAddress.phoneNum} />
+                </Descriptions.Item>
+                <Descriptions.Item label={t('userId')} span={2}>
+                  <IconText icon={<NumberOutlined />} text={selectedAddress.userId} />
+                </Descriptions.Item>
+              </Descriptions>
             </Card>
 
             {/* 地址信息卡片 */}
-            <Card
-              size="small"
-              title={<Text style={styles.text}><EnvironmentOutlined /> {t('addressInfo')}</Text>}
-              style={styles.card}
-              bodyStyle={styles.cardBody}
-              headStyle={styles.cardHead}
+            <Card 
+              size="small" 
+              title={
+                <Space>
+                  <EnvironmentOutlined />
+                  {t('addressInfo')}
+                </Space>
+              }
             >
-              <Space direction="vertical" size={2} style={{ width: '100%' }}>
-                <Row gutter={[8, 4]}>
-                  <Col span={12}>
-                    <IconText
-                      icon={<GlobalOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('province')}: ${selectedAddress.province || '-'}`}
+              <Descriptions size="small" column={2}>
+                <Descriptions.Item label={t('province')}>
+                  <IconText icon={<GlobalOutlined />} text={selectedAddress.province || '-'} />
+                </Descriptions.Item>
+                <Descriptions.Item label={t('city')}>
+                  <IconText icon={<AimOutlined />} text={selectedAddress.city || '-'} />
+                </Descriptions.Item>
+                <Descriptions.Item label={t('contactAddress')} span={2}>
+                  <Space>
+                    <IconText 
+                      icon={<HomeOutlined />} 
+                      text={selectedAddress.contactAddress} 
                     />
-                  </Col>
-                  <Col span={12}>
-                    <IconText
-                      icon={<AimOutlined style={{ fontSize: '10px' }} />}
-                      text={`${t('city')}: ${selectedAddress.city || '-'}`}
-                    />
-                  </Col>
-                </Row>
-                <IconText
-                  icon={<HomeOutlined style={{ fontSize: '10px' }} />}
-                  text={
-                    <Space>
-                      <span style={{ 
-                        maxWidth: '300px', 
-                        overflow: 'hidden', 
-                        textOverflow: 'ellipsis', 
-                        whiteSpace: 'nowrap',
-                        display: 'inline-block',
-                        verticalAlign: 'bottom'
-                      }}>
-                        {`${t('contactAddress')}: ${selectedAddress.contactAddress}`}
-                      </span>
-                      <CopyOutlined
-                        style={{ fontSize: '10px', cursor: 'pointer' }}
-                        onClick={() => handleCopy(selectedAddress.contactAddress)}
-                      />
-                    </Space>
-                  }
-                />
-              </Space>
+                    <CopyOutlined onClick={() => handleCopy(selectedAddress.contactAddress)} />
+                  </Space>
+                </Descriptions.Item>
+              </Descriptions>
             </Card>
 
             {/* 其他信息卡片 */}
-            <Card
-              size="small"
-              title={<Text style={styles.text}><ClockCircleOutlined /> {t('otherInfo')}</Text>}
-              style={{ ...styles.card, marginBottom: 0 }}
-              bodyStyle={styles.cardBody}
-              headStyle={styles.cardHead}
+            <Card 
+              size="small" 
+              title={
+                <Space>
+                  <ClockCircleOutlined />
+                  {t('otherInfo')}
+                </Space>
+              }
             >
-              <Row gutter={[8, 4]}>
-                <Col span={12}>
-                  <IconText
-                    icon={<ClockCircleOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('createTime')}: ${formatDate(selectedAddress.createTime)}`}
-                  />
-                </Col>
-                <Col span={12}>
-                  <IconText
-                    icon={<ClockCircleOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('updateTime')}: ${formatDate(selectedAddress.updateTime)}`}
-                  />
-                </Col>
-              </Row>
-              <Row gutter={[8, 4]} style={{ marginTop: '4px' }}>
-                <Col span={12}>
-                  <IconText
-                    icon={<NumberOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('useCount')}: ${selectedAddress.useCount}`}
-                  />
-                </Col>
-                <Col span={12}>
-                  <IconText
-                    icon={<HomeOutlined style={{ fontSize: '10px' }} />}
-                    text={`${t('isDefault')}: ${selectedAddress.currentUse ? t('yes') : t('no')}`}
-                  />
-                </Col>
-              </Row>
+              <Descriptions size="small" column={2}>
+                <Descriptions.Item label={t('createTime')}>
+                  <IconText icon={<ClockCircleOutlined />} text={formatDate(selectedAddress.createTime)} />
+                </Descriptions.Item>
+                <Descriptions.Item label={t('updateTime')}>
+                  <IconText icon={<ClockCircleOutlined />} text={formatDate(selectedAddress.updateTime)} />
+                </Descriptions.Item>
+                <Descriptions.Item label={t('useCount')}>
+                  <IconText icon={<NumberOutlined />} text={selectedAddress.useCount} />
+                </Descriptions.Item>
+                <Descriptions.Item label={t('isDefault')}>
+                  <IconText icon={<HomeOutlined />} text={selectedAddress.currentUse ? t('yes') : t('no')} />
+                </Descriptions.Item>
+              </Descriptions>
             </Card>
-          </div>
+          </Space>
         </Watermark>
       )}
     </Modal>
