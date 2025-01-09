@@ -104,7 +104,7 @@ const UserProductTable = (_, ref) => {
     if (error || !responseData) {
       return;
     }
-    message.success('商品更新成功');
+    message.success(t('更新成功'));
     triggerTableLoadData();
   };
 
@@ -127,18 +127,18 @@ const UserProductTable = (_, ref) => {
 
   const triggerTableDeleteMore = () => {
     if (productIds.length === 0) {
-      message.warning('请选择要删除的用户');
+      message.warning(t('请选择要删除的项'));
       return;
     }
     Modal.confirm({
-      title: '批量删除',
-      content: '确认要删除选中的数据吗？',
+      title: t('批量删除'),
+      content: t('确认要删除选中的数据吗？'),
       onOk: async () => {
         const [error] = await deleteProductByIdsService(productIds);
         if (error) {
-          return message.error('批量删除失败');
+          return message.error(t('批量删除失败'));
         }
-        message.success('删除成功');
+        message.success(t('删除成功'));
         triggerTableLoadData();
       },
     });
@@ -170,7 +170,7 @@ const UserProductTable = (_, ref) => {
     if (error || !responseData) {
       return;
     }
-    message.success('商品创建成功');
+    message.success(t('创建成功'));
     triggerTableLoadData();
   };
 

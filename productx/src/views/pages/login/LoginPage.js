@@ -24,7 +24,7 @@ import styled from 'styled-components';
 import WaveEffect from 'src/components/WaveEffect';
 import { initReactI18next, useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { setCurrentUser } from 'src/redux/userSlice';
+import { setCurrentUser } from 'src/store/user';
 import { Select } from 'antd';
 import HealthCheck from 'src/components/common/HealthCheck';
 const { Option } = Select;
@@ -102,11 +102,12 @@ const LoginCard = styled(CCard)`
     font-size: 16px;
     font-weight: 300;
     letter-spacing: 1px;
-    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
     white-space: nowrap;
-    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5),
-                 0 0 20px rgba(99, 102, 241, 0.3),
-                 0 0 30px rgba(99, 102, 241, 0.2);
+    text-shadow:
+      0 0 10px rgba(99, 102, 241, 0.5),
+      0 0 20px rgba(99, 102, 241, 0.3),
+      0 0 30px rgba(99, 102, 241, 0.2);
     animation: glow 2s ease-in-out infinite alternate;
     margin-bottom: 8px;
   }
@@ -123,14 +124,16 @@ const LoginCard = styled(CCard)`
 
   @keyframes glow {
     from {
-      text-shadow: 0 0 10px rgba(99, 102, 241, 0.5),
-                   0 0 20px rgba(99, 102, 241, 0.3),
-                   0 0 30px rgba(99, 102, 241, 0.2);
+      text-shadow:
+        0 0 10px rgba(99, 102, 241, 0.5),
+        0 0 20px rgba(99, 102, 241, 0.3),
+        0 0 30px rgba(99, 102, 241, 0.2);
     }
     to {
-      text-shadow: 0 0 20px rgba(99, 102, 241, 0.6),
-                   0 0 30px rgba(99, 102, 241, 0.4),
-                   0 0 40px rgba(99, 102, 241, 0.3);
+      text-shadow:
+        0 0 20px rgba(99, 102, 241, 0.6),
+        0 0 30px rgba(99, 102, 241, 0.4),
+        0 0 40px rgba(99, 102, 241, 0.3);
     }
   }
 
@@ -142,10 +145,12 @@ const LoginCard = styled(CCard)`
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: linear-gradient(45deg,
+    background: linear-gradient(
+      45deg,
       rgba(99, 102, 241, 0.1),
       rgba(139, 92, 246, 0.1),
-      rgba(99, 102, 241, 0.1));
+      rgba(99, 102, 241, 0.1)
+    );
     filter: blur(10px);
     z-index: -1;
     animation: gradientMove 6s linear infinite;
@@ -559,7 +564,7 @@ const LoginPage = () => {
   const [notice, setNotice] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [captcha, setCaptcha] = useState("");
+  const [captcha, setCaptcha] = useState('');
   const [selectedEnv, setSelectedEnv] = useState('PROD');
   const [loading, setLoading] = useState(false);
   const [showApiConfig, setShowApiConfig] = useState(false);
@@ -770,12 +775,8 @@ const LoginPage = () => {
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <div className="slogan">
-                          极致的用户体验，直达用户的内心
-                        </div>
-                        <div className="sub-slogan">
-                          ProductX - 让每一次使用都触及灵魂
-                        </div>
+                        <div className="slogan">极致的用户体验，直达用户的内心</div>
+                        <div className="sub-slogan">ProductX - 让每一次使用都触及灵魂</div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -886,14 +887,8 @@ const LoginPage = () => {
                       <motion.div variants={itemVariants} custom={4}>
                         <CaptchaInputGroup>
                           <div className="captcha-wrapper">
-                            <div className="captcha-tooltip">
-                              {t('clickToChange')}
-                            </div>
-                            <img
-                              src={captcha}
-                              alt={t('captcha')}
-                              onClick={refreshCaptcha}
-                            />
+                            <div className="captcha-tooltip">{t('clickToChange')}</div>
+                            <img src={captcha} alt={t('captcha')} onClick={refreshCaptcha} />
                           </div>
                           <StyledInput
                             placeholder="验证码"
@@ -911,7 +906,7 @@ const LoginPage = () => {
                           onMouseEnter={handleMouseEnter}
                           onMouseLeave={handleMouseLeave}
                         >
-                          {loading ? "登录中..." : t('loginButton')}
+                          {loading ? '登录中...' : t('loginButton')}
                         </StyledButton>
                       </motion.div>
 
