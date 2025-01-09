@@ -581,7 +581,7 @@
   "pleaseInputLogoUrl": "请输入Logo地址",
   "pleaseInputWebsiteUrl": "请输入官网网址",
   "pleaseInputDescription": "请输入描述",
-  
+
   "statusUpdateSuccess": "状态更新成功",
   "statusUpdateFailed": "状态更新失败",
   "loadDataFailed": "加载数据失败",
@@ -957,5 +957,20 @@
   "polygon": "多边形",
   "avalanche": "雪崩",
   "cardano": "卡尔达诺",
-  "polkadot": "波卡"
+  "polkadot": "波卡",
+
+  "bug": "Bug",
+  "featureRequest": "功能需求",
+  "discussion": "讨论",
+  "improvement": "改进",
+
+  "memo": "备忘",
+  "low": "低优先级",
+  "medium": "中优先级",
+  "high": "高优先级",
+  "critical": "紧急",
+
+  "reporter": "报告人",
+  "assignee": "处理人",
+  "issueTimeline": "问题时间线"
 }

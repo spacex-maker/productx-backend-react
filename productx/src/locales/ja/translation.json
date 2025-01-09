@@ -944,5 +944,18 @@
   "polygon": "ポリゴン",
   "avalanche": "アバランチ",
   "cardano": "カルダノ",
-  "polkadot": "ポルカドット"
+  "polkadot": "ポルカドット",
+
+  "bug": "バグ",
+  "featureRequest": "機能リクエスト",
+  "discussion": "ディスカッション",
+  "improvement": "改善",
+  "memo": "メモ",
+  "low": "低",
+  "medium": "中",
+  "high": "高",
+  "critical": "重要",
+  "reporter": "報告者",
+  "assignee": "担当者",
+  "issueTimeline": "問題タイムライン"
 }
