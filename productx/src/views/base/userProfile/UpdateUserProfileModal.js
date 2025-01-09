@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select, Typography, Divider, DatePicker } from 'antd';
+import { Modal, Form, Input, Select, Typography, Divider, DatePicker, Row, Col, Descriptions } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { UserOutlined, MailOutlined, PhoneOutlined, ManOutlined, WomanOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
@@ -17,37 +17,9 @@ const UpdateUserProfileModal = ({
 }) => {
   const { t } = useTranslation();
 
-  const styles = {
-    label: {
-      fontSize: '10px',
-      height: '16px',
-      lineHeight: '16px',
-      marginBottom: '2px'
-    },
-    input: {
-      height: '24px',
-      fontSize: '10px',
-      padding: '0 8px'
-    },
-    formItem: {
-      marginBottom: '8px'
-    },
-    icon: {
-      fontSize: '12px',
-      color: '#1890ff',
-      marginRight: '4px'
-    }
-  };
-
   useEffect(() => {
     if (isVisible && selectedProfile) {
       form.setFieldsValue({
-        userId: selectedProfile.userId,
-        name: selectedProfile.name,
-        age: selectedProfile.age,
-        gender: selectedProfile.gender,
-        location: selectedProfile.location,
-        registrationDate: selectedProfile.registrationDate ? dayjs(selectedProfile.registrationDate) : null,
         preferredCategories: selectedProfile.preferredCategories,
         preferredBrands: selectedProfile.preferredBrands
       });
@@ -57,121 +29,64 @@ const UpdateUserProfileModal = ({
   return (
     <Modal
       title={
-        <span style={{ fontSize: '12px' }}>
-          <UserOutlined style={styles.icon} />
-          {t('editProfile')}
+        <span>
+          <UserOutlined /> {t('editProfile')}
         </span>
       }
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      width={500}
+      width={600}
       maskClosable={false}
     >
       <Form form={form} onFinish={handleUpdateProfile} layout="vertical">
-        <Form.Item name="userId" hidden>
-          <Input />
-        </Form.Item>
+        <Title level={5}>{t('basicInfo')}</Title>
+        <Descriptions column={2} size="small">
+          <Descriptions.Item label={t('userId')}>
+            {selectedProfile?.userId}
+          </Descriptions.Item>
+          <Descriptions.Item label={t('name')}>
+            {selectedProfile?.name}
+          </Descriptions.Item>
+          <Descriptions.Item label={t('age')}>
+            {selectedProfile?.age}
+          </Descriptions.Item>
+          <Descriptions.Item label={t('gender')}>
+            {t(selectedProfile?.gender)}
+          </Descriptions.Item>
+          <Descriptions.Item label={t('location')}>
+            {selectedProfile?.location}
+          </Descriptions.Item>
+          <Descriptions.Item label={t('registrationDate')}>
+            {selectedProfile?.registrationDate}
+          </Descriptions.Item>
+        </Descriptions>
 
-        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
-          {t('basicInfo')}
-        </Title>
-        <Divider style={{ margin: '8px 0' }} />
-
-        <Form.Item
-          label={t('name')}
-          name="name"
-          rules={[{ required: true, message: t('pleaseEnterName') }]}
-          style={styles.formItem}
-        >
-          <Input
-            prefix={<UserOutlined />}
-            style={styles.input}
-            placeholder={t('enterName')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('age')}
-          name="age"
-          rules={[{ required: true, message: t('pleaseEnterAge') }]}
-          style={styles.formItem}
-        >
-          <Input
-            type="number"
-            style={styles.input}
-            placeholder={t('enterAge')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('gender')}
-          name="gender"
-          rules={[{ required: true, message: t('pleaseSelectGender') }]}
-          style={styles.formItem}
-        >
-          <Select
-            style={styles.input}
-            placeholder={t('selectGender')}
-          >
-            <Option value="MALE"><ManOutlined /> {t('male')}</Option>
-            <Option value="FEMALE"><WomanOutlined /> {t('female')}</Option>
-            <Option value="OTHER">{t('other')}</Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label={t('location')}
-          name="location"
-          rules={[{ required: true, message: t('pleaseEnterLocation') }]}
-          style={styles.formItem}
-        >
-          <Input
-            style={styles.input}
-            placeholder={t('enterLocation')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('registrationDate')}
-          name="registrationDate"
-          rules={[{ required: true, message: t('pleaseSelectRegistrationDate') }]}
-          style={styles.formItem}
-        >
-          <DatePicker style={styles.input} />
-        </Form.Item>
-
+        <Title level={5} style={{ marginTop: 24 }}>{t('preferences')}</Title>
         <Form.Item
           label={t('preferredCategories')}
           name="preferredCategories"
-          style={styles.formItem}
+          rules={[{ required: true, message: t('pleaseEnterPreferredCategories') }]}
         >
-          <Input
-            style={styles.input}
+          <Select
+            mode="tags"
             placeholder={t('enterPreferredCategories')}
+            style={{ width: '100%' }}
           />
         </Form.Item>
 
         <Form.Item
           label={t('preferredBrands')}
           name="preferredBrands"
-          style={styles.formItem}
+          rules={[{ required: true, message: t('pleaseEnterPreferredBrands') }]}
         >
-          <Input
-            style={styles.input}
+          <Select
+            mode="tags"
             placeholder={t('enterPreferredBrands')}
+            style={{ width: '100%' }}
           />
         </Form.Item>
       </Form>
-
-      <style jsx global>{`
-        .ant-input::placeholder {
-          color: #bfbfbf;
-        }
-        .ant-select-selection-placeholder {
-          color: #bfbfbf;
-        }
-      `}</style>
     </Modal>
   );
 };

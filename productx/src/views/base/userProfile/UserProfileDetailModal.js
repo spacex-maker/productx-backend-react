@@ -1,7 +1,19 @@
 import React from 'react';
-import { Modal, Descriptions, Tag, Space } from 'antd';
+import { Modal, Descriptions, Tag, Space, Typography, Row, Col, Card } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { UserOutlined, EnvironmentOutlined, ShoppingCartOutlined, HeartOutlined, ShareAltOutlined } from '@ant-design/icons';
+import {
+  UserOutlined,
+  EnvironmentOutlined,
+  ShoppingCartOutlined,
+  HeartOutlined,
+  ShareAltOutlined,
+  TeamOutlined,
+  FieldTimeOutlined,
+  TagOutlined,
+  SearchOutlined
+} from '@ant-design/icons';
+
+const { Title } = Typography;
 
 const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
   const { t } = useTranslation();
@@ -18,7 +30,7 @@ const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
     try {
       const items = JSON.parse(str);
       return (
-        <Space size={[0, 4]} wrap>
+        <Space size={[0, 8]} wrap>
           {items.map((item, index) => (
             <Tag color={color} key={index}>
               {item}
@@ -31,93 +43,103 @@ const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
     }
   };
 
+  if (!selectedProfile) return null;
+
   return (
     <Modal
-      title={t('userProfileDetail')}
+      title={
+        <Space>
+          <UserOutlined />
+          {t('userProfileDetail')} - {selectedProfile.name}
+        </Space>
+      }
       open={isVisible}
       onCancel={onCancel}
       footer={null}
-      width={700}
+      width={800}
     >
-      {selectedProfile && (
-        <Descriptions bordered column={3} size="small">
-          <Descriptions.Item label={<><UserOutlined /> {t('userId')}</>}>
-            {selectedProfile.userId}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><UserOutlined /> {t('name')}</>}>
-            {selectedProfile.name}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><UserOutlined /> {t('age')}</>}>
-            {selectedProfile.age}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><UserOutlined /> {t('gender')}</>}>
-            <Tag color={selectedProfile.gender === 'male' ? 'blue' : selectedProfile.gender === 'female' ? 'pink' : 'default'}>
-              {t(selectedProfile.gender)}
-            </Tag>
-          </Descriptions.Item>
-          <Descriptions.Item label={<><EnvironmentOutlined /> {t('location')}</>}>
-            {selectedProfile.location}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><ShoppingCartOutlined /> {t('totalOrders')}</>}>
-            {selectedProfile.totalOrders}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><ShoppingCartOutlined /> {t('avgOrderValue')}</>}>
-            {selectedProfile.avgOrderValue}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><UserOutlined /> {t('followersCount')}</>}>
-            {selectedProfile.followersCount}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><UserOutlined /> {t('followingCount')}</>}>
-            {selectedProfile.followingCount}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><UserOutlined /> {t('registrationDate')}</>} span={1.5}>
-            {selectedProfile.registrationDate}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><UserOutlined /> {t('lastLogin')}</>} span={1.5}>
-            {selectedProfile.lastLogin}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><ShoppingCartOutlined /> {t('preferredPriceRange')}</>} span={1.5}>
-            {selectedProfile.preferredPriceRange}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><ShoppingCartOutlined /> {t('preferredCategories')}</>} span={3}>
-            {formatArrayToTags(selectedProfile.preferredCategories, 'purple')}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><ShoppingCartOutlined /> {t('preferredBrands')}</>} span={3}>
-            {formatArrayToTags(selectedProfile.preferredBrands, 'blue')}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><ShoppingCartOutlined /> {t('recentSearchKeywords')}</>} span={3}>
-            {formatArrayToTags(selectedProfile.recentSearchKeywords, 'green')}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><HeartOutlined /> {t('likedProducts')}</>} span={3}>
-            {formatArrayString(selectedProfile.likedProducts)}
-          </Descriptions.Item>
-          <Descriptions.Item label={<><ShareAltOutlined /> {t('sharedProducts')}</>} span={3}>
-            {formatArrayString(selectedProfile.sharedProducts)}
-          </Descriptions.Item>
-        </Descriptions>
-      )}
-      
-      <style jsx>{`
-        :global(.ant-descriptions) {
-          margin-bottom: 0;
-        }
-        :global(.ant-descriptions-item-label) {
-          width: 120px;
-          font-size: 10px;
-          padding: 6px 10px !important;
-        }
-        :global(.ant-descriptions-item-content) {
-          font-size: 10px;
-          padding: 6px 10px !important;
-        }
-        :global(.ant-tag) {
-          margin: 0 4px 4px 0;
-          font-size: 10px;
-        }
-        :global(.ant-space) {
-          width: 100%;
-        }
-      `}</style>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Card size="small" title={t('basicInfo')}>
+            <Descriptions column={3} size="small">
+              <Descriptions.Item label={<><UserOutlined /> {t('userId')}</>}>
+                {selectedProfile.userId}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><UserOutlined /> {t('name')}</>}>
+                {selectedProfile.name}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><UserOutlined /> {t('age')}</>}>
+                {selectedProfile.age}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><UserOutlined /> {t('gender')}</>}>
+                <Tag color={selectedProfile.gender === 'male' ? 'blue' : selectedProfile.gender === 'female' ? 'pink' : 'default'}>
+                  {t(selectedProfile.gender)}
+                </Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label={<><EnvironmentOutlined /> {t('location')}</>}>
+                {selectedProfile.location}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><FieldTimeOutlined /> {t('registrationDate')}</>}>
+                {selectedProfile.registrationDate}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+
+        <Col span={24}>
+          <Card size="small" title={t('activityInfo')}>
+            <Descriptions column={3} size="small">
+              <Descriptions.Item label={<><ShoppingCartOutlined /> {t('totalOrders')}</>}>
+                {selectedProfile.totalOrders}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><ShoppingCartOutlined /> {t('avgOrderValue')}</>}>
+                {selectedProfile.avgOrderValue}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><FieldTimeOutlined /> {t('lastLogin')}</>}>
+                {selectedProfile.lastLogin}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><TeamOutlined /> {t('followersCount')}</>}>
+                {selectedProfile.followersCount}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><TeamOutlined /> {t('followingCount')}</>}>
+                {selectedProfile.followingCount}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+
+        <Col span={24}>
+          <Card size="small" title={t('preferences')}>
+            <Descriptions column={1} size="small">
+              <Descriptions.Item label={<><TagOutlined /> {t('preferredPriceRange')}</>}>
+                {selectedProfile.preferredPriceRange}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><TagOutlined /> {t('preferredCategories')}</>}>
+                {formatArrayToTags(selectedProfile.preferredCategories, 'purple')}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><TagOutlined /> {t('preferredBrands')}</>}>
+                {formatArrayToTags(selectedProfile.preferredBrands, 'blue')}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><SearchOutlined /> {t('recentSearchKeywords')}</>}>
+                {formatArrayToTags(selectedProfile.recentSearchKeywords, 'green')}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+
+        <Col span={24}>
+          <Card size="small" title={t('interactions')}>
+            <Descriptions column={1} size="small">
+              <Descriptions.Item label={<><HeartOutlined /> {t('likedProducts')}</>}>
+                {formatArrayString(selectedProfile.likedProducts)}
+              </Descriptions.Item>
+              <Descriptions.Item label={<><ShareAltOutlined /> {t('sharedProducts')}</>}>
+                {formatArrayString(selectedProfile.sharedProducts)}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+      </Row>
     </Modal>
   );
 };

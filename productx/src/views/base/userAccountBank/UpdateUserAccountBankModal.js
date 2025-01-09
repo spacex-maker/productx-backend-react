@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, Select, Checkbox, Typography, Divider, Avatar, Tag } from 'antd';
+import { Modal, Form, Input, Select, Checkbox, Typography, Divider, Avatar, Tag, Card, Space, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
   UserOutlined,
@@ -63,124 +63,131 @@ const UpdateUserAccountBankModal = ({
   return (
     <Modal
       title={
-        <span style={{ fontSize: '12px' }}>
-          <BankOutlined style={{ marginRight: '8px' }} />
+        <Space size="small">
+          <BankOutlined />
           {t('editAccount')}
-        </span>
+        </Space>
       }
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      width={500}
+      width={600}
       maskClosable={false}
     >
-      <Form form={form} onFinish={handleUpdateAccount} layout="vertical">
-        <Form.Item name="id" hidden>
-          <Input />
-        </Form.Item>
+      <Form 
+        form={form} 
+        onFinish={handleUpdateAccount} 
+        layout="vertical"
+        size="small"
+        colon={false}
+      >
+        <Form.Item name="id" hidden><Input /></Form.Item>
+        <Form.Item name="userId" hidden><Input /></Form.Item>
 
-        <Form.Item name="userId" hidden>
-          <Input />
-        </Form.Item>
+        <Space direction="vertical" size={0} style={{ width: '100%' }}>
+          <Typography.Title level={5} style={{ marginBottom: 8 }}>
+            <Space size="small">
+              <UserOutlined />
+              {t('userInfo')}
+            </Space>
+          </Typography.Title>
+          <Divider style={{ margin: '8px 0' }} />
 
-        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
-          <UserOutlined style={{ marginRight: '8px' }} />
-          {t('userInfo')}
-        </Title>
-        <Divider style={{ margin: '8px 0' }} />
-
-        {userInfo && (
-          <div style={{ marginBottom: '16px', padding: '12px', background: '#f5f5f5', borderRadius: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-              <Avatar src={userInfo.avatar} icon={<UserOutlined />} size={40} />
-              <div style={{ marginLeft: '12px', flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                  <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{userInfo.username}</span>
-                  {userInfo.isBelongSystem && (
-                    <Tag color="blue" style={{ marginRight: '8px' }}>
-                      {t('systemUser')}
+          {userInfo && (
+            <Card size="small" bodyStyle={{ padding: 8 }}>
+              <Space align="start" size="small">
+                <Avatar size="small" src={userInfo.avatar} icon={<UserOutlined />} />
+                <div>
+                  <Space size={4}>
+                    <Typography.Text strong>{userInfo.username}</Typography.Text>
+                    {userInfo.isBelongSystem && (
+                      <Tag color="blue" style={{ marginInlineEnd: 0 }}>{t('systemUser')}</Tag>
+                    )}
+                    <Tag color={userInfo.isActive ? 'success' : 'error'} style={{ marginInlineEnd: 0 }}>
+                      {userInfo.isActive ? t('active') : t('inactive')}
                     </Tag>
-                  )}
-                  <Tag color={userInfo.isActive ? 'success' : 'error'}>
-                    {userInfo.isActive ? t('active') : t('inactive')}
-                  </Tag>
+                  </Space>
+                  <br />
+                  <Typography.Text type="secondary">
+                    {userInfo.nickname && `${userInfo.nickname} - `}
+                    {[userInfo.city, userInfo.state, userInfo.country].filter(Boolean).join(', ')}
+                  </Typography.Text>
                 </div>
-                <div style={{ fontSize: '12px', color: '#666' }}>
-                  {userInfo.nickname && `${userInfo.nickname} - `}
-                  {[userInfo.city, userInfo.state, userInfo.country].filter(Boolean).join(', ')}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+              </Space>
+            </Card>
+          )}
 
-        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px', marginTop: '16px' }}>
-          <BankOutlined style={{ marginRight: '8px' }} />
-          {t('bankInfo')}
-        </Title>
-        <Divider style={{ margin: '8px 0' }} />
+          <Typography.Title level={5} style={{ marginTop: 16, marginBottom: 8 }}>
+            <Space size="small">
+              <BankOutlined />
+              {t('bankInfo')}
+            </Space>
+          </Typography.Title>
+          <Divider style={{ margin: '8px 0' }} />
 
-        <Form.Item
-          label={t('bankName')}
-          name="bankName"
-          rules={[{ required: true, message: t('pleaseEnterBankName') }]}
-        >
-          <Input
-            prefix={<BankOutlined />}
-            placeholder={t('enterBankName')}
-          />
-        </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label={t('bankName')}
+                name="bankName"
+                rules={[{ required: true, message: t('pleaseEnterBankName') }]}
+              >
+                <Input prefix={<BankOutlined />} placeholder={t('enterBankName')} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={t('accountNumber')}
+                name="accountNumber"
+                rules={[{ required: true, message: t('pleaseEnterAccountNumber') }]}
+              >
+                <Input prefix={<NumberOutlined />} placeholder={t('enterAccountNumber')} />
+              </Form.Item>
+            </Col>
+          </Row>
 
-        <Form.Item
-          label={t('accountNumber')}
-          name="accountNumber"
-          rules={[{ required: true, message: t('pleaseEnterAccountNumber') }]}
-        >
-          <Input
-            prefix={<NumberOutlined />}
-            placeholder={t('enterAccountNumber')}
-          />
-        </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label={t('accountHolderName')}
+                name="accountHolderName"
+                rules={[{ required: true, message: t('pleaseEnterAccountHolderName') }]}
+              >
+                <Input prefix={<UserOutlined />} placeholder={t('enterAccountHolderName')} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label={t('swiftCode')}
+                name="swiftCode"
+                rules={[{ required: true, message: t('pleaseEnterSwiftCode') }]}
+              >
+                <Input prefix={<SafetyCertificateOutlined />} placeholder={t('enterSwiftCode')} />
+              </Form.Item>
+            </Col>
+          </Row>
 
-        <Form.Item
-          label={t('accountHolderName')}
-          name="accountHolderName"
-          rules={[{ required: true, message: t('pleaseEnterAccountHolderName') }]}
-        >
-          <Input
-            prefix={<UserOutlined />}
-            placeholder={t('enterAccountHolderName')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('swiftCode')}
-          name="swiftCode"
-          rules={[{ required: true, message: t('pleaseEnterSwiftCode') }]}
-        >
-          <Input
-            prefix={<SafetyCertificateOutlined />}
-            placeholder={t('enterSwiftCode')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('currencyCode')}
-          name="currencyCode"
-          rules={[{ required: true, message: t('pleaseEnterCurrencyCode') }]}
-        >
-          <Input
-            prefix={<DollarOutlined />}
-            placeholder={t('enterCurrencyCode')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="isActive"
-          valuePropName="checked"
-        >
-          <Checkbox>{t('isActive')}</Checkbox>
-        </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label={t('currencyCode')}
+                name="currencyCode"
+                rules={[{ required: true, message: t('pleaseEnterCurrencyCode') }]}
+              >
+                <Input prefix={<DollarOutlined />} placeholder={t('enterCurrencyCode')} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="isActive"
+                valuePropName="checked"
+                style={{ marginTop: 29 }}
+              >
+                <Checkbox>{t('isActive')}</Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Space>
       </Form>
     </Modal>
   );
