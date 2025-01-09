@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Modal, Row, Col, Tag, Divider } from 'antd';
+import { Modal, Row, Col, Tag, Divider, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { 
   MobileOutlined,
@@ -32,7 +32,14 @@ import {
   UserSwitchOutlined,
   EditOutlined,
   CheckCircleOutlined,
-  AppstoreOutlined
+  AppstoreOutlined,
+  FacebookOutlined,
+  TwitterOutlined,
+  InstagramOutlined,
+  LinkedinOutlined,
+  YoutubeOutlined,
+  WeiboOutlined,
+  WechatOutlined
 } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -65,6 +72,17 @@ const RepairServiceMerchantsDetailModal = ({
     'electricalRepair': <ThunderboltOutlined />,
     'carRepair': <CarOutlined />,
     'other': <QuestionOutlined />
+  }), []);
+
+  // 社交平台图标映射
+  const socialMediaIcons = useMemo(() => ({
+    facebook: <FacebookOutlined />,
+    twitter: <TwitterOutlined />,
+    instagram: <InstagramOutlined />,
+    linkedin: <LinkedinOutlined />,
+    youtube: <YoutubeOutlined />,
+    weibo: <WeiboOutlined />,
+    wechat: <WechatOutlined />
   }), []);
 
   const renderDetailItem = (label, value, icon) => (
@@ -135,6 +153,38 @@ const RepairServiceMerchantsDetailModal = ({
     );
   };
 
+  // 渲染社交平台链接
+  const renderSocialMediaLinks = (links) => {
+    if (!links) return '-';
+    try {
+      const linksObj = typeof links === 'string' ? JSON.parse(links) : links;
+      return (
+        <Space size={4} wrap>
+          {Object.entries(linksObj).map(([platform, url]) => (
+            <Tag
+              key={platform}
+              icon={socialMediaIcons[platform.toLowerCase()]}
+              color="blue"
+              style={{ 
+                margin: 0, 
+                fontSize: '10px', 
+                lineHeight: '16px', 
+                padding: '0 4px',
+                cursor: 'pointer'
+              }}
+              onClick={() => window.open(url, '_blank')}
+            >
+              {t(platform)}
+            </Tag>
+          ))}
+        </Space>
+      );
+    } catch (error) {
+      console.error('Failed to parse social media links:', error);
+      return '-';
+    }
+  };
+
   return (
     <Modal
       title={t('merchantDetail')}
@@ -196,7 +246,11 @@ const RepairServiceMerchantsDetailModal = ({
             <div className="section-title">{t('additionalInfo')}</div>
             {renderDetailItem(t('certifications'), merchantData?.certifications, <SafetyCertificateOutlined />)}
             {renderDetailItem(t('websiteUrl'), merchantData?.websiteUrl, <GlobalOutlined />)}
-            {renderDetailItem(t('socialMediaLinks'), merchantData?.socialMediaLinks, <LinkOutlined />)}
+            {renderDetailItem(
+              t('socialMediaLinks'), 
+              renderSocialMediaLinks(merchantData?.socialMediaLinks), 
+              <LinkOutlined />
+            )}
             {renderDetailItem(t('registrationChannel'), merchantData?.registrationChannel, <IeOutlined />)}
           </div>
         </Col>
