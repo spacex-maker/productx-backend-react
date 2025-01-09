@@ -938,5 +938,18 @@
   "polygon": "Polygon",
   "avalanche": "Avalanche",
   "cardano": "Cardano",
-  "polkadot": "Polkadot"
+  "polkadot": "Polkadot",
+
+  "bug": "Bug",
+  "featureRequest": "Richiesta di Funzione",
+  "discussion": "Discussione",
+  "improvement": "Miglioramento",
+  "memo": "Promemoria",
+  "low": "Basso",
+  "medium": "Medio",
+  "high": "Alto",
+  "critical": "Critico",
+  "reporter": "Segnalatore",
+  "assignee": "Assegnatario",
+  "issueTimeline": "Cronologia del Problema"
 }

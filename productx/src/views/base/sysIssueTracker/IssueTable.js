@@ -37,6 +37,24 @@ const getTypeColor = (type) => {
   return colorMap[type] || 'primary'
 }
 
+const toTranslationKey = (text) => {
+  if (!text) return ''
+  
+  // 特殊处理 Feature Request
+  if (text === 'Feature Request') {
+    return 'featureRequest'
+  }
+  
+  return text
+    .split(' ')
+    .map((word, index) => 
+      index === 0 
+        ? word.toLowerCase() 
+        : word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join('')
+}
+
 const IssueTable = ({ 
   data, 
   loading, 
@@ -66,7 +84,7 @@ const IssueTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['ID', '标题', '类型', '状态', '优先级', '报告人', '处理人'].map((field) => (
+          {['ID', '标题', '状态', '优先级', '报告人', '处理人'].map((field) => (
             <th key={field}>{field}</th>
           ))}
           <th className="fixed-column">操作</th>
@@ -94,38 +112,31 @@ const IssueTable = ({
             <td>
               <Tooltip title={item.title}>
                 <div style={{ 
-                  maxWidth: '200px',
+                  maxWidth: '400px',
+                  minWidth: '200px',
+                  width: '100%',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  textAlign: 'center',
-                  margin: '0 auto'
+                  textAlign: 'left',
+                  margin: '0'
                 }}>
-                  <div style={{ fontWeight: 500 }}>{item.title}</div>
-                  <small style={{ color: '#666' }}>#{item.id}</small>
+                  <CBadge color={getTypeColor(item.type)} style={{ marginRight: '8px' }}>
+                    {t(toTranslationKey(item.type))}
+                  </CBadge>
+                  <span style={{ fontWeight: 500 }}>{item.title}</span>
+                  <small style={{ color: '#666', marginLeft: '4px' }}>#{item.id}</small>
                 </div>
               </Tooltip>
             </td>
             <td>
-              <CBadge color={getTypeColor(item.type)}>
-                {item.type}
-              </CBadge>
-            </td>
-            <td>
               <CBadge color={getStatusColor(item.status)}>
-                {item.status === 'Open' ? '待处理' :
-                 item.status === 'In Progress' ? '处理中' :
-                 item.status === 'Resolved' ? '已解决' :
-                 item.status === 'Closed' ? '已关闭' :
-                 item.status === 'Reopened' ? '重新打开' : item.status}
+                {t(item.status.charAt(0).toLowerCase() + item.status.slice(1).replace(/\s+(.)/g, m => m.toUpperCase()))}
               </CBadge>
             </td>
             <td>
               <CBadge color={getPriorityColor(item.priority)}>
-                {item.priority === 'Low' ? '低优先级' :
-                 item.priority === 'Medium' ? '中优先级' :
-                 item.priority === 'High' ? '高优先级' :
-                 item.priority === 'Critical' ? '紧急' : item.priority}
+                {t(item.priority.toLowerCase())}
               </CBadge>
             </td>
             <td>

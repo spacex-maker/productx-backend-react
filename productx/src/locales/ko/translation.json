@@ -945,5 +945,18 @@
   "polygon": "폴리곤",
   "avalanche": "아발란체",
   "cardano": "카르다노",
-  "polkadot": "폴카닷"
+  "polkadot": "폴카닷",
+
+  "bug": "버그",
+  "featureRequest": "기능 요청",
+  "discussion": "토론",
+  "improvement": "개선",
+  "memo": "메모",
+  "low": "낮음",
+  "medium": "중간",
+  "high": "높음",
+  "critical": "중요",
+  "reporter": "보고자",
+  "assignee": "담당자",
+  "issueTimeline": "문제 타임라인"
 }

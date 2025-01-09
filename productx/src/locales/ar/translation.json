@@ -928,6 +928,19 @@
   "polygon": "بوليجون",
   "avalanche": "أفالانش",
   "cardano": "كاردانو",
-  "polkadot": "بولكادوت"
+  "polkadot": "بولكادوت",
+
+  "bug": "خلل",
+  "featureRequest": "طلب ميزة",
+  "discussion": "مناقشة",
+  "improvement": "تحسين",
+  "memo": "مذكرة",
+  "low": "منخفض",
+  "medium": "متوسط",
+  "high": "مرتفع",
+  "critical": "حرج",
+  "reporter": "المراسل",
+  "assignee": "المسؤول",
+  "issueTimeline": "الجدول الزمني للقضية"
 
 }
