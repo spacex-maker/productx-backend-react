@@ -84,7 +84,7 @@ const IssueTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['ID', '标题', '状态', '优先级', '报告人', '处理人'].map((field) => (
+          {['标题', '状态', '优先级', '报告人', '处理人'].map((field) => (
             <th key={field}>{field}</th>
           ))}
           <th className="fixed-column">操作</th>
@@ -108,7 +108,6 @@ const IssueTable = ({
                 ></label>
               </div>
             </td>
-            <td className="text-truncate">{item.id}</td>
             <td>
               <Tooltip title={item.title}>
                 <div style={{ 
@@ -121,22 +120,22 @@ const IssueTable = ({
                   textAlign: 'left',
                   margin: '0'
                 }}>
+                  <small style={{ color: '#666', marginRight: '8px' }}>#{item.id}</small>
                   <CBadge color={getTypeColor(item.type)} style={{ marginRight: '8px' }}>
                     {t(toTranslationKey(item.type))}
                   </CBadge>
                   <span style={{ fontWeight: 500 }}>{item.title}</span>
-                  <small style={{ color: '#666', marginLeft: '4px' }}>#{item.id}</small>
                 </div>
               </Tooltip>
             </td>
             <td>
               <CBadge color={getStatusColor(item.status)}>
-                {t(item.status.charAt(0).toLowerCase() + item.status.slice(1).replace(/\s+(.)/g, m => m.toUpperCase()))}
+                {t(toTranslationKey(item.status))}
               </CBadge>
             </td>
             <td>
               <CBadge color={getPriorityColor(item.priority)}>
-                {t(item.priority.toLowerCase())}
+                {t(toTranslationKey(item.priority))}
               </CBadge>
             </td>
             <td>
