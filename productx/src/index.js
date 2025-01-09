@@ -4,9 +4,7 @@ import { Provider } from 'react-redux';
 import 'core-js';
 import './i18n'; // 引入 i18n 配置
 import App from './App';
-import store from './redux/store';
-import { ConfigProvider } from 'antd';
-import { theme } from './config/theme';
+import store from './store';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -16,8 +14,6 @@ console.log('Initial Redux State:', store.getState());
 
 root.render(
   <Provider store={store}>
-    <ConfigProvider theme={theme}>
-      <App />
-    </ConfigProvider>
+    <App />
   </Provider>,
 );
