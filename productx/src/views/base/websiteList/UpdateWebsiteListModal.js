@@ -18,12 +18,7 @@ const UpdateWebsiteListModal = ({
 
   // 处理表单提交，转换布尔值为字节
   const handleFinish = (values) => {
-    const formData = {
-      ...values,
-      isFeatured: values.isFeatured ? 1 : 0,
-      isPopular: values.isPopular ? 1 : 0,
-    };
-    onFinish(formData);
+    onFinish(values);
   };
 
   useEffect(() => {
@@ -33,13 +28,13 @@ const UpdateWebsiteListModal = ({
         startDate: selectedWebsite.startDate ? dayjs(selectedWebsite.startDate) : null,
         endDate: selectedWebsite.endDate ? dayjs(selectedWebsite.endDate) : null,
         tags: selectedWebsite.tags ? selectedWebsite.tags.split(',') : [],
-        isFeatured: selectedWebsite.isFeatured === 1,
-        isPopular: selectedWebsite.isPopular === 1,
-        isNewWebsite: selectedWebsite.isNew === 1,
-        isVerified: selectedWebsite.isVerified === 1,
-        supportsMobile: selectedWebsite.hasMobileSupport === 1,
-        supportsDarkMode: selectedWebsite.hasDarkMode === 1,
-        enableHttps: selectedWebsite.hasSsl === 1,
+        isFeatured: Boolean(selectedWebsite.isFeatured),
+        isPopular: Boolean(selectedWebsite.isPopular),
+        isNewWebsite: Boolean(selectedWebsite.isNew),
+        isVerified: Boolean(selectedWebsite.isVerified),
+        supportsMobile: Boolean(selectedWebsite.hasMobileSupport),
+        supportsDarkMode: Boolean(selectedWebsite.hasDarkMode),
+        enableHttps: Boolean(selectedWebsite.hasSsl),
       });
     }
   }, [isVisible, selectedWebsite, form]);
