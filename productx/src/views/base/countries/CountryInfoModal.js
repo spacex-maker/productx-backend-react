@@ -1,26 +1,60 @@
 import React from 'react';
-import { Modal, Descriptions } from 'antd';
+import { Modal, Descriptions, List, Avatar, Tag, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { TeamOutlined } from '@ant-design/icons';
 
 const CountryInfoModal = ({ visible, country, onCancel }) => {
   const { t } = useTranslation();
 
+  const title = (
+    <Space direction="vertical">
+      <div>{country?.name} - {t('countryInfo')}</div>
+      
+      {country?.maintainers && country.maintainers.length > 0 && (
+        <List
+          header={
+            <Space>
+              <TeamOutlined /> {t('dataContributors')}
+            </Space>
+          }
+          dataSource={country.maintainers}
+          renderItem={maintainer => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={
+                  <Avatar 
+                    src={maintainer.avatar}
+                    size="large"
+                  >
+                    {!maintainer.avatar ? maintainer.username.charAt(0).toUpperCase() : null}
+                  </Avatar>
+                }
+                title={maintainer.username}
+                description={
+                  <Tag color="blue">
+                    {t('contributionCount')}: {maintainer.count}
+                  </Tag>
+                }
+              />
+            </List.Item>
+          )}
+        />
+      )}
+    </Space>
+  );
+
   return (
     <Modal
-      title={<div style={{ fontSize: '12px' }}>{country?.name} - {t('countryInfo')}</div>}
+      title={title}
       open={visible}
       onCancel={onCancel}
       width={800}
       footer={null}
-      styles={{ padding: '12px', maxHeight: '80vh', overflow: 'auto' }}
     >
       {country && (
         <Descriptions
-          size="small"
           column={2}
           bordered
-          labelStyle={{ width: '150px', fontSize: '10px' }}
-          contentStyle={{ fontSize: '10px' }}
         >
           <Descriptions.Item label={t('areaManager')}>{country.areaManager || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('name')}>{country.name || '-'}</Descriptions.Item>

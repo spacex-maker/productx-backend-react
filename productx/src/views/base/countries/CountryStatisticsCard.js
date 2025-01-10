@@ -38,13 +38,7 @@ const CountryStatisticsCard = ({ country }) => {
   const { t } = useTranslation();
 
   const cardStyles = {
-    card: {
-      marginBottom: '2px',
-      borderRadius: '2px'
-    },
     icon: {
-      fontSize: '9px !important',
-      marginRight: '2px',
       color: '#1890ff'
     }
   };
@@ -124,187 +118,51 @@ const CountryStatisticsCard = ({ country }) => {
 
   return (
     <div className="country-statistics">
-      <Row gutter={[4, 4]}>
-        {cards.slice(0, 5).map((card, index) => (
-          <Col span={12} key={index}>
+      <Row gutter={[8, 8]}>
+        {cards.map((card, index) => (
+          <Col span={24} key={index}>
             <Card
               size="small"
               title={card.title}
-              style={cardStyles.card}
-              styles={{ padding: '2px !important' }}
-              headStyle={{
-                fontSize: '10px !important',
-                padding: '2px 4px !important',
-                minHeight: '16px !important',
-                background: '#fafafa'
-              }}
+              bodyStyle={{ padding: '8px' }}
             >
-              <Descriptions size="small" column={2} bordered>
+              <Descriptions 
+                size="small" 
+                column={4}
+                bordered
+                contentStyle={{ 
+                  fontSize: '12px',
+                  padding: '4px 8px'
+                }}
+                labelStyle={{ 
+                  fontSize: '12px',
+                  padding: '4px 8px'
+                }}
+              >
                 {card.items.map((item, idx) => (
                   <Descriptions.Item
                     key={idx}
                     label={
                       <span style={{
-                        whiteSpace: 'nowrap',
-                        fontSize: '10px !important',
                         display: 'flex',
                         alignItems: 'center',
-                        height: '16px'
+                        gap: '4px',
+                        fontSize: '12px'
                       }}>
                         {React.cloneElement(item.icon, { style: cardStyles.icon })}
                         {item.label}
                       </span>
                     }
-                    contentStyle={{
-                      padding: '2px 4px !important',
-                      fontSize: '10px !important',
-                      whiteSpace: 'pre-wrap !important',
-                      wordBreak: 'break-word !important'
-                    }}
-                    labelStyle={{
-                      padding: '2px 4px !important',
-                      fontSize: '10px !important'
-                    }}
                   >
-                    <span style={{
-                      fontSize: '10px !important',
-                      whiteSpace: 'pre-wrap',
-                      wordBreak: 'break-word'
-                    }}>
-                      {item.render ? item.render(item.value) :
-                        (item.value ? `${item.value}${item.suffix || ''}` : '-')}
-                    </span>
+                    {item.render ? item.render(item.value) :
+                      (item.value ? `${item.value}${item.suffix || ''}` : '-')}
                   </Descriptions.Item>
                 ))}
               </Descriptions>
             </Card>
           </Col>
         ))}
-
-        <Col span={24}>
-          <Card
-            size="small"
-            title={cards[5].title}
-            style={cardStyles.card}
-            styles={{ padding: '2px !important' }}
-            headStyle={{
-              fontSize: '10px !important',
-              padding: '2px 4px !important',
-              minHeight: '16px !important',
-              background: '#fafafa'
-            }}
-          >
-            <Descriptions size="small" column={4} bordered>
-              {cards[5].items.map((item, idx) => (
-                <Descriptions.Item
-                  key={idx}
-                  label={
-                    <span style={{
-                      whiteSpace: 'nowrap',
-                      fontSize: '10px !important',
-                      display: 'flex',
-                      alignItems: 'center',
-                      height: '16px'
-                    }}>
-                      {React.cloneElement(item.icon, { style: cardStyles.icon })}
-                      {item.label}
-                    </span>
-                  }
-                  contentStyle={{
-                    padding: '2px 4px !important',
-                    fontSize: '10px !important',
-                    whiteSpace: 'pre-wrap !important',
-                    wordBreak: 'break-word !important'
-                  }}
-                  labelStyle={{
-                    padding: '2px 4px !important',
-                    fontSize: '10px !important'
-                  }}
-                >
-                  <span style={{
-                    fontSize: '10px !important',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-word'
-                  }}>
-                    {item.render ? item.render(item.value) :
-                      (item.value ? `${item.value}${item.suffix || ''}` : '-')}
-                  </span>
-                </Descriptions.Item>
-              ))}
-            </Descriptions>
-          </Card>
-        </Col>
       </Row>
-
-      <style jsx global>{`
-        .country-statistics {
-          padding: 4px;
-        }
-
-        .country-statistics .ant-card {
-          margin-bottom: 2px !important;
-        }
-
-        .country-statistics .ant-card-head {
-          min-height: 16px !important;
-          padding: 0 !important;
-        }
-
-        .country-statistics .ant-card-head-title {
-          font-size: 10px !important;
-          padding: 2px 4px !important;
-        }
-
-        .country-statistics .ant-descriptions-item {
-          padding: 0 !important;
-        }
-
-        .country-statistics .ant-descriptions-row > th,
-        .country-statistics .ant-descriptions-row > td {
-          padding: 2px 4px !important;
-        }
-
-        .country-statistics .ant-descriptions-item-label {
-          background-color: #fafafa !important;
-          color: #666666 !important;
-          height: 16px !important;
-          line-height: 16px !important;
-          font-size: 10px !important;
-          white-space: nowrap !important;
-        }
-
-        .country-statistics .ant-descriptions-item-content {
-          color: #000000 !important;
-          min-height: 16px !important;
-          line-height: 1.2 !important;
-          font-size: 10px !important;
-          white-space: pre-wrap !important;
-          word-break: break-word !important;
-          padding: 2px 4px !important;
-        }
-
-        .country-statistics .ant-descriptions-bordered {
-          border: 1px solid #f0f0f0 !important;
-        }
-
-        .country-statistics .ant-descriptions-view {
-          border: none !important;
-        }
-
-        .country-statistics .ant-descriptions-bordered .ant-descriptions-item {
-          border-right: 1px solid #f0f0f0 !important;
-          border-bottom: 1px solid #f0f0f0 !important;
-        }
-
-        .country-statistics .ant-descriptions-bordered .ant-descriptions-row {
-          border-bottom: 1px solid #f0f0f0 !important;
-        }
-
-        .country-statistics .ant-card-body {
-          padding: 2px !important;
-          overflow: visible !important;
-        }
-      `}</style>
     </div>
   );
 };

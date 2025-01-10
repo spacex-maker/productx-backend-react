@@ -18,6 +18,7 @@ import {
   List,
   Tag,
   message,
+  Space,
 } from 'antd';
 import {
   GlobalOutlined,
@@ -35,6 +36,7 @@ import { Resizable } from 'react-resizable';
 import 'react-resizable/css/styles.css';
 import EditRegionModal from './EditRegionModal';
 import CountryStatisticsCard from './CountryStatisticsCard';
+import AddRegionModal from './AddRegionModal';
 
 // 添加可调整列宽的表头单元格组件
 const ResizableTitle = (props) => {
@@ -67,6 +69,115 @@ const ResizableTitle = (props) => {
     >
       <th {...restProps} />
     </Resizable>
+  );
+};
+
+const ContributorsList = ({ maintainers, loading }) => {
+  const { t } = useTranslation();
+  
+  const getContributorColor = (count) => {
+    if (count >= 100000) return '#f50'; // 红色
+    if (count >= 10000) return '#722ed1'; // 紫色
+    if (count >= 1000) return '#13c2c2'; // 青色
+    if (count >= 100) return '#52c41a'; // 绿色
+    return '#1890ff'; // 蓝色
+  };
+
+  const getContributorTitle = (count) => {
+    if (count >= 100000) return t('legendaryContributor'); // 传奇贡献者
+    if (count >= 10000) return t('eliteContributor'); // 精英贡献者
+    if (count >= 1000) return t('seniorContributor'); // 高级贡献者
+    if (count >= 100) return t('activeContributor'); // 活跃贡献者
+    return t('contributor'); // 贡献者
+  };
+
+  return (
+    <Card 
+      size="small"
+      title={
+        <Space>
+          <TeamOutlined style={{ fontSize: '14px' }} />
+          <span style={{ fontSize: '14px' }}>{t('dataContributors')}</span>
+        </Space>
+      }
+      bodyStyle={{ padding: '8px' }}
+    >
+      <Spin spinning={loading}>
+        <Row gutter={[8, 8]}>
+          {maintainers.map((item) => {
+            const color = getContributorColor(item.count);
+            const title = getContributorTitle(item.count);
+            
+            return (
+              <Col span={6} key={item.id}>
+                <Card
+                  size="small"
+                  bordered={false}
+                  bodyStyle={{ 
+                    padding: '8px',
+                    background: color + '0A',
+                    borderRadius: '4px',
+                    transition: 'all 0.3s'
+                  }}
+                  hoverable
+                >
+                  <Space align="center" style={{ width: '100%', justifyContent: 'space-between' }}>
+                    <Space size={8}>
+                      <Avatar
+                        size={24}
+                        src={item.avatar}
+                        style={{ 
+                          border: `2px solid ${color}`,
+                          backgroundColor: item.avatar ? 'transparent' : color
+                        }}
+                      >
+                        {!item.avatar ? item.username.charAt(0).toUpperCase() : null}
+                      </Avatar>
+                      <div>
+                        <div style={{ 
+                          fontSize: '12px',
+                          fontWeight: 500,
+                          color: '#000000d9',
+                          width: '80px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {item.username}
+                        </div>
+                        <div style={{ 
+                          fontSize: '11px',
+                          color: color,
+                          marginTop: '2px'
+                        }}>
+                          {title}
+                        </div>
+                      </div>
+                    </Space>
+                    <Tag
+                      color={color}
+                      style={{ 
+                        fontSize: '11px',
+                        padding: '0 4px',
+                        minWidth: '48px',
+                        textAlign: 'center'
+                      }}
+                    >
+                      {item.count >= 10000 
+                        ? `${(item.count / 10000).toFixed(1)}w`
+                        : item.count >= 1000
+                          ? `${(item.count / 1000).toFixed(1)}k`
+                          : item.count
+                      }
+                    </Tag>
+                  </Space>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      </Spin>
+    </Card>
   );
 };
 
@@ -140,11 +251,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     input: {
       fontSize: '12px',
       height: '24px',
-      color: '#000000 !important', // 添加 !important 确保不被覆盖
-      backgroundColor: '#ffffff !important', // 确保背景色也是白色
-      '&::placeholder': {
-        color: '#999999', // 保持 placeholder 颜色较浅
-      },
     },
     formItem: {
       marginBottom: '4px',
@@ -385,13 +491,13 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       title: t('localName'),
       dataIndex: 'localName',
       key: 'localName',
-      width: columnWidths.localName,
+      width: 160,
       fixed: 'left',
       ...getColumnSearchProps('localName'),
       render: (text, record) => (
-        <div>
-          <div style={{ fontSize: '9px' }}>{text}</div>
-          <div style={{ fontSize: '10px', color: '#666' }}>{record.code}</div>
+        <div style={{ padding: '4px 0' }}>
+          <div style={{ fontSize: '12px', fontWeight: 500 }}>{text}</div>
+          <div style={{ fontSize: '11px', color: '#666' }}>{record.code}</div>
         </div>
       ),
     },
@@ -399,13 +505,13 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       title: t('name'),
       dataIndex: 'name',
       key: 'name',
-      width: columnWidths.name,
+      width: 160,
       fixed: 'left',
       ...getColumnSearchProps('name'),
       render: (text, record) => (
-        <div>
-          <div style={{ fontSize: '9px' }}>{text}</div>
-          <div style={{ fontSize: '10px', color: '#666' }}>{record.enName}</div>
+        <div style={{ padding: '4px 0' }}>
+          <div style={{ fontSize: '12px', fontWeight: 500 }}>{text}</div>
+          <div style={{ fontSize: '11px', color: '#666' }}>{record.enName}</div>
         </div>
       ),
     },
@@ -413,94 +519,102 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       title: t('shortName'),
       dataIndex: 'shortName',
       key: 'shortName',
-      width: columnWidths.shortName,
+      width: 120,
       ...getColumnSearchProps('shortName'),
+      render: text => <span style={{ fontSize: '12px' }}>{text}</span>
     },
     {
       title: t('type'),
       dataIndex: 'type',
       key: 'type',
-      width: columnWidths.type,
+      width: 140,
       ...getColumnSearchProps('type'),
+      render: text => (
+        <Tag color="blue" style={{ fontSize: '11px', padding: '0 4px' }}>
+          {text}
+        </Tag>
+      )
     },
     {
       title: t('zone'),
       dataIndex: 'region',
       key: 'region',
-      width: columnWidths.region,
+      width: 120,
       ...getColumnSearchProps('region'),
+      render: text => <span style={{ fontSize: '12px' }}>{text}</span>
     },
     {
       title: t('capital'),
       dataIndex: 'capital',
       key: 'capital',
-      width: columnWidths.capital,
+      width: 120,
       ...getColumnSearchProps('capital'),
+      render: text => <span style={{ fontSize: '12px' }}>{text}</span>
     },
     {
       title: t('population'),
       dataIndex: 'population',
       key: 'population',
-      width: columnWidths.population,
+      width: 100,
+      align: 'right',
       ...getColumnSearchProps('population'),
-      render: (val) => (val ? `${(val / 10000).toFixed(2)}万` : '-'),
+      render: val => (
+        <span style={{ fontSize: '12px' }}>
+          {val ? `${(val / 10000).toFixed(2)}万` : '-'}
+        </span>
+      )
     },
     {
       title: t('area'),
       dataIndex: 'areaKm2',
       key: 'areaKm2',
-      width: columnWidths.areaKm2,
+      width: 120,
+      align: 'right',
       ...getColumnSearchProps('areaKm2'),
-      render: (val) => (val ? `${val.toLocaleString()} km²` : '-'),
+      render: val => (
+        <span style={{ fontSize: '12px' }}>
+          {val ? `${val.toLocaleString()} km²` : '-'}
+        </span>
+      )
     },
     {
       title: t('action'),
       key: 'action',
-      width: columnWidths.action,
+      width: 160,
       fixed: 'right',
       render: (_, record) => (
-        <div
-          style={{
-            display: 'flex',
-            gap: '4px',
-            alignItems: 'center',
-            fontSize: '10px',
-          }}
-        >
+        <Space size={4}>
           <Switch
             checked={record.status}
             size="small"
             onChange={(checked) => handleStatusChange(record, checked)}
             style={{
               transform: 'scale(0.8)',
-              marginTop: '-2px',
               minWidth: '28px',
-              height: '16px',
+              height: '16px'
             }}
           />
           <Button
             type="link"
             size="small"
-            style={{
-              fontSize: '10px',
-              padding: '0 4px',
-              height: '16px',
-              lineHeight: '16px',
-            }}
             onClick={() => handleDrillDown(record)}
+            style={{
+              fontSize: '12px',
+              padding: '0 4px',
+              height: '20px'
+            }}
           >
             {t('detail')}
           </Button>
           <Button
             type="link"
             size="small"
-            style={{
-              fontSize: '10px',
-              padding: '0 4px',
-              height: '16px',
-              lineHeight: '16px',
-            }}
             onClick={() => handleEdit(record)}
+            style={{
+              fontSize: '12px',
+              padding: '0 4px',
+              height: '20px'
+            }}
           >
             {t('edit')}
           </Button>
@@ -509,23 +623,21 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             onConfirm={() => handleDelete(record.id)}
             okText={t('confirm')}
             cancelText={t('cancel')}
-            okButtonProps={{ size: 'small', style: { fontSize: '10px' } }}
-            cancelButtonProps={{ size: 'small', style: { fontSize: '10px' } }}
+            okButtonProps={{ size: 'small' }}
+            cancelButtonProps={{ size: 'small' }}
           >
             <Button
               type="link"
               danger
               size="small"
-              icon={<DeleteOutlined style={{ fontSize: '10px' }} />}
+              icon={<DeleteOutlined style={{ fontSize: '12px' }} />}
               style={{
-                fontSize: '10px',
                 padding: '0 4px',
-                height: '16px',
-                lineHeight: '16px',
+                height: '20px'
               }}
             />
           </Popconfirm>
-        </div>
+        </Space>
       ),
     },
   ];
@@ -593,734 +705,185 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     }
   };
 
-  // 添加 Retina 屏幕适配的样式
-  const retinaStyles = `
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-resolution: 192dpi) {
-      .super-compact-table .ant-table-thead > tr > th {
-        font-size: 12px;
-      }
-
-      .super-compact-table .ant-table-tbody > tr > td {
-        font-size: 12px;
-      }
-
-      .ant-table-cell {
-        font-size: 12px;
-      }
-
-      .ant-statistic-title {
-        font-size: 12px;
-      }
-
-      .ant-statistic-content {
-        font-size: 14px;
-      }
-
-      .ant-empty-description {
-        font-size: 12px;
-      }
-
-      .ant-input {
-        font-size: 12px;
-      }
-
-      .ant-form-item-label > label {
-        font-size: 12px;
-      }
-
-      .ant-btn {
-        font-size: 12px;
-      }
-
-      .ant-modal-title {
-        font-size: 14px;
-      }
-
-      .ant-table-filter-trigger {
-        font-size: 12px;
-      }
-    }
-  `;
-
   if (!country) return null;
 
   return (
-    <>
-      <Modal
-        title={
-          <div>
-            {/* 维护人统计卡片 */}
-            <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-              <Col span={24}>
-                <Card size="small" bodyStyle={{ padding: '4px' }}>
-                  <div
-                    style={{
-                      fontSize: '9px',
-                      marginBottom: '2px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '2px',
-                      color: '#666',
-                    }}
-                  >
-                    <TeamOutlined style={{ fontSize: '9px' }} />
-                    {t('dataContributors')}
-                  </div>
-                  <Spin spinning={maintainersLoading} size="small">
-                    <List
-                      size="small"
-                      grid={{ column: 6 }}
-                      dataSource={maintainers}
-                      style={{ margin: 0 }}
-                      renderItem={(item) => (
-                        <List.Item style={{ padding: '2px' }}>
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '2px',
-                              fontSize: '9px',
-                            }}
-                          >
-                            <Avatar
-                              src={item.avatar}
-                              size={14}
-                              style={{
-                                backgroundColor: !item.avatar ? '#1890ff' : undefined,
-                                fontSize: '8px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                              }}
-                            >
-                              {!item.avatar ? item.username.charAt(0).toUpperCase() : null}
-                            </Avatar>
-                            <span
-                              style={{
-                                flex: '1',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                maxWidth: '40px',
-                              }}
-                            >
-                              {item.username}
-                            </span>
-                            <Tag
-                              color="blue"
-                              style={{
-                                fontSize: '8px',
-                                lineHeight: '12px',
-                                height: '14px',
-                                padding: '0 2px',
-                                margin: 0,
-                                flexShrink: 0,
-                              }}
-                            >
-                              {item.count}
-                            </Tag>
-                          </div>
-                        </List.Item>
-                      )}
-                    />
-                  </Spin>
-                </Card>
-              </Col>
-            </Row>
+    <Modal
+      title={
+        <div style={{ padding: '8px 0' }}>
+          <Row gutter={[8, 8]}>
+            <Col span={24}>
+              <ContributorsList 
+                maintainers={maintainers}
+                loading={maintainersLoading}
+              />
+            </Col>
+          </Row>
 
-            {/* 国家统计卡片 */}
-            <CountryStatisticsCard country={country} />
+          {/* 国家统计卡片 */}
+          <Row gutter={[8, 8]} style={{ marginTop: '8px' }}>
+            <Col span={24}>
+              <CountryStatisticsCard country={country} />
+            </Col>
+          </Row>
 
-            {/* 四个指标统计卡片 */}
-            <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-              <Col span={6}>
-                <Card size="small" bodyStyle={{ padding: '6px' }}>
+          {/* 四个指标统计卡片 */}
+          <Row gutter={[8, 8]} style={{ marginTop: '8px' }}>
+            {[
+              {
+                title: t('unemploymentRate'),
+                value: country?.unemploymentRate,
+                suffix: '%',
+                icon: <TeamOutlined />
+              },
+              {
+                title: t('educationLevel'),
+                value: country?.educationLevel,
+                formatter: val => val?.toFixed(1),
+                icon: <GlobalOutlined />
+              },
+              {
+                title: t('healthcareLevel'),
+                value: country?.healthcareLevel,
+                formatter: val => val?.toFixed(1),
+                icon: <GlobalOutlined />
+              },
+              {
+                title: t('internetPenetration'),
+                value: country?.internetPenetrationRate,
+                suffix: '%',
+                icon: <GlobalOutlined />
+              }
+            ].map((stat, index) => (
+              <Col span={6} key={index}>
+                <Card size="small">
                   <Statistic
-                    title={<span style={{ fontSize: '10px' }}>{t('unemploymentRate')}</span>}
-                    value={country?.unemploymentRate}
-                    prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
-                    valueStyle={{ fontSize: '12px' }}
-                    formatter={(value) => `${value}%`}
+                    title={<span style={{ fontSize: '12px' }}>{stat.title}</span>}
+                    value={stat.value}
+                    prefix={React.cloneElement(stat.icon, { style: { fontSize: '12px' } })}
+                    valueStyle={{ fontSize: '14px' }}
+                    formatter={stat.formatter}
+                    suffix={stat.suffix}
                   />
                 </Card>
               </Col>
-              <Col span={6}>
-                <Card size="small" bodyStyle={{ padding: '6px' }}>
-                  <Statistic
-                    title={<span style={{ fontSize: '10px' }}>{t('educationLevel')}</span>}
-                    value={country?.educationLevel}
-                    prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                    valueStyle={{ fontSize: '12px' }}
-                    formatter={(value) => value?.toFixed(1)}
-                  />
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card size="small" bodyStyle={{ padding: '6px' }}>
-                  <Statistic
-                    title={<span style={{ fontSize: '10px' }}>{t('healthcareLevel')}</span>}
-                    value={country?.healthcareLevel}
-                    prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                    valueStyle={{ fontSize: '12px' }}
-                    formatter={(value) => value?.toFixed(1)}
-                  />
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card size="small" bodyStyle={{ padding: '6px' }}>
-                  <Statistic
-                    title={<span style={{ fontSize: '10px' }}>{t('internetPenetration')}</span>}
-                    value={country?.internetPenetrationRate}
-                    prefix={<GlobalOutlined style={{ fontSize: '9px' }} />}
-                    valueStyle={{ fontSize: '12px' }}
-                    formatter={(value) => `${value}%`}
-                  />
-                </Card>
-              </Col>
-            </Row>
+            ))}
+          </Row>
 
-            {/* 行政区划统计卡片 */}
-            <Row gutter={[6, 6]} style={{ marginBottom: '6px' }}>
-              <Col span={8}>
-                <Card size="small" bodyStyle={{ padding: '6px' }}>
+          {/* 行政区划统计卡片 */}
+          <Row gutter={[8, 8]} style={{ marginTop: '8px' }}>
+            {[
+              {
+                title: currentRegion ? t('subRegionsCount') : t('regionsCount'),
+                value: regions.length,
+                icon: <EnvironmentOutlined />
+              },
+              {
+                title: t('totalPopulation'),
+                value: regions.reduce((sum, region) => sum + (region.population || 0), 0),
+                formatter: val => `${(val / 10000).toFixed(2)}${t('tenThousand')}`,
+                icon: <TeamOutlined />
+              },
+              {
+                title: t('totalArea'),
+                value: regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0),
+                formatter: val => `${val.toLocaleString()} km²`,
+                icon: <EnvironmentOutlined />
+              }
+            ].map((stat, index) => (
+              <Col span={8} key={index}>
+                <Card size="small">
                   <Statistic
-                    title={
-                      <span style={{ fontSize: '10px' }}>
-                        {currentRegion ? t('subRegionsCount') : t('regionsCount')}
-                      </span>
-                    }
-                    value={regions.length}
-                    prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
-                    valueStyle={{ fontSize: '12px' }}
+                    title={<span style={{ fontSize: '12px' }}>{stat.title}</span>}
+                    value={stat.value}
+                    prefix={React.cloneElement(stat.icon, { style: { fontSize: '12px' } })}
+                    valueStyle={{ fontSize: '14px' }}
+                    formatter={stat.formatter}
                   />
                 </Card>
               </Col>
-              <Col span={8}>
-                <Card size="small" bodyStyle={{ padding: '6px' }}>
-                  <Statistic
-                    title={<span style={{ fontSize: '10px' }}>{t('totalPopulation')}</span>}
-                    value={regions.reduce((sum, region) => sum + (region.population || 0), 0)}
-                    prefix={<TeamOutlined style={{ fontSize: '9px' }} />}
-                    valueStyle={{ fontSize: '12px' }}
-                    formatter={(value) => `${(value / 10000).toFixed(2)}${t('tenThousand')}`}
-                  />
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card size="small" bodyStyle={{ padding: '6px' }}>
-                  <Statistic
-                    title={<span style={{ fontSize: '10px' }}>{t('totalArea')}</span>}
-                    value={regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0)}
-                    prefix={<EnvironmentOutlined style={{ fontSize: '9px' }} />}
-                    valueStyle={{ fontSize: '12px' }}
-                    formatter={(value) => `${value.toLocaleString()} km²`}
-                  />
-                </Card>
-              </Col>
-            </Row>
+            ))}
+          </Row>
 
-            {/* 面包屑和按钮 */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              {/* 面包屑导航 */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          {/* 面包屑和按钮 */}
+          <Row style={{ marginTop: '12px' }}>
+            <Col flex="auto">
+              <Space split="/">
                 {breadcrumb.map((item, index) => (
-                  <React.Fragment key={item.id}>
-                    {index > 0 && <span>/</span>}
-                    <span
-                      style={{ cursor: 'pointer', color: '#1890ff' }}
-                      onClick={() => handleGoBack(index)}
-                    >
-                      {item.name}
-                    </span>
-                  </React.Fragment>
+                  <Button
+                    key={item.id}
+                    type="link"
+                    size="small"
+                    onClick={() => handleGoBack(index)}
+                    style={{ padding: '0', fontSize: '12px' }}
+                  >
+                    {item.name}
+                  </Button>
                 ))}
-              </div>
-
-              {/* 新增按钮 */}
+              </Space>
+            </Col>
+            <Col>
               <Button
                 type="primary"
                 size="small"
                 icon={<PlusOutlined />}
                 onClick={handleAddModalOpen}
-                style={{
-                  fontSize: '10px',
-                  height: '24px',
-                  padding: '0 8px',
-                }}
               >
                 {t('addRegion')}
               </Button>
-            </div>
-          </div>
-        }
-        open={visible}
-        onCancel={onCancel}
-        width={900}
-        footer={null}
-        styles={{ padding: '6px' }}
-        closeIcon={<CloseOutlined style={{ fontSize: '10px' }} />}
-      >
-        {/* 行政区划表格 */}
-        <Spin spinning={loading}>
-          {regions.length > 0 ? (
-            <Table
-              components={components}
-              columns={getColumns()}
-              dataSource={filteredData}
-              size="small"
-              scroll={{ x: 'max-content', y: 300 }}
-              pagination={false}
-              rowKey="id"
-              style={{ fontSize: '10px' }}
-              className="super-compact-table resizable-table"
-              tableLayout="fixed"
-              sticky={true}
-              bordered
-            />
-          ) : (
-            <Empty description={<span style={{ fontSize: '10px' }}>暂无行政区划数据</span>} />
-          )}
-        </Spin>
-
-        {/* 新增表单弹窗 */}
-        <Modal
-          title={
-            <div style={formStyles.modalTitle}>
-              {t('region', { type: currentRegion ? t('subRegion') : t('region') })}
-            </div>
-          }
-          open={addModalVisible}
-          onCancel={() => {
-            setAddModalVisible(false);
-            addForm.resetFields();
-          }}
-          onOk={() => addForm.submit()}
-          width={400}
-          style={{ padding: '8px' }}
-          destroyOnClose
-        >
-          <Form
-            form={addForm}
-            onFinish={handleAdd}
-            layout="vertical"
+            </Col>
+          </Row>
+        </div>
+      }
+      open={visible}
+      onCancel={onCancel}
+      width={1000}
+      footer={null}
+      bodyStyle={{ padding: '12px' }}
+    >
+      {/* 表格部分 */}
+      <Spin spinning={loading}>
+        {regions.length > 0 ? (
+          <Table
+            components={components}
+            columns={columns}
+            dataSource={filteredData}
             size="small"
-          >
-            <Row gutter={8}>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('regionCode')}</span>}
-                  name="code"
-                  rules={[{ required: true, message: t('pleaseInputCode') }]}
-                  style={formStyles.formItem}
-                  tooltip={t('regionCodeTip')}
-                >
-                  <Input style={formStyles.input} />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('countryCode')}</span>}
-                  name="countryCode"
-                  rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
-                  style={formStyles.formItem}
-                  tooltip={t('countryCodeTip')}
-                >
-                  <Input style={formStyles.input} />
-                </Form.Item>
-              </Col>
-            </Row>
+            scroll={{ x: 1200, y: 400 }}
+            pagination={false}
+            rowKey="id"
+            bordered
+            style={{ marginTop: 8 }}
+            rowClassName={() => 'table-row-small'}
+          />
+        ) : (
+          <Empty description={<span style={{ fontSize: '12px' }}>{t('noData')}</span>} />
+        )}
+      </Spin>
 
-            <Row gutter={8}>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('localName')}</span>}
-                  name="localName"
-                  style={formStyles.formItem}
-                  tooltip={t('localNameTip')}
-                >
-                  <Input style={formStyles.input} />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('name')}</span>}
-                  name="name"
-                  rules={[{ required: true, message: t('pleaseInputName') }]}
-                  style={formStyles.formItem}
-                  tooltip={t('nameTip')}
-                >
-                  <Input style={formStyles.input} />
-                </Form.Item>
-              </Col>
-            </Row>
+      {/* 模态框组件 */}
+      <AddRegionModal
+        visible={addModalVisible}
+        onCancel={() => {
+          setAddModalVisible(false);
+          addForm.resetFields();
+        }}
+        onOk={handleAdd}
+        form={addForm}
+        handleTypeChange={handleTypeChange}
+      />
 
-            <Row gutter={8}>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('shortName')}</span>}
-                  name="shortName"
-                  style={formStyles.formItem}
-                  tooltip={t('shortNameTip')}
-                >
-                  <Input style={formStyles.input} />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('type')}</span>}
-                  name="type"
-                  style={formStyles.formItem}
-                  tooltip={t('typeTip')}
-                >
-                  <Input
-                    style={formStyles.input}
-                    onChange={handleTypeChange}
-                    list="typeHistory"
-                    allowClear
-                  />
-                  <datalist id="typeHistory">
-                    {Object.keys(historicalInputs).map(type => (
-                      <option key={type} value={type} />
-                    ))}
-                  </datalist>
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={8}>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('capital')}</span>}
-                  name="capital"
-                  style={formStyles.formItem}
-                  tooltip={t('capitalTip')}
-                >
-                  <Input style={formStyles.input} />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('population')}</span>}
-                  name="population"
-                  style={formStyles.formItem}
-                  tooltip={t('populationTip')}
-                >
-                  <Input type="number" style={formStyles.input} />
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <Row gutter={8}>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('areaKm2')}</span>}
-                  name="areaKm2"
-                  style={formStyles.formItem}
-                  tooltip={t('areaKm2Tip')}
-                >
-                  <Input type="number" style={formStyles.input} />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label={<span style={formStyles.label}>{t('region')}</span>}
-                  name="region"
-                  style={formStyles.formItem}
-                  tooltip={t('regionTip')}
-                >
-                  <Input style={formStyles.input} />
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-        </Modal>
-
-        {/* 使用新的编辑弹窗组件 */}
-        <EditRegionModal
-          visible={editModalVisible}
-          onCancel={() => {
-            setEditModalVisible(false);
-            editForm.resetFields();
-          }}
-          onOk={handleUpdate}
-          form={editForm}
-        />
-        <style jsx>{`
-          ${Object.entries(styles)
-            .map(
-              ([selector, rules]) =>
-                `${selector} {
-              ${Object.entries(rules)
-                .map(([prop, value]) => `${prop}: ${value};`)
-                .join('\n')}
-            }`,
-            )
-            .join('\n')}
-        `}</style>
-      </Modal>
-
-      {/* 添加 Retina 适配样式 */}
-      <style jsx global>{retinaStyles}</style>
-    </>
+      <EditRegionModal
+        visible={editModalVisible}
+        onCancel={() => {
+          setEditModalVisible(false);
+          editForm.resetFields();
+        }}
+        onOk={handleUpdate}
+        form={editForm}
+      />
+    </Modal>
   );
 };
-
-// 更新全局样式
-const styles = `
-  .super-compact-table .ant-table-thead > tr > th {
-    padding: 4px 6px;
-    font-size: 10px;
-    line-height: 1.2;
-  }
-
-  .super-compact-table .ant-table-tbody > tr > td {
-    padding: 3px 6px;
-    font-size: 10px;
-    line-height: 1.2;
-  }
-
-  .super-compact-table .ant-table-cell {
-    font-size: 10px;
-  }
-
-  .ant-modal-header {
-    padding: 6px 8px;
-  }
-
-  .ant-modal-close {
-    top: 6px;
-    right: 6px;
-  }
-
-  .ant-modal-close-x {
-    font-size: 12px;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-  }
-
-  .ant-modal-body {
-    padding: 6px;
-  }
-
-  .ant-card-body {
-    padding: 6px;
-  }
-
-  .ant-statistic-title {
-    margin-bottom: 1px;
-    font-size: 10px;
-    line-height: 1.2;
-  }
-
-  .ant-statistic-content {
-    font-size: 12px;
-    line-height: 1.2;
-  }
-
-  .ant-statistic-content-value {
-    font-size: 12px;
-  }
-
-  .ant-table {
-    font-size: 10px;
-  }
-
-  .ant-table-column-title {
-    font-size: 10px;
-  }
-
-  .ant-empty-description {
-    font-size: 10px;
-  }
-
-  .ant-spin-text {
-    font-size: 10px;
-  }
-
-  .ant-input-sm {
-    font-size: 10px;
-    padding: 5px 10px;
-    line-height: 1.2;
-  }
-
-  .ant-dropdown {
-    font-size: 10px;
-  }
-
-  .ant-dropdown-menu {
-    padding: 2px;
-  }
-
-  .ant-dropdown-menu-item {
-    padding: 5px 10px;
-    font-size: 10px;
-    line-height: 1.2;
-  }
-
-  .ant-table-filter-trigger {
-    margin: 0;
-    padding: 0 2px;
-    height: auto;
-    line-height: 1;
-  }
-
-  .ant-table-filter-dropdown {
-    min-width: auto !important;
-    width: auto !important;
-    padding: 0 !important;
-    margin-top: -4px !important;
-  }
-
-  .ant-input-sm {
-    font-size: 10px;
-    padding: 5px 10px;
-    line-height: 1.2;
-    height: 20px;
-  }
-
-  .ant-table-thead > tr > th {
-    position: relative;
-  }
-
-  .ant-table-filter-column {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .ant-table-filter-column-title {
-    flex: auto;
-    padding-right: 2px;
-  }
-
-  .ant-table-filter-trigger-container {
-    position: static !important;
-    margin: 0 !important;
-  }
-
-  .ant-table-filter-trigger {
-    color: #bfbfbf;
-  }
-
-  .ant-table-filter-trigger:hover {
-    color: #1890ff;
-  }
-
-  .ant-dropdown {
-    padding: 0;
-  }
-
-  .ant-dropdown-menu {
-    padding: 0;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  }
-
-  .ant-form-item {
-    margin-bottom: 8px;
-  }
-
-  .ant-form-item-label {
-    padding: 0;
-  }
-
-  .ant-form-item-label > label {
-    font-size: 10px;
-    height: 20px;
-  }
-
-  .ant-input {
-    font-size: 10px;
-    padding: 5px 10px;
-    height: 20px;
-  }
-
-  .ant-form-item-explain {
-    font-size: 10px;
-    min-height: 16px;
-  }
-
-  .ant-modal-footer {
-    padding: 6px 8px;
-  }
-
-  .ant-modal-footer .ant-btn {
-    font-size: 10px;
-    padding: 2px 8px;
-    height: 20px;
-  }
-
-  .ant-switch {
-    min-width: 32px;
-    height: 16px;
-    line-height: 16px;
-  }
-
-  .ant-switch-handle {
-    width: 14px;
-    height: 14px;
-    top: 1px;
-  }
-
-  .ant-switch-checked .ant-switch-handle {
-    left: calc(100% - 15px);
-  }
-
-  .ant-switch-small {
-    min-width: 32px;
-    height: 16px;
-  }
-
-  .ant-switch-small .ant-switch-handle {
-    width: 14px;
-    height: 14px;
-  }
-
-  .ant-switch-small.ant-switch-checked .ant-switch-handle {
-    left: calc(100% - 15px);
-  }
-
-  .ant-popover {
-    font-size: 10px;
-  }
-
-  .ant-popover-message {
-    font-size: 10px;
-    padding: 4px 0;
-  }
-
-  .ant-popover-buttons {
-    margin-top: 4px;
-  }
-
-  .ant-popover-buttons .ant-btn {
-    font-size: 10px;
-    padding: 0 4px;
-    height: 20px;
-    line-height: 20px;
-  }
-
-  .ant-popconfirm-buttons {
-    display: flex;
-    gap: 4px;
-  }
-
-  .ant-popover-inner-content {
-    padding: 4px 8px;
-  }
-
-  .ant-popover-arrow {
-    display: none;
-  }
-`;
-
-// 将样式添加到文档中
-const styleSheet = document.createElement('style');
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
 
 export default CountryDetailModal;

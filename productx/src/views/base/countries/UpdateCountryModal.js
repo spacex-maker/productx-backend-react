@@ -52,8 +52,6 @@ const UpdateCountryModal = ({
 
   // 统一的图标样式
   const iconStyle = {
-    fontSize: '10px',
-    marginRight: '2px',
     color: '#1890ff'
   };
 
@@ -90,29 +88,29 @@ const UpdateCountryModal = ({
         )
       },
       { name: 'borderingCountries', label: t('borderingCountries'), icon: <NodeIndexOutlined style={iconStyle} />,
-        component: <Select mode="tags" style={{ width: '100%' }} />
+        component: <Select mode="tags" />
       }
     ],
     populationAndArea: [
       { name: 'population', label: t('population'), icon: <TeamOutlined style={iconStyle} />,
-        component: <InputNumber style={{ width: '100%' }} />
+        component: <InputNumber />
       },
       { name: 'area', label: t('area'), icon: <BorderOuterOutlined style={iconStyle} />,
-        component: <InputNumber style={{ width: '100%' }} />
+        component: <InputNumber />
       },
       { name: 'gdp', label: t('gdp'), icon: <DollarOutlined style={iconStyle} />,
-        component: <InputNumber style={{ width: '100%' }} />
+        component: <InputNumber />
       },
       { name: 'currency', label: t('currency'), icon: <PayCircleOutlined style={iconStyle} /> },
       { name: 'foreignExchangeReserves', label: t('foreignExchangeReserves'), icon: <GoldOutlined style={iconStyle} />,
-        component: <InputNumber style={{ width: '100%' }} />
+        component: <InputNumber />
       }
     ],
     economicIndicators: [
       { name: 'unemploymentRate', label: t('unemploymentRate'), icon: <UserDeleteOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={100} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={100} /> },
       { name: 'povertyRate', label: t('povertyRate'), icon: <HeartOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={100} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={100} /> },
       { name: 'incomeLevel', label: t('incomeLevel'), icon: <FundOutlined style={iconStyle} />,
         component: (
           <Select>
@@ -126,26 +124,26 @@ const UpdateCountryModal = ({
     ],
     socialDevelopment: [
       { name: 'hdi', label: t('hdi'), icon: <RiseOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={1} step={0.001} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={1} step={0.001} /> },
       { name: 'educationLevel', label: t('educationLevel'), icon: <ReadOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={10} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={10} /> },
       { name: 'healthcareLevel', label: t('healthcareLevel'), icon: <MedicineBoxOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={10} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={10} /> },
       { name: 'internetPenetrationRate', label: t('internetPenetrationRate'), icon: <WifiOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={100} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={100} /> },
       { name: 'energyConsumption', label: t('energyConsumption'), icon: <ThunderboltOutlined style={iconStyle} />,
-        component: <InputNumber style={{width: '100%'}}/> },
+        component: <InputNumber /> },
       { name: 'airQualityIndex', label: t('airQualityIndex'), icon: <CloudOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={500} style={{width: '100%'}}/> }
+        component: <InputNumber min={0} max={500} /> }
     ],
     politicsAndSecurity: [
       { name: 'governmentType', label: t('governmentType'), icon: <BankOutlined style={iconStyle} /> },
       { name: 'politicalStability', label: t('politicalStability'), icon: <SafetyCertificateOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={10} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={10} /> },
       { name: 'nationalSecurityIndex', label: t('nationalSecurityIndex'), icon: <SafetyOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={10} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={10} /> },
       { name: 'militaryStrengthIndex', label: t('militaryStrengthIndex'), icon: <RocketOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={10} style={{width: '100%'}}/> },
+        component: <InputNumber min={0} max={10} /> },
       { name: 'foreignPolicy', label: t('foreignPolicy'), icon: <GlobalOutlined style={iconStyle} /> },
       { name: 'legalSystem', label: t('legalSystem'), icon: <LockOutlined style={iconStyle} /> }
     ],
@@ -154,7 +152,7 @@ const UpdateCountryModal = ({
       { name: 'majorReligions', label: t('majorReligions'), icon: <BankOutlined style={iconStyle} /> },
       { name: 'majorSports', label: t('majorSports'), icon: <TrophyOutlined style={iconStyle} /> },
       { name: 'linguisticDiversity', label: t('linguisticDiversity'), icon: <MessageOutlined style={iconStyle} />,
-        component: <InputNumber min={0} max={1} step={0.01} style={{width: '100%'}}/> }
+        component: <InputNumber min={0} max={1} step={0.01} /> }
     ],
     infrastructureAndResources: [
       { name: 'transportInfrastructure', label: t('transportInfrastructure'), icon: <CarOutlined style={iconStyle} />,
@@ -189,18 +187,11 @@ const UpdateCountryModal = ({
       okText={t('confirm')}
       cancelText={t('cancel')}
       width={800}
-      style={{top: 20}}
-      styles={{padding: '4px'}}
     >
       <Form
         form={form}
         onFinish={handleUpdateCountry}
         layout="vertical"
-        style={{
-          maxHeight: 'calc(100vh - 200px)',
-          overflowY: 'auto',
-          padding: '0 4px'
-        }}
         size="small"
       >
         {Object.entries(formGroups).map(([groupKey, fields]) => (
@@ -212,15 +203,13 @@ const UpdateCountryModal = ({
             headStyle={{
               fontSize: '10px',
               padding: '2px 4px',
-              minHeight: '16px',
-              background: '#fafafa'
+              minHeight: '16px'
             }}
-            styles={{ padding: '4px' }}
           >
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '4px'
+              gap: '8px'
             }}>
               {fields.map(field => (
                 <Form.Item
@@ -244,19 +233,11 @@ const UpdateCountryModal = ({
         <Card
           size="small"
           title={t('otherInformation')}
-          style={{marginBottom: '4px'}}
-          headStyle={{
-            fontSize: '10px',
-            padding: '2px 4px',
-            minHeight: '16px',
-            background: '#fafafa'
-          }}
-          styles={{padding: '4px'}}
         >
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '4px'
+            gap: '8px'
           }}>
             <Form.Item label={t('historicalBackground')} name="historicalBackground">
               <TextArea rows={3}/>
@@ -280,155 +261,18 @@ const UpdateCountryModal = ({
               <Input/>
             </Form.Item>
             <Form.Item label={t('independenceDay')} name="independenceDay">
-              <DatePicker style={{width: '100%'}}/>
+              <DatePicker/>
             </Form.Item>
             <Form.Item label={t('officialWebsite')} name="officialWebsite">
               <Input/>
             </Form.Item>
             <Form.Item label={t('worldHeritageSites')} name="worldHeritageSites">
-              <InputNumber min={0} style={{width: '100%'}}/>
+              <InputNumber min={0}/>
             </Form.Item>
           </div>
         </Card>
 
-
       </Form>
-
-      <style jsx global>{`
-        .ant-form-item {
-          margin-bottom: 0;
-        }
-
-        .ant-form-item-label {
-          padding: 0;
-        }
-
-        .ant-form-item-label > label {
-          font-size: 10px !important;
-          height: 16px !important;
-          line-height: 16px !important;
-          color: #666666 !important;
-        }
-
-        .ant-card {
-          border-radius: 2px;
-        }
-
-        .ant-card-head {
-          min-height: 16px;
-          padding: 0;
-          border-bottom: 1px solid #f0f0f0;
-        }
-
-        .ant-card-head-title {
-          font-size: 10px !important;
-          padding: 2px 4px;
-        }
-
-        .ant-input, .ant-select-selector, .ant-picker, .ant-input-number {
-          height: 22px !important;
-          font-size: 10px !important;
-          padding: 0 4px !important;
-          color: #000000 !important;
-        }
-
-        .ant-input-number-input {
-          height: 20px !important;
-          font-size: 10px !important;
-          padding: 0 4px !important;
-          color: #000000 !important;
-        }
-
-        .ant-select-selection-item {
-          line-height: 20px !important;
-          font-size: 10px !important;
-          color: #000000 !important;
-        }
-
-        textarea.ant-input {
-          height: auto !important;
-          min-height: 22px !important;
-          padding: 2px 4px !important;
-          color: #000000 !important;
-        }
-
-        .ant-modal-header {
-          padding: 4px 8px;
-        }
-
-        .ant-modal-body {
-          padding: 4px;
-        }
-
-        .ant-modal-footer {
-          padding: 4px 8px;
-        }
-
-        .ant-btn {
-          height: 22px !important;
-          padding: 0 8px !important;
-          font-size: 10px !important;
-          color: #000000 !important;
-        }
-
-        .ant-form-item-explain {
-          font-size: 10px !important;
-          min-height: 16px !important;
-        }
-
-        .ant-select-selection-item-content {
-          color: #000000 !important;
-        }
-
-        .ant-select-item-option-content {
-          color: #000000 !important;
-          font-size: 10px !important;
-        }
-
-        .ant-card-head-title {
-          font-size: 10px !important;
-          padding: 2px 4px !important;
-          color: #666666 !important;
-        }
-
-        .ant-modal-title {
-          font-size: 12px !important;
-          color: #000000 !important;
-        }
-
-        .ant-input[disabled],
-        .ant-input-number-disabled,
-        .ant-select-disabled .ant-select-selector,
-        .ant-picker-disabled {
-          color: rgba(0, 0, 0, 0.25) !important;
-          background-color: #f5f5f5 !important;
-        }
-
-        .ant-input::placeholder,
-        .ant-input-number-input::placeholder,
-        .ant-select-selection-placeholder {
-          color: #999999 !important;
-        }
-
-        /* 添加图标相关样式 */
-        .ant-form-item-label .anticon {
-          display: inline-flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          vertical-align: middle !important;
-        }
-
-        .ant-form-item-label > label {
-          display: inline-flex !important;
-          align-items: center !important;
-        }
-
-        /* 图标悬停效果 */
-        .anticon:hover {
-          color: #40a9ff !important;
-          transition: color 0.3s !important;
-        }
-      `}</style>
     </Modal>
   );
 };
