@@ -5,37 +5,13 @@ import { useTranslation } from 'react-i18next';
 const EditRegionModal = ({ visible, onCancel, onOk, initialValues, form }) => {
   const { t } = useTranslation();
 
-  // 表单样式定义
-  const formStyles = {
-    label: {
-      fontSize: '10px',
-      color: '#000000',
-      marginBottom: '2px'
-    },
-    input: {
-      fontSize: '10px',
-      height: '20px',
-      color: '#000000 !important',
-      backgroundColor: '#ffffff !important'
-    },
-    formItem: {
-      marginBottom: '4px'
-    },
-    modalTitle: {
-      fontSize: '10px',
-      color: '#000000'
-    }
-  };
-
   return (
     <Modal
-      title={<div style={formStyles.modalTitle}>修改行政区划</div>}
+      title={t('editRegion')}
       open={visible}
       onCancel={onCancel}
       onOk={() => form.submit()}
       width={600}
-      style={{ fontSize: '10px' }}
-      styles={{ padding: '8px' }}
       destroyOnClose
     >
       <Form
@@ -45,69 +21,30 @@ const EditRegionModal = ({ visible, onCancel, onOk, initialValues, form }) => {
         size="small"
         initialValues={initialValues}
       >
-        <Form.Item name="id" hidden>
-          <Input />
-        </Form.Item>
-
         <Row gutter={8}>
           <Col span={8}>
             <Form.Item
-              label={<span style={formStyles.label}>行政区划编码</span>}
-              name="code"
-              rules={[{ required: true, message: '请输入编码' }]}
-              style={formStyles.formItem}
-            >
-              <Input style={formStyles.input} placeholder="例如：CN-BJ" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              label={<span style={formStyles.label}>国家码</span>}
-              name="countryCode"
-              rules={[{ required: true, message: '请输入国家码' }]}
-              style={formStyles.formItem}
-            >
-              <Input style={formStyles.input} placeholder="例如：CN" />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              label={<span style={formStyles.label}>类型</span>}
-              name="type"
-              style={formStyles.formItem}
-            >
-              <Input style={formStyles.input} placeholder="国家/省/市/区等" />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={8}>
-          <Col span={8}>
-            <Form.Item
-              label={<span style={formStyles.label}>行政区划名称</span>}
+              label={t('name')}
               name="name"
-              rules={[{ required: true, message: '请输入名称' }]}
-              style={formStyles.formItem}
+              rules={[{ required: true, message: t('pleaseInputName') }]}
             >
-              <Input style={formStyles.input} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              label={<span style={formStyles.label}>英文名称</span>}
+              label={t('enName')}
               name="enName"
-              style={formStyles.formItem}
             >
-              <Input style={formStyles.input} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              label={<span style={formStyles.label}>本地名称</span>}
+              label={t('localName')}
               name="localName"
-              style={formStyles.formItem}
             >
-              <Input style={formStyles.input} />
+              <Input />
             </Form.Item>
           </Col>
         </Row>
@@ -115,29 +52,26 @@ const EditRegionModal = ({ visible, onCancel, onOk, initialValues, form }) => {
         <Row gutter={8}>
           <Col span={8}>
             <Form.Item
-              label={<span style={formStyles.label}>简称</span>}
+              label={t('shortName')}
               name="shortName"
-              style={formStyles.formItem}
             >
-              <Input style={formStyles.input} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              label={<span style={formStyles.label}>人口</span>}
+              label={t('population')}
               name="population"
-              style={formStyles.formItem}
             >
-              <InputNumber style={{ ...formStyles.input, width: '100%' }} />
+              <InputNumber style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              label={<span style={formStyles.label}>面积(km²)</span>}
+              label={t('areaKm2')}
               name="areaKm2"
-              style={formStyles.formItem}
             >
-              <InputNumber style={{ ...formStyles.input, width: '100%' }} />
+              <InputNumber style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </Row>
@@ -145,48 +79,22 @@ const EditRegionModal = ({ visible, onCancel, onOk, initialValues, form }) => {
         <Row gutter={8}>
           <Col span={12}>
             <Form.Item
-              label={<span style={formStyles.label}>省会/首府</span>}
+              label={t('capital')}
               name="capital"
-              style={formStyles.formItem}
             >
-              <Input style={formStyles.input} />
+              <Input />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={<span style={formStyles.label}>区域</span>}
+              label={t('region')}
               name="region"
-              style={formStyles.formItem}
             >
-              <Input style={formStyles.input} placeholder="华北/华南等" />
+              <Input placeholder={t('regionPlaceholder')} />
             </Form.Item>
           </Col>
         </Row>
       </Form>
-
-      <style jsx>{`
-        :global(.ant-modal-content) {
-          * {
-            font-size: 10px !important;
-          }
-        }
-
-        :global(.ant-form) {
-          * {
-            font-size: 10px !important;
-          }
-        }
-
-        :global(.ant-modal-footer) {
-          padding: 4px 8px !important;
-        }
-
-        :global(.ant-modal-footer .ant-btn) {
-          height: 20px !important;
-          padding: 0 8px !important;
-          font-size: 10px !important;
-        }
-      `}</style>
     </Modal>
   );
 };

@@ -130,6 +130,8 @@ const SysPaymentMethodsRouter = React.lazy(() => import('./views/base/sysPayment
 
 const ClientCountryConfigRouter = React.lazy(() => import('./views/base/clientCountryConfig/ClientCountryConfig'));
 
+const WebsiteListRouter = React.lazy(() => import('./views/base/websiteList/WebsiteList'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -460,6 +462,13 @@ const routes = [
     path: '/sys/clientCountryConfig', name: '客户端配置', element: (
       <PrivateRoute>
         <ClientCountryConfigRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/websiteList', name: '综合导航管理', element: (
+      <PrivateRoute>
+        <WebsiteListRouter/>
       </PrivateRoute>
     )
   },

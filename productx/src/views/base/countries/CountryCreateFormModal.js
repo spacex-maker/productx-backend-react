@@ -32,11 +32,6 @@ const CountryCreateFormModal = ({
       okText={t('save')}
       cancelText={t('cancel')}
       width={800}
-      styles={{
-        padding: '12px 24px',
-        maxHeight: '80vh',
-        overflow: 'auto'
-      }}
     >
       <Form
         form={form}
@@ -44,9 +39,9 @@ const CountryCreateFormModal = ({
         layout="vertical"
         requiredMark={false}
       >
-        <div style={{ marginBottom: '16px' }}>
-          <Title level={5} style={{ marginBottom: '8px' }}>{t('basicInfo')}</Title>
-          <Divider style={{ margin: '8px 0' }} />
+        <div>
+          <Title level={5}>{t('basicInfo')}</Title>
+          <Divider />
         </div>
 
         <Row gutter={16}>
@@ -55,7 +50,6 @@ const CountryCreateFormModal = ({
               label={t('countryName')}
               name="countryName"
               rules={[{ required: true, message: t('pleaseInputCountryName') }]}
-              style={{ marginBottom: '12px' }}
             >
               <Input
                 placeholder={t('inputCountryNamePlaceholder')}
@@ -69,7 +63,6 @@ const CountryCreateFormModal = ({
               label={t('countryCode')}
               name="countryCode"
               rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
-              style={{ marginBottom: '12px' }}
             >
               <Input
                 placeholder={t('inputCountryCodePlaceholder')}
@@ -83,7 +76,6 @@ const CountryCreateFormModal = ({
               label={t('continent')}
               name="continent"
               rules={[{ required: true, message: t('pleaseSelectContinent') }]}
-              style={{ marginBottom: '12px' }}
             >
               <Select
                 placeholder={t('selectContinentPlaceholder')}
