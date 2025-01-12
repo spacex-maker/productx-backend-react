@@ -1025,5 +1025,59 @@
   "seoInfo": "معلومات تحسين محركات البحث",
   "seoTitle": "عنوان تحسين محركات البحث",
   "seoKeywords": "كلمات تحسين محركات البحث",
-  "seoDescription": "وصف تحسين محركات البحث"
+  "seoDescription": "وصف تحسين محركات البحث",
+
+  "createWebsite": "إنشاء موقع",
+  "websiteName": "اسم الموقع",
+  "pleaseInputWebsiteName": "يرجى إدخال اسم الموقع",
+  "websiteLink": "رابط الموقع",
+  "pleaseInputWebsiteLink": "يرجى إدخال رابط الموقع",
+  "pleaseInputValidWebsiteLink": "يرجى إدخال رابط موقع صحيح",
+  "websiteDescription": "وصف الموقع",
+  "pleaseInputWebsiteDescription": "يرجى إدخال وصف الموقع",
+
+  "socialNetwork": "شبكة اجتماعية",
+  "pleaseInputSubClassification": "يرجى إدخال التصنيف الفرعي",
+  "priorityLevel": "مستوى الأولوية",
+  "pleaseInputPriorityLevel": "يرجى إدخال مستوى الأولوية",
+
+  "pleaseInputLogoLink": "يرجى إدخال رابط الشعار",
+  "pleaseInputFaviconLink": "يرجى إدخال رابط الأيقونة المصغرة",
+  "label": "تسمية",
+  "pleaseInputLabel": "يرجى إدخال التسمية",
+
+  "countryRegion": "الدولة/المنطقة",
+  "pleaseSelectCountryRegion": "يرجى اختيار الدولة/المنطقة",
+  "pleaseSelectLanguage": "يرجى اختيار اللغة",
+  "newOnline": "جديد على الإنترنت",
+  "technicalCharacteristics": "الخصائص التقنية",
+  "mobileSideSupport": "دعم الأجهزة المحمولة",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "يرجى إدخال عنوان SEO",
+  "pleaseInputSeoKeywords": "يرجى إدخال كلمات SEO المفتاحية",
+  "pleaseInputSeoDescription": "يرجى إدخال وصف SEO",
+
+  "pleaseInputCompanyName": "يرجى إدخال اسم الشركة",
+  "establishmentYear": "سنة التأسيس",
+  "pleaseInputEstablishmentYear": "يرجى إدخال سنة التأسيس",
+  "freePlusValue": "قيمة إضافية مجانية",
+
+  "contactMailbox": "صندوق البريد",
+  "pleaseInputContactMailbox": "يرجى إدخال صندوق البريد",
+
+  "customCss": "CSS مخصص",
+  "pleaseInputCustomCss": "يرجى إدخال CSS مخصص",
+  "customJavaScript": "JavaScript مخصص",
+  "pleaseInputCustomJavaScript": "يرجى إدخال JavaScript مخصص",
+
+  "dataSourceApi": "مصدر بيانات API",
+  "pleaseInputDataSourceApi": "يرجى إدخال مصدر بيانات API",
+  "relatedWebsites": "مواقع ذات صلة",
+  "pleaseInputRelatedWebsites": "يرجى إدخال المواقع ذات الصلة",
+  "pleaseInputSocialMediaLinks": "يرجى إدخال روابط وسائل التواصل الاجتماعي",
+
+  "managementRemarks": "ملاحظات الإدارة",
+  "pleaseInputManagementRemarks": "يرجى إدخال ملاحظات الإدارة",
+  "customData": "بيانات مخصصة",
+  "pleaseInputCustomData": "يرجى إدخال البيانات المخصصة"
 }

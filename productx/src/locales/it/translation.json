@@ -1026,5 +1026,59 @@
   "seoInfo": "Informazioni SEO",
   "seoTitle": "Titolo SEO",
   "seoKeywords": "Parole chiave SEO",
-  "seoDescription": "Descrizione SEO"
+  "seoDescription": "Descrizione SEO",
+
+  "createWebsite": "Crea sito web",
+  "websiteName": "Nome del sito web",
+  "pleaseInputWebsiteName": "Per favore, inserisci il nome del sito web",
+  "websiteLink": "Link del sito web",
+  "pleaseInputWebsiteLink": "Per favore, inserisci il link del sito web",
+  "pleaseInputValidWebsiteLink": "Per favore, inserisci un link valido del sito web",
+  "websiteDescription": "Descrizione del sito web",
+  "pleaseInputWebsiteDescription": "Per favore, inserisci la descrizione del sito web",
+
+  "socialNetwork": "Rete sociale",
+  "pleaseInputSubClassification": "Per favore, inserisci la sottocategoria",
+  "priorityLevel": "Livello di priorità",
+  "pleaseInputPriorityLevel": "Per favore, inserisci il livello di priorità",
+
+  "pleaseInputLogoLink": "Per favore, inserisci il link del logo",
+  "pleaseInputFaviconLink": "Per favore, inserisci il link del favicon",
+  "label": "Etichetta",
+  "pleaseInputLabel": "Per favore, inserisci l'etichetta",
+
+  "countryRegion": "Paese/Regione",
+  "pleaseSelectCountryRegion": "Per favore, seleziona un paese o una regione",
+  "pleaseSelectLanguage": "Per favore, seleziona una lingua",
+  "newOnline": "Nuovo online",
+  "technicalCharacteristics": "Caratteristiche tecniche",
+  "mobileSideSupport": "Supporto mobile",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "Per favore, inserisci il titolo SEO",
+  "pleaseInputSeoKeywords": "Per favore, inserisci le parole chiave SEO",
+  "pleaseInputSeoDescription": "Per favore, inserisci la descrizione SEO",
+
+  "pleaseInputCompanyName": "Per favore, inserisci il nome della società",
+  "establishmentYear": "Anno di fondazione",
+  "pleaseInputEstablishmentYear": "Per favore, inserisci l'anno di fondazione",
+  "freePlusValue": "Freemium",
+
+  "contactMailbox": "Casella di posta di contatto",
+  "pleaseInputContactMailbox": "Per favore, inserisci la casella di posta di contatto",
+
+  "customCss": "CSS personalizzato",
+  "pleaseInputCustomCss": "Per favore, inserisci il CSS personalizzato",
+  "customJavaScript": "JavaScript personalizzato",
+  "pleaseInputCustomJavaScript": "Per favore, inserisci il JavaScript personalizzato",
+
+  "dataSourceApi": "API della fonte dati",
+  "pleaseInputDataSourceApi": "Per favore, inserisci l'API della fonte dati",
+  "relatedWebsites": "Siti web correlati",
+  "pleaseInputRelatedWebsites": "Per favore, inserisci i siti web correlati",
+  "pleaseInputSocialMediaLinks": "Per favore, inserisci i link dei social media",
+
+  "managementRemarks": "Note di gestione",
+  "pleaseInputManagementRemarks": "Per favore, inserisci le note di gestione",
+  "customData": "Dati personalizzati",
+  "pleaseInputCustomData": "Per favore, inserisci i dati personalizzati"
 }

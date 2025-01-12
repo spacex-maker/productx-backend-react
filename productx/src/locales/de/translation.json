@@ -1009,5 +1009,59 @@
   "seoInfo": "SEO-Informationen",
   "seoTitle": "SEO-Titel",
   "seoKeywords": "SEO-Schlüsselwörter",
-  "seoDescription": "SEO-Beschreibung"
+  "seoDescription": "SEO-Beschreibung",
+
+  "createWebsite": "Website erstellen",
+  "websiteName": "Websitename",
+  "pleaseInputWebsiteName": "Bitte Websitename eingeben",
+  "websiteLink": "Websitelink",
+  "pleaseInputWebsiteLink": "Bitte Websitelink eingeben",
+  "pleaseInputValidWebsiteLink": "Bitte einen gültigen Websitelink eingeben",
+  "websiteDescription": "Webseitenbeschreibung",
+  "pleaseInputWebsiteDescription": "Bitte Webseitenbeschreibung eingeben",
+
+  "socialNetwork": "Soziales Netzwerk",
+  "pleaseInputSubClassification": "Bitte Unterkategorie eingeben",
+  "priorityLevel": "Prioritätsstufe",
+  "pleaseInputPriorityLevel": "Bitte Prioritätsstufe eingeben",
+
+  "pleaseInputLogoLink": "Bitte Logo-Link eingeben",
+  "pleaseInputFaviconLink": "Bitte Favicon-Link eingeben",
+  "label": "Etikett",
+  "pleaseInputLabel": "Bitte Etikett eingeben",
+
+  "countryRegion": "Land/Region",
+  "pleaseSelectCountryRegion": "Bitte Land/Region auswählen",
+  "pleaseSelectLanguage": "Bitte eine Sprache auswählen",
+  "newOnline": "Neu online",
+  "technicalCharacteristics": "Technische Merkmale",
+  "mobileSideSupport": "Mobile Unterstützung",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "Bitte SEO-Titel eingeben",
+  "pleaseInputSeoKeywords": "Bitte SEO-Schlüsselwörter eingeben",
+  "pleaseInputSeoDescription": "Bitte SEO-Beschreibung eingeben",
+
+  "pleaseInputCompanyName": "Bitte Firmennamen eingeben",
+  "establishmentYear": "Gründungsjahr",
+  "pleaseInputEstablishmentYear": "Bitte Gründungsjahr eingeben",
+  "freePlusValue": "Kostenlos mit Mehrwert",
+
+  "contactMailbox": "Kontakt-Mailbox",
+  "pleaseInputContactMailbox": "Bitte Kontakt-Mailbox eingeben",
+
+  "customCss": "Benutzerdefiniertes CSS",
+  "pleaseInputCustomCss": "Bitte benutzerdefiniertes CSS eingeben",
+  "customJavaScript": "Benutzerdefiniertes JavaScript",
+  "pleaseInputCustomJavaScript": "Bitte benutzerdefiniertes JavaScript eingeben",
+
+  "dataSourceApi": "API-Datenquelle",
+  "pleaseInputDataSourceApi": "Bitte API-Datenquelle eingeben",
+  "relatedWebsites": "Verwandte Websites",
+  "pleaseInputRelatedWebsites": "Bitte verwandte Websites eingeben",
+  "pleaseInputSocialMediaLinks": "Bitte Social-Media-Links eingeben",
+
+  "managementRemarks": "Management-Bemerkungen",
+  "pleaseInputManagementRemarks": "Bitte Management-Bemerkungen eingeben",
+  "customData": "Benutzerdefinierte Daten",
+  "pleaseInputCustomData": "Bitte benutzerdefinierte Daten eingeben"
 }

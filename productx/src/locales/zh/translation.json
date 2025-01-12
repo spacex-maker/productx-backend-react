@@ -1056,5 +1056,60 @@
   "seoInfo": "SEO信息",
   "seoTitle": "SEO标题",
   "seoKeywords": "SEO关键词",
-  "seoDescription": "SEO描述"
+  "seoDescription": "SEO描述",
+
+  "createWebsite": "创建网站",
+  "websiteName": "网站名称",
+  "pleaseInputWebsiteName": "请输入网站名称",
+  "websiteLink": "网站链接",
+  "pleaseInputWebsiteLink": "请输入网站链接",
+  "pleaseInputValidWebsiteLink": "请输入有效的网站链接",
+  "websiteDescription": "网站描述",
+  "pleaseInputWebsiteDescription": "请输入网站描述",
+
+  "socialNetwork": "社交",
+  "pleaseInputSubClassification": "请输入子分类",
+  "priorityLevel": "优先级",
+  "pleaseInputPriorityLevel": "请输入优先级",
+
+  "pleaseInputLogoLink": "请输入Logo链接",
+  "pleaseInputFaviconLink": "请输入Favicon链接",
+  "label": "标签",
+  "pleaseInputLabel": "请输入标签",
+
+  "countryRegion": "国家/地区",
+  "pleaseSelectCountryRegion": "请选择国家/地区",
+  "pleaseSelectLanguage": "请选择语言",
+  "newOnline": "新上线",
+  "technicalCharacteristics": "技术特性",
+  "mobileSideSupport": "移动端支持",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "请输入SEO标题",
+  "pleaseInputSeoKeywords": "请输入SEO关键词",
+  "pleaseInputSeoDescription": "请输入SEO描述",
+
+  "pleaseInputCompanyName": "请输入公司名称",
+  "establishmentYear": "成立年份",
+  "pleaseInputEstablishmentYear": "请输入成立年份",
+  "freePlusValue": "免费增值",
+
+  "contactMailbox": "联系邮箱",
+  "pleaseInputContactMailbox": "请输入联系邮箱",
+
+  "customCss": "自定义CSS",
+  "pleaseInputCustomCss": "请输入自定义CSS",
+  "customJavaScript": "自定义JavaScript",
+  "pleaseInputCustomJavaScript": "请输入自定义JavaScript",
+
+  "dataSourceApi": "数据来源API",
+  "pleaseInputDataSourceApi": "请输入数据来源API",
+  "relatedWebsites": "相关网站",
+  "pleaseInputRelatedWebsites": "请输入相关网站",
+  "pleaseInputSocialMediaLinks": "请输入社交媒体链接",
+
+  "managementRemarks": "管理备注",
+  "pleaseInputManagementRemarks": "请输入管理备注",
+  "customData": "自定义数据",
+  "pleaseInputCustomData": "请输入自定义数据"
+
 }

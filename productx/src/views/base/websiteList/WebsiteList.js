@@ -116,11 +116,16 @@ const WebsiteList = () => {
   const handleStatusChange = async (id, checked) => {
     setLoadingStatus(prev => ({ ...prev, [id]: true }));
     try {
-      await updateWebsiteStatus(id, checked ? 1 : 0);
-      fetchData();
+      await api.put('/manage/website-list/update-status', {
+        id,
+        status: checked ? 1 : 0
+      });
+      
+      await fetchData();
       message.success(t('updateSuccess'));
     } catch (error) {
-      message.error(t('updateFailed'));
+      console.error('Failed to update status:', error);
+      message.error(error.message || t('updateFailed'));
     } finally {
       setLoadingStatus(prev => ({ ...prev, [id]: false }));
     }
