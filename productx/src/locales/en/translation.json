@@ -1088,5 +1088,8 @@
   "managementRemarks": "Management Remarks",
   "pleaseInputManagementRemarks": "Please input management remarks",
   "customData": "Custom Data",
-  "pleaseInputCustomData": "Please input custom data"
+  "pleaseInputCustomData": "Please input custom data",
+
+  "features": "Features",
+  "socialMedia": "Social Media"
 }

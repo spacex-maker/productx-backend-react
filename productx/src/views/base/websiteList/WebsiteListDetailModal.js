@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Descriptions, Space, Tag, Row, Col, Card, Statistic, Divider, Typography } from 'antd';
+import { Modal, Descriptions, Space, Tag, Row, Col, Card, Statistic, Divider, Typography, Avatar } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
   GlobalOutlined,
@@ -24,6 +24,9 @@ import {
   CalendarOutlined,
   TwitterOutlined,
   FacebookOutlined,
+  InstagramOutlined,
+  WeiboOutlined,
+  YoutubeOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
@@ -68,13 +71,18 @@ const WebsiteListDetailModal = ({
           <Card title={t('basicInformation')}>
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
               <Space align="start" size="large">
-                {websiteData?.logoUrl && (
-                  <img
-                    src={websiteData.logoUrl}
-                    alt={websiteData.name}
-                    style={{ width: 80, height: 80, objectFit: 'contain' }}
-                  />
-                )}
+                <Avatar 
+                  src={websiteData?.logoUrl}
+                  alt={websiteData?.name}
+                  size={80}
+                  shape="square"
+                  style={{ 
+                    backgroundColor: '#f5f5f5',
+                    padding: 4,
+                    border: '1px solid #d9d9d9'
+                  }}
+                  icon={<GlobalOutlined />}
+                />
                 <div>
                   <Title level={3} style={{ margin: 0 }}>{websiteData?.name}</Title>
                   <Space>
@@ -237,6 +245,21 @@ const WebsiteListDetailModal = ({
               {socialLinks.facebook && (
                 <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer">
                   <Tag icon={<FacebookOutlined />} color="blue">Facebook</Tag>
+                </a>
+              )}
+              {socialLinks.instagram && (
+                <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<InstagramOutlined />} color="blue">Instagram</Tag>
+                </a>
+              )}
+              {socialLinks.weibo && (
+                <a href={socialLinks.weibo} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<WeiboOutlined />} color="blue">微博</Tag>
+                </a>
+              )}
+              {socialLinks.youtube && (
+                <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<YoutubeOutlined />} color="blue">YouTube</Tag>
                 </a>
               )}
             </Space>

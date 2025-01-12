@@ -1063,5 +1063,8 @@
   "managementRemarks": "Management-Bemerkungen",
   "pleaseInputManagementRemarks": "Bitte Management-Bemerkungen eingeben",
   "customData": "Benutzerdefinierte Daten",
-  "pleaseInputCustomData": "Bitte benutzerdefinierte Daten eingeben"
+  "pleaseInputCustomData": "Bitte benutzerdefinierte Daten eingeben",
+
+  "features": "Funktionen",
+  "socialMedia": "Soziale Medien"
 }

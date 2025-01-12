@@ -16,7 +16,7 @@ const WebsiteList = () => {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
-  const [currentPage, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchParams, setSearchParams] = useState({
     name: '',
@@ -59,7 +59,7 @@ const WebsiteList = () => {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, pageSize, searchParams]);
+  }, [current, pageSize, searchParams]);
 
   // 获取国家列表
   useEffect(() => {
@@ -93,8 +93,8 @@ const WebsiteList = () => {
 
       const response = await api.get('/manage/website-list/list', {
         params: { 
-          currentPage, 
-          pageSize, 
+          currentPage: current,
+          pageSize: pageSize,
           ...filteredParams 
         },
       });
@@ -116,9 +116,9 @@ const WebsiteList = () => {
   const handleStatusChange = async (id, checked) => {
     setLoadingStatus(prev => ({ ...prev, [id]: true }));
     try {
-      await api.put('/manage/website-list/update-status', {
+      await api.post('/manage/website-list/change-status', {
         id,
-        status: checked ? 1 : 0
+        status: checked
       });
       
       await fetchData();
@@ -131,9 +131,12 @@ const WebsiteList = () => {
     }
   };
 
-  const handleSearchChange = (event) => {
-    const { name, value } = event.target;
-    setSearchParams(prev => ({ ...prev, [name]: value }));
+  const handleSearchChange = ({ target: { name, value } }) => {
+    setSearchParams(prev => ({ 
+      ...prev, 
+      [name]: value,
+      currentPage: 1  // 修正参数名为 currentPage
+    }));
   };
 
   const handleCreateWebsite = async (values) => {
@@ -169,102 +172,139 @@ const WebsiteList = () => {
     setIsDetailModalVisible(true);
   };
 
+  const totalPages = Math.ceil(totalNum / pageSize);
+
+  // 特征多选框的处理
+  const handleCharacteristicsChange = (values) => {
+    setSearchParams(prev => ({
+      ...prev,
+      isNew: values.includes('isNew'),
+      isFeatured: values.includes('isFeatured'),
+      isPopular: values.includes('isPopular'),
+      isVerified: values.includes('isVerified'),
+      currentPage: 1
+    }));
+  };
+
+  // 功能多选框的处理
+  const handleFeaturesChange = (values) => {
+    setSearchParams(prev => ({
+      ...prev,
+      hasMobileSupport: values.includes('hasMobileSupport') || undefined,
+      hasDarkMode: values.includes('hasDarkMode') || undefined,
+      hasSsl: values.includes('hasSsl') || undefined,
+      currentPage: 1
+    }));
+  };
+
   return (
     <div>
       <div className="search-form mb-3">
         <Form>
-          <Row gutter={16}>
-            <Col>
-              <Input
-                placeholder={t('pleaseEnterSiteName')}
-                value={searchParams.name}
-                onChange={(e) => handleSearchChange({ target: { name: 'name', value: e.target.value }})}
-                allowClear
-                style={{ width: 180 }}
-              />
-            </Col>
-            <Col>
-              <Input
-                placeholder={t('pleaseEnterSiteUrl')}
-                value={searchParams.url}
-                onChange={(e) => handleSearchChange({ target: { name: 'url', value: e.target.value }})}
-                allowClear
-                style={{ width: 180 }}
-              />
-            </Col>
-            <Col>
-              <Select
-                allowClear
-                placeholder={t('pleaseSelectClassification')}
-                value={searchParams.category}
-                onChange={(value) => handleSearchChange({ target: { name: 'category', value }})}
-                style={{ width: 180 }}
+          <Space wrap>
+            <Input
+              placeholder={t('pleaseEnterSiteName')}
+              value={searchParams.name}
+              onChange={(e) => handleSearchChange({ target: { name: 'name', value: e.target.value }})}
+              allowClear
+              style={{ minWidth: 200 }}
+            />
+            <Input
+              placeholder={t('pleaseEnterSiteUrl')}
+              value={searchParams.url}
+              onChange={(e) => handleSearchChange({ target: { name: 'url', value: e.target.value }})}
+              allowClear
+              style={{ minWidth: 200 }}
+            />
+            <Select
+              allowClear
+              placeholder={t('pleaseSelectClassification')}
+              value={searchParams.category}
+              onChange={(value) => handleSearchChange({ target: { name: 'category', value }})}
+              style={{ minWidth: 200 }}
+            >
+              <Option value="购物">{t('shopping')}</Option>
+              <Option value="美食">{t('food')}</Option>
+              <Option value="交通">{t('transportation')}</Option>
+              <Option value="旅游">{t('travel')}</Option>
+              <Option value="娱乐">{t('entertainment')}</Option>
+              <Option value="教育">{t('education')}</Option>
+              <Option value="新闻">{t('news')}</Option>
+              <Option value="社交">{t('social')}</Option>
+            </Select>
+            <Select
+              allowClear
+              placeholder={t('status')}
+              value={searchParams.status}
+              onChange={(value) => handleSearchChange({ target: { name: 'status', value }})}
+              style={{ minWidth: 200 }}
+            >
+              <Option value={true}>{t('enabled')}</Option>
+              <Option value={false}>{t('disabled')}</Option>
+            </Select>
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder={t('characteristics')}
+              value={[
+                searchParams.isNew && 'isNew',
+                searchParams.isFeatured && 'isFeatured',
+                searchParams.isPopular && 'isPopular',
+                searchParams.isVerified && 'isVerified',
+              ].filter(Boolean)}
+              onChange={handleCharacteristicsChange}
+              style={{ minWidth: 200 }}
+            >
+              <Option value="isNew">{t('newOnline')}</Option>
+              <Option value="isFeatured">{t('recommended')}</Option>
+              <Option value="isPopular">{t('popular')}</Option>
+              <Option value="isVerified">{t('verified')}</Option>
+            </Select>
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder={t('features')}
+              value={[
+                searchParams.hasMobileSupport && 'hasMobileSupport',
+                searchParams.hasDarkMode && 'hasDarkMode',
+                searchParams.hasSsl && 'hasSsl',
+              ].filter(Boolean)}
+              onChange={handleFeaturesChange}
+              style={{ minWidth: 200 }}
+            >
+              <Option value="hasMobileSupport">{t('mobileSupport')}</Option>
+              <Option value="hasDarkMode">{t('darkMode')}</Option>
+              <Option value="hasSsl">{t('ssl')}</Option>
+            </Select>
+            <Input
+              placeholder={t('pleaseEnterCompanyName')}
+              value={searchParams.companyName}
+              onChange={(e) => handleSearchChange({ target: { name: 'companyName', value: e.target.value }})}
+              allowClear
+              style={{ minWidth: 200 }}
+            />
+            <Space>
+              <Button type="primary" onClick={fetchData}>
+                {t('search')}
+              </Button>
+              <Button onClick={() => setIsCreateModalVisible(true)}>
+                {t('create')}
+              </Button>
+              <Button
+                type="primary"
+                onClick={() =>
+                  HandleBatchDelete({
+                    url: '/manage/website-list/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })
+                }
+                disabled={selectedRows.length === 0}
               >
-                <Option value="购物">{t('shopping')}</Option>
-                <Option value="娱乐">{t('entertainment')}</Option>
-                <Option value="教育">{t('education')}</Option>
-                <Option value="新闻">{t('news')}</Option>
-                <Option value="社交">{t('social')}</Option>
-              </Select>
-            </Col>
-            <Col>
-              <Select
-                allowClear
-                showSearch
-                placeholder={t('country')}
-                value={searchParams.countryCode}
-                onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value }})}
-                filterOption={(input, option) => {
-                  const country = countries.find(c => c.code === option.value);
-                  return (
-                    country?.name.toLowerCase().includes(input.toLowerCase()) ||
-                    country?.code.toLowerCase().includes(input.toLowerCase())
-                  );
-                }}
-                style={{ width: 180 }}
-              >
-                {countries.map(country => (
-                  <Option key={country.code} value={country.code}>
-                    <Space>
-                      <img 
-                        src={country.flagImageUrl} 
-                        alt={country.name}
-                        style={{ 
-                          width: 20,
-                          height: 15,
-                          borderRadius: 0
-                        }}
-                      />
-                      <span>{country.name}</span>
-                    </Space>
-                  </Option>
-                ))}
-              </Select>
-            </Col>
-            <Col>
-              <Space>
-                <Button type="primary" onClick={fetchData}>
-                  {t('search')}
-                </Button>
-                <Button onClick={() => setIsCreateModalVisible(true)}>
-                  {t('create')}
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() =>
-                    HandleBatchDelete({
-                      url: '/manage/website-list/delete-batch',
-                      selectedRows,
-                      fetchData,
-                    })
-                  }
-                  disabled={selectedRows.length === 0}
-                >
-                  {t('batchDelete')}
-                </Button>
-              </Space>
-            </Col>
-          </Row>
+                {t('batchDelete')}
+              </Button>
+            </Space>
+          </Space>
         </Form>
       </div>
 
@@ -286,14 +326,11 @@ const WebsiteList = () => {
       </div>
 
       <Pagination
-        total={totalNum}
-        current={currentPage}
+        totalPages={totalPages}
+        current={current}
+        onPageChange={setCurrent}
         pageSize={pageSize}
-        onChange={setCurrent}
-        onShowSizeChange={(current, size) => {
-          setCurrent(1);
-          setPageSize(size);
-        }}
+        onPageSizeChange={setPageSize}
       />
 
       <WebsiteListCreateFormModal
