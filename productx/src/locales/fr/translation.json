@@ -1042,5 +1042,59 @@
   "seoInfo": "Informations SEO",
   "seoTitle": "Titre SEO",
   "seoKeywords": "Mots-clés SEO",
-  "seoDescription": "Description SEO"
+  "seoDescription": "Description SEO",
+
+  "createWebsite": "Créer un site web",
+  "websiteName": "Nom du site web",
+  "pleaseInputWebsiteName": "Veuillez saisir le nom du site web",
+  "websiteLink": "Lien du site web",
+  "pleaseInputWebsiteLink": "Veuillez saisir le lien du site web",
+  "pleaseInputValidWebsiteLink": "Veuillez saisir un lien de site web valide",
+  "websiteDescription": "Description du site web",
+  "pleaseInputWebsiteDescription": "Veuillez saisir la description du site web",
+
+  "socialNetwork": "Réseau social",
+  "pleaseInputSubClassification": "Veuillez saisir une sous-catégorie",
+  "priorityLevel": "Niveau de priorité",
+  "pleaseInputPriorityLevel": "Veuillez saisir le niveau de priorité",
+
+  "pleaseInputLogoLink": "Veuillez saisir le lien du logo",
+  "pleaseInputFaviconLink": "Veuillez saisir le lien du favicon",
+  "label": "Étiquette",
+  "pleaseInputLabel": "Veuillez saisir une étiquette",
+
+  "countryRegion": "Pays/Région",
+  "pleaseSelectCountryRegion": "Veuillez sélectionner un pays ou une région",
+  "pleaseSelectLanguage": "Veuillez sélectionner une langue",
+  "newOnline": "Nouveau en ligne",
+  "technicalCharacteristics": "Caractéristiques techniques",
+  "mobileSideSupport": "Support mobile",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "Veuillez saisir le titre SEO",
+  "pleaseInputSeoKeywords": "Veuillez saisir les mots-clés SEO",
+  "pleaseInputSeoDescription": "Veuillez saisir la description SEO",
+
+  "pleaseInputCompanyName": "Veuillez saisir le nom de l'entreprise",
+  "establishmentYear": "Année de création",
+  "pleaseInputEstablishmentYear": "Veuillez saisir l'année de création",
+  "freePlusValue": "Freemium",
+
+  "contactMailbox": "Boîte mail de contact",
+  "pleaseInputContactMailbox": "Veuillez saisir une boîte mail de contact",
+
+  "customCss": "CSS personnalisé",
+  "pleaseInputCustomCss": "Veuillez saisir le CSS personnalisé",
+  "customJavaScript": "JavaScript personnalisé",
+  "pleaseInputCustomJavaScript": "Veuillez saisir le JavaScript personnalisé",
+
+  "dataSourceApi": "Source de données API",
+  "pleaseInputDataSourceApi": "Veuillez saisir la source de données API",
+  "relatedWebsites": "Sites web associés",
+  "pleaseInputRelatedWebsites": "Veuillez saisir les sites web associés",
+  "pleaseInputSocialMediaLinks": "Veuillez saisir les liens des réseaux sociaux",
+
+  "managementRemarks": "Remarques de gestion",
+  "pleaseInputManagementRemarks": "Veuillez saisir les remarques de gestion",
+  "customData": "Données personnalisées",
+  "pleaseInputCustomData": "Veuillez saisir les données personnalisées"
 }

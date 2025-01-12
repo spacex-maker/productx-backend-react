@@ -1033,5 +1033,59 @@
   "seoInfo": "SEO информация",
   "seoTitle": "SEO заголовок",
   "seoKeywords": "SEO ключевые слова",
-  "seoDescription": "SEO описание"
+  "seoDescription": "SEO описание",
+
+  "createWebsite": "Создать сайт",
+  "websiteName": "Название сайта",
+  "pleaseInputWebsiteName": "Пожалуйста, введите название сайта",
+  "websiteLink": "Ссылка на сайт",
+  "pleaseInputWebsiteLink": "Пожалуйста, введите ссылку на сайт",
+  "pleaseInputValidWebsiteLink": "Пожалуйста, введите действительную ссылку на сайт",
+  "websiteDescription": "Описание сайта",
+  "pleaseInputWebsiteDescription": "Пожалуйста, введите описание сайта",
+
+  "socialNetwork": "Социальная сеть",
+  "pleaseInputSubClassification": "Пожалуйста, введите подкатегорию",
+  "priorityLevel": "Уровень приоритета",
+  "pleaseInputPriorityLevel": "Пожалуйста, введите уровень приоритета",
+
+  "pleaseInputLogoLink": "Пожалуйста, введите ссылку на логотип",
+  "pleaseInputFaviconLink": "Пожалуйста, введите ссылку на фавикон",
+  "label": "Метка",
+  "pleaseInputLabel": "Пожалуйста, введите метку",
+
+  "countryRegion": "Страна/Регион",
+  "pleaseSelectCountryRegion": "Пожалуйста, выберите страну/регион",
+  "pleaseSelectLanguage": "Пожалуйста, выберите язык",
+  "newOnline": "Новый онлайн",
+  "technicalCharacteristics": "Технические характеристики",
+  "mobileSideSupport": "Поддержка мобильной версии",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "Пожалуйста, введите SEO-заголовок",
+  "pleaseInputSeoKeywords": "Пожалуйста, введите SEO-ключевые слова",
+  "pleaseInputSeoDescription": "Пожалуйста, введите SEO-описание",
+
+  "pleaseInputCompanyName": "Пожалуйста, введите название компании",
+  "establishmentYear": "Год основания",
+  "pleaseInputEstablishmentYear": "Пожалуйста, введите год основания",
+  "freePlusValue": "Бесплатно с доп. услугами",
+
+  "contactMailbox": "Контактный почтовый ящик",
+  "pleaseInputContactMailbox": "Пожалуйста, введите контактный почтовый ящик",
+
+  "customCss": "Пользовательский CSS",
+  "pleaseInputCustomCss": "Пожалуйста, введите пользовательский CSS",
+  "customJavaScript": "Пользовательский JavaScript",
+  "pleaseInputCustomJavaScript": "Пожалуйста, введите пользовательский JavaScript",
+
+  "dataSourceApi": "API источник данных",
+  "pleaseInputDataSourceApi": "Пожалуйста, введите API источник данных",
+  "relatedWebsites": "Связанные сайты",
+  "pleaseInputRelatedWebsites": "Пожалуйста, введите связанные сайты",
+  "pleaseInputSocialMediaLinks": "Пожалуйста, введите ссылки на соцсети",
+
+  "managementRemarks": "Замечания по управлению",
+  "pleaseInputManagementRemarks": "Пожалуйста, введите замечания по управлению",
+  "customData": "Пользовательские данные",
+  "pleaseInputCustomData": "Пожалуйста, введите пользовательские данные"
 }

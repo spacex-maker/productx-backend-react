@@ -1032,5 +1032,59 @@
   "seoInfo": "SEO情報",
   "seoTitle": "SEOタイトル",
   "seoKeywords": "SEOキーワード",
-  "seoDescription": "SEO説明"
+  "seoDescription": "SEO説明",
+
+  "createWebsite": "ウェブサイトを作成",
+  "websiteName": "ウェブサイト名",
+  "pleaseInputWebsiteName": "ウェブサイト名を入力してください",
+  "websiteLink": "ウェブサイトリンク",
+  "pleaseInputWebsiteLink": "ウェブサイトリンクを入力してください",
+  "pleaseInputValidWebsiteLink": "有効なウェブサイトリンクを入力してください",
+  "websiteDescription": "ウェブサイトの説明",
+  "pleaseInputWebsiteDescription": "ウェブサイトの説明を入力してください",
+
+  "socialNetwork": "ソーシャルネットワーク",
+  "pleaseInputSubClassification": "サブ分類を入力してください",
+  "priorityLevel": "優先度",
+  "pleaseInputPriorityLevel": "優先度を入力してください",
+
+  "pleaseInputLogoLink": "ロゴリンクを入力してください",
+  "pleaseInputFaviconLink": "ファビコンリンクを入力してください",
+  "label": "ラベル",
+  "pleaseInputLabel": "ラベルを入力してください",
+
+  "countryRegion": "国/地域",
+  "pleaseSelectCountryRegion": "国/地域を選択してください",
+  "pleaseSelectLanguage": "言語を選択してください",
+  "newOnline": "新オンライン",
+  "technicalCharacteristics": "技術的な特徴",
+  "mobileSideSupport": "モバイルサポート",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "SEOタイトルを入力してください",
+  "pleaseInputSeoKeywords": "SEOキーワードを入力してください",
+  "pleaseInputSeoDescription": "SEO説明を入力してください",
+
+  "pleaseInputCompanyName": "会社名を入力してください",
+  "establishmentYear": "設立年",
+  "pleaseInputEstablishmentYear": "設立年を入力してください",
+  "freePlusValue": "無料プラス価値",
+
+  "contactMailbox": "連絡先メールボックス",
+  "pleaseInputContactMailbox": "連絡先メールボックスを入力してください",
+
+  "customCss": "カスタムCSS",
+  "pleaseInputCustomCss": "カスタムCSSを入力してください",
+  "customJavaScript": "カスタムJavaScript",
+  "pleaseInputCustomJavaScript": "カスタムJavaScriptを入力してください",
+
+  "dataSourceApi": "データソースAPI",
+  "pleaseInputDataSourceApi": "データソースAPIを入力してください",
+  "relatedWebsites": "関連ウェブサイト",
+  "pleaseInputRelatedWebsites": "関連ウェブサイトを入力してください",
+  "pleaseInputSocialMediaLinks": "ソーシャルメディアリンクを入力してください",
+
+  "managementRemarks": "管理メモ",
+  "pleaseInputManagementRemarks": "管理メモを入力してください",
+  "customData": "カスタムデータ",
+  "pleaseInputCustomData": "カスタムデータを入力してください"
 }

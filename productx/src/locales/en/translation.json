@@ -1034,5 +1034,59 @@
   "seoInfo": "SEO Information",
   "seoTitle": "SEO Title",
   "seoKeywords": "SEO Keywords",
-  "seoDescription": "SEO Description"
+  "seoDescription": "SEO Description",
+
+  "createWebsite": "Create Website",
+  "websiteName": "Website Name",
+  "pleaseInputWebsiteName": "Please input website name",
+  "websiteLink": "Website Link",
+  "pleaseInputWebsiteLink": "Please input website link",
+  "pleaseInputValidWebsiteLink": "Please input a valid website link",
+  "websiteDescription": "Website Description",
+  "pleaseInputWebsiteDescription": "Please input website description",
+
+  "socialNetwork": "Social Network",
+  "pleaseInputSubClassification": "Please input sub classification",
+  "priorityLevel": "Priority Level",
+  "pleaseInputPriorityLevel": "Please input priority level",
+
+  "pleaseInputLogoLink": "Please input logo link",
+  "pleaseInputFaviconLink": "Please input favicon link",
+  "label": "Label",
+  "pleaseInputLabel": "Please input label",
+
+  "countryRegion": "Country/Region",
+  "pleaseSelectCountryRegion": "Please select a country/region",
+  "pleaseSelectLanguage": "Please select a language",
+  "newOnline": "New Online",
+  "technicalCharacteristics": "Technical Characteristics",
+  "mobileSideSupport": "Mobile Side Support",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "Please input SEO title",
+  "pleaseInputSeoKeywords": "Please input SEO keywords",
+  "pleaseInputSeoDescription": "Please input SEO description",
+
+  "pleaseInputCompanyName": "Please input company name",
+  "establishmentYear": "Establishment Year",
+  "pleaseInputEstablishmentYear": "Please input establishment year",
+  "freePlusValue": "Free Plus Value",
+
+  "contactMailbox": "Contact Mailbox",
+  "pleaseInputContactMailbox": "Please input contact mailbox",
+
+  "customCss": "Custom CSS",
+  "pleaseInputCustomCss": "Please input custom CSS",
+  "customJavaScript": "Custom JavaScript",
+  "pleaseInputCustomJavaScript": "Please input custom JavaScript",
+
+  "dataSourceApi": "Data Source API",
+  "pleaseInputDataSourceApi": "Please input data source API",
+  "relatedWebsites": "Related Websites",
+  "pleaseInputRelatedWebsites": "Please input related websites",
+  "pleaseInputSocialMediaLinks": "Please input social media links",
+
+  "managementRemarks": "Management Remarks",
+  "pleaseInputManagementRemarks": "Please input management remarks",
+  "customData": "Custom Data",
+  "pleaseInputCustomData": "Please input custom data"
 }

@@ -1042,5 +1042,59 @@
   "seoInfo": "Información SEO",
   "seoTitle": "Título SEO",
   "seoKeywords": "Palabras clave SEO",
-  "seoDescription": "Descripción SEO"
+  "seoDescription": "Descripción SEO",
+
+  "createWebsite": "Crear sitio web",
+  "websiteName": "Nombre del sitio web",
+  "pleaseInputWebsiteName": "Por favor, ingrese el nombre del sitio web",
+  "websiteLink": "Enlace del sitio web",
+  "pleaseInputWebsiteLink": "Por favor, ingrese el enlace del sitio web",
+  "pleaseInputValidWebsiteLink": "Por favor, ingrese un enlace válido del sitio web",
+  "websiteDescription": "Descripción del sitio web",
+  "pleaseInputWebsiteDescription": "Por favor, ingrese la descripción del sitio web",
+
+  "socialNetwork": "Red social",
+  "pleaseInputSubClassification": "Por favor, ingrese una subcategoría",
+  "priorityLevel": "Nivel de prioridad",
+  "pleaseInputPriorityLevel": "Por favor, ingrese el nivel de prioridad",
+
+  "pleaseInputLogoLink": "Por favor, ingrese el enlace del logo",
+  "pleaseInputFaviconLink": "Por favor, ingrese el enlace del favicon",
+  "label": "Etiqueta",
+  "pleaseInputLabel": "Por favor, ingrese una etiqueta",
+
+  "countryRegion": "País/Región",
+  "pleaseSelectCountryRegion": "Por favor, seleccione un país o región",
+  "pleaseSelectLanguage": "Por favor, seleccione un idioma",
+  "newOnline": "Nuevo en línea",
+  "technicalCharacteristics": "Características técnicas",
+  "mobileSideSupport": "Soporte móvil",
+  "secureConnection": "HTTPS",
+  "pleaseInputSeoTitle": "Por favor, ingrese el título SEO",
+  "pleaseInputSeoKeywords": "Por favor, ingrese las palabras clave SEO",
+  "pleaseInputSeoDescription": "Por favor, ingrese la descripción SEO",
+
+  "pleaseInputCompanyName": "Por favor, ingrese el nombre de la empresa",
+  "establishmentYear": "Año de establecimiento",
+  "pleaseInputEstablishmentYear": "Por favor, ingrese el año de establecimiento",
+  "freePlusValue": "Freemium",
+
+  "contactMailbox": "Correo de contacto",
+  "pleaseInputContactMailbox": "Por favor, ingrese el correo de contacto",
+
+  "customCss": "CSS personalizado",
+  "pleaseInputCustomCss": "Por favor, ingrese el CSS personalizado",
+  "customJavaScript": "JavaScript personalizado",
+  "pleaseInputCustomJavaScript": "Por favor, ingrese el JavaScript personalizado",
+
+  "dataSourceApi": "API de fuente de datos",
+  "pleaseInputDataSourceApi": "Por favor, ingrese la API de fuente de datos",
+  "relatedWebsites": "Sitios web relacionados",
+  "pleaseInputRelatedWebsites": "Por favor, ingrese los sitios web relacionados",
+  "pleaseInputSocialMediaLinks": "Por favor, ingrese los enlaces de redes sociales",
+
+  "managementRemarks": "Notas de gestión",
+  "pleaseInputManagementRemarks": "Por favor, ingrese las notas de gestión",
+  "customData": "Datos personalizados",
+  "pleaseInputCustomData": "Por favor, ingrese los datos personalizados"
 }
