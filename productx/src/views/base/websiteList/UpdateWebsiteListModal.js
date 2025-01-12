@@ -1,7 +1,17 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select, Row, Col, DatePicker, Space, Switch } from 'antd';
+import { Modal, Form, Input, Select, Row, Col, DatePicker, Space, Switch, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import { 
+  GithubOutlined,
+  TwitterOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
+  LinkedinOutlined,
+  YoutubeOutlined,
+  WeiboOutlined,
+  WechatOutlined
+} from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -16,21 +26,65 @@ const UpdateWebsiteListModal = ({
 }) => {
   const { t } = useTranslation();
 
+  // 精简后的社交媒体平台列表
+  const socialPlatforms = [
+    { key: 'twitter', icon: <TwitterOutlined />, name: 'Twitter', urlPrefix: 'https://twitter.com/' },
+    { key: 'instagram', icon: <InstagramOutlined />, name: 'Instagram', urlPrefix: 'https://instagram.com/' },
+    { key: 'facebook', icon: <FacebookOutlined />, name: 'Facebook', urlPrefix: 'https://facebook.com/' },
+    { key: 'weibo', icon: <WeiboOutlined />, name: '微博', urlPrefix: 'https://weibo.com/' },
+    { key: 'youtube', icon: <YoutubeOutlined />, name: 'YouTube', urlPrefix: 'https://youtube.com/' },
+    { key: 'linkedin', icon: <LinkedinOutlined />, name: 'LinkedIn', urlPrefix: 'https://linkedin.com/company/' }
+  ];
+
+  // 处理表单提交
+  const handleSubmit = (values) => {
+    // 将各个社交平台的链接组合成对象
+    const socialLinksObj = {};
+    socialPlatforms.forEach(platform => {
+      if (values[`social_${platform.key}`]) {
+        // 如果用户输入的是完整链接，就直接使用
+        const value = values[`social_${platform.key}`];
+        socialLinksObj[platform.key] = value.startsWith('http') ? value : `${platform.urlPrefix}${value}`;
+      }
+    });
+
+    // 移除临时的社交媒体字段，添加组合后的 socialLinks
+    const formattedValues = {
+      ...values,
+      tags: Array.isArray(values.tags) ? values.tags : [],
+      socialLinks: JSON.stringify(socialLinksObj)
+    };
+    
+    // 删除临时的社交媒体字段
+    socialPlatforms.forEach(platform => {
+      delete formattedValues[`social_${platform.key}`];
+    });
+
+    onFinish(formattedValues);
+  };
+
+  // 在加载数据时解析现有的社交链接和标签
   useEffect(() => {
     if (isVisible && selectedWebsite) {
-      form.setFieldsValue({
+      const socialLinks = JSON.parse(selectedWebsite.socialLinks || '{}');
+      
+      const initialValues = {
         ...selectedWebsite,
-        startDate: selectedWebsite.startDate ? dayjs(selectedWebsite.startDate) : null,
-        endDate: selectedWebsite.endDate ? dayjs(selectedWebsite.endDate) : null,
         tags: selectedWebsite.tags ? selectedWebsite.tags.split(',') : [],
-        isFeatured: Boolean(selectedWebsite.isFeatured),
-        isPopular: Boolean(selectedWebsite.isPopular),
-        isNew: Boolean(selectedWebsite.isNew),
-        isVerified: Boolean(selectedWebsite.isVerified),
-        hasMobileSupport: Boolean(selectedWebsite.hasMobileSupport),
-        hasDarkMode: Boolean(selectedWebsite.hasDarkMode),
-        hasSsl: Boolean(selectedWebsite.hasSsl),
+      };
+
+      // 为每个社交平台设置单独的字段值
+      socialPlatforms.forEach(platform => {
+        if (socialLinks[platform.key]) {
+          // 直接使用完整的链接，不做处理
+          initialValues[`social_${platform.key}`] = socialLinks[platform.key];
+        }
       });
+
+      form.setFieldsValue(initialValues);
+    } else {
+      // 当模态框关闭时重置表单
+      form.resetFields();
     }
   }, [isVisible, selectedWebsite, form]);
 
@@ -45,9 +99,8 @@ const UpdateWebsiteListModal = ({
     >
       <Form 
         form={form} 
-        onFinish={onFinish}
+        onFinish={handleSubmit}
         layout="vertical"
-        labelCol={{ style: { padding: '0 4px' } }}
       >
         <Form.Item name="id" hidden>
           <Input />
@@ -312,9 +365,41 @@ const UpdateWebsiteListModal = ({
               <Input.TextArea rows={2} placeholder={t('pleaseInputRelatedWebsites')} />
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item label={t('socialMediaLinks')} name="socialLinks">
-              <Input.TextArea rows={2} placeholder={t('pleaseInputSocialMediaLinks')} />
+          <Col span={24}>
+            <Form.Item 
+              label={t('socialMediaLinks')}
+              style={{ marginBottom: 0 }}
+            >
+              <Row gutter={[16, 16]}>
+                {socialPlatforms.map(platform => (
+                  <Col span={12} key={platform.key}>
+                    <Form.Item
+                      name={`social_${platform.key}`}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <Input
+                        prefix={
+                          <Space>
+                            {platform.icon}
+                            <span style={{ 
+                              minWidth: '60px',
+                              display: 'inline-block'
+                            }}>
+                              {platform.name}
+                            </span>
+                          </Space>
+                        }
+                        placeholder={`${t('pleaseInput')}${platform.name}${t('link')}`}
+                        allowClear
+                        style={{ 
+                          borderRadius: '6px',
+                          height: '36px'
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                ))}
+              </Row>
             </Form.Item>
           </Col>
         </Row>

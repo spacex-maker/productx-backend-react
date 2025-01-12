@@ -1110,6 +1110,9 @@
   "managementRemarks": "管理备注",
   "pleaseInputManagementRemarks": "请输入管理备注",
   "customData": "自定义数据",
-  "pleaseInputCustomData": "请输入自定义数据"
+  "pleaseInputCustomData": "请输入自定义数据",
+
+  "features": "功能",
+  "socialMedia": "社交媒体"
 
 }

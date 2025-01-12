@@ -1087,5 +1087,8 @@
   "managementRemarks": "Замечания по управлению",
   "pleaseInputManagementRemarks": "Пожалуйста, введите замечания по управлению",
   "customData": "Пользовательские данные",
-  "pleaseInputCustomData": "Пожалуйста, введите пользовательские данные"
+  "pleaseInputCustomData": "Пожалуйста, введите пользовательские данные",
+
+  "features": "Особенности",
+  "socialMedia": "Социальные сети"
 }

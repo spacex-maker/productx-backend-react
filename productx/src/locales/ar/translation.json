@@ -1079,5 +1079,8 @@
   "managementRemarks": "ملاحظات الإدارة",
   "pleaseInputManagementRemarks": "يرجى إدخال ملاحظات الإدارة",
   "customData": "بيانات مخصصة",
-  "pleaseInputCustomData": "يرجى إدخال البيانات المخصصة"
+  "pleaseInputCustomData": "يرجى إدخال البيانات المخصصة",
+
+  "features": "الميزات",
+  "socialMedia": "وسائل التواصل الاجتماعي"
 }

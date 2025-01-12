@@ -1086,5 +1086,8 @@
   "managementRemarks": "管理メモ",
   "pleaseInputManagementRemarks": "管理メモを入力してください",
   "customData": "カスタムデータ",
-  "pleaseInputCustomData": "カスタムデータを入力してください"
+  "pleaseInputCustomData": "カスタムデータを入力してください",
+
+  "features": "機能",
+  "socialMedia": "ソーシャルメディア"
 }

@@ -35,11 +35,11 @@ const WebsiteListTable = ({
               onChange={handleSelectAll}
             />
           </th>
-          <th>{t('siteName')}</th>
-          <th>{t('siteUrl')}</th>
+          <th>{t('websiteName')}</th>
+          <th>{t('websiteLink')}</th>
           <th>{t('classification')}</th>
           <th>{t('subClassification')}</th>
-          <th>{t('country')}</th>
+          <th>{t('countryRegion')}</th>
           <th>{t('status')}</th>
           <th>{t('characteristics')}</th>
           <th>{t('statisticalData')}</th>
@@ -63,7 +63,14 @@ const WebsiteListTable = ({
                   <img
                     src={item.logoUrl}
                     alt={item.name}
-                    style={{ width: 20, height: 20, objectFit: 'contain' }}
+                    style={{ 
+                      width: 32,
+                      height: 32,
+                      objectFit: 'contain',
+                      padding: 3,
+                      backgroundColor: '#fff',
+                      borderRadius: 4
+                    }}
                   />
                 )}
                 {item.name}
@@ -90,18 +97,17 @@ const WebsiteListTable = ({
             </td>
             <td>
               <Switch
-                checked={item.status === 1}
+                checked={item.status}
                 onChange={(checked) => handleStatusChange(item.id, checked)}
                 loading={loadingStatus[item.id]}
-                size="small"
               />
             </td>
             <td>
               <Space wrap>
-                {item.isFeatured === 1 && <Tag color="blue">{t('recommended')}</Tag>}
-                {item.isPopular === 1 && <Tag color="blue">{t('popular')}</Tag>}
-                {item.isNew === 1 && <Tag color="blue">{t('newWebsite')}</Tag>}
-                {item.isVerified === 1 && <Tag color="blue">{t('verified')}</Tag>}
+                {item.isFeatured && <Tag color="blue">{t('recommended')}</Tag>}
+                {item.isPopular && <Tag color="blue">{t('popular')}</Tag>}
+                {item.isNew && <Tag color="blue">{t('newOnline')}</Tag>}
+                {item.isVerified && <Tag color="blue">{t('verified')}</Tag>}
               </Space>
             </td>
             <td>
@@ -113,26 +119,22 @@ const WebsiteListTable = ({
             <td>{dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</td>
             <td>
               <Space>
-                <Tooltip title={t('details')}>
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<EyeOutlined />}
-                    onClick={() => handleViewClick(item)}
-                  >
-                    {t('details')}
-                  </Button>
-                </Tooltip>
-                <Tooltip title={t('edit')}>
-                  <Button
-                    type="text"
-                    size="small"
-                    icon={<EditOutlined />}
-                    onClick={() => handleEditClick(item)}
-                  >
-                    {t('edit')}
-                  </Button>
-                </Tooltip>
+                <Button
+                  type="text"
+                  size="small"
+                  icon={<EyeOutlined />}
+                  onClick={() => handleViewClick(item)}
+                >
+                  {t('details')}
+                </Button>
+                <Button
+                  type="text"
+                  size="small"
+                  icon={<EditOutlined />}
+                  onClick={() => handleEditClick(item)}
+                >
+                  {t('edit')}
+                </Button>
               </Space>
             </td>
           </tr>

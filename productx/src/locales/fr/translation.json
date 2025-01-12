@@ -1096,5 +1096,8 @@
   "managementRemarks": "Remarques de gestion",
   "pleaseInputManagementRemarks": "Veuillez saisir les remarques de gestion",
   "customData": "Données personnalisées",
-  "pleaseInputCustomData": "Veuillez saisir les données personnalisées"
+  "pleaseInputCustomData": "Veuillez saisir les données personnalisées",
+
+  "features": "Fonctionnalités",
+  "socialMedia": "Médias sociaux"
 }
