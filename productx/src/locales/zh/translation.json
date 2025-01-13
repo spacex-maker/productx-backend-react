@@ -1115,8 +1115,22 @@
   "features": "功能",
   "socialMedia": "社交媒体",
 
-  "appDownloadLink": "应用下载链接",
-  "pleaseInputAppDownloadLink": "请输入应用下载链接",
-  "pleaseInputValidAppLink": "请输入有效的应用下载链接"
+  "androidAppDownloadLink": "安卓应用下载链接",
+  "iosAppDownloadLink": "iOS应用下载链接",
+  "pleaseInputAndroidAppLink": "请输入安卓应用下载链接",
+  "pleaseInputIosAppLink": "请输入iOS应用下载链接",
+  "pleaseInputValidAndroidAppLink": "请输入有效的安卓应用下载链接",
+  "pleaseInputValidIosAppLink": "请输入有效的iOS应用下载链接",
+  "harmonyOSAppDownloadLink": "鸿蒙应用下载链接",
+  "pleaseInputHarmonyOSAppLink": "请输入鸿蒙应用下载链接",
+  "pleaseInputValidHarmonyOSAppLink": "请输入有效的鸿蒙应用下载链接",
+  "timeInfo": "时间信息",
+  "lastAccessed": "最后访问",
+  "appLinks": "应用链接",
+  "androidApp": "安卓应用",
+  "iosApp": "iOS应用",
+  "harmonyOSApp": "鸿蒙应用",
 
+  "trafficSource": "流量来源",
+  "displayMode": "显示模式"
 }

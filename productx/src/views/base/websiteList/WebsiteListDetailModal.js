@@ -27,10 +27,22 @@ import {
   InstagramOutlined,
   WeiboOutlined,
   YoutubeOutlined,
+  LinkedinOutlined,
+  AppstoreOutlined,
+  FieldTimeOutlined,
+  AndroidOutlined,
+  AppleOutlined,
+  CloudOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 const { Title, Text, Paragraph } = Typography;
+
+const TiktokIcon = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+    <path d="M19.321 5.562a5.122 5.122 0 0 1-.443-.258 6.228 6.228 0 0 1-2.137-3.253H12.6v14.067c0 .722-.406 1.285-.722 1.598a2.466 2.466 0 0 1-1.612.566 2.466 2.466 0 0 1-2.334-2.334 2.466 2.466 0 0 1 2.334-2.334c.258 0 .515.052.773.155V9.67a7.295 7.295 0 0 0-.773-.052 6.461 6.461 0 0 0-6.461 6.461 6.461 6.461 0 0 0 6.461 6.461 6.461 6.461 0 0 0 6.461-6.461V9.514a9.073 9.073 0 0 0 5.378 1.751V7.158a5.786 5.786 0 0 1-2.784-1.596z"/>
+  </svg>
+);
 
 const WebsiteListDetailModal = ({
   isVisible,
@@ -55,6 +67,10 @@ const WebsiteListDetailModal = ({
   };
 
   const socialLinks = websiteData?.socialLinks ? JSON.parse(websiteData.socialLinks) : {};
+
+  const formatDateTime = (dateString) => {
+    return dateString ? dayjs(dateString).format('YYYY-MM-DD HH:mm:ss') : '-';
+  };
 
   return (
     <Modal
@@ -262,6 +278,21 @@ const WebsiteListDetailModal = ({
                   <Tag icon={<YoutubeOutlined />} color="blue">YouTube</Tag>
                 </a>
               )}
+              {socialLinks.linkedin && (
+                <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<LinkedinOutlined />} color="blue">LinkedIn</Tag>
+                </a>
+              )}
+              {socialLinks.douyin && (
+                <a href={socialLinks.douyin} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<TiktokIcon />} color="blue">抖音</Tag>
+                </a>
+              )}
+              {socialLinks.tiktok && (
+                <a href={socialLinks.tiktok} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<TiktokIcon />} color="blue">TikTok</Tag>
+                </a>
+              )}
             </Space>
           </Card>
         </Col>
@@ -287,6 +318,84 @@ const WebsiteListDetailModal = ({
         <Col span={24}>
           <Card title={t('notes')} size="small">
             <Paragraph>{websiteData?.notes}</Paragraph>
+          </Card>
+        </Col>
+
+        {/* 添加时间信息卡片 */}
+        <Col span={24}>
+          <Card title={t('timeInfo')} size="small">
+            <Row gutter={16}>
+              <Col span={8}>
+                <Statistic
+                  title={t('createTime')}
+                  value={formatDateTime(websiteData?.createTime)}
+                  prefix={<FieldTimeOutlined />}
+                />
+              </Col>
+              <Col span={8}>
+                <Statistic
+                  title={t('updateTime')}
+                  value={formatDateTime(websiteData?.updateTime)}
+                  prefix={<FieldTimeOutlined />}
+                />
+              </Col>
+              <Col span={8}>
+                <Statistic
+                  title={t('lastAccessed')}
+                  value={formatDateTime(websiteData?.lastAccessed)}
+                  prefix={<FieldTimeOutlined />}
+                />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
+        {/* 添加应用链接卡片 */}
+        <Col span={24}>
+          <Card title={t('appLinks')} size="small">
+            <Space wrap>
+              {websiteData?.androidAppUrl && (
+                <a href={websiteData.androidAppUrl} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<AndroidOutlined />} color="success">
+                    {t('androidApp')}
+                  </Tag>
+                </a>
+              )}
+              {websiteData?.iosAppUrl && (
+                <a href={websiteData.iosAppUrl} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<AppleOutlined />} color="success">
+                    {t('iosApp')}
+                  </Tag>
+                </a>
+              )}
+              {websiteData?.harmonyOSAppUrl && (
+                <a href={websiteData.harmonyOSAppUrl} target="_blank" rel="noopener noreferrer">
+                  <Tag icon={<CloudOutlined />} color="success">
+                    {t('harmonyOSApp')}
+                  </Tag>
+                </a>
+              )}
+            </Space>
+          </Card>
+        </Col>
+
+        {/* 添加其他信息卡片 */}
+        <Col span={24}>
+          <Card title={t('additionalInfo')} size="small">
+            <Descriptions column={2} size="small">
+              <Descriptions.Item label={t('trafficSource')}>
+                <Tag color="orange">{websiteData?.trafficSource}</Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label={t('language')}>
+                <Tag color="geekblue">{websiteData?.language}</Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label={t('displayMode')}>
+                <Tag color="purple">{websiteData?.displayMode}</Tag>
+              </Descriptions.Item>
+              <Descriptions.Item label={t('priority')}>
+                <Tag color="cyan">{websiteData?.priority}</Tag>
+              </Descriptions.Item>
+            </Descriptions>
           </Card>
         </Col>
       </Row>

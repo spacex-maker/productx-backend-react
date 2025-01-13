@@ -1066,5 +1066,23 @@
   "pleaseInputCustomData": "Bitte benutzerdefinierte Daten eingeben",
 
   "features": "Funktionen",
-  "socialMedia": "Soziale Medien"
+  "socialMedia": "Soziale Medien",
+
+  "androidAppDownloadLink": "Android App Download-Link",
+  "iosAppDownloadLink": "iOS App Download-Link",
+  "pleaseInputAndroidAppLink": "Bitte geben Sie den Android App Download-Link ein",
+  "pleaseInputIosAppLink": "Bitte geben Sie den iOS App Download-Link ein",
+  "pleaseInputValidAndroidAppLink": "Bitte geben Sie einen gültigen Android App Download-Link ein",
+  "pleaseInputValidIosAppLink": "Bitte geben Sie einen gültigen iOS App Download-Link ein",
+  "harmonyOSAppDownloadLink": "HarmonyOS App Download-Link",
+  "pleaseInputHarmonyOSAppLink": "Bitte geben Sie den HarmonyOS App Download-Link ein",
+  "pleaseInputValidHarmonyOSAppLink": "Bitte geben Sie einen gültigen HarmonyOS App Download-Link ein",
+  "timeInfo": "Zeitinformationen",
+  "lastAccessed": "Zuletzt besucht",
+  "appLinks": "App-Links",
+  "androidApp": "Android App",
+  "iosApp": "iOS App",
+  "harmonyOSApp": "HarmonyOS App",
+  "trafficSource": "Verkehrsquelle",
+  "displayMode": "Anzeige-Modus"
 }

@@ -1089,5 +1089,23 @@
   "pleaseInputCustomData": "カスタムデータを入力してください",
 
   "features": "機能",
-  "socialMedia": "ソーシャルメディア"
+  "socialMedia": "ソーシャルメディア",
+
+  "androidAppDownloadLink": "Androidアプリのダウンロードリンク",
+  "iosAppDownloadLink": "iOSアプリのダウンロードリンク",
+  "pleaseInputAndroidAppLink": "Androidアプリのダウンロードリンクを入力してください",
+  "pleaseInputIosAppLink": "iOSアプリのダウンロードリンクを入力してください",
+  "pleaseInputValidAndroidAppLink": "有効なAndroidアプリのダウンロードリンクを入力してください",
+  "pleaseInputValidIosAppLink": "有効なiOSアプリのダウンロードリンクを入力してください",
+  "harmonyOSAppDownloadLink": "HarmonyOSアプリのダウンロードリンク",
+  "pleaseInputHarmonyOSAppLink": "HarmonyOSアプリのダウンロードリンクを入力してください",
+  "pleaseInputValidHarmonyOSAppLink": "有効なHarmonyOSアプリのダウンロードリンクを入力してください",
+  "timeInfo": "時間情報",
+  "lastAccessed": "最終アクセス",
+  "appLinks": "アプリリンク",
+  "androidApp": "Androidアプリ",
+  "iosApp": "iOSアプリ",
+  "harmonyOSApp": "HarmonyOSアプリ",
+  "trafficSource": "トラフィックソース",
+  "displayMode": "表示モード"
 }

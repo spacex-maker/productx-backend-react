@@ -22,6 +22,13 @@ const CountryOption = ({ country }) => (
   </div>
 );
 
+// 添加自定义抖音和TikTok图标组件
+const TiktokIcon = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+    <path d="M19.321 5.562a5.122 5.122 0 0 1-.443-.258 6.228 6.228 0 0 1-2.137-3.253H12.6v14.067c0 .722-.406 1.285-.722 1.598a2.466 2.466 0 0 1-1.612.566 2.466 2.466 0 0 1-2.334-2.334 2.466 2.466 0 0 1 2.334-2.334c.258 0 .515.052.773.155V9.67a7.295 7.295 0 0 0-.773-.052 6.461 6.461 0 0 0-6.461 6.461 6.461 6.461 0 0 0 6.461 6.461 6.461 6.461 0 0 0 6.461-6.461V9.514a9.073 9.073 0 0 0 5.378 1.751V7.158a5.786 5.786 0 0 1-2.784-1.596z"/>
+  </svg>
+);
+
 const WebsiteListCreateFormModal = ({
   isVisible,
   onCancel,
@@ -37,7 +44,9 @@ const WebsiteListCreateFormModal = ({
     { key: 'instagram', icon: <InstagramOutlined />, name: 'Instagram', urlPrefix: 'https://instagram.com/' },
     { key: 'linkedin', icon: <LinkedinOutlined />, name: 'LinkedIn', urlPrefix: 'https://linkedin.com/company/' },
     { key: 'youtube', icon: <YoutubeOutlined />, name: 'YouTube', urlPrefix: 'https://youtube.com/' },
-    { key: 'weibo', icon: <WeiboOutlined />, name: '微博', urlPrefix: 'https://weibo.com/' }
+    { key: 'weibo', icon: <WeiboOutlined />, name: '微博', urlPrefix: 'https://weibo.com/' },
+    { key: 'douyin', icon: <TiktokIcon />, name: '抖音', urlPrefix: 'https://www.douyin.com/' },
+    { key: 'tiktok', icon: <TiktokIcon />, name: 'TikTok', urlPrefix: 'https://www.tiktok.com/@' }
   ];
 
   const handleSubmit = (values) => {
@@ -100,14 +109,44 @@ const WebsiteListCreateFormModal = ({
             </Form.Item>
           </Col>
           <Col span={8}>
+            <Form.Item label={t('logoLink')} name="logoUrl">
+              <Input placeholder={t('pleaseInputLogoLink')} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={12}>
+          <Col span={8}>
             <Form.Item
-              label={t('appDownloadLink')}
-              name="appUrl"
+              label={t('androidAppDownloadLink')}
+              name="androidAppUrl"
               rules={[
-                { type: 'url', message: t('pleaseInputValidAppLink') }
+                { type: 'url', message: t('pleaseInputValidAndroidAppLink') }
               ]}
             >
-              <Input placeholder={t('pleaseInputAppDownloadLink')} />
+              <Input placeholder={t('pleaseInputAndroidAppLink')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('iosAppDownloadLink')}
+              name="iosAppUrl"
+              rules={[
+                { type: 'url', message: t('pleaseInputValidIosAppLink') }
+              ]}
+            >
+              <Input placeholder={t('pleaseInputIosAppLink')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('harmonyOSAppDownloadLink')}
+              name="harmonyOSAppUrl"
+              rules={[
+                { type: 'url', message: t('pleaseInputValidHarmonyOSAppLink') }
+              ]}
+            >
+              <Input placeholder={t('pleaseInputHarmonyOSAppLink')} />
             </Form.Item>
           </Col>
         </Row>
@@ -126,7 +165,10 @@ const WebsiteListCreateFormModal = ({
           </Col>
           <Col span={4}>
             <Form.Item label={t('subClassification')} name="subCategory">
-              <Input placeholder={t('pleaseInputSubClassification')} />
+              <Select placeholder={t('pleaseSelectSubClassification')}>
+                <Option value="general">{t('general')}</Option>
+                <Option value="special">{t('special')}</Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -137,12 +179,12 @@ const WebsiteListCreateFormModal = ({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item label={t('priorityLevel')} name="priority">
               <Input type="number" placeholder={t('pleaseInputPriorityLevel')} />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={8}>
             <Form.Item label={t('countryRegion')} name="countryCode">
               <Select
                 showSearch
@@ -191,69 +233,65 @@ const WebsiteListCreateFormModal = ({
         </Row>
 
         <Row gutter={12}>
-          <Col span={24}>
-            <Row>
-              <Col span={12}>
-                <Form.Item label={t('characteristics')}>
-                  <Space size={[16, 8]} wrap>
-                    <Space size={4}>
-                      <Form.Item name="isFeatured" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('recommended')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="isPopular" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('popular')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="isNew" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('newOnline')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="isVerified" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('verified')}</span>
-                    </Space>
-                  </Space>
-                </Form.Item>
-              </Col>
-              
-              <Col span={12}>
-                <Form.Item label={t('technicalCharacteristics')}>
-                  <Space size={[16, 8]} wrap>
-                    <Space size={4}>
-                      <Form.Item name="hasMobileSupport" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('mobileSideSupport')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="hasDarkMode" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('darkMode')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="hasSsl" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('secureConnection')}</span>
-                    </Space>
-                  </Space>
-                </Form.Item>
-              </Col>
-            </Row>
+          <Col span={12}>
+            <Form.Item label={t('characteristics')}>
+              <Space size={[16, 8]} wrap>
+                <Space size={4}>
+                  <Form.Item name="isFeatured" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('recommended')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="isPopular" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('popular')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="isNew" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('newOnline')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="isVerified" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('verified')}</span>
+                </Space>
+              </Space>
+            </Form.Item>
+          </Col>
+          
+          <Col span={12}>
+            <Form.Item label={t('technicalCharacteristics')}>
+              <Space size={[16, 8]} wrap>
+                <Space size={4}>
+                  <Form.Item name="hasMobileSupport" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('mobileSideSupport')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="hasDarkMode" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('darkMode')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="hasSsl" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('secureConnection')}</span>
+                </Space>
+              </Space>
+            </Form.Item>
           </Col>
         </Row>
 

@@ -1082,5 +1082,23 @@
   "pleaseInputCustomData": "يرجى إدخال البيانات المخصصة",
 
   "features": "الميزات",
-  "socialMedia": "وسائل التواصل الاجتماعي"
+  "socialMedia": "وسائل التواصل الاجتماعي",
+
+  "androidAppDownloadLink": "رابط تحميل تطبيق الأندرويد",
+  "iosAppDownloadLink": "رابط تحميل تطبيق iOS",
+  "pleaseInputAndroidAppLink": "يرجى إدخال رابط تحميل تطبيق الأندرويد",
+  "pleaseInputIosAppLink": "يرجى إدخال رابط تحميل تطبيق iOS",
+  "pleaseInputValidAndroidAppLink": "يرجى إدخال رابط تحميل تطبيق أندرويد صالح",
+  "pleaseInputValidIosAppLink": "يرجى إدخال رابط تحميل تطبيق iOS صالح",
+  "harmonyOSAppDownloadLink": "رابط تحميل تطبيق هونغمنغ",
+  "pleaseInputHarmonyOSAppLink": "يرجى إدخال رابط تحميل تطبيق هونغمنغ",
+  "pleaseInputValidHarmonyOSAppLink": "يرجى إدخال رابط تحميل تطبيق هونغمنغ صالح",
+  "timeInfo": "معلومات الوقت",
+  "lastAccessed": "آخر وصول",
+  "appLinks": "روابط التطبيقات",
+  "androidApp": "تطبيق الأندرويد",
+  "iosApp": "تطبيق iOS",
+  "harmonyOSApp": "تطبيق هونغمنغ",
+  "trafficSource": "مصدر الحركة",
+  "displayMode": "وضع العرض"
 }
