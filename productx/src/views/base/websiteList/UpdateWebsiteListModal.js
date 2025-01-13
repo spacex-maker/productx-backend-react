@@ -129,14 +129,20 @@ const UpdateWebsiteListModal = ({
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label={t('priorityLevel')} name="priority">
-              <Input type="number" placeholder={t('pleaseInputPriorityLevel')} />
+            <Form.Item
+              label={t('appDownloadLink')}
+              name="appUrl"
+              rules={[
+                { type: 'url', message: t('pleaseInputValidAppLink') }
+              ]}
+            >
+              <Input placeholder={t('pleaseInputAppDownloadLink')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Row gutter={12}>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item label={t('classification')} name="category">
               <Select placeholder={t('pleaseSelectClassification')}>
                 <Option value="shopping">{t('shopping')}</Option>
@@ -147,9 +153,22 @@ const UpdateWebsiteListModal = ({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item label={t('subClassification')} name="subCategory">
               <Input placeholder={t('pleaseInputSubClassification')} />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label={t('language')} name="language">
+              <Select placeholder={t('pleaseSelectLanguage')}>
+                <Option value="zh">中文</Option>
+                <Option value="en">English</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item label={t('priorityLevel')} name="priority">
+              <Input type="number" placeholder={t('pleaseInputPriorityLevel')} />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -180,106 +199,86 @@ const UpdateWebsiteListModal = ({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item label={t('language')} name="language">
-              <Select placeholder={t('pleaseSelectLanguage')}>
-                <Option value="zh">中文</Option>
-                <Option value="en">English</Option>
-              </Select>
-            </Form.Item>
-          </Col>
         </Row>
 
         <Row gutter={12}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label={t('websiteDescription')} name="description">
               <Input.TextArea rows={2} placeholder={t('pleaseInputWebsiteDescription')} />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label={t('label')} name="tags">
               <Select mode="tags" placeholder={t('pleaseInputLabel')} />
             </Form.Item>
           </Col>
-        </Row>
-
-        <Row gutter={12}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label={t('logoLink')} name="logoUrl">
               <Input placeholder={t('pleaseInputLogoLink')} />
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item label={t('faviconLink')} name="faviconUrl">
-              <Input placeholder={t('pleaseInputFaviconLink')} />
-            </Form.Item>
-          </Col>
         </Row>
 
         <Row gutter={12}>
-          <Col span={24}>
-            <Row>
-              <Col span={12}>
-                <Form.Item label={t('characteristics')}>
-                  <Space size={[16, 8]} wrap>
-                    <Space size={4}>
-                      <Form.Item name="isFeatured" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('recommended')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="isPopular" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('popular')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="isNew" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('newOnline')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="isVerified" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('verified')}</span>
-                    </Space>
-                  </Space>
-                </Form.Item>
-              </Col>
-              
-              <Col span={12}>
-                <Form.Item label={t('technicalCharacteristics')}>
-                  <Space size={[16, 8]} wrap>
-                    <Space size={4}>
-                      <Form.Item name="hasMobileSupport" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('mobileSideSupport')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="hasDarkMode" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('darkMode')}</span>
-                    </Space>
-                    
-                    <Space size={4}>
-                      <Form.Item name="hasSsl" valuePropName="checked" noStyle>
-                        <Switch size="small" />
-                      </Form.Item>
-                      <span>{t('secureConnection')}</span>
-                    </Space>
-                  </Space>
-                </Form.Item>
-              </Col>
-            </Row>
+          <Col span={12}>
+            <Form.Item label={t('characteristics')}>
+              <Space size={[16, 8]} wrap>
+                <Space size={4}>
+                  <Form.Item name="isFeatured" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('recommended')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="isPopular" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('popular')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="isNew" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('newOnline')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="isVerified" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('verified')}</span>
+                </Space>
+              </Space>
+            </Form.Item>
+          </Col>
+          
+          <Col span={12}>
+            <Form.Item label={t('technicalCharacteristics')}>
+              <Space size={[16, 8]} wrap>
+                <Space size={4}>
+                  <Form.Item name="hasMobileSupport" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('mobileSideSupport')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="hasDarkMode" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('darkMode')}</span>
+                </Space>
+                
+                <Space size={4}>
+                  <Form.Item name="hasSsl" valuePropName="checked" noStyle>
+                    <Switch size="small" />
+                  </Form.Item>
+                  <span>{t('secureConnection')}</span>
+                </Space>
+              </Space>
+            </Form.Item>
           </Col>
         </Row>
 
@@ -360,7 +359,7 @@ const UpdateWebsiteListModal = ({
         </Row>
 
         <Row gutter={12}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item label={t('relatedWebsites')} name="relatedSites">
               <Input.TextArea rows={2} placeholder={t('pleaseInputRelatedWebsites')} />
             </Form.Item>

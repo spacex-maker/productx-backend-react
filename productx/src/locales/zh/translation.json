@@ -1113,6 +1113,10 @@
   "pleaseInputCustomData": "请输入自定义数据",
 
   "features": "功能",
-  "socialMedia": "社交媒体"
+  "socialMedia": "社交媒体",
+
+  "appDownloadLink": "应用下载链接",
+  "pleaseInputAppDownloadLink": "请输入应用下载链接",
+  "pleaseInputValidAppLink": "请输入有效的应用下载链接"
 
 }
