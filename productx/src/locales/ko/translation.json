@@ -1090,5 +1090,23 @@
   "pleaseInputCustomData": "사용자 정의 데이터를 입력하세요",
 
   "features": "기능",
-  "socialMedia": "소셜 미디어"
+  "socialMedia": "소셜 미디어",
+
+  "androidAppDownloadLink": "안드로이드 앱 다운로드 링크",
+  "iosAppDownloadLink": "iOS 앱 다운로드 링크",
+  "pleaseInputAndroidAppLink": "안드로이드 앱 다운로드 링크를 입력하세요",
+  "pleaseInputIosAppLink": "iOS 앱 다운로드 링크를 입력하세요",
+  "pleaseInputValidAndroidAppLink": "유효한 안드로이드 앱 다운로드 링크를 입력하세요",
+  "pleaseInputValidIosAppLink": "유효한 iOS 앱 다운로드 링크를 입력하세요",
+  "harmonyOSAppDownloadLink": "HarmonyOS 앱 다운로드 링크",
+  "pleaseInputHarmonyOSAppLink": "HarmonyOS 앱 다운로드 링크를 입력하세요",
+  "pleaseInputValidHarmonyOSAppLink": "유효한 HarmonyOS 앱 다운로드 링크를 입력하세요",
+  "timeInfo": "시간 정보",
+  "lastAccessed": "마지막 방문",
+  "appLinks": "앱 링크",
+  "androidApp": "안드로이드 앱",
+  "iosApp": "iOS 앱",
+  "harmonyOSApp": "HarmonyOS 앱",
+  "trafficSource": "트래픽 소스",
+  "displayMode": "디스플레이 모드"
 }

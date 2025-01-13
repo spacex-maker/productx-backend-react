@@ -1090,5 +1090,23 @@
   "pleaseInputCustomData": "Пожалуйста, введите пользовательские данные",
 
   "features": "Особенности",
-  "socialMedia": "Социальные сети"
+  "socialMedia": "Социальные сети",
+
+  "androidAppDownloadLink": "Ссылка на загрузку Android-приложения",
+  "iosAppDownloadLink": "Ссылка на загрузку iOS-приложения",
+  "pleaseInputAndroidAppLink": "Введите ссылку на загрузку Android-приложения",
+  "pleaseInputIosAppLink": "Введите ссылку на загрузку iOS-приложения",
+  "pleaseInputValidAndroidAppLink": "Введите действительную ссылку на загрузку Android-приложения",
+  "pleaseInputValidIosAppLink": "Введите действительную ссылку на загрузку iOS-приложения",
+  "harmonyOSAppDownloadLink": "Ссылка на загрузку HarmonyOS-приложения",
+  "pleaseInputHarmonyOSAppLink": "Введите ссылку на загрузку HarmonyOS-приложения",
+  "pleaseInputValidHarmonyOSAppLink": "Введите действительную ссылку на загрузку HarmonyOS-приложения",
+  "timeInfo": "Информация о времени",
+  "lastAccessed": "Последний доступ",
+  "appLinks": "Ссылки на приложения",
+  "androidApp": "Android-приложение",
+  "iosApp": "iOS-приложение",
+  "harmonyOSApp": "HarmonyOS-приложение",
+  "trafficSource": "Источник трафика",
+  "displayMode": "Режим отображения"
 }

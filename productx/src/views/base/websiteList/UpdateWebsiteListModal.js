@@ -16,6 +16,13 @@ import {
 const { TextArea } = Input;
 const { Option } = Select;
 
+// 添加自定义抖音和TikTok图标组件
+const TiktokIcon = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+    <path d="M19.321 5.562a5.122 5.122 0 0 1-.443-.258 6.228 6.228 0 0 1-2.137-3.253H12.6v14.067c0 .722-.406 1.285-.722 1.598a2.466 2.466 0 0 1-1.612.566 2.466 2.466 0 0 1-2.334-2.334 2.466 2.466 0 0 1 2.334-2.334c.258 0 .515.052.773.155V9.67a7.295 7.295 0 0 0-.773-.052 6.461 6.461 0 0 0-6.461 6.461 6.461 6.461 0 0 0 6.461 6.461 6.461 6.461 0 0 0 6.461-6.461V9.514a9.073 9.073 0 0 0 5.378 1.751V7.158a5.786 5.786 0 0 1-2.784-1.596z"/>
+  </svg>
+);
+
 const UpdateWebsiteListModal = ({
   isVisible,
   onCancel,
@@ -33,7 +40,9 @@ const UpdateWebsiteListModal = ({
     { key: 'facebook', icon: <FacebookOutlined />, name: 'Facebook', urlPrefix: 'https://facebook.com/' },
     { key: 'weibo', icon: <WeiboOutlined />, name: '微博', urlPrefix: 'https://weibo.com/' },
     { key: 'youtube', icon: <YoutubeOutlined />, name: 'YouTube', urlPrefix: 'https://youtube.com/' },
-    { key: 'linkedin', icon: <LinkedinOutlined />, name: 'LinkedIn', urlPrefix: 'https://linkedin.com/company/' }
+    { key: 'linkedin', icon: <LinkedinOutlined />, name: 'LinkedIn', urlPrefix: 'https://linkedin.com/company/' },
+    { key: 'douyin', icon: <TiktokIcon />, name: '抖音', urlPrefix: 'https://www.douyin.com/' },
+    { key: 'tiktok', icon: <TiktokIcon />, name: 'TikTok', urlPrefix: 'https://www.tiktok.com/@' }
   ];
 
   // 处理表单提交
@@ -129,14 +138,44 @@ const UpdateWebsiteListModal = ({
             </Form.Item>
           </Col>
           <Col span={8}>
+            <Form.Item label={t('logoLink')} name="logoUrl">
+              <Input placeholder={t('pleaseInputLogoLink')} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={12}>
+          <Col span={8}>
             <Form.Item
-              label={t('appDownloadLink')}
-              name="appUrl"
+              label={t('androidAppDownloadLink')}
+              name="androidAppUrl"
               rules={[
-                { type: 'url', message: t('pleaseInputValidAppLink') }
+                { type: 'url', message: t('pleaseInputValidAndroidAppLink') }
               ]}
             >
-              <Input placeholder={t('pleaseInputAppDownloadLink')} />
+              <Input placeholder={t('pleaseInputAndroidAppLink')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('iosAppDownloadLink')}
+              name="iosAppUrl"
+              rules={[
+                { type: 'url', message: t('pleaseInputValidIosAppLink') }
+              ]}
+            >
+              <Input placeholder={t('pleaseInputIosAppLink')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('harmonyOSAppDownloadLink')}
+              name="harmonyOSAppUrl"
+              rules={[
+                { type: 'url', message: t('pleaseInputValidHarmonyOSAppLink') }
+              ]}
+            >
+              <Input placeholder={t('pleaseInputHarmonyOSAppLink')} />
             </Form.Item>
           </Col>
         </Row>
@@ -155,7 +194,11 @@ const UpdateWebsiteListModal = ({
           </Col>
           <Col span={4}>
             <Form.Item label={t('subClassification')} name="subCategory">
-              <Input placeholder={t('pleaseInputSubClassification')} />
+              <Select placeholder={t('pleaseSelectSubClassification')}>
+                <Option value="general">{t('general')}</Option>
+                <Option value="special">{t('special')}</Option>
+                {/* 根据实际需求添加更多子分类选项 */}
+              </Select>
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -166,12 +209,12 @@ const UpdateWebsiteListModal = ({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item label={t('priorityLevel')} name="priority">
               <Input type="number" placeholder={t('pleaseInputPriorityLevel')} />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={8}>
             <Form.Item label={t('countryRegion')} name="countryCode">
               <Select
                 showSearch

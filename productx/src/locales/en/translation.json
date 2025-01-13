@@ -1091,5 +1091,22 @@
   "pleaseInputCustomData": "Please input custom data",
 
   "features": "Features",
-  "socialMedia": "Social Media"
+  "socialMedia": "Social Media",
+  "androidAppDownloadLink": "Android App Download Link",
+  "iosAppDownloadLink": "iOS App Download Link",
+  "pleaseInputAndroidAppLink": "Please input Android App Download Link",
+  "pleaseInputIosAppLink": "Please input iOS App Download Link",
+  "pleaseInputValidAndroidAppLink": "Please input a valid Android App Download Link",
+  "pleaseInputValidIosAppLink": "Please input a valid iOS App Download Link",
+  "harmonyOSAppDownloadLink": "HarmonyOS App Download Link",
+  "pleaseInputHarmonyOSAppLink": "Please input HarmonyOS App Download Link",
+  "pleaseInputValidHarmonyOSAppLink": "Please input a valid HarmonyOS App Download Link",
+  "timeInfo": "Time Information",
+  "lastAccessed": "Last Accessed",
+  "appLinks": "App Links",
+  "androidApp": "Android App",
+  "iosApp": "iOS App",
+  "harmonyOSApp": "HarmonyOS App",
+  "trafficSource": "Traffic Source",
+  "displayMode": "Display Mode"
 }
