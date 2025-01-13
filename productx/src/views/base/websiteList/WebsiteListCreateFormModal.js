@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Form, Input, Select, Row, Col, Space, Switch } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { GlobalOutlined } from '@ant-design/icons';
+import { GlobalOutlined, TwitterOutlined, FacebookOutlined, InstagramOutlined, LinkedinOutlined, YoutubeOutlined, WeiboOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -31,6 +31,37 @@ const WebsiteListCreateFormModal = ({
 }) => {
   const { t } = useTranslation();
 
+  const socialPlatforms = [
+    { key: 'twitter', icon: <TwitterOutlined />, name: 'Twitter', urlPrefix: 'https://twitter.com/' },
+    { key: 'facebook', icon: <FacebookOutlined />, name: 'Facebook', urlPrefix: 'https://facebook.com/' },
+    { key: 'instagram', icon: <InstagramOutlined />, name: 'Instagram', urlPrefix: 'https://instagram.com/' },
+    { key: 'linkedin', icon: <LinkedinOutlined />, name: 'LinkedIn', urlPrefix: 'https://linkedin.com/company/' },
+    { key: 'youtube', icon: <YoutubeOutlined />, name: 'YouTube', urlPrefix: 'https://youtube.com/' },
+    { key: 'weibo', icon: <WeiboOutlined />, name: '微博', urlPrefix: 'https://weibo.com/' }
+  ];
+
+  const handleSubmit = (values) => {
+    const socialLinksObj = {};
+    socialPlatforms.forEach(platform => {
+      if (values[`social_${platform.key}`]) {
+        const value = values[`social_${platform.key}`];
+        socialLinksObj[platform.key] = value.startsWith('http') ? value : `${platform.urlPrefix}${value}`;
+      }
+    });
+
+    const formattedValues = {
+      ...values,
+      tags: Array.isArray(values.tags) ? values.tags : [],
+      socialLinks: JSON.stringify(socialLinksObj)
+    };
+    
+    socialPlatforms.forEach(platform => {
+      delete formattedValues[`social_${platform.key}`];
+    });
+
+    onFinish(formattedValues);
+  };
+
   return (
     <Modal
       title={t('createWebsite')}
@@ -42,7 +73,7 @@ const WebsiteListCreateFormModal = ({
     >
       <Form 
         form={form} 
-        onFinish={onFinish}
+        onFinish={handleSubmit}
         layout="vertical"
         labelCol={{ style: { padding: '0 4px' } }}
       >
@@ -69,14 +100,20 @@ const WebsiteListCreateFormModal = ({
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item label={t('priorityLevel')} name="priority">
-              <Input type="number" placeholder={t('pleaseInputPriorityLevel')} />
+            <Form.Item
+              label={t('appDownloadLink')}
+              name="appUrl"
+              rules={[
+                { type: 'url', message: t('pleaseInputValidAppLink') }
+              ]}
+            >
+              <Input placeholder={t('pleaseInputAppDownloadLink')} />
             </Form.Item>
           </Col>
         </Row>
 
         <Row gutter={12}>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item label={t('classification')} name="category">
               <Select placeholder={t('pleaseSelectClassification')}>
                 <Option value="shopping">{t('shopping')}</Option>
@@ -87,9 +124,22 @@ const WebsiteListCreateFormModal = ({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={4}>
             <Form.Item label={t('subClassification')} name="subCategory">
               <Input placeholder={t('pleaseInputSubClassification')} />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label={t('language')} name="language">
+              <Select placeholder={t('pleaseSelectLanguage')}>
+                <Option value="zh">中文</Option>
+                <Option value="en">English</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item label={t('priorityLevel')} name="priority">
+              <Input type="number" placeholder={t('pleaseInputPriorityLevel')} />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -120,38 +170,22 @@ const WebsiteListCreateFormModal = ({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item label={t('language')} name="language">
-              <Select placeholder={t('pleaseSelectLanguage')}>
-                <Option value="zh">中文</Option>
-                <Option value="en">English</Option>
-              </Select>
-            </Form.Item>
-          </Col>
         </Row>
 
         <Row gutter={12}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label={t('websiteDescription')} name="description">
               <Input.TextArea rows={2} placeholder={t('pleaseInputWebsiteDescription')} />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label={t('label')} name="tags">
               <Select mode="tags" placeholder={t('pleaseInputLabel')} />
             </Form.Item>
           </Col>
-        </Row>
-
-        <Row gutter={12}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item label={t('logoLink')} name="logoUrl">
               <Input placeholder={t('pleaseInputLogoLink')} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item label={t('faviconLink')} name="faviconUrl">
-              <Input placeholder={t('pleaseInputFaviconLink')} />
             </Form.Item>
           </Col>
         </Row>
@@ -300,14 +334,46 @@ const WebsiteListCreateFormModal = ({
         </Row>
 
         <Row gutter={12}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item label={t('relatedWebsites')} name="relatedSites">
               <Input.TextArea rows={2} placeholder={t('pleaseInputRelatedWebsites')} />
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item label={t('socialMediaLinks')} name="socialLinks">
-              <Input.TextArea rows={2} placeholder={t('pleaseInputSocialMediaLinks')} />
+          <Col span={24}>
+            <Form.Item 
+              label={t('socialMediaLinks')}
+              style={{ marginBottom: 0 }}
+            >
+              <Row gutter={[16, 16]}>
+                {socialPlatforms.map(platform => (
+                  <Col span={12} key={platform.key}>
+                    <Form.Item
+                      name={`social_${platform.key}`}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <Input
+                        prefix={
+                          <Space>
+                            {platform.icon}
+                            <span style={{ 
+                              minWidth: '60px',
+                              display: 'inline-block'
+                            }}>
+                              {platform.name}
+                            </span>
+                          </Space>
+                        }
+                        placeholder={`${t('pleaseInput')}${platform.name}${t('link')}`}
+                        allowClear
+                        style={{ 
+                          borderRadius: '6px',
+                          height: '36px'
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                ))}
+              </Row>
             </Form.Item>
           </Col>
         </Row>

@@ -283,6 +283,27 @@ const WebsiteList = () => {
               allowClear
               style={{ minWidth: 200 }}
             />
+            <Select
+              allowClear
+              placeholder={t('pleaseSelectCountry')}
+              value={searchParams.countryCode}
+              onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value }})}
+              style={{ minWidth: 200 }}
+              loading={loadingCountries}
+            >
+              {countries.map(country => (
+                <Option key={country.code} value={country.code}>
+                  <Space>
+                    <img 
+                      src={country.flagImageUrl} 
+                      alt={country.code} 
+                      style={{ width: 20, height: 15, borderRadius: 0 }}
+                    />
+                    {country.name}
+                  </Space>
+                </Option>
+              ))}
+            </Select>
             <Space>
               <Button type="primary" onClick={fetchData}>
                 {t('search')}
