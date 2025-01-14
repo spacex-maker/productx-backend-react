@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Modal, Button, Form, Input, message, Spin, Select, Col, Row } from 'antd'
+import { Modal, Button, Form, Input, message, Spin, Select, Col, Row, Space } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
 import WalletTable from "src/views/base/sysWallets/WalletTable"
-import UpdateWalletModal from "src/views/base/sysWallets/UpdateWalletsModel"
+import UpdateWalletModal from "src/views/base/sysWallets/UpdateWalletModal"
 import WalletCreateFormModal from "src/views/base/sysWallets/WalletsCreateFormModel"
 
 const updateWalletStatus = async (id, newStatus) => {
@@ -137,6 +137,11 @@ const WalletList = () => {
     handleSelectRow,
   } = UseSelectableRows()
 
+  const handleEditClick = (wallet) => {
+    setSelectedWallet(wallet);
+    setIsUpdateModalVisible(true);
+  };
+
   return (
     <div>
       <div className="mb-3">
@@ -184,10 +189,41 @@ const WalletList = () => {
                 onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value } })}
                 placeholder="钱包所属国家"
                 allowClear
-                style={{ width: '100%' }}>
-                {countries.map((country) => (
-                  <Select.Option key={country.id} value={country.code}>
-                    {country.name} ({country.code})
+                style={{ width: '100%' }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) => {
+                  const country = countries.find(c => c.code === option.value);
+                  return (
+                    country?.name.toLowerCase().includes(input.toLowerCase()) ||
+                    country?.code.toLowerCase().includes(input.toLowerCase())
+                  );
+                }}
+                dropdownMatchSelectWidth={false}
+                popupMatchSelectWidth={false}
+                listHeight={256}
+                dropdownStyle={{ 
+                  minWidth: 250,
+                  maxWidth: 300
+                }}
+              >
+                {countries.map(country => (
+                  <Select.Option key={country.code} value={country.code}>
+                    <Space>
+                      <img 
+                        src={country.flagImageUrl} 
+                        alt={country.name}
+                        style={{ 
+                          width: 20, 
+                          height: 15, 
+                          objectFit: 'cover',
+                          borderRadius: 2,
+                          border: '1px solid #f0f0f0'
+                        }}
+                      />
+                      <span>{country.name}</span>
+                      <span style={{ color: '#999' }}>({country.code})</span>
+                    </Space>
                   </Select.Option>
                 ))}
               </Select>
@@ -242,7 +278,8 @@ const WalletList = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleStatusChange={handleStatusChange}
-            handleEditClick={handleUpdateWallet}
+            handleEditClick={handleEditClick}
+            countries={countries}
           />
         </Spin>
       </div>
@@ -267,7 +304,8 @@ const WalletList = () => {
         onOk={() => updateForm.submit()}
         form={updateForm}
         handleUpdateWallet={handleUpdateWallet}
-        selectedWallet={selectedWallet} // Pass the selected wallet info
+        selectedWallet={selectedWallet}
+        cryptoCurrencies={cryptoCurrencies}
       />
     </div>
   )

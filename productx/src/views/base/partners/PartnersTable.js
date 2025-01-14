@@ -10,6 +10,7 @@ const PartnersTable = ({
   handleSelectRow,
   handleStatusChange,
   handleEditClick,
+  handleDetailClick,
 }) => {
   const { t } = useTranslation();
 
@@ -96,6 +97,9 @@ const PartnersTable = ({
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}
+              </Button>
+              <Button type="link" onClick={() => handleDetailClick(item)}>
+                {t('details')}
               </Button>
             </td>
           </tr>

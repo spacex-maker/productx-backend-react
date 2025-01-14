@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, message} from 'antd';
+import {Button, message, Space} from 'antd';
 import {CopyOutlined} from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
@@ -11,6 +11,7 @@ const WalletTable = ({
                        handleSelectRow,
                        handleStatusChange,
                        handleEditClick,
+                       countries = []
                      }) => {
 
   // 复制到剪贴板的功能
@@ -85,7 +86,24 @@ const WalletTable = ({
           </td>
           <td className="text-truncate">{item.typeName}</td>
           <td className="text-truncate">{item.label}</td>
-          <td className="text-truncate">{item.countryCode}</td>
+          <td className="text-truncate">
+            <Space>
+              <img 
+                src={countries.find(country => country.code === item.countryCode)?.flagImageUrl} 
+                alt={countries.find(country => country.code === item.countryCode)?.name}
+                style={{ 
+                  width: 20, 
+                  height: 15, 
+                  objectFit: 'cover',
+                  borderRadius: 2,
+                  border: '1px solid #f0f0f0'
+                }}
+              />
+              <span>
+                {countries.find(country => country.code === item.countryCode)?.name || item.countryCode}
+              </span>
+            </Space>
+          </td>
           <td>
             <label className="toggle-switch">
               <input
