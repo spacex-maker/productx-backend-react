@@ -39,7 +39,12 @@ const breakpoints = {
 
 const PageWrapper = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1c2e 0%, #131525 100%);
+  background: linear-gradient(
+    135deg, 
+    #1a1c2e 0%,
+    #2d1b4b 50%,
+    #131525 100%
+  );
   position: relative;
   overflow: hidden;
 
@@ -75,12 +80,25 @@ const ContentWrapper = styled(CContainer)`
 `;
 
 const LoginCard = styled(CCard)`
-  background: rgba(30, 32, 47, 0.95);
+  background: linear-gradient(
+    145deg,
+    rgba(30, 32, 47, 0.95) 0%,
+    rgba(35, 28, 54, 0.95) 100%
+  );
   border: 1px solid rgba(99, 102, 241, 0.2);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   overflow: visible;
   position: relative;
+  border-radius: 16px;
+
+  & > div:first-child {
+    border-radius: 16px 16px 0 0;
+  }
+
+  & > div:last-child {
+    border-radius: 0 0 16px 16px;
+  }
 
   // 标语容器
   .slogan-container {
@@ -104,17 +122,19 @@ const LoginCard = styled(CCard)`
     letter-spacing: 1px;
     font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
     white-space: nowrap;
-    text-shadow:
-      0 0 10px rgba(99, 102, 241, 0.5),
-      0 0 20px rgba(99, 102, 241, 0.3),
-      0 0 30px rgba(99, 102, 241, 0.2);
-    animation: glow 2s ease-in-out infinite alternate;
-    margin-bottom: 8px;
+    background: linear-gradient(120deg, #6366f1, #8b5cf6, #6366f1);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+    text-shadow: none;
   }
 
   // 副标语样式
   .sub-slogan {
-    color: rgba(255, 255, 255, 0.6);
+    background: linear-gradient(120deg, #8b5cf6, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-size: 12px;
     font-weight: 300;
     letter-spacing: 0.5px;
@@ -122,18 +142,9 @@ const LoginCard = styled(CCard)`
     white-space: nowrap;
   }
 
-  @keyframes glow {
-    from {
-      text-shadow:
-        0 0 10px rgba(99, 102, 241, 0.5),
-        0 0 20px rgba(99, 102, 241, 0.3),
-        0 0 30px rgba(99, 102, 241, 0.2);
-    }
+  @keyframes shine {
     to {
-      text-shadow:
-        0 0 20px rgba(99, 102, 241, 0.6),
-        0 0 30px rgba(99, 102, 241, 0.4),
-        0 0 40px rgba(99, 102, 241, 0.3);
+      background-position: 200% center;
     }
   }
 
@@ -172,20 +183,33 @@ const LoginCard = styled(CCard)`
 const CardHeader = styled.div`
   padding: 24px;
   border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+  background: linear-gradient(
+    to right,
+    rgba(99, 102, 241, 0.05),
+    rgba(139, 92, 246, 0.05)
+  );
 
   h4 {
     color: #f1f5f9;
     margin: 0;
     font-weight: 600;
     font-size: 1.25rem;
-    background: linear-gradient(120deg, #6366f1, #8b5cf6);
+    background: linear-gradient(120deg, #6366f1, #8b5cf6, #6366f1);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+  }
+
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
   }
 `;
 
 const CardBody = styled(CCardBody)`
-  padding: 24px;
+  padding: 2rem 1.5rem;
 `;
 
 const ApiSection = styled.div`
@@ -203,7 +227,9 @@ const ApiSection = styled.div`
 
 const ApiTitle = styled.div`
   font-size: 0.875rem;
-  color: #8b5cf6;
+  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -212,6 +238,7 @@ const ApiTitle = styled.div`
   svg {
     width: 16px;
     height: 16px;
+    color: #8b5cf6;
   }
 `;
 
@@ -346,7 +373,7 @@ const ApiButton = styled(CButton)`
 
 const LoginForm = styled(CForm)`
   .divider {
-    margin: 24px 0;
+    margin: 2rem 0;
     border-top: 1px solid rgba(99, 102, 241, 0.1);
     position: relative;
 
@@ -357,32 +384,34 @@ const LoginForm = styled(CForm)`
       left: 50%;
       transform: translate(-50%, -50%);
       background: rgba(30, 32, 47, 0.95);
-      padding: 0 16px;
-      color: #64748b;
+      padding: 0 1rem;
+      background: linear-gradient(120deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       font-size: 0.875rem;
     }
   }
 `;
 
 const StyledInputGroup = styled(CInputGroup)`
-  margin-bottom: 12px;
+  margin-bottom: 1.5rem;
 
   .input-group-text {
     background: rgba(99, 102, 241, 0.1);
     border: 1px solid rgba(99, 102, 241, 0.2);
     border-right: none;
     color: #8b5cf6;
-    padding: 6px 10px;
-    cursor: pointer;
+    min-width: 46px;
+    justify-content: center;
 
     svg {
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
     }
   }
 
   &:last-of-type {
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
   }
 `;
 
@@ -391,9 +420,6 @@ const StyledInput = styled(CFormInput)`
   border: 1px solid rgba(99, 102, 241, 0.2);
   border-left: none;
   color: #e2e8f0;
-  padding: 6px 10px;
-  font-size: 14px;
-  line-height: 20px;
   transition: all 0.3s ease;
 
   &::placeholder {
@@ -413,57 +439,90 @@ const StyledInput = styled(CFormInput)`
 `;
 
 const StyledButton = styled(CButton)`
-  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  background: linear-gradient(
+    120deg, 
+    #6366f1 0%,
+    #8b5cf6 50%,
+    #6366f1 100%
+  ) !important;
+  background-size: 200% auto !important;
   border: none;
-  padding: 8px 16px;
+  padding: 0.625rem 1rem;
   font-weight: 500;
   transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  height: 42px;
 
   &:hover {
+    background-position: right center !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
   }
 
   &:disabled {
-    background: linear-gradient(120deg, #4b4d8b, #5d4b8b);
+    background: linear-gradient(
+      120deg,
+      #4b4d8b 0%,
+      #5d4b8b 100%
+    ) !important;
     opacity: 0.7;
   }
 `;
 
 const GithubButton = styled(CButton)`
-  background: rgba(99, 102, 241, 0.1);
+  background: linear-gradient(
+    120deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.1) 100%
+  );
   border: 1px solid rgba(99, 102, 241, 0.2);
   color: #8b5cf6;
-  padding: 8px 16px;
+  padding: 0.625rem 1rem;
   font-weight: 500;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
+  margin-bottom: 1rem;
 
   &:hover {
-    background: rgba(99, 102, 241, 0.2);
+    background: linear-gradient(
+      120deg,
+      rgba(99, 102, 241, 0.2) 0%,
+      rgba(139, 92, 246, 0.2) 100%
+    );
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
   }
 `;
 
 const ForgotPasswordLink = styled.a`
-  color: #8b5cf6;
+  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-decoration: none;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 
-  &:hover {
-    color: #6366f1;
-    text-decoration: underline;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
   }
 `;
 
@@ -497,27 +556,27 @@ const CaptchaInputGroup = styled(StyledInputGroup)`
   .captcha-wrapper {
     display: flex;
     align-items: center;
-    padding: 2px;
+    padding: 4px;
     background: rgba(99, 102, 241, 0.1);
     border: 1px solid rgba(99, 102, 241, 0.2);
     border-right: none;
     position: relative;
 
     img {
-      height: 28px;
-      border-radius: 3px;
+      height: 32px;
+      border-radius: 4px;
       cursor: pointer;
     }
 
     .captcha-tooltip {
       position: absolute;
-      top: -25px;
+      top: -30px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(30, 32, 47, 0.95);
-      padding: 0 16px;
+      padding: 4px 12px;
       color: #64748b;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
       border-radius: 4px;
       white-space: nowrap;
       opacity: 0;
@@ -540,10 +599,22 @@ const ApiConfigHint = styled.div`
   border: 1px solid rgba(99, 102, 241, 0.2);
   padding: 8px 16px;
   border-radius: 20px;
-  color: #8b5cf6;
+  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-size: 12px;
   opacity: 0.7;
   pointer-events: none;
+  animation: pulse 2s ease-in-out infinite;
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
 
   @media (max-width: ${breakpoints.sm}) {
     display: none;
@@ -575,8 +646,11 @@ const LoginPage = () => {
   const [showSlogan, setShowSlogan] = useState(false);
 
   const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { duration: 0.3 }
+    }
   };
 
   useEffect(() => {
@@ -658,46 +732,6 @@ const LoginPage = () => {
       'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=https://protx.cn/manage/manager/github-callback';
   };
 
-  // 定义随机初始位置
-  const getRandomPosition = () => ({
-    x: (Math.random() - 0.5) * window.innerWidth * 0.8,
-    y: (Math.random() - 0.5) * window.innerHeight * 0.8,
-    rotate: Math.random() * 360 - 180,
-    scale: 0.5 + Math.random() * 0.5,
-  });
-
-  // 动画变体
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: (i) => ({
-      ...getRandomPosition(),
-      opacity: 0,
-    }),
-    visible: {
-      x: 0,
-      y: 0,
-      rotate: 0,
-      scale: 1,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        damping: 20,
-        stiffness: 100,
-        duration: 1.5,
-      },
-    },
-  };
-
   const handleWaveDoubleClick = () => {
     setShowApiConfig((prev) => !prev);
     message.info(showApiConfig ? 'API 配置已隐藏' : 'API 配置已显示');
@@ -764,7 +798,11 @@ const LoginPage = () => {
         <ContentWrapper>
           <CRow className="justify-content-center">
             <CCol xs={12} sm={10} md={8} lg={6} xl={5}>
-              <motion.div variants={containerVariants} initial="hidden" animate="visible">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeIn}
+              >
                 <LoginCard>
                   <AnimatePresence>
                     {showSlogan && (
@@ -780,160 +818,146 @@ const LoginPage = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  <motion.div variants={itemVariants} custom={0}>
-                    <CardHeader>
-                      <h4>{t('login')} ProductX Admin</h4>
-                    </CardHeader>
-                  </motion.div>
+                  <CardHeader>
+                    <h4>{t('login')} ProductX Admin</h4>
+                  </CardHeader>
 
                   <CardBody>
-                    <motion.div variants={itemVariants} custom={1}>
-                      <ApiSection $visible={showApiConfig}>
-                        <ApiTitle>
-                          <CIcon icon={cilSettings} />
-                          API 配置
-                        </ApiTitle>
-                        <VerticalStack>
-                          <ApiInputGroup>
-                            <StyledEnvDropdown>
-                              <StyledEnvSelect
-                                value={isCustomEnv ? 'CUSTOM' : selectedEnv}
-                                onChange={(value) => {
-                                  if (value === 'CUSTOM') {
-                                    setIsCustomEnv(true);
-                                    setCustomUrl('');
-                                  } else {
-                                    setIsCustomEnv(false);
-                                    setSelectedEnv(value);
-                                  }
-                                }}
-                                dropdownMatchSelectWidth={false}
-                                optionLabelProp="label"
-                              >
-                                {Object.entries(API_CONFIG).map(([env, url]) =>
-                                  renderEnvironmentOption(env, url),
-                                )}
-                                <Option value="CUSTOM" label="自定义">
-                                  <div
-                                    style={{
-                                      display: 'flex',
-                                      justifyContent: 'space-between',
-                                      alignItems: 'center',
-                                    }}
-                                  >
-                                    <span>自定义环境</span>
-                                  </div>
-                                </Option>
-                              </StyledEnvSelect>
-                            </StyledEnvDropdown>
-                            <ApiInput
-                              $isCustom={isCustomEnv}
-                              value={isCustomEnv ? customUrl : API_CONFIG[selectedEnv]}
-                              onChange={(e) => isCustomEnv && setCustomUrl(e.target.value)}
-                              disabled={!isCustomEnv}
-                              placeholder={
-                                isCustomEnv
-                                  ? '请输入自定义API地址，例如: http://example.com:8080'
-                                  : 'API 地址将根据选择的环境自动设置'
-                              }
-                            />
-                            <ApiButton onClick={handleSetBaseURL}>
-                              {isCustomEnv ? '应用配置' : '切换环境'}
-                            </ApiButton>
-                          </ApiInputGroup>
-                          {isCustomEnv && (
-                            <div
-                              style={{
-                                fontSize: '12px',
-                                color: '#64748b',
-                                padding: '4px 8px',
+                    <ApiSection $visible={showApiConfig}>
+                      <ApiTitle>
+                        <CIcon icon={cilSettings} />
+                        API 配置
+                      </ApiTitle>
+                      <VerticalStack>
+                        <ApiInputGroup>
+                          <StyledEnvDropdown>
+                            <StyledEnvSelect
+                              value={isCustomEnv ? 'CUSTOM' : selectedEnv}
+                              onChange={(value) => {
+                                if (value === 'CUSTOM') {
+                                  setIsCustomEnv(true);
+                                  setCustomUrl('');
+                                } else {
+                                  setIsCustomEnv(false);
+                                  setSelectedEnv(value);
+                                }
                               }}
+                              dropdownMatchSelectWidth={false}
+                              optionLabelProp="label"
                             >
-                              请输入完整的URL地址，包含 http:// 或 https:// 前缀
-                            </div>
-                          )}
-                        </VerticalStack>
-                      </ApiSection>
-                    </motion.div>
+                              {Object.entries(API_CONFIG).map(([env, url]) =>
+                                renderEnvironmentOption(env, url),
+                              )}
+                              <Option value="CUSTOM" label="自定义">
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <span>自定义环境</span>
+                                </div>
+                              </Option>
+                            </StyledEnvSelect>
+                          </StyledEnvDropdown>
+                          <ApiInput
+                            $isCustom={isCustomEnv}
+                            value={isCustomEnv ? customUrl : API_CONFIG[selectedEnv]}
+                            onChange={(e) => isCustomEnv && setCustomUrl(e.target.value)}
+                            disabled={!isCustomEnv}
+                            placeholder={
+                              isCustomEnv
+                                ? '请输入自定义API地址，例如: http://example.com:8080'
+                                : 'API 地址将根据选择的环境自动设置'
+                            }
+                          />
+                          <ApiButton onClick={handleSetBaseURL}>
+                            {isCustomEnv ? '应用配置' : '切换环境'}
+                          </ApiButton>
+                        </ApiInputGroup>
+                        {isCustomEnv && (
+                          <div
+                            style={{
+                              fontSize: '12px',
+                              color: '#64748b',
+                              padding: '4px 8px',
+                            }}
+                          >
+                            请输入完整的URL地址，包含 http:// 或 https:// 前缀
+                          </div>
+                        )}
+                      </VerticalStack>
+                    </ApiSection>
 
                     <LoginForm onSubmit={handleLogin}>
-                      <motion.div variants={itemVariants} custom={2}>
-                        <StyledInputGroup>
-                          <CInputGroupText>
-                            <CIcon icon={cilUser} />
-                          </CInputGroupText>
-                          <StyledInput
-                            placeholder={t('username')}
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                          />
-                        </StyledInputGroup>
-                      </motion.div>
+                      <StyledInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilUser} />
+                        </CInputGroupText>
+                        <StyledInput
+                          placeholder={t('username')}
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                        />
+                      </StyledInputGroup>
 
-                      <motion.div variants={itemVariants} custom={3}>
-                        <StyledInputGroup>
-                          <CInputGroupText onClick={() => setShowPassword(!showPassword)}>
-                            <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} />
-                          </CInputGroupText>
-                          <StyledInput
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder={t('password')}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                          />
-                        </StyledInputGroup>
-                      </motion.div>
+                      <StyledInputGroup>
+                        <CInputGroupText onClick={() => setShowPassword(!showPassword)}>
+                          <CIcon icon={showPassword ? cilLockUnlocked : cilLockLocked} />
+                        </CInputGroupText>
+                        <StyledInput
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder={t('password')}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                      </StyledInputGroup>
 
-                      <motion.div variants={itemVariants} custom={4}>
-                        <CaptchaInputGroup>
-                          <div className="captcha-wrapper">
-                            <div className="captcha-tooltip">{t('clickToChange')}</div>
-                            <img src={captcha} alt={t('captcha')} onClick={refreshCaptcha} />
-                          </div>
-                          <StyledInput
-                            placeholder="验证码"
-                            value={verify}
-                            onChange={(e) => setVerify(e.target.value)}
-                          />
-                        </CaptchaInputGroup>
-                      </motion.div>
+                      <CaptchaInputGroup>
+                        <div className="captcha-wrapper">
+                          <div className="captcha-tooltip">{t('clickToChange')}</div>
+                          <img src={captcha} alt={t('captcha')} onClick={refreshCaptcha} />
+                        </div>
+                        <StyledInput
+                          placeholder="验证码"
+                          value={verify}
+                          onChange={(e) => setVerify(e.target.value)}
+                        />
+                      </CaptchaInputGroup>
 
-                      <motion.div variants={itemVariants} custom={5}>
-                        <StyledButton
-                          type="submit"
-                          className="w-100"
-                          disabled={loading}
-                          onMouseEnter={handleMouseEnter}
-                          onMouseLeave={handleMouseLeave}
-                        >
-                          {loading ? '登录中...' : t('loginButton')}
-                        </StyledButton>
-                      </motion.div>
+                      <StyledButton
+                        type="submit"
+                        className="w-100"
+                        disabled={loading}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {loading ? '登录中...' : t('loginButton')}
+                      </StyledButton>
 
                       <div className="divider" />
 
-                      <motion.div variants={itemVariants} custom={6}>
-                        <CRow>
-                          <CCol xs={12} className="text-center mb-3">
-                            <GithubButton onClick={handleGitHubLogin} className="w-100">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                className="bi bi-github me-2"
-                                viewBox="0 0 16 16"
-                              >
-                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
-                              </svg>
-                              {t('githubLogin')}
-                            </GithubButton>
-                          </CCol>
-                          <CCol xs={12} className="text-center">
-                            <ForgotPasswordLink>{t('forgetPassword')}</ForgotPasswordLink>
-                          </CCol>
-                        </CRow>
-                      </motion.div>
+                      <CRow>
+                        <CCol xs={12} className="text-center mb-3">
+                          <GithubButton onClick={handleGitHubLogin} className="w-100">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              fill="currentColor"
+                              className="bi bi-github me-2"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
+                            </svg>
+                            {t('githubLogin')}
+                          </GithubButton>
+                        </CCol>
+                        <CCol xs={12} className="text-center">
+                          <ForgotPasswordLink>{t('forgetPassword')}</ForgotPasswordLink>
+                        </CCol>
+                      </CRow>
                     </LoginForm>
                   </CardBody>
                 </LoginCard>

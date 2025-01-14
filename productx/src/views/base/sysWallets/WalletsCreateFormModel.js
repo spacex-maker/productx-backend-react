@@ -111,7 +111,25 @@ const WalletCreateFormModal = ({
               maxWidth: 300
             }}
           >
-            {countries.map(country => countryOption(country))}
+            {countries.map(country => (
+              <Option key={country.code} value={country.code}>
+                <Space>
+                  <img 
+                    src={country.flagImageUrl} 
+                    alt={country.name}
+                    style={{ 
+                      width: 20, 
+                      height: 15, 
+                      objectFit: 'cover',
+                      borderRadius: 2,
+                      border: '1px solid #f0f0f0'
+                    }}
+                  />
+                  <span>{country.name}</span>
+                  <span style={{ color: '#999' }}>({country.code})</span>
+                </Space>
+              </Option>
+            ))}
           </Select>
         </Form.Item>
       </Form>

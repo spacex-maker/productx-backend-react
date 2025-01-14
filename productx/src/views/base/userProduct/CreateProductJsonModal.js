@@ -42,8 +42,6 @@ const CreateProductJsonModal = ({ visible, onCancel, onSuccess }) => {
       
       message.success(t('createSuccess'));
       setJsonContent('');
-      onSuccess?.();
-      onCancel();
     } catch (error) {
       if (error instanceof SyntaxError) {
         message.error(t('invalidJson'));

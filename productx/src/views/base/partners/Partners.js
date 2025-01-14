@@ -7,6 +7,7 @@ import PartnersTable from './PartnersTable';
 import UpdatePartnersModal from './UpdatePartnersModal';
 import PartnersCreateFormModal from './PartnersCreateFormModal';
 import { useTranslation } from 'react-i18next';
+import PartnerDetail from './PartnerDetail';
 
 const updatePartnerStatus = async (id, newStatus) => {
   await api.post('/manage/partners/change-status', { id, status: newStatus ? 1 : 0 });
@@ -34,6 +35,8 @@ const Partners = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedPartner, setSelectedPartner] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [selectedPartnerDetail, setSelectedPartnerDetail] = useState(null);
 
   const {
     selectedRows,
@@ -116,6 +119,11 @@ const Partners = () => {
     setIsUpdateModalVisible(true);
   };
 
+  const handleDetailClick = (partner) => {
+    setSelectedPartnerDetail(partner);
+    setIsDetailModalVisible(true);
+  };
+
   return (
     <div>
       <div className="mb-3">
@@ -192,6 +200,7 @@ const Partners = () => {
             handleSelectRow={handleSelectRow}
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
+            handleDetailClick={handleDetailClick}
           />
         </Spin>
       </div>
@@ -210,6 +219,12 @@ const Partners = () => {
         form={updateForm}
         handleUpdatePartner={handleUpdatePartner}
         selectedPartner={selectedPartner}
+      />
+
+      <PartnerDetail
+        isVisible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        partner={selectedPartnerDetail}
       />
     </div>
   );
