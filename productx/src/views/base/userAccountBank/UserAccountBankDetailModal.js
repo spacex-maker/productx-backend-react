@@ -17,7 +17,7 @@ const { Text } = Typography;
 const IconText = ({ icon, text }) => (
   <Space size={4}>
     {icon}
-    <Text style={{ fontSize: '10px' }}>{text}</Text>
+    <Text>{text}</Text>
   </Space>
 );
 
@@ -48,8 +48,8 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
   return (
     <Modal
       title={
-        <span style={{ fontSize: '12px' }}>
-          <BankOutlined style={{ fontSize: '12px', color: '#1890ff', marginRight: '4px' }} />
+        <span>
+          <BankOutlined style={{ color: '#1890ff', marginRight: '4px' }} />
           {t('accountDetails')}
         </span>
       }
@@ -64,32 +64,76 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
           {/* 用户信息卡片 */}
           <Card
             size="small"
-            title={<Text style={{ fontSize: '10px' }}><UserOutlined /> {t('userInfo')}</Text>}
-            style={{ marginBottom: 8 }}
+            title={<Text strong><UserOutlined /> {t('userInfo')}</Text>}
+            style={{ marginBottom: 16 }}
           >
             {userInfo && (
-              <div style={{ marginBottom: '8px' }}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar src={userInfo.avatar} icon={<UserOutlined />} size={40} />
-                  <div style={{ marginLeft: '12px', flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{userInfo.username}</span>
-                      {userInfo.isBelongSystem && (
-                        <Tag color="blue" style={{ marginRight: '8px' }}>
-                          {t('systemUser')}
+              <Space direction="vertical" style={{ width: '100%' }} size={24}>
+                {/* 基本信息区域 */}
+                <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                  <Avatar src={userInfo.avatar} icon={<UserOutlined />} size={80} />
+                  <div style={{ marginLeft: 24, flex: 1 }}>
+                    <div style={{ marginBottom: 12 }}>
+                      <Text strong style={{ fontSize: 18, marginRight: 12 }}>{userInfo.username}</Text>
+                      <Space>
+                        {userInfo.isBelongSystem && (
+                          <Tag color="blue">{t('systemUser')}</Tag>
+                        )}
+                        <Tag color={userInfo.isActive ? 'success' : 'error'}>
+                          {userInfo.isActive ? t('active') : t('inactive')}
                         </Tag>
-                      )}
-                      <Tag color={userInfo.isActive ? 'success' : 'error'}>
-                        {userInfo.isActive ? t('active') : t('inactive')}
-                      </Tag>
+                      </Space>
                     </div>
-                    <div style={{ fontSize: '12px', color: '#666' }}>
-                      {userInfo.nickname && `${userInfo.nickname} - `}
-                      {[userInfo.city, userInfo.state, userInfo.country].filter(Boolean).join(', ')}
+                    
+                    {/* 详细信息网格布局 */}
+                    <div style={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: 'auto 1fr', 
+                      gap: '12px 24px', 
+                      alignItems: 'baseline'
+                    }}>
+                      {userInfo.nickname && (
+                        <>
+                          <Text type="secondary">{t('nickname')}:</Text>
+                          <Text>{userInfo.nickname}</Text>
+                        </>
+                      )}
+                      
+                      {userInfo.email && (
+                        <>
+                          <Text type="secondary">{t('email')}:</Text>
+                          <Text>{userInfo.email}</Text>
+                        </>
+                      )}
+                      
+                      {userInfo.phone && (
+                        <>
+                          <Text type="secondary">{t('phone')}:</Text>
+                          <Text>{userInfo.phone}</Text>
+                        </>
+                      )}
+                      
+                      {(userInfo.city || userInfo.state || userInfo.country) && (
+                        <>
+                          <Text type="secondary">{t('location')}:</Text>
+                          <Text>
+                            {[userInfo.city, userInfo.state, userInfo.country]
+                              .filter(Boolean)
+                              .join(', ')}
+                          </Text>
+                        </>
+                      )}
+                      
+                      {userInfo.createdAt && (
+                        <>
+                          <Text type="secondary">{t('registrationDate')}:</Text>
+                          <Text>{new Date(userInfo.createdAt).toLocaleDateString()}</Text>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
-              </div>
+              </Space>
             )}
           </Card>
 
@@ -97,34 +141,29 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
           {selectedAccount && (
             <Card
               size="small"
-              title={<Text style={{ fontSize: '10px' }}><BankOutlined /> {t('bankInfo')}</Text>}
+              title={<Text strong><BankOutlined /> {t('bankInfo')}</Text>}
             >
-              <Space direction="vertical" size={2} style={{ width: '100%' }}>
-                <IconText
-                  icon={<BankOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('bankName')}: ${selectedAccount.bankName}`}
-                />
-                <IconText
-                  icon={<NumberOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('accountNumber')}: ${selectedAccount.accountNumber}`}
-                />
-                <IconText
-                  icon={<UserOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('accountHolderName')}: ${selectedAccount.accountHolderName}`}
-                />
-                <IconText
-                  icon={<SafetyCertificateOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('swiftCode')}: ${selectedAccount.swiftCode}`}
-                />
-                <IconText
-                  icon={<DollarOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('currencyCode')}: ${selectedAccount.currencyCode}`}
-                />
-                <IconText
-                  icon={<GlobalOutlined style={{ fontSize: '10px' }} />}
-                  text={`${t('isActive')}: ${selectedAccount.isActive ? t('yes') : t('no')}`}
-                />
-              </Space>
+              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '16px 24px', alignItems: 'center' }}>
+                <Text type="secondary">{t('bankName')}:</Text>
+                <Text strong>{selectedAccount.bankName}</Text>
+                
+                <Text type="secondary">{t('accountNumber')}:</Text>
+                <Text strong>{selectedAccount.accountNumber}</Text>
+                
+                <Text type="secondary">{t('accountHolderName')}:</Text>
+                <Text strong>{selectedAccount.accountHolderName}</Text>
+                
+                <Text type="secondary">{t('swiftCode')}:</Text>
+                <Text strong>{selectedAccount.swiftCode}</Text>
+                
+                <Text type="secondary">{t('currencyCode')}:</Text>
+                <Text strong>{selectedAccount.currencyCode}</Text>
+                
+                <Text type="secondary">{t('isActive')}:</Text>
+                <Tag color={selectedAccount.isActive ? 'success' : 'error'}>
+                  {selectedAccount.isActive ? t('yes') : t('no')}
+                </Tag>
+              </div>
             </Card>
           )}
         </div>

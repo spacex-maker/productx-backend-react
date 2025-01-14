@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Modal, Row, Col, Tag, Divider, Space } from 'antd';
+import { Modal, Row, Col, Tag, Divider, Space, Typography, Card, Descriptions, Statistic, Image } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { 
   MobileOutlined,
@@ -187,125 +187,272 @@ const RepairServiceMerchantsDetailModal = ({
 
   return (
     <Modal
-      title={t('merchantDetail')}
+      title={<Typography.Title level={4} style={{ margin: 0 }}>{t('merchantDetail')}</Typography.Title>}
       open={isVisible}
       onCancel={onCancel}
       footer={null}
-      width={680}
+      width={1000}
+      bodyStyle={{ padding: '12px 24px' }}
     >
-      <Row gutter={[8, 0]}>
-        <Col span={12}>
-          <div className="detail-section">
-            <div className="section-title">{t('basicInfo')}</div>
-            {renderDetailItem(t('merchantName'), merchantData?.merchantName, <ShopOutlined />)}
-            {renderDetailItem(t('status'), renderStatus(merchantData?.status), <CheckCircleOutlined />)}
-            {renderDetailItem(t('vipLevel'), renderVipLevel(merchantData?.vipLevel), <CrownOutlined />)}
-            {renderDetailItem(t('joinedPartnerProgram'), merchantData?.joinedPartnerProgram ? t('yes') : t('no'), <TeamOutlined />)}
-          </div>
-
-          <div className="detail-section">
-            <div className="section-title">{t('contactInfo')}</div>
-            {renderDetailItem(t('contactPerson'), merchantData?.contactPerson, <UserOutlined />)}
-            {renderDetailItem(t('contactPhone'), merchantData?.contactPhone, <PhoneOutlined />)}
-            {renderDetailItem(t('contactEmail'), merchantData?.contactEmail, <MailOutlined />)}
-          </div>
-
-          <div className="detail-section">
-            <div className="section-title">{t('addressInfo')}</div>
-            {renderDetailItem(t('province'), merchantData?.province, <EnvironmentOutlined />)}
-            {renderDetailItem(t('city'), merchantData?.city, <EnvironmentOutlined />)}
-            {renderDetailItem(t('address'), merchantData?.address, <EnvironmentOutlined />)}
-            {renderDetailItem(t('postalCode'), merchantData?.postalCode, <EnvironmentOutlined />)}
-          </div>
-        </Col>
-
-        <Col span={12}>
-          <div className="detail-section">
-            <div className="section-title">{t('businessInfo')}</div>
-            {renderDetailItem(t('workingHours'), merchantData?.workingHours, <ClockCircleOutlined />)}
-            {renderDetailItem(t('paymentMethods'), 
-              renderPaymentMethods(merchantData?.paymentMethods), 
-              <WalletOutlined />
-            )}
-            {renderDetailItem(t('serviceTypes'), 
-              renderServiceTypes(merchantData?.serviceTypes), 
-              <AppstoreOutlined />
-            )}
-          </div>
-
-          <div className="detail-section">
-            <div className="section-title">{t('performanceInfo')}</div>
-            {renderDetailItem(t('rating'), merchantData?.rating?.toFixed(1), <StarOutlined />)}
-            {renderDetailItem(t('totalReviews'), merchantData?.totalReviews, <CommentOutlined />)}
-            {renderDetailItem(t('completedOrders'), merchantData?.completedOrders, <OrderedListOutlined />)}
-            {renderDetailItem(t('pendingOrders'), merchantData?.pendingOrders, <OrderedListOutlined />)}
-            {renderDetailItem(t('avgCompletionTime'), merchantData?.avgCompletionTime, <FieldTimeOutlined />)}
-          </div>
-
-          <div className="detail-section">
-            <div className="section-title">{t('additionalInfo')}</div>
-            {renderDetailItem(t('certifications'), merchantData?.certifications, <SafetyCertificateOutlined />)}
-            {renderDetailItem(t('websiteUrl'), merchantData?.websiteUrl, <GlobalOutlined />)}
-            {renderDetailItem(
-              t('socialMediaLinks'), 
-              renderSocialMediaLinks(merchantData?.socialMediaLinks), 
-              <LinkOutlined />
-            )}
-            {renderDetailItem(t('registrationChannel'), merchantData?.registrationChannel, <IeOutlined />)}
-          </div>
-        </Col>
-      </Row>
-
-      <Divider style={{ margin: '8px 0' }} />
-
-      <Row>
+      <Row gutter={[16, 16]}>
+        {/* 基本信息 */}
         <Col span={24}>
-          <div className="detail-section">
-            <div className="section-title">{t('systemInfo')}</div>
-            {renderDetailItem(t('createTime'), renderDateTime(merchantData?.createTime), <CalendarOutlined />)}
-            {renderDetailItem(t('updateTime'), renderDateTime(merchantData?.updateTime), <CalendarOutlined />)}
-            {renderDetailItem(t('createBy'), merchantData?.createBy, <UserSwitchOutlined />)}
-            {renderDetailItem(t('updateBy'), merchantData?.updateBy, <EditOutlined />)}
-            {renderDetailItem(t('remark'), merchantData?.remark, <FileTextOutlined />)}
-          </div>
+          <Card 
+            size="small"
+            title={<Space><ShopOutlined />{t('basicInfo')}</Space>}
+            bordered={false}
+          >
+            <div style={{ display: 'flex', gap: '24px' }}>
+              {/* 左侧头像 */}
+              <div style={{ 
+                flexShrink: 0,
+                width: 120, 
+                height: 120, 
+                border: '1px solid #f0f0f0',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                backgroundColor: '#fafafa'
+              }}>
+                {merchantData?.merchantLogo ? (
+                  <Image
+                    src={merchantData.merchantLogo}
+                    width={120}
+                    height={120}
+                    style={{ objectFit: 'contain' }}
+                    preview={true}
+                  />
+                ) : (
+                  <div style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    backgroundColor: '#f5f5f5'
+                  }}>
+                    <ShopOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                  </div>
+                )}
+              </div>
+
+              {/* 右侧信息 */}
+              <div style={{ flex: 1 }}>
+                <Descriptions 
+                  column={{ xs: 1, sm: 2, md: 3 }} 
+                  size="small"
+                  style={{ marginBottom: 8 }}
+                >
+                  <Descriptions.Item 
+                    label={t('merchantName')} 
+                    span={3}
+                  >
+                    <Space size={16}>
+                      <Typography.Text strong>{merchantData?.merchantName}</Typography.Text>
+                      {renderStatus(merchantData?.status)}
+                      {renderVipLevel(merchantData?.vipLevel)}
+                    </Space>
+                  </Descriptions.Item>
+                  <Descriptions.Item label={t('businessLicense')}>
+                    {merchantData?.businessLicense || '-'}
+                  </Descriptions.Item>
+                  <Descriptions.Item label={t('licenseExpiry')}>
+                    {merchantData?.licenseExpiry?.join('-') || '-'}
+                  </Descriptions.Item>
+                  <Descriptions.Item label={t('taxNumber')}>
+                    {merchantData?.taxNumber || '-'}
+                  </Descriptions.Item>
+                  <Descriptions.Item label={t('joinedPartnerProgram')}>
+                    <Tag color={merchantData?.joinedPartnerProgram ? 'success' : 'default'}>
+                      {merchantData?.joinedPartnerProgram ? t('yes') : t('no')}
+                    </Tag>
+                  </Descriptions.Item>
+                  <Descriptions.Item label={t('certifications')} span={2}>
+                    {merchantData?.certifications ? (
+                      <Space size={4} wrap>
+                        {merchantData.certifications.split(',').map(cert => (
+                          <Tag key={cert} color="blue" icon={<SafetyCertificateOutlined />}>
+                            {cert.trim()}
+                          </Tag>
+                        ))}
+                      </Space>
+                    ) : '-'}
+                  </Descriptions.Item>
+                </Descriptions>
+              </div>
+            </div>
+          </Card>
+        </Col>
+
+        {/* 联系信息 */}
+        <Col span={12}>
+          <Card 
+            size="small"
+            title={<Space><PhoneOutlined />{t('contactInfo')}</Space>}
+            bordered={false}
+          >
+            <Descriptions column={1} size="small">
+              <Descriptions.Item label={t('contactPerson')}>
+                {merchantData?.contactPerson}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('contactPhone')}>
+                {merchantData?.contactPhone}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('contactEmail')}>
+                {merchantData?.contactEmail}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('websiteUrl')}>
+                <a href={merchantData?.websiteUrl} target="_blank" rel="noopener noreferrer">
+                  {merchantData?.websiteUrl}
+                </a>
+              </Descriptions.Item>
+              <Descriptions.Item label={t('socialMediaLinks')}>
+                {renderSocialMediaLinks(merchantData?.socialMediaLinks)}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+
+        {/* 地址信息 */}
+        <Col span={12}>
+          <Card 
+            size="small"
+            title={<Space><EnvironmentOutlined />{t('addressInfo')}</Space>}
+            bordered={false}
+          >
+            <Descriptions column={1} size="small">
+              <Descriptions.Item label={t('address')}>
+                {`${merchantData?.province || ''} ${merchantData?.city || ''} ${merchantData?.address || ''}`}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('postalCode')}>
+                {merchantData?.postalCode}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('countryCode')}>
+                {merchantData?.countryCode}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('coordinates')}>
+                {merchantData?.latitude && merchantData?.longitude ? 
+                  `${merchantData.latitude}, ${merchantData.longitude}` : '-'}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('serviceAreas')}>
+                {merchantData?.serviceAreas}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+
+        {/* 业务信息 */}
+        <Col span={24}>
+          <Card 
+            size="small"
+            title={<Space><AppstoreOutlined />{t('businessInfo')}</Space>}
+            bordered={false}
+          >
+            <Descriptions column={{ xs: 1, sm: 2 }} size="small">
+              <Descriptions.Item label={t('workingHours')}>
+                {merchantData?.workingHours}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('serviceTypes')}>
+                {renderServiceTypes(merchantData?.serviceTypes)}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('paymentMethods')}>
+                {renderPaymentMethods(merchantData?.paymentMethods)}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+        </Col>
+
+        {/* 绩效信息 */}
+        <Col span={24}>
+          <Card 
+            size="small"
+            title={<Space><StarOutlined />{t('performanceInfo')}</Space>}
+            bordered={false}
+          >
+            <Row 
+              gutter={[16, 16]} 
+              justify="space-between"
+              align="middle"
+            >
+              <Col>
+                <Statistic
+                  title={t('rating')}
+                  value={merchantData?.rating}
+                  precision={2}
+                  prefix={<StarOutlined style={{ color: '#faad14' }}/>}
+                />
+              </Col>
+              <Col>
+                <Statistic
+                  title={t('totalReviews')}
+                  value={merchantData?.totalReviews}
+                  prefix={<CommentOutlined />}
+                />
+              </Col>
+              <Col>
+                <Statistic
+                  title={t('completedOrders')}
+                  value={merchantData?.completedOrders}
+                  prefix={<CheckCircleOutlined style={{ color: '#52c41a' }}/>}
+                />
+              </Col>
+              <Col>
+                <Statistic
+                  title={t('pendingOrders')}
+                  value={merchantData?.pendingOrders}
+                  prefix={<ClockCircleOutlined />}
+                />
+              </Col>
+              <Col>
+                <Statistic
+                  title={t('avgCompletionTime')}
+                  value={merchantData?.avgCompletionTime}
+                  suffix="min"
+                  prefix={<FieldTimeOutlined />}
+                />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
+        {/* 系统信息 */}
+        <Col span={24}>
+          <Card 
+            size="small"
+            title={<Space><FileTextOutlined />{t('systemInfo')}</Space>}
+            bordered={false}
+          >
+            <Descriptions column={{ xs: 1, sm: 2, md: 3 }} size="small">
+              <Descriptions.Item label={t('createTime')}>
+                {renderDateTime(merchantData?.createTime)}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('updateTime')}>
+                {renderDateTime(merchantData?.updateTime)}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('createBy')}>
+                {merchantData?.createBy}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('updateBy')}>
+                {merchantData?.updateBy}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('registrationIp')}>
+                {merchantData?.registrationIp}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('registrationChannel')}>
+                {merchantData?.registrationChannel}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('registrationTimeZone')}>
+                {merchantData?.registrationTimeZone}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('remark')}>
+                {merchantData?.remark}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('blacklistReason')}>
+                {merchantData?.blacklistReason}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
         </Col>
       </Row>
-
-      <style jsx>{`
-        .detail-section {
-          margin-bottom: 12px;
-        }
-        .section-title {
-          font-size: 11px;
-          color: #262626;
-          font-weight: 500;
-          margin-bottom: 6px;
-          padding-left: 6px;
-          border-left: 2px solid #1890ff;
-        }
-        .detail-item {
-          margin-bottom: 6px;
-          font-size: 10px;
-          display: flex;
-          align-items: flex-start;
-        }
-        .detail-label {
-          color: #666;
-          width: 80px;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-        }
-        .detail-icon {
-          color: #1890ff;
-        }
-        .detail-value {
-          flex: 1;
-          color: #262626;
-          word-break: break-all;
-          padding-right: 4px;
-        }
-      `}</style>
     </Modal>
   );
 };
