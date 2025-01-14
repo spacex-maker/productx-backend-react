@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Modal, Button, Form, Input, message, Spin, Select, Col, Row } from 'antd';
+import { Modal, Button, Form, Input, message, Spin, Select, Col, Row, Space } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
 import CourierTable from 'src/views/base/express/ExpressTable';
 import UpdateCourierModal from 'src/views/base/express/UpdateExpressCompanyModal';
 import CourierCreateFormModal from 'src/views/base/express/ExpressCompanyCreateFormModal';
+import ExpressCompanyDetailModal from './ExpressCompanyDetailModal';
+import { useTranslation } from 'react-i18next';
+
+const { Option } = Select;
 
 const updateCourierStatus = async (id, newStatus) => {
   await api.post('/manage/express/change-status', { id, status: newStatus});
@@ -21,6 +25,7 @@ const updateCourier = async (updateData) => {
 };
 
 const ExpressList = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
@@ -31,6 +36,7 @@ const ExpressList = () => {
     website: '',
     contactNumber: '',
     status: '',
+    countryCode: undefined
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -39,14 +45,30 @@ const ExpressList = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedCourier, setSelectedCourier] = useState(null);
+  const [countries, setCountries] = useState([]);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, [currentPage, pageSize, searchParams]);
 
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);
+        }
+      } catch (error) {
+        console.error('获取国家列表失败:', error);
+      }
+    };
+    fetchCountries();
+  }, []);
+
   const handleDetailClick = (courier) => {
     setSelectedCourier(courier);
-    setIsUpdateModalVisible(true);
+    setIsDetailModalVisible(true);
   };
 
   const {
@@ -103,11 +125,15 @@ const ExpressList = () => {
   };
 
   const handleEditClick = (courier) => {
+    setSelectedCourier(courier);
     updateForm.setFieldsValue({
       id: courier.id,
-      courierName: courier.courierName,
-      courierCode: courier.courierCode,
-      status: courier.status,
+      countryCode: courier.countryCode,
+      name: courier.name,
+      trackingNumberFormat: courier.trackingNumberFormat,
+      website: courier.website,
+      contactNumber: courier.contactNumber,
+      status: courier.status
     });
     setIsUpdateModalVisible(true);
   };
@@ -122,40 +148,40 @@ const ExpressList = () => {
             <Col>
               <Input
                 size="small"
-                value={searchParams.courierName}
+                value={searchParams.name}
                 onChange={handleSearchChange}
                 name="name"
-                placeholder="快递公司名称"
+                placeholder={t('companyName')}
                 allowClear
               />
             </Col>
             <Col>
               <Input
                 size="small"
-                value={searchParams.courierCode}
+                value={searchParams.trackingNumberFormat}
                 onChange={handleSearchChange}
                 name="trackingNumberFormat"
-                placeholder="单号格式，正则表达式"
+                placeholder={t('trackingFormat')}
                 allowClear
               />
             </Col>
             <Col>
               <Input
                 size="small"
-                value={searchParams.courierCode}
+                value={searchParams.website}
                 onChange={handleSearchChange}
                 name="website"
-                placeholder="官网"
+                placeholder={t('website')}
                 allowClear
               />
             </Col>
             <Col>
               <Input
                 size="small"
-                value={searchParams.courierCode}
+                value={searchParams.contactNumber}
                 onChange={handleSearchChange}
                 name="contactNumber"
-                placeholder="客服电话"
+                placeholder={t('contactNumber')}
                 allowClear
               />
             </Col>
@@ -166,10 +192,42 @@ const ExpressList = () => {
                 name="status"
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
-                placeholder="是否启用"
+                placeholder={t('status')}
               >
-                <Select.Option value="1">启用</Select.Option>
-                <Select.Option value="0">禁用</Select.Option>
+                <Select.Option value="1">{t('enable')}</Select.Option>
+                <Select.Option value="0">{t('disable')}</Select.Option>
+              </Select>
+            </Col>
+            <Col>
+              <Select
+                size="small"
+                className="search-box"
+                name="countryCode"
+                onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value } })}
+                allowClear
+                placeholder={t('country')}
+                showSearch
+                optionFilterProp="children"
+                style={{ minWidth: 150 }}
+              >
+                {countries.map(country => (
+                  <Select.Option key={country.id} value={country.code}>
+                    <Space>
+                      <img 
+                        src={country.flagImageUrl} 
+                        alt={country.name}
+                        style={{ 
+                          width: 20, 
+                          height: 15, 
+                          objectFit: 'cover',
+                          borderRadius: 2,
+                          border: '1px solid #f0f0f0'
+                        }}
+                      />
+                      <span>{country.name}</span>
+                    </Space>
+                  </Select.Option>
+                ))}
               </Select>
             </Col>
             <Col>
@@ -180,7 +238,7 @@ const ExpressList = () => {
                 className="search-button"
                 disabled={isLoading}
               >
-                {isLoading ? <Spin /> : '查询'}
+                {isLoading ? <Spin /> : t('search')}
               </Button>
             </Col>
             <Col>
@@ -189,7 +247,7 @@ const ExpressList = () => {
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
               >
-                新增快递公司
+                {t('addExpressCompany')}
               </Button>
             </Col>
             <Col>
@@ -205,7 +263,7 @@ const ExpressList = () => {
                 }
                 disabled={selectedRows.length === 0}
               >
-                批量删除
+                {t('batchDelete')}
               </Button>
             </Col>
           </Row>
@@ -223,6 +281,7 @@ const ExpressList = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             handleDetailClick={handleDetailClick}
+            countries={countries}
           />
         </Spin>
       </div>
@@ -241,11 +300,20 @@ const ExpressList = () => {
       />
       <UpdateCourierModal
         isVisible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
+        onCancel={() => {
+          setIsUpdateModalVisible(false);
+          updateForm.resetFields();
+        }}
         onOk={() => updateForm.submit()}
         form={updateForm}
         handleUpdateCourier={handleUpdateCourier}
         selectedCourier={selectedCourier}
+      />
+      <ExpressCompanyDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        courier={selectedCourier}
+        countries={countries}
       />
     </div>
   );

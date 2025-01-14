@@ -1120,5 +1120,20 @@
   "iosApp": "Application iOS",
   "harmonyOSApp": "Application HarmonyOS",
   "trafficSource": "Source de trafic",
-  "displayMode": "Mode d'affichage"
+  "displayMode": "Mode d'affichage",
+
+  "expressCompanyManagement": "Gestion des entreprises de messagerie",
+  "addExpressCompany": "Ajouter une entreprise de messagerie",
+  "editExpressCompany": "Modifier une entreprise de messagerie",
+  "expressCompanyDetails": "Détails de l'entreprise de messagerie",
+
+  "trackingNumberFormat": "Format du numéro de suivi",
+  "pleaseEnterTrackingFormat": "Veuillez entrer le format du numéro de suivi",
+  "pleaseEnterWebsite": "Veuillez entrer le site web",
+  "pleaseEnterContactNumber": "Veuillez entrer le numéro de contact",
+  "trackingFormatExample": "Exemple: ^\\d{12}$",
+
+  "fetchCountriesFailed": "Échec de la récupération de la liste des pays",
+  "fetchDataFailed": "Échec de la récupération des données",
+  "trackingFormat": "Format du numéro de suivi"
 }

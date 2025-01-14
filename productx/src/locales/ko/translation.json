@@ -1111,5 +1111,20 @@
   "iosApp": "iOS 앱",
   "harmonyOSApp": "HarmonyOS 앱",
   "trafficSource": "트래픽 소스",
-  "displayMode": "디스플레이 모드"
+  "displayMode": "디스플레이 모드",
+
+  "expressCompanyManagement": "택배 회사 관리",
+  "addExpressCompany": "택배 회사 추가",
+  "editExpressCompany": "택배 회사 수정",
+  "expressCompanyDetails": "택배 회사 세부 정보",
+
+  "trackingNumberFormat": "추적 번호 형식",
+  "pleaseEnterTrackingFormat": "추적 번호 형식을 입력하세요",
+  "pleaseEnterWebsite": "웹사이트를 입력하세요",
+  "pleaseEnterContactNumber": "연락처 번호를 입력하세요",
+  "trackingFormatExample": "예시: ^\\d{12}$",
+
+  "fetchCountriesFailed": "국가 목록을 가져오는 데 실패했습니다",
+  "fetchDataFailed": "데이터를 가져오는 데 실패했습니다",
+  "trackingFormat": "추적 번호 형식"
 }

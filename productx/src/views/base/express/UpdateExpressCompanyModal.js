@@ -1,73 +1,134 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, Select, Space } from 'antd';
+import api from 'src/axiosInstance';
+import { useTranslation } from 'react-i18next';
+
+const { Option } = Select;
 
 const UpdateExpressCompanyModal = ({
-                                     isVisible,
-                                     onCancel,
-                                     onOk,
-                                     form,
-                                     handleUpdateExpressCompany,
-                                     selectedExpressCompany // 用于传递选中的快递公司信息
-                                   }) => {
-  // 当模态框打开时，设置表单字段的值
+  isVisible,
+  onCancel,
+  onOk,
+  form,
+  handleUpdateCourier,
+  selectedCourier
+}) => {
+  const { t } = useTranslation();
+  const [countries, setCountries] = useState([]);
+
   useEffect(() => {
-    if (isVisible && selectedExpressCompany) {
+    const fetchCountries = async () => {
+      try {
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);
+        }
+      } catch (error) {
+        console.error('获取国家列表失败:', error);
+        message.error(t('fetchCountriesFailed'));
+      }
+    };
+    fetchCountries();
+  }, [t]);
+
+  useEffect(() => {
+    if (isVisible && selectedCourier) {
       form.setFieldsValue({
-        id: selectedExpressCompany.id,
-        name: selectedExpressCompany.name,
-        trackingNumberFormat: selectedExpressCompany.trackingNumberFormat,
-        website: selectedExpressCompany.website,
-        contactNumber: selectedExpressCompany.contactNumber,
+        id: selectedCourier.id,
+        countryCode: selectedCourier.countryCode,
+        name: selectedCourier.name,
+        trackingNumberFormat: selectedCourier.trackingNumberFormat,
+        website: selectedCourier.website,
+        contactNumber: selectedCourier.contactNumber
       });
     }
-  }, [isVisible, selectedExpressCompany, form]);
+  }, [isVisible, selectedCourier, form]);
+
+  const countryOption = (country) => (
+    <Option key={country.id} value={country.code}>
+      <Space>
+        <img 
+          src={country.flagImageUrl} 
+          alt={country.name}
+          style={{ 
+            width: 30, 
+            height: 20, 
+            objectFit: 'cover',
+            borderRadius: 2,
+            border: '1px solid #f0f0f0'
+          }}
+        />
+        <span>{country.name}</span>
+        <span style={{ color: '#999' }}>({country.isoCode})</span>
+      </Space>
+    </Option>
+  );
 
   return (
     <Modal
-      title="修改快递公司"
+      title={t('editExpressCompany')}
       open={isVisible}
-      onCancel={onCancel}
+      onCancel={() => {
+        form.resetFields();
+        onCancel();
+      }}
       onOk={onOk}
-      okText="确认"
-      cancelText="取消"
+      width={500}
+      maskClosable={false}
     >
-      <Form form={form} onFinish={handleUpdateExpressCompany}>
+      <Form form={form} onFinish={handleUpdateCourier}>
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="快递公司名称"
+          label={t('country')}
+          name="countryCode"
+          rules={[{ required: true, message: t('pleaseSelectCountry') }]}
+        >
+          <Select
+            showSearch
+            placeholder={t('pleaseSelectCountry')}
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+              const country = countries.find(c => c.code === option.value);
+              return country?.name.toLowerCase().includes(input.toLowerCase());
+            }}
+            dropdownMatchSelectWidth={false}
+            style={{ width: '100%' }}
+          >
+            {countries.map(country => countryOption(country))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label={t('companyName')}
           name="name"
-          rules={[{ required: true, message: '请输入快递公司名称' }]}
-          style={{ marginBottom: '8px' }}
+          rules={[{ required: true, message: t('pleaseEnterCompanyName') }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="运单格式"
+          label={t('trackingNumberFormat')}
           name="trackingNumberFormat"
-          rules={[{ required: true, message: '请输入运单格式' }]}
-          style={{ marginBottom: '8px' }}
+          rules={[{ required: true, message: t('pleaseEnterTrackingFormat') }]}
         >
-          <Input />
+          <Input placeholder={t('trackingFormatExample')} />
         </Form.Item>
 
         <Form.Item
-          label="官网网址"
+          label={t('website')}
           name="website"
-          rules={[{ required: true, message: '请输入官网网址' }]}
-          style={{ marginBottom: '8px' }}
+          rules={[{ required: true, message: t('pleaseEnterWebsite') }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="联系电话"
+          label={t('contactNumber')}
           name="contactNumber"
-          rules={[{ required: true, message: '请输入联系电话' }]}
-          style={{ marginBottom: '8px' }}
+          rules={[{ required: true, message: t('pleaseEnterContactNumber') }]}
         >
           <Input />
         </Form.Item>
