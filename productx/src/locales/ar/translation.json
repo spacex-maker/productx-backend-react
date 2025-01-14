@@ -1103,5 +1103,20 @@
   "iosApp": "تطبيق iOS",
   "harmonyOSApp": "تطبيق هونغمنغ",
   "trafficSource": "مصدر الحركة",
-  "displayMode": "وضع العرض"
+  "displayMode": "وضع العرض",
+
+  "expressCompanyManagement": "إدارة شركات الشحن",
+  "addExpressCompany": "إضافة شركة شحن",
+  "editExpressCompany": "تعديل شركة شحن",
+  "expressCompanyDetails": "تفاصيل شركة الشحن",
+
+  "trackingNumberFormat": "تنسيق رقم التتبع",
+  "pleaseEnterTrackingFormat": "يرجى إدخال تنسيق رقم التتبع",
+  "pleaseEnterWebsite": "يرجى إدخال رابط الموقع",
+  "pleaseEnterContactNumber": "يرجى إدخال رقم الاتصال",
+  "trackingFormatExample": "مثال: ^\\d{12}$",
+
+  "fetchCountriesFailed": "فشل في جلب قائمة الدول",
+  "fetchDataFailed": "فشل في جلب البيانات",
+  "trackingFormat": "تنسيق رقم التتبع"
 }

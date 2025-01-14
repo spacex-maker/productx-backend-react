@@ -1111,5 +1111,20 @@
   "iosApp": "iOS-приложение",
   "harmonyOSApp": "HarmonyOS-приложение",
   "trafficSource": "Источник трафика",
-  "displayMode": "Режим отображения"
+  "displayMode": "Режим отображения",
+
+  "expressCompanyManagement": "Управление курьерскими компаниями",
+  "addExpressCompany": "Добавить курьерскую компанию",
+  "editExpressCompany": "Редактировать курьерскую компанию",
+  "expressCompanyDetails": "Детали курьерской компании",
+
+  "trackingNumberFormat": "Формат номера отслеживания",
+  "pleaseEnterTrackingFormat": "Пожалуйста, введите формат номера отслеживания",
+  "pleaseEnterWebsite": "Пожалуйста, введите веб-сайт",
+  "pleaseEnterContactNumber": "Пожалуйста, введите контактный номер",
+  "trackingFormatExample": "Пример: ^\\d{12}$",
+
+  "fetchCountriesFailed": "Не удалось получить список стран",
+  "fetchDataFailed": "Не удалось получить данные",
+  "trackingFormat": "Формат номера отслеживания"
 }

@@ -1111,5 +1111,20 @@
   "iosApp": "iOS App",
   "harmonyOSApp": "HarmonyOS App",
   "trafficSource": "Traffic Source",
-  "displayMode": "Display Mode"
+  "displayMode": "Display Mode",
+
+  "expressCompanyManagement": "Express Company Management",
+  "addExpressCompany": "Add Express Company",
+  "editExpressCompany": "Edit Express Company",
+  "expressCompanyDetails": "Express Company Details",
+
+  "trackingNumberFormat": "Tracking Number Format",
+  "pleaseEnterTrackingFormat": "Please enter the tracking number format",
+  "pleaseEnterWebsite": "Please enter the website",
+  "pleaseEnterContactNumber": "Please enter the contact number",
+  "trackingFormatExample": "Example: ^\\d{12}$",
+
+  "fetchCountriesFailed": "Failed to fetch countries list",
+  "fetchDataFailed": "Failed to fetch data",
+  "trackingFormat": "Tracking Number Format"
 }

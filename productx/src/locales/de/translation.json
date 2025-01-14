@@ -1087,5 +1087,20 @@
   "iosApp": "iOS App",
   "harmonyOSApp": "HarmonyOS App",
   "trafficSource": "Verkehrsquelle",
-  "displayMode": "Anzeige-Modus"
+  "displayMode": "Anzeige-Modus",
+
+  "expressCompanyManagement": "Kurierunternehmen Verwaltung",
+  "addExpressCompany": "Neues Kurierunternehmen hinzufügen",
+  "editExpressCompany": "Kurierunternehmen bearbeiten",
+  "expressCompanyDetails": "Details des Kurierunternehmens",
+
+  "trackingNumberFormat": "Tracking-Nummer Format",
+  "pleaseEnterTrackingFormat": "Bitte Tracking-Nummer Format eingeben",
+  "pleaseEnterWebsite": "Bitte Website eingeben",
+  "pleaseEnterContactNumber": "Bitte Telefonnummer eingeben",
+  "trackingFormatExample": "Beispiel: ^\\d{12}$",
+
+  "fetchCountriesFailed": "Länderliste konnte nicht abgerufen werden",
+  "fetchDataFailed": "Daten konnten nicht abgerufen werden",
+  "trackingFormat": "Tracking-Nummer Format"
 }

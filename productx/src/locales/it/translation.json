@@ -1104,5 +1104,20 @@
   "iosApp": "App iOS",
   "harmonyOSApp": "App HarmonyOS",
   "trafficSource": "Fonte di traffico",
-  "displayMode": "Modalità di visualizzazione"
+  "displayMode": "Modalità di visualizzazione",
+
+  "expressCompanyManagement": "Gestione Aziende di Corriere",
+  "addExpressCompany": "Aggiungi Azienda di Corriere",
+  "editExpressCompany": "Modifica Azienda di Corriere",
+  "expressCompanyDetails": "Dettagli Azienda di Corriere",
+
+  "trackingNumberFormat": "Formato del Numero di Tracciamento",
+  "pleaseEnterTrackingFormat": "Per favore inserisci il formato del numero di tracciamento",
+  "pleaseEnterWebsite": "Per favore inserisci il sito web",
+  "pleaseEnterContactNumber": "Per favore inserisci il numero di contatto",
+  "trackingFormatExample": "Esempio: ^\\d{12}$",
+
+  "fetchCountriesFailed": "Impossibile recuperare la lista dei paesi",
+  "fetchDataFailed": "Impossibile recuperare i dati",
+  "trackingFormat": "Formato del numero di tracciamento"
 }

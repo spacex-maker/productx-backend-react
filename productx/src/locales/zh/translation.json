@@ -1135,5 +1135,20 @@
   "harmonyOSApp": "鸿蒙应用",
 
   "trafficSource": "流量来源",
-  "displayMode": "显示模式"
+  "displayMode": "显示模式",
+
+  "expressCompanyManagement": "快递公司管理",
+  "addExpressCompany": "新增快递公司",
+  "editExpressCompany": "修改快递公司",
+  "expressCompanyDetails": "快递公司详情",
+
+  "trackingNumberFormat": "运单号格式",
+  "pleaseEnterTrackingFormat": "请输入运单号格式",
+  "pleaseEnterWebsite": "请输入官网网址",
+  "pleaseEnterContactNumber": "请输入联系电话",
+  "trackingFormatExample": "示例：^\\d{12}$",
+
+  "fetchCountriesFailed": "获取国家列表失败",
+  "fetchDataFailed": "获取数据失败",
+  "trackingFormat": "运单格式"
 }

@@ -1110,5 +1110,20 @@
   "iosApp": "iOSアプリ",
   "harmonyOSApp": "HarmonyOSアプリ",
   "trafficSource": "トラフィックソース",
-  "displayMode": "表示モード"
+  "displayMode": "表示モード",
+
+  "expressCompanyManagement": "宅配業者管理",
+  "addExpressCompany": "宅配業者追加",
+  "editExpressCompany": "宅配業者編集",
+  "expressCompanyDetails": "宅配業者詳細",
+
+  "trackingNumberFormat": "追跡番号フォーマット",
+  "pleaseEnterTrackingFormat": "追跡番号フォーマットを入力してください",
+  "pleaseEnterWebsite": "ウェブサイトを入力してください",
+  "pleaseEnterContactNumber": "連絡先番号を入力してください",
+  "trackingFormatExample": "例: ^\\d{12}$",
+
+  "fetchCountriesFailed": "国リストの取得に失敗しました",
+  "fetchDataFailed": "データの取得に失敗しました",
+  "trackingFormat": "追跡番号の形式"
 }

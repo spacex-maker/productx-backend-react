@@ -1120,5 +1120,20 @@
   "iosApp": "Aplicación iOS",
   "harmonyOSApp": "Aplicación HarmonyOS",
   "trafficSource": "Fuente de tráfico",
-  "displayMode": "Modo de visualización"
+  "displayMode": "Modo de visualización",
+
+  "expressCompanyManagement": "Gestión de Empresas de Envíos",
+  "addExpressCompany": "Añadir Empresa de Envíos",
+  "editExpressCompany": "Editar Empresa de Envíos",
+  "expressCompanyDetails": "Detalles de la Empresa de Envíos",
+
+  "trackingNumberFormat": "Formato del Número de Seguimiento",
+  "pleaseEnterTrackingFormat": "Por favor ingrese el formato del número de seguimiento",
+  "pleaseEnterWebsite": "Por favor ingrese el sitio web",
+  "pleaseEnterContactNumber": "Por favor ingrese el número de contacto",
+  "trackingFormatExample": "Ejemplo: ^\\d{12}$",
+
+  "fetchCountriesFailed": "No se pudo obtener la lista de países",
+  "fetchDataFailed": "No se pudo obtener los datos",
+  "trackingFormat": "Formato del número de seguimiento"
 }
