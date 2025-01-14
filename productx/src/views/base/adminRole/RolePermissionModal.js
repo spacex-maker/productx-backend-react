@@ -48,14 +48,14 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
   const handleOk = async () => {
     try {
       setLoading(true);
-      // 确保 selectedPermissions 是一个数组，而不是包含 checked 和 halfChecked 的对象
+      // 确保 selectedPermissions 是一个数组
       const permissionIds = Array.isArray(selectedPermissions) 
         ? selectedPermissions 
-        : selectedPermissions.checked;
+        : (selectedPermissions.checked || []);
 
       await api.post('/manage/role-permissions/configure', {
         roleId,
-        permissionIds // 直接发送权限ID数组
+        permissionIds
       });
       message.success('权限配置成功');
       onCancel();
@@ -329,6 +329,15 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     e.stopPropagation();
   };
 
+  // 修改 Tree 组件的选择处理
+  const onCheck = (checkedKeys, info) => {
+    // 如果 checkedKeys 是对象（包含 checked 和 halfChecked），直接使用
+    // 如果是数组，则创建一个新的数组
+    setSelectedPermissions(
+      typeof checkedKeys === 'object' ? checkedKeys : [...checkedKeys]
+    );
+  };
+
   return (
     <Modal
       title={
@@ -395,27 +404,17 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
             </div>
           </div>
 
-          <div 
-            style={{ 
-              height: 400,
-              overflow: 'hidden',
-              paddingRight: 8
-            }}
-            onWheel={handleWheel}
-          >
+          <div style={{ height: 400, overflow: 'hidden' }} onWheel={handleWheel}>
             {showAsTree ? (
               <div style={{ height: '100%', overflow: 'auto' }}>
                 <Tree
                   checkable
                   checkedKeys={selectedPermissions}
-                  onCheck={(checkedKeys) => setSelectedPermissions(checkedKeys)}
+                  onCheck={onCheck}
                   treeData={treeData}
                   filterTreeNode={filterTreeNode}
                   showLine={{ showLeafIcon: false }}
-                  style={{ 
-                    fontSize: '10px',
-                    padding: '4px 0'
-                  }}
+                  style={{ fontSize: '10px', padding: '4px 0' }}
                   checkStrictly={true}
                 />
               </div>
@@ -423,7 +422,9 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
               <Table
                 rowSelection={{
                   type: 'checkbox',
-                  selectedRowKeys: selectedPermissions,
+                  selectedRowKeys: Array.isArray(selectedPermissions) 
+                    ? selectedPermissions 
+                    : (selectedPermissions.checked || []),
                   onChange: (selectedRowKeys) => setSelectedPermissions(selectedRowKeys)
                 }}
                 columns={columns}
@@ -432,9 +433,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 size="small"
                 pagination={false}
                 scroll={{ y: 400 }}
-                style={{ 
-                  fontSize: '10px'
-                }}
+                style={{ fontSize: '10px' }}
               />
             )}
           </div>

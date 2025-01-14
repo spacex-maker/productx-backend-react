@@ -239,7 +239,10 @@
     "系统语言管理": "System Language Management",
     "系统基础配置": "System Basic Configuration",
     "系统支付方式管理": "System Payment Management",
-    "客户端配置": "Client Configuration"
+    "客户端配置": "Client Configuration",
+    "系统支持支付方式": "System Supported Payment Methods",
+    "网站管理": "Website Management",
+    "综合导航页管理": "Comprehensive Navigation Page Management"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",

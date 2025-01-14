@@ -246,7 +246,10 @@
     "系统语言管理": "Systemsprachenverwaltung",
     "系统基础配置": "Systemgrundkonfiguration",
     "系统支付方式管理": "Zahlungsartenverwaltung",
-    "客户端配置": "Kundenkonfiguration"
+    "客户端配置": "Kundenkonfiguration",
+    "系统支持支付方式": "Unterstützte Zahlungsmethoden des Systems",
+    "网站管理": "Website-Management",
+    "综合导航页管理": "Verwaltung der umfassenden Navigationsseite"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",

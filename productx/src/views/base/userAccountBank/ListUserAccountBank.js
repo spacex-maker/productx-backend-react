@@ -85,10 +85,17 @@ const ListUserAccountBank = () => {
   };
 
   const handleUpdateAccount = async (values) => {
-    // 更新账户逻辑
-    setIsUpdateModalVisible(false);
-    updateForm.resetFields();
-    await fetchData();
+    try {
+      await api.put('/manage/user-account-bank/update', {
+        ...values,
+        id: selectedAccount.id  // 确保包含要更新的账户ID
+      });
+      setIsUpdateModalVisible(false);
+      updateForm.resetFields();
+      await fetchData();  // 刷新数据
+    } catch (error) {
+      console.error('更新账户失败:', error);
+    }
   };
 
   const handleEditClick = (account) => {
