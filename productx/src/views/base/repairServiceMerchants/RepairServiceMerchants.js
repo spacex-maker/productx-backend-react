@@ -8,6 +8,7 @@ import UpdateRepairServiceMerchantsModal from './UpdateRepairServiceMerchantsMod
 import RepairServiceMerchantsCreateFormModal from './RepairServiceMerchantsCreateFormModal';
 import RepairServiceMerchantsDetailModal from './RepairServiceMerchantsDetailModal';
 import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
 
 const updateMerchantStatus = async (id, newStatus) => {
   await api.post('/manage/repair-service-merchants/change-status', { id, status: newStatus ? 1 : 0 });
@@ -64,7 +65,7 @@ const RepairServiceMerchants = () => {
       }
     } catch (err) {
       console.error('Failed to fetch data:', err);
-      message.error(err?.response?.message || t('获取数据失败'));
+      message.error(err?.response?.data?.message || t('获取数据失败'));
     } finally {
       setIsLoading(false);
     }
@@ -118,8 +119,51 @@ const RepairServiceMerchants = () => {
   };
 
   const handleEditClick = (merchant) => {
-    setSelectedMerchant(merchant);
-    updateForm.setFieldsValue(merchant);
+    console.log('Original workingHours:', merchant.workingHours);
+    
+    let workingHoursArray;
+    try {
+      if (merchant.workingHours && typeof merchant.workingHours === 'string' && merchant.workingHours.includes('-')) {
+        const [startTime, endTime] = merchant.workingHours.split('-').map(t => t.trim());
+        workingHoursArray = [
+          dayjs(startTime, 'HH:mm'),
+          dayjs(endTime, 'HH:mm')
+        ];
+        
+        if (!workingHoursArray[0].isValid() || !workingHoursArray[1].isValid()) {
+          console.warn('Invalid time format detected');
+          workingHoursArray = null;
+        }
+      } else {
+        console.warn('Invalid workingHours format:', merchant.workingHours);
+        workingHoursArray = null;
+      }
+      
+      console.log('Processed workingHours:', workingHoursArray);
+    } catch (error) {
+      console.error('Error processing workingHours:', error);
+      workingHoursArray = null;
+    }
+
+    const formattedMerchant = {
+      ...merchant,
+      licenseExpiry: merchant.licenseExpiry ? dayjs(merchant.licenseExpiry) : null,
+      workingHours: workingHoursArray,
+      paymentMethods: Array.isArray(merchant.paymentMethods) 
+        ? merchant.paymentMethods 
+        : (merchant.paymentMethods?.split(',').filter(Boolean) || []),
+      serviceTypes: Array.isArray(merchant.serviceTypes)
+        ? merchant.serviceTypes
+        : (merchant.serviceTypes?.split(',').filter(Boolean) || []),
+      serviceAreas: Array.isArray(merchant.serviceAreas)
+        ? merchant.serviceAreas
+        : (merchant.serviceAreas?.split(',').filter(Boolean) || [])
+    };
+
+    console.log('Final formatted merchant:', formattedMerchant);
+
+    setSelectedMerchant(formattedMerchant);
+    updateForm.setFieldsValue(formattedMerchant);
     setIsUpdateModalVisible(true);
   };
 

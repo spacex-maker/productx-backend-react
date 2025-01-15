@@ -91,6 +91,34 @@ const LoginCard = styled(CCard)`
   overflow: visible;
   position: relative;
   border-radius: 16px;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.8s ease,
+              scale 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &.exit {
+    transform: perspective(1000px) rotateY(720deg) translateZ(300px);
+    opacity: 0;
+    scale: 0.8;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(120deg, #6366f1, #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    border-radius: 16px;
+    z-index: -1;
+  }
+
+  &.exit:before {
+    opacity: 0.15;
+  }
 
   & > div:first-child {
     border-radius: 16px 16px 0 0;
@@ -644,6 +672,7 @@ const LoginPage = () => {
   const [customUrl, setCustomUrl] = useState('');
   const dispatch = useDispatch();
   const [showSlogan, setShowSlogan] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
   const fadeIn = {
     hidden: { opacity: 0 },
@@ -711,9 +740,16 @@ const LoginPage = () => {
         );
 
         localStorage.setItem('currentUser', JSON.stringify(userInfo));
-
-        navigate('/dashboard');
+        
+        // 添加登录成功动画
+        setIsExiting(true);
         message.success(t('loginSuccess'));
+        
+        // 等待动画完成后再跳转
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1200);
+
       } catch (userError) {
         localStorage.removeItem('jwtManageToken');
         message.error(t('failedToGetUserInfo'));
@@ -803,7 +839,7 @@ const LoginPage = () => {
                 animate="visible"
                 variants={fadeIn}
               >
-                <LoginCard>
+                <LoginCard className={isExiting ? 'exit' : ''}>
                   <AnimatePresence>
                     {showSlogan && (
                       <motion.div
