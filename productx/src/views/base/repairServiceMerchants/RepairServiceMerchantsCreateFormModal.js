@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import { Modal, Form, Input, Upload, message, DatePicker, Select, Row, Col, TimePicker, Spin, Button, Space } from 'antd';
+import { Modal, Form, Input, Upload, message, DatePicker, Select, Row, Col, TimePicker, Spin, Button, Space, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { PlusOutlined, GlobalOutlined, ShopOutlined, UserOutlined, PhoneOutlined, MailOutlined, EnvironmentOutlined, CompassOutlined, ClockCircleOutlined, WalletOutlined, AppstoreOutlined, FileOutlined, CalendarOutlined, NumberOutlined, FileTextOutlined, MobileOutlined, LaptopOutlined, ToolOutlined, TableOutlined, ExperimentOutlined, ThunderboltOutlined, CarOutlined, QuestionOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
@@ -193,10 +193,14 @@ const RepairServiceMerchantsCreateFormModal = ({
     const formData = {
       ...values,
       merchantLogo: logoUrl,
-      serviceTypes: values.serviceTypes,
-      paymentMethods: values.paymentMethods?.join(','),
+      businessLicense: licenseUrl,
+      service_types: values.serviceTypes,
+      paymentMethods: values.paymentMethods || [],
       serviceAreas: values.serviceAreas?.join(','),
-      licenseExpiry: values.licenseExpiry?.format('YYYY-MM-DD')
+      workStartTime: values.workingHours?.[0]?.format('HH:mm:00') || null,
+      workEndTime: values.workingHours?.[1]?.format('HH:mm:00') || null,
+      workingHours: undefined,
+      licenseExpiry: values.licenseExpiry ? values.licenseExpiry.format('YYYY-MM-DD') : null
     };
     onFinish(formData);
   };
@@ -513,7 +517,7 @@ const RepairServiceMerchantsCreateFormModal = ({
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
-      width={480}
+      width={1000}
       okText={t('confirm')}
       cancelText={t('cancel')}
     >
@@ -521,396 +525,308 @@ const RepairServiceMerchantsCreateFormModal = ({
         form={form}
         onFinish={handleFinish}
         layout="vertical"
-        labelCol={{ span: 24 }}
-        wrapperCol={{ span: 24 }}
       >
-        <div className="form-section">
-          <div className="section-title">{t('basicInfo')}</div>
-          <Row gutter={[16, 0]}>
-            <Col span={16}>
-              <Form.Item
-                label={<span><ShopOutlined /> {t('merchantName')}</span>}
-                name="merchantName"
-                rules={[{ required: true }]}
-              >
-                <Input size="small" />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item
-                label={t('logo')}
-                name="merchantLogo"
-                rules={[{ required: true }]}
-                getValueFromEvent={(e) => {
-                  if (Array.isArray(e)) {
-                    return e;
-                  }
-                  return e?.file?.response?.url || logoUrl;
-                }}
-              >
-                <Upload
-                  name="file"
-                  listType="picture-card"
-                  className="avatar-uploader-small"
-                  showUploadList={false}
-                  beforeUpload={beforeUpload}
-                  customRequest={(options) => customRequest({ ...options, fileType: 'logo' })}
-                >
-                  {logoUrl ? (
-                    <img src={logoUrl} alt="logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  ) : uploadButton}
-                </Upload>
-              </Form.Item>
-            </Col>
-          </Row>
-        </div>
-
-        <div className="form-section">
-          <div className="section-title">{t('contactInfo')}</div>
-          <Row gutter={[16, 0]}>
-            <Col span={8}>
-              <Form.Item
-                label={<span><UserOutlined /> {t('contactPerson')}</span>}
-                name="contactPerson"
-                rules={[{ required: true }]}
-              >
-                <Input size="small" />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item
-                label={<span><PhoneOutlined /> {t('contactPhone')}</span>}
-                name="contactPhone"
-                rules={[{ required: true }]}
-              >
-                <Input size="small" />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item
-                label={<span><MailOutlined /> {t('contactEmail')}</span>}
-                name="contactEmail"
-                rules={[{ required: true, type: 'email' }]}
-              >
-                <Input size="small" />
-              </Form.Item>
-            </Col>
-          </Row>
-        </div>
-
-        <div className="form-section">
-          <div className="section-title">{t('addressInfo')}</div>
-          <Row gutter={[16, 0]}>
-            <Col span={selectedCountry === 'CN' ? 8 : 12}>
-              <Form.Item
-                name="countryCode"
-                label={<span><GlobalOutlined /> {t("country")}</span>}
-                rules={[{ required: true, message: t("selectCountry") }]}
-              >
-                <Select
-                  showSearch
-                  size="small"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                  }
-                  optionLabelProp="label"
-                  dropdownMatchSelectWidth={false}
-                  dropdownStyle={{ width: '400px' }}
-                  onChange={(value) => {
-                    form.setFieldValue('city', undefined);
-                    form.setFieldValue('province', undefined);
-                    setCities([]);
-                    setSelectedCountry(value);
-                  }}
-                >
-                  {countries.map(country => (
-                    <Select.Option
-                      key={country.code}
-                      value={country.code}
-                      label={`${country.name} (${country.code})`}
-                    >
-                      <div style={{ fontSize: '10px', padding: '2px 0', display: 'flex', alignItems: 'center' }}>
-                        <img
-                          src={country.flagImageUrl}
-                          alt={`${country.name} flag`}
-                          style={{ width: '20px', height: '15px', marginRight: '8px' }}
-                        />
-                        <div>
-                          {country.name} ({country.code})
-                        </div>
-                        <div style={{ color: '#666', marginTop: '2px' }}>
-                          {country.capital} | {country.officialLanguages} | {country.currency} | {country.continent}
-                        </div>
-                      </div>
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-            {selectedCountry === 'CN' && (
-              <Col span={8}>
+        {/* 基本信息 */}
+        <Typography.Title level={5}>{t('basicInfo')}</Typography.Title>
+        <Row gutter={24}>
+          <Col span={20}>
+            <Row gutter={24}>
+              <Col span={12}>
                 <Form.Item
-                  label={<span><EnvironmentOutlined /> {t('province')}</span>}
-                  name="province"
-                  rules={[{ required: true, message: t('enterProvince') }]}
+                  label={t('merchantName')}
+                  name="merchantName"
+                  rules={[{ required: true }]}
                 >
-                  <Input size="small" prefix={<EnvironmentOutlined />} />
+                  <Input prefix={<ShopOutlined />} />
                 </Form.Item>
               </Col>
-            )}
-            <Col span={selectedCountry === 'CN' ? 8 : 12}>
-              <Form.Item
-                label={<span><EnvironmentOutlined /> {t("city")}</span>}
-                name="city"
-                rules={[{ required: true, message: t("enterCity") }]}
-              >
-                <Select
-                  showSearch
-                  size="small"
-                  disabled={!form.getFieldValue('countryCode')}
-                  loading={citySearchLoading}
-                  onSearch={handleCitySearch}
-                  filterOption={false}
-                  notFoundContent={citySearchLoading ? <Spin size="small" /> : null}
-                  optionLabelProp="label"
-                  dropdownMatchSelectWidth={false}
-                  dropdownStyle={{ width: '300px' }}
+              <Col span={12}>
+                <Form.Item
+                  label={t('contactPerson')}
+                  name="contactPerson"
+                  rules={[{ required: true }]}
                 >
-                  {cities.map(city => (
-                    <Select.Option
-                      key={city.code}
-                      value={city.name}
-                      label={`${city.name} (${city.enName})`}
-                    >
-                      <div style={{ fontSize: '10px', padding: '2px 0' }}>
-                        <div>{city.name}</div>
-                        <div style={{ color: '#666', marginTop: '2px' }}>
-                          {city.enName} | {city.type} | 人口: {(city.population/10000).toFixed(0)}万
-                        </div>
-                      </div>
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={6}>
-              <Form.Item
-                label={<span><EnvironmentOutlined /> {t('postalCode')}</span>}
-                name="postalCode"
-              >
-                <Input size="small" />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item
-                label={<span><EnvironmentOutlined /> {t('address')}</span>}
-                name="address"
-                rules={[{ required: true }]}
-              >
-                <Input size="small" prefix={<EnvironmentOutlined />} />
-              </Form.Item>
-            </Col>
-          </Row>
-        </div>
-
-        <div className="form-section">
-          <div className="section-title">{t('locationAndOthers')}</div>
-          <Row gutter={[16, 0]}>
-            <Col span={24}>
-              <Form.Item label={<span><EnvironmentOutlined /> {t('location')}</span>}>
-                <Space.Compact style={{ width: '100%' }}>
-                  <Form.Item
-                    name="latitude"
-                    noStyle
-                  >
-                    <Input
-                      style={{ width: '30%' }}
-                      size="small"
-                      prefix={t('lat')}
-                      readOnly
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="longitude"
-                    noStyle
-                  >
-                    <Input
-                      style={{ width: '30%' }}
-                      size="small"
-                      prefix={t('lng')}
-                      readOnly
-                    />
-                  </Form.Item>
-                  <Button
-                    size="small"
-                    type="primary"
-                    icon={<EnvironmentOutlined />}
-                    onClick={handleOpenMap}  // 使用包装后的处理函数
-                    style={{ width: '40%' }}
-                  >
-                    {t('selectOnMap')}
-                  </Button>
-                </Space.Compact>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span><CompassOutlined /> {t('serviceAreas')}</span>}
-                name="serviceAreas"
-                initialValue={[t('wholeCity')]}
-              >
-                <Select
-                  size="small"
-                  mode="tags"
-                  dropdownStyle={{ display: 'none' }}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span><GlobalOutlined /> {t('websiteUrl')}</span>}
-                name="websiteUrl"
-              >
-                <Input size="small" />
-              </Form.Item>
-            </Col>
-          </Row>
-        </div>
-
-        <div className="form-section">
-          <div className="section-title">{t('businessInfo')}</div>
-          <Row gutter={[16, 0]}>
-            <Col span={12}>
-              <Form.Item
-                label={<span><ClockCircleOutlined /> {t('workingHours')}</span>}
-                name="workingHours"
-                rules={[{ required: true }]}
-                initialValue="00:00-24:00"
-                getValueFromEvent={(times) => {
-                  if (Array.isArray(times) && times[0] && times[1]) {
-                    return `${dayjs(times[0]).format('HH:mm')}-${dayjs(times[1]).format('HH:mm')}`;
-                  }
-                  return undefined;
-                }}
-                getValueProps={(value) => {
-                  if (typeof value === 'string' && value) {
-                    const [start, end] = value.split('-');
-                    return {
-                      value: [dayjs(`2000-01-01 ${start}`), dayjs(`2000-01-01 ${end}`)]
-                    };
-                  }
-                  return { value: undefined };
-                }}
-              >
-                <TimeRangePicker
-                  size="small"
-                  format="HH:mm"
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label={<span><WalletOutlined /> {t('paymentMethods')}</span>}
-                name="paymentMethods"
-              >
-                <Select
-                  size="small"
-                  mode="multiple"
-                  dropdownMatchSelectWidth={false}
-                  options={[
-                    { value: '支付宝', label: '支付宝' },
-                    { value: '微信', label: '微信' },
-                    { value: '现金', label: '现金' }
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item
-                label={<span><AppstoreOutlined /> {t('serviceTypes')}</span>}
-                name="serviceTypes"
-                rules={[{ required: true, message: t('pleaseSelectServiceTypes') }]}
-                initialValue={['other']}
-              >
-                <Select
-                  size="small"
-                  mode="multiple"
-                  options={serviceTypeOptions}
-                  optionLabelProp="label"
-                  optionRender={(option) => (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      {option.data.icon}
-                      <span>{option.data.label}</span>
-                    </div>
-                  )}
-                  maxTagCount={2}
-                  maxTagTextLength={10}
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-        </div>
-
-        <div className="form-section">
-          <div className="section-title">{t('licenseInfo')}</div>
-          <Row gutter={[16, 0]}>
-            <Col span={8}>
-              <Form.Item
-                label={<span><FileOutlined /> {t('businessLicense')}</span>}
-                name="businessLicense"
-              >
-                <Upload
-                  name="file"
-                  listType="picture-card"
-                  className="license-uploader-small"
-                  showUploadList={false}
-                  beforeUpload={beforeUpload}
-                  customRequest={(options) => customRequest({ ...options, fileType: 'license' })}
+                  <Input prefix={<UserOutlined />} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={t('contactPhone')}
+                  name="contactPhone"
+                  rules={[{ required: true }]}
                 >
-                  {licenseUrl ? (
-                    <img
-                      src={licenseUrl}
-                      alt="license"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  ) : (
-                    <div style={{ fontSize: '10px' }}>
-                      <PlusOutlined />
-                    </div>
-                  )}
-                </Upload>
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item
-                label={<span><CalendarOutlined /> {t('licenseExpiry')}</span>}
-                name="licenseExpiry"
+                  <Input prefix={<PhoneOutlined />} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={t('contactEmail')}
+                  name="contactEmail"
+                  rules={[{ required: true, type: 'email' }]}
+                >
+                  <Input prefix={<MailOutlined />} />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Col>
+          <Col span={4}>
+            <Form.Item
+              label={t('logo')}
+              name="merchantLogo"
+              rules={[{ required: true }]}
+            >
+              <Upload
+                name="file"
+                listType="picture-card"
+                showUploadList={false}
+                beforeUpload={beforeUpload}
+                customRequest={(options) => customRequest({ ...options, fileType: 'logo' })}
               >
-                <DatePicker size="small" style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item
-                label={<span><NumberOutlined /> {t('taxNumber')}</span>}
-                name="taxNumber"
-              >
-                <Input size="small" />
-              </Form.Item>
-            </Col>
-          </Row>
-        </div>
+                {logoUrl ? (
+                  <img src={logoUrl} alt="logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : uploadButton}
+              </Upload>
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <div className="form-section">
-          <div className="section-title">{t('remarks')}</div>
-          <Form.Item
-            label={<span><FileTextOutlined /> {t('remark')}</span>}
-            name="remark"
-          >
-            <Input.TextArea size="small" rows={2} />
-          </Form.Item>
-        </div>
+        {/* 地址信息 */}
+        <Typography.Title level={5}>{t('addressInfo')}</Typography.Title>
+        <Row gutter={24}>
+          <Col span={4}>
+            <Form.Item
+              name="countryCode"
+              label={<span><GlobalOutlined /> {t("country")}</span>}
+              rules={[{ required: true }]}
+            >
+              <Select
+                showSearch
+                optionFilterProp="label"
+                filterOption={(input, option) =>
+                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                }
+                onChange={handleCountryChange}
+                dropdownMatchSelectWidth={false}
+                getPopupContainer={triggerNode => triggerNode.parentNode}
+                optionLabelProp="customLabel"
+              >
+                {countries.map(country => (
+                  <Select.Option 
+                    key={country.code} 
+                    value={country.code}
+                    label={`${country.name} (${country.code})`}
+                    customLabel={
+                      <Space>
+                        <img 
+                          src={country.flagImageUrl}
+                          alt={country.name}
+                          style={{ 
+                            width: 16, 
+                            height: 12,
+                            objectFit: 'cover',
+                            display: 'block',
+                            border: '1px solid #f0f0f0',
+                            borderRadius: 0,
+                            padding: 0,
+                            overflow: 'hidden'
+                          }}
+                        />
+                        {country.name}
+                      </Space>
+                    }
+                  >
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                      <Space>
+                        <img 
+                          src={country.flagImageUrl}
+                          alt={country.name}
+                          style={{ 
+                            width: 16, 
+                            height: 12,
+                            objectFit: 'cover',
+                            display: 'block',
+                            border: '1px solid #f0f0f0',
+                            borderRadius: 0,
+                            padding: 0,
+                            overflow: 'hidden'
+                          }}
+                        />
+                        {country.name}
+                        <Typography.Text type="secondary">
+                          ({country.code})
+                        </Typography.Text>
+                      </Space>
+                      <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
+                        {country.continent} · {country.capital} · {country.officialLanguages}
+                      </Typography.Text>
+                      <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
+                        {country.governmentType} · {country.timezone} · {country.currency}
+                      </Typography.Text>
+                      <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
+                        人口: {country.population?.toLocaleString()} · 
+                        面积: {country.area?.toLocaleString()} km² · 
+                        GDP: {country.gdp} B
+                      </Typography.Text>
+                    </Space>
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item
+              label={<span><EnvironmentOutlined /> {t("city")}</span>}
+              name="city"
+              rules={[{ required: true }]}
+            >
+              <Select
+                showSearch
+                disabled={!form.getFieldValue('countryCode')}
+                loading={citySearchLoading}
+                onSearch={handleCitySearch}
+                filterOption={false}
+                dropdownMatchSelectWidth={false}
+                options={cities.map(city => ({
+                  value: city.name,
+                  label: (
+                    <Space direction="vertical" style={{ width: '100%' }}>
+                      <Space>
+                        {city.name}
+                        <Typography.Text type="secondary">
+                          ({city.enName})
+                        </Typography.Text>
+                      </Space>
+                      <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
+                        {city.type} · {city.region} · {city.code}
+                      </Typography.Text>
+                    </Space>
+                  )
+                }))}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={<span><EnvironmentOutlined /> {t('address')}</span>}
+              name="address"
+              rules={[{ required: true }]}
+            >
+              <Input prefix={<EnvironmentOutlined />} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label={<span><EnvironmentOutlined /> {t('location')}</span>}>
+              <Space.Compact style={{ width: '100%' }}>
+                <Form.Item name="latitude" noStyle>
+                  <Input prefix={t('lat')} />
+                </Form.Item>
+                <Form.Item name="longitude" noStyle>
+                  <Input prefix={t('lng')} />
+                </Form.Item>
+                <Button
+                  type="primary"
+                  icon={<EnvironmentOutlined />}
+                  onClick={handleOpenMap}
+                >
+                  {t('selectOnMap')}
+                </Button>
+              </Space.Compact>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* 营业信息 */}
+        <Typography.Title level={5}>{t('businessInfo')}</Typography.Title>
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item
+              label={<span><ClockCircleOutlined /> {t('workingHours')}</span>}
+              name="workingHours"
+              rules={[{ required: true }]}
+            >
+              <TimeRangePicker format="HH:mm" style={{ width: '100%' }} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={<span><WalletOutlined /> {t('paymentMethods')}</span>}
+              name="paymentMethods"
+            >
+              <Select
+                mode="multiple"
+                options={[
+                  { value: '支付宝', label: '支付宝' },
+                  { value: '微信', label: '微信' },
+                  { value: '现金', label: '现金' }
+                ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item
+              label={<span><AppstoreOutlined /> {t('serviceTypes')}</span>}
+              name="serviceTypes"
+              rules={[{ required: true }]}
+            >
+              <Select
+                mode="multiple"
+                options={serviceTypeOptions}
+                optionLabelProp="label"
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* 许可证信息 */}
+        <Typography.Title level={5}>{t('licenseInfo')}</Typography.Title>
+        <Row gutter={24}>
+          <Col span={20}>
+            <Row gutter={24}>
+              <Col span={12}>
+                <Form.Item
+                  label={<span><CalendarOutlined /> {t('licenseExpiry')}</span>}
+                  name="licenseExpiry"
+                >
+                  <DatePicker style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={<span><NumberOutlined /> {t('taxNumber')}</span>}
+                  name="taxNumber"
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Form.Item
+                  label={<span><FileTextOutlined /> {t('remark')}</span>}
+                  name="remark"
+                >
+                  <Input.TextArea rows={3} />
+                </Form.Item>
+              </Col>
+            </Row>
+          </Col>
+          <Col span={4}>
+            <Form.Item
+              label={<span><FileOutlined /> {t('businessLicense')}</span>}
+              name="businessLicense"
+            >
+              <Upload
+                name="file"
+                listType="picture-card"
+                showUploadList={false}
+                beforeUpload={beforeUpload}
+                customRequest={(options) => customRequest({ ...options, fileType: 'license' })}
+              >
+                {licenseUrl ? (
+                  <img src={licenseUrl} alt="license" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : uploadButton}
+              </Upload>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
 
       <MapPicker
@@ -919,184 +835,6 @@ const RepairServiceMerchantsCreateFormModal = ({
         onCancel={handleMapCancel}
         onSelect={handleMapSelect}
       />
-
-      <style jsx global>{`
-        .form-section {
-          margin-bottom: 4px;
-        }
-        .section-title {
-          font-size: 10px;
-          margin-bottom: 2px;
-          color: #666;
-        }
-        .ant-form-item {
-          margin-bottom: 2px;
-        }
-        .ant-form-item-label {
-          padding-bottom: 1px;
-        }
-        .ant-form-item-label > label {
-          font-size: 10px !important;
-          height: 12px;
-          line-height: 12px;
-        }
-        .ant-input {
-          height: 22px !important;
-          font-size: 10px !important;
-          padding: 0 4px !important;
-        }
-        .avatar-uploader-small .ant-upload {
-          width: 40px !important;
-          height: 40px !important;
-          border-radius: 4px !important;
-        }
-        .ant-row {
-          margin-bottom: 0 !important;
-        }
-        [class*='ant-col'] {
-          padding-bottom: 0 !important;
-        }
-        .ant-form-item-explain-error {
-          font-size: 10px;
-          margin-top: 1px;
-        }
-        .ant-modal-header {
-          padding: 8px 12px;
-        }
-        .ant-modal-body {
-          padding: 12px;
-        }
-        .ant-modal-footer {
-          padding: 6px 12px;
-        }
-        .ant-modal-footer .ant-btn {
-          font-size: 10px;
-          height: 22px;
-          padding: 0 8px;
-        }
-        .ant-modal-title {
-          font-size: 11px;
-        }
-        .ant-row {
-          margin-bottom: 0 !important;
-        }
-        [class*='ant-col'] {
-          padding-bottom: 0 !important;
-        }
-        .ant-form-item-label > label {
-          font-size: 10px !important;
-          height: 12px;
-          line-height: 12px;
-        }
-        .ant-form .ant-form-item .ant-form-item-label > label,
-        .ant-select-dropdown .ant-select-item {
-          font-size: 10px !important;
-        }
-        .ant-form-item-required::before {
-          font-size: 10px !important;
-        }
-        .license-uploader-small .ant-upload {
-          width: 40px !important;
-          height: 40px !important;
-          border-radius: 4px !important;
-        }
-        .ant-picker {
-          height: 22px !important;
-        }
-        .ant-picker-input > input {
-          font-size: 10px !important;
-        }
-        .form-section .ant-row {
-          align-items: flex-start !important;
-        }
-        .ant-input,
-        .ant-picker-input > input,
-        .ant-select-selection-item {
-          font-size: 10px !important;
-        }
-        .ant-picker-dropdown {
-          font-size: 10px !important;
-        }
-
-        .ant-picker-time-panel-column {
-          width: 50px !important;
-        }
-
-        .ant-picker-time-panel-column > li {
-          padding: 0 0 !important;
-          height: 20px !important;
-          line-height: 20px !important;
-        }
-
-        .ant-select-dropdown {
-          font-size: 10px !important;
-        }
-
-        .ant-picker {
-          height: 22px !important;
-        }
-
-        .ant-picker input {
-          font-size: 10px !important;
-        }
-
-
-
-
-        // 时间选择器样式优化
-        .ant-picker {
-          height: 22px !important;
-        }
-
-        .ant-picker input {
-          font-size: 10px !important;
-          height: 22px !important;
-          color: #000000 !important;
-        }
-
-        .ant-picker-dropdown {
-          font-size: 10px !important;
-        }
-
-        .ant-picker-time-panel-column {
-          width: 50px !important;
-        }
-
-        .ant-picker-time-panel-column > li {
-          padding: 0 0 !important;
-          height: 20px !important;
-          line-height: 20px !important;
-        }
-
-        // 确保选中的时间显示为黑色
-        .ant-picker-input > input,
-        .ant-picker-input > input:hover {
-          color: #000000 !important;
-        }
-
-        // 国家选择下拉框样式
-        .ant-select-item-option-content {
-          font-size: 10px !important;
-        }
-
-        .ant-select-item {
-          padding: 4px 8px !important;
-        }
-
-        .ant-select-dropdown {
-          font-size: 10px !important;
-        }
-
-        .ant-select-item-option-content > div {
-          white-space: normal;
-          line-height: 1.2;
-        }
-
-        // 确保下拉选项内容正确显示
-        .ant-select-item-option-content div {
-          width: 100%;
-        }
-      `}</style>
     </Modal>
   );
 };

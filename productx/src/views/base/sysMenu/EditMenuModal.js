@@ -9,67 +9,9 @@ import {
 } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
 import * as icons from '@coreui/icons'
-import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
-
-const StyledModal = styled(Modal)`
-  .ant-modal-title {
-    font-size: 12px;
-    color: #000000;
-  }
-
-  .ant-form {
-    .ant-form-item-label > label {
-      font-size: 10px;
-      color: #666666;
-      height: 20px;
-    }
-
-    .ant-input,
-    .ant-select-selection-item,
-    .ant-select-item-option-content {
-      font-size: 10px !important;
-      color: #000000 !important;
-    }
-
-    .ant-input::placeholder,
-    .ant-select-selection-placeholder {
-      color: #999999 !important;
-      font-size: 10px !important;
-    }
-
-    .ant-select-selector {
-      height: 24px !important;
-      
-      .ant-select-selection-search-input {
-        height: 22px !important;
-      }
-    }
-
-    .ant-form-item {
-      margin-bottom: 8px;
-    }
-
-    .ant-form-item-explain {
-      font-size: 10px;
-    }
-  }
-
-  .ant-modal-footer {
-    .ant-btn {
-      font-size: 10px;
-      height: 24px;
-      padding: 0 12px;
-    }
-  }
-
-  .menu-icon {
-    width: 14px;
-    height: 14px;
-  }
-`
 
 const EditMenuModal = ({ 
   visible, 
@@ -85,7 +27,7 @@ const EditMenuModal = ({
   const allIconOptions = Object.keys(icons).filter(key => key.startsWith('cil'));
 
   return (
-    <StyledModal
+    <Modal
       title={t('editMenu')}
       open={visible}
       onOk={onOk}
@@ -186,11 +128,10 @@ const EditMenuModal = ({
           <Switch
             checkedChildren={t('enabled')}
             unCheckedChildren={t('disabled')}
-            size="small"
           />
         </Form.Item>
       </Form>
-    </StyledModal>
+    </Modal>
   )
 }
 

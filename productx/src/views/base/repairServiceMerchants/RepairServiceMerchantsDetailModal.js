@@ -42,6 +42,7 @@ import {
   WechatOutlined
 } from '@ant-design/icons';
 import moment from 'moment';
+import dayjs from 'dayjs';
 
 const RepairServiceMerchantsDetailModal = ({
   isVisible,
@@ -95,8 +96,48 @@ const RepairServiceMerchantsDetailModal = ({
     </div>
   );
 
-  const renderDateTime = (dateTime) => {
-    return dateTime ? moment(dateTime).format('YYYY-MM-DD HH:mm:ss') : '-';
+  // 格式化营业时间显示
+  const formatWorkingHours = (startTime, endTime) => {
+    if (!startTime || !endTime) return '-';
+    return `${startTime} - ${endTime}`;
+  };
+
+  // 处理许可证过期时间的显示
+  const formatLicenseExpiry = (expiry) => {
+    if (!expiry) return '-';
+    
+    try {
+      // 如果是 dayjs 对象
+      if (expiry?._isAMomentObject || expiry?.isValid) {
+        return dayjs(expiry).format('YYYY-MM-DD');
+      }
+      
+      // 如果是数组格式 [2025, 12, 31]
+      if (Array.isArray(expiry)) {
+        return dayjs(expiry.join('-')).format('YYYY-MM-DD');
+      }
+      
+      // 如果是字符串格式
+      if (typeof expiry === 'string') {
+        return dayjs(expiry).isValid() ? dayjs(expiry).format('YYYY-MM-DD') : expiry;
+      }
+      
+      console.warn('Unknown licenseExpiry format:', expiry);
+      return '-';
+    } catch (error) {
+      console.error('Error formatting licenseExpiry:', error);
+      return '-';
+    }
+  };
+
+  // 添加数据格式检查
+  const safeRenderDateTime = (dateTime) => {
+    try {
+      return dateTime ? moment(dateTime).format('YYYY-MM-DD HH:mm:ss') : '-';
+    } catch (error) {
+      console.error('Error formatting datetime:', error);
+      return '-';
+    }
   };
 
   const renderStatus = (status) => {
@@ -256,7 +297,7 @@ const RepairServiceMerchantsDetailModal = ({
                     {merchantData?.businessLicense || '-'}
                   </Descriptions.Item>
                   <Descriptions.Item label={t('licenseExpiry')}>
-                    {merchantData?.licenseExpiry?.join('-') || '-'}
+                    {formatLicenseExpiry(merchantData?.licenseExpiry)}
                   </Descriptions.Item>
                   <Descriptions.Item label={t('taxNumber')}>
                     {merchantData?.taxNumber || '-'}
@@ -349,7 +390,7 @@ const RepairServiceMerchantsDetailModal = ({
           >
             <Descriptions column={{ xs: 1, sm: 2 }} size="small">
               <Descriptions.Item label={t('workingHours')}>
-                {merchantData?.workingHours}
+                {formatWorkingHours(merchantData?.workStartTime, merchantData?.workEndTime)}
               </Descriptions.Item>
               <Descriptions.Item label={t('serviceTypes')}>
                 {renderServiceTypes(merchantData?.serviceTypes)}
@@ -423,10 +464,10 @@ const RepairServiceMerchantsDetailModal = ({
           >
             <Descriptions column={{ xs: 1, sm: 2, md: 3 }} size="small">
               <Descriptions.Item label={t('createTime')}>
-                {renderDateTime(merchantData?.createTime)}
+                {safeRenderDateTime(merchantData?.createTime)}
               </Descriptions.Item>
               <Descriptions.Item label={t('updateTime')}>
-                {renderDateTime(merchantData?.updateTime)}
+                {safeRenderDateTime(merchantData?.updateTime)}
               </Descriptions.Item>
               <Descriptions.Item label={t('createBy')}>
                 {merchantData?.createBy}

@@ -9,120 +9,9 @@ import {
 } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
 import * as icons from '@coreui/icons'
-import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
 const { Option } = Select
-
-const StyledModal = styled(Modal)`
-  .ant-modal-title {
-    font-size: 12px;
-    color: #000000;
-  }
-
-  .ant-form {
-    .ant-form-item-label > label {
-      font-size: 10px;
-      color: #666666;
-      height: 20px;
-    }
-
-    .ant-input,
-    .ant-select-selection-item,
-    .ant-select-item-option-content {
-      font-size: 10px !important;
-      color: #000000 !important;
-    }
-
-    .ant-input::placeholder,
-    .ant-select-selection-placeholder {
-      color: #999999 !important;
-      font-size: 10px !important;
-    }
-
-    .ant-select-selector {
-      height: 24px !important;
-      
-      .ant-select-selection-search-input {
-        height: 22px !important;
-      }
-    }
-
-    .ant-form-item {
-      margin-bottom: 8px;
-    }
-
-    .ant-form-item-explain {
-      font-size: 10px;
-    }
-  }
-
-  .ant-modal-footer {
-    .ant-btn {
-      font-size: 10px;
-      height: 24px;
-      padding: 0 12px;
-    }
-  }
-
-  .menu-icon {
-    width: 14px;
-    height: 14px;
-  }
-
-  .ant-select-dropdown {
-    .ant-select-item {
-      padding: 8px 12px;
-      
-      .menu-icon {
-        width: 16px;
-        height: 16px;
-        vertical-align: middle;
-      }
-      
-      .ant-space {
-        width: 100%;
-        justify-content: flex-start;
-      }
-    }
-  }
-
-  .ant-select-selection-item {
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-  }
-
-  .menu-icon {
-    width: 14px;
-    height: 14px;
-  }
-
-  .ant-select-dropdown {
-    .ant-select-item {
-      padding: 8px 12px;
-      
-      .menu-icon {
-        width: 16px;
-        height: 16px;
-        vertical-align: middle;
-      }
-      
-      .ant-space {
-        width: 100%;
-        justify-content: flex-start;
-      }
-    }
-  }
-
-  .ant-select-selection-item {
-    .menu-icon {
-      width: 16px;
-      height: 16px;
-      vertical-align: middle;
-    }
-  }
-`
 
 const AddMenuModal = ({ 
   visible, 
@@ -145,7 +34,7 @@ const AddMenuModal = ({
   };
 
   return (
-    <StyledModal
+    <Modal
       title={selectedParent ? t('addSubmenu') : t('addRootMenu')}
       open={visible}
       onOk={onOk}
@@ -161,11 +50,7 @@ const AddMenuModal = ({
         type="info"
         showIcon
         banner
-        style={{ 
-          marginBottom: '8px',
-          padding: '4px 8px',
-          fontSize: '12px'
-        }}
+        style={{ marginBottom: '8px' }}
       />
       
       <Form
@@ -260,7 +145,7 @@ const AddMenuModal = ({
           <Input placeholder={t('badgeColorPlaceholder')} />
         </Form.Item>
       </Form>
-    </StyledModal>
+    </Modal>
   )
 }
 

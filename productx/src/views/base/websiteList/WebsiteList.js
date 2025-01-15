@@ -134,9 +134,9 @@ const WebsiteList = () => {
   const handleSearchChange = ({ target: { name, value } }) => {
     setSearchParams(prev => ({ 
       ...prev, 
-      [name]: value,
-      currentPage: 1  // 修正参数名为 currentPage
+      [name]: value
     }));
+    setCurrent(1);
   };
 
   const handleCreateWebsite = async (values) => {
@@ -181,9 +181,9 @@ const WebsiteList = () => {
       isNew: values.includes('isNew'),
       isFeatured: values.includes('isFeatured'),
       isPopular: values.includes('isPopular'),
-      isVerified: values.includes('isVerified'),
-      currentPage: 1
+      isVerified: values.includes('isVerified')
     }));
+    setCurrent(1);
   };
 
   // 功能多选框的处理
@@ -192,9 +192,9 @@ const WebsiteList = () => {
       ...prev,
       hasMobileSupport: values.includes('hasMobileSupport') || undefined,
       hasDarkMode: values.includes('hasDarkMode') || undefined,
-      hasSsl: values.includes('hasSsl') || undefined,
-      currentPage: 1
+      hasSsl: values.includes('hasSsl') || undefined
     }));
+    setCurrent(1);
   };
 
   return (
