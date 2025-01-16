@@ -3,8 +3,6 @@ import {
   Input,
   Modal,
   Form,
-  Switch,
-  Alert,
   Row,
   Col,
   Select,
@@ -12,6 +10,7 @@ import {
   Upload,
   Spin,
   Button,
+  Cascader,
 } from 'antd';
 import {
   PlusOutlined,
@@ -31,6 +30,7 @@ import COS from 'cos-js-sdk-v5';
 import { message } from 'antd';
 import api from 'src/axiosInstance';
 import CreateProductJsonModal from './CreateProductJsonModal';
+import { useModal } from 'src/hooks/useModal';
 const StyledModal = styled(Modal)`
   .ant-modal-content {
     padding: 12px;
@@ -149,7 +149,6 @@ const AddUserProductModal = (props) => {
   const { form, ...modalProps } = props;
   const { t } = useTranslation();
   const [cosInstance, setCosInstance] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const bucketName = 'px-1258150206';
   const region = 'ap-nanjing';
   const [userOptions, setUserOptions] = useState([]);
@@ -157,7 +156,21 @@ const AddUserProductModal = (props) => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [citySearchLoading, setCitySearchLoading] = useState(false);
-  const [jsonModalVisible, setJsonModalVisible] = useState(false);
+
+  const categoryList = [
+    {
+      id: 1,
+      name: t('computer'),
+    },
+    {
+      id: 2,
+      name: t('phone'),
+    },
+    {
+      id: 3,
+      name: t('other'),
+    },
+  ];
 
   // 初始化 COS 实例
   const initCOS = async () => {
@@ -326,9 +339,9 @@ const AddUserProductModal = (props) => {
     }
   };
 
-  // 处理 JSON 创建成功
-  const handleJsonCreateSuccess = () => {
-    onCancel(); // 关闭当前模态框
+  const [jsonModal, jsonPlaceHolder] = useModal(CreateProductJsonModal);
+  const onInputJson = async () => {
+    jsonModal.open(form);
   };
 
   return (
@@ -345,7 +358,7 @@ const AddUserProductModal = (props) => {
         <Button
           type="link"
           icon={<CodeOutlined />}
-          onClick={() => setJsonModalVisible(true)}
+          onClick={onInputJson}
           style={{ padding: 0, height: 'auto', fontSize: '10px' }}
         >
           {t('createWithJson')}
@@ -431,9 +444,12 @@ const AddUserProductModal = (props) => {
               <UnorderedListOutlined /> {t('productDescription')}
             </span>
           }
-          rules={[{ required: true, message: t('enterProductDescription') }]}
+          rules={[
+            { required: true, message: t('enterProductDescription') },
+            { max: 500, message: t('productNameMaxLength') },
+          ]}
         >
-          <Input.TextArea placeholder={t('enterProductDescription')} rows={3} />
+          <Input.TextArea placeholder={t('enterProductDescription')} rows={8} />
         </Form.Item>
 
         <Row gutter={8}>
@@ -484,7 +500,10 @@ const AddUserProductModal = (props) => {
                   <AppstoreOutlined /> {t('stock')}
                 </span>
               }
-              rules={[{ required: true, message: t('enterStock') }]}
+              rules={[
+                { required: true, message: t('enterStock') },
+                { min: 1, max: 999999999, message: t('productNameMaxLength') },
+              ]}
             >
               <InputNumber placeholder={t('enterStock')} style={{ width: '100%' }} min={0} />
             </Form.Item>
@@ -499,11 +518,15 @@ const AddUserProductModal = (props) => {
               }
               rules={[{ required: true, message: t('selectCategory') }]}
             >
-              <Select placeholder={t('selectCategory')}>
-                <Select.Option value="电脑">{t('computer')}</Select.Option>
-                <Select.Option value="手机">{t('phone')}</Select.Option>
-                <Select.Option value="其他">{t('other')}</Select.Option>
-              </Select>
+              <Cascader
+                placeholder={t('selectCategory')}
+                options={categoryList}
+                fieldNames={{
+                  label: 'name',
+                  value: 'id',
+                }}
+                changeOnSelect
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -614,19 +637,11 @@ const AddUserProductModal = (props) => {
           getValueFromEvent={normFile}
           rules={[{ required: true, message: t('uploadCoverImage') }]}
         >
-          <Upload
-            listType="picture-card"
-            maxCount={1}
-            customRequest={customRequest}
-            fileList={form.getFieldValue('imageCover') || []}
-            onChange={({ fileList }) => form.setFieldsValue({ imageCover: fileList })}
-          >
-            {(form.getFieldValue('imageCover') || []).length < 1 && (
-              <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>{t('upload')}</div>
-              </div>
-            )}
+          <Upload listType="picture-card" maxCount={1} customRequest={customRequest}>
+            <div>
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>{t('upload')}</div>
+            </div>
           </Upload>
         </Form.Item>
 
@@ -640,12 +655,7 @@ const AddUserProductModal = (props) => {
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
-          <Upload
-            listType="picture-card"
-            multiple
-            customRequest={customRequest}
-            onChange={({ fileList }) => form.setFieldsValue({ imageList: fileList })}
-          >
+          <Upload listType="picture-card" multiple maxCount={15} customRequest={customRequest}>
             <div>
               <PlusOutlined />
               <div style={{ marginTop: 8 }}>{t('upload')}</div>
@@ -653,12 +663,7 @@ const AddUserProductModal = (props) => {
           </Upload>
         </Form.Item>
       </Form>
-
-      <CreateProductJsonModal
-        visible={jsonModalVisible}
-        onCancel={() => setJsonModalVisible(false)}
-        onSuccess={handleJsonCreateSuccess}
-      />
+      {jsonPlaceHolder}
     </StyledModal>
   );
 };
