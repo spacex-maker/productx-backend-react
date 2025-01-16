@@ -56,8 +56,8 @@ export const useModal = (ModalComponent, props, domNode = document.body) => {
               }
             } else {
               res([true, null]);
+              setVisible(false);
             }
-            setVisible(false);
           };
           handle.current.onCancel = () => {
             res([false, null]);
@@ -66,7 +66,7 @@ export const useModal = (ModalComponent, props, domNode = document.body) => {
         });
       },
       close: () => {
-        setVisible(false);
+        handle.current.onCancel();
       },
     };
   }, []);

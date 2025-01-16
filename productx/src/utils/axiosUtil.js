@@ -41,6 +41,9 @@ class AxiosUtil {
     this.axiosInstance = axios.create({
       baseURL: this._getBaseURL(),
       withCredentials: true,
+      headers:{
+        'Content-Type': 'application/json'
+      }
     });
 
     this.axiosInstance.interceptors.request.use(

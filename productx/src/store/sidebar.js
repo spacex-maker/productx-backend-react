@@ -4,7 +4,6 @@ const initialState = {
 };
 
 export const sidebarReducer = (state = initialState, { type, ...rest }) => {
-  console.log(state);
   switch (type) {
     case 'set':
       return { ...state, ...rest };
