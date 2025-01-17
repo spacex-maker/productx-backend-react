@@ -99,6 +99,8 @@ const UserProductTable = (_, ref) => {
         Array.isArray(formData.imageCover) && formData.imageCover.length > 0
           ? formData.imageCover[0].response?.url || formData.imageCover[0].url
           : formData.imageCover,
+      imageList: (formData.imageList || []).map((file) => file.response?.url || file.url),
+      category: formData.category?.join(),
     };
     const [error, responseData] = await updateProductService(requestData);
     if (error || !responseData) {
@@ -154,18 +156,17 @@ const UserProductTable = (_, ref) => {
     if (!status || !formData) {
       return;
     }
-    const requestData = Object.assign(
-      { ...formData },
-      {
-        currencyCode: 'CNY',
-        status: 0,
-        imageCover:
-          Array.isArray(formData.imageCover) && formData.imageCover.length > 0
-            ? formData.imageCover[0].response?.url || formData.imageCover[0].url
-            : '',
-        imageList: (formData.imageList || []).map((file) => file.response?.url || file.url),
-      },
-    );
+    const requestData = {
+      ...formData,
+      currencyCode: 'CNY',
+      category: formData.category?.join(),
+      status: 0,
+      imageCover:
+        Array.isArray(formData.imageCover) && formData.imageCover.length > 0
+          ? formData.imageCover[0].response?.url || formData.imageCover[0].url
+          : '',
+      imageList: (formData.imageList || []).map((file) => file.response?.url || file.url),
+    };
     const [error, responseData] = await createProductService(requestData);
     if (error || !responseData) {
       return;
@@ -289,6 +290,7 @@ const UserProductTable = (_, ref) => {
             type: 'checkbox',
             onChange: onTableSelectChange,
           }}
+          bordered
           dataSource={data}
           pagination={pagination}
           onChange={onTableChange}
