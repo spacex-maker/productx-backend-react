@@ -1135,5 +1135,19 @@
 
   "fetchCountriesFailed": "Échec de la récupération de la liste des pays",
   "fetchDataFailed": "Échec de la récupération des données",
-  "trackingFormat": "Format du numéro de suivi"
+  "trackingFormat": "Format du numéro de suivi",
+
+  "websiteApplications": "Gestion des applications du site web",
+  "applicationStatus": "Statut de la demande",
+  "reviewComments": "Commentaires de révision",
+  "reviewedAt": "Date de révision",
+  "createApplication": "Créer une application",
+  "updateApplication": "Mettre à jour l'application",
+  "applicationDetail": "Détails de l'application",
+  "pleaseInputValidWebsiteUrl": "Veuillez saisir une URL de site web valide",
+  "pleaseInputContactEmail": "Veuillez saisir un e-mail de contact",
+  "pleaseInputValidEmail": "Veuillez saisir une adresse e-mail valide",
+  "pleaseInputReviewComments": "Veuillez saisir des commentaires de révision",
+  "batchDeleteSuccess": "Suppression par lot réussie",
+  "batchDeleteFailed": "Échec de la suppression par lot"
 }

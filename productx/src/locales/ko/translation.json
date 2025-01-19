@@ -1126,5 +1126,19 @@
 
   "fetchCountriesFailed": "국가 목록을 가져오는 데 실패했습니다",
   "fetchDataFailed": "데이터를 가져오는 데 실패했습니다",
-  "trackingFormat": "추적 번호 형식"
+  "trackingFormat": "추적 번호 형식",
+
+  "websiteApplications": "웹사이트 애플리케이션 관리",
+  "applicationStatus": "신청 상태",
+  "reviewComments": "검토 의견",
+  "reviewedAt": "검토 시간",
+  "createApplication": "애플리케이션 생성",
+  "updateApplication": "애플리케이션 업데이트",
+  "applicationDetail": "애플리케이션 세부정보",
+  "pleaseInputValidWebsiteUrl": "유효한 웹사이트 URL을 입력하세요",
+  "pleaseInputContactEmail": "연락처 이메일을 입력하세요",
+  "pleaseInputValidEmail": "유효한 이메일 주소를 입력하세요",
+  "pleaseInputReviewComments": "검토 의견을 입력하세요",
+  "batchDeleteSuccess": "일괄 삭제 성공",
+  "batchDeleteFailed": "일괄 삭제 실패"
 }

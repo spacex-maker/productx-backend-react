@@ -1119,5 +1119,19 @@
 
   "fetchCountriesFailed": "Impossibile recuperare la lista dei paesi",
   "fetchDataFailed": "Impossibile recuperare i dati",
-  "trackingFormat": "Formato del numero di tracciamento"
+  "trackingFormat": "Formato del numero di tracciamento",
+
+  "websiteApplications": "Gestione delle applicazioni del sito web",
+  "applicationStatus": "Stato della domanda",
+  "reviewComments": "Commenti della revisione",
+  "reviewedAt": "Data della revisione",
+  "createApplication": "Crea applicazione",
+  "updateApplication": "Aggiorna applicazione",
+  "applicationDetail": "Dettagli dell'applicazione",
+  "pleaseInputValidWebsiteUrl": "Inserisci un URL valido del sito web",
+  "pleaseInputContactEmail": "Inserisci un'email di contatto",
+  "pleaseInputValidEmail": "Inserisci un indirizzo email valido",
+  "pleaseInputReviewComments": "Inserisci i commenti della revisione",
+  "batchDeleteSuccess": "Eliminazione batch riuscita",
+  "batchDeleteFailed": "Eliminazione batch fallita"
 }

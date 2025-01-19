@@ -1102,5 +1102,19 @@
 
   "fetchCountriesFailed": "Länderliste konnte nicht abgerufen werden",
   "fetchDataFailed": "Daten konnten nicht abgerufen werden",
-  "trackingFormat": "Tracking-Nummer Format"
+  "trackingFormat": "Tracking-Nummer Format",
+
+  "websiteApplications": "Website-Anwendungsverwaltung",
+  "applicationStatus": "Anwendungsstatus",
+  "reviewComments": "Überprüfungskommentare",
+  "reviewedAt": "Überprüfungszeit",
+  "createApplication": "Anwendung erstellen",
+  "updateApplication": "Anwendung aktualisieren",
+  "applicationDetail": "Anwendungsdetails",
+  "pleaseInputValidWebsiteUrl": "Bitte geben Sie eine gültige Website-URL ein",
+  "pleaseInputContactEmail": "Bitte geben Sie eine Kontakt-E-Mail ein",
+  "pleaseInputValidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+  "pleaseInputReviewComments": "Bitte geben Sie Überprüfungskommentare ein",
+  "batchDeleteSuccess": "Stapelweise Löschung erfolgreich",
+  "batchDeleteFailed": "Stapelweise Löschung fehlgeschlagen"
 }

@@ -1126,5 +1126,19 @@
 
   "fetchCountriesFailed": "Не удалось получить список стран",
   "fetchDataFailed": "Не удалось получить данные",
-  "trackingFormat": "Формат номера отслеживания"
+  "trackingFormat": "Формат номера отслеживания",
+
+  "websiteApplications": "Управление приложениями сайта",
+  "applicationStatus": "Статус заявки",
+  "reviewComments": "Комментарии к отзыву",
+  "reviewedAt": "Время проверки",
+  "createApplication": "Создать приложение",
+  "updateApplication": "Обновить приложение",
+  "applicationDetail": "Детали приложения",
+  "pleaseInputValidWebsiteUrl": "Пожалуйста, введите действительный URL сайта",
+  "pleaseInputContactEmail": "Пожалуйста, введите контактный адрес электронной почты",
+  "pleaseInputValidEmail": "Пожалуйста, введите действительный адрес электронной почты",
+  "pleaseInputReviewComments": "Пожалуйста, введите комментарии к отзыву",
+  "batchDeleteSuccess": "Массовое удаление успешно",
+  "batchDeleteFailed": "Массовое удаление не удалось"
 }
