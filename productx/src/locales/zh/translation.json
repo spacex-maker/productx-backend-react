@@ -1150,5 +1150,20 @@
 
   "fetchCountriesFailed": "获取国家列表失败",
   "fetchDataFailed": "获取数据失败",
-  "trackingFormat": "运单格式"
+  "trackingFormat": "运单格式",
+
+  "websiteApplications": "网站应用管理",
+  "applicationStatus": "申请状态",
+  "reviewComments": "审核意见",
+  "reviewedAt": "审核时间",
+  "createApplication": "创建应用",
+  "updateApplication": "更新应用",
+  "applicationDetail": "应用详情",
+  "pleaseInputValidWebsiteUrl": "请输入有效的网站地址",
+  "pleaseInputContactEmail": "请输入联系邮箱",
+  "pleaseInputValidEmail": "请输入有效的邮箱地址",
+  "pleaseInputReviewComments": "请输入审核意见",
+  "batchDeleteSuccess": "批量删除成功",
+  "batchDeleteFailed": "批量删除失败"
+
 }

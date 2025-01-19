@@ -1126,5 +1126,19 @@
 
   "fetchCountriesFailed": "Failed to fetch countries list",
   "fetchDataFailed": "Failed to fetch data",
-  "trackingFormat": "Tracking Number Format"
+  "trackingFormat": "Tracking Number Format",
+
+  "websiteApplications": "Website Applications Management",
+  "applicationStatus": "Application Status",
+  "reviewComments": "Review Comments",
+  "reviewedAt": "Reviewed At",
+  "createApplication": "Create Application",
+  "updateApplication": "Update Application",
+  "applicationDetail": "Application Detail",
+  "pleaseInputValidWebsiteUrl": "Please input a valid website URL",
+  "pleaseInputContactEmail": "Please input a contact email",
+  "pleaseInputValidEmail": "Please input a valid email address",
+  "pleaseInputReviewComments": "Please input review comments",
+  "batchDeleteSuccess": "Batch delete successful",
+  "batchDeleteFailed": "Batch delete failed"
 }

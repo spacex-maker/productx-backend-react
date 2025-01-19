@@ -1125,5 +1125,19 @@
 
   "fetchCountriesFailed": "国リストの取得に失敗しました",
   "fetchDataFailed": "データの取得に失敗しました",
-  "trackingFormat": "追跡番号の形式"
+  "trackingFormat": "追跡番号の形式",
+
+  "websiteApplications": "ウェブサイトアプリケーション管理",
+  "applicationStatus": "申請状況",
+  "reviewComments": "レビューコメント",
+  "reviewedAt": "レビュー日時",
+  "createApplication": "アプリケーションを作成",
+  "updateApplication": "アプリケーションを更新",
+  "applicationDetail": "アプリケーションの詳細",
+  "pleaseInputValidWebsiteUrl": "有効なウェブサイトURLを入力してください",
+  "pleaseInputContactEmail": "連絡先メールアドレスを入力してください",
+  "pleaseInputValidEmail": "有効なメールアドレスを入力してください",
+  "pleaseInputReviewComments": "レビューコメントを入力してください",
+  "batchDeleteSuccess": "バッチ削除に成功しました",
+  "batchDeleteFailed": "バッチ削除に失敗しました"
 }

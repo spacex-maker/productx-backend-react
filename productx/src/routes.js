@@ -132,6 +132,7 @@ const ClientCountryConfigRouter = React.lazy(() => import('./views/base/clientCo
 
 const WebsiteListRouter = React.lazy(() => import('./views/base/websiteList/WebsiteList'));
 
+const WebsiteApplicationRouter = React.lazy(() => import('./views/base/websiteApplications/WebsiteApplication'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -469,6 +470,13 @@ const routes = [
     path: '/sys/websiteList', name: '综合导航管理', element: (
       <PrivateRoute>
         <WebsiteListRouter/>
+      </PrivateRoute>
+    )
+  },
+  {
+    path: '/sys/websiteApplications', name: '网站应用管理', element: (
+      <PrivateRoute>
+        <WebsiteApplicationRouter/>
       </PrivateRoute>
     )
   },

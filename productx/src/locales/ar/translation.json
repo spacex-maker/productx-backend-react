@@ -1118,5 +1118,19 @@
 
   "fetchCountriesFailed": "فشل في جلب قائمة الدول",
   "fetchDataFailed": "فشل في جلب البيانات",
-  "trackingFormat": "تنسيق رقم التتبع"
+  "trackingFormat": "تنسيق رقم التتبع",
+
+  "websiteApplications": "إدارة تطبيقات الموقع",
+  "applicationStatus": "حالة الطلب",
+  "reviewComments": "تعليقات المراجعة",
+  "reviewedAt": "وقت المراجعة",
+  "createApplication": "إنشاء تطبيق",
+  "updateApplication": "تحديث التطبيق",
+  "applicationDetail": "تفاصيل التطبيق",
+  "pleaseInputValidWebsiteUrl": "يرجى إدخال عنوان موقع صالح",
+  "pleaseInputContactEmail": "يرجى إدخال بريد إلكتروني للتواصل",
+  "pleaseInputValidEmail": "يرجى إدخال بريد إلكتروني صالح",
+  "pleaseInputReviewComments": "يرجى إدخال تعليقات المراجعة",
+  "batchDeleteSuccess": "تم الحذف الجماعي بنجاح",
+  "batchDeleteFailed": "فشل الحذف الجماعي"
 }
