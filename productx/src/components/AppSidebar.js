@@ -51,6 +51,11 @@ const BrandContainer = styled(CSidebarBrand)`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none !important;
+  
+  &:hover {
+    text-decoration: none !important;
+  }
 `;
 
 const BrandText = styled.div`
@@ -59,15 +64,30 @@ const BrandText = styled.div`
   color: #fff;
   animation: ${glowAnimation} 2s ease-in-out infinite;
   transition: all 0.3s ease;
+  text-decoration: none !important;
 
   .full-brand {
     display: ${({ $narrow }) => ($narrow ? 'none' : 'block')};
+    text-decoration: none !important;
+    
+    &:hover {
+      text-decoration: none !important;
+    }
   }
 
   .single-letter {
     display: ${({ $narrow }) => ($narrow ? 'block' : 'none')};
     font-size: 1.5rem;
     font-weight: 800;
+    text-decoration: none !important;
+    
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+  
+  &:hover {
+    text-decoration: none !important;
   }
 `;
 
@@ -147,6 +167,7 @@ const AppSidebar = () => {
       onVisibleChange={(visible) => {
         dispatch({ type: 'set', sidebarShow: visible });
       }}
+      className="sidebar-dark"
     >
       <BrandContainer>
         <BrandText $narrow={sidebarUnfoldable || !sidebarShow}>
@@ -156,6 +177,38 @@ const AppSidebar = () => {
       </BrandContainer>
       <style>
         {`
+          /* 强制使用暗色主题样式 */
+          .sidebar-dark {
+            background-color: #3c4b64 !important;
+            color: #fff !important;
+          }
+
+          .sidebar-dark .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+          }
+
+          .sidebar-dark .nav-link:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+          }
+
+          .sidebar-dark .nav-link.active {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.1) !important;
+          }
+
+          .sidebar-dark .nav-group.show {
+            background: rgba(0, 0, 0, 0.2) !important;
+          }
+
+          .sidebar-dark .nav-group-toggle {
+            color: rgba(255, 255, 255, 0.8) !important;
+          }
+
+          .sidebar-dark .nav-group-toggle:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+          }
 
           /* 展开状态下的子菜单图标缩进 */
           .nav-group-items .nav-item .nav-icon {
