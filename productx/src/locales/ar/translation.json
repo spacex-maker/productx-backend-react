@@ -1132,5 +1132,19 @@
   "pleaseInputValidEmail": "يرجى إدخال بريد إلكتروني صالح",
   "pleaseInputReviewComments": "يرجى إدخال تعليقات المراجعة",
   "batchDeleteSuccess": "تم الحذف الجماعي بنجاح",
-  "batchDeleteFailed": "فشل الحذف الجماعي"
+  "batchDeleteFailed": "فشل الحذف الجماعي",
+
+  "aiAssistant": "مساعد الذكاء الاصطناعي",
+  "online": "متصل",
+  "startNewChat": "ابدأ محادثة جديدة",
+  "typeMessage": "أدخل الرسالة...",
+  "image": "صورة",
+  "remaining": "متبقي",
+  "enterConsole": "الدخول إلى وحدة التحكم",
+  "exitFloating": "خروج من النافذة العائمة",
+  "switchFloating": "التبديل إلى النافذة العائمة",
+  "getKeyFailed": "فشل في الحصول على المفتاح، يرجى تحديث الصفحة والمحاولة مرة أخرى",
+  "getSessionsFailed": "فشل في الحصول على قائمة الجلسات",
+  "getMessageHistoryFailed": "فشل في الحصول على سجل الرسائل",
+  "imageUploadFailed": "فشل في تحميل الصورة"
 }

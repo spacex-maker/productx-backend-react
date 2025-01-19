@@ -23,6 +23,7 @@ import {
   cilSpeedometer,
   cilDevices
 } from '@coreui/icons';
+import { useTranslation } from 'react-i18next';
 
 const API_URL = 'https://api.x.ai/v1/chat/completions';
 
@@ -61,6 +62,7 @@ const MODEL_OPTIONS = [
 ];
 
 const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -94,7 +96,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
       setApiKey(response);
     } catch (error) {
       console.error('获取XAI密钥失败:', error);
-      message.error('获取密钥失败，请刷新页面重试');
+      message.error(t('getKeyFailed'));
     }
   };
 
@@ -289,19 +291,6 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
     window.open('https://console.x.ai/team/2ca12c0e-dfa5-4ccf-9d64-1bff3390222a', '_blank');
   };
 
-  // 定义下拉菜单项
-  const dropdownItems = [
-    {
-      key: 'console',
-      label: (
-        <DropdownItem onClick={handleConsoleClick}>
-          <CIcon icon={cilDevices} size="sm"/>
-          <span>进入控制台</span>
-        </DropdownItem>
-      ),
-    }
-  ];
-
   // 更新切换浮窗的处理函数
   const handleToggleMode = () => {
     if (isFloating) {
@@ -326,13 +315,15 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
     <StyledCard $isFloating={isFloating}>
       <StyledCardHeader>
         <CIcon icon={cilDevices} size="lg" className="me-2"/>
-        <span>AI 助手</span>
-        <CBadge color="success" shape="rounded-pill" className="ms-2">在线</CBadge>
+        <span>{t('aiAssistant')}</span>
+        <CBadge color="success" shape="rounded-pill" className="ms-2">
+          {t('online')}
+        </CBadge>
         <HeaderRightGroup>
           {accountInfo.remainingQuota !== null && (
             <QuotaInfo>
               <QuotaBadge color="info" shape="rounded-pill">
-                剩余: {accountInfo.remainingQuota}
+                {t('remaining')}: {accountInfo.remainingQuota}
               </QuotaBadge>
             </QuotaInfo>
           )}
@@ -340,27 +331,31 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
             color="light"
             variant="ghost"
             onClick={handleToggleMode}
-            title={isFloating ? "退出浮窗" : "切换浮窗"}
+            title={isFloating ? t('exitFloating') : t('switchFloating')}
           >
             {isFloating ? <CompressOutlined /> : <ExpandOutlined />}
           </FloatingButton>
           <Dropdown
-            menu={{items: dropdownItems}}
+            menu={{
+              items: [
+                {
+                  key: 'console',
+                  label: (
+                    <DropdownItem onClick={handleConsoleClick}>
+                      <CIcon icon={cilDevices} size="sm"/>
+                      <span>{t('enterConsole')}</span>
+                    </DropdownItem>
+                  ),
+                }
+              ]
+            }}
             placement="bottomRight"
             trigger={['click']}
-            dropdownRender={menu => (
-              <DropdownWrapper>
-                {menu}
-              </DropdownWrapper>
-            )}
-            overlayStyle={{
-              background: 'var(--cui-card-bg)'
-            }}
           >
             <ConsoleButton
               color="light"
               variant="ghost"
-              title="设置"
+              title={t('settings')}
             >
               <CIcon icon={cilDevices} size="sm"/>
             </ConsoleButton>
@@ -372,7 +367,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
         {messages.length === 0 ? (
           <EmptyState>
             <CIcon icon={cilCommentSquare} size="3xl" className="text-muted mb-3"/>
-            <div className="text-muted">开始新的对话吧</div>
+            <div className="text-muted">{t('startNewChat')}</div>
           </EmptyState>
         ) : (
           messages.map((msg, index) => (
@@ -409,14 +404,6 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
           <StyledSelect
             value={currentModel}
             onChange={handleModelChange}
-            dropdownMatchSelectWidth={false}
-            dropdownStyle={{
-              background: 'var(--cui-card-bg)',
-              border: '1px solid var(--cui-border-color)',
-              borderRadius: '8px',
-              boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-              minWidth: '180px'
-            }}
           >
             {MODEL_OPTIONS.map(option => (
               <Select.Option key={option.value} value={option.value}>
@@ -424,7 +411,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
                   <CIcon icon={option.icon} size="sm"/>
                   <span>{option.label}</span>
                   {option.supportsImage && (
-                    <ModelFeatureBadge>图片</ModelFeatureBadge>
+                    <ModelFeatureBadge>{t('image')}</ModelFeatureBadge>
                   )}
                 </ModelOptionContent>
               </Select.Option>
@@ -435,7 +422,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
               color="light"
               variant="ghost"
               disabled={loading}
-              title="上传图片"
+              title={t('image')}
             >
               <Upload
                 accept="image/*"
@@ -454,7 +441,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="输入消息..."
+          placeholder={t('typeMessage')}
           disabled={loading}
           rows={1}
         />
@@ -462,7 +449,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
           color="primary"
           onClick={handleSend}
           disabled={loading || !inputValue.trim()}
-          title="发送消息"
+          title={t('sendMessage')}
         >
           <CIcon icon={cilArrowRight} size="lg"/>
         </SendButton>

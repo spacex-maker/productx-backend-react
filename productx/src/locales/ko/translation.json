@@ -1140,5 +1140,19 @@
   "pleaseInputValidEmail": "유효한 이메일 주소를 입력하세요",
   "pleaseInputReviewComments": "검토 의견을 입력하세요",
   "batchDeleteSuccess": "일괄 삭제 성공",
-  "batchDeleteFailed": "일괄 삭제 실패"
+  "batchDeleteFailed": "일괄 삭제 실패",
+
+  "aiAssistant": "AI 어시스턴트",
+  "online": "온라인",
+  "startNewChat": "새 채팅 시작",
+  "typeMessage": "메시지 입력...",
+  "image": "이미지",
+  "remaining": "남은",
+  "enterConsole": "콘솔로 들어가기",
+  "exitFloating": "플로팅 창 종료",
+  "switchFloating": "플로팅 창 전환",
+  "getKeyFailed": "키 가져오기 실패, 페이지를 새로고침하고 다시 시도하세요",
+  "getSessionsFailed": "세션 목록 가져오기 실패",
+  "getMessageHistoryFailed": "메시지 기록 가져오기 실패",
+  "imageUploadFailed": "이미지 업로드 실패"
 }

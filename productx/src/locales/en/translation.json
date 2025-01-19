@@ -1140,5 +1140,19 @@
   "pleaseInputValidEmail": "Please input a valid email address",
   "pleaseInputReviewComments": "Please input review comments",
   "batchDeleteSuccess": "Batch delete successful",
-  "batchDeleteFailed": "Batch delete failed"
+  "batchDeleteFailed": "Batch delete failed",
+
+  "aiAssistant": "AI Assistant",
+  "online": "Online",
+  "startNewChat": "Start a new chat",
+  "typeMessage": "Type a message...",
+  "image": "Image",
+  "remaining": "Remaining",
+  "enterConsole": "Enter console",
+  "exitFloating": "Exit floating window",
+  "switchFloating": "Switch floating window",
+  "getKeyFailed": "Failed to get key, please refresh the page and try again",
+  "getSessionsFailed": "Failed to get session list",
+  "getMessageHistoryFailed": "Failed to get message history",
+  "imageUploadFailed": "Image upload failed"
 }

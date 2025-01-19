@@ -1133,5 +1133,19 @@
   "pleaseInputValidEmail": "Inserisci un indirizzo email valido",
   "pleaseInputReviewComments": "Inserisci i commenti della revisione",
   "batchDeleteSuccess": "Eliminazione batch riuscita",
-  "batchDeleteFailed": "Eliminazione batch fallita"
+  "batchDeleteFailed": "Eliminazione batch fallita",
+
+  "aiAssistant": "Assistente IA",
+  "online": "Online",
+  "startNewChat": "Inizia una nuova chat",
+  "typeMessage": "Scrivi un messaggio...",
+  "image": "Immagine",
+  "remaining": "Rimanente",
+  "enterConsole": "Entra nella console",
+  "exitFloating": "Esci dalla finestra flottante",
+  "switchFloating": "Cambia finestra flottante",
+  "getKeyFailed": "Impossibile ottenere la chiave, per favore aggiorna la pagina e riprova",
+  "getSessionsFailed": "Impossibile ottenere la lista delle sessioni",
+  "getMessageHistoryFailed": "Impossibile ottenere la cronologia dei messaggi",
+  "imageUploadFailed": "Caricamento immagine fallito"
 }

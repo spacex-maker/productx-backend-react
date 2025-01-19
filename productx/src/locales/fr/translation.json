@@ -1149,5 +1149,19 @@
   "pleaseInputValidEmail": "Veuillez saisir une adresse e-mail valide",
   "pleaseInputReviewComments": "Veuillez saisir des commentaires de révision",
   "batchDeleteSuccess": "Suppression par lot réussie",
-  "batchDeleteFailed": "Échec de la suppression par lot"
+  "batchDeleteFailed": "Échec de la suppression par lot",
+
+  "aiAssistant": "Assistant IA",
+  "online": "En ligne",
+  "startNewChat": "Commencer une nouvelle conversation",
+  "typeMessage": "Saisir un message...",
+  "image": "Image",
+  "remaining": "Restant",
+  "enterConsole": "Accéder à la console",
+  "exitFloating": "Quitter la fenêtre flottante",
+  "switchFloating": "Changer la fenêtre flottante",
+  "getKeyFailed": "Échec de l'obtention de la clé, veuillez actualiser la page et réessayer",
+  "getSessionsFailed": "Échec de l'obtention de la liste des sessions",
+  "getMessageHistoryFailed": "Échec de l'obtention de l'historique des messages",
+  "imageUploadFailed": "Échec du téléchargement de l'image"
 }

@@ -1116,5 +1116,19 @@
   "pleaseInputValidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "pleaseInputReviewComments": "Bitte geben Sie Überprüfungskommentare ein",
   "batchDeleteSuccess": "Stapelweise Löschung erfolgreich",
-  "batchDeleteFailed": "Stapelweise Löschung fehlgeschlagen"
+  "batchDeleteFailed": "Stapelweise Löschung fehlgeschlagen",
+
+  "aiAssistant": "KI-Assistent",
+  "online": "Online",
+  "startNewChat": "Starte einen neuen Chat",
+  "typeMessage": "Nachricht eingeben...",
+  "image": "Bild",
+  "remaining": "Verbleibend",
+  "enterConsole": "In die Konsole eintreten",
+  "exitFloating": "Floating-Fenster verlassen",
+  "switchFloating": "Floating-Fenster wechseln",
+  "getKeyFailed": "Schlüssel konnte nicht abgerufen werden, bitte laden Sie die Seite neu und versuchen Sie es erneut",
+  "getSessionsFailed": "Fehler beim Abrufen der Sitzungen",
+  "getMessageHistoryFailed": "Fehler beim Abrufen der Nachrichtenhistorie",
+  "imageUploadFailed": "Bild-Upload fehlgeschlagen"
 }
