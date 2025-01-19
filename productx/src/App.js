@@ -7,6 +7,7 @@ import './scss/style.scss';
 import styled, { createGlobalStyle } from 'styled-components';
 import { ConfigProvider } from 'antd';
 import { CustomTheme } from './config/theme';
+import GlobalAIChat from './components/GlobalAIChat';
 
 // 添加全局样式
 const GlobalStyle = createGlobalStyle`
@@ -104,6 +105,7 @@ const App = () => {
           </Routes>
         </Suspense>
         {/*<TawkToChat />*/}
+        <GlobalAIChat />
       </HashRouter>
     </ConfigProvider>
   );

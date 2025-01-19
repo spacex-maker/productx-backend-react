@@ -13,11 +13,23 @@ import {
   CNavItem,
   useColorModes,
   CNavbar,
+  CButton,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import { cilContrast, cilEnvelopeOpen, cilLanguage, cilMenu, cilMoon, cilSun } from '@coreui/icons';
+import { 
+  cilContrast, 
+  cilEnvelopeOpen, 
+  cilLanguage, 
+  cilMenu, 
+  cilMoon, 
+  cilSun,
+  cilCommentSquare,
+} from '@coreui/icons';
 import { Badge, Button } from 'antd';
+import { RobotOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
+import { toggleFloating } from 'src/store/aiChat';
+import styled from 'styled-components';
 
 import { AppHeaderDropdown, AppBreadcrumb } from './component';
 import MessageModal from './component/MessageModal';
@@ -88,6 +100,10 @@ const AppHeader = () => {
     fetchSupportedLanguages();
   }, []);
 
+  const handleOpenAIChat = () => {
+    dispatch(toggleFloating(true));
+  };
+
   return (
     <CHeader position="sticky" className={appHeaderStyle.rootHeaderContainer} ref={headerRef}>
       <CContainer className="px-4" fluid>
@@ -98,6 +114,17 @@ const AppHeader = () => {
           <AppBreadcrumb />
         </CNavbar>
         <CHeaderNav>
+          <CNavItem>
+            <StyledButton 
+              color="light" 
+              variant="ghost"
+              className="p-2"
+              onClick={handleOpenAIChat}
+              title="打开 AI 助手"
+            >
+              <RobotOutlined style={{ fontSize: '1.25rem' }} />
+            </StyledButton>
+          </CNavItem>
           <CNavItem>
             <Badge count={unreadCount || 0} offset={[-5, 5]}>
               <Button color="primary" onClick={() => setMessageModalVisible(true)} variant="link">
@@ -187,5 +214,19 @@ const AppHeader = () => {
     </CHeader>
   );
 };
+
+const StyledButton = styled(CButton)`
+  color: var(--cui-body-color);
+  
+  &:hover {
+    color: var(--cui-btn-hover-color);
+    background: var(--cui-btn-hover-bg);
+  }
+
+  &:active {
+    color: var(--cui-btn-active-color);
+    background: var(--cui-btn-active-bg);
+  }
+`;
 
 export default AppHeader;

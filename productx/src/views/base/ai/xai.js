@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {Upload, message, Select, Dropdown} from 'antd';
-import {RobotOutlined, SettingOutlined} from '@ant-design/icons';
+import {RobotOutlined, SettingOutlined, ExpandOutlined, CompressOutlined} from '@ant-design/icons';
 import styled from 'styled-components';
 import api from 'src/axiosInstance';
 import {
@@ -26,19 +26,48 @@ import {
 
 const API_URL = 'https://api.x.ai/v1/chat/completions';
 
-// 添加模型选项配置
+// 更新模型选项配置
 const MODEL_OPTIONS = [
-  {value: 'grok-beta', label: 'Grok Beta', icon: cilSpeedometer, supportsImage: false},
-  {value: 'grok-vision-beta', label: 'Grok Vision', icon: cilImage, supportsImage: true},
+  {
+    value: 'gpt-4-turbo-preview',
+    label: 'GPT-4 Turbo',
+    icon: cilSpeedometer,
+    supportsImage: false
+  },
+  {
+    value: 'gpt-4-vision-preview',
+    label: 'GPT-4 Vision',
+    icon: cilImage,
+    supportsImage: true
+  },
+  {
+    value: 'gpt-4',
+    label: 'GPT-4',
+    icon: cilDevices,
+    supportsImage: false
+  },
+  {
+    value: 'gpt-3.5-turbo',
+    label: 'GPT-3.5 Turbo',
+    icon: cilCommentSquare,
+    supportsImage: false
+  },
+  {
+    value: 'gpt-3.5-turbo-16k',
+    label: 'GPT-3.5 16K',
+    icon: cilCommentSquare,
+    supportsImage: false
+  }
 ];
 
-const XAIChat = () => {
+const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const [currentModel, setCurrentModel] = useState('gpt-3.5-turbo');
   const messagesEndRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(null);
-  const [currentModel, setCurrentModel] = useState('grok-beta');
   const [accountInfo, setAccountInfo] = useState({
     remainingQuota: null,
     balance: null
@@ -74,42 +103,47 @@ const XAIChat = () => {
     fetchApiKey();
   }, []);
 
-  // 优化历史消息处理
-  const getMessageHistory = (newMessage = null) => {
-    const messageHistory = [
-      {
-        role: "system",
-        content: "You are a helpful assistant."
-      },
-      ...messages.map(msg => ({
-        role: msg.type === 'user' ? 'user' : 'assistant',
-        content: msg.content
-      }))
-    ];
-
-    // 如果有新消息，添加到历史中
-    if (newMessage) {
-      // 如果新消息是图片消息
-      if (Array.isArray(newMessage) && newMessage[0]?.type === "image_url") {
-        messageHistory.push({
-          role: "user",
-          content: newMessage
-        });
-      } else {
-        // 文本消息
-        messageHistory.push({
-          role: "user",
-          content: newMessage
-        });
+  // 获取历史会话列表
+  const fetchSessions = async () => {
+    try {
+      const response = await api.get('/manage/chat/sessions');
+      if (response.data?.success && response.data.data.data.length > 0) {
+        const latestSession = response.data.data.data[0];
+        await fetchSessionMessages(latestSession.id);
       }
+    } catch (error) {
+      console.error('获取会话列表失败:', error);
+      message.error('获取会话列表失败');
     }
-
-    return messageHistory;
   };
 
-  // 更新发送消息函数
+  // 获取指定会话的消息历史
+  const fetchSessionMessages = async (sessionId) => {
+    try {
+      const response = await api.get(`/manage/chat/history/${sessionId}`);
+      if (response) {
+        const formattedMessages = response.data.map(msg => ({
+          type: msg.role === 'user' ? 'user' : 'ai',
+          content: msg.content,
+          timestamp: new Date(msg.createTime).toLocaleTimeString()
+        }));
+        setMessages(formattedMessages);
+        setSessionId(sessionId);
+      }
+    } catch (error) {
+      console.error('获取消息历史失败:', error);
+      message.error('获取消息历史失败');
+    }
+  };
+
+  // 组件加载时获取历史会话
+  useEffect(() => {
+    fetchSessions();
+  }, []);
+
+  // 发送消息
   const handleSend = async () => {
-    if (!inputValue.trim() || !apiKey) return;
+    if (!inputValue.trim()) return;
 
     const userMessage = {
       type: 'user',
@@ -122,35 +156,32 @@ const XAIChat = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          messages: getMessageHistory(inputValue),
-          model: currentModel,
-          stream: false,
-          temperature: 0
-        })
-      });
+      const payload = {
+        content: inputValue,
+        model: currentModel
+      };
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (sessionId) {
+        payload.sessionId = sessionId;
       }
 
-      const data = await response.json();
+      const data = await api.post('/manage/chat/send', payload);
+      
       const aiMessage = {
         type: 'ai',
-        content: data.choices[0].message.content,
+        content: data.content,
         timestamp: new Date().toLocaleTimeString()
       };
 
       setMessages(prev => [...prev, aiMessage]);
+      
+      // 如果是新会话，保存会话ID
+      if (!sessionId && data.sessionId) {
+        setSessionId(data.sessionId);
+      }
+
     } catch (error) {
-      message.error('发送消息失败，请重试');
-      console.error('Error:', error);
+      console.error('发送消息失败:', error);
     } finally {
       setLoading(false);
     }
@@ -271,10 +302,19 @@ const XAIChat = () => {
     }
   ];
 
+  // 更新切换浮窗的处理函数
+  const handleToggleMode = () => {
+    if (isFloating) {
+      onClose?.();
+    } else {
+      onToggleFloating?.();
+    }
+  };
+
   // 如果没有密钥，显示加载状态
   if (!apiKey) {
     return (
-      <StyledCard>
+      <StyledCard $isFloating={isFloating}>
         <LoadingWrapper>
           <CSpinner color="primary"/>
         </LoadingWrapper>
@@ -283,7 +323,7 @@ const XAIChat = () => {
   }
 
   return (
-    <StyledCard>
+    <StyledCard $isFloating={isFloating}>
       <StyledCardHeader>
         <CIcon icon={cilDevices} size="lg" className="me-2"/>
         <span>AI 助手</span>
@@ -296,6 +336,14 @@ const XAIChat = () => {
               </QuotaBadge>
             </QuotaInfo>
           )}
+          <FloatingButton
+            color="light"
+            variant="ghost"
+            onClick={handleToggleMode}
+            title={isFloating ? "退出浮窗" : "切换浮窗"}
+          >
+            {isFloating ? <CompressOutlined /> : <ExpandOutlined />}
+          </FloatingButton>
           <Dropdown
             menu={{items: dropdownItems}}
             placement="bottomRight"
@@ -314,49 +362,44 @@ const XAIChat = () => {
               variant="ghost"
               title="设置"
             >
-              <SettingOutlined/>
+              <CIcon icon={cilDevices} size="sm"/>
             </ConsoleButton>
           </Dropdown>
         </HeaderRightGroup>
       </StyledCardHeader>
 
       <StyledCardBody>
-        {messages.map((msg, index) => (
-          <MessageBubble key={index} type={msg.type}>
-            {msg.type !== 'user' && (
-              <CAvatar
-                size="xs"
-                color={msg.type === 'user' ? 'primary' : 'info'}
-                className={msg.type === 'user' ? 'ms-1' : 'me-1'}
-              >
-                <CIcon icon={msg.type === 'user' ? cilUser : cilCommentSquare} size="xs"/>
-              </CAvatar>
-            )}
-            <MessageContentWrapper type={msg.type}>
-              {msg.image && (
-                <MessageImage src={msg.image} alt="uploaded"/>
+        {messages.length === 0 ? (
+          <EmptyState>
+            <CIcon icon={cilCommentSquare} size="3xl" className="text-muted mb-3"/>
+            <div className="text-muted">开始新的对话吧</div>
+          </EmptyState>
+        ) : (
+          messages.map((msg, index) => (
+            <MessageBubble key={index} type={msg.type}>
+              {msg.type === 'ai' && (
+                <CAvatar size="sm" color="info" className="me-2">
+                  <CIcon icon={cilCommentSquare} size="sm"/>
+                </CAvatar>
               )}
-              <MessageContent
-                content={msg.content}
-                type={msg.type}
-              />
-              <TimeStamp>{msg.timestamp}</TimeStamp>
-            </MessageContentWrapper>
-            {msg.type === 'user' && (
-              <CAvatar
-                size="xs"
-                color="primary"
-                className="ms-1"
-              >
-                <CIcon icon={cilUser} size="xs"/>
-              </CAvatar>
-            )}
-          </MessageBubble>
-        ))}
+              <MessageContentWrapper type={msg.type}>
+                <StyledMessageContent type={msg.type}>
+                  {msg.content}
+                </StyledMessageContent>
+                <TimeStamp>{msg.timestamp}</TimeStamp>
+              </MessageContentWrapper>
+              {msg.type === 'user' && (
+                <CAvatar size="sm" color="primary" className="ms-2">
+                  <CIcon icon={cilUser} size="sm"/>
+                </CAvatar>
+              )}
+            </MessageBubble>
+          ))
+        )}
         <div ref={messagesEndRef}/>
         {loading && (
           <LoadingWrapper>
-            <CSpinner size="sm" variant="grow"/>
+            <CSpinner size="sm"/>
           </LoadingWrapper>
         )}
       </StyledCardBody>
@@ -418,7 +461,7 @@ const XAIChat = () => {
         <SendButton
           color="primary"
           onClick={handleSend}
-          disabled={loading || (!inputValue.trim() && !imageUrl)}
+          disabled={loading || !inputValue.trim()}
           title="发送消息"
         >
           <CIcon icon={cilArrowRight} size="lg"/>
@@ -430,252 +473,130 @@ const XAIChat = () => {
 
 // 更新卡片样式
 const StyledCard = styled(CCard)`
-  height: calc(100vh - 100px);
-  margin: 12px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: none;
-  background: var(--cui-card-bg);
+  position: ${props => props.$isFloating ? 'fixed' : 'fixed'};
+  top: ${props => props.$isFloating ? '20px' : '64px'};
+  left: ${props => props.$isFloating ? 'auto' : '256px'};
+  right: ${props => props.$isFloating ? '20px' : '0'};
+  bottom: ${props => props.$isFloating ? 'auto' : '50px'};
+  width: ${props => props.$isFloating ? '400px' : 'auto'};
+  height: ${props => props.$isFloating ? '600px' : 'calc(100vh - 114px)'};
+  margin: 0;
+  border-radius: ${props => props.$isFloating ? '8px' : '0'};
   display: flex;
   flex-direction: column;
-  position: relative;
+  overflow: hidden;
+  box-shadow: ${props => props.$isFloating ? '0 4px 12px rgba(0, 0, 0, 0.15)' : 'none'};
+  z-index: ${props => props.$isFloating ? '1050' : 'auto'};
+
+  @media (max-width: 768px) {
+    left: ${props => props.$isFloating ? '20px' : '0'};
+    width: ${props => props.$isFloating ? 'calc(100% - 40px)' : '100%'};
+  }
 `;
 
 const StyledCardHeader = styled(CCardHeader)`
-  padding: 12px 16px;
-  background: var(--cui-card-cap-bg);
-  border-bottom: 1px solid var(--cui-border-color);
   display: flex;
   align-items: center;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--cui-body-color);
-  position: sticky;
-  top: 12px;
-  z-index: 1;
+  gap: 0.5rem;
+  padding: 1rem;
   flex-shrink: 0;
+  background: var(--cui-card-cap-bg);
+  border-bottom: 1px solid var(--cui-border-color);
 `;
 
 const StyledCardBody = styled(CCardBody)`
-  padding: 12px 16px;
-  padding-top: 0;
+  flex: 1;
   overflow-y: auto;
-  background: var(--cui-body-bg);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--cui-body-bg);
 
+  /* 自定义滚动条样式 */
   &::-webkit-scrollbar {
     width: 6px;
   }
 
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   &::-webkit-scrollbar-thumb {
-    background: var(--cui-border-color);
+    background-color: var(--cui-border-color);
     border-radius: 3px;
   }
 `;
 
 const StyledCardFooter = styled(CCardFooter)`
-  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  flex-shrink: 0;
   background: var(--cui-card-cap-bg);
   border-top: 1px solid var(--cui-border-color);
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  position: sticky;
-  bottom: 0;
-  z-index: 1;
-  flex-shrink: 0;
-`;
-
-// 更新输入框样式
-const StyledTextarea = styled(CFormTextarea)`
-  resize: none;
-  border-radius: 8px;
-  background: var(--cui-input-bg);
-  color: var(--cui-input-color);
-  border-color: var(--cui-input-border-color);
-  font-size: 10px;
-  padding: 8px 12px;
-  flex: 1; // 允许输入框占据剩余空间
-
-  &:focus {
-    box-shadow: 0 0 0 2px var(--cui-primary-rgb);
-    border-color: var(--cui-primary);
-  }
-
-  &::placeholder {
-    color: var(--cui-input-placeholder-color);
-    font-size: 10px;
-  }
 `;
 
 const MessageBubble = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
-  padding: 0 8px;
-  margin: 4px 0;
   justify-content: ${props => props.type === 'user' ? 'flex-end' : 'flex-start'};
+  gap: 0.5rem;
 `;
 
 const MessageContentWrapper = styled.div`
+  max-width: 70%;
   display: flex;
   flex-direction: column;
-  max-width: 70%;
-  gap: 6px;
-  align-items: ${props => props.type === 'user' ? 'flex-end' : 'flex-start'};
+  gap: 0.25rem;
 `;
 
-// 添加代码块和 Markdown 相关的样式组件
-const CodeBlock = styled.pre`
-  background: var(--cui-dark);
-  border-radius: 6px;
-  padding: 8px;
-  margin: 4px 0;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 10px;
-  line-height: 1.4;
-  overflow-x: auto;
-  color: #e9ecef;
-  width: 100%;
-
-  &::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--cui-border-color);
-    border-radius: 2px;
-  }
-`;
-
-const LanguageTag = styled.div`
-  color: #6c757d;
-  font-size: 10px;
-  padding: 5px 10px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  margin-bottom: 4px;
-  display: inline-block;
-`;
-
-const MarkdownContent = styled.div`
-  h3 {
-    font-size: 12px;
-    font-weight: 600;
-    margin: 12px 0 8px 0;
-    color: ${props => props.type === 'user' ? '#fff' : 'var(--cui-body-color)'};
-  }
-
-  p {
-    margin: 4px 0;
-  }
-
-  ul {
-    margin: 4px 0;
-    padding-left: 16px;
-
-    li {
-      margin: 2px 0;
-    }
-  }
-`;
-
-// 更新 MessageContent 组件的渲染逻辑
-const MessageContent = ({content, type}) => {
-  // 分割内容为代码块和非代码块部分
-  const parts = content.split(/(```[\s\S]*?```)/);
-
-  return (
-    <StyledMessageContent type={type}>
-      <MarkdownContent type={type}>
-        {parts.map((part, index) => {
-          if (part.startsWith('```') && part.endsWith('```')) {
-            // 提取代码和语言
-            const [firstLine, ...codeLines] = part.slice(3, -3).split('\n');
-            const language = firstLine.trim();
-            const code = codeLines.join('\n');
-
-            return (
-              <div key={index}>
-                {language && <LanguageTag>{language}</LanguageTag>}
-                <CodeBlock>
-                  {code}
-                </CodeBlock>
-              </div>
-            );
-          }
-
-          // 处理普通文本中的 Markdown 语法
-          const formattedText = part
-            .split('\n')
-            .map((line, i) => {
-              if (line.startsWith('### ')) {
-                return <h3 key={i}>{line.slice(4)}</h3>;
-              }
-              if (line.startsWith('- ')) {
-                return <ul key={i}>
-                  <li>{line.slice(2)}</li>
-                </ul>;
-              }
-              if (line.trim() === '') {
-                return <br key={i}/>;
-              }
-              return <p key={i}>{line}</p>;
-            });
-
-          return <div key={index}>{formattedText}</div>;
-        })}
-      </MarkdownContent>
-    </StyledMessageContent>
-  );
-};
-
-// 更新消息内容的基础样式
 const StyledMessageContent = styled.div`
-  padding: 8px 12px;
-  border-radius: 12px;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
   background: ${props => props.type === 'user' ? 'var(--cui-primary)' : 'var(--cui-card-bg)'};
   color: ${props => props.type === 'user' ? '#fff' : 'var(--cui-body-color)'};
-  font-size: 10px;
-  line-height: 1.4;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  white-space: pre-wrap;
-  word-break: break-word;
+`;
 
-  ${props => props.type !== 'user' && `
-    border: 1px solid var(--cui-border-color);
-  `}
+const StyledTextarea = styled(CFormTextarea)`
+  flex: 1;
+  resize: none;
+`;
+
+const HeaderRightGroup = styled.div`
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const FooterLeftGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
 `;
 
 const MessageImage = styled.img`
-  max-width: 300px;
-  max-height: 300px;
-  border-radius: 12px;
-  margin-bottom: 8px;
-  object-fit: contain;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--cui-border-color);
+  max-width: 100%;
+  border-radius: 0.5rem;
 `;
 
 const TimeStamp = styled.span`
-  font-size: 10px;
-  color: var(--cui-text-muted);
-  margin-top: 2px;
+  font-size: 0.75rem;
+  opacity: 0.7;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-`;
-
-const LoadingWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 8px;
 `;
 
 const StyledButton = styled(CButton)`
@@ -747,33 +668,40 @@ const ModelBadge = styled.span`
   border-radius: 4px;
 `;
 
-const FooterLeftGroup = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
-
 const StyledSelect = styled(Select)`
-  width: 180px;
-
   .ant-select-selector {
     background: var(--cui-input-bg) !important;
-    border: 1px solid var(--cui-border-color) !important;
-    border-radius: 8px !important;
-    height: 32px !important;
-    padding: 0 8px !important;
+    border: var(--cui-border-width) solid var(--cui-border-color) !important;
+    border-radius: var(--cui-border-radius) !important;
+    height: var(--cui-input-height) !important;
+    padding: var(--cui-input-padding-y) var(--cui-input-padding-x) !important;
+  }
 
-    .ant-select-selection-item {
-      font-size: 10px;
-      line-height: 30px !important;
-      color: var(--cui-body-color);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  .ant-select-selection-item {
+    line-height: var(--cui-input-line-height) !important;
+    color: var(--cui-body-color) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ant-select-dropdown {
+    background: var(--cui-card-bg) !important;
+    border: 1px solid var(--cui-border-color);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-select-item {
+    color: var(--cui-body-color) !important;
+    background: transparent !important;
+  }
+
+  .ant-select-item-option-selected {
+    background: var(--cui-input-bg) !important;
+  }
+
+  .ant-select-item-option-active {
+    background: var(--cui-input-bg) !important;
   }
 `;
 
@@ -836,13 +764,6 @@ const QuotaBadge = styled(CBadge)`
   }
 `;
 
-const HeaderRightGroup = styled.div`
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
-  align-items: center;
-`;
-
 const ConsoleButton = styled(CButton)`
   padding: 4px 8px;
   font-size: 12px;
@@ -887,6 +808,44 @@ const DropdownItem = styled.div`
 
   &:hover svg {
     color: var(--cui-primary);
+  }
+`;
+
+// Add new styled component for empty state
+const EmptyState = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--cui-text-muted);
+`;
+
+const FloatingButton = styled(CButton)`
+  padding: 6px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: var(--cui-btn-bg);
+  color: var(--cui-body-color);
+  border: 1px solid var(--cui-border-color);
+
+  &:hover {
+    transform: translateY(-1px);
+    background: var(--cui-btn-hover-bg);
+    color: var(--cui-btn-hover-color);
+    border-color: var(--cui-btn-hover-border-color);
+  }
+
+  &:active {
+    transform: translateY(0);
+    background: var(--cui-btn-active-bg);
+    color: var(--cui-btn-active-color);
+    border-color: var(--cui-btn-active-border-color);
   }
 `;
 
