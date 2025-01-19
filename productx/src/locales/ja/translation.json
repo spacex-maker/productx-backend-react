@@ -1139,5 +1139,19 @@
   "pleaseInputValidEmail": "有効なメールアドレスを入力してください",
   "pleaseInputReviewComments": "レビューコメントを入力してください",
   "batchDeleteSuccess": "バッチ削除に成功しました",
-  "batchDeleteFailed": "バッチ削除に失敗しました"
+  "batchDeleteFailed": "バッチ削除に失敗しました",
+
+  "aiAssistant": "AI アシスタント",
+  "online": "オンライン",
+  "startNewChat": "新しいチャットを始める",
+  "typeMessage": "メッセージを入力...",
+  "image": "画像",
+  "remaining": "残り",
+  "enterConsole": "コンソールに入る",
+  "exitFloating": "浮遊ウィンドウを終了する",
+  "switchFloating": "浮遊ウィンドウを切り替える",
+  "getKeyFailed": "キーの取得に失敗しました。ページをリロードして再試行してください",
+  "getSessionsFailed": "セッションリストの取得に失敗しました",
+  "getMessageHistoryFailed": "メッセージ履歴の取得に失敗しました",
+  "imageUploadFailed": "画像のアップロードに失敗しました"
 }

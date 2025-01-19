@@ -1164,6 +1164,20 @@
   "pleaseInputValidEmail": "请输入有效的邮箱地址",
   "pleaseInputReviewComments": "请输入审核意见",
   "batchDeleteSuccess": "批量删除成功",
-  "batchDeleteFailed": "批量删除失败"
+  "batchDeleteFailed": "批量删除失败",
+
+  "aiAssistant": "AI 助手",
+  "online": "在线",
+  "startNewChat": "开始新的对话吧",
+  "typeMessage": "输入消息...",
+  "image": "图片",
+  "remaining": "剩余",
+  "enterConsole": "进入控制台",
+  "exitFloating": "退出浮窗",
+  "switchFloating": "切换浮窗",
+  "getKeyFailed": "获取密钥失败，请刷新页面重试",
+  "getSessionsFailed": "获取会话列表失败",
+  "getMessageHistoryFailed": "获取消息历史失败",
+  "imageUploadFailed": "图片上传失败"
 
 }

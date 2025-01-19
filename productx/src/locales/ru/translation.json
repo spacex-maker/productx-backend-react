@@ -1140,5 +1140,19 @@
   "pleaseInputValidEmail": "Пожалуйста, введите действительный адрес электронной почты",
   "pleaseInputReviewComments": "Пожалуйста, введите комментарии к отзыву",
   "batchDeleteSuccess": "Массовое удаление успешно",
-  "batchDeleteFailed": "Массовое удаление не удалось"
+  "batchDeleteFailed": "Массовое удаление не удалось",
+
+  "aiAssistant": "AI помощник",
+  "online": "Онлайн",
+  "startNewChat": "Начать новый чат",
+  "typeMessage": "Введите сообщение...",
+  "image": "Изображение",
+  "remaining": "Осталось",
+  "enterConsole": "Войти в консоль",
+  "exitFloating": "Выход из всплывающего окна",
+  "switchFloating": "Переключить всплывающее окно",
+  "getKeyFailed": "Не удалось получить ключ, обновите страницу и попробуйте снова",
+  "getSessionsFailed": "Не удалось получить список сессий",
+  "getMessageHistoryFailed": "Не удалось получить историю сообщений",
+  "imageUploadFailed": "Ошибка загрузки изображения"
 }
