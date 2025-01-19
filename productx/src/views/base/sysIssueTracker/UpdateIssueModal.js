@@ -1,5 +1,5 @@
-import React from 'react'
-import { Modal, Form, Input, Select, message, Row, Col } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Modal, Form, Input, Select, message, Row, Col, Avatar } from 'antd'
 import {
   BugOutlined,
   TagsOutlined,
@@ -16,6 +16,28 @@ const { Option } = Select
 
 const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, issuePriorities }) => {
   const { t } = useTranslation()
+  const [managers, setManagers] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const fetchManagers = async (search = '') => {
+    setLoading(true)
+    try {
+      const response = await api.get('/manage/manager/list', {
+        params: { username: search }
+      })
+      if (response.data) {
+        setManagers(response.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch managers:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchManagers()
+  }, [])
 
   const handleSubmit = async (values) => {
     try {
@@ -130,12 +152,18 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
             >
               <Select
                 showSearch
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
+                loading={loading}
+                filterOption={false}
+                onSearch={fetchManagers}
               >
-                <Option value="yh">YH</Option>
-                <Option value="admin">Admin</Option>
+                {managers.map(manager => (
+                  <Option key={manager.id} value={manager.id}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Avatar size="small" src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
+                      <span>{manager.username}</span>
+                    </div>
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>

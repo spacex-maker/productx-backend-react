@@ -88,7 +88,7 @@ const ExpressList = () => {
         params: { currentPage, size: pageSize, ...filteredParams },
       });
 
-      if (response && response.data) {
+      if (response) {
         setData(response.data);
         setTotalNum(response.totalNum);
       }
@@ -213,12 +213,12 @@ const ExpressList = () => {
                 {countries.map(country => (
                   <Select.Option key={country.id} value={country.code}>
                     <Space>
-                      <img 
-                        src={country.flagImageUrl} 
+                      <img
+                        src={country.flagImageUrl}
                         alt={country.name}
-                        style={{ 
-                          width: 20, 
-                          height: 15, 
+                        style={{
+                          width: 20,
+                          height: 15,
                           objectFit: 'cover',
                           borderRadius: 2,
                           border: '1px solid #f0f0f0'
