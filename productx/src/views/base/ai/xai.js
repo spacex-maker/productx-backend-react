@@ -24,6 +24,8 @@ import {
   cilDevices
 } from '@coreui/icons';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateFloatingPosition } from '../../../store/aiChat';
 
 const API_URL = 'https://api.x.ai/v1/chat/completions';
 
@@ -75,6 +77,9 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
     balance: null
   });
   const [apiKey, setApiKey] = useState(null);
+  const dispatch = useDispatch();
+  const initialPosition = useRef({ x: 0, y: 0 });
+  const isDragging = useRef(false);
 
   // 自动滚动到底部
   const scrollToBottom = () => {
@@ -298,6 +303,13 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
     } else {
       onToggleFloating?.();
     }
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    const newX = e.clientX - initialPosition.current.x;
+    const newY = e.clientY - initialPosition.current.y;
+    dispatch(updateFloatingPosition({ x: newX, y: newY }));
   };
 
   // 如果没有密钥，显示加载状态
