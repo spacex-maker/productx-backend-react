@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Modal, Form, Alert, Row, Col, Select, InputNumber, Upload, Tag } from 'antd';
+import {
+  Input,
+  Modal,
+  Form,
+  Alert,
+  Row,
+  Col,
+  Select,
+  InputNumber,
+  Upload,
+  Tag,
+  Cascader,
+} from 'antd';
 import {
   PlusOutlined,
   CheckCircleOutlined,
@@ -8,81 +20,11 @@ import {
   DeleteOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import COS from 'cos-js-sdk-v5';
 import { message } from 'antd';
 import api from 'src/axiosInstance';
-const StyledModal = styled(Modal)`
-  .ant-modal-content {
-    padding: ${(props) => (props.narrow ? '8px' : '12px')};
-  }
+import { getCategoryListService } from 'src/service/category.service';
 
-  .ant-modal-header {
-    margin-bottom: 8px;
-  }
-
-  .ant-modal-title {
-    color: #000000;
-  }
-
-  .ant-form {
-    .ant-form-item {
-      margin-bottom: 4px;
-    }
-
-    .ant-form-item-label {
-      padding: 0;
-
-      > label {
-        color: #666;
-        height: 20px;
-      }
-    }
-
-    .ant-input,
-    .ant-input-number,
-    .ant-picker,
-    .ant-select-selector {
-      height: 24px !important;
-      line-height: 24px;
-      padding: 0 8px;
-    }
-
-    .ant-input-number-input {
-      height: 22px;
-    }
-
-    .ant-select-selection-item {
-      line-height: 22px;
-    }
-
-    textarea.ant-input {
-      height: auto !important;
-      min-height: 48px;
-      padding: 4px 8px;
-    }
-  }
-
-  .ant-alert {
-    margin-bottom: 8px;
-    padding: 4px 8px;
-  }
-
-  .ant-form-item-explain {
-    min-height: 16px;
-  }
-
-  .ant-modal-footer {
-    margin-top: 8px;
-    padding: 8px 0 0;
-    border-top: 1px solid #f0f0f0;
-
-    .ant-btn {
-      height: 24px;
-      padding: 0 12px;
-    }
-  }
-`;
 /**
  *
  * @param {{
@@ -100,6 +42,54 @@ const UpdateUserProductModal = (props) => {
   const [cosInstance, setCosInstance] = useState(null);
   const bucketName = 'px-1258150206';
   const region = 'ap-nanjing';
+
+  const [categoryList, setCategoryList] = useState([]);
+  const getCategoryList = async (id) => {
+    const [error, responseData] = await getCategoryListService(id);
+    if (error) {
+      return [];
+    }
+    return (responseData ?? []).map((item) => ((item.isLeaf = false), item));
+  };
+  const initSetCategoryList = async () => {
+    if (!selectedProduct?.category) {
+      return;
+    }
+    const categoryList = await getCategoryList(0);
+    const selectCategory = (selectedProduct.category?.split(',') ?? []).map((id, index) => {
+      console.log(id);
+      if (index === 0) {
+        return { id: Number(id), list: categoryList };
+      }
+      return { id: Number(id), list: [] };
+    });
+    for (let [index, item] of selectCategory.entries()) {
+      const children = await getCategoryList(item.id);
+      const { id, list } = item;
+      const selectOption = list.find((option) => option.id == id);
+      if (selectOption) {
+        const nextItem = selectCategory[index + 1];
+        if (nextItem) {
+          nextItem.list = children;
+        }
+        selectOption.children = children;
+      }
+    }
+    setCategoryList(categoryList);
+  };
+
+  const loadCategoryData = async (selectedOptions) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    if (!targetOption.children) {
+      const list = await getCategoryList(targetOption.id);
+      if (Array.isArray(list) && list.length === 0) {
+        targetOption.isLeaf = true;
+      } else {
+        targetOption.children = list;
+      }
+      setCategoryList([...categoryList]);
+    }
+  };
 
   // 初始化 COS 实例
   const initCOS = async () => {
@@ -134,6 +124,10 @@ const UpdateUserProductModal = (props) => {
   useEffect(() => {
     initCOS();
   }, []);
+
+  useEffect(() => {
+    initSetCategoryList();
+  }, [selectedProduct]);
 
   // 处理文件上传
   const handleUpload = async (file) => {
@@ -182,12 +176,10 @@ const UpdateUserProductModal = (props) => {
     if (Array.isArray(e)) {
       return e;
     }
-    // 对于 Upload 组件的 onChange 事件
-    if (e?.fileList && e.fileList.length > 0) {
-      // 返回 URL 字符串用于提交
-      return e.fileList[0].response?.url || e.fileList[0].url;
-    }
-    return '';
+    return e?.fileList.map((file) => ({
+      ...file,
+      url: file.response?.url || file.url,
+    }));
   };
 
   useEffect(() => {
@@ -202,9 +194,10 @@ const UpdateUserProductModal = (props) => {
             },
           ]
         : [];
-
+      const category = (selectedProduct.category?.split(',') ?? []).map(Number);
       form.setFieldsValue({
         ...selectedProduct,
+        category: category,
         status: selectedProduct.status,
         imageCover: coverImage,
         imageList: selectedProduct.imageList || [],
@@ -241,8 +234,7 @@ const UpdateUserProductModal = (props) => {
   ];
 
   return (
-    <StyledModal
-      narrow={narrow}
+    <Modal
       title={t('updateProduct')}
       {...modalProps}
       okText={t('submit')}
@@ -272,9 +264,12 @@ const UpdateUserProductModal = (props) => {
             <Form.Item
               name="productName"
               label={t('productName')}
-              rules={[{ required: true, message: t('enterProductName') }]}
+              rules={[
+                { required: true, message: t('enterProductName') },
+                { max: 30, message: t('productNameMaxLength') },
+              ]}
             >
-              <Input placeholder={t('enterProductName')} />
+              <Input maxLength={30} showCount placeholder={t('enterProductName')} />
             </Form.Item>
           </Col>
         </Row>
@@ -282,9 +277,12 @@ const UpdateUserProductModal = (props) => {
         <Form.Item
           name="productDescription"
           label={t('productDescription')}
-          rules={[{ required: true, message: t('enterProductDescription') }]}
+          rules={[
+            { required: true, message: t('enterProductDescription') },
+            { max: 500, message: t('productNameMaxLength') },
+          ]}
         >
-          <Input.TextArea placeholder={t('enterProductDescription')} rows={3} />
+          <Input.TextArea placeholder={t('enterProductDescription')} rows={8} />
         </Form.Item>
 
         <Row gutter={8}>
@@ -323,9 +321,12 @@ const UpdateUserProductModal = (props) => {
             <Form.Item
               name="stock"
               label={t('stock')}
-              rules={[{ required: true, message: t('enterStock') }]}
+              rules={[
+                { required: true, message: t('enterStock') },
+                { type: 'number', min: 1, max: 999999999, message: t('productNameMaxLength') },
+              ]}
             >
-              <InputNumber placeholder={t('enterStock')} style={{ width: '100%' }} min={0} />
+              <InputNumber placeholder={t('enterStock')} style={{ width: '100%' }} min={1} />
             </Form.Item>
           </Col>
           <Col span={16}>
@@ -334,11 +335,16 @@ const UpdateUserProductModal = (props) => {
               label={t('category')}
               rules={[{ required: true, message: t('selectCategory') }]}
             >
-              <Select placeholder={t('selectCategory')}>
-                <Select.Option value="电脑">{t('computer')}</Select.Option>
-                <Select.Option value="手机">{t('phone')}</Select.Option>
-                <Select.Option value="其他">{t('other')}</Select.Option>
-              </Select>
+              <Cascader
+                placeholder={t('selectCategory')}
+                options={categoryList}
+                loadData={loadCategoryData}
+                fieldNames={{
+                  label: 'name',
+                  value: 'id',
+                }}
+                changeOnSelect
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -371,12 +377,7 @@ const UpdateUserProductModal = (props) => {
           getValueFromEvent={normFile}
           rules={[{ required: true, message: t('uploadCoverImage') }]}
         >
-          <Upload
-            listType="picture-card"
-            maxCount={1}
-            customRequest={customRequest}
-            onChange={({ fileList }) => form.setFieldsValue({ imageCover: fileList })}
-          >
+          <Upload listType="picture-card" maxCount={1} customRequest={customRequest}>
             <div>
               <PlusOutlined />
               <div style={{ marginTop: 8 }}>{t('upload')}</div>
@@ -390,12 +391,7 @@ const UpdateUserProductModal = (props) => {
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
-          <Upload
-            listType="picture-card"
-            multiple
-            customRequest={customRequest}
-            onChange={({ fileList }) => form.setFieldsValue({ imageList: fileList })}
-          >
+          <Upload listType="picture-card" multiple customRequest={customRequest}>
             <div>
               <PlusOutlined />
               <div style={{ marginTop: 8 }}>{t('upload')}</div>
@@ -422,7 +418,7 @@ const UpdateUserProductModal = (props) => {
           </Select>
         </Form.Item>
       </Form>
-    </StyledModal>
+    </Modal>
   );
 };
 

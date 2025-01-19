@@ -7,8 +7,10 @@ import { createPortal } from 'react-dom';
  * @param {*} props
  * @param {*} domNode
  * @returns {[
- * {open(form: any): Promise<any>;
- * close: () => void;},
+ * {
+ *  open(form?: any, onSubmit?:()=>Promise<boolean>): Promise<[boolean, object | null]>;
+ *  close: () => void;
+ * },
  * React.ReactPortal
  * ]}
  */
@@ -43,21 +45,35 @@ export const useModal = (ModalComponent, props, domNode = document.body) => {
 
   const modal = useMemo(() => {
     return {
-      open(form) {
+      open(form, onSubmit) {
         setVisible(true);
         return new Promise((res) => {
           handle.current.onOk = async () => {
-            if (form) {
-              try {
-                const values = await form.validateFields();
-                res([true, values]);
-              } catch (errorInfo) {
-                console.log('Failed:', errorInfo);
-              }
-            } else {
+            if (!form) {
               res([true, null]);
+              setVisible(false);
+              return;
             }
-            setVisible(false);
+            try {
+              const values = await form.validateFields();
+              if (onSubmit) {
+                try {
+                  const status = await onSubmit(values);
+                  if (status) {
+                    res([true, values]);
+                    setVisible(false);
+                  }
+                  // 表单提交失败，不关闭弹窗
+                  return;
+                } catch (error) {
+                  return;
+                }
+              }
+              res([true, values]);
+              setVisible(false);
+            } catch (errorInfo) {
+              console.log('Failed:', errorInfo);
+            }
           };
           handle.current.onCancel = () => {
             res([false, null]);
@@ -66,7 +82,7 @@ export const useModal = (ModalComponent, props, domNode = document.body) => {
         });
       },
       close: () => {
-        setVisible(false);
+        handle.current.onCancel();
       },
     };
   }, []);

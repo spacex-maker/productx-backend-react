@@ -6,12 +6,12 @@
  */
 export function to(promise, errorExt) {
   return promise
-    .then((data) => [null, data])
+    .then((response) => [null, response.data?.data, response])
     .catch((err) => {
       if (errorExt) {
         const parsedError = Object.assign({}, err, errorExt);
-        return [parsedError, undefined];
+        return [parsedError, undefined, undefined];
       }
-      return [err, undefined];
+      return [err, undefined, undefined];
     });
 }
