@@ -27,6 +27,10 @@ export const createProductService = async (product) => {
   return await to(axiosInstance.post('/manage/user-product/create', product));
 };
 
+export const createProductByJsonService = async (jsonProduct) => {
+  return await to(axiosInstance.post('/manage/user-product/create-json', jsonProduct));
+};
+
 export const detailProductService = async (productId) => {
   return await to(
     axiosInstance.get('/manage/user-product/detail', {

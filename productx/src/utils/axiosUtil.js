@@ -41,6 +41,9 @@ class AxiosUtil {
     this.axiosInstance = axios.create({
       baseURL: this._getBaseURL(),
       withCredentials: true,
+      headers:{
+        'Content-Type': 'application/json'
+      }
     });
 
     this.axiosInstance.interceptors.request.use(
@@ -56,12 +59,11 @@ class AxiosUtil {
       },
       (error) => Promise.reject(error),
     );
-
     this.axiosInstance.interceptors.response.use(
       (response) => {
-        const { success, data, message: msg } = response.data;
+        const { success, message: msg } = response.data;
         if (success) {
-          return data;
+          return response;
         }
         message.error(`${msg}`, 4);
         return Promise.reject(new Error(msg || 'Error'));

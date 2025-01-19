@@ -3,8 +3,6 @@ import {
   Input,
   Modal,
   Form,
-  Switch,
-  Alert,
   Row,
   Col,
   Select,
@@ -12,6 +10,7 @@ import {
   Upload,
   Spin,
   Button,
+  Cascader,
 } from 'antd';
 import {
   PlusOutlined,
@@ -26,130 +25,18 @@ import {
   CodeOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import COS from 'cos-js-sdk-v5';
 import { message } from 'antd';
 import api from 'src/axiosInstance';
 import CreateProductJsonModal from './CreateProductJsonModal';
-const StyledModal = styled(Modal)`
-  .ant-modal-content {
-    padding: 12px;
-  }
-
-  .ant-modal-header {
-    margin-bottom: 8px;
-  }
-
-  .ant-modal-title {
-    color: #000000;
-  }
-
-  .ant-form {
-    .ant-form-item {
-      margin-bottom: 4px;
-    }
-
-    .ant-form-item-label {
-      padding: 0;
-
-      > label {
-        color: #666;
-        height: 20px;
-      }
-    }
-
-    .ant-input,
-    .ant-input-number,
-    .ant-picker,
-    .ant-select-selector {
-      height: 24px !important;
-      line-height: 24px !important;
-      padding: 0 8px !important;
-    }
-
-    .ant-select-single {
-      height: 24px !important;
-
-      .ant-select-selector {
-        height: 24px !important;
-        line-height: 24px !important;
-
-        .ant-select-selection-search-input {
-          height: 22px !important;
-          line-height: 22px !important;
-        }
-
-        .ant-select-selection-item {
-          line-height: 22px !important;
-          padding-right: 24px !important;
-        }
-      }
-    }
-
-    .ant-input-number-input {
-      height: 22px !important;
-      line-height: 22px !important;
-    }
-
-    .ant-select-selection-item {
-      line-height: 22px !important;
-    }
-
-    textarea.ant-input {
-      height: auto !important;
-      min-height: 48px;
-      padding: 4px 8px;
-    }
-
-    .ant-select {
-      .ant-select-selection-item,
-      .ant-select-selection-search-input {
-        font-size: 10px;
-        color: #000000 !important;
-      }
-    }
-
-    .ant-select-dropdown {
-      .ant-select-item {
-        color: #000000 !important;
-      }
-
-      .ant-select-item-option-selected {
-        color: #000000 !important;
-        background-color: #f5f5f5;
-      }
-    }
-  }
-
-  .ant-alert {
-    margin-bottom: 8px;
-    padding: 4px 8px;
-  }
-
-  .ant-form-item-explain {
-    min-height: 16px;
-  }
-
-  .ant-modal-footer {
-    margin-top: 8px;
-    padding: 8px 0 0;
-    border-top: 1px solid #f0f0f0;
-
-    .ant-btn {
-      height: 24px;
-      padding: 0 12px;
-    }
-  }
-`;
-
-const { Option } = Select;
+import { useModal } from 'src/hooks/useModal';
+import { getCategoryListService } from 'src/service/category.service';
 
 const AddUserProductModal = (props) => {
   // eslint-disable-next-line react/prop-types
   const { form, ...modalProps } = props;
   const { t } = useTranslation();
   const [cosInstance, setCosInstance] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const bucketName = 'px-1258150206';
   const region = 'ap-nanjing';
   const [userOptions, setUserOptions] = useState([]);
@@ -157,7 +44,8 @@ const AddUserProductModal = (props) => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [citySearchLoading, setCitySearchLoading] = useState(false);
-  const [jsonModalVisible, setJsonModalVisible] = useState(false);
+
+  const [categoryList, setCategoryList] = useState([]);
 
   // 初始化 COS 实例
   const initCOS = async () => {
@@ -189,9 +77,36 @@ const AddUserProductModal = (props) => {
     }
   };
 
+  const initSetCategoryList = async () => {
+    const [error, responseData] = await getCategoryListService(0);
+    if (error) {
+      return;
+    }
+    const list = (responseData ?? []).map((item) => ((item.isLeaf = false), item));
+    setCategoryList(list);
+  };
+
+  const loadCategoryData = async (selectedOptions) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    if (!targetOption.children) {
+      const [error, responseData] = await getCategoryListService(targetOption.id);
+      if (error) {
+        return;
+      }
+      if (responseData == null || (Array.isArray(responseData) && responseData.length === 0)) {
+        targetOption.isLeaf = true;
+      } else {
+        const list = (responseData ?? []).map((item) => ((item.isLeaf = false), item));
+        targetOption.children = list;
+      }
+      setCategoryList([...categoryList]);
+    }
+  };
+
   useEffect(() => {
     initCOS();
     fetchCountries();
+    initSetCategoryList();
   }, []);
 
   // 获取国家列表
@@ -326,13 +241,13 @@ const AddUserProductModal = (props) => {
     }
   };
 
-  // 处理 JSON 创建成功
-  const handleJsonCreateSuccess = () => {
-    onCancel(); // 关闭当前模态框
+  const [jsonModal, jsonPlaceHolder] = useModal(CreateProductJsonModal);
+  const onInputJson = async () => {
+    jsonModal.open(form);
   };
 
   return (
-    <StyledModal
+    <Modal
       title={t('addNewProduct')}
       {...modalProps}
       okText={t('submit')}
@@ -345,7 +260,7 @@ const AddUserProductModal = (props) => {
         <Button
           type="link"
           icon={<CodeOutlined />}
-          onClick={() => setJsonModalVisible(true)}
+          onClick={onInputJson}
           style={{ padding: 0, height: 'auto', fontSize: '10px' }}
         >
           {t('createWithJson')}
@@ -377,22 +292,11 @@ const AddUserProductModal = (props) => {
                 onSearch={handleUserSearch}
                 filterOption={false}
                 notFoundContent={userSearchLoading ? <Spin size="small" /> : null}
-                style={{ width: '100%' }}
               >
                 {userOptions.map((option) => (
-                  <Option key={option.value} value={option.value}>
-                    <div
-                      style={{
-                        fontSize: '10px',
-                        lineHeight: '24px',
-                        height: '24px',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      {option.label}
-                    </div>
-                  </Option>
+                  <Select.Option key={option.value} value={option.value}>
+                    <div>{option.label}</div>
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Item>
@@ -407,19 +311,10 @@ const AddUserProductModal = (props) => {
               }
               rules={[
                 { required: true, message: t('enterProductName') },
-                { max: 20, message: t('productNameMaxLength') },
+                { max: 30, message: t('productNameMaxLength') },
               ]}
             >
-              <Input
-                placeholder={t('enterProductName')}
-                maxLength={20}
-                showCount
-                style={{
-                  height: '24px',
-                  lineHeight: '22px',
-                  padding: '0 8px',
-                }}
-              />
+              <Input placeholder={t('enterProductName')} maxLength={30} showCount />
             </Form.Item>
           </Col>
         </Row>
@@ -431,9 +326,12 @@ const AddUserProductModal = (props) => {
               <UnorderedListOutlined /> {t('productDescription')}
             </span>
           }
-          rules={[{ required: true, message: t('enterProductDescription') }]}
+          rules={[
+            { required: true, message: t('enterProductDescription') },
+            { max: 500, message: t('productNameMaxLength') },
+          ]}
         >
-          <Input.TextArea placeholder={t('enterProductDescription')} rows={3} />
+          <Input.TextArea placeholder={t('enterProductDescription')} rows={8} />
         </Form.Item>
 
         <Row gutter={8}>
@@ -484,7 +382,10 @@ const AddUserProductModal = (props) => {
                   <AppstoreOutlined /> {t('stock')}
                 </span>
               }
-              rules={[{ required: true, message: t('enterStock') }]}
+              rules={[
+                { required: true, message: t('enterStock') },
+                { type: 'number', min: 1, max: 999999999, message: t('productNameMaxLength') },
+              ]}
             >
               <InputNumber placeholder={t('enterStock')} style={{ width: '100%' }} min={0} />
             </Form.Item>
@@ -499,11 +400,16 @@ const AddUserProductModal = (props) => {
               }
               rules={[{ required: true, message: t('selectCategory') }]}
             >
-              <Select placeholder={t('selectCategory')}>
-                <Select.Option value="电脑">{t('computer')}</Select.Option>
-                <Select.Option value="手机">{t('phone')}</Select.Option>
-                <Select.Option value="其他">{t('other')}</Select.Option>
-              </Select>
+              <Cascader
+                placeholder={t('selectCategory')}
+                options={categoryList}
+                loadData={loadCategoryData}
+                fieldNames={{
+                  label: 'name',
+                  value: 'id',
+                }}
+                changeOnSelect
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -533,19 +439,12 @@ const AddUserProductModal = (props) => {
                 }}
               >
                 {countries.map((country) => (
-                  <Option
+                  <Select.Option
                     key={country.code}
                     value={country.code}
                     label={`${country.name} (${country.code})`}
                   >
-                    <div
-                      style={{
-                        fontSize: '10px',
-                        padding: '2px 0',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
+                    <div>
                       <img
                         src={country.flagImageUrl}
                         alt={`${country.name} flag`}
@@ -559,7 +458,7 @@ const AddUserProductModal = (props) => {
                         {country.continent}
                       </div>
                     </div>
-                  </Option>
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Item>
@@ -589,14 +488,18 @@ const AddUserProductModal = (props) => {
                 optionLabelProp="label"
               >
                 {cities.map((city) => (
-                  <Option key={city.code} value={city.name} label={`${city.name} (${city.enName})`}>
+                  <Select.Option
+                    key={city.code}
+                    value={city.name}
+                    label={`${city.name} (${city.enName})`}
+                  >
                     <div style={{ fontSize: '10px', padding: '2px 0' }}>
                       <div>{city.name}</div>
                       <div style={{ color: '#666', marginTop: '2px' }}>
                         {city.enName} | {city.type} | 人口: {(city.population / 10000).toFixed(0)}万
                       </div>
                     </div>
-                  </Option>
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Item>
@@ -614,19 +517,11 @@ const AddUserProductModal = (props) => {
           getValueFromEvent={normFile}
           rules={[{ required: true, message: t('uploadCoverImage') }]}
         >
-          <Upload
-            listType="picture-card"
-            maxCount={1}
-            customRequest={customRequest}
-            fileList={form.getFieldValue('imageCover') || []}
-            onChange={({ fileList }) => form.setFieldsValue({ imageCover: fileList })}
-          >
-            {(form.getFieldValue('imageCover') || []).length < 1 && (
-              <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>{t('upload')}</div>
-              </div>
-            )}
+          <Upload listType="picture-card" maxCount={1} customRequest={customRequest}>
+            <div>
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>{t('upload')}</div>
+            </div>
           </Upload>
         </Form.Item>
 
@@ -640,12 +535,7 @@ const AddUserProductModal = (props) => {
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
-          <Upload
-            listType="picture-card"
-            multiple
-            customRequest={customRequest}
-            onChange={({ fileList }) => form.setFieldsValue({ imageList: fileList })}
-          >
+          <Upload listType="picture-card" multiple maxCount={15} customRequest={customRequest}>
             <div>
               <PlusOutlined />
               <div style={{ marginTop: 8 }}>{t('upload')}</div>
@@ -653,13 +543,8 @@ const AddUserProductModal = (props) => {
           </Upload>
         </Form.Item>
       </Form>
-
-      <CreateProductJsonModal
-        visible={jsonModalVisible}
-        onCancel={() => setJsonModalVisible(false)}
-        onSuccess={handleJsonCreateSuccess}
-      />
-    </StyledModal>
+      {jsonPlaceHolder}
+    </Modal>
   );
 };
 
