@@ -1191,5 +1191,18 @@
   "sendTime": "Hora de envío",
   "expireTime": "Hora de expiración",
   "markReadSuccess": "Marcado como leído con éxito",
-  "markReadFailed": "Error al marcar como leído"
+  "markReadFailed": "Error al marcar como leído",
+
+  "birthday": "Cumpleaños",
+  "oldPassword": "Contraseña antigua",
+  "newPassword": "Nueva contraseña",
+  "invalidPhone": "Número de teléfono inválido",
+  "passwordTooSimple": "La contraseña es demasiado simple",
+
+  "logoutConfirm": "Confirmar cierre de sesión",
+  "logoutConfirmContent": "¿Está seguro de que desea cerrar sesión?",
+
+  "changePassword": "Cambiar contraseña",
+  "confirmPassword": "Confirmar contraseña",
+  "securitySettings": "Configuraciones de seguridad"
 }

@@ -1191,5 +1191,18 @@
   "sendTime": "Heure d'envoi",
   "expireTime": "Heure d'expiration",
   "markReadSuccess": "Marqué comme lu avec succès",
-  "markReadFailed": "Échec du marquage comme lu"
+  "markReadFailed": "Échec du marquage comme lu",
+
+  "birthday": "Anniversaire",
+  "oldPassword": "Ancien mot de passe",
+  "newPassword": "Nouveau mot de passe",
+  "invalidPhone": "Numéro de téléphone invalide",
+  "passwordTooSimple": "Le mot de passe est trop simple",
+
+  "logoutConfirm": "Confirmer la déconnexion",
+  "logoutConfirmContent": "Êtes-vous sûr de vouloir vous déconnecter ?",
+
+  "changePassword": "Changer le mot de passe",
+  "confirmPassword": "Confirmer le mot de passe",
+  "securitySettings": "Paramètres de sécurité"
 }

@@ -1206,6 +1206,18 @@
   "sendTime": "发送时间",
   "expireTime": "过期时间",
   "markReadSuccess": "标记已读成功",
-  "markReadFailed": "标记已读失败"
+  "markReadFailed": "标记已读失败",
 
+  "birthday": "生日",
+  "oldPassword": "旧密码",
+  "newPassword": "新密码",
+  "invalidPhone": "无效手机号",
+  "passwordTooSimple": "密码过于简单",
+
+  "logoutConfirm": "确认登出",
+  "logoutConfirmContent": "您确定要退出登录吗？",
+
+  "changePassword": "修改密码",
+  "confirmPassword": "确认密码",
+  "securitySettings": "安全设置"
 }

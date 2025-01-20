@@ -1182,5 +1182,18 @@
   "sendTime": "보낸 시간",
   "expireTime": "만료 시간",
   "markReadSuccess": "읽음으로 표시 성공",
-  "markReadFailed": "읽음으로 표시 실패"
+  "markReadFailed": "읽음으로 표시 실패",
+
+  "birthday": "생일",
+  "oldPassword": "이전 비밀번호",
+  "newPassword": "새 비밀번호",
+  "invalidPhone": "유효하지 않은 전화번호",
+  "passwordTooSimple": "비밀번호가 너무 단순합니다",
+
+  "changePassword": "비밀번호 변경",
+  "confirmPassword": "비밀번호 확인",
+  "securitySettings": "보안 설정",
+
+  "logoutConfirm": "로그아웃 확인",
+  "logoutConfirmContent": "로그아웃하시겠습니까?"
 }

@@ -14,6 +14,7 @@ import {
   useColorModes,
   CNavbar,
   CButton,
+  CHeaderToggler,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { 
@@ -105,15 +106,15 @@ const AppHeader = () => {
   };
 
   return (
-    <CHeader position="sticky" className={appHeaderStyle.rootHeaderContainer} ref={headerRef}>
-      <CContainer className="px-4" fluid>
-        <CNavbar>
-          <CNavLink className="p-2" onClick={toggleSidebar}>
-            <CIcon icon={cilMenu} size="lg" />
-          </CNavLink>
+    <CHeader position="sticky" className="mb-4">
+      <CContainer fluid>
+        <CHeaderToggler onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}>
+          <CIcon icon={cilMenu} size="lg" />
+        </CHeaderToggler>
+        <CHeaderNav className="d-none d-md-flex me-auto">
           <AppBreadcrumb />
-        </CNavbar>
-        <CHeaderNav>
+        </CHeaderNav>
+        <CHeaderNav className="ms-3 d-flex align-items-center">
           <CNavItem>
             <StyledButton 
               color="light" 
@@ -133,12 +134,13 @@ const AppHeader = () => {
             </Badge>
           </CNavItem>
           <CNavItem>
-            <div className="nav-link d-flex align-items-center">
+            <div className="nav-link">
               <span
                 style={{
                   marginRight: '15px',
                   color: colorMode === 'dark' ? '#fff' : '#333',
                   fontSize: '14px',
+                  lineHeight: '40px',
                 }}
               >
                 {currentUser?.username

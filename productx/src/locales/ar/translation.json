@@ -1174,5 +1174,18 @@
   "sendTime": "وقت الإرسال",
   "expireTime": "وقت الانتهاء",
   "markReadSuccess": "تم وضع علامة مقروء بنجاح",
-  "markReadFailed": "فشل وضع علامة مقروء"
+  "markReadFailed": "فشل وضع علامة مقروء",
+
+  "birthday": "تاريخ الميلاد",
+  "oldPassword": "كلمة المرور القديمة",
+  "newPassword": "كلمة المرور الجديدة",
+  "invalidPhone": "رقم الهاتف غير صالح",
+  "passwordTooSimple": "كلمة المرور بسيطة جدًا",
+
+  "logoutConfirm": "تأكيد تسجيل الخروج",
+  "logoutConfirmContent": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+
+  "changePassword": "تغيير كلمة المرور",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "securitySettings": "إعدادات الأمان"
 }

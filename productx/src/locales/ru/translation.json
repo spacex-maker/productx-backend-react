@@ -1182,5 +1182,18 @@
   "sendTime": "Время отправки",
   "expireTime": "Время истечения",
   "markReadSuccess": "Успешно отмечено как прочитанное",
-  "markReadFailed": "Ошибка при отметке как прочитанное"
+  "markReadFailed": "Ошибка при отметке как прочитанное",
+
+  "birthday": "День рождения",
+  "oldPassword": "Старый пароль",
+  "newPassword": "Новый пароль",
+  "invalidPhone": "Недействительный номер телефона",
+  "passwordTooSimple": "Пароль слишком простой",
+
+  "logoutConfirm": "Подтверждение выхода",
+  "logoutConfirmContent": "Вы уверены, что хотите выйти?",
+
+  "changePassword": "Изменить пароль",
+  "confirmPassword": "Подтвердить пароль",
+  "securitySettings": "Настройки безопасности"
 }
