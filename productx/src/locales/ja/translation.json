@@ -1196,5 +1196,6 @@
   "changePassword": "パスワードを変更",
   "confirmPassword": "パスワードを確認",
   "securitySettings": "セキュリティ設定",
-  "newChat": "新しいチャット"
+  "newChat": "新しいチャット",
+  "openAIAssistant": "AIアシスタントを開く"
 }

@@ -298,6 +298,224 @@ const WelcomeWrapper = styled.div`
   }
 `;
 
+const ThemeButton = styled(StyledButton)`
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 40px;
+    background: ${props => props.$isDark ? 
+      'linear-gradient(135deg, #2c3e50, #3498db)' : 
+      'linear-gradient(135deg, #f6d365, #fda085)'
+    };
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  .theme-icon-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    .icon {
+      font-size: 16px;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center;
+      
+      ${props => props.$isDark ? `
+        animation: moonRotate 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes moonRotate {
+          from {
+            transform: rotate(0deg) scale(0.5);
+            opacity: 0;
+          }
+          to {
+            transform: rotate(360deg) scale(1);
+            opacity: 1;
+          }
+        }
+      ` : `
+        animation: sunRotate 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        @keyframes sunRotate {
+          from {
+            transform: rotate(0deg) scale(0.5);
+            opacity: 0;
+          }
+          to {
+            transform: rotate(360deg) scale(1);
+            opacity: 1;
+          }
+        }
+      `}
+    }
+
+    .text {
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: left center;
+      
+      ${props => props.$isDark ? `
+        animation: textFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      ` : `
+        animation: textFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      `}
+
+      @keyframes textFadeIn {
+        from {
+          transform: translateY(10px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    }
+  }
+`;
+
+const AIButton = styled(StyledButton)`
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 42px;
+    background: linear-gradient(
+      90deg,
+      #4355f5,
+      #4d2cf5,
+      #842cf5,
+      #4355f5
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: var(--cui-body-bg);
+    border-radius: 40px;
+    z-index: 0;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(67, 85, 245, 0.2);
+
+    &::before {
+      opacity: 1;
+      animation: borderRotate 3s linear infinite;
+    }
+
+    .ai-icon-wrapper {
+      transform: scale(1.05);
+
+      .robot-icon {
+        animation: robotPulse 1.5s ease infinite;
+        color: #4355f5;
+      }
+
+      .ai-particles {
+        opacity: 1;
+      }
+    }
+
+    .text {
+      background: linear-gradient(90deg, #4355f5, #842cf5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .ai-icon-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s ease;
+  }
+
+  .robot-icon {
+    transition: all 0.3s ease;
+  }
+
+  .ai-particles {
+    position: absolute;
+    inset: -10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #4355f5;
+      animation: particleFloat 2s ease-in-out infinite;
+    }
+
+    &::before {
+      top: 50%;
+      left: -10px;
+      animation-delay: -1s;
+    }
+
+    &::after {
+      bottom: 50%;
+      right: -10px;
+      animation-delay: -0.5s;
+    }
+  }
+
+  @keyframes borderRotate {
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
+    }
+  }
+
+  @keyframes robotPulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes particleFloat {
+    0%, 100% {
+      transform: translate(0, 0);
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    50% {
+      transform: translate(10px, -10px);
+      opacity: 0;
+    }
+  }
+`;
+
 const AppHeader = () => {
   const headerRef = useRef(null);
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
@@ -402,21 +620,18 @@ const AppHeader = () => {
         </CHeaderNav>
         <CHeaderNav className="ms-3 d-flex align-items-center">
           <HeaderItem>
-            <StyledButton 
+            <AIButton 
               onClick={handleOpenAIChat}
               title={t('openAIAssistant')}
             >
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '8px'
-              }}>
-                <RobotOutlined className="icon" style={{ fontSize: '16px' }} />
+              <div className="ai-icon-wrapper">
+                <div className="ai-particles" />
+                <RobotOutlined className="robot-icon" style={{ fontSize: '16px' }} />
                 <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
                   {t('aiAssistant')}
                 </span>
               </div>
-            </StyledButton>
+            </AIButton>
           </HeaderItem>
 
           <HeaderItem>
@@ -471,18 +686,20 @@ const AppHeader = () => {
           </HeaderItem>
 
           <HeaderItem>
-            <StyledButton onClick={onChangeTheme.bind(null, colorMode === 'dark' ? 'light' : 'dark')}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ThemeButton 
+              onClick={() => onChangeTheme(colorMode === 'dark' ? 'light' : 'dark')}
+              $isDark={colorMode === 'dark'}
+            >
+              <div className="theme-icon-wrapper">
                 <CIcon 
                   icon={colorMode === 'dark' ? cilMoon : cilSun} 
                   className="icon"
-                  style={{ fontSize: '16px' }} 
                 />
-                <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+                <span className="text">
                   {colorMode === 'dark' ? t('darkMode') : t('lightMode')}
                 </span>
               </div>
-            </StyledButton>
+            </ThemeButton>
           </HeaderItem>
 
           <HeaderItem>

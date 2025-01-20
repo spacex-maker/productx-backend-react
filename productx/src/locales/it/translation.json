@@ -1190,5 +1190,6 @@
   "changePassword": "Cambia password",
   "confirmPassword": "Conferma password",
   "securitySettings": "Impostazioni di sicurezza",
-  "newChat": "Nuova chat"
+  "newChat": "Nuova chat",
+  "openAIAssistant": "Aprire l'assistente AI"
 }
