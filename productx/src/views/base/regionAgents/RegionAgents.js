@@ -146,33 +146,29 @@ const RegionAgents = () => {
   }, []);
 
   return (
-    <div>
+    <div className="page-container">
       <div className="mb-3">
         <Row gutter={[16, 16]} align="middle">
           <Col>
             <Input
-              size="small"
               placeholder={t('pleaseInputAgentName')}
               onChange={(e) => handleSearchChange('agentName', e.target.value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
+              allowClear
             />
           </Col>
           <Col>
             <Select
-              size="small"
               placeholder={t('pleaseSelectAgentType')}
               allowClear
               loading={agentTypesLoading}
               onChange={(value) => handleSearchChange('agentType', value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
               dropdownMatchSelectWidth={false}
               dropdownStyle={{ minWidth: '160px' }}
             >
               {agentTypes.map(type => (
-                <Select.Option 
-                  key={type.code} 
-                  value={type.code}
-                >
+                <Select.Option key={type.code} value={type.code}>
                   <Tooltip title={type.description}>
                     {type.name}
                   </Tooltip>
@@ -182,27 +178,26 @@ const RegionAgents = () => {
           </Col>
           <Col>
             <Input
-              size="small"
               placeholder={t('pleaseInputRegionCode')}
               onChange={(e) => handleSearchChange('regionCode', e.target.value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
+              allowClear
             />
           </Col>
           <Col>
             <Input
-              size="small"
               placeholder={t('pleaseInputRegionName')}
               onChange={(e) => handleSearchChange('regionName', e.target.value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
+              allowClear
             />
           </Col>
           <Col>
             <Select
-              size="small"
               placeholder={t('pleaseSelectAgentLevel')}
               allowClear
               onChange={(value) => handleSearchChange('agentLevel', value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
               dropdownMatchSelectWidth={false}
               dropdownStyle={{ minWidth: '160px' }}
             >
@@ -213,11 +208,10 @@ const RegionAgents = () => {
           </Col>
           <Col>
             <Select
-              size="small"
               placeholder={t('pleaseSelectIsExclusive')}
               allowClear
               onChange={(value) => handleSearchChange('isExclusive', value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
               dropdownMatchSelectWidth={false}
               dropdownStyle={{ minWidth: '160px' }}
             >
@@ -227,11 +221,10 @@ const RegionAgents = () => {
           </Col>
           <Col>
             <Select
-              size="small"
               placeholder={t('pleaseSelectAuditStatus')}
               allowClear
               onChange={(value) => handleSearchChange('auditStatus', value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
               dropdownMatchSelectWidth={false}
               dropdownStyle={{ minWidth: '160px' }}
             >
@@ -242,11 +235,10 @@ const RegionAgents = () => {
           </Col>
           <Col>
             <Select
-              size="small"
               placeholder={t('pleaseSelectStatus')}
               allowClear
               onChange={(value) => handleSearchChange('status', value)}
-              style={{ width: 120 }}
+              style={{ width: 150 }}
               dropdownMatchSelectWidth={false}
               dropdownStyle={{ minWidth: '160px' }}
             >
@@ -254,9 +246,8 @@ const RegionAgents = () => {
               <Select.Option value={0}>{t('disabled')}</Select.Option>
             </Select>
           </Col>
-          <Col span={6}>
+          <Col>
             <DatePicker.RangePicker
-              size="small"
               placeholder={[t('cooperationStartDate'), t('cooperationEndDate')]}
               onChange={(dates) => {
                 if (dates) {
@@ -267,36 +258,31 @@ const RegionAgents = () => {
                   handleSearchChange('endTime', null);
                 }
               }}
-              style={{ width: '100%' }}
+              style={{ width: 280 }}
             />
           </Col>
           <Col>
             <Space>
-              <Button size="small" type="primary" onClick={fetchData}>
+              <Button type="primary" onClick={fetchData}>
                 {t('search')}
               </Button>
-              <Button 
-                size="small" 
-                onClick={() => {
-                  setSearchParams({
-                    agentName: '',
-                    agentType: '',
-                    regionCode: '',
-                    regionName: '',
-                    agentLevel: '',
-                    isExclusive: '',
-                    auditStatus: '',
-                    status: '',
-                    startTime: null,
-                    endTime: null,
-                  });
-                  form.resetFields();
-                }}
-              >
+              <Button onClick={() => {
+                setSearchParams({
+                  agentName: '',
+                  agentType: '',
+                  regionCode: '',
+                  regionName: '',
+                  agentLevel: '',
+                  isExclusive: '',
+                  auditStatus: '',
+                  status: '',
+                  startTime: null,
+                  endTime: null,
+                });
+              }}>
                 {t('reset')}
               </Button>
               <Button
-                size="small"
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
               >
@@ -307,17 +293,19 @@ const RegionAgents = () => {
         </Row>
       </div>
 
-      <Spin spinning={isLoading}>
-        <RegionAgentsTable
-          data={data}
-          selectAll={selectAll}
-          selectedRows={selectedRows}
-          handleSelectAll={handleSelectAll}
-          handleSelectRow={handleSelectRow}
-          handleEditClick={handleEditClick}
-          handleViewDetail={handleViewDetail}
-        />
-      </Spin>
+      <div className="table-container">
+        <Spin spinning={isLoading}>
+          <RegionAgentsTable
+            data={data}
+            selectAll={selectAll}
+            selectedRows={selectedRows}
+            handleSelectAll={handleSelectAll}
+            handleSelectRow={handleSelectRow}
+            handleEditClick={handleEditClick}
+            handleViewDetail={handleViewDetail}
+          />
+        </Spin>
+      </div>
 
       <Pagination
         totalPages={Math.ceil(totalNum / pageSize)}

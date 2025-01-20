@@ -220,52 +220,51 @@ const WebsiteApplication = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.websiteName}
                 onChange={handleSearchChange}
                 name="websiteName"
                 placeholder={t('websiteName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.url}
                 onChange={handleSearchChange}
                 name="url"
                 placeholder={t('websiteUrl')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.contactEmail}
                 onChange={handleSearchChange}
                 name="contactEmail"
                 placeholder={t('contactEmail')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.contactPhone}
                 onChange={handleSearchChange}
                 name="contactPhone"
                 placeholder={t('contactPhone')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value }})}
                 placeholder={t('applicationStatus')}
                 allowClear
-                style={{ minWidth: 120 }}
+                style={{ width: 150 }}
               >
                 <Option value="pending">{t('pending')}</Option>
                 <Option value="approved">{t('approved')}</Option>
@@ -274,14 +273,13 @@ const WebsiteApplication = () => {
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.countryCode}
                 onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value }})}
                 placeholder={t('country')}
                 allowClear
                 showSearch
                 loading={loadingCountries}
-                style={{ minWidth: 150 }}
+                style={{ width: 150 }}
                 filterOption={(input, option) => {
                   const country = countries.find(c => c.code === option.value);
                   return (
@@ -295,46 +293,39 @@ const WebsiteApplication = () => {
             </Col>
             <Col>
               <RangePicker
-                size="small"
                 onChange={handleDateRangeChange}
-                style={{ minWidth: 230 }}
+                style={{ width: 280 }}
               />
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                {t('createApplication')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() =>
-                  HandleBatchDelete({
-                    url: '/manage/website-applications/delete-batch',
-                    selectedRows,
-                    fetchData,
-                  })
-                }
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchDelete')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('createApplication')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    HandleBatchDelete({
+                      url: '/manage/website-applications/delete-batch',
+                      selectedRows,
+                      fetchData,
+                    })
+                  }
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

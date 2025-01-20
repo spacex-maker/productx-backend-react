@@ -96,6 +96,31 @@ const FooterLink = styled.a`
   `}
 `;
 
+const FooterContainer = styled(CFooter)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    
+    .ms-auto {
+      margin-left: 0 !important;
+    }
+  }
+`;
+
+const PartnersContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
 const AppFooter = () => {
   const partners = [
     { name: 'CoreUI', url: 'https://coreui.io/react' },
@@ -139,7 +164,7 @@ const AppFooter = () => {
   };
 
   return (
-    <CFooter className="px-4">
+    <FooterContainer>
       <div>
         <PartnerLink 
           href="https://ProductX.cn" 
@@ -149,7 +174,7 @@ const AppFooter = () => {
           <strong>ProductX</strong>
         </PartnerLink>
       </div>
-      <div className="ms-auto">
+      <PartnersContainer className="ms-auto">
         <span className="me-1">Powered by</span>
         {partners.map((partner, partnerIndex) => (
           <React.Fragment key={partner.name}>
@@ -183,8 +208,8 @@ const AppFooter = () => {
             )}
           </React.Fragment>
         ))}
-      </div>
-    </CFooter>
+      </PartnersContainer>
+    </FooterContainer>
   );
 };
 
