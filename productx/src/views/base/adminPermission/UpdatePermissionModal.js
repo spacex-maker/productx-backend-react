@@ -36,7 +36,7 @@ const UpdatePermissionModal = ({
   return (
     <Modal
       title={
-        <div style={{ fontWeight: 500 }}>
+        <div>
           <EditOutlined style={{ marginRight: '4px' }} />
           修改权限信息
         </div>
@@ -164,49 +164,6 @@ const UpdatePermissionModal = ({
           />
         </Form.Item>
       </Form>
-
-      {/* 添加样式部分 */}
-      <style jsx global>{`
-        .ant-modal-header {
-          padding: 12px 24px !important;
-          border-bottom: 1px solid #f0f0f0;
-        }
-
-        .ant-modal-footer {
-          padding: 8px 16px !important;
-          border-top: 1px solid #f0f0f0;
-        }
-
-        .ant-form-item-label > label {
-          height: 24px !important;
-        }
-
-        .ant-input-textarea textarea {
-          font-size: 10px !important;
-          padding: 4px 8px !important;
-          color: rgba(0, 0, 0, 0.88) !important;
-        }
-
-        .ant-switch-inner {
-          font-size: 10px !important;
-        }
-
-        .ant-form-item {
-          margin-bottom: 8px !important;
-        }
-
-        .ant-modal-close {
-          height: 40px !important;
-          width: 40px !important;
-          line-height: 40px !important;
-        }
-
-        .ant-modal-close-x {
-          width: 40px !important;
-          height: 40px !important;
-          line-height: 40px !important;
-        }
-      `}</style>
     </Modal>
   );
 };

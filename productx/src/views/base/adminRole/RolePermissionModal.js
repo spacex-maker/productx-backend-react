@@ -92,7 +92,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 marginBottom: '1px'
               }}>
                 <span style={{ 
-                  fontSize: '10px',
                   color: item.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
                   fontWeight: item.isSystem ? 500 : 400,
                   lineHeight: '14px'
@@ -101,7 +100,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 </span>
                 {item.isSystem && (
                   <span style={{ 
-                    fontSize: '10px',
                     color: '#1890ff',
                     border: '1px solid #1890ff',
                     padding: '0 4px',
@@ -116,7 +114,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 )}
               </div>
               <span style={{ 
-                fontSize: '9px',
                 color: '#999',
                 fontWeight: 400,
                 lineHeight: '12px'
@@ -125,7 +122,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
               </span>
             </div>
             <div style={{ 
-              fontSize: '10px',
               color: getTypeColor(item.type),
               minWidth: '60px',
               display: 'flex',
@@ -263,7 +259,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
               marginBottom: '2px'
             }}>
               <span style={{ 
-                fontSize: '10px',
                 color: record.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
                 fontWeight: record.isSystem ? 500 : 400,
               }}>
@@ -271,7 +266,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
               </span>
               {record.isSystem && (
                 <span style={{ 
-                  fontSize: '10px',
                   color: '#1890ff',
                   border: '1px solid #1890ff',
                   padding: '0 4px',
@@ -286,7 +280,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
               )}
             </div>
             <span style={{ 
-              fontSize: '10px',
               color: '#999',
               fontWeight: 400
             }}>
@@ -311,7 +304,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       width: '20%',
       render: (type) => (
         <div style={{ 
-          fontSize: '10px',
           color: getTypeColor(type),
           display: 'flex',
           alignItems: 'center',
@@ -341,36 +333,26 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
   return (
     <Modal
       title={
-        <div style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 8 }}>
-          <div style={{ fontSize: '12px', fontWeight: 500 }}>配置权限</div>
-          <div style={{ fontSize: '10px', color: '#666', marginTop: 2 }}>
-            当前角色：{roleName}
-          </div>
+        <div className="modal-title">
+          <div>配置权限</div>
+          <div>当前角色：{roleName}</div>
         </div>
       }
       open={visible}
       onCancel={onCancel}
       onOk={handleOk}
-      width={700}
+      width={800}
       confirmLoading={loading}
-      styles={{ padding: '8px 16px' }}
     >
       <Spin spinning={loading}>
         <Space direction="vertical" style={{ width: '100%' }} size="small">
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: 8,
-            paddingRight: 8
-          }}>
+          <div className="header-container">
             <Space size="small">
               <Input
                 placeholder="搜索权限名称/描述"
-                prefix={<SearchOutlined style={{ fontSize: '10px' }} />}
+                prefix={<SearchOutlined />}
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
-                style={{ width: 180, fontSize: '10px' }}
                 size="small"
                 allowClear
               />
@@ -380,33 +362,22 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 optionType="button"
                 buttonStyle="solid"
                 size="small"
-                style={{ fontSize: '10px' }}
               >
-                <Radio.Button value="all" style={{ fontSize: '10px', padding: '0 8px' }}>
-                  全部
-                </Radio.Button>
-                <Radio.Button value="menu" style={{ fontSize: '10px', padding: '0 8px' }}>
-                  <MenuOutlined /> 菜单
-                </Radio.Button>
-                <Radio.Button value="api" style={{ fontSize: '10px', padding: '0 8px' }}>
-                  <ApiOutlined /> 接口
-                </Radio.Button>
-                <Radio.Button value="button" style={{ fontSize: '10px', padding: '0 8px' }}>
-                  <ControlOutlined /> 按钮
-                </Radio.Button>
-                <Radio.Button value="business" style={{ fontSize: '10px', padding: '0 8px' }}>
-                  <AppstoreOutlined /> 业务
-                </Radio.Button>
+                <Radio.Button value="all">全部</Radio.Button>
+                <Radio.Button value="menu"><MenuOutlined /> 菜单</Radio.Button>
+                <Radio.Button value="api"><ApiOutlined /> 接口</Radio.Button>
+                <Radio.Button value="button"><ControlOutlined /> 按钮</Radio.Button>
+                <Radio.Button value="business"><AppstoreOutlined /> 业务</Radio.Button>
               </Radio.Group>
             </Space>
-            <div style={{ color: '#666', fontSize: '10px' }}>
+            <div className="selected-count">
               已选择 {selectedPermissions.length} 项权限
             </div>
           </div>
 
-          <div style={{ height: 400, overflow: 'hidden' }} onWheel={handleWheel}>
+          <div className="content-container" onWheel={handleWheel}>
             {showAsTree ? (
-              <div style={{ height: '100%', overflow: 'auto' }}>
+              <div className="tree-container">
                 <Tree
                   checkable
                   checkedKeys={selectedPermissions}
@@ -414,7 +385,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                   treeData={treeData}
                   filterTreeNode={filterTreeNode}
                   showLine={{ showLeafIcon: false }}
-                  style={{ fontSize: '10px', padding: '4px 0' }}
                   checkStrictly={true}
                 />
               </div>
@@ -433,75 +403,11 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 size="small"
                 pagination={false}
                 scroll={{ y: 400 }}
-                style={{ fontSize: '10px' }}
               />
             )}
           </div>
         </Space>
       </Spin>
-
-      <style jsx global>{`
-        /* 基础样式 */
-        .ant-tree {
-          font-size: 10px !important;
-        }
-        .ant-tree-node-content-wrapper {
-          display: flex !important;
-          align-items: center !important;
-          padding: 0 4px !important;
-          line-height: 24px !important;
-        }
-        .ant-tree-title {
-          flex: 1 !important;
-          line-height: 1.2 !important;
-        }
-        .ant-tree-checkbox {
-          margin: 4px 8px 0 0 !important;
-        }
-        
-        /* 表格样式 */
-        .ant-table {
-          font-size: 10px !important;
-        }
-        .ant-table-tbody > tr > td {
-          padding: 8px !important;
-        }
-
-        /* 滚动条样式 */
-        div::-webkit-scrollbar {
-          width: 6px;
-          height: 6px;
-        }
-        
-        div::-webkit-scrollbar-thumb {
-          background: #ccc;
-          border-radius: 3px;
-        }
-        
-        div::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 3px;
-        }
-
-        /* 防止滚动传导 */
-        .ant-modal-body {
-          overflow: hidden;
-        }
-
-        /* 移除多余的滚动条 */
-        .ant-tree-list {
-          height: auto !important;
-        }
-
-        .ant-tree-list-holder {
-          overflow: visible !important;
-        }
-
-        .ant-table-wrapper {
-          height: 400px !important;
-          overflow: hidden !important;
-        }
-      `}</style>
     </Modal>
   );
 };
