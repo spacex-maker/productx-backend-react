@@ -27,20 +27,6 @@ const AddDepartmentManagerModal = ({ isVisible, onClose, onAddSuccess, parentId 
     }
   };
 
-  // 添加自定义样式
-  const modalStyle = {
-    fontSize: '10px',
-  };
-
-  const formItemStyle = {
-    marginBottom: '8px',  // 减小表单项之间的间距
-  };
-
-  const labelStyle = {
-    fontSize: '10px',
-    marginBottom: '2px',  // 减小标签和输入框之间的间距
-  };
-
   return (
     <Modal
       title={<><UserOutlined style={{ marginRight: '8px' }} />加入员工</>}
@@ -49,20 +35,16 @@ const AddDepartmentManagerModal = ({ isVisible, onClose, onAddSuccess, parentId 
       onOk={handleOk}
       okText={<><CheckCircleOutlined />加入</>}
       cancelText={<><CloseCircleOutlined />取消</>}
-      bodyStyle={modalStyle}
-      width={300}
+      width={400}
     >
       <Form
         form={form}
         layout="vertical"
-        size="small"
       >
         <Form.Item
           name="managerName"
           label={<><UserOutlined style={{ marginRight: '4px' }} />员工名称</>}
           rules={[{ required: true, message: '请输入管理员名称' }]}
-          style={formItemStyle}
-          labelCol={{ style: labelStyle }}
         >
           <ManagerSearchInput
             prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -77,11 +59,8 @@ const AddDepartmentManagerModal = ({ isVisible, onClose, onAddSuccess, parentId 
           label={<><CheckCircleOutlined style={{ marginRight: '4px' }} />状态</>}
           valuePropName="checked"
           initialValue={true}
-          style={formItemStyle}
-          labelCol={{ style: labelStyle }}
         >
           <Switch 
-            size="small"
             checkedChildren={<CheckCircleOutlined />}
             unCheckedChildren={<CloseCircleOutlined />}
           />

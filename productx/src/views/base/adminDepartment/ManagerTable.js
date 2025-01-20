@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Switch } from 'antd';
 
 const ManagerTable = ({
                           data,
@@ -56,14 +56,10 @@ const ManagerTable = ({
           <td className="text-truncate">{item.phone || '-'}</td>
           <td className="text-truncate">{item.roleId}</td>
           <td>
-            <label className="toggle-switch">
-              <input
-                type="checkbox"
-                checked={item.status}
-                onChange={(e) => handleStatusChange(item.id, e.target.checked)}
-              />
-              <span className="toggle-switch-slider"></span>
-            </label>
+            <Switch
+              checked={item.status}
+              onChange={(checked) => handleStatusChange(item.id, checked)}
+            />
           </td>
           <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>

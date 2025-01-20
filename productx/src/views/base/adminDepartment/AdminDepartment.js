@@ -344,10 +344,9 @@ const AdminDepartments = () => {
           )}
 
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-            <Row gutter={[16, 16]}>
+            <Row gutter={16}>
               <Col>
                 <Input
-                  size="small"
                   placeholder="搜索员工"
                   value={searchManagerTerm}
                   onChange={handleManagerSearch}
@@ -355,7 +354,7 @@ const AdminDepartments = () => {
                 />
               </Col>
               <Col>
-                <Button size="small" type="primary" onClick={showModal}>
+                <Button type="primary" onClick={showModal}>
                   加入员工
                 </Button>
               </Col>

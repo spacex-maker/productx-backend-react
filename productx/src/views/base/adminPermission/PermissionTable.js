@@ -23,7 +23,7 @@ const PermissionTable = ({
 }) => {
   const renderActionButtons = (item) => {
     return (
-      <td className="fixed-column">
+      <td>
         <Button type="link" onClick={() => handleViewDetail(item)}>
           <EyeOutlined /> 详情
         </Button>
@@ -90,19 +90,16 @@ const PermissionTable = ({
               <input
                 type="checkbox"
                 className="custom-control-input"
-                id="select_all"
                 checked={selectAll}
-                onChange={(event) => handleSelectAll(event, data)}
+                onChange={(e) => handleSelectAll(e, data)}
               />
-              <label className="custom-control-label" htmlFor="select_all"></label>
+              <label className="custom-control-label"></label>
             </div>
           </th>
           {['ID', '权限名称', '权限英文名', '描述', '类型', '状态'].map((field) => (
             <th key={field}>{field}</th>
           ))}
-          <th className="fixed-column" key="操作">
-            操作
-          </th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -113,16 +110,14 @@ const PermissionTable = ({
                 <input
                   type="checkbox"
                   className="custom-control-input"
-                  id={`td_checkbox_${item.id}`}
                   checked={selectedRows.includes(item.id)}
-                  onChange={() => handleSelectRow(item.id, data)}
-                  disabled={item.isSystem}
+                  onChange={() => handleSelectRow(item.id)}
                 />
-                <label className="custom-control-label" htmlFor={`td_checkbox_${item.id}`}></label>
+                <label className="custom-control-label"></label>
               </div>
             </td>
-            <td className="text-truncate">{item.id}</td>
-            <td className="text-truncate">
+            <td>{item.id}</td>
+            <td>
               {item.permissionName}
               {item.isSystem && (
                 <span
@@ -139,9 +134,9 @@ const PermissionTable = ({
                 </span>
               )}
             </td>
-            <td className="text-truncate">{item.permissionNameEn}</td>
-            <td className="text-truncate">{item.description}</td>
-            <td className="text-truncate" style={{ textAlign: 'center' }}>
+            <td>{item.permissionNameEn}</td>
+            <td>{item.description}</td>
+            <td style={{ textAlign: 'center' }}>
               {getTypeTag(item.type)}
             </td>
             <td>
@@ -149,7 +144,8 @@ const PermissionTable = ({
                 <input
                   type="checkbox"
                   checked={item.status}
-                  onChange={(e) => handleStatusChange(item.id, e.target.checked)}
+                  onChange={(e) => handleStatusChange(item.id, e)}
+                  disabled={item.isSystem}
                 />
                 <span className="toggle-switch-slider"></span>
               </label>

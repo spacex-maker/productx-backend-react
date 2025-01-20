@@ -130,85 +130,76 @@ const ManagerList = () => {
   return (
     <div>
       <div className="mb-3">
-        <div className="search-container">
-          <Row gutter={[16, 16]}>
-            <Col>
-              <Input
-                size="small"
-                value={searchParams.username}
-                onChange={handleSearchChange}
-                name="username"
-                placeholder="用户名"
-                allowClear
-              />
-            </Col>
-            <Col>
-              <Input
-                size="small"
-                value={searchParams.email}
-                onChange={handleSearchChange}
-                name="email"
-                placeholder="邮箱"
-                allowClear
-              />
-            </Col>
-            <Col>
-              <Input
-                size="small"
-                value={searchParams.phone}
-                onChange={handleSearchChange}
-                name="phone"
-                placeholder="手机号"
-                allowClear
-              />
-            </Col>
-            <Col>
-              <Select
-                size="small"
-                name="status"
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value: value === 1}})}
-                allowClear
-                placeholder="选择状态"
-              >
-                <Select.Option value={1}>启用</Select.Option>
-                <Select.Option value={0}>禁用</Select.Option>
-              </Select>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : '查询'}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}>
-                新增管理员
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/manager/delete-batch',
-                  selectedRows,
-                  resetSelection,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-              >
-                批量删除
-              </Button>
-            </Col>
-          </Row>
-        </div>
+        <Row gutter={16}>
+          <Col>
+            <Input
+              value={searchParams.username}
+              onChange={handleSearchChange}
+              name="username"
+              placeholder="用户名"
+              allowClear
+            />
+          </Col>
+          <Col>
+            <Input
+              value={searchParams.email}
+              onChange={handleSearchChange}
+              name="email"
+              placeholder="邮箱"
+              allowClear
+            />
+          </Col>
+          <Col>
+            <Input
+              value={searchParams.phone}
+              onChange={handleSearchChange}
+              name="phone"
+              placeholder="手机号"
+              allowClear
+            />
+          </Col>
+          <Col>
+            <Select
+              name="status"
+              onChange={(value) => handleSearchChange({ target: { name: 'status', value: value === 1}})}
+              allowClear
+              placeholder="选择状态"
+            >
+              <Select.Option value={1}>启用</Select.Option>
+              <Select.Option value={0}>禁用</Select.Option>
+            </Select>
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              onClick={fetchData}
+              disabled={isLoading}
+            >
+              {isLoading ? <Spin /> : '查询'}
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              onClick={() => setIsCreateModalVisible(true)}>
+              新增管理员
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              type="primary"
+              onClick={() => HandleBatchDelete({
+                url: '/manage/manager/delete-batch',
+                selectedRows,
+                resetSelection,
+                fetchData,
+              })}
+              disabled={selectedRows.length === 0}
+            >
+              批量删除
+            </Button>
+          </Col>
+        </Row>
       </div>
 
       <div className="table-responsive">

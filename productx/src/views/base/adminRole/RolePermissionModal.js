@@ -368,18 +368,34 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
   return (
     <Modal
       title={
-        <Space direction="vertical" size={4} style={{ width: '100%' }}>
-          <div style={{ fontSize: '16px', fontWeight: 500 }}>配置权限</div>
+        <div style={{ padding: '8px 0' }}>
           <div style={{ 
-            fontSize: '14px',
+            fontSize: '16px', 
+            fontWeight: 500,
+            marginBottom: '12px',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px' 
+            gap: '8px'
           }}>
-            <span>当前角色：</span>
-            <Tag>{roleName}</Tag>
+            <span>配置权限</span>
+            <div style={{
+              height: '14px',
+              width: '1px',
+              background: '#e8e8e8',
+              margin: '0 4px'
+            }} />
+            <Tag color="blue" style={{ margin: 0 }}>{roleName}</Tag>
           </div>
-        </Space>
+          <div style={{
+            fontSize: '13px',
+            color: '#666',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            已选择 <Badge count={selectedPermissions.length} style={{ backgroundColor: '#1890ff' }} /> 个权限
+          </div>
+        </div>
       }
       open={visible}
       onCancel={onCancel}
@@ -387,8 +403,8 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       width={1200}
       confirmLoading={loading}
       bodyStyle={{ 
-        padding: '24px',
-        maxHeight: 'calc(100vh - 300px)',  // 调整为更小的高度，确保能看到整个模态框
+        padding: '16px 24px',
+        maxHeight: 'calc(100vh - 300px)',
         overflow: 'hidden'
       }}
     >
@@ -437,9 +453,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 <Radio.Button value="business" style={{ borderRadius: '6px' }}><AppstoreOutlined /> 业务</Radio.Button>
               </Radio.Group>
             </div>
-            <Badge count={selectedPermissions.length}>
-              <Tag style={{ margin: 0 }}>已选择权限</Tag>
-            </Badge>
           </div>
 
           <div 

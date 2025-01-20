@@ -1,0 +1,48 @@
+// 表格样式
+.table {
+  td, th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  // 固定首列（选择框）
+  th:first-child,
+  td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--cui-body-bg);
+  }
+  
+  // 固定最后一列（操作列）
+  th:last-child,
+  td:last-child {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    background: var(--cui-body-bg);
+  }
+  
+  // 表头的固定列
+  thead {
+    th:first-child,
+    th:last-child {
+      z-index: 3;
+    }
+  }
+}
+
+// 表格容器样式
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+// 页面容器样式
+.page-container {
+  width: 100%;
+  overflow: hidden;
+  min-width: 0;
+}
