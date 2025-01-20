@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, Spin, Row, Col, Select, DatePicker, InputNumber } from 'antd';
+import { Button, Form, Input, Spin, Row, Col, Select, DatePicker, InputNumber, Space } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from "src/components/common/Pagination";
@@ -42,12 +42,7 @@ const ListUserProfile = () => {
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
 
-  const {
-    selectedRows,
-    selectAll,
-    handleSelectAll,
-    handleSelectRow,
-  } = UseSelectableRows();
+  const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows('userId');
 
   useEffect(() => {
     fetchData();
@@ -123,35 +118,34 @@ const ListUserProfile = () => {
     <div>
       <div className="mb-3">
         <div className="search-container">
-          <Row gutter={[10, 10]}>
+          <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.userId}
                 onChange={handleSearchChange}
                 name="userId"
                 placeholder={t('userId')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.name}
                 onChange={handleSearchChange}
                 name="name"
                 placeholder={t('name')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
-                className="search-box"
                 value={searchParams.gender}
                 onChange={(value) => handleSearchChange({target: {name: 'gender', value}})}
-                allowClear
                 placeholder={t('gender')}
+                allowClear
+                style={{ width: 150 }}
               >
                 <Option value="MALE">{t('male')}</Option>
                 <Option value="FEMALE">{t('female')}</Option>
@@ -160,116 +154,115 @@ const ListUserProfile = () => {
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.location}
                 onChange={handleSearchChange}
                 name="location"
                 placeholder={t('location')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <RangePicker
-                size="small"
                 onChange={(dates) => {
-                  setSearchParams(prev => ({
-                    ...prev,
-                    registrationDateStart: dates?.[0]?.format('YYYY-MM-DD') || '',
-                    registrationDateEnd: dates?.[1]?.format('YYYY-MM-DD') || ''
-                  }));
+                  if (dates) {
+                    setSearchParams(prev => ({
+                      ...prev,
+                      registrationDateStart: dates[0].format('YYYY-MM-DD'),
+                      registrationDateEnd: dates[1].format('YYYY-MM-DD')
+                    }));
+                  } else {
+                    setSearchParams(prev => ({
+                      ...prev,
+                      registrationDateStart: undefined,
+                      registrationDateEnd: undefined
+                    }));
+                  }
                 }}
-                placeholder={[t('startDate'), t('endDate')]}
+                style={{ width: 280 }}
               />
             </Col>
             <Col>
               <InputNumber
-                size="small"
                 value={searchParams.minTotalOrders}
                 onChange={(value) => handleSearchChange({target: {name: 'minTotalOrders', value}})}
                 placeholder={t('minTotalOrders')}
-                style={{ width: 100 }}
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <InputNumber
-                size="small"
                 value={searchParams.maxTotalOrders}
                 onChange={(value) => handleSearchChange({target: {name: 'maxTotalOrders', value}})}
                 placeholder={t('maxTotalOrders')}
-                style={{ width: 100 }}
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <InputNumber
-                size="small"
                 value={searchParams.minAvgOrderValue}
                 onChange={(value) => handleSearchChange({target: {name: 'minAvgOrderValue', value}})}
                 placeholder={t('minAvgOrderValue')}
-                style={{ width: 100 }}
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <InputNumber
-                size="small"
                 value={searchParams.maxAvgOrderValue}
                 onChange={(value) => handleSearchChange({target: {name: 'maxAvgOrderValue', value}})}
                 placeholder={t('maxAvgOrderValue')}
-                style={{ width: 100 }}
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.preferredCategories}
                 onChange={handleSearchChange}
                 name="preferredCategories"
                 placeholder={t('preferredCategories')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.preferredBrands}
                 onChange={handleSearchChange}
                 name="preferredBrands"
                 placeholder={t('preferredBrands')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                {t('createProfile')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/user-profile/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchDelete')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('createProfile')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    HandleBatchDelete({
+                      url: '/manage/user-profile/delete-batch',
+                      selectedRows,
+                      fetchData,
+                    })
+                  }
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

@@ -46,7 +46,6 @@ const UpdateOrderModal = ({
           label="用户ID"
           name="userId"
           rules={[{ required: true, message: '请输入用户ID' }]}
-          style={{ marginBottom: '8px' }}
         >
           <Input placeholder="请输入用户ID" />
         </Form.Item>
@@ -56,7 +55,6 @@ const UpdateOrderModal = ({
           label="收货人"
           name="receiverName"
           rules={[{ required: true, message: '请输入收货人姓名' }]}
-          style={{ marginBottom: '8px' }}
         >
           <Input placeholder="请输入收货人姓名" />
         </Form.Item>
@@ -66,7 +64,6 @@ const UpdateOrderModal = ({
           label="手机号"
           name="phoneNum"
           rules={[{ required: true, message: '请输入手机号' }]}
-          style={{ marginBottom: '8px' }}
         >
           <Input placeholder="请输入手机号" />
         </Form.Item>
@@ -76,7 +73,6 @@ const UpdateOrderModal = ({
           label="订单状态"
           name="orderStatus"
           rules={[{ required: true, message: '请选择订单状态' }]}
-          style={{ marginBottom: '8px' }}
         >
           <Input placeholder="请输入订单状态" />
         </Form.Item>
@@ -86,7 +82,6 @@ const UpdateOrderModal = ({
           label="支付方式"
           name="paymentType"
           rules={[{ required: true, message: '请输入支付方式' }]}
-          style={{ marginBottom: '8px' }}
         >
           <Input placeholder="请输入支付方式" />
         </Form.Item>
@@ -96,7 +91,6 @@ const UpdateOrderModal = ({
           label="支付时间"
           name="payTime"
           rules={[{ required: true, message: '请选择支付时间' }]}
-          style={{ marginBottom: '8px' }}
         >
           <DatePicker showTime placeholder="请选择支付时间" />
         </Form.Item>
@@ -106,7 +100,6 @@ const UpdateOrderModal = ({
           label="总金额"
           name="totalAmount"
           rules={[{ required: true, message: '请输入总金额' }]}
-          style={{ marginBottom: '8px' }}
         >
           <Input placeholder="请输入总金额" />
         </Form.Item>
@@ -116,7 +109,6 @@ const UpdateOrderModal = ({
           label="配送方式"
           name="shippingMethod"
           rules={[{ required: true, message: '请输入配送方式' }]}
-          style={{ marginBottom: '8px' }}
         >
           <Input placeholder="请输入配送方式" />
         </Form.Item>
@@ -126,7 +118,6 @@ const UpdateOrderModal = ({
           label="启用状态"
           name="status"
           valuePropName="checked"
-          style={{ marginBottom: '8px' }}
         >
           <Switch checkedChildren="启用" unCheckedChildren="禁用" />
         </Form.Item>

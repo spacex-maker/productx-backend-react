@@ -19,11 +19,16 @@ const SysLanguageTable = ({
       <thead>
         <tr>
           <th>
-            <input
-              type="checkbox"
-              checked={selectAll}
-              onChange={handleSelectAll}
-            />
+            <div className="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="select_all"
+                checked={selectAll}
+                onChange={(event) => handleSelectAll(event, data)}
+              />
+              <label className="custom-control-label" htmlFor="select_all"></label>
+            </div>
           </th>
           <th>{t('languageCode')}</th>
           <th>{t('englishName')}</th>
@@ -38,11 +43,19 @@ const SysLanguageTable = ({
         {data.map((item) => (
           <tr key={item.id} className="record-font">
             <td>
-              <input
-                type="checkbox"
-                checked={selectedRows.includes(item.id)}
-                onChange={() => handleSelectRow(item.id)}
-              />
+              <div className="custom-control custom-checkbox">
+                <input
+                  type="checkbox"
+                  className="custom-control-input"
+                  id={`td_checkbox_${item.id}`}
+                  checked={selectedRows.includes(item.id)}
+                  onChange={() => handleSelectRow(item.id, data)}
+                />
+                <label
+                  className="custom-control-label"
+                  htmlFor={`td_checkbox_${item.id}`}
+                ></label>
+              </div>
             </td>
             <td>{item.languageCode}</td>
             <td>{item.languageNameEn}</td>

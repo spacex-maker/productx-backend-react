@@ -204,34 +204,33 @@ const BankList = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.bankName}
                 onChange={handleSearchChange}
                 name="bankName"
                 placeholder="银行名称"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.swiftCode}
                 onChange={handleSearchChange}
                 name="swiftCode"
                 placeholder="SWIFT代码"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.countryCode}
                 onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value }})}
                 placeholder="国家"
                 allowClear
                 showSearch
                 loading={loadingCountries}
-                style={{ minWidth: 150 }}
+                style={{ width: 150 }}
                 filterOption={(input, option) => {
                   const country = countries.find(c => c.code === option.value);
                   return (
@@ -239,73 +238,61 @@ const BankList = () => {
                     country?.code.toLowerCase().includes(input.toLowerCase())
                   );
                 }}
-                dropdownMatchSelectWidth={false}
-                popupMatchSelectWidth={false}
-                dropdownStyle={{ 
-                  minWidth: 250,
-                  maxWidth: 300
-                }}
               >
                 {countries.map(country => countryOption(country))}
               </Select>
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.city}
                 onChange={handleSearchChange}
                 name="city"
                 placeholder="城市"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.status}
-                onChange={handleStatusChange}
+                onChange={(value) => handleSearchChange({ target: { name: 'status', value }})}
                 allowClear
                 placeholder="是否支持"
+                style={{ width: 150 }}
               >
                 <Select.Option value="true">支持</Select.Option>
                 <Select.Option value="false">不支持</Select.Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : '查询'}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                新增银行
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() =>
-                  HandleBatchDelete({
-                    url: '/manage/bank/delete-batch',
-                    selectedRows,
-                    fetchData,
-                  })
-                }
-                disabled={selectedRows.length === 0}
-              >
-                批量删除
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : '查询'}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  新增银行
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    HandleBatchDelete({
+                      url: '/manage/bank/delete-batch',
+                      selectedRows,
+                      fetchData,
+                    })
+                  }
+                  disabled={selectedRows.length === 0}
+                >
+                  批量删除
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

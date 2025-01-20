@@ -292,7 +292,7 @@ const Dashboard = () => {
       animationType: 'scale',
       animationEasing: 'elasticOut',
       animationDelay: (idx) => idx * 200,
-      data: growthStats?.length > 0 ? 
+      data: growthStats?.length > 0 ?
         Object.entries(JSON.parse(growthStats[growthStats.length - 1].regionDistribution || '{}'))
           .map(([name, value]) => ({ name, value })) : []
     }]
@@ -332,11 +332,11 @@ const Dashboard = () => {
       },
       animationType: 'scale',
       animationEasing: 'elasticOut',
-      data: growthStats?.length > 0 ? 
+      data: growthStats?.length > 0 ?
         Object.entries(JSON.parse(growthStats[growthStats.length - 1].deviceDistribution || '{}'))
-          .map(([name, value]) => ({ 
+          .map(([name, value]) => ({
             name: name === 'mobile' ? '移动端' : name === 'tablet' ? '平板' : '桌面端',
-            value 
+            value
           })) : []
     }]
   })
@@ -368,7 +368,7 @@ const Dashboard = () => {
       splitLine: { lineStyle: { type: 'dashed' } }
     },
     series: [{
-      data: growthStats?.length > 0 ? 
+      data: growthStats?.length > 0 ?
         Object.values(JSON.parse(growthStats[growthStats.length - 1].newUserSource || '{}')) : [],
       type: 'bar',
       showBackground: true,
@@ -401,7 +401,7 @@ const Dashboard = () => {
   const renderMetricsCards = () => {
     if (!growthStats?.length) return null;
     const latestStats = growthStats[growthStats.length - 1];
-    
+
     const metrics = [
       {
         title: '用户留存率',
@@ -470,7 +470,7 @@ const Dashboard = () => {
             defaultValue={[startDate, endDate]}
             onChange={handleDateRangeChange}
             format="YYYY-MM-DD"
-            size="small"
+
             style={{ fontSize: '12px' }}
           />
         </CCardBody>

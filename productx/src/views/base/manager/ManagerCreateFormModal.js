@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal, Form, Input, Upload, Button } from 'antd';
 import RoleSelect from "src/views/base/adminRole/RoleSelect";
-import { 
-  UserOutlined, 
-  LockOutlined, 
-  MailOutlined, 
-  PhoneOutlined, 
+import {
+  UserOutlined,
+  LockOutlined,
+  MailOutlined,
+  PhoneOutlined,
   TeamOutlined,
   PlusOutlined,
-  UploadOutlined 
+  UploadOutlined
 } from '@ant-design/icons';
 
 const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
@@ -52,8 +52,8 @@ const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
       onOk={() => form.submit()}
       width={850}
     >
-      <Form 
-        form={form} 
+      <Form
+        form={form}
         onFinish={handleSubmit}
         layout="vertical"
       >
@@ -64,9 +64,9 @@ const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
               name="username"
               rules={[{ required: true, message: '请输入用户名' }]}
             >
-              <Input 
+              <Input
                 prefix={<UserOutlined />}
-                placeholder="请输入用户名" 
+                placeholder="请输入用户名"
               />
             </Form.Item>
 
@@ -75,9 +75,9 @@ const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
               name="password"
               rules={[{ required: true, message: '请输入密码' }]}
             >
-              <Input.Password 
+              <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="请输入密码" 
+                placeholder="请输入密码"
               />
             </Form.Item>
 
@@ -86,9 +86,9 @@ const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
               name="email"
               rules={[{ required: true, message: '请输入邮箱', type: 'email' }]}
             >
-              <Input 
+              <Input
                 prefix={<MailOutlined />}
-                placeholder="请输入邮箱" 
+                placeholder="请输入邮箱"
               />
             </Form.Item>
           </div>
@@ -99,9 +99,9 @@ const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
               name="phone"
               rules={[{ required: true, message: '请输入电话' }]}
             >
-              <Input 
+              <Input
                 prefix={<PhoneOutlined />}
-                placeholder="请输入电话" 
+                placeholder="请输入电话"
               />
             </Form.Item>
 
@@ -110,7 +110,7 @@ const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
               name="roleIds"
               rules={[{ required: true, message: '请选择角色' }]}
             >
-              <RoleSelect 
+              <RoleSelect
                 mode="multiple"
                 placeholder="请选择角色"
                 style={{ width: '100%' }}
@@ -123,9 +123,9 @@ const ManagerCreateFormModal = ({ isVisible, onCancel, onFinish, form }) => {
               name="avatar"
             >
               <Upload {...uploadProps}>
-                <Button 
-                  icon={<UploadOutlined />} 
-                  size="small"
+                <Button
+                  icon={<UploadOutlined />}
+
                 >
                   上传头像
                 </Button>

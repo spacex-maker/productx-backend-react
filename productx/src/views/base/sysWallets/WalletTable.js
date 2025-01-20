@@ -78,7 +78,7 @@ const WalletTable = ({
               </div>
               <Button
                 icon={<CopyOutlined/>}
-                size="small"
+
                 onClick={() => handleCopy(item.address)}
                 style={{marginLeft: '8px'}}
               />
@@ -88,12 +88,12 @@ const WalletTable = ({
           <td className="text-truncate">{item.label}</td>
           <td className="text-truncate">
             <Space>
-              <img 
-                src={countries.find(country => country.code === item.countryCode)?.flagImageUrl} 
+              <img
+                src={countries.find(country => country.code === item.countryCode)?.flagImageUrl}
                 alt={countries.find(country => country.code === item.countryCode)?.name}
-                style={{ 
-                  width: 20, 
-                  height: 15, 
+                style={{
+                  width: 20,
+                  height: 15,
                   objectFit: 'cover',
                   borderRadius: 2,
                   border: '1px solid #f0f0f0'
@@ -120,7 +120,7 @@ const WalletTable = ({
             </Button>
             <Button
               type="link"
-              size="small"
+
               onClick={() => handleBlockchainQuery(item.address)}
             >
               区块链浏览器

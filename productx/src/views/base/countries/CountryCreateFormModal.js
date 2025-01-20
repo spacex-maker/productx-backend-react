@@ -53,7 +53,7 @@ const CountryCreateFormModal = ({
             >
               <Input
                 placeholder={t('inputCountryNamePlaceholder')}
-                size="small"
+
               />
             </Form.Item>
           </Col>
@@ -66,7 +66,7 @@ const CountryCreateFormModal = ({
             >
               <Input
                 placeholder={t('inputCountryCodePlaceholder')}
-                size="small"
+
               />
             </Form.Item>
           </Col>
@@ -79,7 +79,7 @@ const CountryCreateFormModal = ({
             >
               <Select
                 placeholder={t('selectContinentPlaceholder')}
-                size="small"
+
               >
                 {continentOptions.map(option => (
                   <Option key={option.value} value={option.value}>

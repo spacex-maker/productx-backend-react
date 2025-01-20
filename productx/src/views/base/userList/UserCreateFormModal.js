@@ -1,10 +1,10 @@
 import React from 'react';
 import { Modal, Form, Input, Row, Col, Divider, Typography, Checkbox, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { 
-  UserOutlined, 
-  IdcardOutlined, 
-  LockOutlined, 
+import {
+  UserOutlined,
+  IdcardOutlined,
+  LockOutlined,
   PhoneOutlined,
   MailOutlined,
   InfoCircleOutlined,
@@ -43,11 +43,11 @@ const UserCreateFormModal = ({
       width={600}
       maskClosable={false}
     >
-      <Form 
-        form={form} 
-        onFinish={onFinish} 
+      <Form
+        form={form}
+        onFinish={onFinish}
         layout="vertical"
-        size="small"
+
       >
         {/* 基本信息部分 */}
         <Title level={5}>
@@ -65,7 +65,7 @@ const UserCreateFormModal = ({
               name="nickname"
               rules={[{ required: true, message: t('nicknameRequired') }]}
             >
-              <Input 
+              <Input
                 prefix={<UserOutlined />}
                 placeholder={t('enterNickname')}
               />
@@ -77,7 +77,7 @@ const UserCreateFormModal = ({
               name="fullName"
               rules={[{ required: true, message: t('fullNameRequired') }]}
             >
-              <Input 
+              <Input
                 prefix={<IdcardOutlined />}
                 placeholder={t('enterFullName')}
               />
@@ -92,7 +92,7 @@ const UserCreateFormModal = ({
               name="password"
               rules={[{ required: true, message: t('passwordRequired') }]}
             >
-              <Input.Password 
+              <Input.Password
                 prefix={<LockOutlined />}
                 placeholder={t('enterPassword')}
               />
@@ -104,7 +104,7 @@ const UserCreateFormModal = ({
               name="phoneNumber"
               rules={[{ required: true, message: t('phoneNumberRequired') }]}
             >
-              <Input 
+              <Input
                 prefix={<PhoneOutlined />}
                 placeholder={t('enterPhoneNumber')}
               />
@@ -112,29 +112,29 @@ const UserCreateFormModal = ({
           </Col>
         </Row>
 
-        <Form.Item 
+        <Form.Item
           label={t('email')}
           name="email"
         >
-          <Input 
-            prefix={<MailOutlined />} 
-            placeholder={t('enterEmail')} 
+          <Input
+            prefix={<MailOutlined />}
+            placeholder={t('enterEmail')}
           />
         </Form.Item>
 
-        <Form.Item 
+        <Form.Item
           label={t('description')}
           name="description"
         >
-          <Input 
-            prefix={<InfoCircleOutlined />} 
-            placeholder={t('enterDescription')} 
+          <Input
+            prefix={<InfoCircleOutlined />}
+            placeholder={t('enterDescription')}
           />
         </Form.Item>
 
-        <Form.Item 
-          label={t('status')} 
-          name="status" 
+        <Form.Item
+          label={t('status')}
+          name="status"
           valuePropName="checked"
         >
           <Checkbox>{t('active')}</Checkbox>
@@ -155,7 +155,7 @@ const UserCreateFormModal = ({
               label={t('country')}
               name="country"
             >
-              <Input 
+              <Input
                 prefix={<GlobalOutlined />}
                 placeholder={t('enterCountry')}
               />
@@ -166,7 +166,7 @@ const UserCreateFormModal = ({
               label={t('state')}
               name="state"
             >
-              <Input 
+              <Input
                 prefix={<BankOutlined />}
                 placeholder={t('enterState')}
               />
@@ -180,7 +180,7 @@ const UserCreateFormModal = ({
               label={t('city')}
               name="city"
             >
-              <Input 
+              <Input
                 prefix={<AimOutlined />}
                 placeholder={t('enterCity')}
               />
@@ -191,7 +191,7 @@ const UserCreateFormModal = ({
               label={t('postalCode')}
               name="postalCode"
             >
-              <Input 
+              <Input
                 prefix={<TagOutlined />}
                 placeholder={t('enterPostalCode')}
               />
@@ -203,24 +203,24 @@ const UserCreateFormModal = ({
           label={t('address')}
           name="address"
         >
-          <Input 
+          <Input
             prefix={<EnvironmentOutlined />}
             placeholder={t('enterAddress')}
           />
         </Form.Item>
 
-        <Form.Item 
+        <Form.Item
           label={t('creditScore')}
           name="creditScore"
         >
-          <Input 
+          <Input
             prefix={<NumberOutlined />}
             type="number"
             placeholder={t('enterCreditScore')}
           />
         </Form.Item>
 
-        <Form.Item 
+        <Form.Item
           label={t('isActive')}
           name="isActive"
           valuePropName="checked"

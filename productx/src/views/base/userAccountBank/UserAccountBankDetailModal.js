@@ -63,7 +63,7 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
         <div style={{ padding: '8px' }}>
           {/* 用户信息卡片 */}
           <Card
-            size="small"
+
             title={<Text strong><UserOutlined /> {t('userInfo')}</Text>}
             style={{ marginBottom: 16 }}
           >
@@ -84,12 +84,12 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
                         </Tag>
                       </Space>
                     </div>
-                    
+
                     {/* 详细信息网格布局 */}
-                    <div style={{ 
-                      display: 'grid', 
-                      gridTemplateColumns: 'auto 1fr', 
-                      gap: '12px 24px', 
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'auto 1fr',
+                      gap: '12px 24px',
                       alignItems: 'baseline'
                     }}>
                       {userInfo.nickname && (
@@ -98,21 +98,21 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
                           <Text>{userInfo.nickname}</Text>
                         </>
                       )}
-                      
+
                       {userInfo.email && (
                         <>
                           <Text type="secondary">{t('email')}:</Text>
                           <Text>{userInfo.email}</Text>
                         </>
                       )}
-                      
+
                       {userInfo.phone && (
                         <>
                           <Text type="secondary">{t('phone')}:</Text>
                           <Text>{userInfo.phone}</Text>
                         </>
                       )}
-                      
+
                       {(userInfo.city || userInfo.state || userInfo.country) && (
                         <>
                           <Text type="secondary">{t('location')}:</Text>
@@ -123,7 +123,7 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
                           </Text>
                         </>
                       )}
-                      
+
                       {userInfo.createdAt && (
                         <>
                           <Text type="secondary">{t('registrationDate')}:</Text>
@@ -140,25 +140,25 @@ const UserAccountBankDetailModal = ({ isVisible, onCancel, selectedAccount }) =>
           {/* 银行账户信息卡片 */}
           {selectedAccount && (
             <Card
-              size="small"
+
               title={<Text strong><BankOutlined /> {t('bankInfo')}</Text>}
             >
               <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '16px 24px', alignItems: 'center' }}>
                 <Text type="secondary">{t('bankName')}:</Text>
                 <Text strong>{selectedAccount.bankName}</Text>
-                
+
                 <Text type="secondary">{t('accountNumber')}:</Text>
                 <Text strong>{selectedAccount.accountNumber}</Text>
-                
+
                 <Text type="secondary">{t('accountHolderName')}:</Text>
                 <Text strong>{selectedAccount.accountHolderName}</Text>
-                
+
                 <Text type="secondary">{t('swiftCode')}:</Text>
                 <Text strong>{selectedAccount.swiftCode}</Text>
-                
+
                 <Text type="secondary">{t('currencyCode')}:</Text>
                 <Text strong>{selectedAccount.currencyCode}</Text>
-                
+
                 <Text type="secondary">{t('isActive')}:</Text>
                 <Tag color={selectedAccount.isActive ? 'success' : 'error'}>
                   {selectedAccount.isActive ? t('yes') : t('no')}

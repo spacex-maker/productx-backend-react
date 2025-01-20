@@ -13,7 +13,7 @@ const StyledForm = styled(Form)`
 
   .ant-form-item-label {
     padding: 0 0 4px;
-    
+
     > label {
       font-size: 12px;
       height: 16px;
@@ -42,13 +42,13 @@ const StyledCard = styled(Card)`
   .ant-card-head {
     min-height: 36px;
     padding: 0 12px;
-    
+
     .ant-card-head-title {
       padding: 8px 0;
       font-size: 13px;
     }
   }
-  
+
   .ant-card-body {
     padding: 12px;
   }
@@ -62,38 +62,38 @@ const StyledSelect = styled(Select)`
   .country-option {
     display: flex;
     flex-direction: column;
-    
+
     .main-row {
       display: flex;
       align-items: center;
       margin-bottom: 4px;
-      
+
       .flag {
         margin-right: 8px;
         font-size: 16px;
       }
-      
+
       .name {
         flex: 1;
         font-weight: 500;
       }
-      
+
       .code {
         color: #666;
         margin-left: 8px;
       }
     }
-    
+
     .sub-row {
       display: flex;
       font-size: 11px;
       color: #666;
-      
+
       > span {
         display: flex;
         align-items: center;
         margin-right: 12px;
-        
+
         .anticon {
           margin-right: 4px;
           font-size: 11px;
@@ -105,34 +105,34 @@ const StyledSelect = styled(Select)`
   .city-option {
     display: flex;
     flex-direction: column;
-    
+
     .main-row {
       display: flex;
       align-items: center;
       margin-bottom: 4px;
-      
+
       .name {
         flex: 1;
         font-weight: 500;
       }
-      
+
       .code {
         color: #666;
         margin-left: 8px;
       }
     }
-    
+
     .sub-row {
       display: flex;
       flex-wrap: wrap;
       font-size: 11px;
       color: #666;
-      
+
       > span {
         display: flex;
         align-items: center;
         margin-right: 12px;
-        
+
         .anticon {
           margin-right: 4px;
           font-size: 11px;
@@ -146,21 +146,21 @@ const StyledModal = styled(Modal)`
   .ant-modal-content {
     padding: 12px;
   }
-  
+
   .ant-modal-header {
     padding: 12px;
     margin-bottom: 8px;
   }
-  
+
   .ant-modal-title {
     font-size: 14px;
     line-height: 1.5;
   }
-  
+
   .ant-modal-body {
     padding: 12px;
   }
-  
+
   .ant-modal-footer {
     padding: 8px 12px;
     margin-top: 8px;
@@ -189,7 +189,7 @@ const RegionAgentsCreateFormModal = ({
     setManagerLoading(true);
     try {
       const response = await api.get('/manage/manager/list', {
-        params: { 
+        params: {
           username: search,
           pageSize: 20
         }
@@ -279,7 +279,7 @@ const RegionAgentsCreateFormModal = ({
   // 处理城市选择
   const handleCitySelect = (cityName, option) => {
     const selectedCity = option.data;
-    
+
     if (selectedCity) {
       const countryCode = form.getFieldValue('countryCode');
       form.setFieldsValue({
@@ -491,18 +491,18 @@ const RegionAgentsCreateFormModal = ({
                       <div style={{ padding: '4px 0' }}>
                         <div style={{ fontWeight: 500 }}>
                           {type.name}
-                          <span style={{ 
-                            fontSize: '12px', 
-                            color: '#666', 
+                          <span style={{
+                            fontSize: '12px',
+                            color: '#666',
                             fontWeight: 'normal',
-                            marginLeft: '8px' 
+                            marginLeft: '8px'
                           }}>
                             ({type.code})
                           </span>
                         </div>
-                        <div style={{ 
-                          fontSize: '12px', 
-                          color: '#666', 
+                        <div style={{
+                          fontSize: '12px',
+                          color: '#666',
                           marginTop: '4px',
                           whiteSpace: 'normal',
                           lineHeight: '1.4'
@@ -542,19 +542,19 @@ const RegionAgentsCreateFormModal = ({
                       value={country.code}
                       label={`${country.name} (${country.code})`}
                     >
-                      <div style={{ 
-                        fontSize: '12px', 
-                        padding: '4px 0', 
-                        display: 'flex', 
+                      <div style={{
+                        fontSize: '12px',
+                        padding: '4px 0',
+                        display: 'flex',
                         alignItems: 'center',
                         whiteSpace: 'nowrap'
                       }}>
                         <img
                           src={country.flagImageUrl}
                           alt={`${country.name} ${t('flag')}`}
-                          style={{ 
-                            width: '20px', 
-                            height: '15px', 
+                          style={{
+                            width: '20px',
+                            height: '15px',
                             marginRight: '8px',
                             flexShrink: 0
                           }}
@@ -562,7 +562,7 @@ const RegionAgentsCreateFormModal = ({
                         <span style={{ marginRight: '8px', flexShrink: 0 }}>
                           {country.name} ({country.code})
                         </span>
-                        <span style={{ 
+                        <span style={{
                           color: '#666',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -599,7 +599,7 @@ const RegionAgentsCreateFormModal = ({
                   loading={citySearchLoading}
                   onSearch={handleCitySearch}
                   filterOption={false}
-                  notFoundContent={citySearchLoading ? <Spin size="small" /> : null}
+                  notFoundContent={citySearchLoading ? <Spin    /> : null}
                   optionLabelProp="label"
                   dropdownMatchSelectWidth={false}
                   dropdownStyle={{ width: '300px' }}
@@ -675,7 +675,7 @@ const RegionAgentsCreateFormModal = ({
                 label={t('isExclusive')}
                 rules={[{ required: true, message: t('pleaseSelectIsExclusive') }]}
               >
-                <Select 
+                <Select
                   placeholder={t('pleaseSelectIsExclusive')}
                   disabled
                 >
@@ -704,9 +704,9 @@ const RegionAgentsCreateFormModal = ({
                 label={t('contactInfo')}
                 name="contactInfo"
               >
-                <Input.TextArea 
+                <Input.TextArea
                   rows={2}
-                  placeholder={t('pleaseInputContactInfo')} 
+                  placeholder={t('pleaseInputContactInfo')}
                 />
               </Form.Item>
             </Col>

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { PlusOutlined, GlobalOutlined, CalendarOutlined, FileOutlined, AppstoreOutlined, NumberOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import COS from 'cos-js-sdk-v5';
-import { 
+import {
   MobileOutlined,
   LaptopOutlined,
   ToolOutlined,
@@ -51,7 +51,7 @@ const getSignedUrl = async (url) => {
     );
 
     const base64Signature = btoa(String.fromCharCode(...new Uint8Array(signature)));
-    
+
     return `${url}&signature=${encodeURIComponent(base64Signature)}`;
   } catch (error) {
     console.error('URL signing error:', error);
@@ -91,8 +91,8 @@ const UpdateRepairServiceMerchantsModal = ({
           dayjs(selectedMerchant.workStartTime, 'HH:mm'),
           dayjs(selectedMerchant.workEndTime, 'HH:mm')
         ] : undefined,
-        paymentMethods: Array.isArray(selectedMerchant.paymentMethods) 
-          ? selectedMerchant.paymentMethods 
+        paymentMethods: Array.isArray(selectedMerchant.paymentMethods)
+          ? selectedMerchant.paymentMethods
           : (selectedMerchant.paymentMethods?.split(',').filter(Boolean) || []),
         serviceTypes: Array.isArray(selectedMerchant.serviceTypes)
           ? selectedMerchant.serviceTypes
@@ -101,7 +101,7 @@ const UpdateRepairServiceMerchantsModal = ({
           ? selectedMerchant.serviceAreas
           : (selectedMerchant.serviceAreas?.split(',').filter(Boolean) || [])
       };
-      
+
       form.setFieldsValue(formData);
       setLogoUrl(selectedMerchant.merchantLogo);
       setLicenseUrl(selectedMerchant.businessLicense);
@@ -171,7 +171,7 @@ const UpdateRepairServiceMerchantsModal = ({
 
       const folder = fileType === 'license' ? 'licenses' : 'logos';
       const key = `${folder}/${Date.now()}-${file.name}`;
-      
+
       await instance.uploadFile({
         Bucket: bucketName,
         Region: region,
@@ -183,7 +183,7 @@ const UpdateRepairServiceMerchantsModal = ({
       });
 
       const url = `https://${bucketName}.cos.${region}.myqcloud.com/${key}`;
-      
+
       if (fileType === 'license') {
         setLicenseUrl(url);
         form.setFieldsValue({ businessLicense: url });
@@ -191,7 +191,7 @@ const UpdateRepairServiceMerchantsModal = ({
         setLogoUrl(url);
         form.setFieldsValue({ merchantLogo: url });
       }
-      
+
       onSuccess();
     } catch (error) {
       console.error('上传失败:', error);
@@ -222,7 +222,7 @@ const UpdateRepairServiceMerchantsModal = ({
     if (!timeString) return null;
     if (timeString === '24时营业') return null;
     if (Array.isArray(timeString)) return timeString;
-    
+
     try {
       if (typeof timeString !== 'string') {
         console.warn('Invalid timeString format:', timeString);
@@ -234,10 +234,10 @@ const UpdateRepairServiceMerchantsModal = ({
         console.warn('Invalid time range format:', timeString);
         return null;
       }
-      
+
       const startTime = dayjs(start.trim(), 'HH:mm');
       const endTime = dayjs(end.trim(), 'HH:mm');
-      
+
       if (!startTime.isValid() || !endTime.isValid()) {
         console.warn('Invalid time values:', start, end);
         return null;
@@ -304,20 +304,20 @@ const UpdateRepairServiceMerchantsModal = ({
     try {
       const response = await fetch('https://ipapi.co/json/');
       const data = await response.json();
-      
+
       if (data.country_code) {
         form.setFieldValue('countryCode', data.country_code);
         setSelectedCountry(data.country_code);
         setMapType(data.country_code === 'CN' ? 'amap' : 'google');
-        
+
         if (data.city) {
           form.setFieldValue('city', data.city);
         }
-        
+
         if (data.region) {
           form.setFieldValue('province', data.region);
         }
-        
+
         setLocation({
           lat: parseFloat(data.latitude),
           lng: parseFloat(data.longitude)
@@ -367,12 +367,12 @@ const UpdateRepairServiceMerchantsModal = ({
             const city = form.getFieldValue('city');
             const province = form.getFieldValue('province');
             const country = countries.find(c => c.code === form.getFieldValue('countryCode'))?.name;
-            
+
             const fullAddress = [address, city, province, country].filter(Boolean).join(', ');
 
-            const defaultCenter = { 
-              lat: location?.lat || 22.396428, 
-              lng: location?.lng || 114.109497 
+            const defaultCenter = {
+              lat: location?.lat || 22.396428,
+              lng: location?.lng || 114.109497
             };
 
             const map = new window.google.maps.Map(mapContainer, {
@@ -400,7 +400,7 @@ const UpdateRepairServiceMerchantsModal = ({
               const position = marker.getPosition();
               const lat = position.lat();
               const lng = position.lng();
-              
+
               onSelect({
                 lat,
                 lng,
@@ -412,7 +412,7 @@ const UpdateRepairServiceMerchantsModal = ({
               const lat = e.latLng.lat();
               const lng = e.latLng.lng();
               marker.setPosition(e.latLng);
-              
+
               onSelect({
                 lat,
                 lng,
@@ -425,7 +425,7 @@ const UpdateRepairServiceMerchantsModal = ({
               geocoder.geocode({ address: fullAddress }, (results, status) => {
                 if (status === 'OK' && results[0]) {
                   const location = results[0].geometry.location;
-                  
+
                   map.setCenter(location);
                   map.setZoom(17);
                   marker.setPosition(location);
@@ -456,14 +456,14 @@ const UpdateRepairServiceMerchantsModal = ({
         open={visible}
         onCancel={onCancel}
         footer={[
-          <Button key="cancel" onClick={onCancel} size="small">
+          <Button key="cancel" onClick={onCancel}   >
             {t('cancel')}
           </Button>,
-          <Button 
-            key="confirm" 
-            type="primary" 
+          <Button
+            key="confirm"
+            type="primary"
             onClick={onCancel}
-            size="small"
+
           >
             {t('confirm')}
           </Button>
@@ -472,7 +472,7 @@ const UpdateRepairServiceMerchantsModal = ({
         destroyOnClose={true}
       >
         <Spin spinning={loading} tip={t('loadingMap')}>
-          <div 
+          <div
             ref={mapContainerRef}
             style={{ height: '500px', width: '100%' }}
           />
@@ -495,18 +495,18 @@ const UpdateRepairServiceMerchantsModal = ({
       script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&callback=initMap`;
       script.async = true;
       script.defer = true;
-      
+
       window.initMap = () => {
         console.log('Google Maps API loaded successfully');
       };
-      
+
       script.onerror = (error) => {
         console.error('Google Maps API loading failed:', error);
         message.error(t('mapLoadError'));
       };
-      
+
       document.head.appendChild(script);
-      
+
       return () => {
         document.head.removeChild(script);
         delete window.initMap;
@@ -557,7 +557,7 @@ const UpdateRepairServiceMerchantsModal = ({
   // 处理工作时间的转换
   const normalizeWorkingHours = (workingHours) => {
     if (!workingHours) return undefined;
-    
+
     // 如果是字符串格式 "HH:mm-HH:mm"
     if (typeof workingHours === 'string' && workingHours.includes('-')) {
       const [start, end] = workingHours.split('-');
@@ -566,7 +566,7 @@ const UpdateRepairServiceMerchantsModal = ({
         dayjs(`2000-01-01 ${end.trim()}`)
       ];
     }
-    
+
     return undefined;
   };
 
@@ -581,7 +581,7 @@ const UpdateRepairServiceMerchantsModal = ({
           dayjs(selectedMerchant.workEndTime, 'HH:mm')
         ] : undefined,
       };
-      
+
       form.setFieldsValue(formData);
     }
   }, [selectedMerchant, form]);
@@ -684,17 +684,17 @@ const UpdateRepairServiceMerchantsModal = ({
                 optionLabelProp="customLabel"
               >
                 {countries.map(country => (
-                  <Select.Option 
-                    key={country.code} 
+                  <Select.Option
+                    key={country.code}
                     value={country.code}
                     label={`${country.name} (${country.code})`}
                     customLabel={
                       <Space>
-                        <img 
+                        <img
                           src={country.flagImageUrl}
                           alt={country.name}
-                          style={{ 
-                            width: 16, 
+                          style={{
+                            width: 16,
                             height: 12,
                             objectFit: 'cover',
                             display: 'block',
@@ -710,11 +710,11 @@ const UpdateRepairServiceMerchantsModal = ({
                   >
                     <Space direction="vertical" style={{ width: '100%' }}>
                       <Space>
-                        <img 
+                        <img
                           src={country.flagImageUrl}
                           alt={country.name}
-                          style={{ 
-                            width: 16, 
+                          style={{
+                            width: 16,
                             height: 12,
                             objectFit: 'cover',
                             display: 'block',
@@ -736,8 +736,8 @@ const UpdateRepairServiceMerchantsModal = ({
                         {country.governmentType} · {country.timezone} · {country.currency}
                       </Typography.Text>
                       <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
-                        人口: {country.population?.toLocaleString()} · 
-                        面积: {country.area?.toLocaleString()} km² · 
+                        人口: {country.population?.toLocaleString()} ·
+                        面积: {country.area?.toLocaleString()} km² ·
                         GDP: {country.gdp} B
                       </Typography.Text>
                     </Space>
@@ -914,4 +914,4 @@ const UpdateRepairServiceMerchantsModal = ({
   );
 };
 
-export default UpdateRepairServiceMerchantsModal; 
+export default UpdateRepairServiceMerchantsModal;

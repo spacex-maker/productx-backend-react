@@ -49,7 +49,7 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
         tags,
         updateBy: localStorage.getItem('username') || 'system'
       })
-      
+
       message.success(t('updateSuccess'))
       onOk()
     } catch (err) {
@@ -159,7 +159,7 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
                 {managers.map(manager => (
                   <Option key={manager.id} value={manager.id}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Avatar size="small" src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
+                      <Avatar  src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
                       <span>{manager.username}</span>
                     </div>
                   </Option>

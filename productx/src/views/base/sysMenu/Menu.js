@@ -213,7 +213,7 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
             </Space>
           </div>
           <Switch
-            size="small"
+
             checked={item.status}
             onChange={(checked) => onStatusChange(item.id, checked)}
             checkedChildren="启用"

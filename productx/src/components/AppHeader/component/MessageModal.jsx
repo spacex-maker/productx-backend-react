@@ -33,9 +33,9 @@ const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType })
           {messageType === 'received' ? (
             !message?.isRead && <Badge status="processing" text="未读" />
           ) : (
-            <Badge 
-              status={message?.isRead ? 'success' : 'default'} 
-              text={message?.isRead ? '对方已读' : '对方未读'} 
+            <Badge
+              status={message?.isRead ? 'success' : 'default'}
+              text={message?.isRead ? '对方已读' : '对方未读'}
             />
           )}
           {message?.isRetracted && <Tag color="red">已撤回</Tag>}
@@ -62,9 +62,9 @@ const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType })
             <div className={styles.infoGrid}>
               <div className={styles.infoItem}>
                 <Text type="secondary">{messageType === 'received' ? '发送人：' : '接收人：'}</Text>
-                <UserInfo 
-                  avatar={messageType === 'received' ? message?.senderAvatar : message?.receiverAvatar} 
-                  username={messageType === 'received' ? message?.senderUsername : message?.receiverUsername} 
+                <UserInfo
+                  avatar={messageType === 'received' ? message?.senderAvatar : message?.receiverAvatar}
+                  username={messageType === 'received' ? message?.senderUsername : message?.receiverUsername}
                 />
               </div>
               <div className={styles.infoItem}>
@@ -107,7 +107,7 @@ const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType })
               <Text type="secondary">附件：</Text>
               <div className={styles.attachmentList}>
                 {JSON.parse(message.attachments).map((attachment, index) => (
-                  <Button 
+                  <Button
                     key={index}
                     type="link"
                     href={attachment}
@@ -150,9 +150,9 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
       const filteredParams = Object.fromEntries(
         Object.entries(searchParams).filter(([_, value]) => value !== undefined)
       );
-      
-      const url = messageType === 'received' ? 
-        '/manage/admin-messages/received' : 
+
+      const url = messageType === 'received' ?
+        '/manage/admin-messages/received' :
         '/manage/admin-messages/sent';
 
       const response = await api.get(url, {
@@ -211,23 +211,23 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
       render: (_, record) => (
         <Space size={4}>
           {messageType === 'received' ? (
-            <Tooltip 
+            <Tooltip
               title={record.readAt ? `读取时间：${record.readAt}` : null}
               mouseEnterDelay={0.5}
             >
-              <Badge 
-                status={record.isRead ? 'default' : 'processing'} 
+              <Badge
+                status={record.isRead ? 'default' : 'processing'}
                 text={record.isRead ? '已读' : '未读'}
                 className={record.isRead ? styles.readStatus : ''}
               />
             </Tooltip>
           ) : (
-            <Tooltip 
+            <Tooltip
               title={record.readAt ? `对方读取时间：${record.readAt}` : null}
               mouseEnterDelay={0.5}
             >
-              <Badge 
-                status={record.isRead ? 'success' : 'default'} 
+              <Badge
+                status={record.isRead ? 'success' : 'default'}
                 text={record.isRead ? '对方已读' : '对方未读'}
                 className={record.isRead ? styles.readStatus : ''}
               />
@@ -244,13 +244,13 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
       width: 120,
       render: (_, record) => (
         messageType === 'received' ? (
-          <UserInfo 
-            avatar={record.senderAvatar} 
+          <UserInfo
+            avatar={record.senderAvatar}
             username={record.senderUsername}
           />
         ) : (
-          <UserInfo 
-            avatar={record.receiverAvatar} 
+          <UserInfo
+            avatar={record.receiverAvatar}
             username={record.receiverUsername}
           />
         )
@@ -296,15 +296,15 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
         <Space>
           <Button
             type="link"
-            size="small"
+
             onClick={() => handleViewDetail(record)}
           >
             查看
           </Button>
           {messageType === 'received' && !record.isRead && !record.isRetracted && (
-            <Button 
-              type="link" 
-              size="small" 
+            <Button
+              type="link"
+
               onClick={() => handleRead(record.id)}
             >
               标记已读
@@ -332,8 +332,8 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
           <div className={styles.modalHeader}>
             <Space size="large">
               <Text strong className={styles.modalTitle}>消息列表</Text>
-              <Radio.Group 
-                value={messageType} 
+              <Radio.Group
+                value={messageType}
                 onChange={(e) => {
                   setMessageType(e.target.value);
                   setCurrent(1);
@@ -344,8 +344,8 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
                 <Radio.Button value="sent">发送的消息</Radio.Button>
               </Radio.Group>
             </Space>
-            <Button 
-              type="primary" 
+            <Button
+              type="primary"
               onClick={() => setSendMessageVisible(true)}
             >
               发送消息
@@ -362,7 +362,7 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
           <Form
             onFinish={handleSearch}
             layout="inline"
-            size="small"
+
           >
             <Row gutter={[16, 16]} style={{ width: '100%', marginBottom: 16 }}>
               <Col>
@@ -403,9 +403,9 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
               </Col>
               <Col flex="auto">
                 <Form.Item name="timeRange" label="时间范围">
-                  <RangePicker 
-                    showTime 
-                    style={{ width: '100%', minWidth: '360px' }} 
+                  <RangePicker
+                    showTime
+                    style={{ width: '100%', minWidth: '360px' }}
                   />
                 </Form.Item>
               </Col>
@@ -435,7 +435,7 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
             showQuickJumper: true,
             showTotal: (total) => `共 ${total} 条`,
           }}
-          size="small"
+
           className={styles.messageTable}
         />
       </Modal>
@@ -460,4 +460,4 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
   );
 };
 
-export default MessageModal; 
+export default MessageModal;

@@ -41,7 +41,7 @@ const UpdateUserProfileModal = ({
     >
       <Form form={form} onFinish={handleUpdateProfile} layout="vertical">
         <Title level={5}>{t('basicInfo')}</Title>
-        <Descriptions column={2} size="small">
+        <Descriptions column={2} >
           <Descriptions.Item label={t('userId')}>
             {selectedProfile?.userId}
           </Descriptions.Item>

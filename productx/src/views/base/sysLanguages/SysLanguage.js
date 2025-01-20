@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Form, Input, message, Spin, Col, Row, Select } from 'antd'
+import { Button, Form, Input, message, Spin, Col, Row, Select, Space } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
@@ -171,49 +171,31 @@ const SysLanguage = () => {
         <div className="search-container">
           <Row gutter={[16, 16]}>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                {t('add')}
-              </Button>
-            </Col>
-            <Col>
               <Input
-                size="small"
                 value={searchParams.languageCode}
-                onChange={(e) => {
-                  setSearchParams(prev => ({ ...prev, languageCode: e.target.value }));
-                  setCurrent(1);
-                }}
+                onChange={handleSearchChange}
+                name="languageCode"
                 placeholder={t('languageCode')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.languageNameZh}
-                onChange={(e) => {
-                  setSearchParams(prev => ({ ...prev, languageNameZh: e.target.value }));
-                  setCurrent(1);
-                }}
+                onChange={handleSearchChange}
+                name="languageNameZh"
                 placeholder={t('chineseName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.isDeveloped}
-                onChange={(value) => {
-                  setSearchParams(prev => ({ ...prev, isDeveloped: value }));
-                  setCurrent(1);
-                }}
+                onChange={(value) => handleSelectChange(value, 'isDeveloped')}
                 placeholder={t('selectDevelopment')}
-                style={{ width: 120, minWidth: 120 }}
-                dropdownMatchSelectWidth={false}
+                style={{ width: 150 }}
                 defaultValue={true}
                 allowClear={false}
               >
@@ -223,15 +205,10 @@ const SysLanguage = () => {
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.status}
-                onChange={(value) => {
-                  setSearchParams(prev => ({ ...prev, status: value }));
-                  setCurrent(1);
-                }}
+                onChange={(value) => handleSelectChange(value, 'status')}
                 placeholder={t('selectStatus')}
-                style={{ width: 120, minWidth: 120 }}
-                dropdownMatchSelectWidth={false}
+                style={{ width: 150 }}
                 allowClear
               >
                 <Select.Option value={true}>{t('enabled')}</Select.Option>
@@ -239,48 +216,40 @@ const SysLanguage = () => {
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => handleStatusChange(selectedRows, true)}
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchEnable')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => handleStatusChange(selectedRows, false)}
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchDisable')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/sys-languages/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchDelete')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => handleStatusChange(selectedRows, true)}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchEnable')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => handleStatusChange(selectedRows, false)}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDisable')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/sys-languages/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

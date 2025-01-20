@@ -122,19 +122,19 @@ const CountryStatisticsCard = ({ country }) => {
         {cards.map((card, index) => (
           <Col span={24} key={index}>
             <Card
-              size="small"
+
               title={card.title}
               bodyStyle={{ padding: '8px' }}
             >
-              <Descriptions 
-                size="small" 
+              <Descriptions
+
                 column={4}
                 bordered
-                contentStyle={{ 
+                contentStyle={{
                   fontSize: '12px',
                   padding: '4px 8px'
                 }}
-                labelStyle={{ 
+                labelStyle={{
                   fontSize: '12px',
                   padding: '4px 8px'
                 }}

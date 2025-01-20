@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Select, Col, Row } from 'antd';
+import { Button, Form, Input, message, Spin, Select, Col, Row, Space } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import PartnersTable from './PartnersTable';
@@ -131,60 +131,55 @@ const Partners = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.name}
                 onChange={handleSearchChange}
                 name="name"
                 placeholder={t('pleaseInputPartnerName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
                 placeholder={t('businessStatus')}
+                style={{ width: 150 }}
               >
                 <Select.Option value={true}>{t('enable')}</Select.Option>
                 <Select.Option value={false}>{t('disable')}</Select.Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                {t('createPartner')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() =>
-                  HandleBatchDelete({
-                    url: '/manage/partners/delete-batch',
-                    selectedRows,
-                    fetchData,
-                  })
-                }
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchDelete')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('createPartner')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    HandleBatchDelete({
+                      url: '/manage/partners/delete-batch',
+                      selectedRows,
+                      fetchData,
+                    })
+                  }
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

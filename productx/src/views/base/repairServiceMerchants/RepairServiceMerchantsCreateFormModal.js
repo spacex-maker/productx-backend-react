@@ -425,14 +425,14 @@ const RepairServiceMerchantsCreateFormModal = ({
         open={visible}
         onCancel={onCancel}
         footer={[
-          <Button key="cancel" onClick={onCancel} size="small">
+          <Button key="cancel" onClick={onCancel} >
             {t('cancel')}
           </Button>,
           <Button
             key="confirm"
             type="primary"
             onClick={onCancel}
-            size="small"
+
           >
             {t('confirm')}
           </Button>
@@ -611,17 +611,17 @@ const RepairServiceMerchantsCreateFormModal = ({
                 optionLabelProp="customLabel"
               >
                 {countries.map(country => (
-                  <Select.Option 
-                    key={country.code} 
+                  <Select.Option
+                    key={country.code}
                     value={country.code}
                     label={`${country.name} (${country.code})`}
                     customLabel={
                       <Space>
-                        <img 
+                        <img
                           src={country.flagImageUrl}
                           alt={country.name}
-                          style={{ 
-                            width: 16, 
+                          style={{
+                            width: 16,
                             height: 12,
                             objectFit: 'cover',
                             display: 'block',
@@ -637,11 +637,11 @@ const RepairServiceMerchantsCreateFormModal = ({
                   >
                     <Space direction="vertical" style={{ width: '100%' }}>
                       <Space>
-                        <img 
+                        <img
                           src={country.flagImageUrl}
                           alt={country.name}
-                          style={{ 
-                            width: 16, 
+                          style={{
+                            width: 16,
                             height: 12,
                             objectFit: 'cover',
                             display: 'block',
@@ -663,8 +663,8 @@ const RepairServiceMerchantsCreateFormModal = ({
                         {country.governmentType} · {country.timezone} · {country.currency}
                       </Typography.Text>
                       <Typography.Text type="secondary" style={{ fontSize: '12px' }}>
-                        人口: {country.population?.toLocaleString()} · 
-                        面积: {country.area?.toLocaleString()} km² · 
+                        人口: {country.population?.toLocaleString()} ·
+                        面积: {country.area?.toLocaleString()} km² ·
                         GDP: {country.gdp} B
                       </Typography.Text>
                     </Space>

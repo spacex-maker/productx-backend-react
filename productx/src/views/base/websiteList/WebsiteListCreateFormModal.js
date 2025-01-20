@@ -9,10 +9,10 @@ const { Option } = Select;
 const CountryOption = ({ country }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
     {country.flag ? (
-      <img 
-        src={country.flag} 
-        alt={country.name} 
-        style={{ width: '16px', height: '16px', objectFit: 'cover' }} 
+      <img
+        src={country.flag}
+        alt={country.name}
+        style={{ width: '16px', height: '16px', objectFit: 'cover' }}
       />
     ) : (
       <GlobalOutlined />
@@ -63,7 +63,7 @@ const WebsiteListCreateFormModal = ({
       tags: Array.isArray(values.tags) ? values.tags : [],
       socialLinks: JSON.stringify(socialLinksObj)
     };
-    
+
     socialPlatforms.forEach(platform => {
       delete formattedValues[`social_${platform.key}`];
     });
@@ -80,8 +80,8 @@ const WebsiteListCreateFormModal = ({
       width={800}
       maskClosable={false}
     >
-      <Form 
-        form={form} 
+      <Form
+        form={form}
         onFinish={handleSubmit}
         layout="vertical"
         labelCol={{ style: { padding: '0 4px' } }}
@@ -200,8 +200,8 @@ const WebsiteListCreateFormModal = ({
                 {countries.map(country => (
                   <Option key={country.code} value={country.code}>
                     <Space>
-                      <img 
-                        src={country.flagImageUrl} 
+                      <img
+                        src={country.flagImageUrl}
                         alt={country.name}
                         style={{ width: 20, height: 15, borderRadius: 0 }}
                       />
@@ -238,55 +238,55 @@ const WebsiteListCreateFormModal = ({
               <Space size={[16, 8]} wrap>
                 <Space size={4}>
                   <Form.Item name="isFeatured" valuePropName="checked" noStyle>
-                    <Switch size="small" />
+                    <Switch   />
                   </Form.Item>
                   <span>{t('recommended')}</span>
                 </Space>
-                
+
                 <Space size={4}>
                   <Form.Item name="isPopular" valuePropName="checked" noStyle>
-                    <Switch size="small" />
+                    <Switch   />
                   </Form.Item>
                   <span>{t('popular')}</span>
                 </Space>
-                
+
                 <Space size={4}>
                   <Form.Item name="isNew" valuePropName="checked" noStyle>
-                    <Switch size="small" />
+                    <Switch   />
                   </Form.Item>
                   <span>{t('newOnline')}</span>
                 </Space>
-                
+
                 <Space size={4}>
                   <Form.Item name="isVerified" valuePropName="checked" noStyle>
-                    <Switch size="small" />
+                    <Switch   />
                   </Form.Item>
                   <span>{t('verified')}</span>
                 </Space>
               </Space>
             </Form.Item>
           </Col>
-          
+
           <Col span={12}>
             <Form.Item label={t('technicalCharacteristics')}>
               <Space size={[16, 8]} wrap>
                 <Space size={4}>
                   <Form.Item name="hasMobileSupport" valuePropName="checked" noStyle>
-                    <Switch size="small" />
+                    <Switch   />
                   </Form.Item>
                   <span>{t('mobileSideSupport')}</span>
                 </Space>
-                
+
                 <Space size={4}>
                   <Form.Item name="hasDarkMode" valuePropName="checked" noStyle>
-                    <Switch size="small" />
+                    <Switch   />
                   </Form.Item>
                   <span>{t('darkMode')}</span>
                 </Space>
-                
+
                 <Space size={4}>
                   <Form.Item name="hasSsl" valuePropName="checked" noStyle>
-                    <Switch size="small" />
+                    <Switch   />
                   </Form.Item>
                   <span>{t('secureConnection')}</span>
                 </Space>
@@ -378,7 +378,7 @@ const WebsiteListCreateFormModal = ({
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item 
+            <Form.Item
               label={t('socialMediaLinks')}
               style={{ marginBottom: 0 }}
             >
@@ -393,7 +393,7 @@ const WebsiteListCreateFormModal = ({
                         prefix={
                           <Space>
                             {platform.icon}
-                            <span style={{ 
+                            <span style={{
                               minWidth: '60px',
                               display: 'inline-block'
                             }}>
@@ -403,7 +403,7 @@ const WebsiteListCreateFormModal = ({
                         }
                         placeholder={`${t('pleaseInput')}${platform.name}${t('link')}`}
                         allowClear
-                        style={{ 
+                        style={{
                           borderRadius: '6px',
                           height: '36px'
                         }}

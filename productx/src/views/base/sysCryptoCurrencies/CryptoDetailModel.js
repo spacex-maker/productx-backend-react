@@ -38,9 +38,9 @@ const CryptoDetailModal = ({
       <img
         src={selectedCryptoDetail.logoUrl}
         alt={selectedCryptoDetail.name}
-        style={{ 
-          width: 48, 
-          height: 48, 
+        style={{
+          width: 48,
+          height: 48,
           marginRight: 16,
           borderRadius: 6,
           padding: 6,
@@ -50,7 +50,7 @@ const CryptoDetailModal = ({
       />
       <div>
         <Title level={5} style={{ marginBottom: 2 }}>
-          {selectedCryptoDetail.name} 
+          {selectedCryptoDetail.name}
           <Text type="secondary" style={{ fontSize: 14, marginLeft: 8 }}>
             {selectedCryptoDetail.symbol}
           </Text>
@@ -64,7 +64,7 @@ const CryptoDetailModal = ({
   );
 
   const renderMarketStats = () => (
-    <Card size="small" style={{ marginBottom: 16 }}>
+    <Card  style={{ marginBottom: 16 }}>
       <Space size={32} wrap>
         <Statistic
           title={t('price')}
@@ -79,9 +79,9 @@ const CryptoDetailModal = ({
           precision={2}
           prefix={selectedCryptoDetail.value24hChange >= 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
           suffix="%"
-          valueStyle={{ 
+          valueStyle={{
             color: selectedCryptoDetail.value24hChange >= 0 ? '#3f8600' : '#cf1322',
-            fontSize: 16 
+            fontSize: 16
           }}
         />
         <Statistic
@@ -108,7 +108,7 @@ const CryptoDetailModal = ({
       open={isVisible}
       onCancel={onCancel}
       footer={[
-        <Button key="back" size="small" onClick={onCancel}>
+        <Button key="back"  onClick={onCancel}>
           {t('close')}
         </Button>,
       ]}
@@ -119,9 +119,9 @@ const CryptoDetailModal = ({
         <>
           {renderHeader()}
           {renderMarketStats()}
-          
-          <Card title={t('blockchainInfo')} size="small" style={{ marginBottom: 12 }}>
-            <Descriptions column={2} bordered size="small" contentStyle={{ padding: '4px 8px' }} labelStyle={{ padding: '4px 8px' }}>
+
+          <Card title={t('blockchainInfo')}  style={{ marginBottom: 12 }}>
+            <Descriptions column={2} bordered  contentStyle={{ padding: '4px 8px' }} labelStyle={{ padding: '4px 8px' }}>
               <Descriptions.Item label={t('blockchainType')}>
                 {selectedCryptoDetail.blockchainType}
               </Descriptions.Item>
@@ -137,8 +137,8 @@ const CryptoDetailModal = ({
             </Descriptions>
           </Card>
 
-          <Card title={t('supplyInfo')} size="small" style={{ marginBottom: 12 }}>
-            <Descriptions column={2} bordered size="small" contentStyle={{ padding: '4px 8px' }} labelStyle={{ padding: '4px 8px' }}>
+          <Card title={t('supplyInfo')}  style={{ marginBottom: 12 }}>
+            <Descriptions column={2} bordered  contentStyle={{ padding: '4px 8px' }} labelStyle={{ padding: '4px 8px' }}>
               <Descriptions.Item label={t('totalSupply')}>
                 {selectedCryptoDetail.totalSupply.toLocaleString()}
               </Descriptions.Item>
@@ -154,7 +154,7 @@ const CryptoDetailModal = ({
             </Descriptions>
           </Card>
 
-          <Card title={t('links')} size="small">
+          <Card title={t('links')} >
             <Space split={<Divider type="vertical" />} size={4}>
               {selectedCryptoDetail.website && (
                 <a href={selectedCryptoDetail.website} target="_blank" rel="noopener noreferrer">

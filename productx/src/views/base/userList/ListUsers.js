@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import {Modal, Button, Form, Input, DatePicker, message, Spin, Row, Col, Select} from 'antd'
+import {Modal, Button, Form, Input, DatePicker, message, Spin, Row, Col, Select, Space} from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
@@ -9,6 +9,8 @@ import UpdateUserModal from "src/views/base/userList/UpdateUserModal";
 import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
 import { useTranslation } from 'react-i18next'; // 引入 useTranslation
+const { Option } = Select;
+
 const updateUserStatus = async (id, newStatus) => {
   await api.post('/manage/user/change-status', { id, status: newStatus})
 }
@@ -33,6 +35,7 @@ const UserList = () => {
     nickname: '',
     email: '',
     address: '',
+    status: undefined
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -121,110 +124,100 @@ const UserList = () => {
     <div>
       <div className="mb-3">
         <div className="search-container">
-          <div className="search-container">
-            <Row gutter={[10, 10]}>
-              <Col>
-                <Input
-                  size="small"
-                  value={searchParams.id}
-                  onChange={handleSearchChange}
-                  name="id"
-                  placeholder={t('userId')}
-                  allowClear
-                />
-              </Col>
-              <Col>
-                <Input
-                  size="small"
-                  value={searchParams.username}
-                  onChange={handleSearchChange}
-                  name="username"
-                  placeholder={t('username')}
-                  allowClear
-                />
-              </Col>
-              <Col>
-                <Input
-                  size="small"
-                  value={searchParams.nickname}
-                  onChange={handleSearchChange}
-                  name="nickname"
-                  placeholder={t('nickname')}
-                  allowClear
-                />
-              </Col>
-              <Col>
-                <Input
-                  size="small"
-                  value={searchParams.email}
-                  onChange={handleSearchChange}
-                  name="email"
-                  placeholder={t('email')}
-                  allowClear
-                />
-              </Col>
-              <Col>
-                <Input
-                  size="small"
-                  value={searchParams.address}
-                  onChange={handleSearchChange}
-                  name="address"
-                  placeholder={t('address')}
-                  allowClear
-                  style={{
-                    maxWidth: '150px',
-                    minWidth: '100px'
-                  }}
-                />
-              </Col>
-              <Col>
-                <Select
-                  size="small"
-                  className="search-box"
-                  name="status"
-                  onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
-                  allowClear
-                  placeholder={t('status')}
-                >
-                  <Option value="true">{t('enabled')}</Option>
-                  <Option value="false">{t('disabled')}</Option>
-                </Select>
-              </Col>
-              <Col>
+          <Row gutter={[16, 16]}>
+            <Col>
+              <Input
+                value={searchParams.id}
+                onChange={handleSearchChange}
+                name="id"
+                placeholder={t('userId')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Input
+                value={searchParams.username}
+                onChange={handleSearchChange}
+                name="username"
+                placeholder={t('username')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Input
+                value={searchParams.nickname}
+                onChange={handleSearchChange}
+                name="nickname"
+                placeholder={t('nickname')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Input
+                value={searchParams.email}
+                onChange={handleSearchChange}
+                name="email"
+                placeholder={t('email')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Input
+                value={searchParams.address}
+                onChange={handleSearchChange}
+                name="address"
+                placeholder={t('address')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Select
+                value={searchParams.status}
+                onChange={(value) => handleSearchChange({ target: { name: 'status', value }})}
+                placeholder={t('status')}
+                allowClear
+                style={{ width: 150 }}
+              >
+                <Option value="true">{t('enabled')}</Option>
+                <Option value="false">{t('disabled')}</Option>
+              </Select>
+            </Col>
+            <Col>
+              <Space>
                 <Button
-                  size="small"
                   type="primary"
                   onClick={fetchData}
-                  className="search-button"
                   disabled={isLoading}
                 >
-                  {isLoading ? <Spin/> : t('search')}
+                  {isLoading ? <Spin /> : t('search')}
                 </Button>
-              </Col>
-              <Col>
                 <Button
-                  size="small"
-                  type="primary" onClick={() => setIsCreateModalVisible(true)}>
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
                   {t('createUser')}
                 </Button>
-              </Col>
-              <Col>
                 <Button
-                  size="small"
                   type="primary"
-                  onClick={() => HandleBatchDelete({
-                    url: '/manage/user/delete-batch',
-                    selectedRows,
-                    fetchData,
-                  })}
+                  onClick={() =>
+                    HandleBatchDelete({
+                      url: '/manage/user/delete-batch',
+                      selectedRows,
+                      fetchData,
+                    })
+                  }
                   disabled={selectedRows.length === 0}
                 >
                   {t('batchDelete')}
                 </Button>
-              </Col>
-            </Row>
-
-          </div>
+              </Space>
+            </Col>
+          </Row>
         </div>
       </div>
 

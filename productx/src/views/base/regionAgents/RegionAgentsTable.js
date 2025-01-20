@@ -74,10 +74,10 @@ const RegionAgentsTable = ({
       key: 'action',
       render: (_, record) => (
         <Space>
-          <Button type="link" size="small" onClick={() => handleViewDetail(record)}>
+          <Button type="link"    onClick={() => handleViewDetail(record)}>
             {t('detail')}
           </Button>
-          <Button type="link" size="small" onClick={() => handleEditClick(record)}>
+          <Button type="link"   onClick={() => handleEditClick(record)}>
             {t('edit')}
           </Button>
         </Space>
@@ -137,11 +137,11 @@ const RegionAgentsTable = ({
             <td>{item.isExclusive ? '是' : '否'}</td>
             <td>{getAuditStatusTag(item.auditStatus)}</td>
             <td>
-              <Space size="small">
-                <Button type="link" size="small" onClick={() => handleViewDetail(item)}>
+              <Space  >
+                <Button type="link"   onClick={() => handleViewDetail(item)}>
                   {t('detail')}
                 </Button>
-                <Button type="link" size="small" onClick={() => handleEditClick(item)}>
+                <Button type="link"    onClick={() => handleEditClick(item)}>
                   {t('edit')}
                 </Button>
               </Space>

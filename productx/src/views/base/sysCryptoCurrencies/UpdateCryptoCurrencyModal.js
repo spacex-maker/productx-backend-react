@@ -19,8 +19,8 @@ const UpdateCryptoCurrencyModal = ({
       onOk={onOk}
       width={600}
     >
-      <Form 
-        form={form} 
+      <Form
+        form={form}
         onFinish={handleUpdateCurrency}
         layout="vertical"
         autoComplete="off"
@@ -29,7 +29,7 @@ const UpdateCryptoCurrencyModal = ({
           <Input />
         </Form.Item>
 
-        <Space direction="vertical" style={{ width: '100%' }} size="small">
+        <Space direction="vertical" style={{ width: '100%' }} >
           <Form.Item
             label={t('cryptoName')}
             name="name"
@@ -71,8 +71,8 @@ const UpdateCryptoCurrencyModal = ({
             name="transactionSpeed"
             rules={[{ required: true, message: t('pleaseInputTransactionSpeed') }]}
           >
-            <InputNumber 
-              style={{ width: '100%' }} 
+            <InputNumber
+              style={{ width: '100%' }}
               min={1}
               placeholder={t('transactionSpeedPlaceholder')}
               addonAfter="TPS"

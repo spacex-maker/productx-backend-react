@@ -93,10 +93,10 @@ const ObjectStorageTable = ({
             <td className="text-truncate">{item.createTime}</td>
             <td className="text-truncate">{item.updateTime}</td>
             <td>
-              <Button type="link" size="small" onClick={() => handleDetailClick(item)}>
+              <Button type="link"    onClick={() => handleDetailClick(item)}>
                 {t('detail')}
               </Button>
-              <Button type="link" size="small" onClick={() => handleEditClick(item)}>
+              <Button type="link"    onClick={() => handleEditClick(item)}>
                 {t('edit')}
               </Button>
             </td>

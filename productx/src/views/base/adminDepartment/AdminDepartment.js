@@ -208,7 +208,7 @@ const AdminDepartments = () => {
               <CIcon size="sm" icon={cilArrowLeft} title="返回" />
             </CButton>
             <Input
-              size="small"
+
               placeholder="搜索部门"
               value={searchTerm}
               onChange={handleSearch}
@@ -249,8 +249,8 @@ const AdminDepartments = () => {
                     {isCurrentUserManager ? '您是当前部门的管理员' : ''}
                   </div>
                   {isCurrentUserManager && (
-                    <button 
-                      className="btn btn-primary btn-sm" 
+                    <button
+                      className="btn btn-primary btn-sm"
                       onClick={handleEdit}
                     >
                       编辑部门信息
@@ -269,11 +269,11 @@ const AdminDepartments = () => {
                       <div className="text-medium-emphasis small mb-1">部门经理</div>
                       <div className="fw-semibold small d-flex align-items-center gap-1">
                         {currentDepartment.managerAvatar ? (
-                          <img 
-                            src={currentDepartment.managerAvatar} 
-                            alt="avatar" 
+                          <img
+                            src={currentDepartment.managerAvatar}
+                            alt="avatar"
                             className="rounded-circle"
-                            style={{ width: '20px', height: '20px' }} 
+                            style={{ width: '20px', height: '20px' }}
                           />
                         ) : null}
                         {currentDepartment.managerUsername}
@@ -410,14 +410,14 @@ const AdminDepartments = () => {
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       {item.avatar ? (
-                        <img 
-                          src={item.avatar} 
-                          alt="avatar" 
+                        <img
+                          src={item.avatar}
+                          alt="avatar"
                           className="rounded-circle"
-                          style={{ width: '24px', height: '24px', objectFit: 'cover' }} 
+                          style={{ width: '24px', height: '24px', objectFit: 'cover' }}
                         />
                       ) : (
-                        <div 
+                        <div
                           className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
                           style={{ width: '24px', height: '24px', color: 'white', fontSize: '12px' }}
                         >
@@ -439,8 +439,8 @@ const AdminDepartments = () => {
                     />
                   </td>
                   <td className="fixed-column">
-                    <Button 
-                      type="link" 
+                    <Button
+                      type="link"
                       onClick={() => handleDetailClick(item.managerId)}
                     >
                       详情
@@ -514,7 +514,7 @@ const AdminDepartments = () => {
             <ManagerSearchInput
               defaultValue={currentDepartment?.managerUsername}
               onSelect={(value, manager) => {
-                editForm.setFieldsValue({ 
+                editForm.setFieldsValue({
                   managerName: value,
                   // 如果需要保存其他管理员信息，可以在这里设置
                 });
@@ -549,8 +549,8 @@ const AdminDepartments = () => {
             label="状态"
             valuePropName="checked"
           >
-            <Switch 
-              checkedChildren="启用" 
+            <Switch
+              checkedChildren="启用"
               unCheckedChildren="禁用"
             />
           </Form.Item>
@@ -572,9 +572,9 @@ const AdminDepartments = () => {
             <Descriptions.Item label="用户名">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {currentManager.username}
-                <Badge 
-                  status={currentManager.status ? 'success' : 'error'} 
-                  text={currentManager.status ? '启用' : '禁用'} 
+                <Badge
+                  status={currentManager.status ? 'success' : 'error'}
+                  text={currentManager.status ? '启用' : '禁用'}
                 />
               </div>
             </Descriptions.Item>
@@ -582,9 +582,9 @@ const AdminDepartments = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {currentManager.email || '-'}
                 {currentManager.email && (
-                  <Badge 
-                    status={currentManager.emailVerification ? 'success' : 'warning'} 
-                    text={currentManager.emailVerification ? '已验证' : '未验证'} 
+                  <Badge
+                    status={currentManager.emailVerification ? 'success' : 'warning'}
+                    text={currentManager.emailVerification ? '已验证' : '未验证'}
                   />
                 )}
               </div>
@@ -597,8 +597,8 @@ const AdminDepartments = () => {
             </Descriptions.Item>
             <Descriptions.Item label="角色" span={2}>
               {currentManager.roles?.map(role => (
-                <Tag 
-                  key={role.roleId} 
+                <Tag
+                  key={role.roleId}
                   color={role.managerRoleStatus ? 'blue' : 'default'}
                   style={{ marginBottom: '4px' }}
                 >

@@ -49,8 +49,8 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     try {
       setLoading(true);
       // 确保 selectedPermissions 是一个数组
-      const permissionIds = Array.isArray(selectedPermissions) 
-        ? selectedPermissions 
+      const permissionIds = Array.isArray(selectedPermissions)
+        ? selectedPermissions
         : (selectedPermissions.checked || []);
 
       await api.post('/manage/role-permissions/configure', {
@@ -103,14 +103,14 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
   const convertToTree = (permissions) => {
     const filteredPermissions = permissions.filter(item => item.type === 1 || item.type === 3);
     const nodeMap = new Map();
-    
+
     filteredPermissions.forEach(item => {
       nodeMap.set(item.id, {
         key: item.id,
         id: item.id,
         title: (
-          <div className="tree-node-content" style={{ 
-            display: 'flex', 
+          <div className="tree-node-content" style={{
+            display: 'flex',
             width: '100%',
             minWidth: 0,
             padding: '4px 0'
@@ -119,18 +119,18 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
               <Space>
                 <span style={{ fontWeight: 500 }}>{item.permissionName}</span>
                 {item.isSystem && (
-                  <Tag size="small">系统权限</Tag>
+                  <Tag  >系统权限</Tag>
                 )}
               </Space>
-              <div style={{ 
-                fontSize: '12px', 
+              <div style={{
+                fontSize: '12px',
                 marginTop: '4px',
                 opacity: 0.65
               }}>
                 {item.permissionNameEn}
               </div>
             </div>
-            <Space style={{ 
+            <Space style={{
               marginLeft: 'auto',
               padding: '2px 8px',
               borderRadius: '4px',
@@ -259,7 +259,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       dataIndex: 'type',
       width: '20%',
       render: (type) => (
-        <div style={{ 
+        <div style={{
           color: getTypeColor(type),
           display: 'flex',
           alignItems: 'center',
@@ -358,7 +358,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
         align-items: flex-start;
         gap: 4px;
       }
-      
+
       .tree-node-content > div:last-child {
         margin-left: 0;
       }
@@ -369,8 +369,8 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     <Modal
       title={
         <div style={{ padding: '8px 0' }}>
-          <div style={{ 
-            fontSize: '16px', 
+          <div style={{
+            fontSize: '16px',
             fontWeight: 500,
             marginBottom: '12px',
             display: 'flex',
@@ -402,7 +402,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       onOk={handleOk}
       width={1200}
       confirmLoading={loading}
-      bodyStyle={{ 
+      bodyStyle={{
         padding: '16px 24px',
         maxHeight: 'calc(100vh - 300px)',
         overflow: 'hidden'
@@ -410,14 +410,14 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     >
       <style>{responsiveStyles}</style>
       <Spin spinning={loading}>
-        <Space 
-          direction="vertical" 
-          style={{ 
+        <Space
+          direction="vertical"
+          style={{
             width: '100%',
             height: '100%',
             display: 'flex',
             flexDirection: 'column'
-          }} 
+          }}
           size={16}
         >
           <div className="filter-container">
@@ -429,7 +429,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
                 allowClear
-                style={{ 
+                style={{
                   width: '280px',
                   borderRadius: '6px'
                 }}
@@ -440,7 +440,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 onChange={e => setFilterType(e.target.value)}
                 optionType="button"
                 buttonStyle="solid"
-                style={{ 
+                style={{
                   display: 'flex',
                   flexWrap: 'wrap',
                   gap: '8px'
@@ -455,8 +455,8 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
             </div>
           </div>
 
-          <div 
-            style={{ 
+          <div
+            style={{
               flex: 1,
               minHeight: '400px',
               height: 'calc(100vh - 500px)',
@@ -474,7 +474,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                   filterTreeNode={filterTreeNode}
                   showLine={{ showLeafIcon: false }}
                   checkStrictly={true}
-                  style={{ 
+                  style={{
                     padding: '12px'
                   }}
                   className="permission-tree"
@@ -485,8 +485,8 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                 <Table
                   rowSelection={{
                     type: 'checkbox',
-                    selectedRowKeys: Array.isArray(selectedPermissions) 
-                      ? selectedPermissions 
+                    selectedRowKeys: Array.isArray(selectedPermissions)
+                      ? selectedPermissions
                       : (selectedPermissions.checked || []),
                     onChange: (selectedRowKeys) => setSelectedPermissions(selectedRowKeys)
                   }}
@@ -495,7 +495,7 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                   rowKey="id"
                   size="middle"
                   pagination={false}
-                  style={{ 
+                  style={{
                     borderRadius: '8px'
                   }}
                 />

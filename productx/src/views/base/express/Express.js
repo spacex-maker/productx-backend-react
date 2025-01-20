@@ -147,7 +147,7 @@ const ExpressList = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.name}
                 onChange={handleSearchChange}
                 name="name"
@@ -157,7 +157,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.trackingNumberFormat}
                 onChange={handleSearchChange}
                 name="trackingNumberFormat"
@@ -167,7 +167,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.website}
                 onChange={handleSearchChange}
                 name="website"
@@ -177,7 +177,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.contactNumber}
                 onChange={handleSearchChange}
                 name="contactNumber"
@@ -187,7 +187,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 className="search-box"
                 name="status"
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
@@ -200,7 +200,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 className="search-box"
                 name="countryCode"
                 onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value } })}
@@ -232,7 +232,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={fetchData}
                 className="search-button"
@@ -243,7 +243,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
               >
@@ -252,7 +252,7 @@ const ExpressList = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={() =>
                   HandleBatchDelete({

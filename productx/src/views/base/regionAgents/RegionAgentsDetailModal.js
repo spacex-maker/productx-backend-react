@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Descriptions, Card, Tag, Row, Col, Spin, Tooltip, Space, Typography } from 'antd';
-import { 
-  UserOutlined, 
-  EnvironmentOutlined, 
+import {
+  UserOutlined,
+  EnvironmentOutlined,
   ContainerOutlined,
   DollarOutlined,
   TeamOutlined,
@@ -84,13 +84,13 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
     >
       <Spin spinning={loading}>
         <Space direction="vertical" size={8} style={{ width: '100%' }}>
-          <Card size="small" title={
+          <Card    title={
             <Space>
               <UserOutlined />
               基本信息
             </Space>
           }>
-            <Descriptions size="small" column={3}>
+            <Descriptions    column={3}>
               <Descriptions.Item label="代理人ID">
                 <Space>
                   <UserOutlined />
@@ -126,13 +126,13 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
             </Descriptions>
           </Card>
 
-          <Card size="small" title={
+          <Card    title={
             <Space>
               <EnvironmentOutlined />
               区域信息
             </Space>
           }>
-            <Descriptions size="small" column={3}>
+            <Descriptions   column={3}>
               <Descriptions.Item label="区域ID">{data.regionId}</Descriptions.Item>
               <Descriptions.Item label="区域编码">{data.regionCode}</Descriptions.Item>
               <Descriptions.Item label="区域名称">{data.regionName}</Descriptions.Item>
@@ -146,13 +146,13 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
             </Descriptions>
           </Card>
 
-          <Card size="small" title={
+          <Card   title={
             <Space>
               <ContainerOutlined />
               合同信息
             </Space>
           }>
-            <Descriptions size="small" column={3}>
+            <Descriptions   column={3}>
               <Descriptions.Item label="合同编号">
                 <Space>
                   <ContainerOutlined />
@@ -168,7 +168,7 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
               <Descriptions.Item label="合同期限">
                 <Space>
                   <ClockCircleOutlined />
-                  {data.contractStartDate && data.contractEndDate 
+                  {data.contractStartDate && data.contractEndDate
                     ? `${data.contractStartDate} ~ ${data.contractEndDate}`
                     : '-'}
                 </Space>
@@ -182,13 +182,13 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
             </Descriptions>
           </Card>
 
-          <Card size="small" title={
+          <Card   title={
             <Space>
               <DollarOutlined />
               业务信息
             </Space>
           }>
-            <Descriptions size="small" column={2}>
+            <Descriptions   column={2}>
               <Descriptions.Item label="销售任务额度">{formatMoney(data.salesQuota, data.currency)}</Descriptions.Item>
               <Descriptions.Item label="佣金比例">{data.commissionRate}%</Descriptions.Item>
               <Descriptions.Item label="累计销售额">{formatMoney(data.totalSales, data.currency)}</Descriptions.Item>
@@ -202,13 +202,13 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
             </Descriptions>
           </Card>
 
-          <Card size="small" title={
+          <Card   title={
             <Space>
               <TeamOutlined />
               团队表现
             </Space>
           }>
-            <Descriptions size="small" column={3}>
+            <Descriptions   column={3}>
               <Descriptions.Item label="团队规模">{data.teamSize}人</Descriptions.Item>
               <Descriptions.Item label="绩效评分">{data.performanceRating}</Descriptions.Item>
               <Descriptions.Item label="工作时间">{data.workingHours}</Descriptions.Item>
@@ -219,7 +219,7 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
           </Card>
 
           {data.remarks && (
-            <Card size="small" title={
+            <Card   title={
               <Space>
                 <FileTextOutlined />
                 备注
@@ -234,4 +234,4 @@ const RegionAgentsDetailModal = ({ isVisible, onCancel, data }) => {
   );
 };
 
-export default RegionAgentsDetailModal; 
+export default RegionAgentsDetailModal;

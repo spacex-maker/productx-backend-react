@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, Spin, Row, Col, Select } from 'antd';
+import { Button, Form, Input, Spin, Row, Col, Select, Space } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from "src/components/common/Pagination";
@@ -141,104 +141,96 @@ const ListUserAddress = () => {
     <div>
       <div className="mb-3">
         <div className="search-container">
-          <Row gutter={[10, 10]}>
+          <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.userId}
                 onChange={handleSearchChange}
                 name="userId"
                 placeholder={t('userId')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.username}
                 onChange={handleSearchChange}
                 name="username"
                 placeholder={t('username')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.receiverName}
                 onChange={handleSearchChange}
                 name="receiverName"
                 placeholder={t('receiverName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.phone}
                 onChange={handleSearchChange}
                 name="phone"
                 placeholder={t('phone')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.detailAddress}
                 onChange={handleSearchChange}
                 name="detailAddress"
                 placeholder={t('detailAddress')}
                 allowClear
-                style={{ maxWidth: '150px', minWidth: '100px' }}
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
-                className="search-box"
-                name="isDefault"
+                value={searchParams.isDefault}
                 onChange={(value) => handleSearchChange({target: {name: 'isDefault', value}})}
-                allowClear
                 placeholder={t('isDefault')}
+                allowClear
+                style={{ width: 150 }}
               >
                 <Option value={true}>{t('yes')}</Option>
                 <Option value={false}>{t('no')}</Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                {t('createAddress')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/user-address/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchDelete')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('createAddress')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/user-address/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

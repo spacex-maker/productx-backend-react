@@ -87,7 +87,7 @@ const ObjectStorageDetailModal = ({
 
     setVerifying(true);
     const startTime = Date.now();
-    
+
     try {
       const response = await api.post('/manage/object-storage-config/verify', {
         id: selectedStorage.id
@@ -203,7 +203,7 @@ const ObjectStorageDetailModal = ({
       </style>
 
       <Card
-        size="small"
+
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -216,7 +216,7 @@ const ObjectStorageDetailModal = ({
         extra={
           <Button
             type="primary"
-            size="small"
+
             onClick={handleVerify}
             loading={verifying}
             style={styles.verifyButton}
@@ -227,7 +227,7 @@ const ObjectStorageDetailModal = ({
       >
         <Descriptions
           column={2}
-          size="small"
+
           bordered
           style={styles.descriptions}
         >
@@ -250,7 +250,7 @@ const ObjectStorageDetailModal = ({
       </Card>
 
       <Card
-        size="small"
+
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -263,7 +263,7 @@ const ObjectStorageDetailModal = ({
       >
         <Descriptions
           column={2}
-          size="small"
+
           bordered
           style={styles.descriptions}
         >
@@ -273,7 +273,7 @@ const ObjectStorageDetailModal = ({
       </Card>
 
       <Card
-        size="small"
+
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -286,7 +286,7 @@ const ObjectStorageDetailModal = ({
       >
         <Descriptions
           column={2}
-          size="small"
+
           bordered
           style={styles.descriptions}
         >
@@ -308,7 +308,7 @@ const ObjectStorageDetailModal = ({
       </Card>
 
       <Card
-        size="small"
+
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -321,7 +321,7 @@ const ObjectStorageDetailModal = ({
       >
         <Descriptions
           column={2}
-          size="small"
+
           bordered
           style={styles.descriptions}
         >
@@ -337,7 +337,7 @@ const ObjectStorageDetailModal = ({
       </Card>
 
       <Card
-        size="small"
+
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -350,7 +350,7 @@ const ObjectStorageDetailModal = ({
       >
         <Descriptions
           column={2}
-          size="small"
+
           bordered
           style={styles.descriptions}
         >
@@ -363,7 +363,7 @@ const ObjectStorageDetailModal = ({
       </Card>
 
       <Card
-        size="small"
+
         style={styles.card}
         headStyle={styles.cardTitle}
         bodyStyle={{ padding: '8px' }}
@@ -376,7 +376,7 @@ const ObjectStorageDetailModal = ({
       >
         <Descriptions
           column={2}
-          size="small"
+
           bordered
           style={styles.descriptions}
         >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Input, message, Spin, Col, Row, Modal, Select } from 'antd';
+import { Button, Form, Input, message, Spin, Col, Row, Modal, Select, Space } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from "src/components/common/Pagination";
@@ -127,86 +127,81 @@ const SysPaymentMethods = () => {
   } = UseSelectableRows();
 
   return (
-    <>
+    <div>
       <div className="mb-3">
         <div className="search-container">
           <Row gutter={[16, 16]}>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                {t('addPaymentMethod')}
-              </Button>
-            </Col>
-            <Col>
               <Input
-                size="small"
                 value={searchParams.paymentMethodName}
                 onChange={handleSearchChange}
                 name="paymentMethodName"
                 placeholder={t('paymentMethodName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.descriptionEn}
                 onChange={handleSearchChange}
                 name="descriptionEn"
                 placeholder={t('englishDescription')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.descriptionZh}
                 onChange={handleSearchChange}
                 name="descriptionZh"
                 placeholder={t('chineseDescription')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange({
                   target: { name: 'status', value }
                 })}
                 placeholder={t('status')}
                 allowClear
+                style={{ width: 150 }}
               >
                 <Option value={true}>{t('enabled')}</Option>
                 <Option value={false}>{t('disabled')}</Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/sys-payment-methods/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-              >
-                {t('batchDelete')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('addPaymentMethod')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/sys-payment-methods/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>
@@ -248,7 +243,7 @@ const SysPaymentMethods = () => {
         form={updateForm}
         selectedPaymentMethod={selectedPaymentMethod}
       />
-    </>
+    </div>
   );
 };
 

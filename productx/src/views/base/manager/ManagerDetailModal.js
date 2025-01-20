@@ -130,7 +130,7 @@ const ManagerDetailModal = ({ isVisible, onCancel, managerId }) => {
 
   return (
     <StyledModal
-      title={<Space size="small"><UserOutlined />管理员详情</Space>}
+      title={<Space ><UserOutlined />管理员详情</Space>}
       open={isVisible}
       onCancel={onCancel}
       footer={null}
@@ -139,7 +139,7 @@ const ManagerDetailModal = ({ isVisible, onCancel, managerId }) => {
     >
       <Spin spinning={loading}>
         {managerData && (
-          <Descriptions column={1} bordered size="small">
+          <Descriptions column={1} bordered >
             <Descriptions.Item
               label={<Space><IdcardOutlined className="description-icon" />ID</Space>}
             >

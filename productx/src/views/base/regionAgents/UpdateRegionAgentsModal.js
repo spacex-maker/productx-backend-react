@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Select, DatePicker, InputNumber, Card, Row, Col, Avatar, message, Spin, Space } from 'antd';
-import { 
-  UserOutlined, 
-  GlobalOutlined, 
-  PhoneOutlined, 
-  CompassOutlined, 
-  ClockCircleOutlined, 
-  EnvironmentOutlined, 
-  NumberOutlined, 
-  TeamOutlined, 
-  AppstoreOutlined 
+import {
+  UserOutlined,
+  GlobalOutlined,
+  PhoneOutlined,
+  CompassOutlined,
+  ClockCircleOutlined,
+  EnvironmentOutlined,
+  NumberOutlined,
+  TeamOutlined,
+  AppstoreOutlined
 } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import debounce from 'lodash/debounce';
@@ -38,7 +38,7 @@ const UpdateRegionAgentsModal = ({
     setManagerLoading(true);
     try {
       const response = await api.get('/manage/manager/list', {
-        params: { 
+        params: {
           username: search,
           pageSize: 20
         }
@@ -121,7 +121,7 @@ const UpdateRegionAgentsModal = ({
   // 处理城市选择
   const handleCitySelect = (cityName, option) => {
     const selectedCity = option.data;
-    
+
     if (selectedCity) {
       const countryCode = form.getFieldValue('countryCode');
       form.setFieldsValue({
@@ -150,10 +150,10 @@ const UpdateRegionAgentsModal = ({
         contractStartDate: initialValues.contractStartDate ? dayjs(initialValues.contractStartDate) : null,
         contractEndDate: initialValues.contractEndDate ? dayjs(initialValues.contractEndDate) : null
       };
-      
+
       form.setFieldsValue(formValues);
       setSelectedCountry(initialValues.countryCode);
-      
+
       // 如果有城市数据，预设城市列表
       if (initialValues.city) {
         setCities([{
@@ -230,10 +230,10 @@ const UpdateRegionAgentsModal = ({
         form={form}
         onFinish={onFinish}
         layout="vertical"
-        size="small"
+
       >
         <Space direction="vertical" size={8} style={{ width: '100%' }}>
-          <Card size="small" title={t('basicInfo')}>
+          <Card    title={t('basicInfo')}>
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item
@@ -304,18 +304,18 @@ const UpdateRegionAgentsModal = ({
                         <div style={{ padding: '4px 0' }}>
                           <div style={{ fontWeight: 500 }}>
                             {type.name}
-                            <span style={{ 
-                              fontSize: '12px', 
-                              color: '#666', 
+                            <span style={{
+                              fontSize: '12px',
+                              color: '#666',
                               fontWeight: 'normal',
-                              marginLeft: '8px' 
+                              marginLeft: '8px'
                             }}>
                               ({type.code})
                             </span>
                           </div>
-                          <div style={{ 
-                            fontSize: '12px', 
-                            color: '#666', 
+                          <div style={{
+                            fontSize: '12px',
+                            color: '#666',
                             marginTop: '4px',
                             whiteSpace: 'normal',
                             lineHeight: '1.4'
@@ -331,7 +331,7 @@ const UpdateRegionAgentsModal = ({
             </Row>
           </Card>
 
-          <Card size="small" title={t('regionInfo')}>
+          <Card    title={t('regionInfo')}>
             <Row gutter={16}>
               <Col span={selectedCountry === 'CN' ? 8 : 12}>
                 <Form.Item
@@ -341,7 +341,7 @@ const UpdateRegionAgentsModal = ({
                 >
                   <Select
                     showSearch
-                    size="small"
+
                     optionFilterProp="children"
                     filterOption={(input, option) =>
                       (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -400,12 +400,12 @@ const UpdateRegionAgentsModal = ({
                 >
                   <Select
                     showSearch
-                    size="small"
+
                     disabled={!form.getFieldValue('countryCode')}
                     loading={citySearchLoading}
                     onSearch={handleCitySearch}
                     filterOption={false}
-                    notFoundContent={citySearchLoading ? <Spin size="small" /> : null}
+                    notFoundContent={citySearchLoading ? <Spin    /> : null}
                     optionLabelProp="label"
                     dropdownMatchSelectWidth={false}
                     dropdownStyle={{ width: '300px' }}
@@ -490,7 +490,7 @@ const UpdateRegionAgentsModal = ({
             </Row>
           </Card>
 
-          <Card size="small" title={t('contractInfo')}>
+          <Card    title={t('contractInfo')}>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -506,9 +506,9 @@ const UpdateRegionAgentsModal = ({
                   label={t('contactInfo')}
                   name="contactInfo"
                 >
-                  <Input.TextArea 
+                  <Input.TextArea
                     rows={2}
-                    placeholder={t('pleaseInputContactInfo')} 
+                    placeholder={t('pleaseInputContactInfo')}
                   />
                 </Form.Item>
               </Col>
@@ -543,7 +543,7 @@ const UpdateRegionAgentsModal = ({
             </Row>
           </Card>
 
-          <Card size="small" title={t('authorizationTime')}>
+          <Card    title={t('authorizationTime')}>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
@@ -574,7 +574,7 @@ const UpdateRegionAgentsModal = ({
             </Row>
           </Card>
 
-          <Card size="small" title={t('businessInfo')}>
+          <Card    title={t('businessInfo')}>
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item

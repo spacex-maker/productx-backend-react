@@ -291,7 +291,7 @@ const AddUserProductModal = (props) => {
                 loading={userSearchLoading}
                 onSearch={handleUserSearch}
                 filterOption={false}
-                notFoundContent={userSearchLoading ? <Spin size="small" /> : null}
+                notFoundContent={userSearchLoading ? <Spin   /> : null}
               >
                 {userOptions.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
@@ -484,7 +484,7 @@ const AddUserProductModal = (props) => {
                 loading={citySearchLoading}
                 onSearch={handleCitySearch}
                 filterOption={false}
-                notFoundContent={citySearchLoading ? <Spin size="small" /> : null}
+                notFoundContent={citySearchLoading ? <Spin   /> : null}
                 optionLabelProp="label"
               >
                 {cities.map((city) => (

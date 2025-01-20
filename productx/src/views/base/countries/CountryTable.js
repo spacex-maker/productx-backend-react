@@ -130,7 +130,7 @@ const CountryTable = ({
         <Space direction="vertical" size={0}>
           <Button
             type="text"
-            size="small"
+
             icon={<GlobalOutlined />}
             onClick={() => {
               setSelectedCountry(item);
@@ -142,7 +142,7 @@ const CountryTable = ({
           </Button>
           <Button
             type="text"
-            size="small"
+
             icon={<EyeOutlined />}
             onClick={() => showDetail(item)}
             style={handleGroupStyle}
@@ -151,7 +151,7 @@ const CountryTable = ({
           </Button>
           <Button
             type="link"
-            size="small"
+
             icon={<EditOutlined />}
             onClick={() => handleEditClick(item)}
             style={handleGroupStyle}

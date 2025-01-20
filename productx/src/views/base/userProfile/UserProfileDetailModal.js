@@ -60,8 +60,8 @@ const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
     >
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <Card size="small" title={t('basicInfo')}>
-            <Descriptions column={3} size="small">
+          <Card  title={t('basicInfo')}>
+            <Descriptions column={3} >
               <Descriptions.Item label={<><UserOutlined /> {t('userId')}</>}>
                 {selectedProfile.userId}
               </Descriptions.Item>
@@ -87,8 +87,8 @@ const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
         </Col>
 
         <Col span={24}>
-          <Card size="small" title={t('activityInfo')}>
-            <Descriptions column={3} size="small">
+          <Card  title={t('activityInfo')}>
+            <Descriptions column={3} >
               <Descriptions.Item label={<><ShoppingCartOutlined /> {t('totalOrders')}</>}>
                 {selectedProfile.totalOrders}
               </Descriptions.Item>
@@ -109,8 +109,8 @@ const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
         </Col>
 
         <Col span={24}>
-          <Card size="small" title={t('preferences')}>
-            <Descriptions column={1} size="small">
+          <Card  title={t('preferences')}>
+            <Descriptions column={1} >
               <Descriptions.Item label={<><TagOutlined /> {t('preferredPriceRange')}</>}>
                 {selectedProfile.preferredPriceRange}
               </Descriptions.Item>
@@ -128,8 +128,8 @@ const UserProfileDetailModal = ({ isVisible, onCancel, selectedProfile }) => {
         </Col>
 
         <Col span={24}>
-          <Card size="small" title={t('interactions')}>
-            <Descriptions column={1} size="small">
+          <Card  title={t('interactions')}>
+            <Descriptions column={1} >
               <Descriptions.Item label={<><HeartOutlined /> {t('likedProducts')}</>}>
                 {formatArrayString(selectedProfile.likedProducts)}
               </Descriptions.Item>

@@ -87,12 +87,12 @@ const WebsiteListDetailModal = ({
           <Card title={t('basicInformation')}>
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
               <Space align="start" size="large">
-                <Avatar 
+                <Avatar
                   src={websiteData?.logoUrl}
                   alt={websiteData?.name}
                   size={80}
                   shape="square"
-                  style={{ 
+                  style={{
                     backgroundColor: '#f5f5f5',
                     padding: 4,
                     border: '1px solid #d9d9d9'
@@ -118,8 +118,8 @@ const WebsiteListDetailModal = ({
 
               <Row gutter={16}>
                 <Col span={8}>
-                  <Card size="small" title={t('classification')}>
-                    <Descriptions column={1} size="small">
+                  <Card   title={t('classification')}>
+                    <Descriptions column={1}  >
                       <Descriptions.Item label={t('mainCategory')}>
                         <Tag color="blue">{websiteData?.category}</Tag>
                       </Descriptions.Item>
@@ -138,8 +138,8 @@ const WebsiteListDetailModal = ({
                 </Col>
 
                 <Col span={8}>
-                  <Card size="small" title={t('businessInfo')}>
-                    <Descriptions column={1} size="small">
+                  <Card   title={t('businessInfo')}>
+                    <Descriptions column={1}  >
                       <Descriptions.Item label={t('companyName')}>
                         {websiteData?.companyName}
                       </Descriptions.Item>
@@ -154,8 +154,8 @@ const WebsiteListDetailModal = ({
                 </Col>
 
                 <Col span={8}>
-                  <Card size="small" title={t('contact')}>
-                    <Descriptions column={1} size="small">
+                  <Card   title={t('contact')}>
+                    <Descriptions column={1}  >
                       <Descriptions.Item label={t('email')}>
                         <MailOutlined /> {websiteData?.contactEmail}
                       </Descriptions.Item>
@@ -178,7 +178,7 @@ const WebsiteListDetailModal = ({
           <Card title={t('statisticalData')}>
             <Row gutter={[16, 16]}>
               <Col span={4}>
-                <Statistic 
+                <Statistic
                   title={t('userRating')}
                   value={websiteData?.userRating}
                   suffix="/5"
@@ -228,7 +228,7 @@ const WebsiteListDetailModal = ({
 
         {/* 特性和支持 */}
         <Col span={12}>
-          <Card title={t('features')} size="small">
+          <Card title={t('features')}  >
             <Space wrap>
               {websiteData?.hasMobileSupport === 1 && (
                 <Tag icon={<MobileOutlined />} color="blue">{t('mobileSupport')}</Tag>
@@ -251,7 +251,7 @@ const WebsiteListDetailModal = ({
 
         {/* 社交媒体 */}
         <Col span={12}>
-          <Card title={t('socialMedia')} size="small">
+          <Card title={t('socialMedia')}  >
             <Space wrap>
               {socialLinks.twitter && (
                 <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer">
@@ -299,8 +299,8 @@ const WebsiteListDetailModal = ({
 
         {/* SEO信息 */}
         <Col span={24}>
-          <Card title={t('seoInfo')} size="small">
-            <Descriptions column={1} size="small">
+          <Card title={t('seoInfo')}  >
+            <Descriptions column={1}  >
               <Descriptions.Item label={t('seoTitle')}>
                 {websiteData?.seoTitle}
               </Descriptions.Item>
@@ -316,14 +316,14 @@ const WebsiteListDetailModal = ({
 
         {/* 备注 */}
         <Col span={24}>
-          <Card title={t('notes')} size="small">
+          <Card title={t('notes')}  >
             <Paragraph>{websiteData?.notes}</Paragraph>
           </Card>
         </Col>
 
         {/* 添加时间信息卡片 */}
         <Col span={24}>
-          <Card title={t('timeInfo')} size="small">
+          <Card title={t('timeInfo')}  >
             <Row gutter={16}>
               <Col span={8}>
                 <Statistic
@@ -352,7 +352,7 @@ const WebsiteListDetailModal = ({
 
         {/* 添加应用链接卡片 */}
         <Col span={24}>
-          <Card title={t('appLinks')} size="small">
+          <Card title={t('appLinks')}  >
             <Space wrap>
               {websiteData?.androidAppUrl && (
                 <a href={websiteData.androidAppUrl} target="_blank" rel="noopener noreferrer">
@@ -381,8 +381,8 @@ const WebsiteListDetailModal = ({
 
         {/* 添加其他信息卡片 */}
         <Col span={24}>
-          <Card title={t('additionalInfo')} size="small">
-            <Descriptions column={2} size="small">
+          <Card title={t('additionalInfo')}  >
+            <Descriptions column={2}  >
               <Descriptions.Item label={t('trafficSource')}>
                 <Tag color="orange">{websiteData?.trafficSource}</Tag>
               </Descriptions.Item>

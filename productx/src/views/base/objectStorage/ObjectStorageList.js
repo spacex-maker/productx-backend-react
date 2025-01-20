@@ -138,7 +138,7 @@ const ObjectStorageList = () => {
           <Row gutter={[10, 10]}>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.storageProvider}
                 onChange={(e) => handleSearchChange('storageProvider', e.target.value)}
                 placeholder={t('storageProvider')}
@@ -147,7 +147,7 @@ const ObjectStorageList = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.storageType}
                 onChange={(e) => handleSearchChange('storageType', e.target.value)}
                 placeholder={t('storageType')}
@@ -156,7 +156,7 @@ const ObjectStorageList = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 value={searchParams.isActive}
                 onChange={(value) => handleSearchChange('isActive', value)}
                 placeholder={t('isActive')}
@@ -168,7 +168,7 @@ const ObjectStorageList = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 value={searchParams.isDefault}
                 onChange={(value) => handleSearchChange('isDefault', value)}
                 placeholder={t('isDefault')}
@@ -180,7 +180,7 @@ const ObjectStorageList = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 showSearch
                 allowClear
                 value={searchParams.country}
@@ -213,7 +213,7 @@ const ObjectStorageList = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.bucketName}
                 onChange={(e) => handleSearchChange('bucketName', e.target.value)}
                 placeholder={t('bucketName')}
@@ -222,7 +222,7 @@ const ObjectStorageList = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.region}
                 onChange={(e) => handleSearchChange('region', e.target.value)}
                 placeholder={t('region')}
@@ -231,19 +231,19 @@ const ObjectStorageList = () => {
             </Col>
             <Col>
               <RangePicker
-                size="small"
+
                 value={searchParams.timeRange}
                 onChange={(value) => handleSearchChange('timeRange', value)}
                 showTime
               />
             </Col>
             <Col>
-              <Button size="small" type="primary" onClick={handleSearch} disabled={isLoading}>
+              <Button    type="primary" onClick={handleSearch} disabled={isLoading}>
                 {isLoading ? <Spin /> : t('search')}
               </Button>
             </Col>
             <Col>
-              <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
+              <Button    type="primary" onClick={() => setIsCreateModalVisible(true)}>
                 {t('createStorage')}
               </Button>
             </Col>

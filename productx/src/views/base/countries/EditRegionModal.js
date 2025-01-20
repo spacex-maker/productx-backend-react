@@ -18,7 +18,7 @@ const EditRegionModal = ({ visible, onCancel, onOk, initialValues, form }) => {
         form={form}
         onFinish={onOk}
         layout="vertical"
-        size="small"
+
         initialValues={initialValues}
       >
         <Row gutter={8}>

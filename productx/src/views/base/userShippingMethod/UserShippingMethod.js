@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Modal, Button, Form, Input, message, Spin, Col, Row } from 'antd';
+import { Modal, Button, Form, Input, message, Spin, Col, Row, Space } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
@@ -90,48 +90,43 @@ const ShippingMethodList = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.shippingMethod}
                 onChange={handleSearchChange}
                 name="shippingMethod"
                 placeholder="配送方式名称"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : '查询'}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                新增配送方式
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() =>
-                  HandleBatchDelete({
-                    url: '/manage/user-shipping-method/delete',
-                    selectedRows,
-                    fetchData,
-                  })
-                }
-                disabled={selectedRows.length === 0}
-              >
-                批量删除
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : '查询'}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  新增配送方式
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    HandleBatchDelete({
+                      url: '/manage/user-shipping-method/delete',
+                      selectedRows,
+                      fetchData,
+                    })
+                  }
+                  disabled={selectedRows.length === 0}
+                >
+                  批量删除
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>
