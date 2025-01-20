@@ -1002,6 +1002,7 @@
   "verified": "검증됨",
   "mobileVersion": "모바일 버전",
   "darkMode": "어두운 모드",
+  "lightMode": "라이트 모드",
   "https": "HTTPS",
   "free": "무료",
   "freemium": "프리미엄",
@@ -1193,6 +1194,7 @@
   "changePassword": "비밀번호 변경",
   "confirmPassword": "비밀번호 확인",
   "securitySettings": "보안 설정",
+  "newChat": "새 채팅",
 
   "logoutConfirm": "로그아웃 확인",
   "logoutConfirmContent": "로그아웃하시겠습니까?"

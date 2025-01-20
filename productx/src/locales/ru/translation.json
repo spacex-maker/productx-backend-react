@@ -1002,6 +1002,7 @@
   "verified": "Проверено",
   "mobileVersion": "Мобильная версия",
   "darkMode": "Тёмный режим",
+  "lightMode": "Светлый режим",
   "https": "HTTPS",
   "free": "Бесплатно",
   "freemium": "Фримиум",
@@ -1195,5 +1196,6 @@
 
   "changePassword": "Изменить пароль",
   "confirmPassword": "Подтвердить пароль",
-  "securitySettings": "Настройки безопасности"
+  "securitySettings": "Настройки безопасности",
+  "newChat": "Новый чат"
 }

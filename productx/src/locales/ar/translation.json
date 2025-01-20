@@ -985,6 +985,7 @@
   "verified": "تم التحقق",
   "mobileVersion": "إصدار الموبايل",
   "darkMode": "الوضع المظلم",
+  "lightMode": "الوضع الفاتح",
   "https": "HTTPS",
   "free": "مجاني",
   "freemium": "مجاني مع مزايا إضافية",
@@ -1187,5 +1188,6 @@
 
   "changePassword": "تغيير كلمة المرور",
   "confirmPassword": "تأكيد كلمة المرور",
-  "securitySettings": "إعدادات الأمان"
+  "securitySettings": "إعدادات الأمان",
+  "newChat": "دردشة جديدة"
 }

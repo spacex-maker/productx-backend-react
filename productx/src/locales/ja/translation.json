@@ -1001,6 +1001,7 @@
   "verified": "確認済み",
   "mobileVersion": "モバイル版",
   "darkMode": "ダークモード",
+  "lightMode": "ライトモード",
   "https": "HTTPS",
   "free": "無料",
   "freemium": "フリーミアム",
@@ -1194,5 +1195,6 @@
 
   "changePassword": "パスワードを変更",
   "confirmPassword": "パスワードを確認",
-  "securitySettings": "セキュリティ設定"
+  "securitySettings": "セキュリティ設定",
+  "newChat": "新しいチャット"
 }

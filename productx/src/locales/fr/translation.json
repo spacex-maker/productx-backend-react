@@ -1002,6 +1002,7 @@
   "verified": "Vérifié",
   "mobileVersion": "Version mobile",
   "darkMode": "Mode sombre",
+  "lightMode": "Mode clair",
   "https": "HTTPS",
   "free": "Gratuit",
   "freemium": "Freemium",
@@ -1204,5 +1205,6 @@
 
   "changePassword": "Changer le mot de passe",
   "confirmPassword": "Confirmer le mot de passe",
-  "securitySettings": "Paramètres de sécurité"
+  "securitySettings": "Paramètres de sécurité",
+  "newChat": "Nouveau chat"
 }
