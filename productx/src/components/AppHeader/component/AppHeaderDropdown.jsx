@@ -70,6 +70,47 @@ const SmallAvatar = styled(CAvatar)`
   height: 28px !important;
 `;
 
+const AnimatedWrapper = styled.div`
+  position: relative;
+  padding: 4px;
+  border-radius: 40px;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent, 
+      rgba(var(--cui-primary-rgb), 0.1),
+      rgba(var(--cui-primary-rgb), 0.3),
+      rgba(var(--cui-primary-rgb), 0.1),
+      transparent 30%
+    );
+    animation: rotate 3s linear infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: var(--cui-body-bg);
+    border-radius: 38px;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 export const AppHeaderDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -161,49 +202,50 @@ export const AppHeaderDropdown = () => {
     <>
       <CDropdown variant="nav-item">
         <CDropdownToggle className="py-0" caret={false}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '16px',
-            padding: '4px',
-            borderRadius: '40px',
-            border: '1px solid var(--cui-border-color)',
-          }}>
-            <div style={{ position: 'relative', padding: '4px' }}>
-              <Avatar
-                size={40}
-                src={currentUser?.avatar || defaultAvatar}
-                style={{ 
-                  border: '3px solid var(--cui-body-bg)',
-                  boxShadow: '0 2px 16px rgba(0,0,0,0.1)'
-                }}
-              />
-              <div style={{
-                position: 'absolute',
-                bottom: 2,
-                right: 2,
-                width: '12px',
-                height: '12px',
-                background: currentUser?.status ? '#52c41a' : '#ff4d4f',
-                borderRadius: '50%',
-                border: '2px solid var(--cui-body-bg)'
-              }} />
-            </div>
+          <AnimatedWrapper>
             <div style={{ 
               display: 'flex', 
-              flexDirection: 'column',
-              gap: '2px',
-              paddingRight: '12px'
+              alignItems: 'center', 
+              gap: '16px',
+              padding: '4px 16px 4px 4px',
+              position: 'relative',
+              zIndex: 1
             }}>
-              <span style={{ 
-                fontWeight: 600,
-                fontSize: '14px'
-              }}>{currentUser?.username}</span>
-              <Text type="secondary" style={{ fontSize: '12px' }}>
-                {currentUser?.email}
-              </Text>
+              <div style={{ position: 'relative', padding: '4px' }}>
+                <Avatar
+                  size={40}
+                  src={currentUser?.avatar || defaultAvatar}
+                  style={{ 
+                    border: '3px solid var(--cui-body-bg)',
+                    boxShadow: '0 2px 16px rgba(0,0,0,0.1)'
+                  }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 2,
+                  right: 2,
+                  width: '12px',
+                  height: '12px',
+                  background: currentUser?.status ? '#52c41a' : '#ff4d4f',
+                  borderRadius: '50%',
+                  border: '2px solid var(--cui-body-bg)'
+                }} />
+              </div>
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column',
+                gap: '2px'
+              }}>
+                <span style={{ 
+                  fontWeight: 600,
+                  fontSize: '14px'
+                }}>{currentUser?.username}</span>
+                <Text type="secondary" style={{ fontSize: '12px' }}>
+                  {currentUser?.email}
+                </Text>
+              </div>
             </div>
-          </div>
+          </AnimatedWrapper>
         </CDropdownToggle>
 
         <CDropdownMenu style={{
