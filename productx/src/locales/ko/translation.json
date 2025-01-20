@@ -1195,6 +1195,7 @@
   "confirmPassword": "비밀번호 확인",
   "securitySettings": "보안 설정",
   "newChat": "새 채팅",
+  "openAIAssistant": "AI 어시스턴트 열기",
 
   "logoutConfirm": "로그아웃 확인",
   "logoutConfirmContent": "로그아웃하시겠습니까?"

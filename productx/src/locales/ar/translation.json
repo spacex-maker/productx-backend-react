@@ -1189,5 +1189,6 @@
   "changePassword": "تغيير كلمة المرور",
   "confirmPassword": "تأكيد كلمة المرور",
   "securitySettings": "إعدادات الأمان",
-  "newChat": "دردشة جديدة"
+  "newChat": "دردشة جديدة",
+  "openAIAssistant": "فتح مساعد AI"
 }

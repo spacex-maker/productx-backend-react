@@ -1221,5 +1221,6 @@
   "changePassword": "修改密码",
   "confirmPassword": "确认密码",
   "securitySettings": "安全设置",
-  "newChat": "新建聊天"
+  "newChat": "新建聊天",
+  "openAIAssistant": "打开AI助手"
 }
