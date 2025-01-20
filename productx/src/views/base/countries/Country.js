@@ -175,35 +175,34 @@ const CountryList = () => {
     <div className="country-list-wrapper">
       <div className="search-wrapper">
         <div className="search-container">
-          <Row gutter={[8, 8]} align="middle">
-            <Col flex="0 0 160px">
+          <Row gutter={[16, 16]}>
+            <Col>
               <Input
-                size="small"
                 value={searchParams.name}
                 onChange={handleSearchChange}
                 name="name"
                 placeholder={t('countryName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
-            <Col flex="0 0 160px">
+            <Col>
               <Input
-                size="small"
                 value={searchParams.code}
                 onChange={handleSearchChange}
                 name="code"
                 placeholder={t('countryCode')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
-            <Col flex="0 0 160px">
+            <Col>
               <Select
-                size="small"
                 name="continent"
                 onChange={(value) => handleSearchChange({ target: { name: 'continent', value } })}
                 allowClear
                 placeholder={t('selectContinent')}
-                style={{ width: '100%' }}
+                style={{ width: 150 }}
               >
                 <Select.Option value="非洲">{t('africa')}</Select.Option>
                 <Select.Option value="亚洲">{t('asia')}</Select.Option>
@@ -214,29 +213,34 @@ const CountryList = () => {
                 <Select.Option value="南极洲">{t('antarctica')}</Select.Option>
               </Select>
             </Col>
-            <Col flex="0 0 160px">
+            <Col>
               <Select
-                size="small"
                 name="status"
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
                 placeholder={t('businessStatus')}
-                style={{ width: '100%' }}
+                style={{ width: 150 }}
               >
                 <Select.Option value="1">{t('yes')}</Select.Option>
                 <Select.Option value="0">{t('no')}</Select.Option>
               </Select>
             </Col>
-            <Col flex="none">
-              <Space size={8}>
-                <Button size="small" type="primary" onClick={fetchData} disabled={isLoading}>
-                  {isLoading ? <Spin size="small" /> : t('search')}
+            <Col>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
                 </Button>
-                <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
                   {t('createCountry')}
                 </Button>
                 <Button
-                  size="small"
                   type="primary"
                   onClick={() =>
                     HandleBatchDelete({
@@ -270,7 +274,7 @@ const CountryList = () => {
         </Spin>
 
         <Pagination
-          size="small"
+
           totalPages={totalPages}
           current={currentPage}
           onPageChange={setCurrent}

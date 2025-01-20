@@ -172,15 +172,16 @@ const SysIssueTracker = () => {
 
   return (
     <div className="issue-tracker-wrapper">
-      <div className="search-wrapper">
+      <div className="mb-3">
         <div className="search-container">
-          <Form form={form} layout="inline" size="small">
+          <Form form={form}>
             <Row gutter={[16, 16]}>
               <Col>
                 <Form.Item name="title">
                   <Input
-                    placeholder={t('enterTitle')}
-                    style={{ width: 200 }}
+                    placeholder={t('issueTitle')}
+                    allowClear
+                    style={{ width: 150 }}
                   />
                 </Form.Item>
               </Col>
@@ -188,7 +189,7 @@ const SysIssueTracker = () => {
                 <Form.Item name="type">
                   <Select
                     placeholder={t('issueType')}
-                    style={{ width: 120 }}
+                    style={{ width: 150 }}
                     allowClear
                   >
                     {issueTypes.map(type => (
@@ -201,7 +202,7 @@ const SysIssueTracker = () => {
                 <Form.Item name="priority">
                   <Select
                     placeholder={t('priority')}
-                    style={{ width: 120 }}
+                    style={{ width: 150 }}
                     allowClear
                   >
                     {issuePriorities.map(priority => (
@@ -214,7 +215,7 @@ const SysIssueTracker = () => {
                 <Form.Item name="status">
                   <Select
                     placeholder={t('status')}
-                    style={{ width: 120 }}
+                    style={{ width: 150 }}
                     allowClear
                   >
                     <Option value="Open">{t('statusOptions.open')}</Option>
@@ -229,6 +230,7 @@ const SysIssueTracker = () => {
                 <Form.Item name="dateRange">
                   <RangePicker
                     placeholder={[t('startDate'), t('endDate')]}
+                    style={{ width: 280 }}
                   />
                 </Form.Item>
               </Col>
@@ -244,6 +246,7 @@ const SysIssueTracker = () => {
                     {t('create')}
                   </Button>
                   <Button
+                    type="primary"
                     danger
                     disabled={selectedRows.length === 0}
                     onClick={handleBatchDelete}
@@ -271,7 +274,7 @@ const SysIssueTracker = () => {
         </Spin>
 
         <Pagination
-          size="small"
+
           totalPages={Math.ceil(totalNum / pageSize)}
           current={currentPage}
           onPageChange={handlePageChange}

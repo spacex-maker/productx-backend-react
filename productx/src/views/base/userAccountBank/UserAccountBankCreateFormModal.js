@@ -52,19 +52,19 @@ const UserAccountBankCreateFormModal = ({
   }, 500);
 
   const userOption = (user) => (
-    <Select.Option 
-      key={user.id} 
+    <Select.Option
+      key={user.id}
       value={user.id}
       label={
         <Space>
-          <Avatar size="small" src={user.avatar} />
+          <Avatar  src={user.avatar} />
           <span>{user.username}</span>
         </Space>
       }
     >
       <Space align="center">
-        <Avatar 
-          size="small" 
+        <Avatar
+
           src={user.avatar}
           style={{ marginRight: 8 }}
         />
@@ -119,9 +119,9 @@ const UserAccountBankCreateFormModal = ({
             onSearch={fetchUsers}
             loading={fetching}
             filterOption={false}
-            notFoundContent={fetching ? <Spin size="small" /> : null}
+            notFoundContent={fetching ? <Spin  /> : null}
             optionLabelProp="label"
-            dropdownStyle={{ 
+            dropdownStyle={{
               padding: 4,
               minWidth: 300
             }}

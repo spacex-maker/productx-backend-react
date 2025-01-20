@@ -70,12 +70,12 @@ const BankTable = ({
             <td className="text-truncate">
               <Space>
                 {item.countryCode && (
-                  <img 
-                    src={getCountryInfo(item.countryCode).flagImageUrl} 
+                  <img
+                    src={getCountryInfo(item.countryCode).flagImageUrl}
                     alt={item.countryCode}
-                    style={{ 
-                      width: 20, 
-                      height: 15, 
+                    style={{
+                      width: 20,
+                      height: 15,
                       objectFit: 'cover',
                       borderRadius: 2,
                       border: '1px solid #f0f0f0',
@@ -94,7 +94,7 @@ const BankTable = ({
               </Tag>
             </td>
             <td>
-              <Spin spinning={loadingStatus === item.id} size="small">
+              <Spin spinning={loadingStatus === item.id} >
                 <label className="toggle-switch">
                   <input
                     type="checkbox"
@@ -106,24 +106,24 @@ const BankTable = ({
               </Spin>
             </td>
             <td>
-              <Space size="small">
+              <Space >
                 <Tooltip title={t('detail')}>
-                  <Button 
-                    type="link" 
-                    size="small"
+                  <Button
+                    type="link"
+
                     className="p-0 m-0 d-inline-flex align-items-center"
-                    icon={<EyeOutlined />} 
+                    icon={<EyeOutlined />}
                     onClick={() => handleViewClick(item)}
                   >
                     {t('detail')}
                   </Button>
                 </Tooltip>
                 <Tooltip title={t('edit')}>
-                  <Button 
-                    type="link" 
-                    size="small"
+                  <Button
+                    type="link"
+
                     className="p-0 m-0 d-inline-flex align-items-center"
-                    icon={<EditOutlined />} 
+                    icon={<EditOutlined />}
                     onClick={() => handleEditClick(item)}
                   >
                     {t('edit')}

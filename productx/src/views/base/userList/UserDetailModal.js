@@ -136,7 +136,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
         open={isVisible}
         onCancel={onCancel}
         footer={[
-          <Button key="back" size="small" onClick={onCancel}>
+          <Button key="back"  onClick={onCancel}>
             {t('close')}
           </Button>
         ]}
@@ -147,7 +147,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
           <Watermark content={watermarkContent}>
             <Space direction="vertical" size={8} style={{ width: '100%' }}>
               {/* 用户基本信息卡片 */}
-              <Card size="small" title={
+              <Card  title={
                 <Space>
                   <UserOutlined />
                   {t('basicInfo')}
@@ -197,7 +197,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
                 {/* 地址信息卡片 */}
                 <Col span={12}>
                   <Card
-                    size="small"
+
                     title={
                       <Space>
                         <EnvironmentOutlined />
@@ -205,7 +205,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
                       </Space>
                     }
                     extra={
-                      <Button type="link" size="small" onClick={handleShowAddresses}>
+                      <Button type="link"  onClick={handleShowAddresses}>
                         {t('shippingAddressInfo')}
                       </Button>
                     }
@@ -226,7 +226,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
                 {/* 财务信息卡片 */}
                 <Col span={12}>
                   <Card
-                    size="small"
+
                     title={
                       <Space>
                         <WalletOutlined />
@@ -234,7 +234,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
                       </Space>
                     }
                   >
-                    <Descriptions size="small" column={1}>
+                    <Descriptions  column={1}>
                       <Descriptions.Item label={t('balance')}>
                         <Space>
                           <BankOutlined />
@@ -267,7 +267,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
 
               {/* 其他信息卡片 */}
               <Card
-                size="small"
+
                 title={
                   <Space>
                     <UserOutlined />
@@ -300,7 +300,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
         open={addressModalVisible}
         onCancel={() => setAddressModalVisible(false)}
         footer={[
-          <Button key="close" size="small" onClick={() => setAddressModalVisible(false)}>
+          <Button key="close"  onClick={() => setAddressModalVisible(false)}>
             {t('close')}
           </Button>
         ]}
@@ -311,7 +311,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
           columns={columns}
           dataSource={addressList}
           rowKey="id"
-          size="small"
+
           loading={loading}
           pagination={false}
           scroll={{ y: 400 }}

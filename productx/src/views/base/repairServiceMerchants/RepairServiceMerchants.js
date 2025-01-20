@@ -120,7 +120,7 @@ const RepairServiceMerchants = () => {
 
   const handleEditClick = (merchant) => {
     console.log('Original workingHours:', merchant.workingHours);
-    
+
     let workingHoursArray;
     try {
       if (merchant.workingHours && typeof merchant.workingHours === 'string' && merchant.workingHours.includes('-')) {
@@ -129,7 +129,7 @@ const RepairServiceMerchants = () => {
           dayjs(startTime, 'HH:mm'),
           dayjs(endTime, 'HH:mm')
         ];
-        
+
         if (!workingHoursArray[0].isValid() || !workingHoursArray[1].isValid()) {
           console.warn('Invalid time format detected');
           workingHoursArray = null;
@@ -138,7 +138,7 @@ const RepairServiceMerchants = () => {
         console.warn('Invalid workingHours format:', merchant.workingHours);
         workingHoursArray = null;
       }
-      
+
       console.log('Processed workingHours:', workingHoursArray);
     } catch (error) {
       console.error('Error processing workingHours:', error);
@@ -149,8 +149,8 @@ const RepairServiceMerchants = () => {
       ...merchant,
       licenseExpiry: merchant.licenseExpiry ? dayjs(merchant.licenseExpiry) : null,
       workingHours: workingHoursArray,
-      paymentMethods: Array.isArray(merchant.paymentMethods) 
-        ? merchant.paymentMethods 
+      paymentMethods: Array.isArray(merchant.paymentMethods)
+        ? merchant.paymentMethods
         : (merchant.paymentMethods?.split(',').filter(Boolean) || []),
       serviceTypes: Array.isArray(merchant.serviceTypes)
         ? merchant.serviceTypes
@@ -179,25 +179,25 @@ const RepairServiceMerchants = () => {
       width: 120,
       render: (_, record) => (
         <Space size={4}>
-          <Button 
-            type="link" 
-            size="small"
+          <Button
+            type="link"
+
             style={{ padding: '4px', height: 'auto', fontSize: '10px' }}
             onClick={() => handleViewDetail(record)}
           >
             {t('detail')}
           </Button>
-          <Button 
-            type="link" 
-            size="small"
+          <Button
+            type="link"
+
             style={{ padding: '4px', height: 'auto', fontSize: '10px' }}
             onClick={() => handleEditClick(record)}
           >
             {t('edit')}
           </Button>
-          <Button 
-            type="link" 
-            size="small"
+          <Button
+            type="link"
+
             style={{ padding: '4px', height: 'auto', fontSize: '10px', color: record.status ? '#ff4d4f' : '#52c41a' }}
             onClick={() => handleStatusChange(record)}
           >
@@ -215,7 +215,7 @@ const RepairServiceMerchants = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.merchantName}
                 onChange={handleSearchChange}
                 name="merchantName"
@@ -225,7 +225,7 @@ const RepairServiceMerchants = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.contactPerson}
                 onChange={handleSearchChange}
                 name="contactPerson"
@@ -235,7 +235,7 @@ const RepairServiceMerchants = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.contactPhone}
                 onChange={handleSearchChange}
                 name="contactPhone"
@@ -245,7 +245,7 @@ const RepairServiceMerchants = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.city}
                 onChange={handleSearchChange}
                 name="city"
@@ -255,7 +255,7 @@ const RepairServiceMerchants = () => {
             </Col>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.province}
                 onChange={handleSearchChange}
                 name="province"
@@ -265,7 +265,7 @@ const RepairServiceMerchants = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
@@ -277,7 +277,7 @@ const RepairServiceMerchants = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={fetchData}
                 disabled={isLoading}
@@ -287,7 +287,7 @@ const RepairServiceMerchants = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
               >

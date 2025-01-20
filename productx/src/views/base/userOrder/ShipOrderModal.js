@@ -83,17 +83,12 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
         <img 
           src={country.flagImageUrl} 
           alt={country.name}
-          style={{ 
-            width: 30, 
-            height: 20, 
-            objectFit: 'cover',
-            borderRadius: 2,
-            border: '1px solid #f0f0f0'
-          }}
+          width={20}
+          height={15}
         />
         <span>{country.name}</span>
-        <span style={{ color: '#999' }}>({country.isoCode})</span>
-        <span style={{ color: '#999' }}>{country.dialCode}</span>
+        <span>({country.isoCode})</span>
+        <span>{country.dialCode}</span>
       </Space>
     </Option>
   );
@@ -113,7 +108,6 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
       <Form
         form={form}
         layout="vertical"
-        colon={false}
       >
         <Form.Item
           name="receiverName"
@@ -126,24 +120,18 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
           />
         </Form.Item>
 
-        <Form.Item label={t('phoneNumber')} required style={{ marginBottom: 0 }}>
-          <Space.Compact style={{ width: '100%' }}>
+        <Form.Item label={t('phoneNumber')} required>
+          <Space.Compact>
             <Form.Item
               name="phoneAreaCode"
               rules={[{ required: true, message: t('pleaseSelectAreaCode') }]}
-              style={{ width: '50%', marginBottom: 0 }}
+              noStyle
             >
               <Select
                 showSearch
                 optionFilterProp="children"
                 placeholder={t('areaCode')}
-                dropdownMatchSelectWidth={false}
-                popupMatchSelectWidth={false}
-                listHeight={256}
-                dropdownStyle={{ 
-                  minWidth: 300,
-                  maxWidth: 400
-                }}
+                style={{ width: 200 }}
               >
                 {countries.map(country => areaCodeOption(country))}
               </Select>
@@ -151,7 +139,7 @@ const ShipOrderModal = ({ visible, onCancel, orderData }) => {
             <Form.Item
               name="phoneNumber"
               rules={[{ required: true, message: t('pleaseEnterPhoneNumber') }]}
-              style={{ width: '50%', marginBottom: 0 }}
+              noStyle
             >
               <Input
                 placeholder={t('enterPhoneNumber')}

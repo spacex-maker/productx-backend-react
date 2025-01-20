@@ -24,12 +24,12 @@ const WebsiteApplicationTable = ({
 
   const countryDisplay = (countryCode) => (
     <Space>
-      <img 
-        src={getCountryInfo(countryCode).flagImageUrl} 
+      <img
+        src={getCountryInfo(countryCode).flagImageUrl}
         alt={countryCode}
-        style={{ 
-          width: 20, 
-          height: 15, 
+        style={{
+          width: 20,
+          height: 15,
           objectFit: 'cover',
           borderRadius: 2,
           border: '1px solid #f0f0f0',
@@ -111,24 +111,24 @@ const WebsiteApplicationTable = ({
             <td>{getStatusTag(item.status)}</td>
             <td>{item.createTime}</td>
             <td>
-              <Space size="small">
+              <Space  >
                 <Tooltip title={t('detail')}>
-                  <Button 
-                    type="link" 
-                    size="small"
+                  <Button
+                    type="link"
+
                     className="p-0 m-0 d-inline-flex align-items-center"
-                    icon={<EyeOutlined />} 
+                    icon={<EyeOutlined />}
                     onClick={() => handleViewClick(item)}
                   >
                     {t('detail')}
                   </Button>
                 </Tooltip>
                 <Tooltip title={t('edit')}>
-                  <Button 
-                    type="link" 
-                    size="small"
+                  <Button
+                    type="link"
+
                     className="p-0 m-0 d-inline-flex align-items-center"
-                    icon={<EditOutlined />} 
+                    icon={<EditOutlined />}
                     onClick={() => handleEditClick(item)}
                   >
                     {t('edit')}
@@ -136,11 +136,11 @@ const WebsiteApplicationTable = ({
                 </Tooltip>
                 {item.status === 'pending' && (
                   <Tooltip title={t('review')}>
-                    <Button 
-                      type="link" 
-                      size="small"
+                    <Button
+                      type="link"
+
                       className="p-0 m-0 d-inline-flex align-items-center"
-                      icon={<AuditOutlined />} 
+                      icon={<AuditOutlined />}
                       onClick={() => handleReviewClick(item)}
                     >
                       {t('review')}

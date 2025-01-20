@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 
 const UserProfileTable = ({
   data,
@@ -26,7 +27,16 @@ const UserProfileTable = ({
       <thead>
         <tr>
           <th>
-            <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
+            <div className="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                className="custom-control-input"
+                id="select_all"
+                checked={selectAll}
+                onChange={(event) => handleSelectAll(event, data)}
+              />
+              <label className="custom-control-label" htmlFor="select_all"></label>
+            </div>
           </th>
           {[
             'userId',
@@ -51,11 +61,19 @@ const UserProfileTable = ({
         {data.map((item) => (
           <tr key={item.userId} className="record-font">
             <td>
-              <input
-                type="checkbox"
-                checked={selectedRows.some((row) => row.userId === item.userId)}
-                onChange={(e) => handleSelectRow(e, item)}
-              />
+              <div className="custom-control custom-checkbox">
+                <input
+                  type="checkbox"
+                  className="custom-control-input"
+                  id={`td_checkbox_${item.userId}`}
+                  checked={selectedRows.includes(item.userId)}
+                  onChange={() => handleSelectRow(item.userId, data)}
+                />
+                <label
+                  className="custom-control-label"
+                  htmlFor={`td_checkbox_${item.userId}`}
+                ></label>
+              </div>
             </td>
             <td className="text-truncate">{item.userId}</td>
             <td className="text-truncate">{item.name}</td>

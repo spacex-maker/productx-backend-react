@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Modal, Row, Col, Tag, Divider, Space, Typography, Card, Descriptions, Statistic, Image } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { 
+import {
   MobileOutlined,
   LaptopOutlined,
   ToolOutlined,
@@ -105,23 +105,23 @@ const RepairServiceMerchantsDetailModal = ({
   // 处理许可证过期时间的显示
   const formatLicenseExpiry = (expiry) => {
     if (!expiry) return '-';
-    
+
     try {
       // 如果是 dayjs 对象
       if (expiry?._isAMomentObject || expiry?.isValid) {
         return dayjs(expiry).format('YYYY-MM-DD');
       }
-      
+
       // 如果是数组格式 [2025, 12, 31]
       if (Array.isArray(expiry)) {
         return dayjs(expiry.join('-')).format('YYYY-MM-DD');
       }
-      
+
       // 如果是字符串格式
       if (typeof expiry === 'string') {
         return dayjs(expiry).isValid() ? dayjs(expiry).format('YYYY-MM-DD') : expiry;
       }
-      
+
       console.warn('Unknown licenseExpiry format:', expiry);
       return '-';
     } catch (error) {
@@ -141,20 +141,20 @@ const RepairServiceMerchantsDetailModal = ({
   };
 
   const renderStatus = (status) => {
-    return status ? 
+    return status ?
       <Tag color="success" style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
         {t('operating')}
-      </Tag> : 
+      </Tag> :
       <Tag color="error" style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
         {t('closed')}
       </Tag>;
   };
 
   const renderVipLevel = (isVip) => {
-    return isVip ? 
+    return isVip ?
       <Tag color="gold" icon={<CrownOutlined />} style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
         {t('vip')}
-      </Tag> : 
+      </Tag> :
       <Tag color="default" style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}>
         {t('regular')}
       </Tag>;
@@ -165,7 +165,7 @@ const RepairServiceMerchantsDetailModal = ({
     return (
       <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
         {types.map(type => (
-          <Tag 
+          <Tag
             key={type}
             color={serviceTypeColors[type]}
             style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}
@@ -183,7 +183,7 @@ const RepairServiceMerchantsDetailModal = ({
     return (
       <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
         {methods.map(method => (
-          <Tag 
+          <Tag
             key={method}
             style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}
           >
@@ -206,10 +206,10 @@ const RepairServiceMerchantsDetailModal = ({
               key={platform}
               icon={socialMediaIcons[platform.toLowerCase()]}
               color="blue"
-              style={{ 
-                margin: 0, 
-                fontSize: '10px', 
-                lineHeight: '16px', 
+              style={{
+                margin: 0,
+                fontSize: '10px',
+                lineHeight: '16px',
                 padding: '0 4px',
                 cursor: 'pointer'
               }}
@@ -238,17 +238,17 @@ const RepairServiceMerchantsDetailModal = ({
       <Row gutter={[16, 16]}>
         {/* 基本信息 */}
         <Col span={24}>
-          <Card 
-            size="small"
+          <Card
+
             title={<Space><ShopOutlined />{t('basicInfo')}</Space>}
             bordered={false}
           >
             <div style={{ display: 'flex', gap: '24px' }}>
               {/* 左侧头像 */}
-              <div style={{ 
+              <div style={{
                 flexShrink: 0,
-                width: 120, 
-                height: 120, 
+                width: 120,
+                height: 120,
                 border: '1px solid #f0f0f0',
                 borderRadius: '8px',
                 overflow: 'hidden',
@@ -263,11 +263,11 @@ const RepairServiceMerchantsDetailModal = ({
                     preview={true}
                   />
                 ) : (
-                  <div style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    display: 'flex', 
-                    alignItems: 'center', 
+                  <div style={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: '#f5f5f5'
                   }}>
@@ -278,13 +278,13 @@ const RepairServiceMerchantsDetailModal = ({
 
               {/* 右侧信息 */}
               <div style={{ flex: 1 }}>
-                <Descriptions 
-                  column={{ xs: 1, sm: 2, md: 3 }} 
-                  size="small"
+                <Descriptions
+                  column={{ xs: 1, sm: 2, md: 3 }}
+
                   style={{ marginBottom: 8 }}
                 >
-                  <Descriptions.Item 
-                    label={t('merchantName')} 
+                  <Descriptions.Item
+                    label={t('merchantName')}
                     span={3}
                   >
                     <Space size={16}>
@@ -326,12 +326,12 @@ const RepairServiceMerchantsDetailModal = ({
 
         {/* 联系信息 */}
         <Col span={12}>
-          <Card 
-            size="small"
+          <Card
+
             title={<Space><PhoneOutlined />{t('contactInfo')}</Space>}
             bordered={false}
           >
-            <Descriptions column={1} size="small">
+            <Descriptions column={1}   >
               <Descriptions.Item label={t('contactPerson')}>
                 {merchantData?.contactPerson}
               </Descriptions.Item>
@@ -355,12 +355,12 @@ const RepairServiceMerchantsDetailModal = ({
 
         {/* 地址信息 */}
         <Col span={12}>
-          <Card 
-            size="small"
+          <Card
+
             title={<Space><EnvironmentOutlined />{t('addressInfo')}</Space>}
             bordered={false}
           >
-            <Descriptions column={1} size="small">
+            <Descriptions column={1}   >
               <Descriptions.Item label={t('address')}>
                 {`${merchantData?.province || ''} ${merchantData?.city || ''} ${merchantData?.address || ''}`}
               </Descriptions.Item>
@@ -371,7 +371,7 @@ const RepairServiceMerchantsDetailModal = ({
                 {merchantData?.countryCode}
               </Descriptions.Item>
               <Descriptions.Item label={t('coordinates')}>
-                {merchantData?.latitude && merchantData?.longitude ? 
+                {merchantData?.latitude && merchantData?.longitude ?
                   `${merchantData.latitude}, ${merchantData.longitude}` : '-'}
               </Descriptions.Item>
               <Descriptions.Item label={t('serviceAreas')}>
@@ -383,12 +383,12 @@ const RepairServiceMerchantsDetailModal = ({
 
         {/* 业务信息 */}
         <Col span={24}>
-          <Card 
-            size="small"
+          <Card
+
             title={<Space><AppstoreOutlined />{t('businessInfo')}</Space>}
             bordered={false}
           >
-            <Descriptions column={{ xs: 1, sm: 2 }} size="small">
+            <Descriptions column={{ xs: 1, sm: 2 }}   >
               <Descriptions.Item label={t('workingHours')}>
                 {formatWorkingHours(merchantData?.workStartTime, merchantData?.workEndTime)}
               </Descriptions.Item>
@@ -404,13 +404,13 @@ const RepairServiceMerchantsDetailModal = ({
 
         {/* 绩效信息 */}
         <Col span={24}>
-          <Card 
-            size="small"
+          <Card
+
             title={<Space><StarOutlined />{t('performanceInfo')}</Space>}
             bordered={false}
           >
-            <Row 
-              gutter={[16, 16]} 
+            <Row
+              gutter={[16, 16]}
               justify="space-between"
               align="middle"
             >
@@ -457,12 +457,12 @@ const RepairServiceMerchantsDetailModal = ({
 
         {/* 系统信息 */}
         <Col span={24}>
-          <Card 
-            size="small"
+          <Card
+
             title={<Space><FileTextOutlined />{t('systemInfo')}</Space>}
             bordered={false}
           >
-            <Descriptions column={{ xs: 1, sm: 2, md: 3 }} size="small">
+            <Descriptions column={{ xs: 1, sm: 2, md: 3 }}   >
               <Descriptions.Item label={t('createTime')}>
                 {safeRenderDateTime(merchantData?.createTime)}
               </Descriptions.Item>
@@ -498,4 +498,4 @@ const RepairServiceMerchantsDetailModal = ({
   );
 };
 
-export default RepairServiceMerchantsDetailModal; 
+export default RepairServiceMerchantsDetailModal;

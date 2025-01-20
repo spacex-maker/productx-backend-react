@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import api from 'src/axiosInstance'
-import {Modal, Button, Form, Input, message, Spin, Select, Col, Row} from 'antd'
+import {Modal, Button, Form, Input, message, Spin, Select, Col, Row, Space} from 'antd'
 import {UseSelectableRows} from 'src/components/common/UseSelectableRows'
 import {HandleBatchDelete} from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
@@ -126,84 +126,77 @@ const CurrencyList = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.currencyName}
                 onChange={handleSearchChange}
                 name="currencyName"
                 placeholder="英文名称"
-                allowClear // 添加这个属性
+                allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.descriptionZh}
                 onChange={handleSearchChange}
                 name="descriptionZh"
                 placeholder="搜索中文名称"
-                allowClear // 添加这个属性
+                allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.currencyCode}
                 onChange={handleSearchChange}
                 name="currencyCode"
                 placeholder="搜索货币代码"
-                allowClear // 添加这个属性
+                allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
-                className="search-box"
                 name="status"
                 onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
                 allowClear
                 placeholder="是否启用"
+                style={{ width: 150 }}
               >
                 <Select.Option value="true">启用</Select.Option>
                 <Select.Option value="false">禁用</Select.Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin/> : '查询'}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary" onClick={() => setIsCreateModalVisible(true)}>
-                新增货币
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/currency/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-              >
-                批量删除
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin/> : '查询'}
+                </Button>
+                <Button
+                  type="primary" 
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  新增货币
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/currency/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  批量删除
+                </Button>
+              </Space>
             </Col>
           </Row>
-
         </div>
       </div>
-
 
       <div className="table-responsive">
         <Spin spinning={isLoading}>

@@ -31,8 +31,8 @@ const PartnerDetail = ({ isVisible, onCancel, partner }) => {
               <Image
                 src={partner.logoUrl}
                 alt={partner.name}
-                style={{ 
-                  width: '100%', 
+                style={{
+                  width: '100%',
                   maxHeight: '120px',
                   objectFit: 'contain',
                   padding: '8px',
@@ -51,9 +51,9 @@ const PartnerDetail = ({ isVisible, onCancel, partner }) => {
                   </Space>
                 </Descriptions.Item>
                 <Descriptions.Item label={t('websiteUrl')}>
-                  <a 
-                    href={partner.websiteUrl} 
-                    target="_blank" 
+                  <a
+                    href={partner.websiteUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     {partner.websiteUrl}
@@ -65,9 +65,9 @@ const PartnerDetail = ({ isVisible, onCancel, partner }) => {
         </Col>
 
         <Col span={24}>
-          <Descriptions 
-            bordered 
-            column={1} 
+          <Descriptions
+            bordered
+            column={1}
             style={descriptionStyle}
           >
             <Descriptions.Item label={t('description')}>
@@ -79,7 +79,7 @@ const PartnerDetail = ({ isVisible, onCancel, partner }) => {
         <Col span={24}>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Descriptions bordered column={1} size="small">
+              <Descriptions bordered column={1}  >
                 <Descriptions.Item label={t('createTime')}>
                   {partner.createTime}
                 </Descriptions.Item>
@@ -89,7 +89,7 @@ const PartnerDetail = ({ isVisible, onCancel, partner }) => {
               </Descriptions>
             </Col>
             <Col span={12}>
-              <Descriptions bordered column={1} size="small">
+              <Descriptions bordered column={1}  >
                 <Descriptions.Item label={t('updateTime')}>
                   {partner.updateTime}
                 </Descriptions.Item>
@@ -105,4 +105,4 @@ const PartnerDetail = ({ isVisible, onCancel, partner }) => {
   );
 };
 
-export default PartnerDetail; 
+export default PartnerDetail;

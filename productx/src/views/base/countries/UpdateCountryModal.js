@@ -59,7 +59,7 @@ const UpdateCountryModal = ({
   const formGroups = {
     basicInfo: [
       { name: 'id', label: t('id'), icon: <KeyOutlined style={iconStyle} />, required: true,
-        component: <Input disabled /> 
+        component: <Input disabled />
       },
       { name: 'name', label: t('countryName'), icon: <TagOutlined style={iconStyle} />, required: true },
       { name: 'code', label: t('countryCode'), icon: <GlobalOutlined style={iconStyle} />, required: true },
@@ -192,12 +192,12 @@ const UpdateCountryModal = ({
         form={form}
         onFinish={handleUpdateCountry}
         layout="vertical"
-        size="small"
+
       >
         {Object.entries(formGroups).map(([groupKey, fields]) => (
           <Card
             key={groupKey}
-            size="small"
+
             title={t(groupKey)}
             style={{ marginBottom: '4px' }}
             headStyle={{
@@ -231,7 +231,7 @@ const UpdateCountryModal = ({
         ))}
 
         <Card
-          size="small"
+
           title={t('otherInformation')}
         >
           <div style={{

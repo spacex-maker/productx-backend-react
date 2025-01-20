@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Checkbox, Row, Col, Divider, Typography, Space, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { 
-  UserOutlined, 
-  IdcardOutlined, 
+import {
+  UserOutlined,
+  IdcardOutlined,
   PhoneOutlined,
   MailOutlined,
   InfoCircleOutlined,
@@ -59,11 +59,11 @@ const UpdateUserModal = ({ isVisible, onCancel, onOk, form, handleUpdateUser, se
       width={600}
       maskClosable={false}
     >
-      <Form 
-        form={form} 
-        onFinish={handleUpdateUser} 
+      <Form
+        form={form}
+        onFinish={handleUpdateUser}
         layout="vertical"
-        size="small"
+
       >
         <Form.Item name="id" hidden>
           <Input />

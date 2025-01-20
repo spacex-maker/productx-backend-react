@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, Spin, Row, Col, Select } from 'antd';
+import { Button, Form, Input, Spin, Row, Col, Select, Space } from 'antd';
+import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
+import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from "src/components/common/Pagination";
 import UserAccountBankTable from "./UserAccountBankTable";
 import UpdateUserAccountBankModal from "./UpdateUserAccountBankModal";
@@ -25,6 +27,13 @@ const ListUserAccountBank = () => {
     currencyCode: '',
     isActive: undefined
   });
+
+  const {
+    selectedRows,
+    selectAll,
+    handleSelectAll,
+    handleSelectRow,
+  } = UseSelectableRows();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -114,103 +123,106 @@ const ListUserAccountBank = () => {
     <div>
       <div className="mb-3">
         <div className="search-container">
-          <Row gutter={[10, 10]}>
+          <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.userId}
                 onChange={handleSearchChange}
                 name="userId"
                 placeholder={t('userId')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.bankName}
                 onChange={handleSearchChange}
                 name="bankName"
                 placeholder={t('bankName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.accountNumber}
                 onChange={handleSearchChange}
                 name="accountNumber"
                 placeholder={t('accountNumber')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.accountHolderName}
                 onChange={handleSearchChange}
                 name="accountHolderName"
                 placeholder={t('accountHolderName')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.swiftCode}
                 onChange={handleSearchChange}
                 name="swiftCode"
                 placeholder={t('swiftCode')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.currencyCode}
                 onChange={handleSearchChange}
                 name="currencyCode"
                 placeholder={t('currencyCode')}
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
-                className="search-box"
-                name="isActive"
                 value={searchParams.isActive}
-                onChange={(value) => {
-                  setCurrent(1);
-                  setSearchParams(prev => ({ ...prev, isActive: value }));
-                }}
-                allowClear
+                onChange={(value) => handleSearchChange({ target: { name: 'isActive', value }})}
                 placeholder={t('isActive')}
+                allowClear
+                style={{ width: 150 }}
               >
                 <Option value={true}>{t('yes')}</Option>
                 <Option value={false}>{t('no')}</Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-              >
-                {t('createAccount')}
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('createAccount')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/user-account-bank/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>
@@ -220,6 +232,10 @@ const ListUserAccountBank = () => {
         <Spin spinning={isLoading}>
           <UserAccountBankTable
             data={data}
+            selectAll={selectAll}
+            selectedRows={selectedRows}
+            handleSelectAll={handleSelectAll}
+            handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
             handleDetailClick={handleDetailClick}
           />

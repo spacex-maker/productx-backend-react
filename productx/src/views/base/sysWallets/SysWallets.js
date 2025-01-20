@@ -149,22 +149,22 @@ const WalletList = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.address}
                 onChange={handleSearchChange}
                 name="address"
                 placeholder="钱包地址"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
                 name="type"
                 onChange={(value) => handleSearchChange({ target: { name: 'type', value } })}
                 placeholder="请选择钱包类型"
                 allowClear
-                style={{ width: '100%' }}>
+                style={{ width: 150 }}
+              >
                 {cryptoCurrencies.map((crypto) => (
                   <Select.Option key={crypto.id} value={crypto.id}>
                     {crypto.name} ({crypto.symbol})
@@ -172,24 +172,23 @@ const WalletList = () => {
                 ))}
               </Select>
             </Col>
-            <Col xs={24} sm={6}>
+            <Col>
               <Input
-                size="small"
                 value={searchParams.label}
                 onChange={handleSearchChange}
                 name="label"
                 placeholder="钱包标签/别名"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
-            <Col xs={24} sm={6}>
+            <Col>
               <Select
-                size="small"
                 name="countryCode"
                 onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value } })}
                 placeholder="钱包所属国家"
                 allowClear
-                style={{ width: '100%' }}
+                style={{ width: 150 }}
                 showSearch
                 optionFilterProp="children"
                 filterOption={(input, option) => {
@@ -199,13 +198,6 @@ const WalletList = () => {
                     country?.code.toLowerCase().includes(input.toLowerCase())
                   );
                 }}
-                dropdownMatchSelectWidth={false}
-                popupMatchSelectWidth={false}
-                listHeight={256}
-                dropdownStyle={{ 
-                  minWidth: 250,
-                  maxWidth: 300
-                }}
               >
                 {countries.map(country => (
                   <Select.Option key={country.code} value={country.code}>
@@ -213,13 +205,7 @@ const WalletList = () => {
                       <img 
                         src={country.flagImageUrl} 
                         alt={country.name}
-                        style={{ 
-                          width: 20, 
-                          height: 15, 
-                          objectFit: 'cover',
-                          borderRadius: 2,
-                          border: '1px solid #f0f0f0'
-                        }}
+                        style={{ width: 20, height: 15, objectFit: 'cover', borderRadius: 2 }}
                       />
                       <span>{country.name}</span>
                       <span style={{ color: '#999' }}>({country.code})</span>
@@ -229,41 +215,32 @@ const WalletList = () => {
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-                block
-              >
-                {isLoading ? <Spin /> : '查询'}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => setIsCreateModalVisible(true)}
-                block
-              >
-                新增钱包
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/sys-wallets/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-                block
-              >
-                批量删除
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : '查询'}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  新增钱包
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/sys-wallets/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  批量删除
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

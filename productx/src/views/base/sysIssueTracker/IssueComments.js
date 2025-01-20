@@ -93,7 +93,7 @@ const IssueComments = ({ issueId }) => {
             onClick={handleSubmit}
             loading={submitting}
             icon={<SendOutlined />}
-            size="small"
+
           >
             {t('submit')}
           </Button>
@@ -115,7 +115,7 @@ const IssueComments = ({ issueId }) => {
             <List.Item.Meta
               avatar={
                 <Avatar
-                  size="small"
+
                   icon={<UserOutlined />}
                   src={item.commenterInfo?.avatar}
                 />

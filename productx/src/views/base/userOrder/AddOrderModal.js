@@ -2,85 +2,6 @@ import React from 'react';
 import { Input, Modal, Form, Switch, DatePicker, Alert, Row, Col, Select, InputNumber } from 'antd';
 import api from 'src/axiosInstance';
 import { useTranslation } from "react-i18next";
-import styled from 'styled-components';
-
-const StyledModal = styled(Modal)`
-  .ant-modal-content {
-    padding: 12px;
-  }
-
-  .ant-modal-header {
-    margin-bottom: 8px;
-  }
-
-  .ant-modal-title {
-    font-size: 12px;
-    color: #000000;
-  }
-
-  .ant-form {
-    .ant-form-item {
-      margin-bottom: 4px;
-    }
-
-    .ant-form-item-label {
-      padding: 0;
-      
-      > label {
-        font-size: 10px;
-        color: #666;
-        height: 20px;
-      }
-    }
-
-    .ant-input,
-    .ant-input-number,
-    .ant-picker,
-    .ant-select-selector {
-      font-size: 10px;
-      height: 24px !important;
-      line-height: 24px;
-      padding: 0 8px;
-    }
-
-    .ant-input-number-input {
-      height: 22px;
-    }
-
-    .ant-select-selection-item {
-      line-height: 22px;
-    }
-
-    textarea.ant-input {
-      height: auto !important;
-      min-height: 48px;
-      padding: 4px 8px;
-    }
-  }
-
-  .ant-alert {
-    margin-bottom: 8px;
-    padding: 4px 8px;
-    font-size: 10px;
-  }
-
-  .ant-form-item-explain {
-    font-size: 10px;
-    min-height: 16px;
-  }
-
-  .ant-modal-footer {
-    margin-top: 8px;
-    padding: 8px 0 0;
-    border-top: 1px solid #f0f0f0;
-
-    .ant-btn {
-      height: 24px;
-      padding: 0 12px;
-      font-size: 10px;
-    }
-  }
-`;
 
 const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
   const [form] = Form.useForm();
@@ -112,14 +33,14 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
   };
 
   return (
-    <StyledModal
+    <Modal
       title={t("addNewOrder")}
       open={isVisible}
       onCancel={onCancel}
       onOk={handleAddOrderOk}
       okText={t("submit")}
       cancelText={t("cancel")}
-      width={480}
+      width={600}
       maskClosable={false}
       destroyOnClose
     >
@@ -132,11 +53,10 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
       <Form
         form={form}
         layout="vertical"
-        colon={false}
         initialValues={{ status: true }}
         preserve={false}
       >
-        <Row gutter={8}>
+        <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="userId"
@@ -157,7 +77,7 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
           </Col>
         </Row>
 
-        <Row gutter={8}>
+        <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="phoneNum"
@@ -173,11 +93,7 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
               label={t("orderStatus")}
               rules={[{ required: true, message: t("selectOrderStatus") }]}
             >
-              <Select
-                placeholder={t("selectOrderStatus")}
-                size="small"
-                style={{ fontSize: '11px' }}
-              >
+              <Select placeholder={t("selectOrderStatus")}>
                 <Select.Option value="PENDING">{t("pending")}</Select.Option>
                 <Select.Option value="PAID">{t("paid")}</Select.Option>
                 <Select.Option value="SHIPPED">{t("shipped")}</Select.Option>
@@ -191,18 +107,14 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
           </Col>
         </Row>
 
-        <Row gutter={8}>
+        <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="paymentType"
               label={t("paymentType")}
               rules={[{ required: true, message: t("selectPaymentMethod") }]}
             >
-              <Select
-                placeholder={t("selectPaymentMethod")}
-                size="small"
-                style={{ fontSize: '11px' }}
-              >
+              <Select placeholder={t("selectPaymentMethod")}>
                 <Select.Option value="WECHAT">{t("wechatPay")}</Select.Option>
                 <Select.Option value="ALIPAY">{t("alipay")}</Select.Option>
                 <Select.Option value="BANK">{t("bankCard")}</Select.Option>
@@ -218,14 +130,13 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
               <DatePicker
                 showTime
                 placeholder={t("selectPaymentTime")}
-                size="small"
-                style={{ width: '100%', fontSize: '11px' }}
+                style={{ width: '100%' }}
               />
             </Form.Item>
           </Col>
         </Row>
 
-        <Row gutter={8}>
+        <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="totalAmount"
@@ -234,8 +145,7 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
             >
               <InputNumber
                 placeholder={t("enterTotalAmount")}
-                size="small"
-                style={{ width: '100%', fontSize: '11px' }}
+                style={{ width: '100%' }}
                 precision={2}
                 min={0}
               />
@@ -247,11 +157,7 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
               label={t("shippingMethod")}
               rules={[{ required: true, message: t("selectShippingMethod") }]}
             >
-              <Select
-                placeholder={t("selectShippingMethod")}
-                size="small"
-                style={{ fontSize: '11px' }}
-              >
+              <Select placeholder={t("selectShippingMethod")}>
                 <Select.Option value="EXPRESS">{t("express")}</Select.Option>
                 <Select.Option value="SELF_PICKUP">{t("selfPickup")}</Select.Option>
               </Select>
@@ -276,13 +182,12 @@ const AddOrderModal = ({ isVisible, onCancel, onFinish, parentId }) => {
           valuePropName="checked"
         >
           <Switch
-            size="small"
             checkedChildren={t("enabled")}
             unCheckedChildren={t("disabled")}
           />
         </Form.Item>
       </Form>
-    </StyledModal>
+    </Modal>
   );
 };
 

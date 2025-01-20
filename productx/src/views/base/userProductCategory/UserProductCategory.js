@@ -363,7 +363,7 @@ const UserProductCategory = () => {
           </div>
           <Button
             type="link"
-            size="small"
+
             icon={<EditOutlined style={{ fontSize: '10px' }} />}
             onClick={(e) => {
               e.stopPropagation();

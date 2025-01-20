@@ -26,9 +26,9 @@ const ManagerSearchInput = ({ onSelect, inputStyle, defaultValue }) => {
         value: manager.username,
         label: (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Avatar 
-              src={manager.avatar} 
-              size="small" 
+            <Avatar
+              src={manager.avatar}
+
               style={{ width: '24px', height: '24px' }}
             >
               {manager.username[0]?.toUpperCase()}

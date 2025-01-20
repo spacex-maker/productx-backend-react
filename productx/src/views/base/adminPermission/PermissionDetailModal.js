@@ -51,7 +51,7 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
       <Descriptions
         bordered
         column={1}
-        size="small"
+
       >
         <Descriptions.Item label="权限ID">{permissionDetail?.id}</Descriptions.Item>
         <Descriptions.Item label="权限类型">{getTypeTag(permissionDetail?.type)}</Descriptions.Item>

@@ -91,7 +91,7 @@ const WorkOrderTable = ({
         ]}
       >
         {detailData && (
-          <Descriptions bordered size="small" column={1}>
+          <Descriptions bordered  column={1}>
             <Descriptions.Item label="工单 ID">{detailData.id}</Descriptions.Item>
             <Descriptions.Item label="用户">{detailData.username}</Descriptions.Item>
             <Descriptions.Item label="描述">{detailData.description}</Descriptions.Item>

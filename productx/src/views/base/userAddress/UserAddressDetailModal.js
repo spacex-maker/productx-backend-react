@@ -60,8 +60,8 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
         <Watermark content={watermarkContent}>
           <Space direction="vertical" size={8}>
             {/* 基本信息卡片 */}
-            <Card 
-              size="small" 
+            <Card
+
               title={
                 <Space>
                   <UserOutlined />
@@ -69,7 +69,7 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
                 </Space>
               }
             >
-              <Descriptions size="small" column={2}>
+              <Descriptions  column={2}>
                 <Descriptions.Item label={t('contactName')}>
                   <IconText icon={<UserOutlined />} text={selectedAddress.contactName} />
                 </Descriptions.Item>
@@ -83,8 +83,8 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
             </Card>
 
             {/* 地址信息卡片 */}
-            <Card 
-              size="small" 
+            <Card
+
               title={
                 <Space>
                   <EnvironmentOutlined />
@@ -92,7 +92,7 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
                 </Space>
               }
             >
-              <Descriptions size="small" column={2}>
+              <Descriptions  column={2}>
                 <Descriptions.Item label={t('province')}>
                   <IconText icon={<GlobalOutlined />} text={selectedAddress.province || '-'} />
                 </Descriptions.Item>
@@ -101,9 +101,9 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
                 </Descriptions.Item>
                 <Descriptions.Item label={t('contactAddress')} span={2}>
                   <Space>
-                    <IconText 
-                      icon={<HomeOutlined />} 
-                      text={selectedAddress.contactAddress} 
+                    <IconText
+                      icon={<HomeOutlined />}
+                      text={selectedAddress.contactAddress}
                     />
                     <CopyOutlined onClick={() => handleCopy(selectedAddress.contactAddress)} />
                   </Space>
@@ -112,8 +112,8 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
             </Card>
 
             {/* 其他信息卡片 */}
-            <Card 
-              size="small" 
+            <Card
+
               title={
                 <Space>
                   <ClockCircleOutlined />
@@ -121,7 +121,7 @@ const UserAddressDetailModal = ({ isVisible, onCancel, selectedAddress }) => {
                 </Space>
               }
             >
-              <Descriptions size="small" column={2}>
+              <Descriptions  column={2}>
                 <Descriptions.Item label={t('createTime')}>
                   <IconText icon={<ClockCircleOutlined />} text={formatDate(selectedAddress.createTime)} />
                 </Descriptions.Item>

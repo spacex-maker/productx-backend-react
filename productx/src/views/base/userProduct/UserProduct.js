@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Button, Form, Input, Select, Divider, Space } from 'antd';
+import { Button, Form, Input, Select, Row, Col, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import UserProductTable from './UserProductTable';
 
@@ -26,38 +26,54 @@ const UserProduct = () => {
 
   return (
     <div>
-      <Form layout="inline" autoComplete="off" onFinish={onFormSearch}>
-        <Form.Item label={null} name="userId">
-          <Input size="small" placeholder={t('userId')} allowClear />
-        </Form.Item>
-        <Form.Item label={null} name="category">
-          <Select
-            size="small"
-            style={{ width: '180px' }}
-            allowClear
-            placeholder={t('selectCategory')}
-          >
-            <Select.Option value="电脑">{t('computer')}</Select.Option>
-            <Select.Option value="手机">{t('phone')}</Select.Option>
-            <Select.Option value="其他">{t('other')}</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item>
-          <Button size="small" type="primary" htmlType="submit" loading={loading}>
-            {t('search')}
-          </Button>
-          <Divider type="vertical" />
-          <Space>
-            <Button size="small" type="primary" onClick={onTableCreate}>
-              {t('createProduct')}
-            </Button>
-            <Button size="small" type="primary" onClick={onTableDelete}>
-              {t('batchDelete')}
-            </Button>
-          </Space>
-        </Form.Item>
-      </Form>
-      <Divider />
+      <div className="mb-3">
+        <div className="search-container">
+          <Row gutter={[16, 16]}>
+            <Col>
+              <Input
+                placeholder={t('userId')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Select
+                style={{ width: 150 }}
+                allowClear
+                placeholder={t('selectCategory')}
+              >
+                <Select.Option value="电脑">{t('computer')}</Select.Option>
+                <Select.Option value="手机">{t('phone')}</Select.Option>
+                <Select.Option value="其他">{t('other')}</Select.Option>
+              </Select>
+            </Col>
+            <Col>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={onFormSearch}
+                  loading={loading}
+                >
+                  {t('search')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={onTableCreate}
+                >
+                  {t('createProduct')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={onTableDelete}
+                >
+                  {t('batchDelete')}
+                </Button>
+              </Space>
+            </Col>
+          </Row>
+        </div>
+      </div>
+
       <div className="table-responsive">
         <UserProductTable ref={tableRef}></UserProductTable>
       </div>

@@ -74,7 +74,7 @@ const ResizableTitle = (props) => {
 
 const ContributorsList = ({ maintainers, loading }) => {
   const { t } = useTranslation();
-  
+
   const getContributorColor = (count) => {
     if (count >= 100000) return '#f50'; // 红色
     if (count >= 10000) return '#722ed1'; // 紫色
@@ -92,8 +92,8 @@ const ContributorsList = ({ maintainers, loading }) => {
   };
 
   return (
-    <Card 
-      size="small"
+    <Card
+
       title={
         <Space>
           <TeamOutlined style={{ fontSize: '14px' }} />
@@ -107,13 +107,13 @@ const ContributorsList = ({ maintainers, loading }) => {
           {maintainers.map((item) => {
             const color = getContributorColor(item.count);
             const title = getContributorTitle(item.count);
-            
+
             return (
               <Col span={6} key={item.id}>
                 <Card
-                  size="small"
+
                   bordered={false}
-                  bodyStyle={{ 
+                  bodyStyle={{
                     padding: '8px',
                     background: color + '0A',
                     borderRadius: '4px',
@@ -126,7 +126,7 @@ const ContributorsList = ({ maintainers, loading }) => {
                       <Avatar
                         size={24}
                         src={item.avatar}
-                        style={{ 
+                        style={{
                           border: `2px solid ${color}`,
                           backgroundColor: item.avatar ? 'transparent' : color
                         }}
@@ -134,7 +134,7 @@ const ContributorsList = ({ maintainers, loading }) => {
                         {!item.avatar ? item.username.charAt(0).toUpperCase() : null}
                       </Avatar>
                       <div>
-                        <div style={{ 
+                        <div style={{
                           fontSize: '12px',
                           fontWeight: 500,
                           color: '#000000d9',
@@ -145,7 +145,7 @@ const ContributorsList = ({ maintainers, loading }) => {
                         }}>
                           {item.username}
                         </div>
-                        <div style={{ 
+                        <div style={{
                           fontSize: '11px',
                           color: color,
                           marginTop: '2px'
@@ -156,14 +156,14 @@ const ContributorsList = ({ maintainers, loading }) => {
                     </Space>
                     <Tag
                       color={color}
-                      style={{ 
+                      style={{
                         fontSize: '11px',
                         padding: '0 4px',
                         minWidth: '48px',
                         textAlign: 'center'
                       }}
                     >
-                      {item.count >= 10000 
+                      {item.count >= 10000
                         ? `${(item.count / 10000).toFixed(1)}w`
                         : item.count >= 1000
                           ? `${(item.count / 1000).toFixed(1)}k`
@@ -214,7 +214,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   useEffect(() => {
     const savedHistory = localStorage.getItem('regionFormHistory');
     const lastType = localStorage.getItem('lastSubmittedType');
-    
+
     if (savedHistory) {
       const history = JSON.parse(savedHistory);
       setHistoricalInputs(history);
@@ -229,10 +229,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     if (addModalVisible && lastSubmittedType && historicalInputs[lastSubmittedType]) {
       const lastData = historicalInputs[lastSubmittedType];
       console.log('Auto filling last submitted data:', lastData);
-      
+
       // 只排除 code、name 和 id，保留其他所有字段
       const { code, name, id, timestamp, ...autoFillData } = lastData;
-      
+
       // 设置类型和其他数据
       addForm.setFieldsValue({
         type: lastSubmittedType,
@@ -265,9 +265,9 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   const handleTypeChange = (e) => {
     const type = e.target.value.trim();
     console.log('Type input changed:', type);
-    
+
     addForm.setFieldValue('type', type);
-    
+
     const historicalData = historicalInputs[type];
     if (historicalData) {
       console.log('Found historical data:', historicalData);
@@ -352,7 +352,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         }}
       >
         <Input
-          size="small"
+
           style={{
             width: 100,
             fontSize: '10px',
@@ -586,7 +586,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         <Space size={4}>
           <Switch
             checked={record.status}
-            size="small"
+
             onChange={(checked) => handleStatusChange(record, checked)}
             style={{
               transform: 'scale(0.8)',
@@ -596,7 +596,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           />
           <Button
             type="link"
-            size="small"
+
             onClick={() => handleDrillDown(record)}
             style={{
               fontSize: '12px',
@@ -608,7 +608,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           </Button>
           <Button
             type="link"
-            size="small"
+
             onClick={() => handleEdit(record)}
             style={{
               fontSize: '12px',
@@ -629,7 +629,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Button
               type="link"
               danger
-              size="small"
+
               icon={<DeleteOutlined style={{ fontSize: '12px' }} />}
               style={{
                 padding: '0 4px',
@@ -651,7 +651,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     try {
       const currentParentId = currentRegion ? currentRegion.id : country.id;
       console.log('Form values before submit:', values);
-      
+
       const params = {
         ...values,
         parentId: currentParentId,
@@ -659,7 +659,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       };
 
       await api.post('/manage/global-addresses/create', params);
-      
+
       if (values.type) {
         const newHistory = {
           ...historicalInputs,
@@ -713,7 +713,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         <div style={{ padding: '8px 0' }}>
           <Row gutter={[8, 8]}>
             <Col span={24}>
-              <ContributorsList 
+              <ContributorsList
                 maintainers={maintainers}
                 loading={maintainersLoading}
               />
@@ -756,7 +756,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               }
             ].map((stat, index) => (
               <Col span={6} key={index}>
-                <Card size="small">
+                <Card   >
                   <Statistic
                     title={<span style={{ fontSize: '12px' }}>{stat.title}</span>}
                     value={stat.value}
@@ -792,7 +792,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               }
             ].map((stat, index) => (
               <Col span={8} key={index}>
-                <Card size="small">
+                <Card   >
                   <Statistic
                     title={<span style={{ fontSize: '12px' }}>{stat.title}</span>}
                     value={stat.value}
@@ -813,7 +813,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
                   <Button
                     key={item.id}
                     type="link"
-                    size="small"
+
                     onClick={() => handleGoBack(index)}
                     style={{ padding: '0', fontSize: '12px' }}
                   >
@@ -825,7 +825,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Col>
               <Button
                 type="primary"
-                size="small"
+
                 icon={<PlusOutlined />}
                 onClick={handleAddModalOpen}
               >
@@ -848,7 +848,7 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             components={components}
             columns={columns}
             dataSource={filteredData}
-            size="small"
+
             scroll={{ x: 1200, y: 400 }}
             pagination={false}
             rowKey="id"

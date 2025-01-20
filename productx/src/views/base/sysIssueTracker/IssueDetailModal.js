@@ -46,16 +46,16 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
 
   const toTranslationKey = (text) => {
     if (!text) return ''
-    
+
     if (text === 'Feature Request') {
       return 'featureRequest'
     }
-    
+
     return text
       .split(' ')
-      .map((word, index) => 
-        index === 0 
-          ? word.toLowerCase() 
+      .map((word, index) =>
+        index === 0
+          ? word.toLowerCase()
           : word.charAt(0).toUpperCase() + word.slice(1)
       )
       .join('')
@@ -92,13 +92,13 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
         </Descriptions.Item>
         <Descriptions.Item label={t('reporter')}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Avatar size="small" src={issue.reporterInfo?.avatar} icon={<UserOutlined />} />
+            <Avatar  src={issue.reporterInfo?.avatar} icon={<UserOutlined />} />
             <span>{issue.reporterInfo?.username}</span>
           </div>
         </Descriptions.Item>
         <Descriptions.Item label={t('assignee')}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Avatar size="small" src={issue.assigneeInfo?.avatar} icon={<UserOutlined />} />
+            <Avatar  src={issue.assigneeInfo?.avatar} icon={<UserOutlined />} />
             <span>{issue.assigneeInfo?.username}</span>
           </div>
         </Descriptions.Item>

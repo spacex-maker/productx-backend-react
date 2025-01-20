@@ -91,7 +91,7 @@ export const AdminDetailModal = ({ visible, onCancel, adminInfo }) => {
         </UserInfo>
       </ProfileHeader>
 
-      <Form layout="vertical" size="small">
+      <Form layout="vertical" >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item label={<FormLabel>邮箱</FormLabel>}>

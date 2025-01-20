@@ -24,9 +24,9 @@ const UserOption = ({ avatar, label }) => (
 
 const LoadingOption = () => (
   <div className={styles.loadingOption}>
-    <Spin 
-      indicator={<LoadingOutlined style={{ fontSize: 16 }} spin />} 
-      size="small"
+    <Spin
+      indicator={<LoadingOutlined style={{ fontSize: 16 }} spin />}
+
     />
     <span>加载中...</span>
   </div>
@@ -91,13 +91,13 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      
+
       // 处理附件列表
       const attachments = fileList.map(file => file.response?.url || file.url);
-      
+
       // 处理过期时间
-      const expiresAt = values.expiresAt ? 
-        values.expiresAt.format('YYYY-MM-DD HH:mm:ss') : 
+      const expiresAt = values.expiresAt ?
+        values.expiresAt.format('YYYY-MM-DD HH:mm:ss') :
         undefined;
 
       await api.post('/manage/admin-messages/create', {
@@ -164,8 +164,8 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
             }}
           >
             {managers.map(manager => (
-              <Select.Option 
-                key={manager.value} 
+              <Select.Option
+                key={manager.value}
                 value={manager.value}
                 label={manager.label}
               >
@@ -196,8 +196,8 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
           }
           rules={[{ required: true, message: '请输入消息内容' }]}
         >
-          <TextArea 
-            rows={4} 
+          <TextArea
+            rows={4}
             placeholder="请输入消息内容"
             maxLength={500}
             showCount
@@ -264,4 +264,4 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
   );
 };
 
-export default SendMessageModal; 
+export default SendMessageModal;

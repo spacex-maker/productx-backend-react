@@ -74,7 +74,7 @@ const UserProductCategoryTable = ({
         <Switch
           checked={status === 1}
           onChange={(checked) => onStatusChange(record.id, checked)}
-          size="small"
+
         />
       ),
     },

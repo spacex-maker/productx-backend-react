@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space, Image, Avatar, Spin } from 'antd';
+import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space, Image, Avatar, Spin, Card, Typography, Tag, Row, Col, List } from 'antd';
 import { useTranslation } from 'react-i18next'; // 导入 useTranslation
 import api from "src/axiosInstance";
 import { formatDate } from "src/components/common/Common";
@@ -88,7 +88,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
 
           {/* 详细信息 */}
           <Descriptions
-            size="small"
+
             column={1}
             labelStyle={{
               width: '80px',
@@ -167,8 +167,14 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
       open={visible}
       onCancel={onCancel}
       footer={null}
-      width={580}
-      styles={{ padding: '12px', fontSize: '12px' }}
+      width={800}
+      styles={{
+        body: {
+          padding: 24,
+          maxHeight: '80vh',
+          overflow: 'auto'
+        }
+      }}
     >
       <Spin spinning={loading}>
         {/* 将现有内容包裹在 Spin 组件中 */}
@@ -262,7 +268,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
             {/* 订单基本信息 */}
             <Descriptions
               bordered
-              size="small"
+
               column={2}
               labelStyle={{
                 width: '90px',
@@ -299,7 +305,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
               </div>
               <Descriptions
                 bordered
-                size="small"
+
                 column={2}
                 labelStyle={{
                   width: '90px',
@@ -458,7 +464,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
                 {orderData.userOrder.orderStatus === 'PAID' && (
                   <Button
                     type="primary"
-                    size="small"
+
                     onClick={() => setShipModalVisible(true)}
                     style={{ fontSize: '12px', height: '24px' }}
                   >
@@ -502,7 +508,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
             {/* 操作按钮 */}
             <div style={{ textAlign: 'right', fontSize: '12px' }}>
               <Space size={4}>
-                <Button size="small" onClick={onCancel} style={{ fontSize: '12px', height: '24px' }}>
+                <Button  onClick={onCancel} style={{ fontSize: '12px', height: '24px' }}>
                   {t('close')}
                 </Button>
                 <Popconfirm
@@ -511,7 +517,7 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
                   okText={t('yes')}
                   cancelText={t('no')}
                 >
-                  <Button size="small" type="primary" danger style={{ fontSize: '12px', height: '24px' }}>
+                  <Button  type="primary" danger style={{ fontSize: '12px', height: '24px' }}>
                     {t('deleteOrder')}
                   </Button>
                 </Popconfirm>

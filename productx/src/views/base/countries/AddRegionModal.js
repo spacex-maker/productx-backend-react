@@ -18,7 +18,7 @@ const AddRegionModal = ({ visible, onCancel, onOk, form, handleTypeChange }) => 
         form={form}
         onFinish={onOk}
         layout="vertical"
-        size="small"
+
       >
         <Row gutter={8}>
           <Col span={12}>
@@ -139,4 +139,4 @@ const AddRegionModal = ({ visible, onCancel, onOk, form, handleTypeChange }) => 
   );
 };
 
-export default AddRegionModal; 
+export default AddRegionModal;

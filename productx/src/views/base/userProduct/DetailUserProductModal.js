@@ -133,7 +133,7 @@ const DetailUserProductModal = (props) => {
       width={800}
       maskClosable={false}
     >
-      <Descriptions column={2} size="small" bordered>
+      <Descriptions column={2}  bordered>
         <Descriptions.Item label={t('productStatus')} span={2}>
           {productData && renderStatus(productData.status)}
         </Descriptions.Item>

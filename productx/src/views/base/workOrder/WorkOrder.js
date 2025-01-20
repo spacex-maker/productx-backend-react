@@ -92,7 +92,7 @@ const WorkOrderList = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
+
                 value={searchParams.title}
                 onChange={handleSearchChange}
                 name="title"
@@ -102,7 +102,7 @@ const WorkOrderList = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 name="status"
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
@@ -118,7 +118,7 @@ const WorkOrderList = () => {
             </Col>
             <Col>
               <Select
-                size="small"
+
                 name="categoryId"
                 onChange={(value) => setSearchParams((prev) => ({ ...prev, categoryId: value }))}
                 allowClear
@@ -144,7 +144,7 @@ const WorkOrderList = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={fetchData}
                 className="search-button"
@@ -155,7 +155,7 @@ const WorkOrderList = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={() => setIsCreateModalVisible(true)}
               >
@@ -164,7 +164,7 @@ const WorkOrderList = () => {
             </Col>
             <Col>
               <Button
-                size="small"
+
                 type="primary"
                 onClick={() =>
                   HandleBatchDelete({

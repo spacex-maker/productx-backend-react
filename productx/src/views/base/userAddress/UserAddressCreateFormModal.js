@@ -71,19 +71,19 @@ const UserAddressCreateFormModal = ({
   }, 500);
 
   const userOption = (user) => (
-    <Select.Option 
-      key={user.id} 
+    <Select.Option
+      key={user.id}
       value={user.id}
       label={
         <Space>
-          <Avatar size="small" src={user.avatar} />
+          <Avatar  src={user.avatar} />
           <span>{user.username}</span>
         </Space>
       }
     >
       <Space align="center">
-        <Avatar 
-          size="small" 
+        <Avatar
+
           src={user.avatar}
           style={{ marginRight: 8 }}
         />
@@ -108,12 +108,12 @@ const UserAddressCreateFormModal = ({
   const areaCodeOption = (country) => (
     <Option key={country.id} value={country.dialCode}>
       <Space>
-        <img 
-          src={country.flagImageUrl} 
+        <img
+          src={country.flagImageUrl}
           alt={country.name}
-          style={{ 
-            width: 30, 
-            height: 20, 
+          style={{
+            width: 30,
+            height: 20,
             objectFit: 'cover',
             borderRadius: 2,
             border: '1px solid #f0f0f0'
@@ -172,9 +172,9 @@ const UserAddressCreateFormModal = ({
             onSearch={fetchUsers}
             loading={fetching}
             filterOption={false}
-            notFoundContent={fetching ? <Spin size="small" /> : null}
+            notFoundContent={fetching ? <Spin  /> : null}
             optionLabelProp="label"
-            dropdownStyle={{ 
+            dropdownStyle={{
               padding: 4,
               minWidth: 300
             }}
@@ -202,7 +202,7 @@ const UserAddressCreateFormModal = ({
               initialValue="+86"
               rules={[{ required: true, message: t('pleaseSelectAreaCode') }]}
             >
-              <Select 
+              <Select
                 style={{ width: 220 }}
                 showSearch
                 optionFilterProp="children"
@@ -223,7 +223,7 @@ const UserAddressCreateFormModal = ({
                 dropdownMatchSelectWidth={false}
                 popupMatchSelectWidth={false}
                 listHeight={256}
-                dropdownStyle={{ 
+                dropdownStyle={{
                   minWidth: 300,
                   maxWidth: 400
                 }}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Modal, Button, Form, Input, message, Spin, Select, Col, Row } from 'antd'
+import { Modal, Button, Form, Input, message, Spin, Select, Col, Row, Space } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
@@ -122,78 +122,73 @@ const CryptoCurrencyList = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.name}
                 onChange={handleSearchChange}
                 name="name"
                 placeholder="加密货币名称"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.symbol}
                 onChange={handleSearchChange}
                 name="symbol"
                 placeholder="加密货币符号"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.chineseName}
                 onChange={handleSearchChange}
                 name="chineseName"
                 placeholder="加密货币中文名称"
                 allowClear
+                style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
-                size="small"
-                className="search-box"
                 name="status"
                 onChange={(value) => handleSearchChange({ target: { name: 'status', value } })}
                 allowClear
                 placeholder="状态"
+                style={{ width: 150 }}
               >
                 <Option value="1">启用</Option>
                 <Option value="0">禁用</Option>
               </Select>
             </Col>
             <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={fetchData}
-                className="search-button"
-                disabled={isLoading}
-              >
-                {isLoading ? <Spin /> : '查询'}
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary" onClick={() => setIsCreateModalVisible(true)}>
-                新增加密货币
-              </Button>
-            </Col>
-            <Col>
-              <Button
-                size="small"
-                type="primary"
-                onClick={() => HandleBatchDelete({
-                  url: '/manage/crypto-currency/delete-batch',
-                  selectedRows,
-                  fetchData,
-                })}
-                disabled={selectedRows.length === 0}
-              >
-                批量删除
-              </Button>
+              <Space>
+                <Button
+                  type="primary"
+                  onClick={fetchData}
+                  disabled={isLoading}
+                >
+                  {isLoading ? <Spin /> : '查询'}
+                </Button>
+                <Button
+                  type="primary" 
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  新增加密货币
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/crypto-currency/delete-batch',
+                    selectedRows,
+                    fetchData,
+                  })}
+                  disabled={selectedRows.length === 0}
+                >
+                  批量删除
+                </Button>
+              </Space>
             </Col>
           </Row>
         </div>

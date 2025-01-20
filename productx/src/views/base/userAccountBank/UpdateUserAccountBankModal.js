@@ -69,9 +69,9 @@ const UpdateUserAccountBankModal = ({
       width={800}
       maskClosable={false}
     >
-      <Form 
-        form={form} 
-        onFinish={handleUpdateAccount} 
+      <Form
+        form={form}
+        onFinish={handleUpdateAccount}
         layout="vertical"
       >
         <Form.Item name="id" hidden><Input /></Form.Item>
@@ -79,7 +79,7 @@ const UpdateUserAccountBankModal = ({
 
         {/* 用户信息部分 */}
         <Card
-          size="small"
+
           title={<Space><UserOutlined />{t('userInfo')}</Space>}
           style={{ marginBottom: 16 }}
         >
@@ -111,7 +111,7 @@ const UpdateUserAccountBankModal = ({
 
         {/* 银行信息部分 */}
         <Card
-          size="small"
+
           title={<Space><BankOutlined />{t('bankInfo')}</Space>}
         >
           <Row gutter={[24, 16]}>
