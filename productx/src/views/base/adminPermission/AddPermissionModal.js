@@ -78,7 +78,6 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
         onFinish={onFinish}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 18 }}
-        size="small"
       >
         <Form.Item
           label={
@@ -91,7 +90,6 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           }
           name="type"
           rules={[{ required: true, message: '请选择权限类型' }]}
-          className="form-item"
           initialValue={1}
         >
           <Select>
@@ -140,10 +138,8 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
                 message: selectedType === 3 ? '按钮权限必须选择所属的菜单权限' : '',
               },
             ]}
-            className="form-item"
           >
             <Select
-              className="small-text"
               placeholder={selectedType === 1 ? '可选择上级菜单' : '请选择所属的菜单权限'}
               allowClear={selectedType === 1}
               optionFilterProp="children"
@@ -179,7 +175,6 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           }
           name="permissionName"
           rules={[{ required: true, message: '请输入权限名称' }]}
-          className="form-item"
         >
           <Input
             prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
@@ -199,7 +194,6 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           }
           name="permissionNameEn"
           rules={[{ required: true, message: '请输入英文权限名称' }]}
-          className="form-item"
         >
           <Input
             prefix={<TranslationOutlined style={{ color: '#bfbfbf' }} />}
@@ -219,9 +213,8 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           }
           name="description"
           rules={[{ required: true, message: '请输入权限描述' }]}
-          className="form-item"
         >
-          <Input.TextArea placeholder="请输入权限描述" rows={3} />
+          <Input.TextArea placeholder="请输入权限描述" />
         </Form.Item>
 
         {/* 启用状态 */}
@@ -237,7 +230,6 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           name="status"
           valuePropName="checked"
           initialValue={true}
-          className="form-item"
         >
           <Switch checkedChildren={<CheckCircleOutlined />} unCheckedChildren="×" />
         </Form.Item>
@@ -255,7 +247,6 @@ const AddPermissionModal = ({ isVisible, onCancel, onFinish, form }) => {
           name="isSystem"
           valuePropName="checked"
           initialValue={false}
-          className="form-item"
         >
           <Switch checkedChildren={<LockOutlined />} unCheckedChildren={<UnlockOutlined />} />
         </Form.Item>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Modal, Descriptions, Tag, Button, Table, Input, Space, Radio } from 'antd';
+import { Modal, Descriptions, Tag, Button, Table, Input, Space, Radio, Row, Col } from 'antd';
 import {
   InfoCircleOutlined,
   MenuOutlined,
@@ -136,7 +136,8 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
         open={isVisible}
         onCancel={onCancel}
         footer={null}
-        width={600}
+        width={700}
+        style={{ padding: '20px' }}
       >
         <Descriptions bordered column={2}>
           <Descriptions.Item label="角色ID">{roleDetail?.id}</Descriptions.Item>
@@ -175,57 +176,60 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
         open={permissionModalVisible}
         onCancel={() => setPermissionModalVisible(false)}
         footer={null}
-        width={800}
+        width={1200}
+        style={{ padding: '20px' }}
       >
-        <Space direction="vertical" style={{ width: '100%', marginBottom: '16px' }}>
-          <div style={{
-            padding: '8px 12px',
-            background: '#f6f6f6',
-            borderRadius: '4px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
-            <InfoCircleOutlined style={{ color: '#1890ff' }} />
-            <span>
-              标记为 <span style={{ color: '#1890ff', fontWeight: 500 }}>蓝色</span> 且带有
-              <Tag color="#1890ff">系统权限</Tag>
-              标签的为系统内置权限
-            </span>
-          </div>
+        <Row gutter={16} style={{ marginBottom: '16px' }}>
+          <Col span={24}>
+            <div >
+              <InfoCircleOutlined style={{ color: '#1890ff' }} />
+              <span>
+                标记为 <span style={{ color: '#1890ff', fontWeight: 500 }}>蓝色</span> 且带有
+                <Tag color="#1890ff">系统权限</Tag>
+                标签的为系统内置权限
+              </span>
+            </div>
+          </Col>
+        </Row>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Row gutter={16} style={{ marginBottom: '16px' }}>
+          <Col span={12}>
             <Input
               placeholder="搜索权限名称、英文名称或描述"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              style={{ width: 300, marginRight: '16px' }}
+              style={{ width: '100%', borderRadius: '4px' }}
               prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
               allowClear
             />
+          </Col>
+          <Col span={12}>
             <Radio.Group
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
+              style={{ width: '100%' }}
             >
-              <Radio.Button value="all">全部</Radio.Button>
-              <Radio.Button value="menu">
-                <MenuOutlined /> 菜单
-              </Radio.Button>
-              <Radio.Button value="api">
-                <ApiOutlined /> 接口
-              </Radio.Button>
-              <Radio.Button value="button">
-                <ControlOutlined /> 按钮
-              </Radio.Button>
-              <Radio.Button value="business">
-                <AppstoreOutlined /> 业务
-              </Radio.Button>
+              <Space>
+                <Radio.Button value="all">全部</Radio.Button>
+                <Radio.Button value="menu">
+                  <MenuOutlined /> 菜单
+                </Radio.Button>
+                <Radio.Button value="api">
+                  <ApiOutlined /> 接口
+                </Radio.Button>
+                <Radio.Button value="button">
+                  <ControlOutlined /> 按钮
+                </Radio.Button>
+                <Radio.Button value="business">
+                  <AppstoreOutlined /> 业务
+                </Radio.Button>
+              </Space>
             </Radio.Group>
-          </div>
-          <div style={{ color: '#8c8c8c' }}>
-            共 {filteredPermissions.length} 条权限记录
-          </div>
-        </Space>
+          </Col>
+        </Row>
+        <div style={{ color: '#8c8c8c', marginBottom: '16px' }}>
+          共 {filteredPermissions.length} 条权限记录
+        </div>
 
         <Table
           dataSource={filteredPermissions}
@@ -234,6 +238,7 @@ const RoleDetailModal = ({ isVisible, onCancel, roleDetail }) => {
           loading={loading}
           pagination={false}
           scroll={{ y: 400 }}
+          rowClassName="table-row"
         />
       </Modal>
     </>
