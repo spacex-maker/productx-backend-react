@@ -5,6 +5,7 @@ import api from 'src/axiosInstance';
 import moment from 'moment';
 import styles from './MessageModal.module.scss';
 import SendMessageModal from './SendMessageModal';
+import { useTranslation } from 'react-i18next';
 
 const { RangePicker } = DatePicker;
 const { Text } = Typography;
@@ -23,22 +24,23 @@ const UserInfo = ({ avatar, username }) => (
 );
 
 const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       title={
-        <Space size="middle" className={styles.detailTitle}>
+        <Space size={4} className={styles.detailTitle}>
           <Text strong>{message?.title}</Text>
-          {message?.isFlagged && <Tag color="red">重要</Tag>}
-          {message?.createdBySystem && <Tag color="blue">系统</Tag>}
+          {message?.isFlagged && <Tag color="red">{t('important')}</Tag>}
+          {message?.createdBySystem && <Tag color="blue">{t('system')}</Tag>}
           {messageType === 'received' ? (
-            !message?.isRead && <Badge status="processing" text="未读" />
+            !message?.isRead && <Badge status="processing" text={t('unread')} />
           ) : (
             <Badge
               status={message?.isRead ? 'success' : 'default'}
-              text={message?.isRead ? '对方已读' : '对方未读'}
+              text={message?.isRead ? t('readByReceiver') : t('unreadByReceiver')}
             />
           )}
-          {message?.isRetracted && <Tag color="red">已撤回</Tag>}
+          {message?.isRetracted && <Tag color="red">{t('retracted')}</Tag>}
         </Space>
       }
       open={visible}
@@ -46,14 +48,14 @@ const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType })
       footer={[
         messageType === 'received' && !message?.isRead && !message?.isRetracted && (
           <Button key="read" type="primary" onClick={() => onRead(message?.id)}>
-            标记已读
+            {t('markRead')}
           </Button>
         ),
         <Button key="close" onClick={onCancel}>
-          关闭
+          {t('close')}
         </Button>,
       ]}
-      width={700}
+      width={600}
       className={styles.detailModal}
     >
       <div className={styles.messageDetail}>
@@ -127,6 +129,7 @@ const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType })
 };
 
 const MessageModal = ({ visible, onCancel, onSuccess }) => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
@@ -182,13 +185,13 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
   const handleRead = async (messageId) => {
     try {
       await api.post(`/manage/admin-messages/read/${messageId}`);
-      message.success('标记已读成功');
+      message.success(t('markReadSuccess'));
       fetchMessages();
       setDetailVisible(false);
       onSuccess?.();
     } catch (error) {
       console.error('标记已读失败:', error);
-      message.error('标记已读失败');
+      message.error(t('markReadFailed'));
     }
   };
 
@@ -205,41 +208,41 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
 
   const columns = [
     {
-      title: '状态',
+      title: t('status'),
       key: 'status',
       width: 100,
       render: (_, record) => (
         <Space size={4}>
           {messageType === 'received' ? (
             <Tooltip
-              title={record.readAt ? `读取时间：${record.readAt}` : null}
+              title={record.readAt ? `${t('readTime')}: ${record.readAt}` : null}
               mouseEnterDelay={0.5}
             >
               <Badge
                 status={record.isRead ? 'default' : 'processing'}
-                text={record.isRead ? '已读' : '未读'}
+                text={record.isRead ? t('read') : t('unread')}
                 className={record.isRead ? styles.readStatus : ''}
               />
             </Tooltip>
           ) : (
             <Tooltip
-              title={record.readAt ? `对方读取时间：${record.readAt}` : null}
+              title={record.readAt ? `${t('readTime')}: ${record.readAt}` : null}
               mouseEnterDelay={0.5}
             >
               <Badge
                 status={record.isRead ? 'success' : 'default'}
-                text={record.isRead ? '对方已读' : '对方未读'}
+                text={record.isRead ? t('readByReceiver') : t('unreadByReceiver')}
                 className={record.isRead ? styles.readStatus : ''}
               />
             </Tooltip>
           )}
-          {record.isRetracted && <Tag color="red">已撤回</Tag>}
-          {record.createdBySystem && <Tag color="blue">系统</Tag>}
+          {record.isRetracted && <Tag color="red">{t('retracted')}</Tag>}
+          {record.createdBySystem && <Tag color="blue">{t('system')}</Tag>}
         </Space>
       ),
     },
     {
-      title: messageType === 'received' ? '发送人' : '接收人',
+      title: messageType === 'received' ? t('sender') : t('receiver'),
       key: 'user',
       width: 120,
       render: (_, record) => (
@@ -257,19 +260,19 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
       ),
     },
     {
-      title: '标题',
+      title: t('title'),
       key: 'title',
       width: 200,
       ellipsis: true,
       render: (_, record) => (
         <Space size={4}>
           <span>{record.title}</span>
-          {record.isFlagged && <Tag color="red">重要</Tag>}
+          {record.isFlagged && <Tag color="red">{t('important')}</Tag>}
         </Space>
       ),
     },
     {
-      title: '内容',
+      title: t('content'),
       key: 'messageText',
       ellipsis: true,
       render: (_, record) => (
@@ -279,7 +282,7 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
       ),
     },
     {
-      title: '时间',
+      title: t('time'),
       key: 'time',
       width: 165,
       render: (_, record) => (
@@ -289,25 +292,17 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
       ),
     },
     {
-      title: '操作',
+      title: t('action'),
       key: 'action',
       width: 100,
       render: (_, record) => (
         <Space>
-          <Button
-            type="link"
-
-            onClick={() => handleViewDetail(record)}
-          >
-            查看
+          <Button type="link" onClick={() => handleViewDetail(record)}>
+            {t('view')}
           </Button>
           {messageType === 'received' && !record.isRead && !record.isRetracted && (
-            <Button
-              type="link"
-
-              onClick={() => handleRead(record.id)}
-            >
-              标记已读
+            <Button type="link" onClick={() => handleRead(record.id)}>
+              {t('markRead')}
             </Button>
           )}
         </Space>
@@ -326,119 +321,109 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
   };
 
   return (
-    <>
-      <Modal
-        title={
-          <div className={styles.modalHeader}>
-            <Space size="large">
-              <Text strong className={styles.modalTitle}>消息列表</Text>
-              <Radio.Group
-                value={messageType}
-                onChange={(e) => {
-                  setMessageType(e.target.value);
-                  setCurrent(1);
-                }}
-                buttonStyle="solid"
-              >
-                <Radio.Button value="received">收到的消息</Radio.Button>
-                <Radio.Button value="sent">发送的消息</Radio.Button>
-              </Radio.Group>
-            </Space>
-            <Button
-              type="primary"
-              onClick={() => setSendMessageVisible(true)}
+    <Modal
+      title={
+        <div className={styles.modalHeader}>
+          <Space size="large">
+            <Text strong className={styles.modalTitle}>{t('messageList')}</Text>
+            <Radio.Group
+              value={messageType}
+              onChange={(e) => {
+                setMessageType(e.target.value);
+                setCurrent(1);
+              }}
+              buttonStyle="solid"
             >
-              发送消息
-            </Button>
-          </div>
-        }
-        open={visible}
-        onCancel={onCancel}
-        width={900}
-        className={styles.listModal}
-        footer={null}
-      >
-        <div className={styles.searchSection}>
-          <Form
-            onFinish={handleSearch}
-            layout="inline"
-
-          >
-            <Row gutter={[16, 16]} style={{ width: '100%', marginBottom: 16 }}>
-              <Col>
-                <Form.Item name="messageType" label="消息类型">
-                  <Select
-                    style={{ width: 120 }}
-                    allowClear
-                    options={[
-                      { label: '文本', value: 'text' },
-                      { label: '系统', value: 'system' },
-                    ]}
-                  />
-                </Form.Item>
-              </Col>
-              <Col>
-                <Form.Item name="isRead" label="阅读状态">
-                  <Select
-                    style={{ width: 120 }}
-                    allowClear
-                    options={[
-                      { label: '已读', value: true },
-                      { label: '未读', value: false },
-                    ]}
-                  />
-                </Form.Item>
-              </Col>
-              <Col>
-                <Form.Item name="isFlagged" label="重要标记">
-                  <Select
-                    style={{ width: 120 }}
-                    allowClear
-                    options={[
-                      { label: '重要', value: true },
-                      { label: '普通', value: false },
-                    ]}
-                  />
-                </Form.Item>
-              </Col>
-              <Col flex="auto">
-                <Form.Item name="timeRange" label="时间范围">
-                  <RangePicker
-                    showTime
-                    style={{ width: '100%', minWidth: '360px' }}
-                  />
-                </Form.Item>
-              </Col>
-              <Col>
-                <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
-                  查询
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+              <Radio.Button value="received">{t('receivedMessages')}</Radio.Button>
+              <Radio.Button value="sent">{t('sentMessages')}</Radio.Button>
+            </Radio.Group>
+          </Space>
+          <Button type="primary" onClick={() => setSendMessageVisible(true)}>
+            {t('sendMessage')}
+          </Button>
         </div>
+      }
+      open={visible}
+      onCancel={onCancel}
+      width={900}
+      className={styles.listModal}
+      footer={null}
+    >
+      <div className={styles.searchSection}>
+        <Form onFinish={handleSearch} layout="inline">
+          <Row gutter={[16, 16]} style={{ width: '100%', marginBottom: 16 }}>
+            <Col>
+              <Form.Item name="messageType" label={t('messageType')}>
+                <Select
+                  style={{ width: 120 }}
+                  allowClear
+                  options={[
+                    { label: t('text'), value: 'text' },
+                    { label: t('system'), value: 'system' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item name="isRead" label={t('readStatus')}>
+                <Select
+                  style={{ width: 120 }}
+                  allowClear
+                  options={[
+                    { label: t('read'), value: true },
+                    { label: t('unread'), value: false },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item name="isFlagged" label={t('important')}>
+                <Select
+                  style={{ width: 120 }}
+                  allowClear
+                  options={[
+                    { label: t('important'), value: true },
+                    { label: t('normal'), value: false },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col flex="auto">
+              <Form.Item name="timeRange" label={t('timeRange')}>
+                <RangePicker
+                  showTime
+                  style={{ width: '100%', minWidth: '360px' }}
+                />
+              </Form.Item>
+            </Col>
+            <Col>
+              <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+                {t('search')}
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </div>
 
-        <Table
-          columns={columns}
-          dataSource={data}
-          rowKey="id"
-          loading={loading}
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: totalNum,
-            onChange: (page, size) => {
-              setCurrent(page);
-              setPageSize(size);
-            },
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条`,
-          }}
-
-          className={styles.messageTable}
-        />
-      </Modal>
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        loading={loading}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalNum,
+          onChange: (page, size) => {
+            setCurrent(page);
+            setPageSize(size);
+          },
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total) => `${t('quantity')} ${total}`,
+        }}
+        className={styles.messageTable}
+      />
 
       <MessageDetailModal
         visible={detailVisible}
@@ -456,7 +441,7 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
           onSuccess?.();
         }}
       />
-    </>
+    </Modal>
   );
 };
 
