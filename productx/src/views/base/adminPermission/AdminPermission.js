@@ -130,7 +130,6 @@ const AdminPermission = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 name="permissionName"
                 placeholder="权限名称"
                 value={searchParams.permissionName}
@@ -140,7 +139,6 @@ const AdminPermission = () => {
             </Col>
             <Col>
               <Input
-                size="small"
                 name="permissionNameEn"
                 placeholder="权限英文名称"
                 value={searchParams.permissionNameEn}
@@ -150,7 +148,6 @@ const AdminPermission = () => {
             </Col>
             <Col>
               <Input
-                size="small"
                 name="description"
                 placeholder="权限描述"
                 value={searchParams.description}
@@ -160,7 +157,6 @@ const AdminPermission = () => {
             </Col>
             <Col>
               <Select
-                size="small"
                 name="type"
                 onChange={(value) => handleSearchChange({ target: { name: 'type', value: value } })}
                 allowClear
@@ -195,7 +191,6 @@ const AdminPermission = () => {
             </Col>
             <Col>
               <Select
-                size="small"
                 name="status"
                 onChange={(value) =>
                   handleSearchChange({ target: { name: 'status', value: value } })
@@ -208,18 +203,17 @@ const AdminPermission = () => {
               </Select>
             </Col>
             <Col>
-              <Button size="small" type="primary" onClick={fetchData} disabled={isLoading}>
+              <Button type="primary" onClick={fetchData} disabled={isLoading}>
                 <SearchOutlined /> {isLoading ? <Spin /> : '查询'}
               </Button>
             </Col>
             <Col>
-              <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
+              <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
                 新增权限
               </Button>
             </Col>
             <Col>
               <Button
-                size="small"
                 type="primary"
                 onClick={() =>
                   HandleBatchDelete({

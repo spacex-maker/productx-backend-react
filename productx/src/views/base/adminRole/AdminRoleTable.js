@@ -64,15 +64,12 @@ const AdminRoleTable = ({
         <thead>
           <tr>
             <th>
-              <div className="custom-control custom-checkbox">
+              <div>
                 <input
                   type="checkbox"
-                  className="custom-control-input"
-                  id="select_all"
                   checked={selectAll}
                   onChange={(event) => handleSelectAll(event, data)}
                 />
-                <label className="custom-control-label" htmlFor="select_all"></label>
               </div>
             </th>
             {[
@@ -88,62 +85,44 @@ const AdminRoleTable = ({
             ].map((field) => (
               <th key={field}>{field}</th>
             ))}
-            <th className="fixed-column" key="操作">
-              操作
-            </th>
+            <th key="操作">操作</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.id} className="record-font">
+            <tr key={item.id}>
               <td>
-                <div className="custom-control custom-checkbox">
+                <div>
                   <input
                     type="checkbox"
-                    className="custom-control-input"
-                    id={`td_checkbox_${item.id}`}
                     checked={selectedRows.includes(item.id)}
                     onChange={() => handleSelectRow(item.id, data)}
-                    // 超级管理员不允许选择
                     disabled={isSuperAdmin(item)}
                   />
-                  <label
-                    className="custom-control-label"
-                    htmlFor={`td_checkbox_${item.id}`}
-                  ></label>
                 </div>
               </td>
-              <td className="text-truncate">{item.id}</td>
-              <td className="text-truncate">
+              <td>{item.id}</td>
+              <td>
                 {item.roleName}
                 {isSuperAdmin(item) && (
-                  <span
-                    style={{
-                      marginLeft: '4px',
-                      fontSize: '10px',
-                      color: '#1890ff',
-                      border: '1px solid #1890ff',
-                      padding: '1px 4px',
-                      borderRadius: '2px',
-                    }}
-                  >
+                  <span>
                     系统角色
                   </span>
                 )}
               </td>
-              <td className="text-truncate">{item.roleNameEn}</td>
-              <td className="text-truncate">{item.description || '无'}</td>
-              <td className="text-truncate">{item.createBy || '无'}</td>
-              <td className="text-truncate">{item.updateBy || '无'}</td>
-              <td className="text-truncate">{formatDate(item.updateTime) || '无'}</td>
-              <td className="text-truncate">{formatDate(item.createTime) || '无'}</td>
+              <td>{item.roleNameEn}</td>
+              <td>{item.description || '无'}</td>
+              <td>{item.createBy || '无'}</td>
+              <td>{item.updateBy || '无'}</td>
+              <td>{formatDate(item.updateTime) || '无'}</td>
+              <td>{formatDate(item.createTime) || '无'}</td>
               <td>
                 <label className="toggle-switch">
                   <input
                     type="checkbox"
                     checked={item.status}
                     onChange={(e) => handleStatusChange(item.id, e.target.checked)}
-                    disabled={isSuperAdmin(item)} // 超级管理员不允许修改状态
+                    disabled={isSuperAdmin(item)}
                   />
                   <span className="toggle-switch-slider"></span>
                 </label>

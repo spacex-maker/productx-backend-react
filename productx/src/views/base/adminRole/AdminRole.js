@@ -130,7 +130,6 @@ const AdminRole = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                size="small"
                 value={searchParams.roleName}
                 onChange={handleSearchChange}
                 name="roleName"
@@ -140,7 +139,6 @@ const AdminRole = () => {
             </Col>
             <Col>
               <Input
-                size="small"
                 value={searchParams.roleNameEn}
                 onChange={handleSearchChange}
                 name="roleNameEn"
@@ -150,7 +148,6 @@ const AdminRole = () => {
             </Col>
             <Col>
               <Select
-                size="small"
                 name="status"
                 onChange={(value) =>
                   handleSearchChange({ target: { name: 'status', value: value } })
@@ -163,18 +160,17 @@ const AdminRole = () => {
               </Select>
             </Col>
             <Col>
-              <Button size="small" type="primary" onClick={fetchData} disabled={isLoading}>
+              <Button type="primary" onClick={fetchData} disabled={isLoading}>
                 <SearchOutlined /> {isLoading ? <Spin /> : '查询'}
               </Button>
             </Col>
             <Col>
-              <Button size="small" type="primary" onClick={() => setIsCreateModalVisible(true)}>
+              <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
                 <PlusOutlined /> 新增角色
               </Button>
             </Col>
             <Col>
               <Button
-                size="small"
                 type="primary"
                 danger
                 onClick={() =>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Modal, Table, message, Spin, Input, Space, Radio, Tree } from 'antd';
+import { Modal, Table, message, Spin, Input, Space, Radio, Tree, Tag, Badge } from 'antd';
 import { SearchOutlined, MenuOutlined, ApiOutlined, ControlOutlined, AppstoreOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
@@ -66,11 +66,42 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     }
   };
 
+  // 获取权限类型的颜色
+  const getTypeColor = (type) => {
+    switch (type) {
+      case 1: return '#1890ff';  // 菜单 - 蓝色
+      case 2: return '#52c41a';  // 接口 - 绿色
+      case 3: return '#722ed1';  // 按钮 - 紫色
+      case 4: return '#fa8c16';  // 业务 - 橙色
+      default: return '#999';
+    }
+  };
+
+  // 获取权限类型的图标
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case 1: return <MenuOutlined />;
+      case 2: return <ApiOutlined />;
+      case 3: return <ControlOutlined />;
+      case 4: return <AppstoreOutlined />;
+      default: return null;
+    }
+  };
+
+  // 获取权限类型的名称
+  const getTypeName = (type) => {
+    switch (type) {
+      case 1: return '菜单';
+      case 2: return '接口';
+      case 3: return '按钮';
+      case 4: return '业务';
+      default: return '未知';
+    }
+  };
+
   // 将权限列表转换为树形结构
   const convertToTree = (permissions) => {
-    // 首先过滤出菜单和按钮类型的权限
     const filteredPermissions = permissions.filter(item => item.type === 1 || item.type === 3);
-    
     const nodeMap = new Map();
     
     filteredPermissions.forEach(item => {
@@ -78,59 +109,35 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
         key: item.id,
         id: item.id,
         title: (
-          <div style={{ 
+          <div className="tree-node-content" style={{ 
             display: 'flex', 
-            alignItems: 'flex-start', 
-            gap: '4px',
-            padding: '2px 0'
+            width: '100%',
+            minWidth: 0,
+            padding: '4px 0'
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '4px',
-                marginBottom: '1px'
-              }}>
-                <span style={{ 
-                  color: item.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
-                  fontWeight: item.isSystem ? 500 : 400,
-                  lineHeight: '14px'
-                }}>
-                  {item.permissionName}
-                </span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <Space>
+                <span style={{ fontWeight: 500 }}>{item.permissionName}</span>
                 {item.isSystem && (
-                  <span style={{ 
-                    color: '#1890ff',
-                    border: '1px solid #1890ff',
-                    padding: '0 4px',
-                    borderRadius: '2px',
-                    lineHeight: '14px',
-                    height: '14px',
-                    display: 'inline-flex',
-                    alignItems: 'center'
-                  }}>
-                    系统权限
-                  </span>
+                  <Tag size="small">系统权限</Tag>
                 )}
-              </div>
-              <span style={{ 
-                color: '#999',
-                fontWeight: 400,
-                lineHeight: '12px'
+              </Space>
+              <div style={{ 
+                fontSize: '12px', 
+                marginTop: '4px',
+                opacity: 0.65
               }}>
                 {item.permissionNameEn}
-              </span>
+              </div>
             </div>
-            <div style={{ 
-              color: getTypeColor(item.type),
-              minWidth: '60px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px'
+            <Space style={{ 
+              marginLeft: 'auto',
+              padding: '2px 8px',
+              borderRadius: '4px',
             }}>
               {getTypeIcon(item.type)}
-              {getTypeName(item.type)}
-            </div>
+              <span style={{ fontSize: '12px' }}>{getTypeName(item.type)}</span>
+            </Space>
           </div>
         ),
         children: [],
@@ -164,39 +171,6 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     removeEmptyChildren(tree);
 
     return tree;
-  };
-
-  // 获取权限类型的颜色
-  const getTypeColor = (type) => {
-    switch (type) {
-      case 1: return '#1890ff';
-      case 2: return '#52c41a';
-      case 3: return '#722ed1';
-      case 4: return '#fa8c16';
-      default: return '#999';
-    }
-  };
-
-  // 获取权限类型的图标
-  const getTypeIcon = (type) => {
-    switch (type) {
-      case 1: return <MenuOutlined />;
-      case 2: return <ApiOutlined />;
-      case 3: return <ControlOutlined />;
-      case 4: return <AppstoreOutlined />;
-      default: return null;
-    }
-  };
-
-  // 获取权限类型的名称
-  const getTypeName = (type) => {
-    switch (type) {
-      case 1: return '菜单';
-      case 2: return '接口';
-      case 3: return '按钮';
-      case 4: return '业务';
-      default: return '未知';
-    }
   };
 
   // 过滤树节点
@@ -250,43 +224,25 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
       dataIndex: 'permissionName',
       width: '45%',
       render: (text, record) => (
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '4px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '4px',
-              marginBottom: '2px'
-            }}>
-              <span style={{ 
-                color: record.isSystem ? '#1890ff' : 'rgba(0, 0, 0, 0.85)',
-                fontWeight: record.isSystem ? 500 : 400,
-              }}>
-                {text}
-              </span>
-              {record.isSystem && (
-                <span style={{ 
-                  color: '#1890ff',
-                  border: '1px solid #1890ff',
-                  padding: '0 4px',
-                  borderRadius: '2px',
-                  lineHeight: '14px',
-                  height: '16px',
-                  display: 'inline-flex',
-                  alignItems: 'center'
-                }}>
-                  系统权限
-                </span>
-              )}
-            </div>
-            <span style={{ 
-              color: '#999',
-              fontWeight: 400
-            }}>
-              {record.permissionNameEn}
-            </span>
-          </div>
-        </div>
+        <Space direction="vertical" size={1}>
+          <Space>
+            <span>{text}</span>
+            {record.isSystem && (
+              <span style={{
+                display: 'inline-block',
+                height: '20px',
+                padding: '0 8px',
+                fontSize: '12px',
+                lineHeight: '20px',
+                borderRadius: '4px',
+                background: 'rgba(24, 144, 255, 0.1)',
+                border: '1px solid rgba(24, 144, 255, 0.2)',
+                color: '#1890ff'
+              }}>系统权限</span>
+            )}
+          </Space>
+          <span type="secondary">{record.permissionNameEn}</span>
+        </Space>
       )
     },
     {
@@ -330,54 +286,173 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
     );
   };
 
+  // 添加响应式样式
+  const responsiveStyles = `
+    .filter-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      border-radius: 8px;
+      gap: 16px;
+    }
+
+    .filter-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media screen and (max-width: 768px) {
+      .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .filter-left {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .search-input {
+        width: 100% !important;
+      }
+
+      .filter-radio-group {
+        width: 100%;
+      }
+    }
+
+    .permission-tree .ant-tree-treenode {
+      width: 100%;
+      padding: 4px 8px !important;
+      border-radius: 4px;
+    }
+
+    .permission-tree .ant-tree-node-content-wrapper {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .permission-tree .ant-tree-node-content-wrapper:hover {
+      background: transparent;
+    }
+
+    .permission-tree .ant-tree-treenode:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .permission-tree .ant-tree-node-selected {
+      background-color: transparent !important;
+    }
+
+    .permission-tree .ant-tree-indent-unit {
+      width: 24px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .tree-node-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      
+      .tree-node-content > div:last-child {
+        margin-left: 0;
+      }
+    }
+  `;
+
   return (
     <Modal
       title={
-        <div className="modal-title">
-          <div>配置权限</div>
-          <div>当前角色：{roleName}</div>
-        </div>
+        <Space direction="vertical" size={4} style={{ width: '100%' }}>
+          <div style={{ fontSize: '16px', fontWeight: 500 }}>配置权限</div>
+          <div style={{ 
+            fontSize: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px' 
+          }}>
+            <span>当前角色：</span>
+            <Tag>{roleName}</Tag>
+          </div>
+        </Space>
       }
       open={visible}
       onCancel={onCancel}
       onOk={handleOk}
-      width={800}
+      width={1200}
       confirmLoading={loading}
+      bodyStyle={{ 
+        padding: '24px',
+        maxHeight: 'calc(100vh - 300px)',  // 调整为更小的高度，确保能看到整个模态框
+        overflow: 'hidden'
+      }}
     >
+      <style>{responsiveStyles}</style>
       <Spin spinning={loading}>
-        <Space direction="vertical" style={{ width: '100%' }} size="small">
-          <div className="header-container">
-            <Space size="small">
+        <Space 
+          direction="vertical" 
+          style={{ 
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+          }} 
+          size={16}
+        >
+          <div className="filter-container">
+            <div className="filter-left">
               <Input
+                className="search-input"
                 placeholder="搜索权限名称/描述"
                 prefix={<SearchOutlined />}
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
-                size="small"
                 allowClear
+                style={{ 
+                  width: '280px',
+                  borderRadius: '6px'
+                }}
               />
               <Radio.Group
+                className="filter-radio-group"
                 value={filterType}
                 onChange={e => setFilterType(e.target.value)}
                 optionType="button"
                 buttonStyle="solid"
-                size="small"
+                style={{ 
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px'
+                }}
               >
-                <Radio.Button value="all">全部</Radio.Button>
-                <Radio.Button value="menu"><MenuOutlined /> 菜单</Radio.Button>
-                <Radio.Button value="api"><ApiOutlined /> 接口</Radio.Button>
-                <Radio.Button value="button"><ControlOutlined /> 按钮</Radio.Button>
-                <Radio.Button value="business"><AppstoreOutlined /> 业务</Radio.Button>
+                <Radio.Button value="all" style={{ borderRadius: '6px' }}>全部</Radio.Button>
+                <Radio.Button value="menu" style={{ borderRadius: '6px' }}><MenuOutlined /> 菜单</Radio.Button>
+                <Radio.Button value="api" style={{ borderRadius: '6px' }}><ApiOutlined /> 接口</Radio.Button>
+                <Radio.Button value="button" style={{ borderRadius: '6px' }}><ControlOutlined /> 按钮</Radio.Button>
+                <Radio.Button value="business" style={{ borderRadius: '6px' }}><AppstoreOutlined /> 业务</Radio.Button>
               </Radio.Group>
-            </Space>
-            <div className="selected-count">
-              已选择 {selectedPermissions.length} 项权限
             </div>
+            <Badge count={selectedPermissions.length}>
+              <Tag style={{ margin: 0 }}>已选择权限</Tag>
+            </Badge>
           </div>
 
-          <div className="content-container" onWheel={handleWheel}>
+          <div 
+            style={{ 
+              flex: 1,
+              minHeight: '400px',
+              height: 'calc(100vh - 500px)',
+              overflow: 'hidden',
+              borderRadius: '8px',
+            }}
+          >
             {showAsTree ? (
-              <div className="tree-container">
+              <div style={{ height: '100%', overflow: 'auto' }}>
                 <Tree
                   checkable
                   checkedKeys={selectedPermissions}
@@ -386,24 +461,32 @@ const RolePermissionModal = ({ visible, onCancel, roleId, roleName }) => {
                   filterTreeNode={filterTreeNode}
                   showLine={{ showLeafIcon: false }}
                   checkStrictly={true}
+                  style={{ 
+                    padding: '12px'
+                  }}
+                  className="permission-tree"
                 />
               </div>
             ) : (
-              <Table
-                rowSelection={{
-                  type: 'checkbox',
-                  selectedRowKeys: Array.isArray(selectedPermissions) 
-                    ? selectedPermissions 
-                    : (selectedPermissions.checked || []),
-                  onChange: (selectedRowKeys) => setSelectedPermissions(selectedRowKeys)
-                }}
-                columns={columns}
-                dataSource={listData}
-                rowKey="id"
-                size="small"
-                pagination={false}
-                scroll={{ y: 400 }}
-              />
+              <div style={{ height: '100%', overflow: 'auto' }}> {/* 添加滚动容器 */}
+                <Table
+                  rowSelection={{
+                    type: 'checkbox',
+                    selectedRowKeys: Array.isArray(selectedPermissions) 
+                      ? selectedPermissions 
+                      : (selectedPermissions.checked || []),
+                    onChange: (selectedRowKeys) => setSelectedPermissions(selectedRowKeys)
+                  }}
+                  columns={columns}
+                  dataSource={listData}
+                  rowKey="id"
+                  size="middle"
+                  pagination={false}
+                  style={{ 
+                    borderRadius: '8px'
+                  }}
+                />
+              </div>
             )}
           </div>
         </Space>

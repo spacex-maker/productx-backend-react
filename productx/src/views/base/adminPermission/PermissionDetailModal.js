@@ -46,13 +46,12 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
       open={isVisible}
       onCancel={onCancel}
       footer={null}
-      width={600}
+      width={800}
     >
       <Descriptions
         bordered
+        column={1}
         size="small"
-        column={2}
-        labelStyle={{ width: '100px' }}
       >
         <Descriptions.Item label="权限ID">{permissionDetail?.id}</Descriptions.Item>
         <Descriptions.Item label="权限类型">{getTypeTag(permissionDetail?.type)}</Descriptions.Item>
@@ -60,12 +59,12 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
         <Descriptions.Item label="英文名称">{permissionDetail?.permissionNameEn}</Descriptions.Item>
         <Descriptions.Item label="权限描述" span={2}>{permissionDetail?.description}</Descriptions.Item>
         <Descriptions.Item label="启用状态">
-          <Tag color={permissionDetail?.status ? '#52c41a' : '#f5222d'} style={{ fontSize: '10px' }}>
+          <Tag color={permissionDetail?.status ? '#52c41a' : '#f5222d'}>
             {permissionDetail?.status ? '启用' : '禁用'}
           </Tag>
         </Descriptions.Item>
         <Descriptions.Item label="系统权限">
-          <Tag color={permissionDetail?.isSystem ? '#1890ff' : '#d9d9d9'} style={{ fontSize: '10px' }}>
+          <Tag color={permissionDetail?.isSystem ? '#1890ff' : '#d9d9d9'}>
             {permissionDetail?.isSystem ? '是' : '否'}
           </Tag>
         </Descriptions.Item>
