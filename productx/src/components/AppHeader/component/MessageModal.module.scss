@@ -51,19 +51,41 @@
 .detailModal {
   :global {
     .ant-modal-body {
-      padding: 16px;
+      padding: 12px;
+    }
+    .ant-modal-header {
+      padding: 12px;
+      margin-bottom: 0;
     }
   }
 }
 
 .detailTitle {
-  font-size: 14px;
+  font-size: 13px;
+  
+  :global {
+    .ant-tag {
+      margin: 0 0 0 8px;
+      padding: 0 6px;
+      font-size: 12px;
+      line-height: 18px;
+    }
+    
+    .ant-badge {
+      font-size: 12px;
+      
+      .ant-badge-status-dot {
+        width: 6px;
+        height: 6px;
+      }
+    }
+  }
 }
 
 .messageDetail {
   .messageHeader {
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: 1px solid #f0f0f0;
 
     .messageInfo {
@@ -71,17 +93,28 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
-        font-size: 13px;
+        font-size: 12px;
         
         .infoItem {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
           
           :global {
             .ant-typography {
-              font-size: 13px;
+              font-size: 12px;
               line-height: 1.5;
+              
+              &.ant-typography-secondary {
+                flex-shrink: 0;
+              }
+            }
+            
+            .ant-tag {
+              margin: 0;
+              padding: 0 4px;
+              line-height: 16px;
+              font-size: 12px;
             }
           }
         }
@@ -91,28 +124,50 @@
 
   .messageContent {
     .messageTags {
-      margin-bottom: 12px;
-      padding-bottom: 12px;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
       border-bottom: 1px dashed #f0f0f0;
+      
+      :global {
+        .ant-typography {
+          font-size: 12px;
+        }
+        
+        .ant-tag {
+          margin: 0 4px;
+          padding: 0 4px;
+          font-size: 12px;
+          line-height: 16px;
+        }
+      }
     }
 
     .messageText {
       white-space: pre-wrap;
-      line-height: 1.5;
-      margin-bottom: 16px;
-      padding: 12px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      padding: 8px 12px;
       border-radius: 4px;
-      font-size: 13px;
-      min-height: 100px;
+      font-size: 12px;
+      min-height: 80px;
+      border: 1px solid #f0f0f0;
     }
 
     .attachments {
-      padding-top: 12px;
+      padding-top: 8px;
       border-top: 1px dashed #f0f0f0;
-      font-size: 13px;
+      font-size: 12px;
 
       .attachmentList {
-        margin-top: 8px;
+        margin-top: 6px;
+        
+        :global {
+          .ant-btn-link {
+            padding: 4px 8px;
+            height: auto;
+            font-size: 12px;
+          }
+        }
       }
     }
   }
