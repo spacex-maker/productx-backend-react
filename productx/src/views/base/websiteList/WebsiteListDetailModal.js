@@ -78,35 +78,40 @@ const WebsiteListDetailModal = ({
       open={isVisible}
       onCancel={onCancel}
       footer={null}
-      width={1200}
-      bodyStyle={{ padding: '16px' }}
+      width={900}
+      bodyStyle={{ padding: '8px' }}
     >
-      <Row gutter={[16, 16]}>
+      <Row gutter={[8, 8]} style={{ fontSize: '12px' }}>
         {/* 基本信息 */}
         <Col span={24}>
-          <Card title={t('basicInformation')}>
-            <Space direction="vertical" size="large" style={{ width: '100%' }}>
-              <Space align="start" size="large">
+          <Card 
+            title={<span style={{ fontSize: '13px' }}>{t('basicInformation')}</span>} 
+            size="small" 
+            bodyStyle={{ padding: '8px' }}
+            headStyle={{ padding: '0 8px', minHeight: '32px' }}
+          >
+            <Space direction="vertical" size="small" style={{ width: '100%' }}>
+              <Space align="start" size="small">
                 <Avatar
                   src={websiteData?.logoUrl}
                   alt={websiteData?.name}
-                  size={80}
+                  size={48}
                   shape="square"
                   style={{
                     backgroundColor: '#f5f5f5',
-                    padding: 4,
+                    padding: 2,
                     border: '1px solid #d9d9d9'
                   }}
                   icon={<GlobalOutlined />}
                 />
                 <div>
-                  <Title level={3} style={{ margin: 0 }}>{websiteData?.name}</Title>
-                  <Space>
+                  <Title level={5} style={{ margin: 0 }}>{websiteData?.name}</Title>
+                  <Space size="small">
                     <a href={websiteData?.url} target="_blank" rel="noopener noreferrer">
                       <LinkOutlined /> {websiteData?.url}
                     </a>
                     {websiteData?.isVerified === 1 && (
-                      <Tag icon={<CheckCircleOutlined />} color="blue">
+                      <Tag icon={<CheckCircleOutlined />} color="blue" style={{ marginInlineStart: '0' }}>
                         {t('verified')}
                       </Tag>
                     )}
@@ -114,12 +119,12 @@ const WebsiteListDetailModal = ({
                 </div>
               </Space>
 
-              <Paragraph>{websiteData?.description}</Paragraph>
+              <Paragraph style={{ margin: 0, fontSize: '12px' }} ellipsis={{ rows: 2 }}>{websiteData?.description}</Paragraph>
 
-              <Row gutter={16}>
+              <Row gutter={8}>
                 <Col span={8}>
-                  <Card   title={t('classification')}>
-                    <Descriptions column={1}  >
+                  <Card size="small" title={t('classification')} bodyStyle={{ padding: '8px' }}>
+                    <Descriptions column={1} size="small" contentStyle={{ paddingBottom: '4px', fontSize: '12px' }} labelStyle={{ fontSize: '12px' }}>
                       <Descriptions.Item label={t('mainCategory')}>
                         <Tag color="blue">{websiteData?.category}</Tag>
                       </Descriptions.Item>
@@ -129,7 +134,7 @@ const WebsiteListDetailModal = ({
                       <Descriptions.Item label={t('tags')}>
                         <Space wrap>
                           {websiteData?.tags?.split(',').map(tag => (
-                            <Tag key={tag}>{tag}</Tag>
+                            <Tag key={tag} style={{ fontSize: '12px', padding: '0 4px' }}>{tag}</Tag>
                           ))}
                         </Space>
                       </Descriptions.Item>
@@ -138,8 +143,8 @@ const WebsiteListDetailModal = ({
                 </Col>
 
                 <Col span={8}>
-                  <Card   title={t('businessInfo')}>
-                    <Descriptions column={1}  >
+                  <Card size="small" title={t('businessInfo')} bodyStyle={{ padding: '8px' }}>
+                    <Descriptions column={1} size="small" contentStyle={{ paddingBottom: '4px', fontSize: '12px' }} labelStyle={{ fontSize: '12px' }}>
                       <Descriptions.Item label={t('companyName')}>
                         {websiteData?.companyName}
                       </Descriptions.Item>
@@ -154,8 +159,8 @@ const WebsiteListDetailModal = ({
                 </Col>
 
                 <Col span={8}>
-                  <Card   title={t('contact')}>
-                    <Descriptions column={1}  >
+                  <Card size="small" title={t('contact')} bodyStyle={{ padding: '8px' }}>
+                    <Descriptions column={1} size="small" contentStyle={{ paddingBottom: '4px', fontSize: '12px' }} labelStyle={{ fontSize: '12px' }}>
                       <Descriptions.Item label={t('email')}>
                         <MailOutlined /> {websiteData?.contactEmail}
                       </Descriptions.Item>
@@ -175,51 +180,62 @@ const WebsiteListDetailModal = ({
 
         {/* 统计数据 */}
         <Col span={24}>
-          <Card title={t('statisticalData')}>
-            <Row gutter={[16, 16]}>
+          <Card 
+            title={<span style={{ fontSize: '13px' }}>{t('statisticalData')}</span>}
+            size="small" 
+            bodyStyle={{ padding: '8px' }}
+            headStyle={{ padding: '0 8px', minHeight: '32px' }}
+          >
+            <Row gutter={[8, 8]}>
               <Col span={4}>
                 <Statistic
-                  title={t('userRating')}
+                  title={<span style={{ fontSize: '12px' }}>{t('userRating')}</span>}
                   value={websiteData?.userRating}
                   suffix="/5"
                   precision={1}
                   prefix={<StarOutlined />}
+                  valueStyle={{ fontSize: '14px' }}
                 />
               </Col>
               <Col span={4}>
                 <Statistic
-                  title={t('ratingCount')}
+                  title={<span style={{ fontSize: '12px' }}>{t('ratingCount')}</span>}
                   value={websiteData?.ratingCount}
                   prefix={<StarOutlined />}
+                  valueStyle={{ fontSize: '14px' }}
                 />
               </Col>
               <Col span={4}>
                 <Statistic
-                  title={t('views')}
+                  title={<span style={{ fontSize: '12px' }}>{t('views')}</span>}
                   value={websiteData?.views}
                   prefix={<EyeOutlined />}
+                  valueStyle={{ fontSize: '14px' }}
                 />
               </Col>
               <Col span={4}>
                 <Statistic
-                  title={t('averageVisitTime')}
+                  title={<span style={{ fontSize: '12px' }}>{t('averageVisitTime')}</span>}
                   value={websiteData?.averageVisitTime}
                   suffix="s"
                   prefix={<ClockCircleOutlined />}
+                  valueStyle={{ fontSize: '14px' }}
                 />
               </Col>
               <Col span={4}>
                 <Statistic
-                  title={t('likes')}
+                  title={<span style={{ fontSize: '12px' }}>{t('likes')}</span>}
                   value={websiteData?.likes}
                   prefix={<LikeOutlined />}
+                  valueStyle={{ fontSize: '14px' }}
                 />
               </Col>
               <Col span={4}>
                 <Statistic
-                  title={t('shares')}
+                  title={<span style={{ fontSize: '12px' }}>{t('shares')}</span>}
                   value={websiteData?.shares}
                   prefix={<ShareAltOutlined />}
+                  valueStyle={{ fontSize: '14px' }}
                 />
               </Col>
             </Row>
@@ -228,7 +244,12 @@ const WebsiteListDetailModal = ({
 
         {/* 特性和支持 */}
         <Col span={12}>
-          <Card title={t('features')}  >
+          <Card 
+            title={<span style={{ fontSize: '13px' }}>{t('features')}</span>}
+            size="small" 
+            bodyStyle={{ padding: '8px' }}
+            headStyle={{ padding: '0 8px', minHeight: '32px' }}
+          >
             <Space wrap>
               {websiteData?.hasMobileSupport === 1 && (
                 <Tag icon={<MobileOutlined />} color="blue">{t('mobileSupport')}</Tag>
@@ -251,7 +272,7 @@ const WebsiteListDetailModal = ({
 
         {/* 社交媒体 */}
         <Col span={12}>
-          <Card title={t('socialMedia')}  >
+          <Card title={t('socialMedia')} size="small" bodyStyle={{ padding: '8px' }}>
             <Space wrap>
               {socialLinks.twitter && (
                 <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer">
@@ -299,8 +320,8 @@ const WebsiteListDetailModal = ({
 
         {/* SEO信息 */}
         <Col span={24}>
-          <Card title={t('seoInfo')}  >
-            <Descriptions column={1}  >
+          <Card title={t('seoInfo')} size="small" bodyStyle={{ padding: '8px' }}>
+            <Descriptions column={1} size="small" contentStyle={{ paddingBottom: '4px', fontSize: '12px' }} labelStyle={{ fontSize: '12px' }}>
               <Descriptions.Item label={t('seoTitle')}>
                 {websiteData?.seoTitle}
               </Descriptions.Item>
@@ -316,15 +337,15 @@ const WebsiteListDetailModal = ({
 
         {/* 备注 */}
         <Col span={24}>
-          <Card title={t('notes')}  >
+          <Card title={t('notes')} size="small" bodyStyle={{ padding: '8px' }}>
             <Paragraph>{websiteData?.notes}</Paragraph>
           </Card>
         </Col>
 
         {/* 添加时间信息卡片 */}
         <Col span={24}>
-          <Card title={t('timeInfo')}  >
-            <Row gutter={16}>
+          <Card title={t('timeInfo')} size="small" bodyStyle={{ padding: '8px' }}>
+            <Row gutter={8}>
               <Col span={8}>
                 <Statistic
                   title={t('createTime')}
@@ -352,7 +373,7 @@ const WebsiteListDetailModal = ({
 
         {/* 添加应用链接卡片 */}
         <Col span={24}>
-          <Card title={t('appLinks')}  >
+          <Card title={t('appLinks')} size="small" bodyStyle={{ padding: '8px' }}>
             <Space wrap>
               {websiteData?.androidAppUrl && (
                 <a href={websiteData.androidAppUrl} target="_blank" rel="noopener noreferrer">
@@ -381,8 +402,8 @@ const WebsiteListDetailModal = ({
 
         {/* 添加其他信息卡片 */}
         <Col span={24}>
-          <Card title={t('additionalInfo')}  >
-            <Descriptions column={2}  >
+          <Card title={t('additionalInfo')} size="small" bodyStyle={{ padding: '8px' }}>
+            <Descriptions column={2} size="small" contentStyle={{ paddingBottom: '4px', fontSize: '12px' }} labelStyle={{ fontSize: '12px' }}>
               <Descriptions.Item label={t('trafficSource')}>
                 <Tag color="orange">{websiteData?.trafficSource}</Tag>
               </Descriptions.Item>
