@@ -36,6 +36,71 @@ import { AppHeaderDropdown, AppBreadcrumb } from './component';
 import MessageModal from './component/MessageModal';
 import appHeaderStyle from './index.module.scss';
 
+const StyledButton = styled(CButton)`
+  color: var(--cui-body-color);
+  
+  &:hover {
+    color: var(--cui-btn-hover-color);
+    background: var(--cui-btn-hover-bg);
+  }
+
+  &:active {
+    color: var(--cui-btn-active-color);
+    background: var(--cui-btn-active-bg);
+  }
+`;
+
+const StyledLanguageMenu = styled(CDropdownMenu)`
+  min-width: 240px;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08);
+`;
+
+const LanguageItem = styled(CDropdownItem)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  margin: 2px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background: var(--cui-btn-hover-bg);
+  }
+
+  &.active {
+    background: var(--cui-primary);
+    color: white;
+
+    .usage-count {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+  }
+
+  .language-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .language-name {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .usage-count {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--cui-tertiary-bg);
+    color: var(--cui-body-color);
+  }
+`;
+
 const AppHeader = () => {
   const headerRef = useRef(null);
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
@@ -103,6 +168,30 @@ const AppHeader = () => {
 
   const handleOpenAIChat = () => {
     dispatch(toggleFloating(true));
+  };
+
+  // 获取当前语言
+  const currentLang = i18n.language;
+  
+  // 对语言列表进行排序
+  const sortedLanguages = [...supportedLanguages].sort((a, b) => {
+    // 首先按使用人数降序
+    if (b.usageCount !== a.usageCount) {
+      return b.usageCount - a.usageCount;
+    }
+    // 如果使用人数相同，按语言名称排序
+    return a.languageNameEn.localeCompare(b.languageNameEn);
+  });
+
+  // 格式化使用人数
+  const formatUsageCount = (count) => {
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    }
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    }
+    return count.toString();
   };
 
   return (
@@ -194,15 +283,34 @@ const AppHeader = () => {
           </CDropdown>
           <CDropdown variant="nav-item" placement="bottom-end">
             <CDropdownToggle caret={false}>
-              <CIcon icon={cilLanguage} size="lg" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CIcon icon={cilLanguage} size="lg" />
+                <span style={{ 
+                  fontSize: '14px',
+                  fontWeight: 500
+                }}>
+                  {sortedLanguages.find(lang => lang.languageCode === currentLang)?.languageNameNative || ''}
+                </span>
+              </div>
             </CDropdownToggle>
-            <CDropdownMenu>
-              {supportedLanguages.map((lang) => (
-                <CDropdownItem key={lang.id} onClick={() => changeLanguage(lang.languageCode)}>
-                  {lang.languageNameNative}
-                </CDropdownItem>
+            <StyledLanguageMenu>
+              {sortedLanguages.map((lang) => (
+                <LanguageItem 
+                  key={lang.id} 
+                  onClick={() => changeLanguage(lang.languageCode)}
+                  className={currentLang === lang.languageCode ? 'active' : ''}
+                >
+                  <div className="language-info">
+                    <span className="language-name">
+                      {lang.languageNameNative}
+                    </span>
+                  </div>
+                  <span className="usage-count" title={`${lang.usageCount} users`}>
+                    {formatUsageCount(lang.usageCount)}
+                  </span>
+                </LanguageItem>
               ))}
-            </CDropdownMenu>
+            </StyledLanguageMenu>
           </CDropdown>
           <AppHeaderDropdown />
         </CHeaderNav>
@@ -216,19 +324,5 @@ const AppHeader = () => {
     </CHeader>
   );
 };
-
-const StyledButton = styled(CButton)`
-  color: var(--cui-body-color);
-  
-  &:hover {
-    color: var(--cui-btn-hover-color);
-    background: var(--cui-btn-hover-bg);
-  }
-
-  &:active {
-    color: var(--cui-btn-active-color);
-    background: var(--cui-btn-active-bg);
-  }
-`;
 
 export default AppHeader;
