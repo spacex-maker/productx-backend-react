@@ -18,7 +18,6 @@
 
 .searchSection {
   margin-bottom: 12px;
-  background: #fafafa;
   padding: 12px;
   border-radius: 4px;
 
@@ -36,7 +35,6 @@
 .messageTable {
   :global {
     .ant-table-thead > tr > th {
-      background: #fafafa;
       padding: 8px;
     }
     
@@ -102,7 +100,6 @@
       white-space: pre-wrap;
       line-height: 1.5;
       margin-bottom: 16px;
-      background: #fafafa;
       padding: 12px;
       border-radius: 4px;
       font-size: 13px;
