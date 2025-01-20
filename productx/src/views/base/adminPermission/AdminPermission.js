@@ -168,25 +168,25 @@ const AdminPermission = () => {
                 dropdownMatchSelectWidth={false}
               >
                 <Select.Option value={1}>
-                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <MenuOutlined style={{ marginRight: '4px', color: '#1890ff' }} />
                     <span style={{ color: '#1890ff' }}>菜单</span>
                   </div>
                 </Select.Option>
                 <Select.Option value={2}>
-                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <ApiOutlined style={{ marginRight: '4px', color: '#52c41a' }} />
                     <span style={{ color: '#52c41a' }}>接口</span>
                   </div>
                 </Select.Option>
                 <Select.Option value={3}>
-                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <ControlOutlined style={{ marginRight: '4px', color: '#722ed1' }} />
                     <span style={{ color: '#722ed1' }}>按钮</span>
                   </div>
                 </Select.Option>
                 <Select.Option value={4}>
-                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <AppstoreOutlined style={{ marginRight: '4px', color: '#fa8c16' }} />
                     <span style={{ color: '#fa8c16' }}>业务</span>
                   </div>

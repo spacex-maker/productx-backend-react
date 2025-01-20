@@ -346,6 +346,19 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
     setShowSessions(!isFloating);
   }, [isFloating]);
 
+  // 添加格式化时间的函数
+  const formatTime = (timeString) => {
+    const date = new Date(timeString);
+    return date.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).replace(/\//g, '-');
+  };
+
   // 如果没有密钥，显示加载状态
   if (!apiKey) {
     return (
@@ -443,7 +456,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
                   {session.title || t('untitledChat')}
                 </SessionTitle>
                 <SessionTime>
-                  {new Date(session.createTime).toLocaleDateString()}
+                  {formatTime(session.createTime)}
                 </SessionTime>
               </SessionItem>
             ))}

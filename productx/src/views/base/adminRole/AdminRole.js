@@ -52,7 +52,7 @@ const AdminRole = () => {
         params: { currentPage, size: pageSize, ...filteredParams },
       });
 
-      if (response && response.data) {
+      if (response) {
         setData(response.data); // 更新数据结构
         setTotalNum(response.totalNum); // 获取总记录数
       } else {

@@ -50,80 +50,31 @@ const PermissionTable = ({
     switch (type) {
       case 1:
         return (
-          <Tag
-            color="#1890ff"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '10px',
-              lineHeight: '16px',
-              padding: '0 4px',
-            }}
-          >
-            <MenuOutlined style={{ marginRight: '4px' }} />
-            菜单
+          <Tag color="#1890ff" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <MenuOutlined style={{ marginRight: '4px' }} />菜单
           </Tag>
         );
       case 2:
         return (
-          <Tag
-            color="#52c41a"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '10px',
-              lineHeight: '16px',
-              padding: '0 4px',
-            }}
-          >
-            <ApiOutlined style={{ marginRight: '4px' }} />
-            接口
+          <Tag color="#52c41a" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <ApiOutlined style={{ marginRight: '4px' }} />接口
           </Tag>
         );
       case 3:
         return (
-          <Tag
-            color="#722ed1"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '10px',
-              lineHeight: '16px',
-              padding: '0 4px',
-            }}
-          >
-            <ControlOutlined style={{ marginRight: '4px' }} />
-            按钮
+          <Tag color="#722ed1" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <ControlOutlined style={{ marginRight: '4px' }} />按钮
           </Tag>
         );
       case 4:
         return (
-          <Tag
-            color="#fa8c16"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '10px',
-              lineHeight: '16px',
-              padding: '0 4px',
-            }}
-          >
-            <AppstoreOutlined style={{ marginRight: '4px' }} />
-            业务
+          <Tag color="#fa8c16" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <AppstoreOutlined style={{ marginRight: '4px' }} />业务
           </Tag>
         );
       default:
         return (
-          <Tag
-            color="#bfbfbf"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontSize: '10px',
-              lineHeight: '16px',
-              padding: '0 4px',
-            }}
-          >
+          <Tag color="#bfbfbf" style={{ display: 'inline-flex', alignItems: 'center' }}>
             未知
           </Tag>
         );

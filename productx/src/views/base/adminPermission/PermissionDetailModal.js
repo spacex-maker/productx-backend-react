@@ -38,7 +38,7 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
   return (
     <Modal
       title={
-        <div style={{ fontSize: '12px', fontWeight: 500 }}>
+        <div>
           <InfoCircleOutlined style={{ marginRight: '4px' }} />
           权限详情
         </div>
@@ -52,8 +52,7 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
         bordered
         size="small"
         column={2}
-        labelStyle={{ width: '100px', fontSize: '10px' }}
-        contentStyle={{ fontSize: '10px' }}
+        labelStyle={{ width: '100px' }}
       >
         <Descriptions.Item label="权限ID">{permissionDetail?.id}</Descriptions.Item>
         <Descriptions.Item label="权限类型">{getTypeTag(permissionDetail?.type)}</Descriptions.Item>
@@ -75,35 +74,6 @@ const PermissionDetailModal = ({ isVisible, onCancel, permissionDetail }) => {
         <Descriptions.Item label="创建时间">{formatDate(permissionDetail?.createTime) || '-'}</Descriptions.Item>
         <Descriptions.Item label="更新时间">{formatDate(permissionDetail?.updateTime) || '-'}</Descriptions.Item>
       </Descriptions>
-
-      <style jsx global>{`
-        .ant-modal-header {
-          padding: 12px 24px !important;
-          border-bottom: 1px solid #f0f0f0;
-        }
-
-        .ant-descriptions-header {
-          margin-bottom: 8px !important;
-        }
-
-        .ant-descriptions-item-label {
-          background-color: #fafafa !important;
-          font-weight: 500 !important;
-        }
-
-        .ant-modal-close {
-          height: 40px !important;
-          width: 40px !important;
-          line-height: 40px !important;
-        }
-
-        .ant-modal-close-x {
-          font-size: 10px !important;
-          width: 40px !important;
-          height: 40px !important;
-          line-height: 40px !important;
-        }
-      `}</style>
     </Modal>
   );
 };
