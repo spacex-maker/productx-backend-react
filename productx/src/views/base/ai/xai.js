@@ -21,7 +21,9 @@ import {
   cilArrowRight,
   cilCommentSquare,
   cilSpeedometer,
-  cilDevices
+  cilDevices,
+  cilChevronLeft,
+  cilList
 } from '@coreui/icons';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -80,6 +82,9 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
   const dispatch = useDispatch();
   const initialPosition = useRef({ x: 0, y: 0 });
   const isDragging = useRef(false);
+  const [sessions, setSessions] = useState([]);
+  const [loadingSession, setLoadingSession] = useState(false);
+  const [showSessions, setShowSessions] = useState(!isFloating);
 
   // 自动滚动到底部
   const scrollToBottom = () => {
@@ -114,22 +119,25 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
   const fetchSessions = async () => {
     try {
       const response = await api.get('/manage/chat/sessions');
-      if (response.data?.success && response.data.data.data.length > 0) {
-        const latestSession = response.data.data.data[0];
+      // 解构出正确的数据层级
+      const sessions = response.data || [];
+      if (sessions && sessions.length > 0) {
+        setSessions(sessions);
+        const latestSession = sessions[0];
         await fetchSessionMessages(latestSession.id);
       }
     } catch (error) {
       console.error('获取会话列表失败:', error);
-      message.error('获取会话列表失败');
+      message.error(t('getSessionsFailed'));
     }
   };
 
   // 获取指定会话的消息历史
   const fetchSessionMessages = async (sessionId) => {
     try {
-      const response = await api.get(`/manage/chat/history/${sessionId}`);
-      if (response) {
-        const formattedMessages = response.data.map(msg => ({
+      const messages = await api.get(`/manage/chat/history/${sessionId}`);
+      if (messages && Array.isArray(messages)) {
+        const formattedMessages = messages.map(msg => ({
           type: msg.role === 'user' ? 'user' : 'ai',
           content: msg.content,
           timestamp: new Date(msg.createTime).toLocaleTimeString()
@@ -139,7 +147,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
       }
     } catch (error) {
       console.error('获取消息历史失败:', error);
-      message.error('获取消息历史失败');
+      message.error(t('getHistoryFailed'));
     }
   };
 
@@ -312,6 +320,32 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
     dispatch(updateFloatingPosition({ x: newX, y: newY }));
   };
 
+  // 修改会话切换处理函数
+  const handleSessionChange = async (sessionId) => {
+    setLoadingSession(true);
+    try {
+      await fetchSessionMessages(sessionId);
+    } finally {
+      setLoadingSession(false);
+    }
+  };
+
+  // 添加新建会话的处理函数
+  const handleNewSession = () => {
+    setSessionId(null);
+    setMessages([]);
+  };
+
+  // 添加切换会话列表显示的处理函数
+  const toggleSessionList = () => {
+    setShowSessions(prev => !prev);
+  };
+
+  // 在浮窗模式改变时更新显示状态
+  useEffect(() => {
+    setShowSessions(!isFloating);
+  }, [isFloating]);
+
   // 如果没有密钥，显示加载状态
   if (!apiKey) {
     return (
@@ -326,6 +360,16 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
   return (
     <StyledCard $isFloating={isFloating}>
       <StyledCardHeader>
+        {isFloating && (
+          <SessionToggleButton
+            color="light"
+            variant="ghost"
+            onClick={toggleSessionList}
+            title={showSessions ? t('hideSessions') : t('showSessions')}
+          >
+            <CIcon icon={showSessions ? cilChevronLeft : cilList} size="sm"/>
+          </SessionToggleButton>
+        )}
         <CIcon icon={cilDevices} size="lg" className="me-2"/>
         <span>{t('aiAssistant')}</span>
         <CBadge color="success" shape="rounded-pill" className="ms-2">
@@ -376,39 +420,76 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
       </StyledCardHeader>
 
       <StyledCardBody>
-        {messages.length === 0 ? (
-          <EmptyState>
-            <CIcon icon={cilCommentSquare} size="3xl" className="text-muted mb-3"/>
-            <div className="text-muted">{t('startNewChat')}</div>
-          </EmptyState>
-        ) : (
-          messages.map((msg, index) => (
-            <MessageBubble key={index} type={msg.type}>
-              {msg.type === 'ai' && (
-                <CAvatar size="sm" color="info" className="me-2">
-                  <CIcon icon={cilCommentSquare} size="sm"/>
-                </CAvatar>
-              )}
-              <MessageContentWrapper type={msg.type}>
-                <StyledMessageContent type={msg.type}>
-                  {msg.content}
-                </StyledMessageContent>
-                <TimeStamp>{msg.timestamp}</TimeStamp>
-              </MessageContentWrapper>
-              {msg.type === 'user' && (
-                <CAvatar size="sm" color="primary" className="ms-2">
-                  <CIcon icon={cilUser} size="sm"/>
-                </CAvatar>
-              )}
-            </MessageBubble>
-          ))
-        )}
-        <div ref={messagesEndRef}/>
-        {loading && (
-          <LoadingWrapper>
-            <CSpinner size="sm"/>
-          </LoadingWrapper>
-        )}
+        <SessionListWrapper $show={showSessions}>
+          <SessionListHeader>
+            <NewSessionButton
+              color="primary"
+              variant="ghost"
+              size="sm"
+              onClick={handleNewSession}
+            >
+              {t('newChat')}
+            </NewSessionButton>
+          </SessionListHeader>
+          <SessionList>
+            {sessions.map((session) => (
+              <SessionItem
+                key={session.id}
+                $active={session.id === sessionId}
+                onClick={() => handleSessionChange(session.id)}
+                disabled={loadingSession}
+              >
+                <SessionTitle>
+                  {session.title || t('untitledChat')}
+                </SessionTitle>
+                <SessionTime>
+                  {new Date(session.createTime).toLocaleDateString()}
+                </SessionTime>
+              </SessionItem>
+            ))}
+          </SessionList>
+        </SessionListWrapper>
+
+        <ChatContentWrapper $fullWidth={!showSessions}>
+          {loadingSession ? (
+            <LoadingWrapper>
+              <CSpinner color="primary" />
+              <LoadingText>{t('loadingMessages')}</LoadingText>
+            </LoadingWrapper>
+          ) : messages.length === 0 ? (
+            <EmptyState>
+              <CIcon icon={cilCommentSquare} size="3xl" className="text-muted mb-3"/>
+              <div className="text-muted">{t('startNewChat')}</div>
+            </EmptyState>
+          ) : (
+            messages.map((msg, index) => (
+              <MessageBubble key={index} type={msg.type}>
+                {msg.type === 'ai' && (
+                  <CAvatar size="sm" color="info" className="me-2">
+                    <CIcon icon={cilCommentSquare} size="sm"/>
+                  </CAvatar>
+                )}
+                <MessageContentWrapper type={msg.type}>
+                  <StyledMessageContent type={msg.type}>
+                    {msg.content}
+                  </StyledMessageContent>
+                  <TimeStamp>{msg.timestamp}</TimeStamp>
+                </MessageContentWrapper>
+                {msg.type === 'user' && (
+                  <CAvatar size="sm" color="primary" className="ms-2">
+                    <CIcon icon={cilUser} size="sm"/>
+                  </CAvatar>
+                )}
+              </MessageBubble>
+            ))
+          )}
+          <div ref={messagesEndRef}/>
+          {loading && (
+            <LoadingWrapper>
+              <CSpinner size="sm"/>
+            </LoadingWrapper>
+          )}
+        </ChatContentWrapper>
       </StyledCardBody>
 
       <StyledCardFooter>
@@ -505,25 +586,26 @@ const StyledCardHeader = styled(CCardHeader)`
 
 const StyledCardBody = styled(CCardBody)`
   flex: 1;
-  overflow-y: auto;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  padding: 0;
   background: var(--cui-body-bg);
+  overflow: hidden;
+  position: relative;
 
   /* 自定义滚动条样式 */
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
+  & > div {
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
 
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--cui-border-color);
-    border-radius: 3px;
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--cui-border-color);
+      border-radius: 3px;
+    }
   }
 `;
 
@@ -605,8 +687,16 @@ const FooterLeftGroup = styled.div`
 
 const LoadingWrapper = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding: 1rem;
+  height: 100%;
+  gap: 1rem;
+`;
+
+const LoadingText = styled.div`
+  color: var(--cui-text-muted);
+  font-size: 0.875rem;
 `;
 
 const MessageImage = styled.img`
@@ -872,6 +962,111 @@ const FloatingButton = styled(CButton)`
     background: var(--cui-btn-active-bg);
     color: var(--cui-btn-active-color);
     border-color: var(--cui-btn-active-border-color);
+  }
+`;
+
+// Add new styled component for session list
+const SessionListWrapper = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  border-right: 1px solid var(--cui-border-color);
+  background: var(--cui-card-cap-bg);
+  transition: transform 0.3s ease;
+  transform: translateX(${props => props.$show ? '0' : '-100%'});
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+`;
+
+const SessionList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  overflow-y: auto;
+  flex: 1;
+`;
+
+const SessionItem = styled.div`
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  background: ${props => props.$active ? 'var(--cui-primary)' : 'transparent'};
+  color: ${props => props.$active ? '#fff' : 'var(--cui-body-color)'};
+  opacity: ${props => props.disabled ? 0.6 : 1};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => !props.disabled && (props.$active ? 'var(--cui-primary)' : 'var(--cui-input-bg)')};
+  }
+`;
+
+const SessionTitle = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const SessionTime = styled.div`
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 4px;
+`;
+
+const ChatContentWrapper = styled.div`
+  position: absolute;
+  left: ${props => props.$fullWidth ? '0' : '200px'};
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 16px;
+  transition: all 0.3s ease;
+  background: var(--cui-body-bg);
+`;
+
+// Add new styled component for session list header
+const SessionListHeader = styled.div`
+  padding: 8px;
+  border-bottom: 1px solid var(--cui-border-color);
+  display: flex;
+  justify-content: center;
+`;
+
+// Add new styled component for new session button
+const NewSessionButton = styled(CButton)`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  
+  &:hover {
+    background: var(--cui-primary);
+    color: white;
+  }
+`;
+
+const SessionToggleButton = styled(CButton)`
+  padding: 6px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateX(2px);
   }
 `;
 
