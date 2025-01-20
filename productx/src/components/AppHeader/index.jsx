@@ -36,17 +36,169 @@ import { AppHeaderDropdown, AppBreadcrumb } from './component';
 import MessageModal from './component/MessageModal';
 import appHeaderStyle from './index.module.scss';
 
+const HeaderItem = styled.div`
+  margin: 0 6px;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 20px;
+    background: var(--cui-border-color);
+    opacity: 0.5;
+  }
+`;
+
 const StyledButton = styled(CButton)`
+  position: relative;
   color: var(--cui-body-color);
+  overflow: hidden;
+  border-radius: 40px;
+  padding: 6px 16px;
+  border: 1px solid rgba(var(--cui-primary-rgb), 0.1);
+  background: rgba(var(--cui-primary-rgb), 0.05);
   
+  ${props => props.$hasUnread && `
+    background: linear-gradient(
+      90deg,
+      rgba(var(--cui-primary-rgb), 0.05),
+      rgba(var(--cui-danger-rgb), 0.1),
+      rgba(var(--cui-info-rgb), 0.1),
+      rgba(var(--cui-primary-rgb), 0.05)
+    );
+    background-size: 300% 100%;
+    animation: gradientMove 3s ease infinite;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transform: translateX(-100%);
+      animation: lightPass 2s ease-in-out infinite;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(
+        90deg,
+        var(--cui-primary),
+        var(--cui-danger),
+        var(--cui-info),
+        var(--cui-primary)
+      );
+      background-size: 300% 100%;
+      animation: gradientBorder 3s ease infinite;
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @keyframes gradientBorder {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @keyframes lightPass {
+      0% {
+        transform: translateX(-200%) skewX(-45deg);
+      }
+      100% {
+        transform: translateX(200%) skewX(-45deg);
+      }
+    }
+
+    .icon {
+      animation: iconPulse 2s ease infinite;
+    }
+
+    @keyframes iconPulse {
+      0%, 100% {
+        transform: scale(1);
+        color: var(--cui-primary);
+      }
+      50% {
+        transform: scale(1.2);
+        color: var(--cui-danger);
+      }
+    }
+  `}
+
   &:hover {
     color: var(--cui-btn-hover-color);
     background: var(--cui-btn-hover-bg);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--cui-primary-rgb), 0.15);
+
+    ${props => props.$hasUnread && `
+      &::after {
+        animation: gradientBorder 1.5s ease infinite;
+      }
+      &::before {
+        animation: lightPass 1s ease-in-out infinite;
+      }
+    `}
+
+    .icon {
+      color: var(--cui-primary);
+      transform: scale(1.1);
+    }
+
+    .text {
+      color: var(--cui-primary);
+    }
   }
 
   &:active {
-    color: var(--cui-btn-active-color);
-    background: var(--cui-btn-active-bg);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(var(--cui-primary-rgb), 0.1);
+  }
+
+  .icon {
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .text {
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 `;
 
@@ -69,6 +221,12 @@ const LanguageItem = styled(CDropdownItem)`
 
   &:hover {
     background: var(--cui-btn-hover-bg);
+    color: var(--cui-btn-hover-color);
+
+    .usage-count {
+      background: var(--cui-primary);
+      color: white;
+    }
   }
 
   &.active {
@@ -78,6 +236,10 @@ const LanguageItem = styled(CDropdownItem)`
     .usage-count {
       background: rgba(255, 255, 255, 0.2);
       color: white;
+    }
+
+    &:hover {
+      background: var(--cui-primary-hover);
     }
   }
 
@@ -98,6 +260,41 @@ const LanguageItem = styled(CDropdownItem)`
     border-radius: 10px;
     background: var(--cui-tertiary-bg);
     color: var(--cui-body-color);
+    transition: all 0.3s;
+  }
+`;
+
+const WelcomeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 40px;
+  background: rgba(var(--cui-primary-rgb), 0.05);
+  border: 1px solid rgba(var(--cui-primary-rgb), 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: var(--cui-btn-hover-bg);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--cui-primary-rgb), 0.15);
+
+    .welcome-text, .admin-name {
+      color: var(--cui-primary);
+    }
+  }
+
+  .welcome-text {
+    color: var(--cui-body-color);
+    font-size: 13px;
+    transition: all 0.3s;
+  }
+
+  .admin-name {
+    color: var(--cui-body-color);
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
   }
 `;
 
@@ -204,121 +401,130 @@ const AppHeader = () => {
           <AppBreadcrumb />
         </CHeaderNav>
         <CHeaderNav className="ms-3 d-flex align-items-center">
-          <CNavItem>
+          <HeaderItem>
             <StyledButton 
-              color="light" 
-              variant="ghost"
-              className="p-2"
               onClick={handleOpenAIChat}
-              title="打开 AI 助手"
+              title={t('openAIAssistant')}
             >
-              <RobotOutlined style={{ fontSize: '1.25rem' }} />
-            </StyledButton>
-          </CNavItem>
-          <CNavItem>
-            <Badge count={unreadCount || 0} offset={[-5, 5]}>
-              <Button color="primary" onClick={() => setMessageModalVisible(true)} variant="link">
-                <CIcon icon={cilEnvelopeOpen} size="lg" />
-              </Button>
-            </Badge>
-          </CNavItem>
-          <CNavItem>
-            <div className="nav-link">
-              <span
-                style={{
-                  marginRight: '15px',
-                  color: colorMode === 'dark' ? '#fff' : '#333',
-                  fontSize: '14px',
-                  lineHeight: '40px',
-                }}
-              >
-                {currentUser?.username
-                  ? `${t('welcome')}, ${currentUser.username}`
-                  : t('notLoggedIn')}
-              </span>
-            </div>
-          </CNavItem>
-          <CDropdown variant="nav-item" placement="bottom-end">
-            <CDropdownToggle caret={false}>
-              {colorMode === 'dark' ? (
-                <CIcon icon={cilMoon} size="lg" />
-              ) : colorMode === 'auto' ? (
-                <CIcon icon={cilContrast} size="lg" />
-              ) : (
-                <CIcon icon={cilSun} size="lg" />
-              )}
-            </CDropdownToggle>
-            <CDropdownMenu>
-              <CDropdownItem
-                active={colorMode === 'light'}
-                className="d-flex align-items-center"
-                as="button"
-                type="button"
-                onClick={onChangeTheme.bind(null, 'light')}
-              >
-                <CIcon className="me-2" icon={cilSun} size="lg" />
-                明亮
-              </CDropdownItem>
-              <CDropdownItem
-                active={colorMode === 'dark'}
-                className="d-flex align-items-center"
-                as="button"
-                type="button"
-                onClick={onChangeTheme.bind(null, 'dark')}
-              >
-                <CIcon className="me-2" icon={cilMoon} size="lg" />
-                暗黑
-              </CDropdownItem>
-              <CDropdownItem
-                active={colorMode === 'auto'}
-                className="d-flex align-items-center"
-                as="button"
-                type="button"
-                onClick={onChangeTheme.bind(null, 'auto')}
-              >
-                <CIcon className="me-2" icon={cilContrast} size="lg" />
-                自动
-              </CDropdownItem>
-            </CDropdownMenu>
-          </CDropdown>
-          <CDropdown variant="nav-item" placement="bottom-end">
-            <CDropdownToggle caret={false}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CIcon icon={cilLanguage} size="lg" />
-                <span style={{ 
-                  fontSize: '14px',
-                  fontWeight: 500
-                }}>
-                  {sortedLanguages.find(lang => lang.languageCode === currentLang)?.languageNameNative || ''}
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px'
+              }}>
+                <RobotOutlined className="icon" style={{ fontSize: '16px' }} />
+                <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+                  {t('aiAssistant')}
                 </span>
               </div>
-            </CDropdownToggle>
-            <StyledLanguageMenu>
-              {sortedLanguages.map((lang) => (
-                <LanguageItem 
-                  key={lang.id} 
-                  onClick={() => changeLanguage(lang.languageCode)}
-                  className={currentLang === lang.languageCode ? 'active' : ''}
-                >
-                  <div className="language-info">
-                    <span className="language-name">
-                      {lang.languageNameNative}
+            </StyledButton>
+          </HeaderItem>
+
+          <HeaderItem>
+            <StyledButton 
+              onClick={() => setMessageModalVisible(true)}
+              title={t('messages')}
+              $hasUnread={unreadCount > 0}
+            >
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px'
+              }}>
+                <CIcon 
+                  icon={cilEnvelopeOpen} 
+                  className="icon" 
+                  style={{ fontSize: '16px' }} 
+                />
+                <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+                  {t('messages')}
+                  {unreadCount > 0 && (
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginLeft: '6px',
+                      background: 'var(--cui-danger)',
+                      color: 'white',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      height: '18px',
+                      minWidth: '18px',
+                      padding: '0 5px',
+                      borderRadius: '9px',
+                      lineHeight: 1
+                    }}>
+                      {unreadCount}
+                    </span>
+                  )}
+                </span>
+              </div>
+            </StyledButton>
+          </HeaderItem>
+
+          <HeaderItem>
+            <WelcomeWrapper>
+              <span className="welcome-text">{t('welcome')}</span>
+              <span className="admin-name">
+                {currentUser?.username || t('notLoggedIn')}
+              </span>
+            </WelcomeWrapper>
+          </HeaderItem>
+
+          <HeaderItem>
+            <StyledButton onClick={onChangeTheme.bind(null, colorMode === 'dark' ? 'light' : 'dark')}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CIcon 
+                  icon={colorMode === 'dark' ? cilMoon : cilSun} 
+                  className="icon"
+                  style={{ fontSize: '16px' }} 
+                />
+                <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+                  {colorMode === 'dark' ? t('darkMode') : t('lightMode')}
+                </span>
+              </div>
+            </StyledButton>
+          </HeaderItem>
+
+          <HeaderItem>
+            <CDropdown variant="nav-item" placement="bottom-end">
+              <CDropdownToggle caret={false}>
+                <StyledButton>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <CIcon icon={cilLanguage} className="icon" style={{ fontSize: '16px' }} />
+                    <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+                      {sortedLanguages.find(lang => lang.languageCode === currentLang)?.languageNameNative}
                     </span>
                   </div>
-                  <span className="usage-count" title={`${lang.usageCount} users`}>
-                    {formatUsageCount(lang.usageCount)}
-                  </span>
-                </LanguageItem>
-              ))}
-            </StyledLanguageMenu>
-          </CDropdown>
+                </StyledButton>
+              </CDropdownToggle>
+              <StyledLanguageMenu>
+                {sortedLanguages.map((lang) => (
+                  <LanguageItem 
+                    key={lang.id} 
+                    onClick={() => changeLanguage(lang.languageCode)}
+                    className={currentLang === lang.languageCode ? 'active' : ''}
+                  >
+                    <div className="language-info">
+                      <span className="language-name">
+                        {lang.languageNameNative}
+                      </span>
+                    </div>
+                    <span className="usage-count" title={`${lang.usageCount} users`}>
+                      {formatUsageCount(lang.usageCount)}
+                    </span>
+                  </LanguageItem>
+                ))}
+              </StyledLanguageMenu>
+            </CDropdown>
+          </HeaderItem>
+
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
 
       <MessageModal
         visible={messageModalVisible}
-        onCancel={() => setMessageModalVisible(false)}
+        onCancel={handleModalClose}
         onSuccess={handleModalSuccess}
       />
     </CHeader>

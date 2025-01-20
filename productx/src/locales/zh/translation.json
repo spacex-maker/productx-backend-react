@@ -1016,6 +1016,7 @@
   "verified": "已验证",
   "mobileVersion": "移动端",
   "darkMode": "暗黑模式",
+  "lightMode": "明亮模式",
   "https": "HTTPS",
   "free": "免费",
   "freemium": "免费增值",
@@ -1219,5 +1220,6 @@
 
   "changePassword": "修改密码",
   "confirmPassword": "确认密码",
-  "securitySettings": "安全设置"
+  "securitySettings": "安全设置",
+  "newChat": "新建聊天"
 }
