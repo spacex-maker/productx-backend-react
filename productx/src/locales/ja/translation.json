@@ -1181,5 +1181,18 @@
   "sendTime": "送信時間",
   "expireTime": "有効期限",
   "markReadSuccess": "既読に成功",
-  "markReadFailed": "既読に失敗"
+  "markReadFailed": "既読に失敗",
+
+  "birthday": "誕生日",
+  "oldPassword": "旧パスワード",
+  "newPassword": "新しいパスワード",
+  "invalidPhone": "無効な電話番号",
+  "passwordTooSimple": "パスワードが簡単すぎます",
+
+  "logoutConfirm": "ログアウトの確認",
+  "logoutConfirmContent": "ログアウトしてもよろしいですか？",
+
+  "changePassword": "パスワードを変更",
+  "confirmPassword": "パスワードを確認",
+  "securitySettings": "セキュリティ設定"
 }

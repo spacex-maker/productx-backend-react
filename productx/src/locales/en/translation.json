@@ -1182,5 +1182,18 @@
   "sendTime": "Send Time",
   "expireTime": "Expire Time",
   "markReadSuccess": "Marked as Read Successfully",
-  "markReadFailed": "Mark as Read Failed"
+  "markReadFailed": "Mark as Read Failed",
+
+  "birthday": "Birthday",
+  "oldPassword": "Old Password",
+  "newPassword": "New Password",
+  "invalidPhone": "Invalid phone number",
+  "passwordTooSimple": "Password is too simple",
+
+  "logoutConfirm": "Logout Confirmation",
+  "logoutConfirmContent": "Are you sure you want to log out?",
+
+  "changePassword": "Change Password",
+  "confirmPassword": "Confirm Password",
+  "securitySettings": "Security Settings"
 }

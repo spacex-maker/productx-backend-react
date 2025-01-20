@@ -1,148 +1,147 @@
 import React from 'react';
-import { Modal, Form, Row, Col, Tag, Avatar } from 'antd';
-import styled from 'styled-components';
+import { Modal, Avatar, Card, Tag, Space, Typography, Row, Col } from 'antd';
 // @ts-ignore
 import defaultAvatar from '../../../assets/images/avatars/8.jpg';
 
-const FormLabel = styled.span`
-  color: #666;
-  margin-bottom: 4px;
-  display: block;
-`;
-
-const InfoText = styled.div`
-  color: #000;
-  background: #f5f5f5;
-  padding: 4px 8px;
-  border-radius: 4px;
-  min-height: 20px;
-  line-height: 12px;
-`;
-
-const StatusTag = styled(Tag)`
-  line-height: 18px !important;
-  height: 20px !important;
-  margin: 0 !important;
-  width: 100% !important;
-  text-align: center !important;
-`;
-
-const ProfileHeader = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
-`;
-
-const AvatarWrapper = styled.div`
-  margin-right: 16px;
-`;
-
-const UserInfo = styled.div`
-  flex: 1;
-
-  .username {
-    font-size: 14px;
-    font-weight: 600;
-    color: #000;
-    margin-bottom: 4px;
-  }
-
-  .role {
-    color: #666;
-  }
-`;
+const { Text, Title } = Typography;
 
 export const AdminDetailModal = ({ visible, onCancel, adminInfo }) => {
   const getStatusTag = (status) => {
     if (status === true) {
-      return <StatusTag color="success">启用</StatusTag>;
+      return <Tag color="success">启用</Tag>;
     } else if (status === false) {
-      return <StatusTag color="error">禁用</StatusTag>;
+      return <Tag color="error">禁用</Tag>;
     }
-    return <StatusTag color="default">未知状态</StatusTag>;
+    return <Tag color="default">未知状态</Tag>;
+  };
+
+  // 对角色进行分组，每行显示2个
+  const renderRoles = () => {
+    return (
+      <div style={{ maxHeight: '400px', overflowY: 'auto', padding: '1px' }}>
+        <Row gutter={[16, 16]}>
+          {adminInfo?.roles?.map((role) => (
+            <Col span={12} key={role.roleId}>
+              <Card 
+                size="small"
+                bordered
+                style={{ height: '100%' }}
+              >
+                <div style={{ marginBottom: 8 }}>
+                  <Space align="center" style={{ width: '100%', justifyContent: 'space-between' }}>
+                    <Space>
+                      <Text strong style={{ fontSize: 14 }}>{role.roleName}</Text>
+                      <Tag color={role.roleStatus ? 'success' : 'error'}>
+                        {role.roleStatus ? '启用' : '禁用'}
+                      </Tag>
+                    </Space>
+                    <Text type="secondary" style={{ fontSize: 12 }}>ID: {role.roleId}</Text>
+                  </Space>
+                </div>
+                
+                <div style={{ marginBottom: 8 }}>
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {role.roleNameEn}
+                  </Text>
+                </div>
+                
+                <div style={{ marginBottom: 8 }}>
+                  <Text style={{ fontSize: 13 }}>
+                    {role.description}
+                  </Text>
+                </div>
+
+                <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 8, marginTop: 8 }}>
+                  <Row>
+                    <Col span={12}>
+                      <Text type="secondary" style={{ fontSize: 12 }}>
+                        创建者: {role.createBy}
+                      </Text>
+                    </Col>
+                    <Col span={12} style={{ textAlign: 'right' }}>
+                      <Text type="secondary" style={{ fontSize: 12 }}>
+                        更新者: {role.updateBy}
+                      </Text>
+                    </Col>
+                  </Row>
+                </div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
+    );
   };
 
   return (
     <Modal
-      title={<div style={{ fontSize: '12px', color: '#000000' }}>个人资料</div>}
+      title={null}
       open={visible}
       onCancel={onCancel}
       footer={null}
-      width={500}
+      width={800}
       destroyOnClose
     >
-      <ProfileHeader>
-        <AvatarWrapper>
+      <Card bordered={false}>
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <Avatar
-            size={64}
+            size={100}
             src={adminInfo?.avatar || defaultAvatar}
             onError={(e) => {
               e.target.src = defaultAvatar;
             }}
           />
-        </AvatarWrapper>
-        <UserInfo>
-          <div className="username">{adminInfo?.username}</div>
-          <div className="role">角色 ID: {adminInfo?.roleId}</div>
-          {getStatusTag(adminInfo?.status)}
-        </UserInfo>
-      </ProfileHeader>
+          <Title level={4} style={{ marginTop: 16, marginBottom: 4 }}>
+            {adminInfo?.username}
+          </Title>
+          <Space size={8}>
+            {getStatusTag(adminInfo?.status)}
+            <Tag color={adminInfo?.emailVerification ? 'success' : 'warning'}>
+              {adminInfo?.emailVerification ? '邮箱已验证' : '邮箱未验证'}
+            </Tag>
+          </Space>
+        </div>
 
-      <Form layout="vertical" >
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label={<FormLabel>邮箱</FormLabel>}>
-              <InfoText>{adminInfo?.email || '--'}</InfoText>
-            </Form.Item>
+        <Row gutter={[24, 24]}>
+          <Col span={24}>
+            <Card title="基本信息" size="small" bordered={false}>
+              <Row gutter={[16, 16]}>
+                <Col span={12}>
+                  <Text type="secondary">邮箱：</Text>
+                  <Text>{adminInfo?.email || '--'}</Text>
+                </Col>
+                <Col span={12}>
+                  <Text type="secondary">手机号：</Text>
+                  <Text>{adminInfo?.phone || '--'}</Text>
+                </Col>
+                <Col span={12}>
+                  <Text type="secondary">ID：</Text>
+                  <Text>{adminInfo?.id || '--'}</Text>
+                </Col>
+                <Col span={12}>
+                  <Text type="secondary">创建者：</Text>
+                  <Text>{adminInfo?.createBy || '--'}</Text>
+                </Col>
+              </Row>
+            </Card>
           </Col>
-          <Col span={12}>
-            <Form.Item label={<FormLabel>手机号</FormLabel>}>
-              <InfoText>{adminInfo?.phone || '--'}</InfoText>
-            </Form.Item>
+
+          <Col span={24}>
+            <Card 
+              title={
+                <Space>
+                  <span>角色信息</span>
+                  <Tag>{adminInfo?.roles?.length || 0}个角色</Tag>
+                </Space>
+              } 
+              size="small" 
+              bordered={false}
+            >
+              {renderRoles()}
+            </Card>
           </Col>
         </Row>
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label={<FormLabel>创建者</FormLabel>}>
-              <InfoText>{adminInfo?.createBy || '--'}</InfoText>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item label={<FormLabel>第三方账号ID</FormLabel>}>
-              <InfoText>{adminInfo?.thirdUserAccountId || '--'}</InfoText>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-
-      <style jsx>{`
-        :global(.ant-modal-content) {
-          * {
-            font-size: 10px !important;
-          }
-        }
-        :global(.ant-modal-header) {
-          padding: 12px 16px !important;
-        }
-        :global(.ant-modal-body) {
-          padding: 16px !important;
-        }
-        :global(.ant-modal-footer) {
-          padding: 4px 8px !important;
-        }
-        :global(.ant-modal-footer .ant-btn) {
-          height: 20px !important;
-          padding: 0 8px !important;
-          font-size: 10px !important;
-        }
-        :global(.ant-form-item) {
-          margin-bottom: 12px !important;
-        }
-      `}</style>
+      </Card>
     </Modal>
   );
 };

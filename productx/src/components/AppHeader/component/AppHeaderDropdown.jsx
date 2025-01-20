@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Avatar, Typography, Divider, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearCurrentUser, setCurrentUser } from 'src/store/user';
@@ -32,6 +33,10 @@ import Cookies from 'js-cookie';
 import axiosInstance from 'src/axiosInstance';
 import { message } from 'antd';
 import { AdminDetailModal } from './AdminDetailModal';
+import SettingsModal from './SettingsModal';
+
+const { Text } = Typography;
+const { confirm } = Modal;
 
 // 添加自定义样式
 const CompactDropdownMenu = styled(CDropdownMenu)`
@@ -73,6 +78,7 @@ export const AppHeaderDropdown = () => {
   const { t } = useTranslation();
   const [showAdminDetail, setShowAdminDetail] = useState(false);
   const [adminDetail, setAdminDetail] = useState(null);
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('jwtManageToken');
@@ -105,24 +111,39 @@ export const AppHeaderDropdown = () => {
 
   const handleLoginOut = async (e) => {
     e.preventDefault();
-    try {
-      await axiosInstance.post('/manage/manager/logout');
-      localStorage.removeItem('jwtManageToken');
-      localStorage.removeItem('currentUser');
-      Cookies.remove('LOGIN_IDENTITY');
-      dispatch(clearCurrentUser());
-      setIsLoggedIn(false);
-      message.success('登出成功');
-      navigate('/login');
-    } catch (error) {
-      message.error('登出失败', 4);
-      localStorage.removeItem('jwtManageToken');
-      localStorage.removeItem('currentUser');
-      Cookies.remove('LOGIN_IDENTITY');
-      dispatch(clearCurrentUser());
-      setIsLoggedIn(false);
-      navigate('/login');
-    }
+    confirm({
+      title: t('logoutConfirm'),
+      content: t('logoutConfirmContent'),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      okButtonProps: {
+        danger: true,
+      },
+      onOk: async () => {
+        try {
+          await axiosInstance.post('/manage/manager/logout');
+          localStorage.removeItem('jwtManageToken');
+          localStorage.removeItem('currentUser');
+          Cookies.remove('LOGIN_IDENTITY');
+          dispatch(clearCurrentUser());
+          setIsLoggedIn(false);
+          message.success('登出成功');
+          navigate('/login');
+        } catch (error) {
+          message.error('登出失败', 4);
+          localStorage.removeItem('jwtManageToken');
+          localStorage.removeItem('currentUser');
+          Cookies.remove('LOGIN_IDENTITY');
+          dispatch(clearCurrentUser());
+          setIsLoggedIn(false);
+          navigate('/login');
+        }
+      },
+      centered: true,
+      maskClosable: true,
+      closable: true,
+      width: 400,
+    });
   };
 
   const avatarUrl = currentUser?.avatar || defaultAvatar;
@@ -132,81 +153,146 @@ export const AppHeaderDropdown = () => {
     await fetchAdminDetail();
   };
 
+  const handleSettingsSuccess = async () => {
+    await fetchAdminDetail(); // 刷新用户信息
+  };
+
   return (
     <>
       <CDropdown variant="nav-item">
-        <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-          <SmallAvatar
-            src={avatarUrl}
-            size="md"
-            onError={(e) => {
-              e.target.src = defaultAvatar;
-            }}
-          />
+        <CDropdownToggle className="py-0" caret={false}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '16px',
+            padding: '4px',
+            borderRadius: '40px',
+            border: '1px solid var(--cui-border-color)',
+          }}>
+            <div style={{ position: 'relative', padding: '4px' }}>
+              <Avatar
+                size={40}
+                src={currentUser?.avatar || defaultAvatar}
+                style={{ 
+                  border: '3px solid var(--cui-body-bg)',
+                  boxShadow: '0 2px 16px rgba(0,0,0,0.1)'
+                }}
+              />
+              <div style={{
+                position: 'absolute',
+                bottom: 2,
+                right: 2,
+                width: '12px',
+                height: '12px',
+                background: currentUser?.status ? '#52c41a' : '#ff4d4f',
+                borderRadius: '50%',
+                border: '2px solid var(--cui-body-bg)'
+              }} />
+            </div>
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              gap: '2px',
+              paddingRight: '12px'
+            }}>
+              <span style={{ 
+                fontWeight: 600,
+                fontSize: '14px'
+              }}>{currentUser?.username}</span>
+              <Text type="secondary" style={{ fontSize: '12px' }}>
+                {currentUser?.email}
+              </Text>
+            </div>
+          </div>
         </CDropdownToggle>
-        <CompactDropdownMenu className="pt-0" placement="bottom-end">
-          <CompactDropdownHeader className="bg-body-secondary fw-semibold">
-            {currentUser?.username || t('account')}
-          </CompactDropdownHeader>
-          <CompactDropdownItem href="#">
+
+        <CDropdownMenu style={{
+          padding: '8px',
+          minWidth: '220px',
+          border: '1px solid var(--cui-border-color)',
+          borderRadius: '12px',
+          boxShadow: '0 6px 16px 0 rgba(0, 0, 0, 0.08)',
+        }}>
+          <CDropdownHeader style={{ 
+            padding: '8px 16px',
+            color: 'var(--cui-body-color)',
+            fontWeight: 600,
+            borderBottom: '1px solid var(--cui-border-color)'
+          }}>
+            {t('account')}
+          </CDropdownHeader>
+
+          <CompactDropdownItem href="#" style={{ marginTop: '8px' }}>
             <CIcon icon={cilBell} className="me-2" />
             {t('updates')}
-            <CompactBadge color="info">42</CompactBadge>
+            <CompactBadge color="info" className="ms-auto">42</CompactBadge>
           </CompactDropdownItem>
+
           <CompactDropdownItem href="#">
             <CIcon icon={cilEnvelopeOpen} className="me-2" />
             {t('messages')}
-            <CompactBadge color="success">42</CompactBadge>
+            <CompactBadge color="success" className="ms-auto">42</CompactBadge>
           </CompactDropdownItem>
+
           <CompactDropdownItem href="#">
             <CIcon icon={cilTask} className="me-2" />
             {t('tasks')}
-            <CompactBadge color="danger">42</CompactBadge>
+            <CompactBadge color="danger" className="ms-auto">42</CompactBadge>
           </CompactDropdownItem>
+
           <CompactDropdownItem href="#">
             <CIcon icon={cilCommentSquare} className="me-2" />
             {t('comments')}
-            <CompactBadge color="warning">42</CompactBadge>
+            <CompactBadge color="warning" className="ms-auto">42</CompactBadge>
           </CompactDropdownItem>
-          <CompactDropdownHeader className="bg-body-secondary fw-semibold">
+
+          <CDropdownHeader style={{ 
+            padding: '8px 16px',
+            marginTop: '8px',
+            color: 'var(--cui-body-color)',
+            fontWeight: 600,
+            borderTop: '1px solid var(--cui-border-color)',
+            borderBottom: '1px solid var(--cui-border-color)'
+          }}>
             {t('settings')}
-          </CompactDropdownHeader>
+          </CDropdownHeader>
+
           <CompactDropdownItem onClick={handleShowProfile}>
             <CIcon icon={cilUser} className="me-2" />
             {t('profile')}
           </CompactDropdownItem>
-          <CompactDropdownItem href="#">
+
+          <CompactDropdownItem onClick={() => setShowSettings(true)}>
             <CIcon icon={cilSettings} className="me-2" />
             {t('settings')}
           </CompactDropdownItem>
-          <CDropdownDivider />
-          {isLoggedIn ? (
-            <CompactDropdownItem onClick={handleLoginOut}>
-              <CIcon icon={cilLockLocked} className="me-2" />
-              {t('logout')}
-            </CompactDropdownItem>
-          ) : (
-            <>
-              <CompactDropdownItem onClick={() => navigate('/login')}>
-                <CIcon icon={cilLockLocked} className="me-2" />
-                {t('login')}
-              </CompactDropdownItem>
-              <CompactDropdownItem onClick={() => navigate('/register')}>
-                <CIcon icon={cilLockLocked} className="me-2" />
-                {t('register')}
-              </CompactDropdownItem>
-            </>
-          )}
-        </CompactDropdownMenu>
+
+          <CDropdownDivider style={{ margin: '8px 0' }} />
+
+          <CompactDropdownItem 
+            onClick={handleLoginOut}
+            style={{ color: 'var(--cui-danger)' }}
+          >
+            <CIcon icon={cilLockLocked} className="me-2" />
+            {t('logout')}
+          </CompactDropdownItem>
+        </CDropdownMenu>
       </CDropdown>
 
       <AdminDetailModal
         visible={showAdminDetail}
         onCancel={() => {
           setShowAdminDetail(false);
-          setAdminDetail(null); // 关闭时清空详情数据
+          setAdminDetail(null);
         }}
-        adminInfo={adminDetail || currentUser} // 优先使用新获取的数据
+        adminInfo={adminDetail || currentUser}
+      />
+
+      <SettingsModal
+        visible={showSettings}
+        onCancel={() => setShowSettings(false)}
+        currentUser={currentUser}
+        onSuccess={handleSettingsSuccess}
       />
     </>
   );

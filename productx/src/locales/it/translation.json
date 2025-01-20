@@ -1175,5 +1175,18 @@
   "sendTime": "Orario di invio",
   "expireTime": "Orario di scadenza",
   "markReadSuccess": "Segnato come letto con successo",
-  "markReadFailed": "Segnatura come letto fallita"
+  "markReadFailed": "Segnatura come letto fallita",
+
+  "birthday": "Compleanno",
+  "oldPassword": "Vecchia password",
+  "newPassword": "Nuova password",
+  "invalidPhone": "Numero di telefono non valido",
+  "passwordTooSimple": "La password è troppo semplice",
+
+  "logoutConfirm": "Conferma logout",
+  "logoutConfirmContent": "Sei sicuro di voler effettuare il logout?",
+
+  "changePassword": "Cambia password",
+  "confirmPassword": "Conferma password",
+  "securitySettings": "Impostazioni di sicurezza"
 }

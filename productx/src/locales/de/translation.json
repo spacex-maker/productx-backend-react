@@ -1158,5 +1158,18 @@
   "sendTime": "Sendezeit",
   "expireTime": "Ablaufzeit",
   "markReadSuccess": "Erfolgreich als gelesen markiert",
-  "markReadFailed": "Als gelesen markieren fehlgeschlagen"
+  "markReadFailed": "Als gelesen markieren fehlgeschlagen",
+
+  "birthday": "Geburtstag",
+  "oldPassword": "Altes Passwort",
+  "newPassword": "Neues Passwort",
+  "invalidPhone": "Ungültige Telefonnummer",
+  "passwordTooSimple": "Passwort ist zu einfach",
+
+  "logoutConfirm": "Abmeldung bestätigen",
+  "logoutConfirmContent": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+
+  "changePassword": "Passwort ändern",
+  "confirmPassword": "Passwort bestätigen",
+  "securitySettings": "Sicherheitseinstellungen"
 }
