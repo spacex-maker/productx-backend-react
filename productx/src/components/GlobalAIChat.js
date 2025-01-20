@@ -13,29 +13,24 @@ const GlobalAIChat = () => {
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef(null);
   const initialPosition = useRef({ x: 0, y: 0 });
+  const [isClosing, setIsClosing] = useState(false);
   
   // 检查是否在 XAI 页面
   const isXAIPage = location.pathname === '/data/ai';
 
   const handleMouseDown = (e) => {
-    console.log('MouseDown target:', e.target);
-    console.log('Has card-header:', !!e.target.closest('.card-header'));
-    console.log('Has c-card-header:', !!e.target.closest('.c-card-header'));
-    
-    // 检查是否点击了 CoreUI 的 CCardHeader
-    if (!e.target.closest('.card-header') && !e.target.closest('.c-card-header')) {
-      console.log('Not clicking on header');
+    // 只检查是否点击了头部区域
+    const cardHeader = e.target.closest('.card-header, .c-card-header');
+    if (!cardHeader) {
       return;
     }
     
-    console.log('Starting drag...');
     setIsDragging(true);
     const rect = dragRef.current.getBoundingClientRect();
     initialPosition.current = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
     };
-    console.log('Initial position:', initialPosition.current);
 
     e.preventDefault();
   };
@@ -75,6 +70,15 @@ const GlobalAIChat = () => {
     dispatch(toggleFloating(true));
   };
 
+  // 处理关闭动画
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      dispatch(toggleFloating(false));
+    }, 500); // 延长到 500ms
+  };
+
   // 如果是浮窗模式，使用 Portal 渲染
   if (isVisible) {
     return createPortal(
@@ -84,19 +88,52 @@ const GlobalAIChat = () => {
           position: 'fixed',
           left: `${position.x}px`,
           top: `${position.y}px`,
-          cursor: isDragging ? 'move' : 'default',
+          cursor: 'default',
           zIndex: 1050,
-          userSelect: 'none',
           width: '400px',
-          transform: 'translate3d(0,0,0)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          borderRadius: '8px',
+          transform: isClosing 
+            ? 'translate3d(40px,0,0) rotateY(180deg) scale(0.6)' 
+            : 'translate3d(0,0,0) rotateY(0deg) scale(1)',
+          opacity: isClosing ? 0 : 1,
+          transition: isDragging 
+            ? 'none' 
+            : 'transform 0.5s ease, opacity 0.5s ease',
+          animation: 'fadeIn 0.5s ease',
+          transformOrigin: 'center center',
+          perspective: '1000px'
         }}
         onMouseDown={handleMouseDown}
       >
+        <style>
+          {`
+            /* 只在头部禁用文本选择 */
+            .card-header, .c-card-header {
+              user-select: none;
+              cursor: move;
+            }
+          `}
+        </style>
         <XAIChat 
           isFloating={true} 
-          onClose={() => dispatch(toggleFloating(false))}
+          onClose={handleClose}
           onToggleFloating={handleToggleFloating}
         />
+        <style>
+          {`
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+                transform: translate3d(-40px, 0, 0) rotateY(-180deg) scale(0.6);
+              }
+              to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+              }
+            }
+          `}
+        </style>
       </div>,
       document.body
     );
