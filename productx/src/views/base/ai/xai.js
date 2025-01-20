@@ -556,6 +556,33 @@ const StyledMessageContent = styled.div`
   border-radius: 0.5rem;
   background: ${props => props.type === 'user' ? 'var(--cui-primary)' : 'var(--cui-card-bg)'};
   color: ${props => props.type === 'user' ? '#fff' : 'var(--cui-body-color)'};
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  pre {
+    background-color: ${props => props.type === 'user' ? 'rgba(255, 255, 255, 0.1)' : '#f6f8fa'};
+    border-radius: 6px;
+    padding: 16px;
+    overflow: auto;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 14px;
+    line-height: 1.45;
+    margin: 8px 0;
+  }
+
+  code {
+    background-color: ${props => props.type === 'user' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(175, 184, 193, 0.2)'};
+    border-radius: 4px;
+    padding: 0.2em 0.4em;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 85%;
+  }
+
+  pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
 `;
 
 const StyledTextarea = styled(CFormTextarea)`
