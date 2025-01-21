@@ -109,7 +109,6 @@ const UserProductTable = (_, ref) => {
     message.success(t('更新成功'));
     triggerTableLoadData();
   };
-
   const [detailModal, detailPlaceHolder] = useModal(DetailUserProductModal, {
     productId: selectedProduct?.id,
   });
@@ -262,7 +261,7 @@ const UserProductTable = (_, ref) => {
           <Button type="link" onClick={onTableEditItem.bind(null, rowData)}>
             {t('edit')}
           </Button>
-          <Button type="link" onClick={onTableViewItem.bind(null, rowData.id)}>
+          <Button type="link" onClick={onTableViewItem.bind(null, rowData)}>
             {t('detail')}
           </Button>
           <Popconfirm
@@ -290,6 +289,7 @@ const UserProductTable = (_, ref) => {
             type: 'checkbox',
             onChange: onTableSelectChange,
           }}
+          rowClassName={(_, index) => (index % 2 === 0 ? 'table-even-row' : 'table-odd-row')}
           bordered
           dataSource={data}
           pagination={pagination}

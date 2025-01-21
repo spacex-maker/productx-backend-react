@@ -26,8 +26,8 @@ i18n.use(initReactI18next).init({
   lng: 'zh', // 默认语言
   fallbackLng: 'en', // 备用语言
   interpolation: {
-    escapeValue: false // React 自动防止 XSS，不需要转义
-  }
+    escapeValue: false, // React 自动防止 XSS，不需要转义
+  },
 });
 
 export default i18n;
