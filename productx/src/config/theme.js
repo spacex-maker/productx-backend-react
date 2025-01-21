@@ -9,6 +9,10 @@ const dark = {
   },
   components: {
     Button: {},
+    Table: {
+      borderColor: '#dbdfe6',
+      rowHoverBg: 'rgba(88,86,214,0.4)',
+    },
   },
 };
 const light = {
@@ -19,6 +23,10 @@ const light = {
   },
   components: {
     Button: {},
+    Table: {
+      borderColor: '#dbdfe6',
+      rowHoverBg: 'rgba(88,86,214,0.4)',
+    },
   },
 };
 export const CustomTheme = {

@@ -24,6 +24,7 @@ import COS from 'cos-js-sdk-v5';
 import { message } from 'antd';
 import api from 'src/axiosInstance';
 import { getCategoryListService } from 'src/service/category.service';
+import { ConsumerAvatar, useConsumerAvatar } from 'src/components';
 
 /**
  *
@@ -57,7 +58,6 @@ const UpdateUserProductModal = (props) => {
     }
     const categoryList = await getCategoryList(0);
     const selectCategory = (selectedProduct.category?.split(',') ?? []).map((id, index) => {
-      console.log(id);
       if (index === 0) {
         return { id: Number(id), list: categoryList };
       }
@@ -90,6 +90,8 @@ const UpdateUserProductModal = (props) => {
       setCategoryList([...categoryList]);
     }
   };
+
+  const consumer = useConsumerAvatar(selectedProduct?.userId);
 
   // 初始化 COS 实例
   const initCOS = async () => {
@@ -252,12 +254,8 @@ const UpdateUserProductModal = (props) => {
 
         <Row gutter={8}>
           <Col span={12}>
-            <Form.Item
-              name="userId"
-              label={t('userId')}
-              rules={[{ required: true, message: t('enterUserId') }]}
-            >
-              <Input placeholder={t('enterUserId')} />
+            <Form.Item label={t('userId')}>
+              <ConsumerAvatar consumer={consumer}></ConsumerAvatar>
             </Form.Item>
           </Col>
           <Col span={12}>
