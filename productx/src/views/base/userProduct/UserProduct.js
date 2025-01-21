@@ -31,6 +31,13 @@ const UserProduct = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
+                placeholder={t('productId')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Input
                 placeholder={t('userId')}
                 allowClear
                 style={{ width: 150 }}

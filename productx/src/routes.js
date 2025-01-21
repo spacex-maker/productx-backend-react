@@ -480,6 +480,8 @@ const routes = [
       </PrivateRoute>
     )
   },
+  
+
 ]
 
 export default routes;
