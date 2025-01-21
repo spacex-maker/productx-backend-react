@@ -31,6 +31,7 @@ import api from 'src/axiosInstance';
 import CreateProductJsonModal from './CreateProductJsonModal';
 import { useModal } from 'src/hooks/useModal';
 import { getCategoryListService } from 'src/service/category.service';
+import { ConsumerAvatar } from 'src/components';
 
 const AddUserProductModal = (props) => {
   // eslint-disable-next-line react/prop-types
@@ -195,10 +196,12 @@ const AddUserProductModal = (props) => {
       });
 
       if (response) {
-        const options = response.map((user) => ({
-          label: `${user.username} (ID: ${user.id})`,
-          value: user.id,
-        }));
+        const options = response.map((user) => {
+          return Object.assign(user, {
+            label: `${user.username} (ID: ${user.id})`,
+            value: user.id,
+          });
+        });
         setUserOptions(options);
       }
     } catch (error) {
@@ -243,7 +246,7 @@ const AddUserProductModal = (props) => {
 
   const [jsonModal, jsonPlaceHolder] = useModal(CreateProductJsonModal);
   const onInputJson = async () => {
-    jsonModal.open(form);
+    jsonModal.open();
   };
 
   return (
@@ -295,7 +298,7 @@ const AddUserProductModal = (props) => {
               >
                 {userOptions.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
-                    <div>{option.label}</div>
+                    <ConsumerAvatar consumer={option}></ConsumerAvatar>
                   </Select.Option>
                 ))}
               </Select>

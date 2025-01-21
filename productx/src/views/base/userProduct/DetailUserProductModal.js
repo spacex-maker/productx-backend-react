@@ -1,79 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Descriptions, Divider, Image, Space, Alert, Tag } from 'antd';
+import { Modal, Descriptions, Divider, Image, Tag, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from 'src/components/common/Common';
-import styled from 'styled-components';
 import { CheckCircleOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
 import { detailProductService } from 'src/service/product.service';
-
-const StyledModal = styled(Modal)`
-  .ant-modal-content {
-    padding: 12px;
-  }
-
-  .ant-modal-header {
-    margin-bottom: 8px;
-  }
-
-  .ant-modal-title {
-    color: #000000;
-  }
-
-  .ant-descriptions-item-label {
-    color: #666;
-    width: 100px;
-  }
-
-  .image-gallery {
-    margin: 8px 0;
-
-    .image-title {
-      color: #666;
-      margin-bottom: 4px;
-    }
-
-    .image-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-
-      .ant-image {
-        width: 80px;
-        height: 80px;
-        border-radius: 2px;
-        overflow: hidden;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-    }
-  }
-
-  .ant-alert {
-    margin-bottom: 8px;
-    padding: 4px 8px;
-  }
-
-  .ant-modal-footer {
-    margin-top: 8px;
-    padding: 8px 0 0;
-    border-top: 1px solid #f0f0f0;
-
-    .ant-btn {
-      height: 24px;
-      padding: 0 12px;
-    }
-  }
-`;
+import { ConsumerAvatar, useConsumerAvatar } from 'src/components';
 
 const DetailUserProductModal = (props) => {
   // eslint-disable-next-line react/prop-types
   const { productId, ...modalProps } = props;
   const { t } = useTranslation();
   const [productData, setProductData] = useState(null);
+  const consumer = useConsumerAvatar(productData?.userId);
 
   useEffect(() => {
     if (productId) {
@@ -126,7 +64,7 @@ const DetailUserProductModal = (props) => {
   };
 
   return (
-    <StyledModal
+    <Modal
       title={t('productDetails')}
       {...modalProps}
       footer={null}
@@ -141,7 +79,7 @@ const DetailUserProductModal = (props) => {
           {productData.id}
         </Descriptions.Item>
         <Descriptions.Item label={t('userId')} span={2}>
-          {productData.userId}
+          <ConsumerAvatar consumer={consumer}></ConsumerAvatar>
         </Descriptions.Item>
         <Descriptions.Item label={t('productName')} span={2}>
           {productData.productName}
@@ -169,12 +107,9 @@ const DetailUserProductModal = (props) => {
       <Divider style={{ margin: '12px 0' }} />
 
       <div className="product-description">
-        <div style={{ fontSize: '11px', color: '#666', marginBottom: '4px' }}>
-          {t('productDescription')}:
-        </div>
+        <div style={{ color: '#666', marginBottom: '4px' }}>{t('productDescription')}:</div>
         <div
           style={{
-            fontSize: '11px',
             background: '#fafafa',
             padding: '8px',
             borderRadius: '2px',
@@ -186,23 +121,24 @@ const DetailUserProductModal = (props) => {
       </div>
 
       <div className="image-gallery">
-        <div className="image-title">{t('coverImage')}:</div>
-        <div className="image-container">
+        <div style={{ color: '#666', marginBottom: '4px' }}>{t('coverImage')}:</div>
+        <div style={{ width: '25%' }}>
           <Image src={productData.imageCover} alt="cover" />
         </div>
       </div>
-
-      {productData.imageList && productData.imageList.length > 0 && (
-        <div className="image-gallery">
-          <div className="image-title">{t('productImages')}:</div>
-          <div className="image-container">
-            {productData.imageList.map((image, index) => (
-              <Image key={index} src={image} alt={`product-${index + 1}`} />
+      <div className="image-gallery">
+        <div style={{ color: '#666', marginBottom: '4px' }}>{t('productImages')}:</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+          {productData.imageList &&
+            productData.imageList.length > 0 &&
+            productData.imageList.map((image, index) => (
+              <div key={index} style={{ width: '24%', margin: '0 0.5% 1%' }}>
+                <Image key={index} src={image} alt={`product-${index + 1}`} />
+              </div>
             ))}
-          </div>
         </div>
-      )}
-    </StyledModal>
+      </div>
+    </Modal>
   );
 };
 
