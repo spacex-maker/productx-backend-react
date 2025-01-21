@@ -15,7 +15,7 @@ import { createPortal } from 'react-dom';
  * ]}
  */
 export const useModal = (ModalComponent, props, domNode = document.body) => {
-  const [visible, setVisible] = useState(props?.visible ?? false);
+  const [visible, setVisible] = useState(props?.open ?? false);
   const handle = useRef({
     onOk: () => null,
     onCancel: () => null,
@@ -66,6 +66,7 @@ export const useModal = (ModalComponent, props, domNode = document.body) => {
                   // 表单提交失败，不关闭弹窗
                   return;
                 } catch (error) {
+                  console.log(error);
                   return;
                 }
               }

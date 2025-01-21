@@ -83,7 +83,19 @@ input:checked + .toggle-switch-slider:before {
   font-size: 14px;
 }
 
-
-
+html[data-coreui-theme="dark"]{
+  --table-odd-row-color: #2c313c;
+  --table-even-row: #212631;
+}
+html[data-coreui-theme="light"]{
+  --table-odd-row-color: #e6e8e8;
+  --table-even-row: #fff;
+}
+.table-odd-row {
+  background-color: var(--table-odd-row-color);
+}
+.table-even-row {
+  background-color: var(--table-even-row);
+}
 
 

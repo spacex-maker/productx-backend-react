@@ -1,8 +1,5 @@
-import React from 'react'
-import PrivateRoute from "src/components/PrivateRoute";
-import UserProduct from "src/views/base/userProduct/UserProduct";
-import RepairServiceMerchants from "src/views/base/repairServiceMerchants/RepairServiceMerchants";
-import ClientCountryConfig from './views/base/clientCountryConfig/ClientCountryConfig';
+import React from 'react';
+import PrivateRoute from 'src/components/PrivateRoute';
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'));
@@ -95,30 +92,37 @@ const ListSysCryptoCurrencies = React.lazy(
 
 const XAI = React.lazy(() => import('./views/base/ai/xai'));
 
-const SysIssueTracker = React.lazy(() => import('./views/base/sysIssueTracker/SysIssueTracker'))
+const SysIssueTracker = React.lazy(() => import('./views/base/sysIssueTracker/SysIssueTracker'));
 
-const UserProductRouter = React.lazy(() => import('./views/base/userProduct/UserProduct'))
+const UserProductRouter = React.lazy(() => import('./views/base/userProduct/UserProduct'));
 
-const UserProductCategoryRouter = React.lazy(() => import('./views/base/userProductCategory/UserProductCategory'))
+const UserProductCategoryRouter = React.lazy(
+  () => import('./views/base/userProductCategory/UserProductCategory'),
+);
 
-const UserAddressRouter = React.lazy(() => import('./views/base/userAddress/ListUserAddress'))
+const UserAddressRouter = React.lazy(() => import('./views/base/userAddress/ListUserAddress'));
 
+const UserAccountBankRouter = React.lazy(
+  () => import('./views/base/userAccountBank/ListUserAccountBank'),
+);
 
-const UserAccountBankRouter = React.lazy(() => import('./views/base/userAccountBank/ListUserAccountBank'))
-
-
-const UserProfileRouter = React.lazy(() => import('./views/base/userProfile/ListUserProfile'))
-
+const UserProfileRouter = React.lazy(() => import('./views/base/userProfile/ListUserProfile'));
 
 const SysMenu = React.lazy(() => import('./views/base/sysMenu/Menu'));
 
 const PartnersRouter = React.lazy(() => import('./views/base/partners/Partners'));
 
-const RepairServiceMerchantsRouter = React.lazy(() => import('./views/base/repairServiceMerchants/RepairServiceMerchants'));
+const RepairServiceMerchantsRouter = React.lazy(
+  () => import('./views/base/repairServiceMerchants/RepairServiceMerchants'),
+);
 
-const ObjectStorageListRouter = React.lazy(() => import('./views/base/objectStorage/ObjectStorageList'));
+const ObjectStorageListRouter = React.lazy(
+  () => import('./views/base/objectStorage/ObjectStorageList'),
+);
 
-const UserShippingMethodRouter = React.lazy(() => import('./views/base/userShippingMethod/UserShippingMethod'));
+const UserShippingMethodRouter = React.lazy(
+  () => import('./views/base/userShippingMethod/UserShippingMethod'),
+);
 
 const RegionAgentsRouter = React.lazy(() => import('./views/base/regionAgents/RegionAgents'));
 
@@ -126,13 +130,19 @@ const SysConfigListRouter = React.lazy(() => import('./views/base/sysConfig/SysC
 
 const SysLanguageRouter = React.lazy(() => import('./views/base/sysLanguages/SysLanguage'));
 
-const SysPaymentMethodsRouter = React.lazy(() => import('./views/base/sysPaymentMethods/SysPaymentMethods'));
+const SysPaymentMethodsRouter = React.lazy(
+  () => import('./views/base/sysPaymentMethods/SysPaymentMethods'),
+);
 
-const ClientCountryConfigRouter = React.lazy(() => import('./views/base/clientCountryConfig/ClientCountryConfig'));
+const ClientCountryConfigRouter = React.lazy(
+  () => import('./views/base/clientCountryConfig/ClientCountryConfig'),
+);
 
 const WebsiteListRouter = React.lazy(() => import('./views/base/websiteList/WebsiteList'));
 
-const WebsiteApplicationRouter = React.lazy(() => import('./views/base/websiteApplications/WebsiteApplication'));
+const WebsiteApplicationRouter = React.lazy(
+  () => import('./views/base/websiteApplications/WebsiteApplication'),
+);
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -362,126 +372,158 @@ const routes = [
     ),
   },
   {
-    path: '/sys/issueTracker', name: '问题跟踪', element: (
+    path: '/sys/issueTracker',
+    name: '问题跟踪',
+    element: (
       <PrivateRoute>
-        <SysIssueTracker/>
+        <SysIssueTracker />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/userProduct', name: '产品管理', element: (
+    path: '/sys/userProduct',
+    name: '产品管理',
+    element: (
       <PrivateRoute>
-        <UserProductRouter/>
+        <UserProductRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/userProductCategory', name: '商品分类管理', element: (
+    path: '/sys/userProductCategory',
+    name: '商品分类管理',
+    element: (
       <PrivateRoute>
-        <UserProductCategoryRouter/>
+        <UserProductCategoryRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/userAddress', name: '用户地址管理', element: (
+    path: '/sys/userAddress',
+    name: '用户地址管理',
+    element: (
       <PrivateRoute>
-        <UserAddressRouter/>
+        <UserAddressRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/userAccountBank', name: '银行账户管理', element: (
+    path: '/sys/userAccountBank',
+    name: '银行账户管理',
+    element: (
       <PrivateRoute>
-        <UserAccountBankRouter/>
+        <UserAccountBankRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/userProfile', name: '用户画像管理', element: (
+    path: '/sys/userProfile',
+    name: '用户画像管理',
+    element: (
       <PrivateRoute>
-        <UserProfileRouter/>
+        <UserProfileRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/partners', name: '合作伙伴管理', element: (
+    path: '/sys/partners',
+    name: '合作伙伴管理',
+    element: (
       <PrivateRoute>
-        <PartnersRouter/>
+        <PartnersRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/repairServiceMerchants', name: '维修商户管理', element: (
+    path: '/sys/repairServiceMerchants',
+    name: '维修商户管理',
+    element: (
       <PrivateRoute>
-        <RepairServiceMerchantsRouter/>
+        <RepairServiceMerchantsRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/objectStorageConfigList', name: '对象存储配置管理', element: (
+    path: '/sys/objectStorageConfigList',
+    name: '对象存储配置管理',
+    element: (
       <PrivateRoute>
-        <ObjectStorageListRouter/>
+        <ObjectStorageListRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/userShippingMethod', name: '用户交易方式管理', element: (
+    path: '/sys/userShippingMethod',
+    name: '用户交易方式管理',
+    element: (
       <PrivateRoute>
-        <UserShippingMethodRouter/>
+        <UserShippingMethodRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/regionAgents', name: '区域代理管理', element: (
+    path: '/sys/regionAgents',
+    name: '区域代理管理',
+    element: (
       <PrivateRoute>
-        <RegionAgentsRouter/>
+        <RegionAgentsRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/sysConfig', name: '系统基础配置', element: (
+    path: '/sys/sysConfig',
+    name: '系统基础配置',
+    element: (
       <PrivateRoute>
-        <SysConfigListRouter/>
+        <SysConfigListRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/sysLanguage', name: '系统语言管理', element: (
+    path: '/sys/sysLanguage',
+    name: '系统语言管理',
+    element: (
       <PrivateRoute>
-        <SysLanguageRouter/>
+        <SysLanguageRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/sysPaymentMethods', name: '系统支付方式管理', element: (
+    path: '/sys/sysPaymentMethods',
+    name: '系统支付方式管理',
+    element: (
       <PrivateRoute>
-        <SysPaymentMethodsRouter/>
+        <SysPaymentMethodsRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/clientCountryConfig', name: '客户端配置', element: (
+    path: '/sys/clientCountryConfig',
+    name: '客户端配置',
+    element: (
       <PrivateRoute>
-        <ClientCountryConfigRouter/>
+        <ClientCountryConfigRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/websiteList', name: '综合导航管理', element: (
+    path: '/sys/websiteList',
+    name: '综合导航管理',
+    element: (
       <PrivateRoute>
-        <WebsiteListRouter/>
+        <WebsiteListRouter />
       </PrivateRoute>
-    )
+    ),
   },
   {
-    path: '/sys/websiteApplications', name: '网站应用管理', element: (
+    path: '/sys/websiteApplications',
+    name: '网站应用管理',
+    element: (
       <PrivateRoute>
-        <WebsiteApplicationRouter/>
+        <WebsiteApplicationRouter />
       </PrivateRoute>
-    )
+    ),
   },
-  
-
-]
+];
 
 export default routes;
