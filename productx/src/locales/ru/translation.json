@@ -1200,5 +1200,8 @@
   "newChat": "Новый чат",
   "openAIAssistant": "Открыть помощник AI",
 
-  "resolve": "Решить"
+  "resolve": "Решить",
+  "enterAssignee": "Введите исполнителя",
+  "enterReporter": "Введите докладчика",
+  "onlyShowAssignedToMe": "Назначено мне"
 }

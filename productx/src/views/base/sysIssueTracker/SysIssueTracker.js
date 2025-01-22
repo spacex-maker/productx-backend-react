@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Input, Select, DatePicker, Space, Row, Col, Button, Spin, message, Modal } from 'antd'
+import { Form, Input, Select, DatePicker, Space, Row, Col, Button, Spin, message, Modal, Checkbox, Switch, Avatar } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import api from 'src/axiosInstance'
 import IssueTable from './IssueTable'
@@ -11,7 +11,7 @@ import Pagination from 'src/components/common/Pagination'
 import { useTranslation } from 'react-i18next'
 import dayjs from 'dayjs'
 import IssueDetailModal from './IssueDetailModal'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -34,6 +34,7 @@ const SysIssueTracker = () => {
   const [issueStatus, setIssueStatus] = useState([])
   const [issuePriorities, setIssuePriorities] = useState([])
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+  const [managers, setManagers] = useState([])
 
   const {
     selectedRows,
@@ -69,7 +70,7 @@ const SysIssueTracker = () => {
   const fetchIssues = async (values = {}) => {
     setLoading(true)
     try {
-      // 过滤掉空值
+      // 过滤掉空值并去除字符串首尾空格
       const params = {
         currentPage,
         pageSize,
@@ -78,7 +79,10 @@ const SysIssueTracker = () => {
             value !== undefined &&
             value !== null &&
             value !== ''
-          )
+          ).map(([key, value]) => [
+            key,
+            typeof value === 'string' ? value.trim() : value
+          ])
         )
       }
 
@@ -170,6 +174,23 @@ const SysIssueTracker = () => {
     fetchIssues()                 // 重新获取数据
   }
 
+  const fetchManagers = async (search = '') => {
+    try {
+      const response = await api.get('/manage/manager/list', {
+        params: { username: search }
+      })
+      if (response.data) {
+        setManagers(response.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch managers:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchManagers()
+  }, [])
+
   return (
     <div className="issue-tracker-wrapper">
       <div className="mb-3">
@@ -235,6 +256,66 @@ const SysIssueTracker = () => {
                 </Form.Item>
               </Col>
               <Col>
+                <Form.Item name="assignee">
+                  <Select
+                    showSearch
+                    allowClear
+                    placeholder={t('enterAssignee')}
+                    style={{ width: 200 }}
+                    filterOption={false}
+                    onSearch={fetchManagers}
+                    onChange={() => {
+                      setTimeout(() => {
+                        handleSearch();
+                      }, 0);
+                    }}
+                  >
+                    {managers.map(manager => (
+                      <Option key={manager.id} value={manager.username}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Avatar src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
+                          <span>{manager.username}</span>
+                        </div>
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item name="reporter">
+                  <Select
+                    showSearch
+                    allowClear
+                    placeholder={t('enterReporter')}
+                    style={{ width: 200 }}
+                    filterOption={false}
+                    onSearch={fetchManagers}
+                    onChange={() => {
+                      setTimeout(() => {
+                        handleSearch();
+                      }, 0);
+                    }}
+                  >
+                    {managers.map(manager => (
+                      <Option key={manager.id} value={manager.username}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Avatar src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
+                          <span>{manager.username}</span>
+                        </div>
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col>
+                <Form.Item name="assignedToMe" valuePropName="checked">
+                  <Switch
+                    checkedChildren={t('onlyShowAssignedToMe')}
+                    unCheckedChildren={t('onlyShowAssignedToMe')}
+                  />
+                </Form.Item>
+              </Col>
+              <Col>
                 <Space>
                   <Button type="primary" onClick={handleSearch}>
                     {t('search')}
@@ -274,7 +355,6 @@ const SysIssueTracker = () => {
         </Spin>
 
         <Pagination
-
           totalPages={Math.ceil(totalNum / pageSize)}
           current={currentPage}
           onPageChange={handlePageChange}

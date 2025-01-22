@@ -1199,5 +1199,8 @@
   "securitySettings": "Security Settings",
   "newChat": "New Chat",
   "openAIAssistant": "Open AI Assistant",
-  "resolve": "Resolve"
+  "resolve": "Resolve",
+  "enterAssignee": "Please enter the assignee",
+  "enterReporter": "Please enter the reporter",
+  "onlyShowAssignedToMe": "Assigned to me"
 }

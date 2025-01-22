@@ -1192,5 +1192,8 @@
   "securitySettings": "Impostazioni di sicurezza",
   "newChat": "Nuova chat",
   "openAIAssistant": "Aprire l'assistente AI",
-  "resolve": "Risolvere"
+  "resolve": "Risolvere",
+  "enterAssignee": "Inserisci il destinatario",
+  "enterReporter": "Inserisci il segnalatore",
+  "onlyShowAssignedToMe": "Assegnato a me"
 }

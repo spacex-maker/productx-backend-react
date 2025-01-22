@@ -1208,5 +1208,8 @@
   "securitySettings": "Paramètres de sécurité",
   "newChat": "Nouveau chat",
   "openAIAssistant": "Ouvrir l'assistant AI",
-  "resolve": "Résoudre"
+  "resolve": "Résoudre",
+  "enterAssignee": "Veuillez saisir la personne assignée",
+  "enterReporter": "Veuillez saisir le rapporteur",
+  "onlyShowAssignedToMe": "Attribué à moi"
 }

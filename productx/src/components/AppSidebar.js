@@ -52,7 +52,7 @@ const BrandContainer = styled(CSidebarBrand)`
   align-items: center;
   justify-content: center;
   text-decoration: none !important;
-  
+
   &:hover {
     text-decoration: none !important;
   }
@@ -69,7 +69,7 @@ const BrandText = styled.div`
   .full-brand {
     display: ${({ $narrow }) => ($narrow ? 'none' : 'block')};
     text-decoration: none !important;
-    
+
     &:hover {
       text-decoration: none !important;
     }
@@ -80,12 +80,12 @@ const BrandText = styled.div`
     font-size: 1.5rem;
     font-weight: 800;
     text-decoration: none !important;
-    
+
     &:hover {
       text-decoration: none !important;
     }
   }
-  
+
   &:hover {
     text-decoration: none !important;
   }
@@ -171,8 +171,8 @@ const AppSidebar = () => {
     >
       <BrandContainer>
         <BrandText $narrow={sidebarUnfoldable || !sidebarShow}>
-          <span className="full-brand">Product X ADMIN</span>
-          <span className="single-letter">ProtX</span>
+          <span className="full-brand">ProTX ADMIN</span>
+          <span className="single-letter">X</span>
         </BrandText>
       </BrandContainer>
       <style>
