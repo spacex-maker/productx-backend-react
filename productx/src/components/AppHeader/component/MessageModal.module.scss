@@ -7,13 +7,57 @@
 }
 
 .modalHeader {
+  width: 100%;
+}
+
+.desktopHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-right: 40px;
+  width: 100%;
+
+  .leftSection {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .rightSection {
+    margin-right: 24px;
+  }
+}
+
+.mobileHeader {
+  width: 100%;
+  
+  .topSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-right: 40px;
+  }
+
+  .bottomSection {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+    :global(.ant-radio-group) {
+      width: 100%;
+      display: flex;
+      
+      .ant-radio-button-wrapper {
+        flex: 1;
+        text-align: center;
+      }
+    }
+  }
 }
 
 .modalTitle {
-  font-size: 14px;
+  white-space: nowrap;
 }
 
 .searchSection {
@@ -56,11 +100,20 @@
     .ant-modal-header {
       padding: 12px;
       margin-bottom: 0;
+      padding-right: 40px;
+    }
+    .ant-modal-title {
+      margin-right: 24px;
     }
   }
 }
 
 .detailTitle {
+  width: calc(100% - 40px);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   font-size: 13px;
   
   :global {
@@ -261,5 +314,21 @@
   
   &:hover {
     opacity: 0.8;
+  }
+} 
+
+// 响应式样式
+@media (max-width: 767px) {
+  .listModal {
+    :global {
+      .ant-modal {
+        max-width: 100%;
+        margin: 0;
+      }
+      
+      .ant-modal-content {
+        border-radius: 0;
+      }
+    }
   }
 } 

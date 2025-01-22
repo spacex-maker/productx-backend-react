@@ -111,6 +111,28 @@ const AnimatedWrapper = styled.div`
   }
 `;
 
+const UserInfoText = styled.div`
+  display: flex; 
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+`;
+
+const UserName = styled.span`
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const UserEmail = styled(Text)`
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export const AppHeaderDropdown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -231,19 +253,10 @@ export const AppHeaderDropdown = () => {
                   border: '2px solid var(--cui-body-bg)'
                 }} />
               </div>
-              <div style={{ 
-                display: 'flex', 
-                flexDirection: 'column',
-                gap: '2px'
-              }}>
-                <span style={{ 
-                  fontWeight: 600,
-                  fontSize: '14px'
-                }}>{currentUser?.username}</span>
-                <Text type="secondary" style={{ fontSize: '12px' }}>
-                  {currentUser?.email}
-                </Text>
-              </div>
+              <UserInfoText>
+                <UserName>{currentUser?.username}</UserName>
+                <UserEmail type="secondary">{currentUser?.email}</UserEmail>
+              </UserInfoText>
             </div>
           </AnimatedWrapper>
         </CDropdownToggle>

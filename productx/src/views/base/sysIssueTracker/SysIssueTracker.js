@@ -272,8 +272,16 @@ const SysIssueTracker = () => {
                   >
                     {managers.map(manager => (
                       <Option key={manager.id} value={manager.username}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <Avatar src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Avatar 
+                            size={32} 
+                            src={manager.avatar} 
+                            icon={<UserOutlined />} 
+                            style={{
+                              boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                              border: '2px solid #87d068'
+                            }}
+                          />
                           <span>{manager.username}</span>
                         </div>
                       </Option>

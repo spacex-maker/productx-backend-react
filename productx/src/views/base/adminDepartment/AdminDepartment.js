@@ -408,24 +408,39 @@ const AdminDepartments = () => {
                     </div>
                   </td>
                   <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       {item.avatar ? (
                         <img
                           src={item.avatar}
                           alt="avatar"
                           className="rounded-circle"
-                          style={{ width: '24px', height: '24px', objectFit: 'cover' }}
+                          style={{ 
+                            width: '40px', // 增加尺寸
+                            height: '40px', 
+                            objectFit: 'cover',
+                            boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)', // 添加发光效果
+                            border: '2px solid #87d068' // 添加边框
+                          }}
                         />
                       ) : (
                         <div
                           className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
-                          style={{ width: '24px', height: '24px', color: 'white', fontSize: '12px' }}
+                          style={{ 
+                            width: '40px', // 增加尺寸
+                            height: '40px', 
+                            color: 'white', 
+                            fontSize: '16px', // 增加字体大小
+                            boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)', // 添加发光效果
+                            border: '2px solid #87d068' // 添加边框
+                          }}
                         >
                           {item.managerName?.charAt(0)?.toUpperCase()}
                         </div>
                       )}
-                      <span>{item.managerName}</span>
-                      <span className="text-muted">#{item.managerId}</span>
+                      <div>
+                        <div style={{ fontWeight: '500' }}>{item.managerName}</div>
+                        <div style={{ fontSize: '12px', color: '#666' }}>#{item.managerId}</div>
+                      </div>
                     </div>
                   </td>
                   <td>{formatDate(item.createTime)}</td>

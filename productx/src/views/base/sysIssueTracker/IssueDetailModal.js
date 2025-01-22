@@ -91,15 +91,39 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
           </Tag>
         </Descriptions.Item>
         <Descriptions.Item label={t('reporter')}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Avatar  src={issue.reporterInfo?.avatar} icon={<UserOutlined />} />
-            <span>{issue.reporterInfo?.username}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar  
+              size={40}
+              src={issue.reporterInfo?.avatar} 
+              icon={<UserOutlined />}
+              style={{ 
+                backgroundColor: '#87d068',
+                boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                border: '2px solid #87d068'
+              }}
+            />
+            <div>
+              <div style={{ fontWeight: '500' }}>{issue.reporterInfo?.username}</div>
+              <div style={{ fontSize: '12px', color: '#666' }}>#{issue.reporterInfo?.id}</div>
+            </div>
           </div>
         </Descriptions.Item>
         <Descriptions.Item label={t('assignee')}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Avatar  src={issue.assigneeInfo?.avatar} icon={<UserOutlined />} />
-            <span>{issue.assigneeInfo?.username}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Avatar  
+              size={40}
+              src={issue.assigneeInfo?.avatar} 
+              icon={<UserOutlined />}
+              style={{ 
+                backgroundColor: '#87d068',
+                boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                border: '2px solid #87d068'
+              }}
+            />
+            <div>
+              <div style={{ fontWeight: '500' }}>{issue.assigneeInfo?.username}</div>
+              <div style={{ fontSize: '12px', color: '#666' }}>#{issue.assigneeInfo?.id}</div>
+            </div>
           </div>
         </Descriptions.Item>
         <Descriptions.Item label={t('createTime')} span={2}>
