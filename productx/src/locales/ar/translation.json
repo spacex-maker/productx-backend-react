@@ -1190,5 +1190,6 @@
   "confirmPassword": "تأكيد كلمة المرور",
   "securitySettings": "إعدادات الأمان",
   "newChat": "دردشة جديدة",
-  "openAIAssistant": "فتح مساعد AI"
+  "openAIAssistant": "فتح مساعد AI",
+  "resolve": "حل"
 }
