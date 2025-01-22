@@ -1174,5 +1174,6 @@
   "confirmPassword": "Passwort bestätigen",
   "securitySettings": "Sicherheitseinstellungen",
   "newChat": "Neuer Chat",
-  "openAIAssistant": "AI-Assistent öffnen"
+  "openAIAssistant": "AI-Assistent öffnen",
+  "resolve": "Lösen"
 }

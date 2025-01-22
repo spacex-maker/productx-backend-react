@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Form, Input, Select, message, Row, Col, Avatar } from 'antd'
+import { Modal, Form, Input, Select, message, Row, Col, Avatar, Button } from 'antd'
 import {
   BugOutlined,
   TagsOutlined,
@@ -42,11 +42,15 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
   const handleSubmit = async (values) => {
     try {
       const tags = Array.isArray(values.tags) ? values.tags : []
-
+      
+      // 找到选中的管理员对象
+      const selectedManager = managers.find(manager => manager.id === values.assignee)
+      
       await api.put(`/manage/sys-issue-tracker/update`, {
         ...values,
         id: issue?.id,
         tags,
+        assignee: selectedManager?.username, // 使用用户名而不是 ID
         updateBy: localStorage.getItem('username') || 'system'
       })
 
@@ -57,6 +61,20 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
       message.error(err?.response?.data?.message || t('updateFailed'))
     }
   }
+
+  const handleResolveIssue = async () => {
+    try {
+      await api.post('/manage/sys-issue-tracker/issue-resolve', {
+        id: issue?.id
+      });
+      message.success(t('issueResolved'));
+      form.setFieldsValue({ status: 'Resolved' });
+      onOk();
+    } catch (err) {
+      console.error('Failed to resolve issue:', err);
+      message.error(err?.response?.data?.message || t('resolveFailed'));
+    }
+  };
 
   const statusOptions = [
     { value: 'Open', label: t('open') },
@@ -73,12 +91,45 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
     { value: 'Improvement', label: t('improvement') }
   ]
 
+  const renderFooterButtons = () => {
+    const buttons = [
+      <Button key="cancel" onClick={onCancel}>
+        {t('cancel')}
+      </Button>
+    ];
+
+    // 只有在状态不是 Resolved 和 Closed 时才显示解决按钮
+    if (issue?.status !== 'Resolved' && issue?.status !== 'Closed') {
+      buttons.push(
+        <Button
+          key="resolve"
+          type="primary"
+          style={{ 
+            backgroundColor: '#52c41a',
+            borderColor: '#52c41a'
+          }}
+          onClick={handleResolveIssue}
+        >
+          {t('resolve')}
+        </Button>
+      );
+    }
+
+    buttons.push(
+      <Button key="submit" type="primary" onClick={() => form.submit()}>
+        {t('update')}
+      </Button>
+    );
+
+    return buttons;
+  };
+
   return (
     <Modal
       title={<span><BugOutlined /> {t('updateIssue')}</span>}
       open={visible}
       onCancel={onCancel}
-      onOk={() => form.submit()}
+      footer={renderFooterButtons()}
       width={800}
       maskClosable={false}
       destroyOnClose
@@ -90,6 +141,7 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
         initialValues={{
           ...issue,
           tags: issue?.tags || [],
+          assignee: managers.find(m => m.username === issue?.assignee)?.id
         }}
         preserve={false}
       >
@@ -159,7 +211,7 @@ const UpdateIssueModal = ({ visible, onCancel, onOk, form, issue, issueTypes, is
                 {managers.map(manager => (
                   <Option key={manager.id} value={manager.id}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Avatar  src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
+                      <Avatar src={manager.avatar} icon={<UserOutlined />} style={{ marginRight: 4 }} />
                       <span>{manager.username}</span>
                     </div>
                   </Option>

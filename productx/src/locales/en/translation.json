@@ -1198,5 +1198,6 @@
   "confirmPassword": "Confirm Password",
   "securitySettings": "Security Settings",
   "newChat": "New Chat",
-  "openAIAssistant": "Open AI Assistant"
+  "openAIAssistant": "Open AI Assistant",
+  "resolve": "Resolve"
 }

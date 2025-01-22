@@ -1207,5 +1207,6 @@
   "confirmPassword": "Confirmar contraseña",
   "securitySettings": "Configuraciones de seguridad",
   "newChat": "Nuevo chat",
-  "openAIAssistant": "Abrir asistente de IA"
+  "openAIAssistant": "Abrir asistente de IA",
+  "resolve": "Resolver"
 }
