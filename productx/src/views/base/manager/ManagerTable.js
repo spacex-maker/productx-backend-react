@@ -28,7 +28,7 @@ const ManagerTable = ({
               <label className="custom-control-label"></label>
             </div>
           </th>
-          {['头像', '用户名', '邮箱', '电话', '角色ID', '状态'].map((field) => (
+          {['用户信息', '邮箱', '电话', '角色ID', '状态'].map((field) => (
             <th key={field}>{field}</th>
           ))}
           <th>操作</th>
@@ -49,17 +49,21 @@ const ManagerTable = ({
               </div>
             </td>
             <td>
-              <Avatar 
-                size={24} 
-                icon={<UserOutlined />} 
-                src={item.avatar} 
-                style={{ backgroundColor: '#87d068' }}
-              />
-            </td>
-            <td>
-              <Tooltip title={`ID: ${item.id}`}>
-                {item.username || '—'}
-              </Tooltip>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Avatar 
+                  size={40}
+                  icon={<UserOutlined />} 
+                  src={item.avatar} 
+                  style={{ 
+                    backgroundColor: '#87d068',
+                    boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                    border: '2px solid #87d068'
+                  }}
+                />
+                <Tooltip title={`ID: ${item.id}`}>
+                  <span>{item.username || '—'}</span>
+                </Tooltip>
+              </div>
             </td>
             <td>{item.email || '—'}</td>
             <td>{item.phone || '—'}</td>

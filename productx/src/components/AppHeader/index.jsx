@@ -193,12 +193,14 @@ const StyledButton = styled(CButton)`
     position: relative;
     z-index: 1;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
   }
 
   .text {
     position: relative;
     z-index: 1;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
   }
 `;
 
@@ -273,6 +275,7 @@ const WelcomeWrapper = styled.div`
   background: rgba(var(--cui-primary-rgb), 0.05);
   border: 1px solid rgba(var(--cui-primary-rgb), 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
 
   &:hover {
     background: var(--cui-btn-hover-bg);
@@ -288,6 +291,7 @@ const WelcomeWrapper = styled.div`
     color: var(--cui-body-color);
     font-size: 13px;
     transition: all 0.3s;
+    flex-shrink: 0;
   }
 
   .admin-name {
@@ -295,6 +299,7 @@ const WelcomeWrapper = styled.div`
     font-weight: 600;
     font-size: 14px;
     transition: all 0.3s;
+    flex-shrink: 0;
   }
 `;
 
@@ -447,6 +452,7 @@ const AIButton = styled(StyledButton)`
     align-items: center;
     gap: 8px;
     transition: transform 0.3s ease;
+    white-space: nowrap;
   }
 
   .robot-icon {
@@ -609,132 +615,144 @@ const AppHeader = () => {
     return count.toString();
   };
 
+  // 添加一个判断是否为移动设备的媒体查询
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  // 创建一个渲染头部按钮的函数
+  const renderHeaderButtons = () => (
+    <>
+      <HeaderItem>
+        <AIButton 
+          onClick={handleOpenAIChat}
+          title={t('openAIAssistant')}
+        >
+          <div className="ai-icon-wrapper">
+            <div className="ai-particles" />
+            <RobotOutlined className="robot-icon" style={{ fontSize: '16px' }} />
+            <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+              {t('aiAssistant')}
+            </span>
+          </div>
+        </AIButton>
+      </HeaderItem>
+
+      <HeaderItem>
+        <StyledButton 
+          onClick={() => setMessageModalVisible(true)}
+          title={t('messages')}
+          $hasUnread={unreadCount > 0}
+        >
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px'
+          }}>
+            <CIcon 
+              icon={cilEnvelopeOpen} 
+              className="icon" 
+              style={{ fontSize: '16px' }} 
+            />
+            <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+              {t('messages')}
+              {unreadCount > 0 && (
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: '6px',
+                  background: 'var(--cui-danger)',
+                  color: 'white',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  height: '18px',
+                  minWidth: '18px',
+                  padding: '0 5px',
+                  borderRadius: '9px',
+                  lineHeight: 1
+                }}>
+                  {unreadCount}
+                </span>
+              )}
+            </span>
+          </div>
+        </StyledButton>
+      </HeaderItem>
+
+      <HeaderItem>
+        <WelcomeWrapper>
+          <span className="welcome-text">{t('welcome')}</span>
+          <span className="admin-name">
+            {currentUser?.username || t('notLoggedIn')}
+          </span>
+        </WelcomeWrapper>
+      </HeaderItem>
+
+      <HeaderItem>
+        <ThemeButton 
+          onClick={() => onChangeTheme(colorMode === 'dark' ? 'light' : 'dark')}
+          $isDark={colorMode === 'dark'}
+        >
+          <div className="theme-icon-wrapper">
+            <CIcon 
+              icon={colorMode === 'dark' ? cilMoon : cilSun} 
+              className="icon"
+            />
+            <span className="text">
+              {colorMode === 'dark' ? t('darkMode') : t('lightMode')}
+            </span>
+          </div>
+        </ThemeButton>
+      </HeaderItem>
+
+      <HeaderItem>
+        <CDropdown variant="nav-item" placement="bottom-end">
+          <CDropdownToggle caret={false}>
+            <StyledButton>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CIcon icon={cilLanguage} className="icon" style={{ fontSize: '16px' }} />
+                <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
+                  {sortedLanguages.find(lang => lang.languageCode === currentLang)?.languageNameNative}
+                </span>
+              </div>
+            </StyledButton>
+          </CDropdownToggle>
+          <StyledLanguageMenu>
+            {sortedLanguages.map((lang) => (
+              <LanguageItem 
+                key={lang.id} 
+                onClick={() => changeLanguage(lang.languageCode)}
+                className={currentLang === lang.languageCode ? 'active' : ''}
+              >
+                <div className="language-info">
+                  <span className="language-name">
+                    {lang.languageNameNative}
+                  </span>
+                </div>
+                <span className="usage-count" title={`${lang.usageCount} users`}>
+                  {formatUsageCount(lang.usageCount)}
+                </span>
+              </LanguageItem>
+            ))}
+          </StyledLanguageMenu>
+        </CDropdown>
+      </HeaderItem>
+    </>
+  );
+
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
-        <CHeaderToggler onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}>
+        <CHeaderToggler onClick={toggleSidebar}>
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <AppBreadcrumb />
         </CHeaderNav>
         <CHeaderNav className="ms-3 d-flex align-items-center">
-          <HeaderItem>
-            <AIButton 
-              onClick={handleOpenAIChat}
-              title={t('openAIAssistant')}
-            >
-              <div className="ai-icon-wrapper">
-                <div className="ai-particles" />
-                <RobotOutlined className="robot-icon" style={{ fontSize: '16px' }} />
-                <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
-                  {t('aiAssistant')}
-                </span>
-              </div>
-            </AIButton>
-          </HeaderItem>
-
-          <HeaderItem>
-            <StyledButton 
-              onClick={() => setMessageModalVisible(true)}
-              title={t('messages')}
-              $hasUnread={unreadCount > 0}
-            >
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '8px'
-              }}>
-                <CIcon 
-                  icon={cilEnvelopeOpen} 
-                  className="icon" 
-                  style={{ fontSize: '16px' }} 
-                />
-                <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
-                  {t('messages')}
-                  {unreadCount > 0 && (
-                    <span style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginLeft: '6px',
-                      background: 'var(--cui-danger)',
-                      color: 'white',
-                      fontSize: '12px',
-                      fontWeight: '600',
-                      height: '18px',
-                      minWidth: '18px',
-                      padding: '0 5px',
-                      borderRadius: '9px',
-                      lineHeight: 1
-                    }}>
-                      {unreadCount}
-                    </span>
-                  )}
-                </span>
-              </div>
-            </StyledButton>
-          </HeaderItem>
-
-          <HeaderItem>
-            <WelcomeWrapper>
-              <span className="welcome-text">{t('welcome')}</span>
-              <span className="admin-name">
-                {currentUser?.username || t('notLoggedIn')}
-              </span>
-            </WelcomeWrapper>
-          </HeaderItem>
-
-          <HeaderItem>
-            <ThemeButton 
-              onClick={() => onChangeTheme(colorMode === 'dark' ? 'light' : 'dark')}
-              $isDark={colorMode === 'dark'}
-            >
-              <div className="theme-icon-wrapper">
-                <CIcon 
-                  icon={colorMode === 'dark' ? cilMoon : cilSun} 
-                  className="icon"
-                />
-                <span className="text">
-                  {colorMode === 'dark' ? t('darkMode') : t('lightMode')}
-                </span>
-              </div>
-            </ThemeButton>
-          </HeaderItem>
-
-          <HeaderItem>
-            <CDropdown variant="nav-item" placement="bottom-end">
-              <CDropdownToggle caret={false}>
-                <StyledButton>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <CIcon icon={cilLanguage} className="icon" style={{ fontSize: '16px' }} />
-                    <span className="text" style={{ fontSize: '14px', fontWeight: 500 }}>
-                      {sortedLanguages.find(lang => lang.languageCode === currentLang)?.languageNameNative}
-                    </span>
-                  </div>
-                </StyledButton>
-              </CDropdownToggle>
-              <StyledLanguageMenu>
-                {sortedLanguages.map((lang) => (
-                  <LanguageItem 
-                    key={lang.id} 
-                    onClick={() => changeLanguage(lang.languageCode)}
-                    className={currentLang === lang.languageCode ? 'active' : ''}
-                  >
-                    <div className="language-info">
-                      <span className="language-name">
-                        {lang.languageNameNative}
-                      </span>
-                    </div>
-                    <span className="usage-count" title={`${lang.usageCount} users`}>
-                      {formatUsageCount(lang.usageCount)}
-                    </span>
-                  </LanguageItem>
-                ))}
-              </StyledLanguageMenu>
-            </CDropdown>
-          </HeaderItem>
-
+          {/* 在大屏幕显示按钮 */}
+          <div className="d-none d-md-flex align-items-center">
+            {renderHeaderButtons()}
+          </div>
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>

@@ -12,10 +12,31 @@ const { Option } = Select;
 const UserOption = ({ avatar, label }) => (
   <div className={styles.userOption}>
     {avatar ? (
-      <img src={avatar} alt="avatar" className={styles.avatar} />
+      <img 
+        src={avatar} 
+        alt="avatar" 
+        style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          objectFit: 'cover',
+          boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+          border: '2px solid #87d068'
+        }}
+      />
     ) : (
-      <div className={styles.avatarPlaceholder}>
-        <UserOutlined style={{ fontSize: '12px', color: '#999' }} />
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        backgroundColor: '#87d068',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+        border: '2px solid #87d068'
+      }}>
+        <UserOutlined style={{ fontSize: '16px', color: '#fff' }} />
       </div>
     )}
     <span>{label}</span>

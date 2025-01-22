@@ -13,9 +13,32 @@ const { Text } = Typography;
 const UserInfo = ({ avatar, username }) => (
   <div className={styles.userInfo}>
     {avatar ? (
-      <img src={avatar} alt="avatar" className={styles.avatar} />
+      <img 
+        src={avatar} 
+        alt="avatar" 
+        style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          objectFit: 'cover',
+          boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+          border: '2px solid #87d068'
+        }}
+      />
     ) : (
-      <div className={styles.avatar} style={{ background: '#ccc' }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: '50%',
+        backgroundColor: '#87d068',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#fff',
+        fontSize: '16px',
+        boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+        border: '2px solid #87d068'
+      }}>
         {username?.[0]?.toUpperCase()}
       </div>
     )}
@@ -46,15 +69,15 @@ const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType })
       open={visible}
       onCancel={onCancel}
       footer={[
+        <Button key="close" onClick={onCancel}>
+          {t('close')}
+        </Button>,
         messageType === 'received' && !message?.isRead && !message?.isRetracted && (
           <Button key="read" type="primary" onClick={() => onRead(message?.id)}>
             {t('markRead')}
           </Button>
         ),
-        <Button key="close" onClick={onCancel}>
-          {t('close')}
-        </Button>,
-      ]}
+      ].filter(Boolean)}
       width={600}
       className={styles.detailModal}
     >
@@ -146,6 +169,17 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [detailVisible, setDetailVisible] = useState(false);
   const [sendMessageVisible, setSendMessageVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // 监听窗口大小变化
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const fetchMessages = async () => {
     setLoading(true);
@@ -324,28 +358,59 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
     <Modal
       title={
         <div className={styles.modalHeader}>
-          <Space size="large">
-            <Text strong className={styles.modalTitle}>{t('messageList')}</Text>
-            <Radio.Group
-              value={messageType}
-              onChange={(e) => {
-                setMessageType(e.target.value);
-                setCurrent(1);
-              }}
-              buttonStyle="solid"
-            >
-              <Radio.Button value="received">{t('receivedMessages')}</Radio.Button>
-              <Radio.Button value="sent">{t('sentMessages')}</Radio.Button>
-            </Radio.Group>
-          </Space>
-          <Button type="primary" onClick={() => setSendMessageVisible(true)}>
-            {t('sendMessage')}
-          </Button>
+          {isMobile ? (
+            // 移动端布局
+            <div className={styles.mobileHeader}>
+              <div className={styles.topSection}>
+                <Text strong className={styles.modalTitle}>{t('messageList')}</Text>
+                <Button type="primary" onClick={() => setSendMessageVisible(true)}>
+                  {t('sendMessage')}
+                </Button>
+              </div>
+              <div className={styles.bottomSection}>
+                <Radio.Group
+                  value={messageType}
+                  onChange={(e) => {
+                    setMessageType(e.target.value);
+                    setCurrent(1);
+                  }}
+                  buttonStyle="solid"
+                  size="small"
+                >
+                  <Radio.Button value="received">{t('receivedMessages')}</Radio.Button>
+                  <Radio.Button value="sent">{t('sentMessages')}</Radio.Button>
+                </Radio.Group>
+              </div>
+            </div>
+          ) : (
+            // 桌面端布局
+            <div className={styles.desktopHeader}>
+              <div className={styles.leftSection}>
+                <Text strong className={styles.modalTitle}>{t('messageList')}</Text>
+                <Radio.Group
+                  value={messageType}
+                  onChange={(e) => {
+                    setMessageType(e.target.value);
+                    setCurrent(1);
+                  }}
+                  buttonStyle="solid"
+                >
+                  <Radio.Button value="received">{t('receivedMessages')}</Radio.Button>
+                  <Radio.Button value="sent">{t('sentMessages')}</Radio.Button>
+                </Radio.Group>
+              </div>
+              <div className={styles.rightSection}>
+                <Button type="primary" onClick={() => setSendMessageVisible(true)}>
+                  {t('sendMessage')}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       }
       open={visible}
       onCancel={onCancel}
-      width={900}
+      width={isMobile ? '100%' : 900}
       className={styles.listModal}
       footer={null}
     >

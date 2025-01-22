@@ -144,16 +144,6 @@ const ListUserAddress = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                value={searchParams.userId}
-                onChange={handleSearchChange}
-                name="userId"
-                placeholder={t('userId')}
-                allowClear
-                style={{ width: 150 }}
-              />
-            </Col>
-            <Col>
-              <Input
                 value={searchParams.username}
                 onChange={handleSearchChange}
                 name="username"

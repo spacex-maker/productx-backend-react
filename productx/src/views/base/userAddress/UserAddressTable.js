@@ -32,8 +32,6 @@ const UserAddressTable = ({
             </div>
           </th>
           {[
-            'id',
-            'userId',
             'username',
             'contactName',
             'phoneNum',
@@ -63,28 +61,55 @@ const UserAddressTable = ({
                 <label className="custom-control-label" htmlFor={`td_checkbox_${item.id}`}></label>
               </div>
             </td>
-            <td className="text-truncate">{item.id}</td>
-            <td className="text-truncate">{item.userId}</td>
-            <td className="text-truncate">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                {item.avatar && (
+            <td>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '12px',
+                whiteSpace: 'nowrap', 
+                minWidth: '150px',
+                overflow: 'visible'
+              }}>
+                {item.avatar ? (
                   <img 
                     src={item.avatar} 
                     alt="用户头像"
                     style={{
-                      width: '24px',
-                      height: '24px',
+                      width: '40px',
+                      height: '40px',
                       borderRadius: '50%',
-                      marginRight: '8px'
+                      boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                      border: '2px solid #87d068',
+                      objectFit: 'cover'
                     }}
                   />
+                ) : (
+                  <div
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      backgroundColor: '#87d068',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      fontSize: '16px',
+                      boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                      border: '2px solid #87d068'
+                    }}
+                  >
+                    {item.username?.charAt(0)?.toUpperCase()}
+                  </div>
                 )}
-                {item.username}
-                {item.isBelongSystem && (
-                  <Tag color="blue" style={{ marginLeft: '8px' }}>
-                    {t('systemUser')}
-                  </Tag>
-                )}
+                <div>
+                  <span style={{ fontWeight: '500' }}>{item.username}</span>
+                  {item.isBelongSystem && (
+                    <Tag color="blue" style={{ marginLeft: '8px' }}>
+                      {t('systemUser')}
+                    </Tag>
+                  )}
+                </div>
               </div>
             </td>
             <td className="text-truncate" style={{ backgroundColor: 'rgba(0, 0, 0, 0.02)' }}>

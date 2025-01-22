@@ -140,27 +140,41 @@ const IssueTable = ({
             </td>
             <td>
               {item.reporterInfo ? (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <Avatar 
-                    size={16} 
+                    size={40} 
                     src={item.reporterInfo.avatar} 
                     icon={<UserOutlined />}
-                    style={{ marginRight: 4 }}
+                    style={{ 
+                      backgroundColor: '#87d068',
+                      boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                      border: '2px solid #87d068'
+                    }}
                   />
-                  <span>{item.reporterInfo.username}</span>
+                  <div>
+                    <div style={{ fontWeight: '500' }}>{item.reporterInfo.username}</div>
+                    <div style={{ fontSize: '12px', color: '#666' }}>#{item.reporterInfo.id}</div>
+                  </div>
                 </div>
               ) : '-'}
             </td>
             <td>
               {item.assigneeInfo ? (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <Avatar 
-                    size={16} 
+                    size={40} 
                     src={item.assigneeInfo.avatar} 
                     icon={<UserOutlined />}
-                    style={{ marginRight: 4 }}
+                    style={{ 
+                      backgroundColor: '#87d068',
+                      boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
+                      border: '2px solid #87d068'
+                    }}
                   />
-                  <span>{item.assigneeInfo.username}</span>
+                  <div>
+                    <div style={{ fontWeight: '500' }}>{item.assigneeInfo.username}</div>
+                    <div style={{ fontSize: '12px', color: '#666' }}>#{item.assigneeInfo.id}</div>
+                  </div>
                 </div>
               ) : '-'}
             </td>
