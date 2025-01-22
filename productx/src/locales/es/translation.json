@@ -1208,5 +1208,8 @@
   "securitySettings": "Configuraciones de seguridad",
   "newChat": "Nuevo chat",
   "openAIAssistant": "Abrir asistente de IA",
-  "resolve": "Resolver"
+  "resolve": "Resolver",
+  "enterAssignee": "Por favor, introduzca el asignado",
+  "enterReporter": "Por favor, introduzca el informante",
+  "onlyShowAssignedToMe": "Asignado a mí"
 }

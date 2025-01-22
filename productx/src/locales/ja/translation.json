@@ -1198,5 +1198,8 @@
   "securitySettings": "セキュリティ設定",
   "newChat": "新しいチャット",
   "openAIAssistant": "AIアシスタントを開く",
-  "resolve": "解決"
+  "resolve": "解決",
+  "enterAssignee": "担当者を入力してください",
+  "enterReporter": "報告者を入力してください",
+  "onlyShowAssignedToMe": "自分に割り当てられたもの"
 }

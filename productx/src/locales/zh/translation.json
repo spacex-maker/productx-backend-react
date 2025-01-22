@@ -1223,5 +1223,9 @@
   "securitySettings": "安全设置",
   "newChat": "新建聊天",
   "openAIAssistant": "打开AI助手",
-  "resolve": "解决"
+  "resolve": "解决",
+
+  "enterAssignee": "请输入指派人",
+  "enterReporter": "请输入报告人",
+  "onlyShowAssignedToMe": "指派给我的"
 }

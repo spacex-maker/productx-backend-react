@@ -27,6 +27,7 @@ import { useDispatch } from 'react-redux';
 import { setCurrentUser } from 'src/store/user';
 import { Select } from 'antd';
 import HealthCheck from 'src/components/common/HealthCheck';
+import { Form } from 'antd';
 const { Option } = Select;
 
 const breakpoints = {
@@ -658,6 +659,7 @@ const VerticalStack = styled.div`
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
+  const [historyUsernames, setHistoryUsernames] = useState([]);
   const [password, setPassword] = useState('');
   const [verify, setVerify] = useState('');
   const [notice, setNotice] = useState('');
@@ -667,7 +669,7 @@ const LoginPage = () => {
   const [selectedEnv, setSelectedEnv] = useState('PROD');
   const [loading, setLoading] = useState(false);
   const [showApiConfig, setShowApiConfig] = useState(false);
-  const { t } = useTranslation(); // 获取 t 数
+  const { t } = useTranslation();
   const [isCustomEnv, setIsCustomEnv] = useState(false);
   const [customUrl, setCustomUrl] = useState('');
   const dispatch = useDispatch();
@@ -712,9 +714,30 @@ const LoginPage = () => {
     }
   };
 
+  // 初始化时从 localStorage 加载历史用户名
+  useEffect(() => {
+    const savedUsernames = localStorage.getItem('historyUsernames');
+    if (savedUsernames) {
+      setHistoryUsernames(JSON.parse(savedUsernames));
+    }
+  }, []);
+
+  // 保存新的用户名到历史记录
+  const saveUsernameToHistory = (username) => {
+    if (!username) return;
+    
+    const newHistoryUsernames = [
+      username,
+      ...historyUsernames.filter(name => name !== username)
+    ].slice(0, 5); // 只保留最近5个
+
+    setHistoryUsernames(newHistoryUsernames);
+    localStorage.setItem('historyUsernames', JSON.stringify(newHistoryUsernames));
+  };
+
   const handleLogin = async (e) => {
-    setLoading(true);
     e.preventDefault();
+    setLoading(true);
     const formData = { username, password, verify };
 
     try {
@@ -740,6 +763,9 @@ const LoginPage = () => {
         );
 
         localStorage.setItem('currentUser', JSON.stringify(userInfo));
+        
+        // 登录成功后保存用户名
+        saveUsernameToHistory(username);
         
         // 添加登录成功动画
         setIsExiting(true);
@@ -932,10 +958,18 @@ const LoginPage = () => {
                           <CIcon icon={cilUser} />
                         </CInputGroupText>
                         <StyledInput
-                          placeholder={t('username')}
+                          type="text"
+                          placeholder={t('enterUsername')}
+                          list="usernames"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
+                          required
                         />
+                        <datalist id="usernames">
+                          {historyUsernames.map((username) => (
+                            <option key={username} value={username} />
+                          ))}
+                        </datalist>
                       </StyledInputGroup>
 
                       <StyledInputGroup>

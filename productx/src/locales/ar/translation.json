@@ -1191,5 +1191,8 @@
   "securitySettings": "إعدادات الأمان",
   "newChat": "دردشة جديدة",
   "openAIAssistant": "فتح مساعد AI",
-  "resolve": "حل"
+  "resolve": "حل",
+  "enterAssignee": "يرجى إدخال الشخص المخصص",
+  "enterReporter": "يرجى إدخال المبلغ",
+  "onlyShowAssignedToMe": "المخصصة لي"
 }

@@ -1175,5 +1175,8 @@
   "securitySettings": "Sicherheitseinstellungen",
   "newChat": "Neuer Chat",
   "openAIAssistant": "AI-Assistent öffnen",
-  "resolve": "Lösen"
+  "resolve": "Lösen",
+  "enterAssignee": "Bitte geben Sie den Zuständigen ein",
+  "enterReporter": "Bitte geben Sie den Berichterstatter ein",
+  "onlyShowAssignedToMe": "Mir zugewiesen"
 }
