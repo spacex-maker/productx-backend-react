@@ -1,9 +1,58 @@
 import React from 'react';
 import { Modal, Avatar, Card, Tag, Space, Typography, Row, Col } from 'antd';
+import styled from 'styled-components';
 // @ts-ignore
 import defaultAvatar from '../../../assets/images/avatars/8.jpg';
 
 const { Text, Title } = Typography;
+
+const AvatarWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    background: conic-gradient(
+      from 0deg,
+      #1677ff,
+      #87d068,
+      #1677ff,
+      #87d068,
+      #1677ff
+    );
+    border-radius: 50%;
+    animation: rotate 4s linear infinite;
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: rgba(22, 119, 255, 0.3);
+    border-radius: 50%;
+    animation: glow 2s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  .ant-avatar {
+    position: relative;
+    z-index: 3;
+    border: 2px solid white;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes glow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+`;
 
 export const AdminDetailModal = ({ visible, onCancel, adminInfo }) => {
   const getStatusTag = (status) => {
@@ -84,13 +133,15 @@ export const AdminDetailModal = ({ visible, onCancel, adminInfo }) => {
     >
       <Card bordered={false}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <Avatar
-            size={100}
-            src={adminInfo?.avatar || defaultAvatar}
-            onError={(e) => {
-              e.target.src = defaultAvatar;
-            }}
-          />
+          <AvatarWrapper>
+            <Avatar
+              size={100}
+              src={adminInfo?.avatar || defaultAvatar}
+              onError={(e) => {
+                e.target.src = defaultAvatar;
+              }}
+            />
+          </AvatarWrapper>
           <Title level={4} style={{ marginTop: 16, marginBottom: 4 }}>
             {adminInfo?.username}
           </Title>

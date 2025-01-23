@@ -60,6 +60,7 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
   const [fileList, setFileList] = useState([]);
   const [fetching, setFetching] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const debouncedFetchManagers = debounce(async (search) => {
     if (!search) {
@@ -103,6 +104,15 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
       setFetching(false);
     }
   }, [visible]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleSearch = (search) => {
     setSearchText(search);
@@ -152,12 +162,20 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
       onCancel={onCancel}
       onOk={form.submit}
       confirmLoading={loading}
-      width={600}
+      width={isMobile ? '100%' : 600}
+      className={styles.sendMessageModal}
+      style={isMobile ? {
+        top: 0,
+        maxWidth: '100vw',
+        margin: 0,
+        paddingBottom: 0
+      } : undefined}
     >
       <Form
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
+        className={isMobile ? styles.mobileForm : ''}
       >
         <Form.Item
           name="receiverId"
@@ -265,6 +283,7 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
             format="YYYY-MM-DD HH:mm:ss"
             placeholder="选择过期时间"
             style={{ width: '100%' }}
+            inputReadOnly={isMobile}
           />
         </Form.Item>
 
@@ -272,10 +291,11 @@ const SendMessageModal = ({ visible, onCancel, onSuccess }) => {
           label="附件"
         >
           <Upload
-            action="/api/upload" // 替换为实际的上传接口
+            action="/api/upload"
             fileList={fileList}
             onChange={handleUploadChange}
             multiple
+            className={isMobile ? styles.mobileUpload : ''}
           >
             <Button icon={<UploadOutlined />}>上传附件</Button>
           </Upload>

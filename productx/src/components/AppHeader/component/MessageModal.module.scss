@@ -2,6 +2,44 @@
   :global {
     .ant-modal-body {
       padding: 12px;
+      max-height: 80vh;
+      overflow-y: auto;
+      
+      @media (max-width: 767px) {
+        max-height: calc(100vh - 110px); // 减去头部和底部的高度
+        padding: 8px;
+      }
+    }
+    
+    .ant-modal {
+      @media (max-width: 767px) {
+        max-width: 100%;
+        margin: 0;
+        top: 0;
+      }
+    }
+    
+    .ant-modal-content {
+      @media (max-width: 767px) {
+        border-radius: 0;
+        min-height: 100vh;
+      }
+    }
+    
+    // 优化表格在移动端的显示
+    .ant-table {
+      @media (max-width: 767px) {
+        width: 100%;
+        overflow-x: auto;
+        
+        &-content {
+          overflow-x: auto;
+        }
+        
+        &-body {
+          overflow-x: auto;
+        }
+      }
     }
   }
 }
@@ -64,14 +102,43 @@
   margin-bottom: 12px;
   padding: 12px;
   border-radius: 4px;
-
-  :global {
-    .ant-form-item {
-      margin-bottom: 0;
-    }
+  
+  @media (max-width: 767px) {
+    padding: 8px;
     
-    .ant-form-item-label > label {
-      font-size: 13px;
+    :global {
+      .ant-row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+      }
+      
+      .ant-form-item {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        
+        .ant-form-item-label {
+          display: none;
+        }
+      }
+      
+      .ant-picker {
+        width: 100% !important;
+        min-width: unset !important;
+      }
+      
+      .ant-select {
+        width: 100% !important;
+      }
+      
+      .ant-input,
+      .ant-select,
+      .ant-picker {
+        min-width: 120px;
+      }
+      
+      .ant-form-item-control-input {
+        min-height: unset;
+      }
     }
   }
 }
@@ -248,11 +315,75 @@
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 4px;
-  
+  gap: 8px;
+
+  .avatarWrapper {
+    position: relative;
+    width: 40px;
+    height: 40px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: conic-gradient(
+        from 0deg,
+        #87d068,
+        #1890ff,
+        #87d068,
+        #1890ff,
+        #87d068
+      );
+      border-radius: 50%;
+      animation: rotate 4s linear infinite;
+      z-index: 0;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      background: rgba(135, 208, 104, 0.2);
+      border-radius: 50%;
+      animation: glow 2s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    img {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+      z-index: 2;
+    }
+
+    .avatarPlaceholder {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #87d068;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      border: 2px solid #fff;
+      z-index: 2;
+    }
+  }
+
   .username {
-    font-size: 13px;
-    line-height: 1;
+    font-size: 14px;
+    color: var(--cui-body-color);
   }
 }
 
@@ -317,18 +448,119 @@
   }
 } 
 
-// 响应式样式
-@media (max-width: 767px) {
-  .listModal {
-    :global {
-      .ant-modal {
-        max-width: 100%;
-        margin: 0;
-      }
-      
-      .ant-modal-content {
+.sendMessageModal {
+  :global {
+    .ant-modal-content {
+      @media screen and (max-width: 768px) {
         border-radius: 0;
+        min-height: 100vh;
       }
     }
+  }
+}
+
+.mobileForm {
+  @media screen and (max-width: 768px) {
+    .ant-form-item {
+      margin-bottom: 12px;
+    }
+
+    .ant-input,
+    .ant-select,
+    .ant-picker {
+      font-size: 16px; // 防止 iOS 自动缩放
+    }
+  }
+}
+
+.mobileUpload {
+  @media screen and (max-width: 768px) {
+    :global {
+      .ant-upload-list-item {
+        margin-top: 8px;
+      }
+    }
+  }
+} 
+
+.statusColumn {
+  .statusWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .statusBadge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+
+    :global {
+      .ant-badge-status-text {
+        margin-left: 4px;
+      }
+    }
+  }
+
+  .readStatus {
+    opacity: 0.75;
+  }
+
+  .unreadStatus {
+    font-weight: 500;
+    
+    :global {
+      .ant-badge-status-dot {
+        width: 8px;
+        height: 8px;
+      }
+    }
+  }
+
+  .markReadButton {
+    padding: 2px 8px;
+    height: 24px;
+    line-height: 20px;
+    font-size: 12px;
+    background: rgba(22, 119, 255, 0.1);
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(22, 119, 255, 0.2);
+    }
+  }
+
+  .tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+
+    :global {
+      .ant-tag {
+        margin-right: 0;
+        font-size: 12px;
+        line-height: 18px;
+        padding: 0 4px;
+      }
+    }
+  }
+} 
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
   }
 } 

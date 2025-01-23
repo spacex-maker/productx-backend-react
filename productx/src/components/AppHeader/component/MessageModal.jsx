@@ -12,36 +12,18 @@ const { Text } = Typography;
 
 const UserInfo = ({ avatar, username }) => (
   <div className={styles.userInfo}>
-    {avatar ? (
-      <img 
-        src={avatar} 
-        alt="avatar" 
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          objectFit: 'cover',
-          boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
-          border: '2px solid #87d068'
-        }}
-      />
-    ) : (
-      <div style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '50%',
-        backgroundColor: '#87d068',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#fff',
-        fontSize: '16px',
-        boxShadow: '0 0 8px rgba(135, 208, 104, 0.8)',
-        border: '2px solid #87d068'
-      }}>
-        {username?.[0]?.toUpperCase()}
-      </div>
-    )}
+    <div className={styles.avatarWrapper}>
+      {avatar ? (
+        <img 
+          src={avatar} 
+          alt="avatar" 
+        />
+      ) : (
+        <div className={styles.avatarPlaceholder}>
+          {username?.[0]?.toUpperCase()}
+        </div>
+      )}
+    </div>
     <span className={styles.username}>{username}</span>
   </div>
 );
@@ -151,6 +133,98 @@ const MessageDetailModal = ({ visible, message, onCancel, onRead, messageType })
   );
 };
 
+const SearchForm = ({ onFinish }) => {
+  const { t } = useTranslation();
+  const [form] = Form.useForm();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return (
+    <Form onFinish={onFinish} layout="inline" form={form}>
+      <Row gutter={[16, 16]} style={{ width: '100%', marginBottom: 16 }}>
+        <Col xs={12} sm={8}>
+          <Form.Item 
+            name="messageType" 
+            label={!isMobile ? t('messageType') : ''}
+            style={{ width: '100%' }}
+          >
+            <Select
+              style={{ width: '100%' }}
+              allowClear
+              placeholder={t('messageType')}
+              options={[
+                { label: t('text'), value: 'text' },
+                { label: t('system'), value: 'system' },
+              ]}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={8}>
+          <Form.Item 
+            name="isRead" 
+            label={!isMobile ? t('readStatus') : ''}
+            style={{ width: '100%' }}
+          >
+            <Select
+              style={{ width: '100%' }}
+              allowClear
+              placeholder={t('readStatus')}
+              options={[
+                { label: t('read'), value: true },
+                { label: t('unread'), value: false },
+              ]}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={8}>
+          <Form.Item 
+            name="isFlagged" 
+            label={!isMobile ? t('important') : ''}
+            style={{ width: '100%' }}
+          >
+            <Select
+              style={{ width: '100%' }}
+              allowClear
+              placeholder={t('important')}
+              options={[
+                { label: t('important'), value: true },
+                { label: t('normal'), value: false },
+              ]}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={18} sm={16}>
+          <Form.Item 
+            name="timeRange" 
+            label={!isMobile ? t('timeRange') : ''}
+            style={{ width: '100%' }}
+          >
+            <RangePicker
+              showTime
+              style={{ width: '100%' }}
+              placeholder={[t('startTime'), t('endTime')]}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={6} sm={8}>
+          <Form.Item style={{ width: '100%', textAlign: 'right' }}>
+            <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
+              {!isMobile && t('search')}
+            </Button>
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
+  );
+};
+
 const MessageModal = ({ visible, onCancel, onSuccess }) => {
   const { t } = useTranslation();
   const [data, setData] = useState([]);
@@ -244,35 +318,59 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
     {
       title: t('status'),
       key: 'status',
-      width: 100,
+      width: 120,
       render: (_, record) => (
-        <Space size={4}>
+        <div className={styles.statusColumn}>
           {messageType === 'received' ? (
-            <Tooltip
-              title={record.readAt ? `${t('readTime')}: ${record.readAt}` : null}
-              mouseEnterDelay={0.5}
-            >
-              <Badge
-                status={record.isRead ? 'default' : 'processing'}
-                text={record.isRead ? t('read') : t('unread')}
-                className={record.isRead ? styles.readStatus : ''}
-              />
-            </Tooltip>
+            <div className={styles.statusWrapper}>
+              <div className={styles.statusBadge}>
+                <Tooltip
+                  title={record.readAt ? `${t('readTime')}: ${record.readAt}` : null}
+                  mouseEnterDelay={0.5}
+                >
+                  <Badge
+                    status={record.isRead ? 'default' : 'processing'}
+                    text={record.isRead ? t('read') : t('unread')}
+                    className={record.isRead ? styles.readStatus : styles.unreadStatus}
+                  />
+                </Tooltip>
+                {!record.isRead && !record.isRetracted && (
+                  <Button 
+                    type="link" 
+                    size="small" 
+                    className={styles.markReadButton}
+                    onClick={() => handleRead(record.id)}
+                  >
+                    {t('markRead')}
+                  </Button>
+                )}
+              </div>
+              <div className={styles.tags}>
+                {record.isRetracted && <Tag color="red">{t('retracted')}</Tag>}
+                {record.createdBySystem && <Tag color="blue">{t('system')}</Tag>}
+              </div>
+            </div>
           ) : (
-            <Tooltip
-              title={record.readAt ? `${t('readTime')}: ${record.readAt}` : null}
-              mouseEnterDelay={0.5}
-            >
-              <Badge
-                status={record.isRead ? 'success' : 'default'}
-                text={record.isRead ? t('readByReceiver') : t('unreadByReceiver')}
-                className={record.isRead ? styles.readStatus : ''}
-              />
-            </Tooltip>
+            <div className={styles.statusWrapper}>
+              <div className={styles.statusBadge}>
+                <Tooltip
+                  title={record.readAt ? `${t('readTime')}: ${record.readAt}` : null}
+                  mouseEnterDelay={0.5}
+                >
+                  <Badge
+                    status={record.isRead ? 'success' : 'default'}
+                    text={record.isRead ? t('readByReceiver') : t('unreadByReceiver')}
+                    className={record.isRead ? styles.readStatus : styles.unreadStatus}
+                  />
+                </Tooltip>
+              </div>
+              <div className={styles.tags}>
+                {record.isRetracted && <Tag color="red">{t('retracted')}</Tag>}
+                {record.createdBySystem && <Tag color="blue">{t('system')}</Tag>}
+              </div>
+            </div>
           )}
-          {record.isRetracted && <Tag color="red">{t('retracted')}</Tag>}
-          {record.createdBySystem && <Tag color="blue">{t('system')}</Tag>}
-        </Space>
+        </div>
       ),
     },
     {
@@ -328,29 +426,27 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
     {
       title: t('action'),
       key: 'action',
-      width: 100,
+      width: 80,
       render: (_, record) => (
-        <Space>
-          <Button type="link" onClick={() => handleViewDetail(record)}>
-            {t('view')}
-          </Button>
-          {messageType === 'received' && !record.isRead && !record.isRetracted && (
-            <Button type="link" onClick={() => handleRead(record.id)}>
-              {t('markRead')}
-            </Button>
-          )}
-        </Space>
+        <Button type="link" onClick={() => handleViewDetail(record)}>
+          {t('view')}
+        </Button>
       ),
     },
   ];
 
   const handleSearch = (values) => {
+    const params = { ...values };
+    
+    // 处理时间范围，直接传递 moment 对象
     if (values.timeRange) {
-      values.startTime = values.timeRange[0].format('YYYY-MM-DD HH:mm:ss');
-      values.endTime = values.timeRange[1].format('YYYY-MM-DD HH:mm:ss');
-      delete values.timeRange;
+      const [start, end] = values.timeRange;
+      params.startTime = start.toDate(); // 转换为 JavaScript Date 对象
+      params.endTime = end.toDate();     // 转换为 JavaScript Date 对象
+      delete params.timeRange;
     }
-    setSearchParams(values);
+
+    setSearchParams(params);
     setCurrent(1);
   };
 
@@ -362,7 +458,6 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
             // 移动端布局
             <div className={styles.mobileHeader}>
               <div className={styles.topSection}>
-                <Text strong className={styles.modalTitle}>{t('messageList')}</Text>
                 <Button type="primary" onClick={() => setSendMessageVisible(true)}>
                   {t('sendMessage')}
                 </Button>
@@ -386,7 +481,6 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
             // 桌面端布局
             <div className={styles.desktopHeader}>
               <div className={styles.leftSection}>
-                <Text strong className={styles.modalTitle}>{t('messageList')}</Text>
                 <Radio.Group
                   value={messageType}
                   onChange={(e) => {
@@ -415,59 +509,7 @@ const MessageModal = ({ visible, onCancel, onSuccess }) => {
       footer={null}
     >
       <div className={styles.searchSection}>
-        <Form onFinish={handleSearch} layout="inline">
-          <Row gutter={[16, 16]} style={{ width: '100%', marginBottom: 16 }}>
-            <Col>
-              <Form.Item name="messageType" label={t('messageType')}>
-                <Select
-                  style={{ width: 120 }}
-                  allowClear
-                  options={[
-                    { label: t('text'), value: 'text' },
-                    { label: t('system'), value: 'system' },
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-            <Col>
-              <Form.Item name="isRead" label={t('readStatus')}>
-                <Select
-                  style={{ width: 120 }}
-                  allowClear
-                  options={[
-                    { label: t('read'), value: true },
-                    { label: t('unread'), value: false },
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-            <Col>
-              <Form.Item name="isFlagged" label={t('important')}>
-                <Select
-                  style={{ width: 120 }}
-                  allowClear
-                  options={[
-                    { label: t('important'), value: true },
-                    { label: t('normal'), value: false },
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-            <Col flex="auto">
-              <Form.Item name="timeRange" label={t('timeRange')}>
-                <RangePicker
-                  showTime
-                  style={{ width: '100%', minWidth: '360px' }}
-                />
-              </Form.Item>
-            </Col>
-            <Col>
-              <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>
-                {t('search')}
-              </Button>
-            </Col>
-          </Row>
-        </Form>
+        <SearchForm onFinish={handleSearch} />
       </div>
 
       <Table
