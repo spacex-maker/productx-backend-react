@@ -15,6 +15,8 @@ import {
   CNavbar,
   CButton,
   CHeaderToggler,
+  CModal,
+  CModalBody,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { 
@@ -25,6 +27,7 @@ import {
   cilMoon, 
   cilSun,
   cilCommentSquare,
+  cilUser,
 } from '@coreui/icons';
 import { Badge, Button } from 'antd';
 import { RobotOutlined } from '@ant-design/icons';
@@ -266,43 +269,6 @@ const LanguageItem = styled(CDropdownItem)`
   }
 `;
 
-const WelcomeWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 40px;
-  background: rgba(var(--cui-primary-rgb), 0.05);
-  border: 1px solid rgba(var(--cui-primary-rgb), 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-
-  &:hover {
-    background: var(--cui-btn-hover-bg);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(var(--cui-primary-rgb), 0.15);
-
-    .welcome-text, .admin-name {
-      color: var(--cui-primary);
-    }
-  }
-
-  .welcome-text {
-    color: var(--cui-body-color);
-    font-size: 13px;
-    transition: all 0.3s;
-    flex-shrink: 0;
-  }
-
-  .admin-name {
-    color: var(--cui-body-color);
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s;
-    flex-shrink: 0;
-  }
-`;
-
 const ThemeButton = styled(StyledButton)`
   position: relative;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -522,6 +488,127 @@ const AIButton = styled(StyledButton)`
   }
 `;
 
+const MobileMenuButton = styled(StyledButton)`
+  padding: 8px;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--cui-tertiary-bg);
+  border: 1px solid var(--cui-border-color);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--cui-body-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .menu-icon {
+    font-size: 20px;
+    color: var(--cui-body-color);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .menu-icon {
+    transform: scale(1.1);
+    color: var(--cui-primary);
+  }
+`;
+
+const StyledDropdownMenu = styled(CDropdownMenu)`
+  min-width: 220px;
+  padding: 8px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 12px;
+  background: var(--cui-body-bg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  animation: dropdownFadeIn 0.2s ease-out;
+
+  @keyframes dropdownFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+const StyledDropdownItem = styled(CDropdownItem)`
+  padding: 10px 16px;
+  margin: 2px 0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cui-body-color);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(var(--cui-primary-rgb), 0.08);
+    color: var(--cui-primary);
+    transform: translateX(4px);
+  }
+
+  .icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .badge {
+    margin-left: auto;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    background: var(--cui-danger);
+    color: white;
+  }
+`;
+
+const LanguageModal = styled(CModal)`
+  .modal-content {
+    border-radius: 12px;
+    border: none;
+    background: var(--cui-body-bg);
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid var(--cui-border-color);
+    padding: 16px 20px;
+  }
+  
+  .modal-body {
+    padding: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+`;
+
+// 添加一个新的样式组件来处理 CDropdownToggle
+const StyledDropdownToggle = styled(CDropdownToggle)`
+  padding: 0;
+  border: none;
+  background: none;
+
+  &::after {
+    display: none;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+`;
+
 const AppHeader = () => {
   const headerRef = useRef(null);
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme');
@@ -529,6 +616,8 @@ const AppHeader = () => {
   const [messageModalVisible, setMessageModalVisible] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [supportedLanguages, setSupportedLanguages] = useState([]);
+  const [languageModalVisible, setLanguageModalVisible] = useState(false);
+  const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user?.currentUser);
@@ -679,15 +768,6 @@ const AppHeader = () => {
       </HeaderItem>
 
       <HeaderItem>
-        <WelcomeWrapper>
-          <span className="welcome-text">{t('welcome')}</span>
-          <span className="admin-name">
-            {currentUser?.username || t('notLoggedIn')}
-          </span>
-        </WelcomeWrapper>
-      </HeaderItem>
-
-      <HeaderItem>
         <ThemeButton 
           onClick={() => onChangeTheme(colorMode === 'dark' ? 'light' : 'dark')}
           $isDark={colorMode === 'dark'}
@@ -749,10 +829,21 @@ const AppHeader = () => {
           <AppBreadcrumb />
         </CHeaderNav>
         <CHeaderNav className="ms-3 d-flex align-items-center">
-          {/* 在大屏幕显示按钮 */}
-          <div className="d-none d-md-flex align-items-center">
+          {/* 大屏幕显示所有按钮 */}
+          <div className="d-none d-md-flex align-items-center gap-2">
             {renderHeaderButtons()}
           </div>
+          
+          {/* 小屏幕显示菜单按钮 */}
+          <div className="d-md-none">
+            <MobileMenuButton 
+              onClick={() => setMobileMenuVisible(true)} 
+              title={t('menu')}
+            >
+              <CIcon icon={cilMenu} className="menu-icon" />
+            </MobileMenuButton>
+          </div>
+
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
@@ -762,6 +853,80 @@ const AppHeader = () => {
         onCancel={handleModalClose}
         onSuccess={handleModalSuccess}
       />
+
+      {/* 移动端菜单模态框 */}
+      <CModal
+        visible={mobileMenuVisible}
+        onClose={() => setMobileMenuVisible(false)}
+        className="mobile-menu-modal"
+      >
+        <CModalBody className="p-3">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <StyledDropdownItem onClick={() => {
+              dispatch(toggleFloating(true));
+              setMobileMenuVisible(false);
+            }}>
+              <RobotOutlined className="icon" />
+              {t('aiAssistant')}
+            </StyledDropdownItem>
+
+            <StyledDropdownItem onClick={() => {
+              setMessageModalVisible(true);
+              setMobileMenuVisible(false);
+            }}>
+              <CIcon icon={cilEnvelopeOpen} className="icon" />
+              {t('messages')}
+              {unreadCount > 0 && (
+                <span className="badge">{unreadCount}</span>
+              )}
+            </StyledDropdownItem>
+
+            <StyledDropdownItem onClick={() => {
+              onChangeTheme(colorMode === 'dark' ? 'light' : 'dark');
+              setMobileMenuVisible(false);
+            }}>
+              <CIcon icon={colorMode === 'dark' ? cilMoon : cilSun} className="icon" />
+              {colorMode === 'dark' ? t('darkMode') : t('lightMode')}
+            </StyledDropdownItem>
+
+            <StyledDropdownItem onClick={() => {
+              setLanguageModalVisible(true);
+              setMobileMenuVisible(false);
+            }}>
+              <CIcon icon={cilLanguage} className="icon" />
+              {sortedLanguages.find(lang => lang.languageCode === currentLang)?.languageNameNative}
+            </StyledDropdownItem>
+          </div>
+        </CModalBody>
+      </CModal>
+
+      <LanguageModal
+        visible={languageModalVisible}
+        onClose={() => setLanguageModalVisible(false)}
+        title={t('selectLanguage')}
+      >
+        <CModalBody>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {sortedLanguages.map((lang) => (
+              <LanguageItem 
+                key={lang.id} 
+                onClick={() => {
+                  changeLanguage(lang.languageCode);
+                  setLanguageModalVisible(false);
+                }}
+                className={currentLang === lang.languageCode ? 'active' : ''}
+              >
+                <div className="language-info">
+                  <span className="language-name">{lang.languageNameNative}</span>
+                </div>
+                <span className="usage-count">
+                  {formatUsageCount(lang.usageCount)}
+                </span>
+              </LanguageItem>
+            ))}
+          </div>
+        </CModalBody>
+      </LanguageModal>
     </CHeader>
   );
 };
