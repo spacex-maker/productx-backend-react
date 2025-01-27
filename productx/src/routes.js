@@ -145,6 +145,17 @@ const WebsiteApplicationRouter = React.lazy(
 );
 
 const QtsSymbolRouter = React.lazy(() => import('./views/base/qtsSymbol/QtsSymbol'));
+
+const QtsApiKeyRouter = React.lazy(() => import('./views/base/qtsApiKey/QtsApiKey'));
+
+const QtsStrategyRouter = React.lazy(() => import('./views/base/qtsStrategy/QtsStrategy'));
+
+
+
+
+
+
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -532,6 +543,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <QtsSymbolRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/qtsApiKey',
+    name: 'API密钥管理',
+    element: (
+      <PrivateRoute>
+        <QtsApiKeyRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/qtsStrategy',
+    name: '策略管理',
+    element: (
+      <PrivateRoute>
+        <QtsStrategyRouter />
       </PrivateRoute>
     ),
   },
