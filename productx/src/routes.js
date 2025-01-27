@@ -143,6 +143,8 @@ const WebsiteListRouter = React.lazy(() => import('./views/base/websiteList/Webs
 const WebsiteApplicationRouter = React.lazy(
   () => import('./views/base/websiteApplications/WebsiteApplication'),
 );
+
+const QtsSymbolRouter = React.lazy(() => import('./views/base/qtsSymbol/QtsSymbol'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -521,6 +523,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <WebsiteApplicationRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/qtsSymbol',
+    name: '交易对管理',
+    element: (
+      <PrivateRoute>
+        <QtsSymbolRouter />
       </PrivateRoute>
     ),
   },
