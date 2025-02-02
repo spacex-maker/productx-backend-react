@@ -150,6 +150,9 @@ const QtsApiKeyRouter = React.lazy(() => import('./views/base/qtsApiKey/QtsApiKe
 
 const QtsStrategyRouter = React.lazy(() => import('./views/base/qtsStrategy/QtsStrategy'));
 
+const SocialMonitoredAccountsRouter = React.lazy(
+  () => import('./views/base/socialMonitoredAccounts/SocialMonitoredAccounts'),
+);
 
 
 
@@ -561,6 +564,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <QtsStrategyRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/socialMonitoredAccounts',
+    name: '社交账号监控管理',
+    element: (
+      <PrivateRoute>
+        <SocialMonitoredAccountsRouter />
       </PrivateRoute>
     ),
   },
