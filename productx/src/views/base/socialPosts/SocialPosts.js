@@ -10,22 +10,22 @@ import { FaTelegram } from 'react-icons/fa'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
-import SocialMonitoredAccountsTable from "./SocialMonitoredAccountsTable"
-import UpdateSocialMonitoredAccountsModal from "./UpdateSocialMonitoredAccountsModel"
-import SocialMonitoredAccountsCreateFormModal from "./SocialMonitoredAccountsCreateFormModel"
+import SocialPostsTable from "./SocialPostsTable"
+import UpdateSocialPostsModal from "./UpdateSocialPostsModel"
+import SocialPostsCreateFormModal from "./SocialPostsCreateFormModel"
+import SocialPostsDetailModal from "./SocialPostsDetailModal"
 
 const { Option } = Select
 
-const SocialMonitoredAccounts = () => {
+const SocialPosts = () => {
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
   const [currentPage, setCurrent] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [searchParams, setSearchParams] = useState({
     platform: '',
-    accountName: '',
-    status: undefined,
-    accountDescription: '',
+    authorName: '',
+    content: '',
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -33,18 +33,14 @@ const SocialMonitoredAccounts = () => {
   const [createForm] = Form.useForm()
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
-  const [selectedAccount, setSelectedAccount] = useState(null)
+  const [selectedPost, setSelectedPost] = useState(null)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
   const platformOptions = [
     { value: 'Twitter', icon: <TwitterOutlined style={{ color: '#1DA1F2' }} /> },
     { value: 'Telegram', icon: <FaTelegram style={{ color: '#0088cc' }} /> },
     { value: 'YouTube', icon: <YoutubeOutlined style={{ color: '#FF0000' }} /> },
     { value: 'Reddit', icon: <RedditOutlined style={{ color: '#FF4500' }} /> },
-  ]
-
-  const statusOptions = [
-    { value: true, label: '监控中', color: 'success' },
-    { value: false, label: '已停止', color: 'default' },
   ]
 
   useEffect(() => {
@@ -57,11 +53,11 @@ const SocialMonitoredAccounts = () => {
       const filteredParams = Object.fromEntries(
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== undefined)
       )
-      const response = await api.get('/manage/social-monitored-accounts/list', {
+      const response = await api.get('/manage/social-posts/list', {
         params: { currentPage, size: pageSize, ...filteredParams },
       })
 
-      if (response?.data) {
+      if (response) {
         setData(response.data)
         setTotalNum(response.totalNum)
       }
@@ -78,8 +74,13 @@ const SocialMonitoredAccounts = () => {
     setCurrent(1) // 重置页码到第一页
   }
 
-  const handleEditClick = (account) => {
-    setSelectedAccount(account)
+  const handleViewClick = (post) => {
+    setSelectedPost(post)
+    setIsDetailModalVisible(true)
+  }
+
+  const handleEditClick = (post) => {
+    setSelectedPost(post)
     setIsUpdateModalVisible(true)
   }
 
@@ -127,8 +128,8 @@ const SocialMonitoredAccounts = () => {
             </Col>
             <Col>
               <Input
-                value={searchParams.accountName}
-                onChange={(e) => handleSearchChange(e.target.value, 'accountName')}
+                value={searchParams.authorName}
+                onChange={(e) => handleSearchChange(e.target.value, 'authorName')}
                 placeholder="账号名称"
                 allowClear
                 style={{ width: 150 }}
@@ -136,39 +137,12 @@ const SocialMonitoredAccounts = () => {
             </Col>
             <Col>
               <Input
-                value={searchParams.accountDescription}
-                onChange={(e) => handleSearchChange(e.target.value, 'accountDescription')}
-                placeholder="账号描述"
+                value={searchParams.content}
+                onChange={(e) => handleSearchChange(e.target.value, 'content')}
+                placeholder="帖子内容"
                 allowClear
                 style={{ width: 150 }}
               />
-            </Col>
-            <Col>
-              <Select
-                value={searchParams.status}
-                onChange={(value) => handleSearchChange(value, 'status')}
-                placeholder="监控状态"
-                allowClear
-                style={{ width: 150 }}
-              >
-                {statusOptions.map(status => (
-                  <Option key={status.value} value={status.value}>
-                    <Space>
-                      <span 
-                        style={{ 
-                          display: 'inline-block',
-                          width: '8px',
-                          height: '8px',
-                          borderRadius: '50%',
-                          backgroundColor: status.color === 'success' ? '#52c41a' : '#d9d9d9',
-                          marginRight: '8px'
-                        }} 
-                      />
-                      {status.label}
-                    </Space>
-                  </Option>
-                ))}
-              </Select>
             </Col>
             <Col>
               <Space>
@@ -181,14 +155,8 @@ const SocialMonitoredAccounts = () => {
                 </Button>
                 <Button
                   type="primary"
-                  onClick={() => setIsCreateModalVisible(true)}
-                >
-                  新增监控账号
-                </Button>
-                <Button
-                  type="primary"
                   onClick={() => HandleBatchDelete({
-                    url: '/manage/social-monitored-accounts/delete-batch',
+                    url: '/manage/social-posts/delete-batch',
                     selectedRows,
                     fetchData,
                   })}
@@ -204,13 +172,14 @@ const SocialMonitoredAccounts = () => {
 
       <div className="table-responsive">
         <Spin spinning={isLoading}>
-          <SocialMonitoredAccountsTable
+          <SocialPostsTable
             data={data}
             selectAll={selectAll}
             selectedRows={selectedRows}
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            handleViewClick={handleViewClick}
           />
         </Spin>
       </div>
@@ -223,12 +192,12 @@ const SocialMonitoredAccounts = () => {
         onPageSizeChange={setPageSize}
       />
 
-      <SocialMonitoredAccountsCreateFormModal
+      <SocialPostsCreateFormModal
         isVisible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
         onFinish={async (values) => {
           try {
-            await api.post('/manage/social-monitored-accounts/create', values)
+            await api.post('/manage/social-posts/create', values)
             message.success('创建成功')
             setIsCreateModalVisible(false)
             createForm.resetFields()
@@ -240,14 +209,14 @@ const SocialMonitoredAccounts = () => {
         form={createForm}
       />
 
-      <UpdateSocialMonitoredAccountsModal
+      <UpdateSocialPostsModal
         isVisible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
         onOk={() => updateForm.submit()}
         form={updateForm}
-        handleUpdateAccount={async (values) => {
+        handleUpdatePost={async (values) => {
           try {
-            await api.post('/manage/social-monitored-accounts/update', values)
+            await api.post('/manage/social-posts/update', values)
             message.success('更新成功')
             setIsUpdateModalVisible(false)
             updateForm.resetFields()
@@ -256,10 +225,16 @@ const SocialMonitoredAccounts = () => {
             message.error('更新失败')
           }
         }}
-        selectedAccount={selectedAccount}
+        selectedPost={selectedPost}
+      />
+
+      <SocialPostsDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => setIsDetailModalVisible(false)}
+        post={selectedPost}
       />
     </div>
   )
 }
 
-export default SocialMonitoredAccounts
+export default SocialPosts
