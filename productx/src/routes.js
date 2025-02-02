@@ -154,8 +154,7 @@ const SocialMonitoredAccountsRouter = React.lazy(
   () => import('./views/base/socialMonitoredAccounts/SocialMonitoredAccounts'),
 );
 
-
-
+const SocialPostsRouter = React.lazy(() => import('./views/base/socialPosts/SocialPosts'));
 
 
 
@@ -573,6 +572,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <SocialMonitoredAccountsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/socialPosts',
+    name: '社交帖子管理',
+    element: (
+      <PrivateRoute>
+        <SocialPostsRouter />
       </PrivateRoute>
     ),
   },

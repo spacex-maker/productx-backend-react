@@ -1,20 +1,24 @@
 import React from 'react';
-import { Button, Tag, Space, Badge } from 'antd';
+import { Button, Typography, Space } from 'antd';
 import { 
   TwitterOutlined, 
   YoutubeOutlined, 
   RedditOutlined,
+  EyeOutlined,
+  EditOutlined
 } from '@ant-design/icons';
 import { FaTelegram } from 'react-icons/fa';
-import './SocialMonitoredAccountsTable.css';
 
-const SocialMonitoredAccountsTable = ({
+const { Paragraph } = Typography;
+
+const SocialPostsTable = ({
   data,
   selectAll,
   selectedRows,
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  handleViewClick,
 }) => {
   const getPlatformIcon = (platform) => {
     switch (platform) {
@@ -29,27 +33,6 @@ const SocialMonitoredAccountsTable = ({
       default:
         return null;
     }
-  };
-
-  const getStatusTag = (status) => {
-    if (status) {
-      return (
-        <Tag color="success" className="status-tag-active">
-          <Space>
-            <Badge status="processing" />
-            <span>监控中</span>
-          </Space>
-        </Tag>
-      );
-    }
-    return (
-      <Tag color="default" className="status-tag-stopped">
-        <Space>
-          <Badge status="default" />
-          <span>已停止</span>
-        </Space>
-      </Tag>
-    );
   };
 
   return (
@@ -69,8 +52,8 @@ const SocialMonitoredAccountsTable = ({
             </div>
           </th>
           {[
-            '平台', '账号ID', '账号名称', '账号链接', '账号描述', 
-            '监控状态', '创建时间', '更新时间', '操作'
+            '平台', '账号名称', '帖子类型', '帖子内容', '帖子链接', 
+            '创建时间', '更新时间', '操作'
           ].map((field) => (
             <th key={field}>{field}</th>
           ))}
@@ -95,26 +78,56 @@ const SocialMonitoredAccountsTable = ({
               </div>
             </td>
             <td>
-              <Space>
-                {getPlatformIcon(item.platform)}
-                <span>{item.platform}</span>
-              </Space>
+              <span style={{ marginRight: 8 }}>{getPlatformIcon(item.platform)}</span>
+              {item.platform}
             </td>
-            <td>{item.accountId}</td>
-            <td>{item.accountName}</td>
+            <td>{item.authorName}</td>
+            <td>{item.postType}</td>
             <td>
-              <a href={item.profileUrl} target="_blank" rel="noopener noreferrer">
-                {item.profileUrl}
-              </a>
+              <Paragraph 
+                ellipsis={{ 
+                  rows: 2,
+                  expandable: false,
+                  tooltip: item.content
+                }}
+                style={{ marginBottom: 0, width: 200 }}
+              >
+                {item.content}
+              </Paragraph>
             </td>
-            <td>{item.accountDescription}</td>
-            <td>{getStatusTag(item.status)}</td>
+            <td>
+              <Paragraph 
+                ellipsis={{ 
+                  rows: 1,
+                  expandable: false,
+                  tooltip: item.postUrl
+                }}
+                style={{ marginBottom: 0, width: 150 }}
+              >
+                <a href={item.postUrl} target="_blank" rel="noopener noreferrer">
+                  {item.postUrl}
+                </a>
+              </Paragraph>
+            </td>
             <td>{item.createTime}</td>
             <td>{item.updateTime}</td>
             <td>
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
-              </Button>
+              <Space>
+                <Button 
+                  type="link" 
+                  icon={<EyeOutlined />}
+                  onClick={() => handleViewClick(item)}
+                >
+                  详情
+                </Button>
+                <Button 
+                  type="link" 
+                  icon={<EditOutlined />}
+                  onClick={() => handleEditClick(item)}
+                >
+                  修改
+                </Button>
+              </Space>
             </td>
           </tr>
         ))}
@@ -123,4 +136,4 @@ const SocialMonitoredAccountsTable = ({
   );
 };
 
-export default SocialMonitoredAccountsTable;
+export default SocialPostsTable;
