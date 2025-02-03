@@ -35,6 +35,42 @@ const SocialPostsTable = ({
     }
   };
 
+  const extractSentimentScore = (score) => {
+    if (score === null || score === undefined) return null;
+    
+    // 如果是数字类型，直接返回
+    if (typeof score === 'number') return score;
+    
+    // 处理字符串类型
+    if (typeof score === 'string') {
+      // 如果包含冒号，提取冒号后的数字
+      if (score.includes(':')) {
+        const [, value] = score.split(':');
+        return Number(value);
+      }
+      // 否则尝试直接转换为数字
+      return Number(score);
+    }
+    
+    return null;
+  };
+
+  const getSentimentColor = (score) => {
+    const numScore = extractSentimentScore(score);
+    if (numScore === null || isNaN(numScore)) return '#999';
+    if (numScore >= 0.7) return '#52c41a';  // 积极 - 绿色
+    if (numScore >= 0.3) return '#1890ff';   // 较积极 - 蓝色
+    if (numScore >= -0.3) return '#faad14';  // 中性 - 黄色
+    if (numScore >= -0.7) return '#fa8c16';  // 较消极 - 橙色
+    return '#f5222d';  // 消极 - 红色
+  };
+
+  const formatSentimentScore = (score) => {
+    const numScore = extractSentimentScore(score);
+    if (numScore === null || isNaN(numScore)) return 'N/A';
+    return numScore.toFixed(2);
+  };
+
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -46,14 +82,14 @@ const SocialPostsTable = ({
                 className="custom-control-input"
                 id="select_all"
                 checked={selectAll}
-                onChange={(event) => handleSelectAll(event, data)}
+                onChange={() => handleSelectAll(data)}
               />
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
           {[
             '平台', '账号名称', '帖子类型', '帖子内容', '帖子链接', 
-            '创建时间', '更新时间', '操作'
+            '情绪得分', '创建时间', '更新时间', '操作'
           ].map((field) => (
             <th key={field}>{field}</th>
           ))}
@@ -108,6 +144,27 @@ const SocialPostsTable = ({
                   {item.postUrl}
                 </a>
               </Paragraph>
+            </td>
+            <td>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px' 
+              }}>
+                <div style={{
+                  width: '50px',
+                  height: '24px',
+                  backgroundColor: getSentimentColor(item.sentimentScore),
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontSize: '12px'
+                }}>
+                  {formatSentimentScore(item.sentimentScore)}
+                </div>
+              </div>
             </td>
             <td>{item.createTime}</td>
             <td>{item.updateTime}</td>
