@@ -31,9 +31,9 @@ export const UseSelectableRows = (idField = 'id') => {
    * 3. 如果是取消选中，则清空selectedRows
    */
   const handleSelectAll = (event, data) => {
-    const checked = event.target.checked;
+    const checked = typeof event === 'boolean' ? event : event.target.checked;
     setSelectAll(checked);
-    setSelectedRows(checked ? data.map((item) => item[idField]) : []);
+    setSelectedRows(checked ? (data ? data.map((item) => item[idField]) : []) : []);
   };
 
   /**

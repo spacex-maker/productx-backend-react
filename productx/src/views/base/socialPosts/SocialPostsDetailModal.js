@@ -33,6 +33,42 @@ const SocialPostsDetailModal = ({
     }
   };
 
+  const extractSentimentScore = (score) => {
+    if (score === null || score === undefined) return null;
+    
+    // 如果是数字类型，直接返回
+    if (typeof score === 'number') return score;
+    
+    // 处理字符串类型
+    if (typeof score === 'string') {
+      // 如果包含冒号，提取冒号后的数字
+      if (score.includes(':')) {
+        const [, value] = score.split(':');
+        return Number(value);
+      }
+      // 否则尝试直接转换为数字
+      return Number(score);
+    }
+    
+    return null;
+  };
+
+  const getSentimentColor = (score) => {
+    const numScore = extractSentimentScore(score);
+    if (numScore === null || isNaN(numScore)) return '#999';
+    if (numScore >= 0.7) return '#52c41a';
+    if (numScore >= 0.3) return '#1890ff';
+    if (numScore >= -0.3) return '#faad14';
+    if (numScore >= -0.7) return '#fa8c16';
+    return '#f5222d';
+  };
+
+  const formatSentimentScore = (score) => {
+    const numScore = extractSentimentScore(score);
+    if (numScore === null || isNaN(numScore)) return 'N/A';
+    return numScore.toFixed(2);
+  };
+
   return (
     <Modal
       title={
@@ -78,6 +114,34 @@ const SocialPostsDetailModal = ({
               }
             >
               {post.postId}
+            </Descriptions.Item>
+            <Descriptions.Item 
+              label={
+                <Space>
+                  <FileTextOutlined />
+                  <span>情绪得分</span>
+                </Space>
+              }
+            >
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px' 
+              }}>
+                <div style={{
+                  width: '50px',
+                  height: '24px',
+                  backgroundColor: getSentimentColor(post.sentimentScore),
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontSize: '12px'
+                }}>
+                  {formatSentimentScore(post.sentimentScore)}
+                </div>
+              </div>
             </Descriptions.Item>
             <Descriptions.Item 
               label={

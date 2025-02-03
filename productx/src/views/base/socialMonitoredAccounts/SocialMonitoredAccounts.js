@@ -90,6 +90,7 @@ const SocialMonitoredAccounts = () => {
     selectAll,
     handleSelectAll,
     handleSelectRow,
+    resetSelection,
   } = UseSelectableRows()
 
   return (
@@ -187,11 +188,19 @@ const SocialMonitoredAccounts = () => {
                 </Button>
                 <Button
                   type="primary"
-                  onClick={() => HandleBatchDelete({
-                    url: '/manage/social-monitored-accounts/delete-batch',
-                    selectedRows,
-                    fetchData,
-                  })}
+                  onClick={() => {
+                    if (selectedRows.length === 0) {
+                      message.warning('请选择要删除的数据');
+                      return;
+                    }
+                    const rowsToDelete = [...selectedRows];
+                    HandleBatchDelete({
+                      url: '/manage/social-monitored-accounts/delete-batch',
+                      selectedRows: rowsToDelete,
+                      fetchData,
+                      resetSelection,
+                    });
+                  }}
                   disabled={selectedRows.length === 0}
                 >
                   批量删除
