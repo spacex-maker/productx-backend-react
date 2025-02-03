@@ -156,6 +156,9 @@ const SocialMonitoredAccountsRouter = React.lazy(
 
 const SocialPostsRouter = React.lazy(() => import('./views/base/socialPosts/SocialPosts'));
 
+const QtsSupportedExchangesRouter = React.lazy(
+  () => import('./views/base/qtsSupportedExchanges/QtsSupportedExchanges'),
+);
 
 
 const routes = [
@@ -581,6 +584,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <SocialPostsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/qtsSupportedExchanges',
+    name: '交易所管理',
+    element: (
+      <PrivateRoute>
+        <QtsSupportedExchangesRouter />
       </PrivateRoute>
     ),
   },
