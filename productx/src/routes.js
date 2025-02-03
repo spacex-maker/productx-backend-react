@@ -160,6 +160,7 @@ const QtsSupportedExchangesRouter = React.lazy(
   () => import('./views/base/qtsSupportedExchanges/QtsSupportedExchanges'),
 );
 
+const QtsMarketDataRouter = React.lazy(() => import('./views/base/qtsMarketData/QtsMarketData'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -593,6 +594,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <QtsSupportedExchangesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/qtsMarketData',
+    name: '行情数据',
+    element: (
+      <PrivateRoute>
+        <QtsMarketDataRouter />
       </PrivateRoute>
     ),
   },
