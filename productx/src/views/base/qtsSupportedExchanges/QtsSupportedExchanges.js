@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import api from 'src/axiosInstance'
 import { Modal, Button, Form, Input, message, Spin, Col, Row, Space, Select } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination"
 import QtsSupportedExchangesTable from "./QtsSupportedExchangesTable"
 import UpdateQtsSupportedExchangesModal from "./UpdateQtsSupportedExchangesModel"
 import QtsSupportedExchangesCreateFormModal from "./QtsSupportedExchangesCreateFormModel"
+import SyncMarketDataModal from "./SyncMarketDataModal"
 
 const { Option } = Select
 
@@ -26,6 +27,11 @@ const QtsSupportedExchanges = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
   const [selectedExchange, setSelectedExchange] = useState(null)
+  const [isSyncModalVisible, setIsSyncModalVisible] = useState(false)
+  const [syncForm] = Form.useForm()
+  const [syncLoading, setSyncLoading] = useState(false)
+  const [syncTime, setSyncTime] = useState(0)
+  const syncTimeRef = useRef(null)
 
   useEffect(() => {
     fetchData()
@@ -84,6 +90,43 @@ const QtsSupportedExchanges = () => {
     handleSelectRow,
   } = UseSelectableRows()
 
+  const handleSync = async (values) => {
+    try {
+      setSyncLoading(true)
+      setSyncTime(0)
+      
+      // 开始计时
+      const startTime = Date.now()
+      syncTimeRef.current = setInterval(() => {
+        setSyncTime(Math.floor((Date.now() - startTime) / 1000))
+      }, 1000)
+
+      const params = {
+        ...values,
+        startTime: values.startTime.valueOf(),
+        endTime: values.endTime?.valueOf(),
+      }
+      await api.post('/manage/qts-market-data/sync', params)
+      message.success('同步请求已发送')
+      setIsSyncModalVisible(false)
+      syncForm.resetFields()
+    } catch (error) {
+      message.error('同步请求失败')
+    } finally {
+      setSyncLoading(false)
+      clearInterval(syncTimeRef.current)
+    }
+  }
+
+  // 组件卸载时清除定时器
+  useEffect(() => {
+    return () => {
+      if (syncTimeRef.current) {
+        clearInterval(syncTimeRef.current)
+      }
+    }
+  }, [])
+
   return (
     <div>
       <div className="mb-3">
@@ -135,6 +178,12 @@ const QtsSupportedExchanges = () => {
                   disabled={selectedRows.length === 0}
                 >
                   批量删除
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsSyncModalVisible(true)}
+                >
+                  数据同步
                 </Button>
               </Space>
             </Col>
@@ -201,6 +250,21 @@ const QtsSupportedExchanges = () => {
           }
         }}
         selectedExchange={selectedExchange}
+      />
+
+      <SyncMarketDataModal
+        isVisible={isSyncModalVisible}
+        onCancel={() => {
+          setIsSyncModalVisible(false)
+          syncForm.resetFields()
+          setSyncLoading(false)
+          clearInterval(syncTimeRef.current)
+          setSyncTime(0)
+        }}
+        onFinish={handleSync}
+        form={syncForm}
+        loading={syncLoading}
+        syncTime={syncTime}
       />
     </div>
   )
