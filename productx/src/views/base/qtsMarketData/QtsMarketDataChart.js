@@ -48,8 +48,15 @@ const QtsMarketDataChart = ({
     }
   };
 
+  // 组件首次加载时执行一次查询
+  useEffect(() => {
+    console.log('Initial fetch triggered');
+    fetchKlineData();
+  }, []); // 空依赖数组，确保只在组件挂载时执行一次
+
   // 当参数变化时重新获取数据
   useEffect(() => {
+    console.log('Params changed, fetching data');
     fetchKlineData();
   }, [exchangeName, symbol, interval, startTime, endTime, limit]);
 

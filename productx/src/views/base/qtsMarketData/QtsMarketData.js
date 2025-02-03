@@ -111,24 +111,20 @@ const QtsMarketData = () => {
   useEffect(() => {
     fetchExchanges().then(() => {
       if (DEFAULT_EXCHANGE) {
-        fetchSymbols(DEFAULT_EXCHANGE);
+        fetchSymbols(DEFAULT_EXCHANGE).then(() => {
+          // 交易所和交易对加载完成后，触发图表初始化
+          const defaultValues = {
+            exchangeName: DEFAULT_EXCHANGE,
+            symbol: DEFAULT_SYMBOL,
+            interval: DEFAULT_INTERVAL,
+            dateRange: getDefaultDateRange()
+          };
+          
+          handleChartSearch(defaultValues);
+        });
       }
     });
   }, []);
-
-  // 初始化完成后自动触发查询
-  useEffect(() => {
-    if (exchanges.length > 0 && symbols.length > 0) {
-      const defaultValues = {
-        exchangeName: DEFAULT_EXCHANGE,
-        symbol: DEFAULT_SYMBOL,
-        interval: DEFAULT_INTERVAL,
-        dateRange: getDefaultDateRange()
-      };
-      
-      handleListSearch(defaultValues);
-    }
-  }, [exchanges, symbols]);
 
   // 图表查询处理函数
   const handleChartSearch = (values) => {
@@ -143,18 +139,7 @@ const QtsMarketData = () => {
       limit: 1000  // 设置较大的限制以获取足够的数据点
     };
 
-    // 调用图表数据查询接口
-    api.get('/manage/qts-market-data/list', { params })
-      .then(response => {
-        if (response?.data) {
-          // 更新图表数据
-          setChartParams(params);
-        }
-      })
-      .catch(error => {
-        console.error('获取K线数据失败:', error);
-        message.error('获取K线数据失败');
-      });
+    setChartParams(params); // 直接设置图表参数，不需要额外的API调用
   };
 
   // 处理列表查询
