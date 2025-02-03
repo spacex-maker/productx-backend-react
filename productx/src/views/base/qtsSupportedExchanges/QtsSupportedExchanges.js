@@ -218,13 +218,34 @@ const QtsSupportedExchanges = () => {
         onCancel={() => setIsCreateModalVisible(false)}
         onFinish={async (values) => {
           try {
-            await api.post('/manage/qts-supported-exchanges/create', values)
-            message.success('创建成功')
-            setIsCreateModalVisible(false)
-            createForm.resetFields()
-            await fetchData()
+            // 将 features 数组转换为对象格式
+            const featuresObject = {
+              spot: false,
+              margin: false,
+              futures: false,
+              options: false,
+              swap: false
+            };
+            
+            // 设置选中的功能为 true
+            if (values.features) {
+              values.features.forEach(feature => {
+                featuresObject[feature] = true;
+              });
+            }
+            
+            // 将处理后的数据发送到服务器
+            await api.post('/manage/qts-supported-exchanges/create', {
+              ...values,
+              features: JSON.stringify(featuresObject) // 将对象转换为 JSON 字符串
+            });
+            
+            message.success('创建成功');
+            setIsCreateModalVisible(false);
+            createForm.resetFields();
+            await fetchData();
           } catch (error) {
-            message.error('创建失败')
+            message.error('创建失败');
           }
         }}
         form={createForm}

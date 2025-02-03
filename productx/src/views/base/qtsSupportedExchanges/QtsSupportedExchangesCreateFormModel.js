@@ -24,6 +24,10 @@ const QtsSupportedExchangesCreateFormModal = ({
         onFinish={onFinish}
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 16 }}
+        initialValues={{
+          features: [],
+          status: undefined
+        }}
       >
         <Form.Item
           label="交易所名称"
@@ -73,7 +77,6 @@ const QtsSupportedExchangesCreateFormModal = ({
         <Form.Item
           label="支持功能"
           name="features"
-          initialValue={{ spot: false, margin: false, futures: false, options: false, swap: false }}
         >
           <Checkbox.Group>
             <Checkbox value="spot">现货</Checkbox>
