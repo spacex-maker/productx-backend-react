@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Tag } from 'antd';
 
 const QtsSymbolTable = ({
   data,
@@ -9,13 +9,20 @@ const QtsSymbolTable = ({
   handleSelectRow,
   handleEditClick,
 }) => {
-  const getStatusText = (status) => {
-    switch (status) {
-      case 1: return '交易中';
-      case 2: return '暂停交易';
-      case 3: return '已下架';
-      default: return '未知状态';
-    }
+  const getStatusTag = (status) => {
+    const statusConfig = {
+      1: { color: 'success', text: '交易中' },
+      2: { color: 'warning', text: '暂停交易' },
+      3: { color: 'error', text: '已下架' },
+    };
+    
+    const config = statusConfig[status] || { color: 'default', text: '未知状态' };
+    
+    return (
+      <Tag color={config.color}>
+        {config.text}
+      </Tag>
+    );
   };
 
   return (
@@ -67,7 +74,7 @@ const QtsSymbolTable = ({
             <td>{item.symbol}</td>
             <td>{item.baseAsset}</td>
             <td>{item.quoteAsset}</td>
-            <td>{getStatusText(item.status)}</td>
+            <td>{getStatusTag(item.status)}</td>
             <td>{item.minQty}</td>
             <td>{item.maxQty}</td>
             <td>{item.minLotSize}</td>
