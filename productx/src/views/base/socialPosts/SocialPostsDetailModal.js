@@ -89,11 +89,39 @@ const SocialPostsDetailModal = ({
               label={
                 <Space>
                   <UserOutlined />
-                  <span>账号名称</span>
+                  <span>账号信息</span>
                 </Space>
               }
             >
-              {post.authorName}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {post.authorAvatar ? (
+                  <img 
+                    src={post.authorAvatar} 
+                    alt={post.authorName}
+                    style={{ 
+                      width: '32px', 
+                      height: '32px', 
+                      borderRadius: '50%',
+                      objectFit: 'cover'
+                    }} 
+                  />
+                ) : (
+                  <div 
+                    style={{ 
+                      width: '32px', 
+                      height: '32px', 
+                      borderRadius: '50%',
+                      backgroundColor: '#f0f0f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <UserOutlined style={{ color: '#999' }} />
+                  </div>
+                )}
+                <span>{post.authorName}</span>
+              </div>
             </Descriptions.Item>
             <Descriptions.Item 
               label={

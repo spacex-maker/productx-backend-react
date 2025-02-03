@@ -13,6 +13,7 @@ import Pagination from "src/components/common/Pagination"
 import SocialMonitoredAccountsTable from "./SocialMonitoredAccountsTable"
 import UpdateSocialMonitoredAccountsModal from "./UpdateSocialMonitoredAccountsModel"
 import SocialMonitoredAccountsCreateFormModal from "./SocialMonitoredAccountsCreateFormModel"
+import AccountPostsModal from './AccountPostsModal'
 
 const { Option } = Select
 
@@ -34,6 +35,8 @@ const SocialMonitoredAccounts = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
   const [selectedAccount, setSelectedAccount] = useState(null)
+  const [isAccountPostsModalVisible, setIsAccountPostsModalVisible] = useState(false)
+  const [selectedAccountForPosts, setSelectedAccountForPosts] = useState(null)
 
   const platformOptions = [
     { value: 'Twitter', icon: <TwitterOutlined style={{ color: '#1DA1F2' }} /> },
@@ -81,6 +84,11 @@ const SocialMonitoredAccounts = () => {
   const handleEditClick = (account) => {
     setSelectedAccount(account)
     setIsUpdateModalVisible(true)
+  }
+
+  const handleViewPostsClick = (account) => {
+    setSelectedAccountForPosts(account)
+    setIsAccountPostsModalVisible(true)
   }
 
   const totalPages = Math.ceil(totalNum / pageSize)
@@ -220,6 +228,7 @@ const SocialMonitoredAccounts = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            handleViewPostsClick={handleViewPostsClick}
           />
         </Spin>
       </div>
@@ -266,6 +275,12 @@ const SocialMonitoredAccounts = () => {
           }
         }}
         selectedAccount={selectedAccount}
+      />
+
+      <AccountPostsModal
+        isVisible={isAccountPostsModalVisible}
+        onCancel={() => setIsAccountPostsModalVisible(false)}
+        account={selectedAccountForPosts}
       />
     </div>
   )

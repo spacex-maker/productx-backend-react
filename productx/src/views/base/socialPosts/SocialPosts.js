@@ -11,7 +11,6 @@ import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
 import SocialPostsTable from "./SocialPostsTable"
-import UpdateSocialPostsModal from "./UpdateSocialPostsModel"
 import SocialPostsCreateFormModal from "./SocialPostsCreateFormModel"
 import SocialPostsDetailModal from "./SocialPostsDetailModal"
 
@@ -31,8 +30,6 @@ const SocialPosts = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false)
   const [createForm] = Form.useForm()
-  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
-  const [updateForm] = Form.useForm()
   const [selectedPost, setSelectedPost] = useState(null)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
@@ -77,11 +74,6 @@ const SocialPosts = () => {
   const handleViewClick = (post) => {
     setSelectedPost(post)
     setIsDetailModalVisible(true)
-  }
-
-  const handleEditClick = (post) => {
-    setSelectedPost(post)
-    setIsUpdateModalVisible(true)
   }
 
   const totalPages = Math.ceil(totalNum / pageSize)
@@ -178,7 +170,6 @@ const SocialPosts = () => {
             selectedRows={selectedRows}
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
-            handleEditClick={handleEditClick}
             handleViewClick={handleViewClick}
           />
         </Spin>
@@ -207,25 +198,6 @@ const SocialPosts = () => {
           }
         }}
         form={createForm}
-      />
-
-      <UpdateSocialPostsModal
-        isVisible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
-        onOk={() => updateForm.submit()}
-        form={updateForm}
-        handleUpdatePost={async (values) => {
-          try {
-            await api.post('/manage/social-posts/update', values)
-            message.success('更新成功')
-            setIsUpdateModalVisible(false)
-            updateForm.resetFields()
-            await fetchData()
-          } catch (error) {
-            message.error('更新失败')
-          }
-        }}
-        selectedPost={selectedPost}
       />
 
       <SocialPostsDetailModal
