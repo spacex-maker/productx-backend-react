@@ -5,7 +5,7 @@ import {
   YoutubeOutlined, 
   RedditOutlined,
   EyeOutlined,
-  EditOutlined
+  UserOutlined,
 } from '@ant-design/icons';
 import { FaTelegram } from 'react-icons/fa';
 
@@ -17,7 +17,6 @@ const SocialPostsTable = ({
   selectedRows,
   handleSelectAll,
   handleSelectRow,
-  handleEditClick,
   handleViewClick,
 }) => {
   const getPlatformIcon = (platform) => {
@@ -88,7 +87,7 @@ const SocialPostsTable = ({
             </div>
           </th>
           {[
-            '平台', '账号名称', '帖子类型', '帖子内容', '帖子链接', 
+            '平台', '账号信息', '帖子类型', '帖子内容', '帖子链接', 
             '情绪得分', '创建时间', '更新时间', '操作'
           ].map((field) => (
             <th key={field}>{field}</th>
@@ -117,7 +116,37 @@ const SocialPostsTable = ({
               <span style={{ marginRight: 8 }}>{getPlatformIcon(item.platform)}</span>
               {item.platform}
             </td>
-            <td>{item.authorName}</td>
+            <td>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {item.authorAvatar ? (
+                  <img 
+                    src={item.authorAvatar} 
+                    alt={item.authorName}
+                    style={{ 
+                      width: '32px', 
+                      height: '32px', 
+                      borderRadius: '50%',
+                      objectFit: 'cover'
+                    }} 
+                  />
+                ) : (
+                  <div 
+                    style={{ 
+                      width: '32px', 
+                      height: '32px', 
+                      borderRadius: '50%',
+                      backgroundColor: '#f0f0f0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <UserOutlined style={{ color: '#999' }} />
+                  </div>
+                )}
+                <span>{item.authorName}</span>
+              </div>
+            </td>
             <td>{item.postType}</td>
             <td>
               <Paragraph 
@@ -176,13 +205,6 @@ const SocialPostsTable = ({
                   onClick={() => handleViewClick(item)}
                 >
                   详情
-                </Button>
-                <Button 
-                  type="link" 
-                  icon={<EditOutlined />}
-                  onClick={() => handleEditClick(item)}
-                >
-                  修改
                 </Button>
               </Space>
             </td>

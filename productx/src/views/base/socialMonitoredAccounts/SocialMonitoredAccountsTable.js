@@ -15,6 +15,7 @@ const SocialMonitoredAccountsTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  handleViewPostsClick,
 }) => {
   const getPlatformIcon = (platform) => {
     switch (platform) {
@@ -112,9 +113,14 @@ const SocialMonitoredAccountsTable = ({
             <td>{item.createTime}</td>
             <td>{item.updateTime}</td>
             <td>
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
-              </Button>
+              <Space>
+                <Button type="link" onClick={() => handleEditClick(item)}>
+                  修改
+                </Button>
+                <Button type="link" onClick={() => handleViewPostsClick(item)}>
+                  查看帖子
+                </Button>
+              </Space>
             </td>
           </tr>
         ))}
