@@ -163,7 +163,7 @@ const LoginHeader = () => {
           <motion.div whileHover={{ rotate: 180 }} transition={{ duration: 0.3 }}>
             <CIcon icon={cilSpeedometer} />
           </motion.div>
-          <LogoText>ProductX Admin</LogoText>
+          <LogoText>ProTX Admin</LogoText>
         </Logo>
       </Link>
       <CDropdown variant="nav-item" placement="bottom-end" className="ms-2">
