@@ -162,6 +162,18 @@ const QtsSupportedExchangesRouter = React.lazy(
 
 const QtsMarketDataRouter = React.lazy(() => import('./views/base/qtsMarketData/QtsMarketData'));
 
+const LogisticsRoutesRouter = React.lazy(
+  () => import('./views/base/logisticsRoutes/LogisticsRoutes'),
+);
+
+const LogisticsProvidersRouter = React.lazy(
+  () => import('./views/base/logisticsProviders/LogisticsProviders'),
+);
+
+const LogisticsProviderRoutesRouter = React.lazy(
+  () => import('./views/base/logisticsProviderRoutes/LogisticsProviderRoutes'),
+);
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -603,6 +615,33 @@ const routes = [
     element: (
       <PrivateRoute>
         <QtsMarketDataRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/logisticsRoutes',
+    name: '物流路线管理',
+    element: (
+      <PrivateRoute>
+        <LogisticsRoutesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/logisticsProviders',
+    name: '物流提供商管理',
+    element: (
+      <PrivateRoute>
+        <LogisticsProvidersRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/logisticsProviderRoutes',
+    name: '物流提供商路线管理',
+    element: (
+      <PrivateRoute>
+        <LogisticsProviderRoutesRouter />
       </PrivateRoute>
     ),
   },

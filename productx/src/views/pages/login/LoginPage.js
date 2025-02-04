@@ -20,8 +20,7 @@ import LoginHeader from 'src/views/pages/login/LoginHeader';
 import api, { API_BASE_URL, setBaseURL, API_CONFIG, setCustomBaseURL } from 'src/axiosInstance';
 import { message } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
-import styled from 'styled-components';
-import WaveEffect from 'src/components/WaveEffect';
+import styled, { css } from 'styled-components';
 import { initReactI18next, useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from 'src/store/user';
@@ -48,6 +47,7 @@ const PageWrapper = styled.div`
   );
   position: relative;
   overflow: hidden;
+  cursor: default;
 
   &::before {
     content: '';
@@ -657,6 +657,769 @@ const VerticalStack = styled.div`
   width: 100%;
 `;
 
+// 重新设计第二套动画方案 - 流体动态风格
+const letterAnimationStyle2 = css`
+  .letter {
+    display: inline-block;
+    position: relative;
+    transform-style: preserve-3d;
+    animation-duration: 8s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    animation-iteration-count: infinite;
+    
+    &::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(120deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: blur(8px);
+      opacity: 0.5;
+      animation: inherit;
+    }
+    
+    &:nth-child(1) { // P
+      animation-name: fluid-P;
+      color: rgba(99, 102, 241, 0.08);
+      transform-origin: left;
+      animation-delay: 0s;
+    }
+    
+    &:nth-child(2) { // R
+      animation-name: fluid-R;
+      color: rgba(109, 97, 243, 0.08);
+      transform-origin: top;
+      animation-delay: 0.5s;
+    }
+    
+    &:nth-child(3) { // O
+      animation-name: fluid-O;
+      color: rgba(119, 92, 244, 0.08);
+      transform-origin: center;
+      animation-delay: 1s;
+    }
+    
+    &:nth-child(4) { // T
+      animation-name: fluid-T;
+      color: rgba(129, 87, 245, 0.08);
+      transform-origin: bottom;
+      animation-delay: 1.5s;
+    }
+    
+    &:nth-child(5) { // X
+      animation-name: fluid-X;
+      color: rgba(139, 92, 246, 0.08);
+      transform-origin: right;
+      animation-delay: 2s;
+    }
+  }
+
+  @keyframes fluid-P {
+    0%, 100% { 
+      transform: translateY(0) translateZ(0);
+      filter: brightness(1);
+    }
+    50% { 
+      transform: translateY(-20px) translateZ(50px);
+      filter: brightness(1.2);
+    }
+  }
+
+  @keyframes fluid-R {
+    0%, 100% { 
+      transform: translateY(0) translateZ(0);
+      filter: brightness(1);
+    }
+    50% { 
+      transform: translateY(-30px) translateZ(60px);
+      filter: brightness(1.3);
+    }
+  }
+
+  @keyframes fluid-O {
+    0%, 100% { 
+      transform: scale(1) translateZ(0);
+      filter: brightness(1) blur(0px);
+    }
+    50% { 
+      transform: scale(1.2) translateZ(40px);
+      filter: brightness(1.4) blur(2px);
+    }
+  }
+
+  @keyframes fluid-T {
+    0%, 100% { 
+      transform: translateY(0) translateZ(0);
+      filter: brightness(1);
+    }
+    50% { 
+      transform: translateY(-25px) translateZ(45px);
+      filter: brightness(1.2);
+    }
+  }
+
+  @keyframes fluid-X {
+    0%, 100% { 
+      transform: translateY(0) translateZ(0);
+      filter: brightness(1);
+    }
+    50% { 
+      transform: translateY(-15px) translateZ(35px);
+      filter: brightness(1.5);
+    }
+  }
+
+  // 添加流体光效果
+  .letter::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      rgba(99, 102, 241, 0.1) 25%,
+      transparent 50%,
+      rgba(139, 92, 246, 0.1) 75%,
+      transparent 100%
+    );
+    animation: fluid-light 4s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes fluid-light {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+`;
+
+// 原来的动画方案重命名为 letterAnimationStyle1
+const letterAnimationStyle1 = css`
+  .letter {
+    display: inline-block;
+    position: relative;
+    transform-style: preserve-3d;
+    animation-duration: 4s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    
+    &:nth-child(1) { // P
+      animation-name: letterP;
+      color: rgba(99, 102, 241, 0.08);
+    }
+    
+    &:nth-child(2) { // R
+      animation-name: letterR;
+      color: rgba(109, 97, 243, 0.08);
+      animation-delay: 0.2s;
+    }
+    
+    &:nth-child(3) { // O
+      animation-name: letterO;
+      color: rgba(119, 92, 244, 0.08);
+      animation-delay: 0.4s;
+    }
+    
+    &:nth-child(4) { // T
+      animation-name: letterT;
+      color: rgba(129, 87, 245, 0.08);
+      animation-delay: 0.6s;
+    }
+    
+    &:nth-child(5) { // X
+      animation-name: letterX;
+      color: rgba(139, 92, 246, 0.08);
+      animation-delay: 0.8s;
+    }
+  }
+
+  @keyframes letterP {
+    0%, 100% { transform: translateZ(0); }
+    50% { transform: translateZ(50px) rotateX(10deg); }
+  }
+
+  @keyframes letterR {
+    0%, 100% { transform: translateZ(0); }
+    50% { transform: translateZ(40px) rotateY(-10deg); }
+  }
+
+  @keyframes letterO {
+    0%, 100% { transform: scale(1) translateZ(0); }
+    50% { transform: scale(1.2) translateZ(30px); }
+  }
+
+  @keyframes letterT {
+    0%, 100% { transform: translateZ(0); }
+    50% { transform: translateZ(45px) rotateZ(5deg); }
+  }
+
+  @keyframes letterX {
+    0%, 100% { transform: translateZ(0); }
+    50% { transform: translateZ(35px) rotate3d(1, 1, 0, 15deg); }
+  }
+`;
+
+// 添加第三套动画方案 - 赛博朋克风格
+const letterAnimationStyle3 = css`
+  .letter {
+    display: inline-block;
+    position: relative;
+    text-shadow: 2px 2px 0px #6366f1, -2px -2px 0px #8b5cf6;
+    animation: glitch 4s infinite;
+    
+    &::before,
+    &::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(30, 32, 47, 0.95);
+    }
+
+    &::before {
+      left: 2px;
+      text-shadow: -2px 0 #6366f1;
+      animation: glitch-2 5s infinite reverse;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+
+    &::after {
+      left: -2px;
+      text-shadow: 2px 0 #8b5cf6;
+      animation: glitch-3 1s infinite;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+    }
+
+    &:nth-child(1) { // P
+      animation-delay: 0.1s;
+      &::before { animation-delay: 0.2s; }
+      &::after { animation-delay: 0.3s; }
+    }
+    
+    &:nth-child(2) { // R
+      animation-delay: 0.2s;
+      &::before { animation-delay: 0.3s; }
+      &::after { animation-delay: 0.4s; }
+    }
+    
+    &:nth-child(3) { // O
+      animation-delay: 0.3s;
+      &::before { animation-delay: 0.4s; }
+      &::after { animation-delay: 0.5s; }
+    }
+    
+    &:nth-child(4) { // T
+      animation-delay: 0.4s;
+      &::before { animation-delay: 0.5s; }
+      &::after { animation-delay: 0.6s; }
+    }
+    
+    &:nth-child(5) { // X
+      animation-delay: 0.5s;
+      &::before { animation-delay: 0.6s; }
+      &::after { animation-delay: 0.7s; }
+    }
+  }
+
+  @keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    7% { transform: translate(-2px, 2px); }
+    10% { transform: translate(2px, -2px); }
+    13% { transform: translate(-2px, -2px); }
+    20%, 100% { transform: translate(0); }
+  }
+
+  @keyframes glitch-2 {
+    0%, 100% { transform: translate(0); }
+    7% { transform: translate(2px, -2px); }
+    10% { transform: translate(-2px, 2px); }
+    13% { transform: translate(2px, 2px); }
+    20%, 100% { transform: translate(0); }
+  }
+
+  @keyframes glitch-3 {
+    0%, 100% { transform: translate(0); opacity: 0.75; }
+    7% { transform: translate(-2px, -2px); opacity: 0.75; }
+    10% { transform: translate(2px, 2px); opacity: 0.75; }
+    13% { transform: translate(-2px, 2px); opacity: 0.75; }
+    20%, 100% { transform: translate(0); opacity: 0.75; }
+  }
+
+  // 添加霓虹灯效果
+  @keyframes neon {
+    0%, 100% {
+      text-shadow: 
+        0 0 7px rgba(99, 102, 241, 0.8),
+        0 0 10px rgba(99, 102, 241, 0.8),
+        0 0 21px rgba(99, 102, 241, 0.8),
+        0 0 42px rgba(99, 102, 241, 0.8),
+        0 0 82px rgba(99, 102, 241, 0.8),
+        0 0 92px rgba(99, 102, 241, 0.8),
+        0 0 102px rgba(99, 102, 241, 0.8),
+        0 0 151px rgba(99, 102, 241, 0.8);
+    }
+    50% {
+      text-shadow: 
+        0 0 7px rgba(139, 92, 246, 0.8),
+        0 0 10px rgba(139, 92, 246, 0.8),
+        0 0 21px rgba(139, 92, 246, 0.8),
+        0 0 42px rgba(139, 92, 246, 0.8),
+        0 0 82px rgba(139, 92, 246, 0.8),
+        0 0 92px rgba(139, 92, 246, 0.8),
+        0 0 102px rgba(139, 92, 246, 0.8),
+        0 0 151px rgba(139, 92, 246, 0.8);
+    }
+  }
+`;
+
+// 添加第四套动画方案 - 全息投影风格
+const letterAnimationStyle4 = css`
+  .letter {
+    display: inline-block;
+    position: relative;
+    color: rgba(255, 255, 255, 0.1);
+    text-shadow: 0 0 1px rgba(99, 102, 241, 0.8);
+    transform-style: preserve-3d;
+    
+    &::before,
+    &::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.4;
+      filter: blur(0.02em);
+      pointer-events: none;
+      animation: hologram 8s infinite linear;
+    }
+
+    &::before {
+      text-shadow: 
+        0 0 15px rgba(99, 102, 241, 0.6),
+        0 0 30px rgba(99, 102, 241, 0.4),
+        0 0 45px rgba(99, 102, 241, 0.2);
+      animation: hologram-1 4s infinite linear;
+      transform-origin: 50% 100%;
+    }
+
+    &::after {
+      text-shadow: 
+        0 0 15px rgba(139, 92, 246, 0.6),
+        0 0 30px rgba(139, 92, 246, 0.4),
+        0 0 45px rgba(139, 92, 246, 0.2);
+      animation: hologram-2 4s infinite linear;
+      transform-origin: 50% 0%;
+    }
+
+    &:nth-child(1) {
+      animation: float-1 6s infinite ease-in-out;
+      &::before { animation-delay: -1s; }
+      &::after { animation-delay: -2s; }
+    }
+
+    &:nth-child(2) {
+      animation: float-2 6s infinite ease-in-out;
+      &::before { animation-delay: -1.2s; }
+      &::after { animation-delay: -2.2s; }
+    }
+
+    &:nth-child(3) {
+      animation: float-3 6s infinite ease-in-out;
+      &::before { animation-delay: -1.4s; }
+      &::after { animation-delay: -2.4s; }
+    }
+
+    &:nth-child(4) {
+      animation: float-4 6s infinite ease-in-out;
+      &::before { animation-delay: -1.6s; }
+      &::after { animation-delay: -2.6s; }
+    }
+
+    &:nth-child(5) {
+      animation: float-5 6s infinite ease-in-out;
+      &::before { animation-delay: -1.8s; }
+      &::after { animation-delay: -2.8s; }
+    }
+  }
+
+  @keyframes hologram-1 {
+    0%, 100% {
+      transform: rotateX(0deg) skewX(0deg) scale(1);
+    }
+    25% {
+      transform: rotateX(2deg) skewX(2deg) scale(1.02);
+    }
+    75% {
+      transform: rotateX(-2deg) skewX(-2deg) scale(0.98);
+    }
+  }
+
+  @keyframes hologram-2 {
+    0%, 100% {
+      transform: rotateY(0deg) skewY(0deg);
+    }
+    25% {
+      transform: rotateY(2deg) skewY(2deg);
+    }
+    75% {
+      transform: rotateY(-2deg) skewY(-2deg);
+    }
+  }
+
+  @keyframes float-1 {
+    0%, 100% { transform: translateY(0) translateZ(0) rotateX(0); }
+    50% { transform: translateY(-10px) translateZ(20px) rotateX(10deg); }
+  }
+
+  @keyframes float-2 {
+    0%, 100% { transform: translateY(0) translateZ(0) rotateY(0); }
+    50% { transform: translateY(-15px) translateZ(30px) rotateY(-10deg); }
+  }
+
+  @keyframes float-3 {
+    0%, 100% { transform: translateY(0) translateZ(0) scale(1); }
+    50% { transform: translateY(-20px) translateZ(40px) scale(1.1); }
+  }
+
+  @keyframes float-4 {
+    0%, 100% { transform: translateY(0) translateZ(0) rotateZ(0); }
+    50% { transform: translateY(-15px) translateZ(30px) rotateZ(5deg); }
+  }
+
+  @keyframes float-5 {
+    0%, 100% { transform: translateY(0) translateZ(0) rotate3d(1,1,0,0deg); }
+    50% { transform: translateY(-10px) translateZ(20px) rotate3d(1,1,0,10deg); }
+  }
+
+  // 添加扫描线效果
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(99, 102, 241, 0.1) 50%
+    );
+    background-size: 100% 4px;
+    animation: scan 4s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes scan {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 0 100%;
+    }
+  }
+
+  // 添加干扰效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(99, 102, 241, 0.1) 0%,
+        transparent 5%
+      ) 0 0 / 3px 3px;
+    animation: noise 2s steps(3) infinite;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @keyframes noise {
+    0%, 100% { background-position: 0 0; }
+    20% { background-position: 1px -1px; }
+    40% { background-position: -2px 2px; }
+    60% { background-position: 1px 1px; }
+    80% { background-position: -1px -2px; }
+  }
+`;
+
+// 添加第五套动画方案 - 另一种赛博朋克风格
+const letterAnimationStyle5 = css`
+  .letter {
+    display: inline-block;
+    position: relative;
+    color: rgba(255, 255, 255, 0.15);
+    text-shadow: 
+      0 0 2px #6366f1,
+      0 0 10px #6366f1,
+      0 0 20px #6366f1,
+      0 0 40px #6366f1;
+    animation: cyber-pulse 4s infinite;
+    
+    &::before,
+    &::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.8;
+      mix-blend-mode: screen;
+    }
+
+    &::before {
+      color: #ff00ff;
+      z-index: -1;
+      animation: cyber-glitch-1 4s infinite;
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    }
+
+    &::after {
+      color: #00ffff;
+      z-index: -2;
+      animation: cyber-glitch-2 4s infinite;
+      clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+    }
+
+    &:nth-child(1) {
+      animation-delay: -0.4s;
+      &::before { animation-delay: -0.3s; }
+      &::after { animation-delay: -0.5s; }
+    }
+
+    &:nth-child(2) {
+      animation-delay: -0.8s;
+      &::before { animation-delay: -0.7s; }
+      &::after { animation-delay: -0.9s; }
+    }
+
+    &:nth-child(3) {
+      animation-delay: -1.2s;
+      &::before { animation-delay: -1.1s; }
+      &::after { animation-delay: -1.3s; }
+    }
+
+    &:nth-child(4) {
+      animation-delay: -1.6s;
+      &::before { animation-delay: -1.5s; }
+      &::after { animation-delay: -1.7s; }
+    }
+
+    &:nth-child(5) {
+      animation-delay: -2s;
+      &::before { animation-delay: -1.9s; }
+      &::after { animation-delay: -2.1s; }
+    }
+  }
+
+  @keyframes cyber-pulse {
+    0%, 100% {
+      text-shadow: 
+        0 0 2px #6366f1,
+        0 0 10px #6366f1,
+        0 0 20px #6366f1,
+        0 0 40px #6366f1;
+    }
+    50% {
+      text-shadow: 
+        0 0 4px #8b5cf6,
+        0 0 20px #8b5cf6,
+        0 0 40px #8b5cf6,
+        0 0 80px #8b5cf6;
+    }
+  }
+
+  @keyframes cyber-glitch-1 {
+    0%, 100% { transform: translate(0); }
+    33% { transform: translate(-5px, 3px); }
+    66% { transform: translate(5px, -3px); }
+  }
+
+  @keyframes cyber-glitch-2 {
+    0%, 100% { transform: translate(0); }
+    33% { transform: translate(5px, -3px); }
+    66% { transform: translate(-5px, 3px); }
+  }
+
+  // 添加数字雨效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 300%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 48%,
+      rgba(99, 102, 241, 0.05) 49%,
+      rgba(139, 92, 246, 0.05) 51%,
+      transparent 52%,
+      transparent 100%
+    );
+    animation: matrix-rain 20s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes matrix-rain {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(33.33%); }
+  }
+
+  // 添加扫描线效果
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(99, 102, 241, 0.1) 2px,
+      rgba(99, 102, 241, 0.1) 3px
+    );
+    animation: scan-lines 8s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scan-lines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
+  }
+
+  // 添加闪烁效果
+  .letter {
+    animation: flicker 4s infinite;
+  }
+
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    8% { opacity: 0.8; }
+    9% { opacity: 1; }
+    12% { opacity: 0.9; }
+    20% { opacity: 1; }
+    25% { opacity: 0.8; }
+    30% { opacity: 1; }
+  }
+`;
+
+// 修改 GlowingText 组件的样式条件
+const GlowingText = styled.div`
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20vw;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: rgba(255, 255, 255, 0.05);
+  text-shadow: 
+    0 0 80px rgba(139, 92, 246, 0.15),
+    0 0 32px rgba(139, 92, 246, 0.15),
+    0 0 16px rgba(139, 92, 246, 0.15);
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  z-index: 0;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  
+  @media (max-width: ${breakpoints.md}) {
+    font-size: 25vw;
+    top: 20%;
+  }
+
+  &::before {
+    content: 'PROTX';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      rgba(99, 102, 241, 0.08),
+      rgba(139, 92, 246, 0.08)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: blur(4px);
+  }
+
+  &::after {
+    content: 'PROTX';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(139, 92, 246, 0.15) 50%,
+      transparent 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: blur(2px);
+  }
+
+  ${props => {
+    switch(props.$animationStyle) {
+      case 1:
+        return letterAnimationStyle1;
+      case 2:
+        return letterAnimationStyle2;
+      case 3:
+        return letterAnimationStyle3;
+      case 4:
+        return letterAnimationStyle4;
+      case 5:
+        return letterAnimationStyle5;
+      default:
+        return letterAnimationStyle1;
+    }
+  }}
+
+  @keyframes glow {
+    0%, 100% {
+      filter: brightness(1) blur(0px);
+      text-shadow: 
+        0 0 80px rgba(139, 92, 246, 0.2),
+        0 0 32px rgba(139, 92, 246, 0.2);
+    }
+    50% {
+      filter: brightness(1.2) blur(2px);
+      text-shadow: 
+        0 0 100px rgba(139, 92, 246, 0.3),
+        0 0 40px rgba(139, 92, 246, 0.3);
+    }
+  }
+
+  animation: glow 6s ease-in-out infinite;
+`;
+
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [historyUsernames, setHistoryUsernames] = useState([]);
@@ -675,6 +1438,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const [showSlogan, setShowSlogan] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [animationStyle, setAnimationStyle] = useState(Math.floor(Math.random() * 5) + 1);
 
   const fadeIn = {
     hidden: { opacity: 0 },
@@ -794,11 +1558,6 @@ const LoginPage = () => {
       'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=https://protx.cn/manage/manager/github-callback';
   };
 
-  const handleWaveDoubleClick = () => {
-    setShowApiConfig((prev) => !prev);
-    message.info(showApiConfig ? 'API 配置已隐藏' : 'API 配置已显示');
-  };
-
   // 在组件加载时自动设置当前环境
   useEffect(() => {
     const hostname = window.location.hostname;
@@ -852,9 +1611,24 @@ const LoginPage = () => {
     setShowSlogan(false);
   };
 
+  // 添加双击事件处理函数
+  const handleBackgroundDoubleClick = () => {
+    setShowApiConfig(!showApiConfig);
+  };
+
   return (
-    <PageWrapper>
-      <WaveEffect onDoubleClick={handleWaveDoubleClick} />
+    <PageWrapper onDoubleClick={handleBackgroundDoubleClick}>
+      <GlowingText $animationStyle={animationStyle}>
+        {'PROTX'.split('').map((letter, index) => (
+          <span 
+            key={index} 
+            className="letter"
+            data-text={letter} // 为赛博朋克效果添加
+          >
+            {letter}
+          </span>
+        ))}
+      </GlowingText>
       <LoginHeader />
       <div className="min-vh-100 d-flex align-items-center">
         <ContentWrapper>
@@ -1036,7 +1810,7 @@ const LoginPage = () => {
           </CRow>
         </ContentWrapper>
       </div>
-      {!showApiConfig && <ApiConfigHint>双击水面显示 API 配置！！！</ApiConfigHint>}
+      {!showApiConfig && <ApiConfigHint>双击背景显示 API 配置！！！</ApiConfigHint>}
     </PageWrapper>
   );
 };
