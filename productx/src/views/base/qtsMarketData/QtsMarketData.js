@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Form, Input, message, Spin, Col, Row, Space, DatePicker, Tag, Select, Card, Radio } from 'antd'
+import { Button, Form, Input, message, Spin, Col, Row, Space, DatePicker, Tag, Select, Card, Radio, Tabs } from 'antd'
 import Pagination from "src/components/common/Pagination"
 import QtsMarketDataTable from "./QtsMarketDataTable"
 import QtsMarketDataChart from "./QtsMarketDataChart"
@@ -66,8 +66,6 @@ const QtsMarketData = () => {
   const [chartForm] = Form.useForm();
   const [listForm] = Form.useForm();
   
-  const [showListSection, setShowListSection] = useState(false);
-
   // 快捷时间范围选项
   const timeRangeOptions = [
     { label: '1小时', value: '1h' },
@@ -147,13 +145,18 @@ const QtsMarketData = () => {
     const { dateRange, ...rest } = values;
     const [startDate, endDate] = dateRange || [];
     
-    setSearchParams({
+    // 直接使用 dayjs 对象的 valueOf() 方法获取时间戳
+    const params = {
       ...rest,
       openTime: startDate?.valueOf(),
       closeTime: endDate?.valueOf()
-    });
-    setCurrent(1);
-    fetchData();
+    };
+
+    setSearchParams(params);  // 更新搜索参数
+    setCurrent(1);  // 重置页码
+    
+    // 直接调用 fetchData，不要依赖 useEffect
+    fetchData(params);
   };
 
   const [chartParams, setChartParams] = useState(null);
@@ -173,39 +176,43 @@ const QtsMarketData = () => {
   }, [selectedExchange])
 
   useEffect(() => {
-    fetchData()
-  }, [currentPage, pageSize])
+    if (searchParams.exchangeName) {  // 只有当有基本查询条件时才执行
+      fetchData();
+    }
+  }, [currentPage, pageSize]);
 
-  const fetchData = async () => {
-    setIsLoading(true)
+  const fetchData = async (searchParamsOverride) => {
+    setIsLoading(true);
     try {
+      // 使用传入的参数覆盖当前的搜索参数
+      const paramsToUse = searchParamsOverride || searchParams;
+      
       // 过滤掉空值参数
       const filteredParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, value]) => 
+        Object.entries(paramsToUse).filter(([_, value]) => 
           value !== '' && value !== null && value !== undefined
         )
-      )
+      );
       
-      // 列表查询使用分页参数
       const response = await api.get('/manage/qts-market-data/list', {
         params: { 
           currentPage, 
           size: pageSize, 
           ...filteredParams 
         },
-      })
+      });
 
       if (response?.data) {
-        setData(response.data)
-        setTotalNum(response.totalNum)
+        setData(response.data);
+        setTotalNum(response.totalNum);
       }
     } catch (error) {
-      console.error('获取数据失败', error)
-      message.error('获取数据失败')
+      console.error('获取数据失败', error);
+      message.error('获取数据失败');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const fetchExchanges = async () => {
     setIsLoading(true);
@@ -312,266 +319,272 @@ const QtsMarketData = () => {
 
   return (
     <div>
-      {/* 图表查询区域 */}
-      <Card title="K线图查询" style={{ marginBottom: 16 }}>
-        <Form
-          form={chartForm}
-          layout="inline"
-          style={{ marginBottom: 16 }}
-          initialValues={{
-            exchangeName: DEFAULT_EXCHANGE,
-            symbol: DEFAULT_SYMBOL,
-            interval: DEFAULT_INTERVAL,
-            dateRange: [dayjs().subtract(7, 'day'), dayjs()]
-          }}
-        >
-          <Form.Item
-            name="exchangeName"
-            rules={[{ required: true, message: '请选择交易所' }]}
-          >
-            <Select
-              placeholder="选择交易所"
-              style={{ width: 200 }}
-              onChange={(value) => {
-                chartForm.setFieldsValue({
-                  symbol: undefined,
-                  exchangeName: value
-                });
-                fetchSymbols(value);
-                // 当有其他必填项都有值时，触发查询
-                const formValues = chartForm.getFieldsValue();
-                if (value && formValues.interval && formValues.dateRange) {
-                  handleChartSearch({
-                    ...formValues,
-                    exchangeName: value,
-                    symbol: undefined
-                  });
-                }
-              }}
-              options={exchanges.map(exchange => ({
-                label: exchange.exchangeName,
-                value: exchange.exchangeName
-              }))}
-            />
-          </Form.Item>
+      <Tabs
+        defaultActiveKey="chart"
+        items={[
+          {
+            key: 'chart',
+            label: 'K线图',
+            children: (
+              <>
+                {/* 图表查询区域 */}
+                <Card title="K线图查询" style={{ marginBottom: 16 }}>
+                  <Form
+                    form={chartForm}
+                    layout="inline"
+                    style={{ marginBottom: 16 }}
+                    initialValues={{
+                      exchangeName: DEFAULT_EXCHANGE,
+                      symbol: DEFAULT_SYMBOL,
+                      interval: DEFAULT_INTERVAL,
+                      dateRange: [dayjs().subtract(7, 'day'), dayjs()]
+                    }}
+                  >
+                    <Form.Item
+                      name="exchangeName"
+                      rules={[{ required: true, message: '请选择交易所' }]}
+                    >
+                      <Select
+                        placeholder="选择交易所"
+                        style={{ width: 200 }}
+                        onChange={(value) => {
+                          chartForm.setFieldsValue({
+                            symbol: undefined,
+                            exchangeName: value
+                          });
+                          fetchSymbols(value);
+                          // 当有其他必填项都有值时，触发查询
+                          const formValues = chartForm.getFieldsValue();
+                          if (value && formValues.interval && formValues.dateRange) {
+                            handleChartSearch({
+                              ...formValues,
+                              exchangeName: value,
+                              symbol: undefined
+                            });
+                          }
+                        }}
+                        options={exchanges.map(exchange => ({
+                          label: exchange.exchangeName,
+                          value: exchange.exchangeName
+                        }))}
+                      />
+                    </Form.Item>
 
-          <Form.Item
-            name="symbol"
-            rules={[{ required: true, message: '请选择交易对' }]}
-          >
-            <Select
-              placeholder="选择交易对"
-              style={{ width: 200 }}
-              loading={loadingSymbols}
-              disabled={!chartForm.getFieldValue('exchangeName')}
-              showSearch
-              onChange={(value) => {
-                const formValues = chartForm.getFieldsValue();
-                if (value && formValues.exchangeName && formValues.interval && formValues.dateRange) {
-                  handleChartSearch({
-                    ...formValues,
-                    symbol: value
-                  });
-                }
-              }}
-              options={symbols.map(symbol => ({
-                label: symbol.symbol,
-                value: symbol.symbol
-              }))}
-            />
-          </Form.Item>
+                    <Form.Item
+                      name="symbol"
+                      rules={[{ required: true, message: '请选择交易对' }]}
+                    >
+                      <Select
+                        placeholder="选择交易对"
+                        style={{ width: 200 }}
+                        loading={loadingSymbols}
+                        disabled={!chartForm.getFieldValue('exchangeName')}
+                        showSearch
+                        onChange={(value) => {
+                          const formValues = chartForm.getFieldsValue();
+                          if (value && formValues.exchangeName && formValues.interval && formValues.dateRange) {
+                            handleChartSearch({
+                              ...formValues,
+                              symbol: value
+                            });
+                          }
+                        }}
+                        options={symbols.map(symbol => ({
+                          label: symbol.symbol,
+                          value: symbol.symbol
+                        }))}
+                      />
+                    </Form.Item>
 
-          <Form.Item
-            name="interval"
-            rules={[{ required: true, message: '请选择K线周期' }]}
-          >
-            <Select
-              placeholder="选择K线周期"
-              style={{ width: 150 }}
-              onChange={(value) => {
-                const formValues = chartForm.getFieldsValue();
-                if (value && formValues.exchangeName && formValues.symbol && formValues.dateRange) {
-                  handleChartSearch({
-                    ...formValues,
-                    interval: value
-                  });
-                }
-              }}
-              options={INTERVALS}
-            />
-          </Form.Item>
+                    <Form.Item
+                      name="interval"
+                      rules={[{ required: true, message: '请选择K线周期' }]}
+                    >
+                      <Select
+                        placeholder="选择K线周期"
+                        style={{ width: 150 }}
+                        onChange={(value) => {
+                          const formValues = chartForm.getFieldsValue();
+                          if (value && formValues.exchangeName && formValues.symbol && formValues.dateRange) {
+                            handleChartSearch({
+                              ...formValues,
+                              interval: value
+                            });
+                          }
+                        }}
+                        options={INTERVALS}
+                      />
+                    </Form.Item>
 
-          <Form.Item
-            name="dateRange"
-            rules={[{ required: true, message: '请选择时间范围' }]}
-          >
-            <DatePicker.RangePicker
-              showTime={false}
-              style={{ width: 380 }}
-              ranges={{
-                '最近1小时': [dayjs().subtract(1, 'hour'), dayjs()],
-                '最近4小时': [dayjs().subtract(4, 'hour'), dayjs()],
-                '最近12小时': [dayjs().subtract(12, 'hour'), dayjs()],
-                '最近1天': [dayjs().subtract(1, 'day'), dayjs()],
-                '最近3天': [dayjs().subtract(3, 'day'), dayjs()],
-                '最近7天': [dayjs().subtract(7, 'day'), dayjs()],
-                '最近1月': [dayjs().subtract(1, 'month'), dayjs()],
-                '最近3月': [dayjs().subtract(3, 'month'), dayjs()],
-                '最近6月': [dayjs().subtract(6, 'month'), dayjs()],
-                '最近1年': [dayjs().subtract(1, 'year'), dayjs()],
-              }}
-              onChange={(dates) => {
-                if (dates) {
-                  const formValues = chartForm.getFieldsValue();
-                  if (formValues.exchangeName && formValues.symbol && formValues.interval) {
-                    handleChartSearch({
-                      ...formValues,
-                      dateRange: dates
-                    });
-                  }
-                }
-              }}
-            />
-          </Form.Item>
-        </Form>
-      </Card>
+                    <Form.Item
+                      name="dateRange"
+                      rules={[{ required: true, message: '请选择时间范围' }]}
+                    >
+                      <DatePicker.RangePicker
+                        showTime={false}
+                        style={{ width: 380 }}
+                        ranges={{
+                          '最近1小时': [dayjs().subtract(1, 'hour'), dayjs()],
+                          '最近4小时': [dayjs().subtract(4, 'hour'), dayjs()],
+                          '最近12小时': [dayjs().subtract(12, 'hour'), dayjs()],
+                          '最近1天': [dayjs().subtract(1, 'day'), dayjs()],
+                          '最近3天': [dayjs().subtract(3, 'day'), dayjs()],
+                          '最近7天': [dayjs().subtract(7, 'day'), dayjs()],
+                          '最近1月': [dayjs().subtract(1, 'month'), dayjs()],
+                          '最近3月': [dayjs().subtract(3, 'month'), dayjs()],
+                          '最近6月': [dayjs().subtract(6, 'month'), dayjs()],
+                          '最近1年': [dayjs().subtract(1, 'year'), dayjs()],
+                        }}
+                        onChange={(dates) => {
+                          if (dates) {
+                            const formValues = chartForm.getFieldsValue();
+                            if (formValues.exchangeName && formValues.symbol && formValues.interval) {
+                              handleChartSearch({
+                                ...formValues,
+                                dateRange: dates
+                              });
+                            }
+                          }
+                        }}
+                      />
+                    </Form.Item>
+                  </Form>
+                </Card>
 
-      {/* 图表展示区域 */}
-      {chartParams && <QtsMarketDataChart {...chartParams} />}
+                {/* 图表展示区域 */}
+                {chartParams && <QtsMarketDataChart {...chartParams} />}
+              </>
+            ),
+          },
+          {
+            key: 'list',
+            label: '数据列表',
+            children: (
+              <>
+                <Card title="数据列表查询">
+                  <Form
+                    form={listForm}
+                    onFinish={handleListSearch}
+                    layout="inline"
+                    style={{ marginBottom: 16 }}
+                  >
+                    {/* 基本查询条件 */}
+                    <Form.Item
+                      name="exchangeName"
+                      rules={[{ required: true, message: '请选择交易所' }]}
+                    >
+                      <Select
+                        placeholder="选择交易所"
+                        style={{ width: 200 }}
+                        onChange={(value) => {
+                          listForm.setFieldValue('symbol', undefined);
+                          fetchSymbols(value);
+                        }}
+                        allowClear
+                        loading={isLoading}
+                        options={exchanges.map(exchange => ({
+                          label: exchange.exchangeName,
+                          value: exchange.exchangeName
+                        }))}
+                      />
+                    </Form.Item>
 
-      {/* 展开/收起按钮 */}
-      <Button 
-        type="link" 
-        onClick={() => setShowListSection(!showListSection)}
-        style={{ marginTop: 16, marginBottom: 16 }}
-      >
-        {showListSection ? '收起列表查询 ↑' : '展开列表查询 ↓'}
-      </Button>
+                    <Form.Item
+                      name="symbol"
+                      rules={[{ required: true, message: '请选择交易对' }]}
+                    >
+                      <Select
+                        placeholder="选择交易对"
+                        style={{ width: 200 }}
+                        loading={loadingSymbols}
+                        disabled={!listForm.getFieldValue('exchangeName')}
+                        showSearch
+                        allowClear
+                        optionFilterProp="children"
+                        options={symbols.map(symbol => ({
+                          label: symbol.symbol,
+                          value: symbol.symbol
+                        }))}
+                      />
+                    </Form.Item>
 
-      {/* 列表查询和展示区域 */}
-      {showListSection && (
-        <>
-          <Card title="数据列表查询">
-            <Form
-              form={listForm}
-              onFinish={handleListSearch}
-              layout="inline"
-              style={{ marginBottom: 16 }}
-            >
-              {/* 基本查询条件 */}
-              <Form.Item
-                name="exchangeName"
-                rules={[{ required: true, message: '请选择交易所' }]}
-              >
-                <Select
-                  placeholder="选择交易所"
-                  style={{ width: 200 }}
-                  onChange={(value) => {
-                    listForm.setFieldValue('symbol', undefined);
-                    fetchSymbols(value);
-                  }}
-                  allowClear
-                  loading={isLoading}
-                  options={exchanges.map(exchange => ({
-                    label: exchange.exchangeName,
-                    value: exchange.exchangeName
-                  }))}
+                    <Form.Item
+                      name="interval"
+                      rules={[{ required: true, message: '请选择K线周期' }]}
+                    >
+                      <Select
+                        placeholder="选择K线周期"
+                        style={{ width: 150 }}
+                        allowClear
+                        options={INTERVALS}
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      name="dateRange"
+                      rules={[{ required: true, message: '请选择时间范围' }]}
+                    >
+                      <DatePicker.RangePicker
+                        showTime
+                        style={{ width: 380 }}
+                        ranges={{
+                          '最近1小时': [dayjs().subtract(1, 'hour'), dayjs()],
+                          '最近4小时': [dayjs().subtract(4, 'hour'), dayjs()],
+                          '最近12小时': [dayjs().subtract(12, 'hour'), dayjs()],
+                          '最近1天': [dayjs().subtract(1, 'day'), dayjs()],
+                          '最近3天': [dayjs().subtract(3, 'day'), dayjs()],
+                          '最近7天': [dayjs().subtract(7, 'day'), dayjs()],
+                          '最近1月': [dayjs().subtract(1, 'month'), dayjs()],
+                        }}
+                      />
+                    </Form.Item>
+
+                    {/* 价格和成交量过滤条件 */}
+                    <Form.Item name="minOpenPrice">
+                      <Input placeholder="最小开盘价" style={{ width: 150 }} />
+                    </Form.Item>
+                    <Form.Item name="maxOpenPrice">
+                      <Input placeholder="最大开盘价" style={{ width: 150 }} />
+                    </Form.Item>
+                    <Form.Item name="minClosePrice">
+                      <Input placeholder="最小收盘价" style={{ width: 150 }} />
+                    </Form.Item>
+                    <Form.Item name="maxClosePrice">
+                      <Input placeholder="最大收盘价" style={{ width: 150 }} />
+                    </Form.Item>
+                    <Form.Item name="minVolume">
+                      <Input placeholder="最小成交量" style={{ width: 150 }} />
+                    </Form.Item>
+                    <Form.Item name="maxVolume">
+                      <Input placeholder="最大成交量" style={{ width: 150 }} />
+                    </Form.Item>
+
+                    <Form.Item>
+                      <Button type="primary" htmlType="submit">
+                        查询列表
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </Card>
+
+                <div className="table-responsive" style={{ marginTop: 16 }}>
+                  <Spin spinning={isLoading}>
+                    <QtsMarketDataTable data={data} />
+                  </Spin>
+                </div>
+
+                <Pagination
+                  totalPages={totalPages}
+                  current={currentPage}
+                  onPageChange={setCurrent}
+                  pageSize={pageSize}
+                  onPageSizeChange={setPageSize}
                 />
-              </Form.Item>
-
-              <Form.Item
-                name="symbol"
-                rules={[{ required: true, message: '请选择交易对' }]}
-              >
-                <Select
-                  placeholder="选择交易对"
-                  style={{ width: 200 }}
-                  loading={loadingSymbols}
-                  disabled={!listForm.getFieldValue('exchangeName')}
-                  showSearch
-                  allowClear
-                  optionFilterProp="children"
-                  options={symbols.map(symbol => ({
-                    label: symbol.symbol,
-                    value: symbol.symbol
-                  }))}
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="interval"
-                rules={[{ required: true, message: '请选择K线周期' }]}
-              >
-                <Select
-                  placeholder="选择K线周期"
-                  style={{ width: 150 }}
-                  allowClear
-                  options={INTERVALS}
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="dateRange"
-                rules={[{ required: true, message: '请选择时间范围' }]}
-              >
-                <DatePicker.RangePicker
-                  showTime
-                  style={{ width: 380 }}
-                  ranges={{
-                    '最近1小时': [dayjs().subtract(1, 'hour'), dayjs()],
-                    '最近4小时': [dayjs().subtract(4, 'hour'), dayjs()],
-                    '最近12小时': [dayjs().subtract(12, 'hour'), dayjs()],
-                    '最近1天': [dayjs().subtract(1, 'day'), dayjs()],
-                    '最近3天': [dayjs().subtract(3, 'day'), dayjs()],
-                    '最近7天': [dayjs().subtract(7, 'day'), dayjs()],
-                    '最近1月': [dayjs().subtract(1, 'month'), dayjs()],
-                  }}
-                />
-              </Form.Item>
-
-              {/* 价格和成交量过滤条件 */}
-              <Form.Item name="minOpenPrice">
-                <Input placeholder="最小开盘价" style={{ width: 150 }} />
-              </Form.Item>
-              <Form.Item name="maxOpenPrice">
-                <Input placeholder="最大开盘价" style={{ width: 150 }} />
-              </Form.Item>
-              <Form.Item name="minClosePrice">
-                <Input placeholder="最小收盘价" style={{ width: 150 }} />
-              </Form.Item>
-              <Form.Item name="maxClosePrice">
-                <Input placeholder="最大收盘价" style={{ width: 150 }} />
-              </Form.Item>
-              <Form.Item name="minVolume">
-                <Input placeholder="最小成交量" style={{ width: 150 }} />
-              </Form.Item>
-              <Form.Item name="maxVolume">
-                <Input placeholder="最大成交量" style={{ width: 150 }} />
-              </Form.Item>
-
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  查询列表
-                </Button>
-              </Form.Item>
-            </Form>
-          </Card>
-
-          <div className="table-responsive" style={{ marginTop: 16 }}>
-            <Spin spinning={isLoading}>
-              <QtsMarketDataTable data={data} />
-            </Spin>
-          </div>
-
-          <Pagination
-            totalPages={totalPages}
-            current={currentPage}
-            onPageChange={setCurrent}
-            pageSize={pageSize}
-            onPageSizeChange={setPageSize}
-          />
-        </>
-      )}
+              </>
+            ),
+          },
+        ]}
+      />
     </div>
   )
 }
