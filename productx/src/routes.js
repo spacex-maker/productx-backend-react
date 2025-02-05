@@ -174,6 +174,8 @@ const LogisticsProviderRoutesRouter = React.lazy(
   () => import('./views/base/logisticsProviderRoutes/LogisticsProviderRoutes'),
 );
 
+const QtsSystemLogRouter = React.lazy(() => import('./views/base/qtsSystemLog/QtsSystemLog'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -642,6 +644,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <LogisticsProviderRoutesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/qtsSystemLog',
+    name: 'QTS系统日志',
+    element: (
+      <PrivateRoute>
+        <QtsSystemLogRouter />
       </PrivateRoute>
     ),
   },

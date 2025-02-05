@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Descriptions, Tag, Divider, Typography, Row, Col, Card, message, Button, Space } from 'antd';
+import { Modal, Descriptions, Tag, Divider, Typography, Row, Col, Card, message, Button, Space, Tabs, Table } from 'antd';
 import api from 'src/axiosInstance';
+import { ReloadOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
 const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
   const [scheduleStatus, setScheduleStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (isVisible && symbol) {
@@ -14,8 +17,32 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
     }
   }, [isVisible, symbol]);
 
+  useEffect(() => {
+    let timer;
+    if (scheduleStatus?.taskStatus?.lastExecuteTime && scheduleStatus?.taskStatus?.nextExecuteTime) {
+      setProgress(calculateProgress(
+        scheduleStatus.taskStatus.lastExecuteTime,
+        scheduleStatus.taskStatus.nextExecuteTime
+      ));
+
+      timer = setInterval(() => {
+        setProgress(calculateProgress(
+          scheduleStatus.taskStatus.lastExecuteTime,
+          scheduleStatus.taskStatus.nextExecuteTime
+        ));
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [scheduleStatus?.taskStatus?.lastExecuteTime, scheduleStatus?.taskStatus?.nextExecuteTime]);
+
   const fetchScheduleStatus = async () => {
     try {
+      setRefreshing(true);
       const response = await api.get('/manage/qts-market-data/schedule/status', {
         params: {
           exchangeName: symbol.exchangeName,
@@ -28,6 +55,8 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
     } catch (error) {
       console.error('获取定时任务状态失败', error);
       message.error('获取定时任务状态失败');
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -113,12 +142,47 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
     }
   };
 
+  const getKlineSyncInfo = (taskStatus) => {
+    if (!taskStatus) return [];
+    
+    const klineIntervals = [
+      '1m', '3m', '5m', '15m', '30m',
+      '1h', '2h', '4h', '6h', '8h', '12h',
+      '1d', '3d', '1w'
+    ];
+    
+    return klineIntervals
+      .map(interval => {
+        const info = taskStatus[`klineSyncInfo${interval}`];
+        if (!info) return null;
+        return {
+          timeInterval: interval,
+          ...info
+        };
+      })
+      .filter(Boolean);
+  };
+
+  const calculateProgress = (lastExecuteTime, nextExecuteTime) => {
+    if (!lastExecuteTime || !nextExecuteTime) return 0;
+    
+    const now = new Date().getTime();
+    const last = new Date(lastExecuteTime).getTime();
+    const next = new Date(nextExecuteTime).getTime();
+    
+    if (next <= last) return 0;
+    const progress = ((now - last) / (next - last)) * 100;
+    return Math.min(Math.max(progress, 0), 100);
+  };
+
   return (
     <Modal
       title={
-        <Title level={4} style={{ margin: 0 }}>
-          交易对详情
-        </Title>
+        <Space>
+          <span>{symbol?.exchangeName}</span>
+          <span>{symbol?.symbol}</span>
+          {symbol && getStatusTag(symbol.status)}
+        </Space>
       }
       open={isVisible}
       onCancel={onCancel}
@@ -127,231 +191,146 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
     >
       {symbol && (
         <div style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
-          <Card title="基本信息" bordered={false}>
-            <Row gutter={[16, 8]}>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">交易所</div>
-                  <div className="detail-value">{symbol.exchangeName}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">交易对</div>
-                  <div className="detail-value">{symbol.symbol}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">状态</div>
-                  <div className="detail-value">{getStatusTag(symbol.status)}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">基础币种</div>
-                  <div className="detail-value">{symbol.baseAsset}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">计价币种</div>
-                  <div className="detail-value">{symbol.quoteAsset}</div>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-
-          <Divider style={{ margin: '16px 0' }} />
-
-          <Card title="交易限制" bordered={false}>
-            <Row gutter={[16, 8]}>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">最小数量</div>
-                  <div className="detail-value">{symbol.minQty}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">最大数量</div>
-                  <div className="detail-value">{symbol.maxQty}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">最小手数</div>
-                  <div className="detail-value">{symbol.minLotSize}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">最大手数</div>
-                  <div className="detail-value">{symbol.maxLotSize}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">步长</div>
-                  <div className="detail-value">{symbol.stepSize}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">价格步长</div>
-                  <div className="detail-value">{symbol.tickSize}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">数量精度</div>
-                  <div className="detail-value">{symbol.qtyPrecision}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">价格精度</div>
-                  <div className="detail-value">{symbol.pricePrecision}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">最小名义价值</div>
-                  <div className="detail-value">{symbol.minNotional}</div>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-
-          <Divider style={{ margin: '16px 0' }} />
-
-          <Card title="同步配置" bordered={false}>
-            <Row gutter={[16, 8]}>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">同步状态</div>
-                  <div className="detail-value">{getSyncStatusTag(symbol.syncStatus)}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">同步频率</div>
-                  <div className="detail-value">{getSyncFrequencyText(symbol.syncFrequency)}</div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">同步开关</div>
-                  <div className="detail-value">
-                    <Tag color={symbol.syncEnabled ? 'green' : 'red'}>
-                      {symbol.syncEnabled ? '启用' : '禁用'}
-                    </Tag>
-                  </div>
-                </div>
-              </Col>
-              <Col span={12}>
-                <div className="detail-item">
-                  <div className="detail-label">最后同步时间</div>
-                  <div className="detail-value">{symbol.lastSyncTime || '-'}</div>
-                </div>
-              </Col>
-              <Col span={24}>
-                <div className="detail-item">
-                  <div className="detail-label">同步错误信息</div>
-                  <div className="detail-value error-message">
-                    {symbol.syncErrorMessage || '-'}
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-
-          <Divider style={{ margin: '16px 0' }} />
-
-          <Card 
-            title="定时任务信息" 
-            bordered={false}
-            extra={
-              <Space>
-                {scheduleStatus?.syncStatus === 'PAUSED' ? (
-                  <Button 
-                    type="primary"
-                    loading={loading}
-                    onClick={handleResumeSchedule}
-                  >
-                    开始任务
-                  </Button>
-                ) : (
-                  <Button 
-                    type="primary" 
-                    danger
-                    loading={loading}
-                    onClick={handlePauseSchedule}
-                    disabled={scheduleStatus?.syncStatus === 'DISABLED'}
-                  >
-                    暂停任务
-                  </Button>
-                )}
-              </Space>
-            }
-          >
-            <Row gutter={[16, 8]}>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">任务状态</div>
-                  <div className="detail-value">
-                    {getScheduleStatusTag(scheduleStatus)}
-                  </div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">同步状态</div>
-                  <div className="detail-value">
-                    {scheduleStatus && getSyncStatusTag(scheduleStatus.syncStatus)}
-                  </div>
-                </div>
-              </Col>
-              <Col span={8}>
-                <div className="detail-item">
-                  <div className="detail-label">任务执行</div>
-                  <div className="detail-value">
-                    {scheduleStatus?.scheduled ? (
-                      <Tag color="success">已调度</Tag>
-                    ) : (
-                      <Tag>未调度</Tag>
-                    )}
-                  </div>
-                </div>
-              </Col>
-              <Col span={12}>
-                <div className="detail-item">
-                  <div className="detail-label">下次执行时间</div>
-                  <div className="detail-value">
-                    {scheduleStatus?.nextExecuteTime || '-'}
-                  </div>
-                </div>
-              </Col>
-              <Col span={12}>
-                <div className="detail-item">
-                  <div className="detail-label">上次执行时间</div>
-                  <div className="detail-value">
-                    {scheduleStatus?.lastExecuteTime || '-'}
-                  </div>
-                </div>
-              </Col>
-              {scheduleStatus?.errorMessage && (
-                <Col span={24}>
-                  <div className="detail-item">
-                    <div className="detail-label">错误信息</div>
-                    <div className="detail-value error-message">
-                      {scheduleStatus.errorMessage}
+          <Tabs
+            defaultActiveKey="basic"
+            items={[
+              {
+                key: 'basic',
+                label: '基本信息',
+                children: (
+                  <Descriptions column={3}>
+                    <Descriptions.Item label="基础币种">{symbol.baseAsset}</Descriptions.Item>
+                    <Descriptions.Item label="计价币种">{symbol.quoteAsset}</Descriptions.Item>
+                    <Descriptions.Item label="最小数量">{symbol.minQty}</Descriptions.Item>
+                    <Descriptions.Item label="最大数量">{symbol.maxQty}</Descriptions.Item>
+                    <Descriptions.Item label="最小手数">{symbol.minLotSize}</Descriptions.Item>
+                    <Descriptions.Item label="最大手数">{symbol.maxLotSize}</Descriptions.Item>
+                    <Descriptions.Item label="步长">{symbol.stepSize}</Descriptions.Item>
+                    <Descriptions.Item label="价格步长">{symbol.tickSize}</Descriptions.Item>
+                    <Descriptions.Item label="数量精度">{symbol.qtyPrecision}</Descriptions.Item>
+                    <Descriptions.Item label="价格精度">{symbol.pricePrecision}</Descriptions.Item>
+                    <Descriptions.Item label="最小名义价值">{symbol.minNotional}</Descriptions.Item>
+                  </Descriptions>
+                ),
+              },
+              {
+                key: 'sync',
+                label: '同步配置',
+                children: (
+                  <Descriptions column={3}>
+                    <Descriptions.Item label="同步状态">{getSyncStatusTag(symbol.syncStatus)}</Descriptions.Item>
+                    <Descriptions.Item label="同步频率">{getSyncFrequencyText(symbol.syncFrequency)}</Descriptions.Item>
+                    <Descriptions.Item label="同步开关">
+                      <Tag>{symbol.syncEnabled ? '启用' : '禁用'}</Tag>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="最后同步时间">{symbol.lastSyncTime || '-'}</Descriptions.Item>
+                    <Descriptions.Item label="同步错误信息" span={3}>{symbol.syncErrorMessage || '-'}</Descriptions.Item>
+                  </Descriptions>
+                ),
+              },
+              {
+                key: 'schedule',
+                label: '定时任务',
+                children: (
+                  <>
+                    <div style={{ marginBottom: 16, textAlign: 'right' }}>
+                      <Space>
+                        <Button 
+                          icon={<ReloadOutlined spin={refreshing} />}
+                          loading={refreshing}
+                          onClick={fetchScheduleStatus}
+                        >
+                          刷新
+                        </Button>
+                        {scheduleStatus?.taskStatus?.syncStatus === 'PAUSED' ? (
+                          <Button type="primary" loading={loading} onClick={handleResumeSchedule}>
+                            开始任务
+                          </Button>
+                        ) : (
+                          <Button 
+                            type="primary" 
+                            danger
+                            loading={loading}
+                            onClick={handlePauseSchedule}
+                            disabled={scheduleStatus?.taskStatus?.syncStatus === 'DISABLED'}
+                          >
+                            暂停任务
+                          </Button>
+                        )}
+                      </Space>
                     </div>
-                  </div>
-                </Col>
-              )}
-            </Row>
-          </Card>
+                    <Descriptions column={3}>
+                      <Descriptions.Item label="任务状态">{getScheduleStatusTag(scheduleStatus)}</Descriptions.Item>
+                      <Descriptions.Item label="同步状态">
+                        {scheduleStatus?.taskStatus && getSyncStatusTag(scheduleStatus.taskStatus.syncStatus)}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="任务执行">
+                        {scheduleStatus?.scheduled ? <Tag>已调度</Tag> : <Tag>未调度</Tag>}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="下次执行时间">{scheduleStatus?.taskStatus?.nextExecuteTime || '-'}</Descriptions.Item>
+                      <Descriptions.Item label="上次执行时间">{scheduleStatus?.taskStatus?.lastExecuteTime || '-'}</Descriptions.Item>
+                      <Descriptions.Item label="同步频率">{scheduleStatus?.taskStatus?.frequency || '-'}</Descriptions.Item>
+                    </Descriptions>
+
+                    {scheduleStatus?.taskStatus?.lastExecuteTime && scheduleStatus?.taskStatus?.nextExecuteTime && (
+                      <div style={{ marginTop: 16 }}>
+                        <div className="progress-container">
+                          <div className="progress-bar">
+                            <div 
+                              className="progress-inner" 
+                              style={{ width: `${progress}%` }} 
+                            />
+                            <div 
+                              className="current-time-marker"
+                              style={{ left: `${progress}%` }}
+                            >
+                              <div className="marker-line"></div>
+                              <div className="marker-text">当前</div>
+                            </div>
+                          </div>
+                          <div className="progress-time">
+                            <span>{scheduleStatus.taskStatus.lastExecuteTime}</span>
+                            <span>{scheduleStatus.taskStatus.nextExecuteTime}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {getKlineSyncInfo(scheduleStatus?.taskStatus).length > 0 && (
+                      <div style={{ marginTop: 24 }}>
+                        <Typography.Text type="secondary">K线同步进度</Typography.Text>
+                        <Table 
+                          style={{ marginTop: 8 }}
+                          size="small"
+                          pagination={false}
+                          dataSource={getKlineSyncInfo(scheduleStatus?.taskStatus)}
+                          columns={[
+                            {
+                              title: '周期',
+                              dataIndex: 'timeInterval',
+                              key: 'timeInterval',
+                            },
+                            {
+                              title: '同步时间',
+                              dataIndex: 'syncTime',
+                              key: 'syncTime',
+                              render: (text) => text || '-'
+                            },
+                            {
+                              title: '数据量',
+                              dataIndex: 'dataCount',
+                              key: 'dataCount',
+                              render: (text) => text || 0
+                            },
+                          ]}
+                        />
+                      </div>
+                    )}
+                  </>
+                ),
+              },
+            ]}
+          />
         </div>
       )}
       <style jsx>{`
@@ -386,6 +365,74 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
           font-size: 16px;
           font-weight: 500;
           padding: 0;
+        }
+        :global(.ant-card-small) {
+          background: #f5f5f5;
+        }
+        :global(.ant-card-small .ant-card-body) {
+          padding: 12px;
+        }
+        .kline-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 14px;
+        }
+        
+        .kline-table th,
+        .kline-table td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .kline-table th {
+          font-weight: 500;
+        }
+
+        .progress-container {
+          padding: 16px 16px 8px 16px;
+        }
+
+        .progress-bar {
+          width: 100%;
+          height: 8px;
+          background-color: #f0f0f0;
+          border-radius: 4px;
+          overflow: visible;
+          position: relative;
+        }
+
+        .progress-inner {
+          height: 100%;
+          background-color: #1890ff;
+          transition: width 0.3s ease;
+        }
+
+        .current-time-marker {
+          position: absolute;
+          top: -16px;
+          transform: translateX(-50%);
+          text-align: center;
+        }
+
+        .marker-line {
+          width: 2px;
+          height: 24px;
+          background-color: #1890ff;
+          margin: 0 auto;
+        }
+
+        .marker-text {
+          font-size: 12px;
+          color: #1890ff;
+          margin-top: 4px;
+        }
+
+        .progress-time {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 8px;
+          font-size: 12px;
         }
       `}</style>
     </Modal>
