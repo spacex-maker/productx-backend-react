@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select } from 'antd';
+import { Modal, Form, Input, Select, Switch } from 'antd';
 
 const { Option } = Select;
 
@@ -151,6 +151,53 @@ const UpdateQtsSymbolModal = ({
           rules={[{ required: true, message: '请输入最小名义价值' }]}
         >
           <Input type="number" step="0.00000001" />
+        </Form.Item>
+
+        <Form.Item
+          label="同步状态"
+          name="syncStatus"
+        >
+          <Select disabled>
+            <Option value={0}>未同步</Option>
+            <Option value={1}>同步中</Option>
+            <Option value={2}>同步成功</Option>
+            <Option value={3}>同步失败</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="最后同步时间"
+          name="lastSyncTime"
+        >
+          <Input disabled />
+        </Form.Item>
+
+        <Form.Item
+          label="同步频率"
+          name="syncFrequency"
+          rules={[{ required: true, message: '请选择同步频率' }]}
+        >
+          <Select placeholder="请选择同步频率">
+            <Option value="daily">每天</Option>
+            <Option value="1h">每小时</Option>
+            <Option value="4h">每4小时</Option>
+            <Option value="12h">每12小时</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="同步错误信息"
+          name="syncErrorMessage"
+        >
+          <Input.TextArea disabled />
+        </Form.Item>
+
+        <Form.Item
+          label="同步开关"
+          name="syncEnabled"
+          valuePropName="checked"
+        >
+          <Switch checkedChildren="启用" unCheckedChildren="禁用" />
         </Form.Item>
       </Form>
     </Modal>

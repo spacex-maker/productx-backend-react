@@ -8,6 +8,7 @@ const QtsSymbolTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  handleViewDetails,
 }) => {
   const getStatusTag = (status) => {
     const statusConfig = {
@@ -17,6 +18,23 @@ const QtsSymbolTable = ({
     };
     
     const config = statusConfig[status] || { color: 'default', text: '未知状态' };
+    
+    return (
+      <Tag color={config.color}>
+        {config.text}
+      </Tag>
+    );
+  };
+
+  const getSyncStatusTag = (syncStatus) => {
+    const statusConfig = {
+      0: { color: 'default', text: '未同步' },
+      1: { color: 'processing', text: '同步中' },
+      2: { color: 'success', text: '同步成功' },
+      3: { color: 'error', text: '同步失败' },
+    };
+    
+    const config = statusConfig[syncStatus] || { color: 'default', text: '未知状态' };
     
     return (
       <Tag color={config.color}>
@@ -43,9 +61,7 @@ const QtsSymbolTable = ({
           </th>
           {[
             '交易所', '交易对', '基础币种', '计价币种', '状态',
-            '最小数量', '最大数量', '最小手数', '最大手数',
-            '步长', '价格步长', '数量精度', '价格精度',
-            '最小名义价值', '创建时间', '更新时间'
+            '同步状态', '同步开关'
           ].map((field) => (
             <th key={field}>{field}</th>
           ))}
@@ -75,20 +91,18 @@ const QtsSymbolTable = ({
             <td>{item.baseAsset}</td>
             <td>{item.quoteAsset}</td>
             <td>{getStatusTag(item.status)}</td>
-            <td>{item.minQty}</td>
-            <td>{item.maxQty}</td>
-            <td>{item.minLotSize}</td>
-            <td>{item.maxLotSize}</td>
-            <td>{item.stepSize}</td>
-            <td>{item.tickSize}</td>
-            <td>{item.qtyPrecision}</td>
-            <td>{item.pricePrecision}</td>
-            <td>{item.minNotional}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{getSyncStatusTag(item.syncStatus)}</td>
+            <td>
+              <Tag color={item.syncEnabled ? 'green' : 'red'}>
+                {item.syncEnabled ? '启用' : '禁用'}
+              </Tag>
+            </td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 修改
+              </Button>
+              <Button type="link" onClick={() => handleViewDetails(item)}>
+                详情
               </Button>
             </td>
           </tr>

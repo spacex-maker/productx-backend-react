@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination"
 import QtsSymbolTable from "./QtsSymbolTable"
 import UpdateQtsSymbolModal from "./UpdateQtsSymbolModel"
 import QtsSymbolCreateFormModal from "./QtsSymbolCreateFormModel"
+import QtsSymbolDetailsModal from "./QtsSymbolDetailsModal"
 
 const { Option } = Select
 
@@ -29,6 +30,8 @@ const QtsSymbol = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
   const [selectedSymbol, setSelectedSymbol] = useState(null)
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false)
+  const [selectedSymbolForDetails, setSelectedSymbolForDetails] = useState(null)
 
   useEffect(() => {
     fetchData()
@@ -63,6 +66,11 @@ const QtsSymbol = () => {
   const handleEditClick = (symbol) => {
     setSelectedSymbol(symbol)
     setIsUpdateModalVisible(true)
+  }
+
+  const handleViewDetails = (symbol) => {
+    setSelectedSymbolForDetails(symbol)
+    setIsDetailsModalVisible(true)
   }
 
   const totalPages = Math.ceil(totalNum / pageSize)
@@ -169,6 +177,7 @@ const QtsSymbol = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            handleViewDetails={handleViewDetails}
           />
         </Spin>
       </div>
@@ -215,6 +224,12 @@ const QtsSymbol = () => {
           }
         }}
         selectedSymbol={selectedSymbol}
+      />
+
+      <QtsSymbolDetailsModal
+        isVisible={isDetailsModalVisible}
+        onCancel={() => setIsDetailsModalVisible(false)}
+        symbol={selectedSymbolForDetails}
       />
     </div>
   )

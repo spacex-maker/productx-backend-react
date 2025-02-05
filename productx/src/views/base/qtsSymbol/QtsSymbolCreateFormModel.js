@@ -1,9 +1,9 @@
 import React from 'react';
-import { Modal, Form, Input, Select } from 'antd';
+import { Modal, Form, Input, Select, Switch } from 'antd';
 
 const { Option } = Select;
 
-const QtsSymbolCreateFormModal = ({
+const QtsSymbolCreateFormModel = ({
   isVisible,
   onCancel,
   onFinish,
@@ -140,9 +140,32 @@ const QtsSymbolCreateFormModal = ({
         >
           <Input type="number" step="0.00000001" placeholder="请输入最小名义价值" />
         </Form.Item>
+
+        <Form.Item
+          label="同步频率"
+          name="syncFrequency"
+          initialValue="daily"
+          rules={[{ required: true, message: '请选择同步频率' }]}
+        >
+          <Select placeholder="请选择同步频率">
+            <Option value="daily">每天</Option>
+            <Option value="1h">每小时</Option>
+            <Option value="4h">每4小时</Option>
+            <Option value="12h">每12小时</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          label="同步开关"
+          name="syncEnabled"
+          valuePropName="checked"
+          initialValue={true}
+        >
+          <Switch checkedChildren="启用" unCheckedChildren="禁用" />
+        </Form.Item>
       </Form>
     </Modal>
   );
 };
 
-export default QtsSymbolCreateFormModal; 
+export default QtsSymbolCreateFormModel; 
