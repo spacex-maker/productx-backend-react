@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Tag, Space, Badge } from 'antd';
+import { Button, Tag, Space, Badge, Tooltip } from 'antd';
 import { 
   TwitterOutlined, 
   YoutubeOutlined, 
   RedditOutlined,
+  WarningOutlined
 } from '@ant-design/icons';
 import { FaTelegram } from 'react-icons/fa';
 import './SocialMonitoredAccountsTable.css';
@@ -32,15 +33,22 @@ const SocialMonitoredAccountsTable = ({
     }
   };
 
-  const getStatusTag = (status) => {
+  const getStatusTag = (status, monitorExceptionInfo) => {
     if (status) {
       return (
-        <Tag color="success" className="status-tag-active">
-          <Space>
-            <Badge status="processing" />
-            <span>监控中</span>
-          </Space>
-        </Tag>
+        <Space>
+          <Tag color="success" className="status-tag-active">
+            <Space>
+              <Badge status="processing" />
+              <span>监控中</span>
+            </Space>
+          </Tag>
+          {monitorExceptionInfo && (
+            <Tooltip title={monitorExceptionInfo}>
+              <WarningOutlined style={{ color: '#faad14' }} />
+            </Tooltip>
+          )}
+        </Space>
       );
     }
     return (
@@ -109,7 +117,7 @@ const SocialMonitoredAccountsTable = ({
               </a>
             </td>
             <td>{item.accountDescription}</td>
-            <td>{getStatusTag(item.status)}</td>
+            <td>{getStatusTag(item.status, item.monitorExceptionInfo)}</td>
             <td>{item.createTime}</td>
             <td>{item.updateTime}</td>
             <td>

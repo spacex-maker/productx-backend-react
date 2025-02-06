@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination"
 import QtsApiKeyTable from "./QtsApiKeyTable"
 import UpdateQtsApiKeyModal from "./UpdateQtsApiKeyModel"
 import QtsApiKeyCreateFormModal from "./QtsApiKeyCreateFormModel"
+import QtsApiKeyDetails from "./QtsApiKeyDetails"
 
 const QtsApiKey = () => {
   const [data, setData] = useState([])
@@ -25,6 +26,8 @@ const QtsApiKey = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
   const [selectedApiKey, setSelectedApiKey] = useState(null)
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false)
+  const [selectedApiKeyDetails, setSelectedApiKeyDetails] = useState(null)
 
   useEffect(() => {
     fetchData()
@@ -59,6 +62,11 @@ const QtsApiKey = () => {
   const handleEditClick = (apiKey) => {
     setSelectedApiKey(apiKey)
     setIsUpdateModalVisible(true)
+  }
+
+  const handleViewDetails = (apiKey) => {
+    setSelectedApiKeyDetails(apiKey)
+    setIsDetailsModalVisible(true)
   }
 
   const totalPages = Math.ceil(totalNum / pageSize)
@@ -146,6 +154,7 @@ const QtsApiKey = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            handleViewDetails={handleViewDetails}
           />
         </Spin>
       </div>
@@ -192,6 +201,12 @@ const QtsApiKey = () => {
           }
         }}
         selectedApiKey={selectedApiKey}
+      />
+
+      <QtsApiKeyDetails
+        isVisible={isDetailsModalVisible}
+        onCancel={() => setIsDetailsModalVisible(false)}
+        apiKeyData={selectedApiKeyDetails}
       />
     </div>
   )

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Input, message, Spin, Col, Row, Space, Select, DatePicker } from 'antd'
+import { Button, Input, message, Spin, Col, Row, Space, Select, DatePicker, Modal } from 'antd'
 import Pagination from "src/components/common/Pagination"
 import QtsSystemLogTable from "./QtsSystemLogTable"
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 const { RangePicker } = DatePicker;
+const { confirm } = Modal;
 
 const QtsSystemLog = () => {
   const [data, setData] = useState([])
@@ -31,7 +33,7 @@ const QtsSystemLog = () => {
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== undefined)
       )
       const response = await api.get('/manage/qts-system-log/list', {
-        params: { currentPage, size: pageSize, ...filteredParams },
+        params: { currentPage, pageSize, ...filteredParams },
       })
 
       if (response) {
@@ -65,6 +67,26 @@ const QtsSystemLog = () => {
       }))
     }
   }
+
+  const handleClearLogs = () => {
+    confirm({
+      title: '确认清空日志',
+      icon: <ExclamationCircleOutlined />,
+      content: '此操作将清空所有系统日志，是否继续？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: async () => {
+        try {
+          const response = await api.delete('/manage/qts-system-log/clear');
+          message.success(`成功清空 ${response} 条日志记录`);
+          fetchData(); // 刷新数据
+        } catch (error) {
+          console.error('清空日志失败', error);
+          message.error('清空日志失败');
+        }
+      },
+    });
+  };
 
   const totalPages = Math.ceil(totalNum / pageSize)
 
@@ -119,6 +141,13 @@ const QtsSystemLog = () => {
                   disabled={isLoading}
                 >
                   {isLoading ? <Spin /> : '查询'}
+                </Button>
+                <Button
+                  danger
+                  onClick={handleClearLogs}
+                  disabled={isLoading}
+                >
+                  清空日志
                 </Button>
               </Space>
             </Col>

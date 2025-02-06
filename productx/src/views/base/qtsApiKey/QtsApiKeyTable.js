@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Space, Tag } from 'antd';
+import moment from 'moment';
 
 const QtsApiKeyTable = ({
   data,
@@ -8,6 +9,7 @@ const QtsApiKeyTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  handleViewDetails,
 }) => {
   return (
     <table className="table table-bordered table-striped">
@@ -26,9 +28,8 @@ const QtsApiKeyTable = ({
             </div>
           </th>
           {[
-            '交易所', 'API密钥标识', 'API密钥', 'API密钥秘钥', '备注',
-            '权限', 'IP白名单', '最后使用时间', '状态',
-            '创建时间', '更新时间'
+            '交易所', 'API密钥标识', 'API密钥', '备注',
+            '权限', '状态', '更新时间'
           ].map((field) => (
             <th key={field}>{field}</th>
           ))}
@@ -55,19 +56,30 @@ const QtsApiKeyTable = ({
             </td>
             <td>{item.exchangeName}</td>
             <td>{item.apiKeyName}</td>
-            <td>{item.apiKey}</td>
-            <td>{item.apiSecret}</td>
-            <td>{item.remark}</td>
-            <td>{item.permissions}</td>
-            <td>{item.ipWhitelist}</td>
-            <td>{item.lastUsedTime}</td>
-            <td>{item.status ? '启用' : '禁用'}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{item.apiKey.substring(0, 8)}...</td>
+            <td>{item.remark || '-'}</td>
+            <td>
+              {item.permissions.split(',').map(permission => (
+                <Tag color="blue" key={permission}>
+                  {permission}
+                </Tag>
+              ))}
+            </td>
+            <td>
+              <Tag color={item.status ? 'success' : 'error'}>
+                {item.status ? '启用' : '禁用'}
+              </Tag>
+            </td>
+            <td>{moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss')}</td>
             <td className="fixed-column">
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
-              </Button>
+              <Space>
+                <Button type="link" onClick={() => handleEditClick(item)}>
+                  修改
+                </Button>
+                <Button type="link" onClick={() => handleViewDetails(item)}>
+                  查看详情
+                </Button>
+              </Space>
             </td>
           </tr>
         ))}
