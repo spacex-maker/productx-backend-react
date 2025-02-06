@@ -83,11 +83,11 @@ const ContentWrapper = styled(CContainer)`
 const LoginCard = styled(CCard)`
   background: linear-gradient(
     145deg,
-    rgba(30, 32, 47, 0.95) 0%,
-    rgba(35, 28, 54, 0.95) 100%
+    rgba(30, 32, 47, 0.65) 0%,
+    rgba(35, 28, 54, 0.65) 100%
   );
   border: 1px solid rgba(99, 102, 241, 0.2);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   overflow: visible;
   position: relative;
@@ -1733,7 +1733,7 @@ const LoginPage = () => {
                         </CInputGroupText>
                         <StyledInput
                           type="text"
-                          placeholder={t('enterUsername')}
+                          placeholder={t('username')}
                           list="usernames"
                           value={username}
                           onChange={(e) => setUsername(e.target.value)}
