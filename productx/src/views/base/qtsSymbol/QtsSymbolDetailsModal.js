@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Modal, Descriptions, Tag, Divider, Typography, Row, Col, Card, message, Button, Space, Tabs, Table } from 'antd';
 import api from 'src/axiosInstance';
 import { ReloadOutlined } from '@ant-design/icons';
@@ -10,37 +10,18 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const progressIntervalRef = useRef(null);
+  const refreshIntervalRef = useRef(null);
+  const oldNextExecuteTimeRef = useRef(null);
+  const isRefreshingRef = useRef(false);
 
-  useEffect(() => {
-    if (isVisible && symbol) {
-      fetchScheduleStatus();
-    }
-  }, [isVisible, symbol]);
-
-  useEffect(() => {
-    let timer;
-    if (scheduleStatus?.taskStatus?.lastExecuteTime && scheduleStatus?.taskStatus?.nextExecuteTime) {
-      setProgress(calculateProgress(
-        scheduleStatus.taskStatus.lastExecuteTime,
-        scheduleStatus.taskStatus.nextExecuteTime
-      ));
-
-      timer = setInterval(() => {
-        setProgress(calculateProgress(
-          scheduleStatus.taskStatus.lastExecuteTime,
-          scheduleStatus.taskStatus.nextExecuteTime
-        ));
-      }, 1000);
-    }
-
-    return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };
-  }, [scheduleStatus?.taskStatus?.lastExecuteTime, scheduleStatus?.taskStatus?.nextExecuteTime]);
-
+  // 刷新状态的函数
   const fetchScheduleStatus = async () => {
+    if (!symbol?.exchangeName || !symbol?.symbol) {
+      console.log('symbol 数据不完整，跳过请求');
+      return;
+    }
+
     try {
       setRefreshing(true);
       const response = await api.get('/manage/qts-market-data/schedule/status', {
@@ -51,14 +32,148 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
       });
       if (response) {
         setScheduleStatus(response);
+        
+        // 检查是否获取到新的时间，并且最后执行时间已更新
+        if (oldNextExecuteTimeRef.current && 
+            response?.taskStatus?.nextExecuteTime !== oldNextExecuteTimeRef.current &&
+            response?.taskStatus?.lastExecuteTime === oldNextExecuteTimeRef.current) {
+          console.log('获取到新的有效时间，停止刷新', {
+            old: oldNextExecuteTimeRef.current,
+            new: response?.taskStatus?.nextExecuteTime,
+            last: response?.taskStatus?.lastExecuteTime
+          });
+          isRefreshingRef.current = false;
+          clearIntervals();
+        } else {
+          console.log('继续刷新', {
+            old: oldNextExecuteTimeRef.current,
+            new: response?.taskStatus?.nextExecuteTime,
+            last: response?.taskStatus?.lastExecuteTime
+          });
+        }
       }
     } catch (error) {
       console.error('获取定时任务状态失败', error);
-      message.error('获取定时任务状态失败');
+      message.error({
+        content: '获取定时任务状态失败',
+        key: 'schedule-status-error'
+      });
     } finally {
       setRefreshing(false);
     }
   };
+
+  // 清理定时器
+  const clearIntervals = useCallback(() => {
+    console.log('清理定时器');
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
+    if (refreshIntervalRef.current) {
+      clearInterval(refreshIntervalRef.current);
+      refreshIntervalRef.current = null;
+    }
+  }, []);
+
+  // 启动进度条
+  const startProgress = useCallback(() => {
+    if (!scheduleStatus?.taskStatus?.lastExecuteTime || !scheduleStatus?.taskStatus?.nextExecuteTime) {
+      return;
+    }
+
+    // 如果已经在刷新，不需要重新启动进度条
+    if (isRefreshingRef.current) {
+      console.log('已经在刷新中，跳过进度条启动');
+      return;
+    }
+
+    clearIntervals();
+
+    const updateProgress = () => {
+      const now = new Date().getTime();
+      const last = new Date(scheduleStatus.taskStatus.lastExecuteTime).getTime();
+      const next = new Date(scheduleStatus.taskStatus.nextExecuteTime).getTime();
+      
+      if (next <= last) {
+        setProgress(0);
+        return;
+      }
+
+      const currentProgress = Math.min(Math.max(((now - last) / (next - last)) * 100, 0), 100);
+      setProgress(currentProgress);
+
+      if (currentProgress >= 100 && !isRefreshingRef.current) {
+        console.log('进度达到100%，开始刷新', {
+          currentProgress,
+          isRefreshing: isRefreshingRef.current,
+          nextTime: scheduleStatus.taskStatus.nextExecuteTime
+        });
+        isRefreshingRef.current = true;
+        oldNextExecuteTimeRef.current = scheduleStatus.taskStatus.nextExecuteTime;
+        fetchScheduleStatus();
+        
+        // 设置刷新定时器
+        if (!refreshIntervalRef.current) {
+          refreshIntervalRef.current = setInterval(() => {
+            if (isRefreshingRef.current) {
+              console.log('执行定时刷新');
+              fetchScheduleStatus();
+            } else {
+              console.log('刷新已停止，清理定时器');
+              clearIntervals();
+            }
+          }, 2000);
+        }
+      }
+    };
+
+    updateProgress(); // 立即执行一次
+    if (!progressIntervalRef.current) {
+      progressIntervalRef.current = setInterval(updateProgress, 1000);
+    }
+  }, [scheduleStatus, clearIntervals]);
+
+  // 监听数据变化
+  useEffect(() => {
+    console.log('数据变化:', {
+      oldTime: oldNextExecuteTimeRef.current,
+      newTime: scheduleStatus?.taskStatus?.nextExecuteTime,
+      isRefreshing: isRefreshingRef.current
+    });
+    
+    // 只有在没有刷新时才启动进度条
+    if (!isRefreshingRef.current) {
+      startProgress();
+    }
+    
+    return () => {
+      // 只在组件卸载时清理定时器
+      if (!isRefreshingRef.current) {
+        clearIntervals();
+      }
+    };
+  }, [scheduleStatus?.taskStatus?.lastExecuteTime, scheduleStatus?.taskStatus?.nextExecuteTime, startProgress, clearIntervals]);
+
+  // 初始加载
+  useEffect(() => {
+    if (isVisible && symbol?.exchangeName && symbol?.symbol) {
+      console.log('初始加载');
+      oldNextExecuteTimeRef.current = null;
+      isRefreshingRef.current = false;
+      fetchScheduleStatus();
+    }
+    return clearIntervals;
+  }, [isVisible, symbol, clearIntervals]);
+
+  // 组件卸载时清理
+  useEffect(() => {
+    return () => {
+      console.log('组件卸载');
+      isRefreshingRef.current = false;
+      clearIntervals();
+    };
+  }, [clearIntervals]);
 
   const getStatusTag = (status) => {
     const statusConfig = {
@@ -156,23 +271,12 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
         const info = taskStatus[`klineSyncInfo${interval}`];
         if (!info) return null;
         return {
+          key: interval,
           timeInterval: interval,
           ...info
         };
       })
       .filter(Boolean);
-  };
-
-  const calculateProgress = (lastExecuteTime, nextExecuteTime) => {
-    if (!lastExecuteTime || !nextExecuteTime) return 0;
-    
-    const now = new Date().getTime();
-    const last = new Date(lastExecuteTime).getTime();
-    const next = new Date(nextExecuteTime).getTime();
-    
-    if (next <= last) return 0;
-    const progress = ((now - last) / (next - last)) * 100;
-    return Math.min(Math.max(progress, 0), 100);
   };
 
   return (
@@ -317,11 +421,25 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
                               render: (text) => text || '-'
                             },
                             {
+                              title: '时间范围',
+                              key: 'timeRange',
+                              render: (_, record) => {
+                                if (!record.startTime && !record.endTime) return '-';
+                                return `${record.startTime || ''} ~ ${record.endTime || ''}`;
+                              }
+                            },
+                            {
                               title: '数据量',
                               dataIndex: 'dataCount',
                               key: 'dataCount',
                               render: (text) => text || 0
                             },
+                            {
+                              title: '同步内容',
+                              dataIndex: 'content',
+                              key: 'content',
+                              render: (text) => text || '-'
+                            }
                           ]}
                         />
                       </div>
@@ -333,7 +451,7 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
           />
         </div>
       )}
-      <style jsx>{`
+      <style>{`
         .detail-item {
           display: flex;
           flex-direction: column;
@@ -350,26 +468,26 @@ const QtsSymbolDetailsModal = ({ isVisible, onCancel, symbol }) => {
           white-space: pre-wrap;
           word-break: break-all;
         }
-        :global(.ant-card-head) {
+        .ant-card-head {
           padding: 0 0 8px 0;
           border-bottom: none;
           min-height: 40px;
         }
-        :global(.ant-card-body) {
+        .ant-card-body {
           padding: 0;
         }
-        :global(.ant-card) {
+        .ant-card {
           background: transparent;
         }
-        :global(.ant-card-head-title) {
+        .ant-card-head-title {
           font-size: 16px;
           font-weight: 500;
           padding: 0;
         }
-        :global(.ant-card-small) {
+        .ant-card-small {
           background: #f5f5f5;
         }
-        :global(.ant-card-small .ant-card-body) {
+        .ant-card-small .ant-card-body {
           padding: 12px;
         }
         .kline-table {
