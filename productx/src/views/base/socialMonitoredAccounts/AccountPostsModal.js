@@ -28,7 +28,7 @@ const AccountPostsModal = ({
     try {
       const response = await api.get('/manage/social-posts/list', {
         params: {
-          authorId: account.accountId,
+          authorName: account.accountName,
           platform: account.platform,
           currentPage: 1,
           size: 100
