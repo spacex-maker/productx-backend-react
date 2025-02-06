@@ -178,10 +178,21 @@ const UpdateQtsSymbolModal = ({
           rules={[{ required: true, message: '请选择同步频率' }]}
         >
           <Select placeholder="请选择同步频率">
-            <Option value="daily">每天</Option>
-            <Option value="1h">每小时</Option>
+            <Option value="1m">每1分钟</Option>
+            <Option value="3m">每3分钟</Option>
+            <Option value="5m">每5分钟</Option>
+            <Option value="15m">每15分钟</Option>
+            <Option value="30m">每30分钟</Option>
+            <Option value="1h">每1小时</Option>
+            <Option value="2h">每2小时</Option>
             <Option value="4h">每4小时</Option>
+            <Option value="6h">每6小时</Option>
+            <Option value="8h">每8小时</Option>
             <Option value="12h">每12小时</Option>
+            <Option value="1d">每天</Option>
+            <Option value="3d">每3天</Option>
+            <Option value="1w">每周</Option>
+            <Option value="1M">每月</Option>
           </Select>
         </Form.Item>
 
