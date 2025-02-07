@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, Row, Col, Select, InputNumber, Button, Table, Progress, Alert, Descriptions } from 'antd';
+import { Card, Row, Col, Select, InputNumber, Button, Table, Progress, Alert, Descriptions, Space, Statistic } from 'antd';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { CARTON_SIZES } from '../constants/cartonSizes';
 import { PALLET_SIZES } from '../constants/palletSizes';
 import * as TWEEN from 'tween.js';
+import { PlusOutlined, CalculatorOutlined, ReloadOutlined, ExperimentOutlined } from '@ant-design/icons';
 
 // 定义极点类
 class ExtremePoint {
@@ -351,104 +352,112 @@ const LoadingSimulation = ({ container }) => {
     return minDistance;
   };
 
-  // 修改计算装载方案函数，使用 requestAnimationFrame 来处理动画
+  // 修改计算装载方案函数
   const calculateLoadingPlan = async () => {
     try {
-      console.log('Starting calculation...');
-      
-      setSimulationState(prev => ({
-        ...prev,
+      setSimulationState(prev => ({ 
+        ...prev, 
         isSimulating: true,
         progress: 0,
-        currentStep: '正在计算装载方案...',
+        currentStep: '初始化模拟...',
         error: null,
-        results: []
+        needsReset: false 
       }));
 
-      const sortedBoxes = [...selectedBoxes].sort((a, b) => {
-        const volumeA = a.carton.length * a.carton.width * a.carton.height;
-        const volumeB = b.carton.length * b.carton.width * b.carton.height;
-        return volumeB - volumeA;
+      // 展开并预处理所有箱子
+      const allBoxes = selectedBoxes.flatMap(box => 
+        Array(box.quantity).fill({
+          ...box,
+          // 计算箱子的关键属性
+          maxDimension: Math.max(box.carton.length, box.carton.width, box.carton.height),
+          volume: box.carton.length * box.carton.width * box.carton.height,
+          baseArea: box.carton.length * box.carton.width
+        })
+      );
+
+      // 多重排序：
+      // 1. 先按最大边长排序（大箱子优先）
+      // 2. 然后按底面积排序（稳定性优先）
+      // 3. 最后按体积排序（空间利用率优先）
+      allBoxes.sort((a, b) => {
+        // 先比较最大边长
+        if (a.maxDimension !== b.maxDimension) {
+          return b.maxDimension - a.maxDimension;
+        }
+        // 再比较底面积
+        if (a.baseArea !== b.baseArea) {
+          return b.baseArea - a.baseArea;
+        }
+        // 最后比较体积
+        return b.volume - a.volume;
       });
 
-      const totalBoxes = sortedBoxes.reduce((sum, box) => sum + box.quantity, 0);
+      const totalBoxes = allBoxes.length;
       let processedBoxes = 0;
-      const boxPositions = [];
+      const placedBoxes = [];
 
-      // 创建 Worker 实例
       const worker = new Worker(new URL('../workers/loadingWorker.js', import.meta.url));
+      const boxPositions = [];
 
       const placeBoxes = () => {
         return new Promise((resolve, reject) => {
-          let currentBoxIndex = 0;
-          let currentQuantityIndex = 0;
-
           worker.onmessage = (e) => {
-            console.log('Received worker response:', e.data);
-
             if (!e.data.success) {
               console.error('Worker error:', e.data.error);
               setSimulationState(prev => ({
                 ...prev,
                 isSimulating: false,
-                error: e.data.error || '计算过程出错，请重试',
+                error: e.data.error,
                 needsReset: true
               }));
               worker.terminate();
-              resolve();
+              reject(new Error(e.data.error));
               return;
             }
 
-            const currentBox = sortedBoxes[currentBoxIndex];
-            const newBox = {
-              ...currentBox,
+            // 更新箱子位置
+            boxPositions.push({
+              ...allBoxes[boxPositions.length],
               position: e.data.bestPosition
-            };
-            
-            boxPositions.push(newBox);
-            processedBoxes++;
+            });
 
+            // 更新进度
+            const progress = Math.floor((boxPositions.length / totalBoxes) * 100);
             setSimulationState(prev => ({
               ...prev,
-              progress: Math.floor((processedBoxes / totalBoxes) * 100),
-              currentStep: `正在放置第 ${processedBoxes}/${totalBoxes} 个箱子...`,
+              progress: progress,
+              currentStep: `正在放置第 ${boxPositions.length}/${totalBoxes} 个箱子...`,
               results: [...boxPositions]
             }));
 
-            currentQuantityIndex++;
-            if (currentQuantityIndex >= currentBox.quantity) {
-              currentBoxIndex++;
-              currentQuantityIndex = 0;
-            }
-
-            if (currentBoxIndex >= sortedBoxes.length) {
+            if (boxPositions.length >= totalBoxes) {
               worker.terminate();
-              resolve();
+              resolve(boxPositions);
               return;
             }
 
             // 处理下一个箱子
             setTimeout(() => {
               worker.postMessage({
-                box: sortedBoxes[currentBoxIndex],
-                boxPositions,
+                boxes: allBoxes,
+                placedBoxes: boxPositions,
+                currentBoxIndex: boxPositions.length,
                 container: {
-                  ...container,
                   length: container.externalLength,
                   width: container.externalWidth,
                   height: container.externalHeight,
                   wallThickness: container.wallThickness || 100
                 }
               });
-            }, 30);
+            }, 10); // 添加小延迟确保UI更新
           };
 
           // 开始处理第一个箱子
           worker.postMessage({
-            box: sortedBoxes[0],
-            boxPositions,
+            boxes: allBoxes,
+            placedBoxes: [],
+            currentBoxIndex: 0,
             container: {
-              ...container,
               length: container.externalLength,
               width: container.externalWidth,
               height: container.externalHeight,
@@ -459,22 +468,20 @@ const LoadingSimulation = ({ container }) => {
       };
 
       await placeBoxes();
-
+      
       setSimulationState(prev => ({
         ...prev,
         isSimulating: false,
-        progress: 100,
         currentStep: '装载方案计算完成',
-        results: boxPositions,
-        needsReset: false
+        needsReset: true
       }));
 
     } catch (error) {
-      console.error('Loading failed:', error);
+      console.error('Calculation error:', error);
       setSimulationState(prev => ({
         ...prev,
         isSimulating: false,
-        error: error.message || '计算过程出错，请重试',
+        error: error.message,
         needsReset: true
       }));
     }
@@ -514,130 +521,103 @@ const LoadingSimulation = ({ container }) => {
     calculateLoadingPlan();
   };
 
-  // 创建集装箱模型
+  // 修改初始化场景函数
+  const initScene = () => {
+    if (!container || !containerRef.current) return;
+
+    cleanup();
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf5f5f5);  // 浅灰色背景
+    sceneRef.current = scene;
+
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      containerRef.current.clientWidth / containerRef.current.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.set(8, 8, 8);
+    camera.lookAt(0, 0, 0);
+    cameraRef.current = camera;
+
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true,
+      logarithmicDepthBuffer: true
+    });
+    renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    containerRef.current.appendChild(renderer.domElement);
+    rendererRef.current = renderer;
+
+    // 修改 OrbitControls 配置
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 2;
+    controls.maxDistance = 20;
+    controls.maxPolarAngle = Math.PI / 2;
+    controls.enableRotate = true;
+    controls.enableZoom = true;
+    controls.enablePan = true;
+    controls.rotateSpeed = 1.0;
+    controls.zoomSpeed = 1.2;
+    controls.panSpeed = 0.8;
+    controls.update();
+    controlsRef.current = controls;
+
+    // 添加光源
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(10, 10, 10);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.width = 2048;
+    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 50;
+    directionalLight.shadow.camera.left = -15;
+    directionalLight.shadow.camera.right = 15;
+    directionalLight.shadow.camera.top = 15;
+    directionalLight.shadow.camera.bottom = -15;
+    scene.add(directionalLight);
+
+    // 添加地面网格
+    const gridHelper = new THREE.GridHelper(30, 60, 0x888888, 0xcccccc);
+    gridHelper.position.y = -container.externalHeight * 0.001 / 2;
+    scene.add(gridHelper);
+
+    // 添加坐标轴辅助
+    const axesHelper = new THREE.AxesHelper(5);
+    axesHelper.position.y = gridHelper.position.y + 0.001;
+    scene.add(axesHelper);
+
+    // 创建集装箱模型和装箱模型
+    createContainerModel(scene);
+
+    animate();
+  };
+
+  // 修改创建集装箱模型函数
   const createContainerModel = (scene) => {
     // 清除现有的模型
     scene.children = scene.children.filter(child => 
       child instanceof THREE.AmbientLight || 
       child instanceof THREE.DirectionalLight ||
       child instanceof THREE.GridHelper ||
-      child instanceof THREE.AxesHelper ||
-      child instanceof THREE.Mesh && child.geometry instanceof THREE.PlaneGeometry
+      child instanceof THREE.AxesHelper
     );
 
-    // 显示外部尺寸
-    const containerGeometry = new THREE.BoxGeometry(
-      container.externalLength * 0.001,
-      container.externalHeight * 0.001,
-      container.externalWidth * 0.001
-    );
-    const containerMaterial = new THREE.MeshPhongMaterial({
-      color: 0x2c3e50,
+    // 设置科技感地面
+    const groundGeometry = new THREE.PlaneGeometry(50, 50);
+    const groundMaterial = new THREE.MeshPhongMaterial({ 
+      color: 0x0a192f,  // 深蓝色
+      shininess: 100,
       transparent: true,
-      opacity: 0.15,
-      side: THREE.DoubleSide,
-      depthWrite: false
-    });
-    const containerMesh = new THREE.Mesh(containerGeometry, containerMaterial);
-    containerMesh.position.set(0, 0, 0);
-    scene.add(containerMesh);
-
-    // 添加外部边框
-    const edges = new THREE.EdgesGeometry(containerGeometry);
-    const line = new THREE.LineSegments(
-      edges,
-      new THREE.LineBasicMaterial({ 
-        color: 0x000000,
-        linewidth: 2
-      })
-    );
-    scene.add(line);
-
-    // 显示内部尺寸
-    const internalGeometry = new THREE.BoxGeometry(
-      container.internalLength * 0.001,
-      container.internalHeight * 0.001,
-      container.internalWidth * 0.001
-    );
-    const internalMaterial = new THREE.MeshPhongMaterial({
-      color: 0x3498db,
-      transparent: true,
-      opacity: 0.15,
-      side: THREE.DoubleSide,
-      depthWrite: false
-    });
-    const internalMesh = new THREE.Mesh(internalGeometry, internalMaterial);
-    scene.add(internalMesh);
-
-    // 添加内部边框
-    const internalEdges = new THREE.EdgesGeometry(internalGeometry);
-    const internalLine = new THREE.LineSegments(
-      internalEdges,
-      new THREE.LineBasicMaterial({ 
-        color: 0x3498db,
-        linewidth: 2
-      })
-    );
-    scene.add(internalLine);
-
-    // 渲染装载的箱子
-    if (simulationState.results && simulationState.results.length > 0) {
-      simulationState.results.forEach((boxData, index) => {
-        const carton = boxData.carton;
-        const boxGeometry = new THREE.BoxGeometry(
-          carton.length * 0.001,
-          carton.height * 0.001,
-          carton.width * 0.001
-        );
-        
-        // 添加动画效果的材质
-        const boxMaterial = new THREE.MeshPhongMaterial({
-          color: carton.color || 0x3498db,
-          transparent: true,
-          opacity: simulationState.isSimulating ? 0.8 : 0.6,  // 正在模拟时略微提高透明度
-          side: THREE.DoubleSide
-        });
-        
-        const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-        
-        const { x, y, z } = boxData.position;
-        boxMesh.position.set(
-          x * 0.001,
-          y * 0.001,
-          z * 0.001
-        );
-        
-        // 添加放置动画效果
-        if (simulationState.isSimulating && index === simulationState.results.length - 1) {
-          boxMesh.scale.set(1.1, 1.1, 1.1);  // 稍微放大新放置的箱子
-          new TWEEN.Tween(boxMesh.scale)
-            .to({ x: 1, y: 1, z: 1 }, 300)
-            .easing(TWEEN.Easing.Elastic.Out)
-            .start();
-        }
-        
-        scene.add(boxMesh);
-
-        // 箱子边框
-        const boxEdges = new THREE.EdgesGeometry(boxGeometry);
-        const boxLine = new THREE.LineSegments(
-          boxEdges,
-          new THREE.LineBasicMaterial({ 
-            color: carton.color || 0x3498db,
-            linewidth: 1
-          })
-        );
-        boxLine.position.copy(boxMesh.position);
-        scene.add(boxLine);
-      });
-    }
-
-    // 添加地面
-    const groundGeometry = new THREE.PlaneGeometry(30, 30);
-    const groundMaterial = new THREE.MeshStandardMaterial({ 
-      color: 0xcccccc,
-      roughness: 0.8,
-      metalness: 0.2
+      opacity: 0.9
     });
     const ground = new THREE.Mesh(groundGeometry, groundMaterial);
     ground.rotation.x = -Math.PI / 2;
@@ -645,15 +625,132 @@ const LoadingSimulation = ({ container }) => {
     ground.receiveShadow = true;
     scene.add(ground);
 
-    // 添加地面网格
-    const gridHelper = new THREE.GridHelper(30, 60, 0x888888, 0xcccccc);
-    gridHelper.position.y = ground.position.y + 0.001;
+    // 添加发光网格
+    const gridHelper = new THREE.GridHelper(50, 100, 0x00a8ff, 0x004a77);
+    gridHelper.position.y = ground.position.y + 0.002;
     scene.add(gridHelper);
 
-    // 添加坐标轴辅助
-    const axesHelper = new THREE.AxesHelper(5);
-    axesHelper.position.y = ground.position.y + 0.001;
-    scene.add(axesHelper);
+    // 创建外部集装箱
+    const containerGeometry = new THREE.BoxGeometry(
+      container.externalLength * 0.001,
+      container.externalHeight * 0.001,
+      container.externalWidth * 0.001
+    );
+    
+    // 调整外部集装箱材质的透明度
+    const containerMaterial = new THREE.MeshPhongMaterial({
+      color: 0x2c5282,  // 深蓝色
+      transparent: true,
+      opacity: 0.15,    // 降低透明度，使内部更容易观察
+      shininess: 100,
+      side: THREE.DoubleSide,
+      depthWrite: false  // 确保透明度正确渲染
+    });
+    
+    const containerMesh = new THREE.Mesh(containerGeometry, containerMaterial);
+    containerMesh.position.y = 0;
+    containerMesh.castShadow = true;
+    containerMesh.receiveShadow = true;
+    scene.add(containerMesh);
+
+    // 增强边框的可见度
+    const edges = new THREE.EdgesGeometry(containerGeometry);
+    const edgesMaterial = new THREE.LineBasicMaterial({ 
+      color: 0x00a8ff,  // 亮蓝色
+      linewidth: 2,
+      transparent: true,
+      opacity: 0.8      // 保持边框较高的可见度
+    });
+    const edgesMesh = new THREE.LineSegments(edges, edgesMaterial);
+    containerMesh.add(edgesMesh);
+
+    // 调整内部空间的透明度
+    const internalGeometry = new THREE.BoxGeometry(
+      container.internalLength * 0.001,
+      container.internalHeight * 0.001,
+      container.internalWidth * 0.001
+    );
+    const internalMaterial = new THREE.MeshPhongMaterial({
+      color: 0x60a5fa,  // 亮蓝色
+      transparent: true,
+      opacity: 0.1,     // 降低内部空间的透明度
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    const internalMesh = new THREE.Mesh(internalGeometry, internalMaterial);
+    internalMesh.position.y = 0;
+    internalMesh.castShadow = true;
+    scene.add(internalMesh);
+
+    // 添加内部边框发光效果
+    const internalEdges = new THREE.EdgesGeometry(internalGeometry);
+    const internalEdgesMaterial = new THREE.LineBasicMaterial({ 
+      color: 0x93c5fd,  // 浅蓝色
+      linewidth: 1
+    });
+    const internalEdgesMesh = new THREE.LineSegments(internalEdges, internalEdgesMaterial);
+    internalMesh.add(internalEdgesMesh);
+
+    // 修改光照设置
+    scene.remove(...scene.children.filter(child => 
+      child instanceof THREE.AmbientLight || 
+      child instanceof THREE.DirectionalLight
+    ));
+
+    // 添加环境光
+    const ambientLight = new THREE.AmbientLight(0x4a5568, 0.6);
+    scene.add(ambientLight);
+
+    // 添加主光源
+    const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    mainLight.position.set(10, 10, 10);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.width = 2048;
+    mainLight.shadow.mapSize.height = 2048;
+    scene.add(mainLight);
+
+    // 添加辅助光源（蓝色调）
+    const blueLight = new THREE.DirectionalLight(0x00a8ff, 0.3);
+    blueLight.position.set(-5, 5, -5);
+    scene.add(blueLight);
+
+    // 渲染装载的箱子
+    if (simulationState.results && simulationState.results.length > 0) {
+      simulationState.results.forEach(boxData => {
+        const boxGeometry = new THREE.BoxGeometry(
+          boxData.carton.length * 0.001,
+          boxData.carton.height * 0.001,
+          boxData.carton.width * 0.001
+        );
+        
+        const boxMaterial = new THREE.MeshPhongMaterial({
+          color: new THREE.Color(boxData.carton.color),
+          transparent: true,
+          opacity: boxData.carton.opacity || 0.85,
+          shininess: 100,
+          side: THREE.DoubleSide
+        });
+        
+        const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+        boxMesh.position.set(
+          boxData.position.x * 0.001,
+          boxData.position.y * 0.001,
+          boxData.position.z * 0.001
+        );
+        boxMesh.castShadow = true;
+        boxMesh.receiveShadow = true;
+        scene.add(boxMesh);
+
+        // 添加箱子边框发光效果
+        const boxEdges = new THREE.EdgesGeometry(boxGeometry);
+        const boxEdgesMaterial = new THREE.LineBasicMaterial({ 
+          color: new THREE.Color(boxData.carton.color).multiplyScalar(1.2),
+          linewidth: 1
+        });
+        const boxEdgesMesh = new THREE.LineSegments(boxEdges, boxEdgesMaterial);
+        boxMesh.add(boxEdgesMesh);
+      });
+    }
   };
 
   // 添加文字标注函数
@@ -696,165 +793,84 @@ const LoadingSimulation = ({ container }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 初始化场景
-  const initScene = () => {
-    if (!container || !containerRef.current) return;
-
-    cleanup();
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf5f5f5);
-    sceneRef.current = scene;
-
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      containerRef.current.clientWidth / containerRef.current.clientHeight,
-      0.1,
-      1000
-    );
-    camera.position.set(8, 8, 8);
-    camera.lookAt(0, 0, 0);
-    cameraRef.current = camera;
-
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: true,
-      logarithmicDepthBuffer: true
-    });
-    renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    containerRef.current.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
-    // 修改 OrbitControls 配置
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.minDistance = 2;
-    controls.maxDistance = 20;
-    controls.maxPolarAngle = Math.PI / 2;
-    controls.enableRotate = true;  // 确保旋转功能启用
-    controls.enableZoom = true;    // 确保缩放功能启用
-    controls.enablePan = true;     // 确保平移功能启用
-    controls.rotateSpeed = 1.0;    // 调整旋转速度
-    controls.zoomSpeed = 1.2;      // 调整缩放速度
-    controls.panSpeed = 0.8;       // 调整平移速度
-    controls.update();             // 初始更新控制器
-    controlsRef.current = controls;
-
-    // 添加光源
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(10, 10, 10);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 2048;
-    directionalLight.shadow.mapSize.height = 2048;
-    directionalLight.shadow.camera.near = 0.5;
-    directionalLight.shadow.camera.far = 50;
-    directionalLight.shadow.camera.left = -15;
-    directionalLight.shadow.camera.right = 15;
-    directionalLight.shadow.camera.top = 15;
-    directionalLight.shadow.camera.bottom = -15;
-    scene.add(directionalLight);
-
-    // 创建集装箱模型和装箱模型
-    createContainerModel(scene);
-
-    const animate = () => {
-      frameIdRef.current = requestAnimationFrame(animate);
-      
-      // 确保控制器始终更新
-      if (controlsRef.current) {
-        controlsRef.current.update();
-      }
-      
-      // 更新 TWEEN 动画
-      if (typeof TWEEN !== 'undefined') {
-        TWEEN.update();
-      }
-      
-      // 渲染场景
-      if (rendererRef.current && sceneRef.current && cameraRef.current) {
-        rendererRef.current.render(sceneRef.current, cameraRef.current);
-      }
-    };
-    animate();
-  };
-
-  // 表格列定义
+  // 定义表格列
   const columns = [
     {
       title: '箱型',
-      dataIndex: ['carton', 'name'],
-      key: 'name',
-      render: (text, record) => (
+      dataIndex: 'carton',
+      key: 'carton',
+      render: (carton) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div 
             style={{ 
               width: '16px', 
               height: '16px', 
-              backgroundColor: record.carton.color || '#3498db',
-              opacity: record.carton.opacity || 0.6,
+              backgroundColor: carton.color || '#3498db',
+              opacity: carton.opacity || 0.7,
               marginRight: '8px',
               border: '1px solid #d9d9d9',
               borderRadius: '2px'
             }} 
           />
-          <span>{text}</span>
+          <span>{carton.name} ({carton.length}×{carton.width}×{carton.height})</span>
         </div>
-      ),
+      )
     },
     {
       title: '数量',
       dataIndex: 'quantity',
-      key: 'quantity',
+      key: 'quantity'
     },
     {
       title: '托盘',
-      dataIndex: ['pallet', 'name'],
+      dataIndex: 'pallet',
       key: 'pallet',
-      render: (text) => text || '不使用托盘'
+      render: (pallet) => pallet ? `${pallet.name}` : '不使用托盘'
     },
     {
       title: '操作',
       key: 'action',
       render: (_, record) => (
-        <Button type="link" onClick={() => {
-          setSelectedBoxes(selectedBoxes.filter(box => box.id !== record.id));
-        }}>
+        <Button 
+          type="link" 
+          onClick={() => {
+            setSelectedBoxes(selectedBoxes.filter(box => box.id !== record.id));
+          }}
+        >
           删除
         </Button>
-      ),
-    },
+      )
+    }
   ];
 
-  // 渲染模拟状态
+  // 修改进度显示组件
   const renderSimulationStatus = () => {
-    if (!simulationState.isSimulating && !simulationState.needsReset) return null;
-
+    // 移除判断条件，始终显示进度
     return (
-      <div style={{ marginTop: '8px' }}>
-        <Alert
-          message={
-            <div>
-              <div>{simulationState.currentStep}</div>
-              {simulationState.error && (
-                <div style={{ color: 'red' }}>{simulationState.error}</div>
-              )}
-              <Progress 
-                percent={simulationState.progress} 
-                size="small"
-                status={simulationState.error ? "exception" : 
-                        simulationState.isSimulating ? "active" : "success"}
-              />
-            </div>
+      <div style={{ marginTop: 16 }}>
+        <Progress 
+          percent={simulationState.progress} 
+          status={
+            simulationState.error ? 'exception' : 
+            simulationState.progress === 100 ? 'success' : 
+            'active'
           }
-          type={simulationState.error ? "error" : "info"}
-          showIcon
+          style={{ marginBottom: 8 }}
         />
+        <div style={{ 
+          color: simulationState.error ? '#ff4d4f' : 'inherit',
+          marginBottom: 8 
+        }}>
+          {simulationState.currentStep || '等待开始模拟...'}
+        </div>
+        {simulationState.error && (
+          <Alert
+            message="错误"
+            description={simulationState.error}
+            type="error"
+            showIcon
+          />
+        )}
       </div>
     );
   };
@@ -867,177 +883,328 @@ const LoadingSimulation = ({ container }) => {
     };
   }, []);
 
+  // 修改动画渲染函数
+  const createBoxAnimation = (boxMesh, finalPosition) => {
+    // 设置初始位置（从上方降落）
+    boxMesh.position.set(
+      finalPosition.x,
+      containerDimensions.internalHeight/2,
+      finalPosition.z
+    );
+    
+    // 创建动画
+    new TWEEN.Tween(boxMesh.position)
+      .to({
+        x: finalPosition.x,
+        y: finalPosition.y,
+        z: finalPosition.z
+      }, 1000)
+      .easing(TWEEN.Easing.Bounce.Out)
+      .start();
+
+    // 添加旋转动画
+    new TWEEN.Tween(boxMesh.rotation)
+      .to({
+        x: Math.PI * 2,
+        y: Math.PI * 2,
+        z: 0
+      }, 1000)
+      .easing(TWEEN.Easing.Quadratic.Out)
+      .start();
+
+    // 添加缩放动画
+    boxMesh.scale.set(1.2, 1.2, 1.2);
+    new TWEEN.Tween(boxMesh.scale)
+      .to({ x: 1, y: 1, z: 1 }, 500)
+      .easing(TWEEN.Easing.Back.Out)
+      .start();
+  };
+
+  // 修改箱子渲染函数
+  const renderBox = (scene, boxData, index) => {
+    const { carton, position } = boxData;
+    
+    // 创建箱子几何体
+    const boxGeometry = new THREE.BoxGeometry(
+      carton.length * 0.001,
+      carton.height * 0.001,
+      carton.width * 0.001
+    );
+
+    // 创建材质（使用箱子预定义的颜色）
+    const boxMaterial = new THREE.MeshPhongMaterial({
+      color: carton.color || 0x3498db,
+      transparent: true,
+      opacity: 0.8,
+      shininess: 30,
+      specular: 0x444444
+    });
+
+    const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+    
+    // 添加边框
+    const edges = new THREE.EdgesGeometry(boxGeometry);
+    const line = new THREE.LineSegments(
+      edges,
+      new THREE.LineBasicMaterial({ color: 0x000000 })
+    );
+    boxMesh.add(line);
+
+    // 添加动画
+    createBoxAnimation(boxMesh, {
+      x: position.x * 0.001,
+      y: position.y * 0.001,
+      z: position.z * 0.001
+    });
+
+    scene.add(boxMesh);
+  };
+
+  // 修改选择箱子的处理函数
+  const handleAddBox = () => {
+    if (!currentBox.cartonId) return;
+    
+    const cartonConfig = CARTON_SIZES.find(c => c.id === currentBox.cartonId);
+    if (!cartonConfig) return;
+    
+    console.log('Adding box with config:', cartonConfig); // 调试日志
+    
+    setSelectedBoxes([
+      ...selectedBoxes,
+      {
+        ...currentBox,
+        id: Date.now(),
+        carton: {
+          type: cartonConfig.id,
+          name: cartonConfig.name,
+          length: cartonConfig.length,
+          width: cartonConfig.width,
+          height: cartonConfig.height,
+          color: cartonConfig.color,
+          opacity: cartonConfig.opacity
+        },
+        pallet: currentBox.palletId ? PALLET_SIZES.find(p => p.id === currentBox.palletId) : null
+      }
+    ]);
+  };
+
+  // 添加重置函数
+  const handleReset = () => {
+    setSelectedBoxes([]);
+    setSimulationState({
+      isSimulating: false,
+      progress: 0,
+      currentStep: '',
+      error: null,
+      results: null,
+      needsReset: false
+    });
+    
+    // 重新初始化场景
+    if (sceneRef.current) {
+      createContainerModel(sceneRef.current);
+    }
+  };
+
+  // 添加测试数据函数
+  const addTestData = () => {
+    // 选择3种不同规格的箱子（A1, A3, B2）
+    const testBoxes = [
+      {
+        id: Date.now(),
+        cartonId: 'A1',
+        quantity: 33,
+        carton: {
+          ...CARTON_SIZES.find(c => c.id === 'A1'),
+          type: 'A1'
+        }
+      },
+      {
+        id: Date.now() + 1,
+        cartonId: 'A3',
+        quantity: 33,
+        carton: {
+          ...CARTON_SIZES.find(c => c.id === 'A3'),
+          type: 'A3'
+        }
+      },
+      {
+        id: Date.now() + 2,
+        cartonId: 'B2',
+        quantity: 33,
+        carton: {
+          ...CARTON_SIZES.find(c => c.id === 'B2'),
+          type: 'B2'
+        }
+      }
+    ];
+
+    // 更新选中的箱子列表
+    setSelectedBoxes(testBoxes);
+  };
+
   return (
     <Row gutter={[16, 16]}>
-      <Col span={14}>
-        <Card title="3D装载模拟" bordered={false}>
+      {/* 上方：3D模型展示 */}
+      <Col span={24}>
+        <Card 
+          title="3D装载模拟" 
+          bordered={false}
+          bodyStyle={{ padding: '12px' }}
+        >
           <div 
             ref={containerRef} 
             style={{ 
               width: '100%', 
-              height: '600px',
-              backgroundColor: '#f5f5f5',
+              height: '360px',  // 与 BasicInfo 保持一致
               borderRadius: '8px'
             }} 
           />
         </Card>
       </Col>
-      <Col span={10}>
-        <Card title="装载配置" bordered={false}>
-          <Row gutter={[16, 16]} align="middle">
-            <Col span={9}>
-              <Select
-                placeholder="选择箱型"
-                value={currentBox.cartonId}
-                onChange={(value) => setCurrentBox({ ...currentBox, cartonId: value })}
-                style={{ width: '100%' }}
-                optionLabelProp="label"
-                dropdownMatchSelectWidth={false}
-                labelInValue={false}
-                menuItemSelectedIcon={null}
-                suffixIcon={null}
+
+      {/* 下方：配置区域 */}
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row gutter={[16, 16]}>
+            {/* 左侧：箱型选择和操作按钮 */}
+            <Col span={16}>
+              <Card 
+                title="装载配置" 
+                bordered={false}
+                bodyStyle={{ padding: '12px' }}
+                size="small"
               >
-                {CARTON_SIZES.map(box => (
-                  <Select.Option 
-                    key={box.id} 
-                    value={box.id}
-                    label={
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div 
-                          style={{ 
-                            width: '16px', 
-                            height: '16px', 
-                            backgroundColor: box.color || '#3498db',
-                            opacity: box.opacity || 0.6,
-                            marginRight: '8px',
-                            border: '1px solid #d9d9d9',
-                            borderRadius: '2px',
-                            flexShrink: 0
-                          }} 
-                        />
-                        <span>{box.name}</span>
-                      </div>
-                    }
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-                      <div 
-                        style={{ 
-                          width: '16px', 
-                          height: '16px', 
-                          backgroundColor: box.color || '#3498db',
-                          opacity: box.opacity || 0.6,
-                          marginRight: '8px',
-                          border: '1px solid #d9d9d9',
-                          borderRadius: '2px',
-                          flexShrink: 0
-                        }} 
-                      />
-                      <span>{box.name} ({box.length}×{box.width}×{box.height})</span>
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select>
+                <Space direction="vertical" style={{ width: '100%' }} size={16}>
+                  {/* 箱型选择区域 */}
+                  <Space.Compact block>
+                    <Select
+                      placeholder="选择箱型"
+                      value={currentBox.cartonId}
+                      onChange={(value) => setCurrentBox({ ...currentBox, cartonId: value })}
+                      style={{ width: '45%' }}
+                      optionLabelProp="label"
+                      dropdownMatchSelectWidth={false}
+                    >
+                      {CARTON_SIZES.map(box => (
+                        <Select.Option 
+                          key={box.id} 
+                          value={box.id}
+                          label={box.name}
+                        >
+                          <Space>
+                            <div 
+                              style={{ 
+                                width: '16px', 
+                                height: '16px', 
+                                backgroundColor: box.color || '#3498db',
+                                opacity: box.opacity || 0.6,
+                                border: '1px solid #d9d9d9',
+                                borderRadius: '2px'
+                              }} 
+                            />
+                            <span>{box.name} ({box.length}×{box.width}×{box.height})</span>
+                          </Space>
+                        </Select.Option>
+                      ))}
+                    </Select>
+                    <InputNumber
+                      style={{ width: '15%' }}
+                      min={1}
+                      placeholder="数量"
+                      value={currentBox.quantity}
+                      onChange={(value) => setCurrentBox({ ...currentBox, quantity: value })}
+                    />
+                    <Select
+                      style={{ width: '30%' }}
+                      placeholder="选择托盘"
+                      allowClear
+                      value={currentBox.palletId}
+                      onChange={(value) => setCurrentBox({ ...currentBox, palletId: value })}
+                    >
+                      {PALLET_SIZES.map(pallet => (
+                        <Select.Option key={pallet.id} value={pallet.id}>
+                          {pallet.name}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                    <Button 
+                      type="primary"
+                      onClick={handleAddBox}
+                      style={{ width: '10%' }}
+                      icon={<PlusOutlined />}
+                    />
+                  </Space.Compact>
+
+                  {/* 操作按钮组 */}
+                  <Space>
+                    <Button 
+                      type="primary" 
+                      onClick={handleCalculate}
+                      disabled={selectedBoxes.length === 0 || simulationState.isSimulating}
+                      icon={<CalculatorOutlined />}
+                    >
+                      计算装载方案
+                    </Button>
+                    <Button 
+                      onClick={handleReset}
+                      disabled={simulationState.isSimulating}
+                      icon={<ReloadOutlined />}
+                    >
+                      重置
+                    </Button>
+                    <Button 
+                      type="dashed"
+                      onClick={addTestData}
+                      disabled={simulationState.isSimulating || selectedBoxes.length > 0}
+                      icon={<ExperimentOutlined />}
+                    >
+                      测试数据
+                    </Button>
+                  </Space>
+
+                  {/* 已选箱子列表 */}
+                  {simulationState.isSimulating && renderSimulationStatus()}
+                  <Table
+                    columns={columns}
+                    dataSource={selectedBoxes}
+                    rowKey={record => record.id}
+                    pagination={false}
+                    size="small"
+                    scroll={{ y: 200 }}
+                  />
+                </Space>
+              </Card>
             </Col>
-            <Col span={4}>
-              <InputNumber
-                style={{ width: '100%' }}
-                min={1}
-                placeholder="数量"
-                value={currentBox.quantity}
-                onChange={(value) => setCurrentBox({ ...currentBox, quantity: value })}
-              />
-            </Col>
-            <Col span={7}>
-              <Select
-                style={{ width: '100%' }}
-                placeholder="选择托盘"
-                allowClear
-                value={currentBox.palletId}
-                onChange={(value) => setCurrentBox({ ...currentBox, palletId: value })}
-                dropdownMatchSelectWidth={false}
-                optionLabelProp="label"
+
+            {/* 右侧：装载统计 */}
+            <Col span={8}>
+              <Card 
+                title="装载统计" 
+                bordered={false}
+                bodyStyle={{ padding: '12px' }}
+                size="small"
               >
-                {PALLET_SIZES.map(pallet => (
-                  <Select.Option 
-                    key={pallet.id} 
-                    value={pallet.id}
-                    label={pallet.name}
-                  >
-                    <div style={{ whiteSpace: 'nowrap' }}>
-                      {pallet.name} ({pallet.length}×{pallet.width}×{pallet.height})
-                    </div>
-                  </Select.Option>
-                ))}
-              </Select>
-            </Col>
-            <Col span={4}>
-              <Button 
-                type="primary" 
-                style={{ width: '100%' }}
-                onClick={() => {
-                  if (!currentBox.cartonId) return;
-                  const selectedCarton = CARTON_SIZES.find(c => c.id === currentBox.cartonId);
-                  setSelectedBoxes([
-                    ...selectedBoxes,
-                    {
-                      ...currentBox,
-                      id: Date.now(),
-                      carton: selectedCarton,
-                      pallet: currentBox.palletId ? PALLET_SIZES.find(p => p.id === currentBox.palletId) : null
-                    }
-                  ]);
-                }}
-              >
-                添加
-              </Button>
+                <Descriptions column={1} bordered size="small">
+                  <Descriptions.Item label="已选箱数">
+                    {selectedBoxes.reduce((sum, box) => sum + box.quantity, 0)} 个
+                  </Descriptions.Item>
+                  <Descriptions.Item label="总体积">
+                    {(selectedBoxes.reduce((sum, box) => {
+                      const boxVolume = (box.carton.length * box.carton.width * box.carton.height) / 1000000000;
+                      return sum + (boxVolume * box.quantity);
+                    }, 0)).toFixed(3)} m³
+                  </Descriptions.Item>
+                  <Descriptions.Item label="空间利用率">
+                    {(selectedBoxes.reduce((sum, box) => {
+                      const boxVolume = (box.carton.length * box.carton.width * box.carton.height) / 1000000000;
+                      return sum + (boxVolume * box.quantity);
+                    }, 0) / (container.internalLength * container.internalWidth * container.internalHeight / 1000000000) * 100).toFixed(2)} %
+                  </Descriptions.Item>
+                </Descriptions>
+              </Card>
             </Col>
           </Row>
-          
-          <div style={{ marginTop: '16px' }}>
-            <Button 
-              type="primary" 
-              onClick={handleCalculate}
-              disabled={selectedBoxes.length === 0 || simulationState.isSimulating}
-              style={{ marginBottom: '16px' }}
-            >
-              计算装载方案
-            </Button>
-
-            {renderSimulationStatus()}
-          </div>
-
-          <Table
-            columns={columns}
-            dataSource={selectedBoxes}
-            pagination={false}
-            size="small"
-          />
-          
-          <Card 
-            title="装载统计" 
-            style={{ marginTop: '16px' }} 
-            bordered={false}
-            size="small"
-          >
-            <Descriptions column={1} bordered size="small">
-              <Descriptions.Item label="已选箱数">
-                {selectedBoxes.reduce((sum, box) => sum + box.quantity, 0)}
-              </Descriptions.Item>
-              <Descriptions.Item label="总体积">
-                {(selectedBoxes.reduce((sum, box) => {
-                  // 计算单个箱子的体积（mm³）并转换为 m³
-                  const boxVolume = (box.carton.length * box.carton.width * box.carton.height) / 1000000000;
-                  return sum + (boxVolume * box.quantity);
-                }, 0)).toFixed(3)} m³
-              </Descriptions.Item>
-              <Descriptions.Item label="空间利用率">
-                {(selectedBoxes.reduce((sum, box) => {
-                  const boxVolume = (box.carton.length * box.carton.width * box.carton.height) / 1000000000;
-                  return sum + (boxVolume * box.quantity);
-                }, 0) / (container.internalLength * container.internalWidth * container.internalHeight / 1000000000) * 100).toFixed(2)}%
-              </Descriptions.Item>
-            </Descriptions>
-          </Card>
         </Card>
       </Col>
     </Row>

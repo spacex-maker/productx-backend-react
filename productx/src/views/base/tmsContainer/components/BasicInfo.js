@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Card, Descriptions, Row, Col, Button } from 'antd';
+import { Card, Descriptions, Row, Col, Button, Space } from 'antd';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -57,200 +57,380 @@ const BasicInfo = ({ container }) => {
       child instanceof THREE.AmbientLight || 
       child instanceof THREE.DirectionalLight ||
       child instanceof THREE.GridHelper ||
-      child instanceof THREE.AxesHelper ||
-      child instanceof THREE.Mesh && child.geometry instanceof THREE.PlaneGeometry
+      child instanceof THREE.AxesHelper
     );
 
-    // 显示外部尺寸
+    // 创建 PROTX 文字纹理
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 2048;
+    canvas.height = 2048;
+
+    // 设置背景色
+    context.fillStyle = '#0a192f';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 设置文字样式
+    context.fillStyle = '#1e3a8a';  // 深蓝色
+    context.font = 'bold 500px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    
+    // 绘制 PROTX 文字
+    context.fillText('PROTX', canvas.width/2, canvas.height/2);
+
+    // 添加网格线
+    context.strokeStyle = '#004a77';
+    context.lineWidth = 1;
+    const gridSize = 64;
+    
+    for (let i = 0; i < canvas.width; i += gridSize) {
+      context.beginPath();
+      context.moveTo(i, 0);
+      context.lineTo(i, canvas.height);
+      context.stroke();
+    }
+    
+    for (let i = 0; i < canvas.height; i += gridSize) {
+      context.beginPath();
+      context.moveTo(0, i);
+      context.lineTo(canvas.width, i);
+      context.stroke();
+    }
+
+    // 创建地面纹理
+    const groundTexture = new THREE.CanvasTexture(canvas);
+    groundTexture.wrapS = THREE.RepeatWrapping;
+    groundTexture.wrapT = THREE.RepeatWrapping;
+    groundTexture.repeat.set(1, 1);
+
+    // 设置科技感地面
+    const groundGeometry = new THREE.PlaneGeometry(50, 50);
+    const groundMaterial = new THREE.MeshPhongMaterial({ 
+      map: groundTexture,
+      shininess: 100,
+      transparent: true,
+      opacity: 0.9
+    });
+    
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -container.externalHeight * 0.001 / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // 添加发光网格
+    const gridHelper = new THREE.GridHelper(50, 100, 0x00a8ff, 0x004a77);
+    gridHelper.position.y = ground.position.y + 0.002;
+    gridHelper.material.transparent = true;
+    gridHelper.material.opacity = 0.3;
+    scene.add(gridHelper);
+
+    // 检查一下实际使用的高度值
+    console.log('External Height:', container.externalHeight * 0.001);
+    console.log('Internal Height:', container.internalHeight * 0.001);
+
+    // 确保使用外部尺寸渲染外部集装箱
     const containerGeometry = new THREE.BoxGeometry(
       container.externalLength * 0.001,
-      container.externalHeight * 0.001,
+      container.externalHeight * 0.001,  // 这里必须使用外部高度 2.591
       container.externalWidth * 0.001
     );
+    
+    // 创建发光材质
     const containerMaterial = new THREE.MeshPhongMaterial({
-      color: 0x2c3e50,
+      color: 0x2c5282,  // 深蓝色
       transparent: true,
-      opacity: 0.15,
-      side: THREE.DoubleSide,  // 双面渲染
-      depthWrite: false  // 防止透明物体的渲染问题
+      opacity: 0.7,
+      shininess: 100,
+      side: THREE.DoubleSide,
+      depthWrite: true
     });
+    
     const containerMesh = new THREE.Mesh(containerGeometry, containerMaterial);
-    containerMesh.castShadow = true;  // 投射阴影
-    containerMesh.receiveShadow = true;  // 接收阴影
+    containerMesh.position.y = 0;  // 确保位置正确
+    containerMesh.castShadow = true;
+    containerMesh.receiveShadow = true;
     scene.add(containerMesh);
 
-    // 添加外部边框
+    // 添加边框发光效果
     const edges = new THREE.EdgesGeometry(containerGeometry);
-    const line = new THREE.LineSegments(
-      edges,
-      new THREE.LineBasicMaterial({ 
-        color: 0x000000,
-        linewidth: 2  // 注意：由于WebGL限制，线宽可能在某些浏览器中不起作用
-      })
-    );
-    scene.add(line);
+    const edgesMaterial = new THREE.LineBasicMaterial({ 
+      color: 0x00a8ff,  // 亮蓝色
+      linewidth: 2
+    });
+    const edgesMesh = new THREE.LineSegments(edges, edgesMaterial);
+    containerMesh.add(edgesMesh);
 
-    // 显示内部尺寸
+    // 使用内部尺寸渲染内部空间
     const internalGeometry = new THREE.BoxGeometry(
       container.internalLength * 0.001,
-      container.internalHeight * 0.001,
+      container.internalHeight * 0.001,  // 内部高度 2.393
       container.internalWidth * 0.001
     );
     const internalMaterial = new THREE.MeshPhongMaterial({
-      color: 0x3498db,
+      color: 0x60a5fa,  // 亮蓝色
       transparent: true,
-      opacity: 0.15,
-      side: THREE.DoubleSide,
-      depthWrite: false
+      opacity: 0.3,
+      side: THREE.DoubleSide
     });
     const internalMesh = new THREE.Mesh(internalGeometry, internalMaterial);
+    internalMesh.position.y = 0;  // 确保位置正确
     internalMesh.castShadow = true;
-    internalMesh.receiveShadow = true;
     scene.add(internalMesh);
 
-    // 添加内部边框
+    // 添加内部边框发光效果
     const internalEdges = new THREE.EdgesGeometry(internalGeometry);
-    const internalLine = new THREE.LineSegments(
-      internalEdges,
-      new THREE.LineBasicMaterial({ 
-        color: 0x3498db,
-        linewidth: 2
-      })
-    );
-    scene.add(internalLine);
+    const internalEdgesMaterial = new THREE.LineBasicMaterial({ 
+      color: 0x93c5fd,  // 浅蓝色
+      linewidth: 1
+    });
+    const internalEdgesMesh = new THREE.LineSegments(internalEdges, internalEdgesMaterial);
+    internalMesh.add(internalEdgesMesh);
+
+    // 添加集装箱类型标记
+    const textureCanvas = createContainerTexture();
+    const containerTexture = new THREE.CanvasTexture(textureCanvas);
+    containerMaterial.map = containerTexture;
+    containerMaterial.needsUpdate = true;
+
+    // 修改光照设置
+    scene.remove(...scene.children.filter(child => 
+      child instanceof THREE.AmbientLight || 
+      child instanceof THREE.DirectionalLight
+    ));
+
+    // 添加环境光
+    const ambientLight = new THREE.AmbientLight(0x4a5568, 0.6);
+    scene.add(ambientLight);
+
+    // 添加主光源
+    const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    mainLight.position.set(10, 10, 10);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.width = 2048;
+    mainLight.shadow.mapSize.height = 2048;
+    scene.add(mainLight);
+
+    // 添加辅助光源（蓝色调）
+    const blueLight = new THREE.DirectionalLight(0x00a8ff, 0.3);
+    blueLight.position.set(-5, 5, -5);
+    scene.add(blueLight);
 
     // 添加标注线
     addDimensionLines(scene);
-    // 添加警示标记
     addWarningMarks(scene);
+  };
+
+  // 修改createContainerTexture函数，增加科技感
+  const createContainerTexture = () => {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 2048;
+    canvas.height = 2048;
+    
+    // 绘制科技感背景
+    context.fillStyle = '#1a365d';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // 添加网格线
+    context.strokeStyle = '#2c5282';
+    context.lineWidth = 2;
+    const gridSize = 64;
+    for (let i = 0; i < canvas.width; i += gridSize) {
+      context.beginPath();
+      context.moveTo(i, 0);
+      context.lineTo(i, canvas.height);
+      context.stroke();
+    }
+    for (let i = 0; i < canvas.height; i += gridSize) {
+      context.beginPath();
+      context.moveTo(0, i);
+      context.lineTo(canvas.width, i);
+      context.stroke();
+    }
+    
+    // 绘制集装箱类型
+    context.font = 'bold 300px Arial';
+    context.fillStyle = '#60a5fa';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.shadowColor = '#60a5fa';
+    context.shadowBlur = 30;
+    context.fillText(container.containerType, canvas.width/2, canvas.height/2);
+    
+    return canvas;
   };
 
   // 修改标注线函数
   const addDimensionLines = (scene) => {
-    // 外部尺寸标注
+    // 使用完全相同的尺寸进行标注
     const externalLength = container.externalLength * 0.001;
     const externalWidth = container.externalWidth * 0.001;
     const externalHeight = container.externalHeight * 0.001;
     
-    // 内部尺寸标注
     const internalLength = container.internalLength * 0.001;
     const internalWidth = container.internalWidth * 0.001;
     const internalHeight = container.internalHeight * 0.001;
     
-    const externalLineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
-    const internalLineMaterial = new THREE.LineBasicMaterial({ color: 0x3498db });
+    // 创建发光材质
+    const externalLineMaterial = new THREE.LineBasicMaterial({ 
+      color: 0x00a8ff,  // 亮蓝色
+      linewidth: 2
+    });
     
-    // 外部尺寸标注 - 长度（前面）
+    const internalLineMaterial = new THREE.LineBasicMaterial({ 
+      color: 0x60a5fa,  // 浅蓝色
+      linewidth: 1
+    });
+    
+    // 外部尺寸标注 - 长度（底部前方）
     createDimensionLine(
       scene,
-      new THREE.Vector3(-externalLength/2, -externalHeight/2, externalWidth/2),
-      new THREE.Vector3(externalLength/2, -externalHeight/2, externalWidth/2),
+      new THREE.Vector3(-externalLength/2, -externalHeight/2, externalWidth/2 + 0.5),
+      new THREE.Vector3(externalLength/2, -externalHeight/2, externalWidth/2 + 0.5),
       `${container.externalLength}mm`,
-      '#000000',
+      '#00a8ff',
       externalLineMaterial,
-      0.2  // 标注线偏移距离
+      0.3
     );
     
-    // 外部尺寸标注 - 宽度（右侧）
+    // 外部尺寸标注 - 宽度（底部右侧）
     createDimensionLine(
       scene,
-      new THREE.Vector3(externalLength/2, -externalHeight/2, -externalWidth/2),
-      new THREE.Vector3(externalLength/2, -externalHeight/2, externalWidth/2),
+      new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2, -externalWidth/2),
+      new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2, externalWidth/2),
       `${container.externalWidth}mm`,
-      '#000000',
+      '#00a8ff',
       externalLineMaterial,
-      0.2
+      0.3
     );
     
-    // 外部尺寸标注 - 高度（右侧）
+    // 修改外部尺寸标注 - 高度（右前方）
     createDimensionLine(
       scene,
-      new THREE.Vector3(externalLength/2, -externalHeight/2, -externalWidth/2),
-      new THREE.Vector3(externalLength/2, externalHeight/2, -externalWidth/2),
+      new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2, externalWidth/2 + 0.5),
+      new THREE.Vector3(externalLength/2 + 0.5, externalHeight/2, externalWidth/2 + 0.5),
       `${container.externalHeight}mm`,
-      '#000000',
+      '#00a8ff',
       externalLineMaterial,
-      0.2
+      0.3
     );
 
-    // 内部尺寸标注 - 长度（前面）
+    // 内部尺寸标注 - 长度（中部前方）
     createDimensionLine(
       scene,
-      new THREE.Vector3(-internalLength/2, 0, internalWidth/2),
-      new THREE.Vector3(internalLength/2, 0, internalWidth/2),
+      new THREE.Vector3(-internalLength/2, 0, internalWidth/2 + 0.3),
+      new THREE.Vector3(internalLength/2, 0, internalWidth/2 + 0.3),
       `${container.internalLength}mm`,
-      '#3498db',
+      '#60a5fa',
       internalLineMaterial,
-      0.4  // 内部尺寸标注线偏移距离略大
+      0.2
     );
     
-    // 内部尺寸标注 - 宽度（右侧）
+    // 内部尺寸标注 - 宽度（中部右侧）
     createDimensionLine(
       scene,
-      new THREE.Vector3(internalLength/2, 0, -internalWidth/2),
-      new THREE.Vector3(internalLength/2, 0, internalWidth/2),
+      new THREE.Vector3(internalLength/2 + 0.3, 0, -internalWidth/2),
+      new THREE.Vector3(internalLength/2 + 0.3, 0, internalWidth/2),
       `${container.internalWidth}mm`,
-      '#3498db',
+      '#60a5fa',
       internalLineMaterial,
-      0.4
+      0.2
     );
     
-    // 内部尺寸标注 - 高度（右侧）
+    // 修改内部尺寸标注 - 高度（右前方内侧）
     createDimensionLine(
       scene,
-      new THREE.Vector3(internalLength/2, -internalHeight/2, -internalWidth/2),
-      new THREE.Vector3(internalLength/2, internalHeight/2, -internalWidth/2),
+      new THREE.Vector3(internalLength/2 + 0.3, -internalHeight/2, internalWidth/2 + 0.3),
+      new THREE.Vector3(internalLength/2 + 0.3, internalHeight/2, internalWidth/2 + 0.3),
       `${container.internalHeight}mm`,
-      '#3498db',
+      '#60a5fa',
       internalLineMaterial,
-      0.4
+      0.2
     );
   };
 
-  // 修改标注线创建函数，添加偏移参数
+  // 修改标注线创建函数，添加高度标注的支持
   const createDimensionLine = (scene, start, end, text, textColor, material, offset = 0.2) => {
-    // 计算偏移方向（假设标注线总是垂直于测量方向）
-    const direction = end.clone().sub(start).normalize();
-    const up = new THREE.Vector3(0, 1, 0);
-    const offsetDir = direction.clone().cross(up).normalize();
+    // 判断是否是高度标注（通过检查起点和终点的y值是否不同）
+    const isHeight = start.y !== end.y;
     
-    // 创建偏移的起点和终点
-    const offsetStart = start.clone().add(offsetDir.clone().multiplyScalar(offset));
-    const offsetEnd = end.clone().add(offsetDir.clone().multiplyScalar(offset));
-    
-    // 创建延伸线（从测量点到标注线）
-    const extensionGeometry1 = new THREE.BufferGeometry().setFromPoints([
-      start,
-      offsetStart
-    ]);
-    const extensionLine1 = new THREE.Line(extensionGeometry1, material);
-    scene.add(extensionLine1);
-    
-    const extensionGeometry2 = new THREE.BufferGeometry().setFromPoints([
-      end,
-      offsetEnd
-    ]);
-    const extensionLine2 = new THREE.Line(extensionGeometry2, material);
-    scene.add(extensionLine2);
-    
-    // 创建主标注线
-    const points = [offsetStart, offsetEnd];
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const line = new THREE.Line(geometry, material);
-    scene.add(line);
-    
-    // 创建箭头
-    const arrowLength = 0.1;  // 减小箭头大小
-    const arrowAngle = Math.PI / 6;
-    
-    // 起点箭头
-    createArrow(scene, offsetStart, direction.clone().negate(), arrowLength, arrowAngle, material);
-    // 终点箭头
-    createArrow(scene, offsetEnd, direction, arrowLength, arrowAngle, material);
-    
-    // 添加文字标注
-    const midPoint = offsetStart.clone().add(offsetEnd).multiplyScalar(0.5);
-    createTextLabel(scene, midPoint, text, textColor);
+    if (isHeight) {
+        // 创建从容器边缘到标识线的连接线
+        const startExtension = new THREE.BufferGeometry().setFromPoints([
+            start,
+            new THREE.Vector3(start.x + offset, start.y, start.z + offset)
+        ]);
+        const startLine = new THREE.Line(startExtension, material);
+        scene.add(startLine);
+
+        const endExtension = new THREE.BufferGeometry().setFromPoints([
+            end,
+            new THREE.Vector3(end.x + offset, end.y, end.z + offset)
+        ]);
+        const endLine = new THREE.Line(endExtension, material);
+        scene.add(endLine);
+
+        // 创建偏移后的主标注线
+        const mainLine = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(start.x + offset, start.y, start.z + offset),
+            new THREE.Vector3(end.x + offset, end.y, end.z + offset)
+        ]);
+        const line = new THREE.Line(mainLine, material);
+        scene.add(line);
+
+        // 添加箭头
+        createArrow(scene, 
+            new THREE.Vector3(start.x + offset, start.y, start.z + offset),
+            new THREE.Vector3(0, -1, 0),
+            0.08, Math.PI / 6, material);
+        createArrow(scene, 
+            new THREE.Vector3(end.x + offset, end.y, end.z + offset),
+            new THREE.Vector3(0, 1, 0),
+            0.08, Math.PI / 6, material);
+
+        // 添加文字标注
+        const midPoint = new THREE.Vector3(
+            start.x + offset,
+            (start.y + end.y) / 2,
+            start.z + offset
+        );
+        createTextLabel(scene, midPoint, text, textColor);
+    } else {
+        // 原有的长度和宽度标注逻辑保持不变
+        const direction = end.clone().sub(start).normalize();
+        const up = new THREE.Vector3(0, 1, 0);
+        const offsetDir = direction.clone().cross(up).normalize();
+        
+        const offsetStart = start.clone().add(offsetDir.clone().multiplyScalar(offset));
+        const offsetEnd = end.clone().add(offsetDir.clone().multiplyScalar(offset));
+        
+        const extensionGeometry1 = new THREE.BufferGeometry().setFromPoints([
+            start,
+            offsetStart
+        ]);
+        const extensionLine1 = new THREE.Line(extensionGeometry1, material);
+        scene.add(extensionLine1);
+        
+        const extensionGeometry2 = new THREE.BufferGeometry().setFromPoints([
+            end,
+            offsetEnd
+        ]);
+        const extensionLine2 = new THREE.Line(extensionGeometry2, material);
+        scene.add(extensionLine2);
+        
+        const points = [offsetStart, offsetEnd];
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(geometry, material);
+        scene.add(line);
+        
+        createArrow(scene, offsetStart, direction.clone().negate(), 0.08, Math.PI / 6, material);
+        createArrow(scene, offsetEnd, direction, 0.08, Math.PI / 6, material);
+        
+        const midPoint = offsetStart.clone().add(offsetEnd).multiplyScalar(0.5);
+        createTextLabel(scene, midPoint, text, textColor);
+    }
   };
 
   // 修改箭头创建函数，使其更小巧
@@ -273,20 +453,41 @@ const BasicInfo = ({ container }) => {
   const createTextLabel = (scene, position, text, color) => {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 256;
-    canvas.height = 64;
+    canvas.width = 512;
+    canvas.height = 128;
     
-    context.font = 'bold 36px Arial';  // 调整字体大小
-    context.fillStyle = color;
+    // 绘制背景
+    context.fillStyle = 'rgba(10, 25, 47, 0.85)';  // 深蓝色半透明背景
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // 添加边框
+    context.strokeStyle = '#00a8ff';  // 蓝色边框
+    context.lineWidth = 2;
+    context.strokeRect(2, 2, canvas.width-4, canvas.height-4);
+    
+    // 设置文字样式
+    context.font = 'bold 64px Arial';
+    context.fillStyle = '#ffffff';  // 白色文字
     context.textAlign = 'center';
     context.textBaseline = 'middle';
+    context.shadowColor = '#00a8ff';  // 文字发光效果
+    context.shadowBlur = 10;
+    
+    // 绘制文字
     context.fillText(text, canvas.width/2, canvas.height/2);
     
     const texture = new THREE.CanvasTexture(canvas);
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    
+    const spriteMaterial = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true
+    });
+    
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.position.copy(position);
-    sprite.scale.set(1.5, 0.4, 1);  // 调整文字大小
+    sprite.scale.set(1, 0.25, 1);  // 调整标签大小
     
     scene.add(sprite);
   };
@@ -366,47 +567,6 @@ const BasicInfo = ({ container }) => {
     controls.maxPolarAngle = Math.PI / 2;  // 限制相机垂直旋转角度，防止看到地面以下
     controlsRef.current = controls;
 
-    // 添加环境光
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-
-    // 添加平行光（模拟太阳光）
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(10, 10, 10);
-    directionalLight.castShadow = true;  // 启用阴影投射
-    directionalLight.shadow.mapSize.width = 2048;  // 提高阴影质量
-    directionalLight.shadow.mapSize.height = 2048;
-    directionalLight.shadow.camera.near = 0.5;
-    directionalLight.shadow.camera.far = 50;
-    directionalLight.shadow.camera.left = -15;
-    directionalLight.shadow.camera.right = 15;
-    directionalLight.shadow.camera.top = 15;
-    directionalLight.shadow.camera.bottom = -15;
-    scene.add(directionalLight);
-
-    // 添加地面
-    const groundGeometry = new THREE.PlaneGeometry(30, 30);
-    const groundMaterial = new THREE.MeshStandardMaterial({ 
-      color: 0xcccccc,
-      roughness: 0.8,
-      metalness: 0.2
-    });
-    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-    ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -container.externalHeight * 0.001 / 2;  // 将地面放在集装箱底部
-    ground.receiveShadow = true;  // 接收阴影
-    scene.add(ground);
-
-    // 添加地面网格
-    const gridHelper = new THREE.GridHelper(30, 60, 0x888888, 0xcccccc);
-    gridHelper.position.y = ground.position.y + 0.001;  // 略微抬高网格，防止z-fighting
-    scene.add(gridHelper);
-
-    // 添加坐标轴辅助
-    const axesHelper = new THREE.AxesHelper(5);
-    axesHelper.position.y = ground.position.y + 0.001;
-    scene.add(axesHelper);
-
     // 创建集装箱模型
     createContainerModel(scene);
 
@@ -443,66 +603,97 @@ const BasicInfo = ({ container }) => {
 
   return (
     <Row gutter={[16, 16]}>
-      <Col span={14}>
-        <Card title="3D模型展示" bordered={false}>
+      {/* 上方：3D模型展示 */}
+      <Col span={24}>
+        <Card 
+          title="3D模型展示" 
+          bordered={false}
+          bodyStyle={{ padding: '12px' }}
+        >
           <div 
             ref={containerRef} 
             style={{ 
               width: '100%', 
-              height: '600px',
-              backgroundColor: '#f5f5f5',
+              height: '360px',
               borderRadius: '8px'
             }} 
           />
         </Card>
       </Col>
-      <Col span={10}>
-        <Card title="集装箱规格" bordered={false}>
-          <Descriptions column={1} bordered>
-            <Descriptions.Item label="集装箱类型">
-              {container.containerType}
-            </Descriptions.Item>
-            <Descriptions.Item label="外部尺寸">
-              {`${container.externalLength} × ${container.externalWidth} × ${container.externalHeight} mm`}
-            </Descriptions.Item>
-            <Descriptions.Item label="内部尺寸">
-              {`${container.internalLength} × ${container.internalWidth} × ${container.internalHeight} mm`}
-            </Descriptions.Item>
-            <Descriptions.Item label="门尺寸">
-              {`${container.doorWidth} × ${container.doorHeight} mm`}
-            </Descriptions.Item>
-            <Descriptions.Item label="标称体积">
-              {`${container.volume} m³`}
-            </Descriptions.Item>
-            <Descriptions.Item label="最大载重">
-              {`${container.maxPayload} kg / ${(container.maxPayload/1000).toFixed(1)} T`}
-            </Descriptions.Item>
-            <Descriptions.Item label="自重">
-              {`${container.tareWeight} kg / ${(container.tareWeight/1000).toFixed(1)} T`}
-            </Descriptions.Item>
-            <Descriptions.Item label="总重">
-              {`${container.maxPayload + container.tareWeight} kg / ${((container.maxPayload + container.tareWeight)/1000).toFixed(1)} T`}
-            </Descriptions.Item>
-          </Descriptions>
-        </Card>
-        <Card 
-          title="ISO标准" 
-          style={{ marginTop: '16px' }} 
-          bordered={false}
-        >
-          <Descriptions column={1} bordered>
-            <Descriptions.Item label="适用标准">
-              ISO 668 / 1496 / 6346
-            </Descriptions.Item>
-            <Descriptions.Item label="角件规格">
-              178 × 162 × 118 mm
-            </Descriptions.Item>
-            {container.containerType.startsWith('20') && (
-              <Descriptions.Item label="叉车口规格">
-                352 × 115 mm，距端部 2050±50 mm
-              </Descriptions.Item>
-            )}
-          </Descriptions>
+
+      {/* 下方：集装箱信息 */}
+      <Col span={24}>
+        <Card bordered={false}>
+          <Row gutter={[16, 16]}>
+            {/* 左侧：集装箱规格 */}
+            <Col span={16}>
+              <Card 
+                title="集装箱规格" 
+                bordered={false}
+                bodyStyle={{ padding: '12px' }}
+                size="small"
+              >
+                <Row gutter={[16, 0]}>
+                  <Col span={12}>
+                    <Descriptions column={1} bordered size="small">
+                      <Descriptions.Item label="集装箱类型">
+                        {container.containerType}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="外部尺寸">
+                        {`${container.externalLength} × ${container.externalWidth} × ${container.externalHeight} mm`}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="内部尺寸">
+                        {`${container.internalLength} × ${container.internalWidth} × ${container.internalHeight} mm`}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="门尺寸">
+                        {`${container.doorWidth} × ${container.doorHeight} mm`}
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </Col>
+                  <Col span={12}>
+                    <Descriptions column={1} bordered size="small">
+                      <Descriptions.Item label="标称体积">
+                        {`${container.volume} m³`}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="最大载重">
+                        {`${container.maxPayload} kg / ${(container.maxPayload/1000).toFixed(1)} T`}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="自重">
+                        {`${container.tareWeight} kg / ${(container.tareWeight/1000).toFixed(1)} T`}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="总重">
+                        {`${container.maxPayload + container.tareWeight} kg / ${((container.maxPayload + container.tareWeight)/1000).toFixed(1)} T`}
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+
+            {/* 右侧：ISO标准 */}
+            <Col span={8}>
+              <Card 
+                title="ISO标准" 
+                bordered={false}
+                bodyStyle={{ padding: '12px' }}
+                size="small"
+              >
+                <Descriptions column={1} bordered size="small">
+                  <Descriptions.Item label="适用标准">
+                    ISO 668 / 1496 / 6346
+                  </Descriptions.Item>
+                  <Descriptions.Item label="角件规格">
+                    178 × 162 × 118 mm
+                  </Descriptions.Item>
+                  {container.containerType.startsWith('20') && (
+                    <Descriptions.Item label="叉车口规格">
+                      352 × 115 mm，距端部 2050±50 mm
+                    </Descriptions.Item>
+                  )}
+                </Descriptions>
+              </Card>
+            </Col>
+          </Row>
         </Card>
       </Col>
     </Row>
