@@ -8,8 +8,8 @@ export const CARTON_SIZES = [
     height: 380,
     volume: 83.828,  // 立方分米
     category: 'A系列',
-    color: '#FF4444',  // 鲜红色
-    opacity: 0.7
+    color: '#60A5FA',  // 明亮的蓝色
+    opacity: 0.85
   },
   { 
     id: 'A2',
@@ -19,8 +19,8 @@ export const CARTON_SIZES = [
     height: 360,
     volume: 72.576,
     category: 'A系列',
-    color: '#2196F3',  // 亮蓝色
-    opacity: 0.7
+    color: '#34D399',  // 翡翠绿
+    opacity: 0.85
   },
   { 
     id: 'A3',
@@ -30,8 +30,8 @@ export const CARTON_SIZES = [
     height: 340,
     volume: 62.424,
     category: 'A系列',
-    color: '#4CAF50',  // 翠绿色
-    opacity: 0.7
+    color: '#818CF8',  // 淡紫色
+    opacity: 0.85
   },
   { 
     id: 'A4',
@@ -41,8 +41,8 @@ export const CARTON_SIZES = [
     height: 320,
     volume: 53.248,
     category: 'A系列',
-    color: '#FFC107',  // 金黄色
-    opacity: 0.7
+    color: '#F472B6',  // 粉色
+    opacity: 0.85
   },
   { 
     id: 'A5',
@@ -52,8 +52,8 @@ export const CARTON_SIZES = [
     height: 300,
     volume: 45.000,
     category: 'A系列',
-    color: '#9C27B0',  // 紫色
-    opacity: 0.7
+    color: '#2DD4BF',  // 青色
+    opacity: 0.85
   },
   { 
     id: 'B1',
@@ -63,8 +63,8 @@ export const CARTON_SIZES = [
     height: 400,
     volume: 96.000,
     category: 'B系列',
-    color: '#FF9800',  // 橙色
-    opacity: 0.7
+    color: '#93C5FD',  // 浅蓝色
+    opacity: 0.85
   },
   { 
     id: 'B2',
@@ -74,8 +74,8 @@ export const CARTON_SIZES = [
     height: 380,
     volume: 83.828,
     category: 'B系列',
-    color: '#00BCD4',  // 青色
-    opacity: 0.7
+    color: '#4ADE80',  // 绿色
+    opacity: 0.85
   },
   { 
     id: 'B3',
@@ -85,8 +85,8 @@ export const CARTON_SIZES = [
     height: 300,
     volume: 60.000,
     category: 'B系列',
-    color: '#e74c3c',
-    opacity: 0.6
+    color: '#A78BFA',  // 紫色
+    opacity: 0.85
   },
   { 
     id: 'B4',
@@ -96,8 +96,8 @@ export const CARTON_SIZES = [
     height: 350,
     volume: 55.125,
     category: 'B系列',
-    color: '#e74c3c',
-    opacity: 0.6
+    color: '#FB7185',  // 玫瑰红
+    opacity: 0.85
   },
   { 
     id: 'B5',
@@ -107,7 +107,7 @@ export const CARTON_SIZES = [
     height: 300,
     volume: 36.000,
     category: 'B系列',
-    color: '#e74c3c',
-    opacity: 0.6
+    color: '#38BDF8',  // 天蓝色
+    opacity: 0.85
   }
 ]; 

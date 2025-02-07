@@ -2,58 +2,354 @@
 
 // 确保在 Worker 环境中
 self.onmessage = function(e) {
-  console.log('Worker received message:', e.data);
-  
   try {
-    const { box, boxPositions, container } = e.data;
+    const { boxes, placedBoxes, currentBoxIndex, container } = e.data;
+    console.log('Processing box:', currentBoxIndex, 'Total boxes:', boxes.length);
     
-    // 验证输入数据
-    if (!box || !box.carton || !container) {
-      throw new Error('缺少必要的输入数据');
+    if (!boxes || !boxes[currentBoxIndex] || !container) {
+      throw new Error('输入数据无效');
     }
 
-    console.log('Processing box:', box);
-    console.log('Current positions:', boxPositions);
-    console.log('Container:', container);
-
-    // 计算内部尺寸
-    const containerDimensions = {
-      internalLength: container.length - (container.wallThickness || 100) * 2,
-      internalWidth: container.width - (container.wallThickness || 100) * 2,
-      internalHeight: container.height - (container.wallThickness || 100) * 2,
-      wallThickness: container.wallThickness || 100
+    const box = boxes[currentBoxIndex];
+    
+    // 计算容器内部尺寸（毫米）
+    const internalDimensions = {
+      length: container.length - (container.wallThickness || 0) * 2,
+      width: container.width - (container.wallThickness || 0) * 2,
+      height: container.height - (container.wallThickness || 0) * 2
     };
 
-    console.log('Container dimensions:', containerDimensions);
+    // 定义间距
+    const BOX_GAP = 10;  // 箱子间距10mm
+    const WALL_GAP = 20; // 墙面间距20mm
 
-    // 计算最佳位置
-    const bestPosition = findSimplePosition(box.carton, boxPositions || [], containerDimensions);
-    console.log('Calculated position:', bestPosition);
+    // 容器的左后下角坐标（考虑墙厚和间距）
+    const containerStart = {
+      x: -internalDimensions.length/2 + WALL_GAP,
+      y: -internalDimensions.height/2 + WALL_GAP,
+      z: -internalDimensions.width/2 + WALL_GAP
+    };
+
+    let bestPosition;
+
+    if (!placedBoxes || placedBoxes.length === 0) {
+      // 第一个箱子放在左后下角
+      bestPosition = {
+        x: containerStart.x + box.carton.length/2,
+        y: containerStart.y + box.carton.height/2,
+        z: containerStart.z + box.carton.width/2
+      };
+    } else {
+      // 找到所有可能的放置点
+      const points = findPlacementPoints(containerStart, placedBoxes, BOX_GAP);
+      
+      // 对每个点进行评估
+      let bestScore = Infinity;
+      
+      for (const point of points) {
+        if (canPlaceBox(point, box.carton, placedBoxes, containerStart, internalDimensions, BOX_GAP, WALL_GAP)) {
+          const score = calculateScore(point, containerStart);
+          if (score < bestScore) {
+            bestScore = score;
+            bestPosition = {
+              x: point.x + box.carton.length/2,
+              y: point.y + box.carton.height/2,
+              z: point.z + box.carton.width/2
+            };
+          }
+        }
+      }
+    }
 
     if (!bestPosition) {
-      throw new Error('无法找到合适的放置位置');
+      throw new Error('找不到合适的放置位置');
     }
 
-    // 验证计算出的位置
-    if (!isValidPosition(bestPosition, box.carton, boxPositions || [], containerDimensions)) {
-      throw new Error('计算出的位置无效');
-    }
-
-    // 发送结果回主线程
+    console.log('Found position:', bestPosition);
     self.postMessage({
       success: true,
-      bestPosition,
-      boxId: box.id
+      bestPosition: bestPosition
     });
+
   } catch (error) {
     console.error('Worker error:', error);
     self.postMessage({
       success: false,
-      error: error.message,
-      stack: error.stack
+      error: error.message
     });
   }
 };
+
+function findPlacementPoints(containerStart, placedBoxes, gap) {
+  const points = new Set();
+  
+  // 添加容器起始点
+  points.add(containerStart);
+  
+  // 为每个已放置的箱子添加关键点
+  placedBoxes.forEach(placedBox => {
+    const box = placedBox.carton;
+    const pos = placedBox.position;
+    
+    // 箱子右侧点
+    points.add({
+      x: pos.x + box.length/2 + gap,
+      y: pos.y - box.height/2,
+      z: pos.z - box.width/2
+    });
+    
+    // 箱子顶部点
+    points.add({
+      x: pos.x - box.length/2,
+      y: pos.y + box.height/2 + gap,
+      z: pos.z - box.width/2
+    });
+    
+    // 箱子前方点
+    points.add({
+      x: pos.x - box.length/2,
+      y: pos.y - box.height/2,
+      z: pos.z + box.width/2 + gap
+    });
+  });
+  
+  return Array.from(points);
+}
+
+function canPlaceBox(point, box, placedBoxes, containerStart, containerDim, boxGap, wallGap) {
+  // 检查是否超出容器边界
+  if (point.x + box.length > containerStart.x + containerDim.length - wallGap ||
+      point.y + box.height > containerStart.y + containerDim.height - wallGap ||
+      point.z + box.width > containerStart.z + containerDim.width - wallGap) {
+    return false;
+  }
+  
+  // 检查与已放置箱子的碰撞
+  for (const placedBox of placedBoxes) {
+    if (checkCollision(
+      point, box,
+      {
+        x: placedBox.position.x - placedBox.carton.length/2,
+        y: placedBox.position.y - placedBox.carton.height/2,
+        z: placedBox.position.z - placedBox.carton.width/2
+      },
+      placedBox.carton,
+      boxGap
+    )) {
+      return false;
+    }
+  }
+  
+  return true;
+}
+
+function checkCollision(point1, box1, point2, box2, gap) {
+  return !(
+    point1.x + box1.length + gap <= point2.x ||
+    point1.x >= point2.x + box2.length + gap ||
+    point1.y + box1.height + gap <= point2.y ||
+    point1.y >= point2.y + box2.height + gap ||
+    point1.z + box1.width + gap <= point2.z ||
+    point1.z >= point2.z + box2.width + gap
+  );
+}
+
+function calculateScore(point, containerStart) {
+  // 优先选择靠近左后下角的位置
+  return Math.sqrt(
+    Math.pow(point.x - containerStart.x, 2) +
+    Math.pow(point.y - containerStart.y, 2) +
+    Math.pow(point.z - containerStart.z, 2)
+  );
+}
+
+// 在同一层寻找位置
+function findPositionInSameLayer(box, lastBox, placedBoxes, container, gap) {
+  // 尝试在最后一个箱子右侧放置
+  const rightPosition = {
+    x: lastBox.position.x + lastBox.carton.length/2 + gap + box.length/2,
+    y: lastBox.position.y,
+    z: lastBox.position.z
+  };
+
+  if (isValidPosition(rightPosition, box, placedBoxes, container, gap)) {
+    return rightPosition;
+  }
+
+  // 尝试在最后一个箱子前方放置
+  const frontPosition = {
+    x: lastBox.position.x,
+    y: lastBox.position.y,
+    z: lastBox.position.z + lastBox.carton.width/2 + gap + box.width/2
+  };
+
+  if (isValidPosition(frontPosition, box, placedBoxes, container, gap)) {
+    return frontPosition;
+  }
+
+  return null;
+}
+
+// 在新的一层寻找位置
+function findPositionInNewLayer(box, placedBoxes, container, gap) {
+  // 找到当前最高的箱子
+  const maxHeight = Math.max(...placedBoxes.map(b => 
+    b.position.y + b.carton.height/2
+  ));
+
+  // 在新的一层的起始位置
+  const newLayerPosition = {
+    x: container.startX + box.length/2,
+    y: maxHeight + gap + box.height/2,
+    z: container.startZ + box.width/2
+  };
+
+  if (isValidPosition(newLayerPosition, box, placedBoxes, container, gap)) {
+    return newLayerPosition;
+  }
+
+  return null;
+}
+
+// 寻找最佳放置位置
+function findBestPosition(box, placedBoxes, containerSpace, gap) {
+  const potentialPoints = generatePotentialPoints(placedBoxes, containerSpace, gap);
+  let bestPosition = null;
+  let bestScore = -Infinity;
+
+  for (const point of potentialPoints) {
+    // 尝试六个方向的放置
+    const orientations = [
+      { l: box.length, w: box.width, h: box.height },
+      { l: box.width, w: box.length, h: box.height },
+      { l: box.length, w: box.height, h: box.width },
+      { l: box.height, w: box.length, h: box.width },
+      { l: box.width, w: box.height, h: box.length },
+      { l: box.height, w: box.width, h: box.length }
+    ];
+
+    for (const orientation of orientations) {
+      const position = {
+        x: point.x + orientation.l/2,
+        y: point.y + orientation.h/2,
+        z: point.z + orientation.w/2
+      };
+
+      if (isValidPosition(position, orientation, placedBoxes, containerSpace, gap)) {
+        const score = evaluatePosition(position, orientation, placedBoxes, containerSpace);
+        if (score > bestScore) {
+          bestScore = score;
+          bestPosition = position;
+        }
+      }
+    }
+  }
+
+  return bestPosition;
+}
+
+// 生成潜在的放置点
+function generatePotentialPoints(placedBoxes, containerSpace, gap) {
+  const points = new Set();
+  
+  // 添加容器左后下角作为初始点
+  points.add({
+    x: containerSpace.startX,
+    y: containerSpace.startY,
+    z: containerSpace.startZ
+  });
+
+  // 为每个已放置的箱子生成潜在点
+  placedBoxes.forEach(placedBox => {
+    // 上表面中心点
+    points.add({
+      x: placedBox.position.x,
+      y: placedBox.position.y + placedBox.carton.height/2 + gap,
+      z: placedBox.position.z
+    });
+
+    // 右侧表面中心点
+    points.add({
+      x: placedBox.position.x + placedBox.carton.length/2 + gap,
+      y: placedBox.position.y,
+      z: placedBox.position.z
+    });
+
+    // 前表面中心点
+    points.add({
+      x: placedBox.position.x,
+      y: placedBox.position.y,
+      z: placedBox.position.z + placedBox.carton.width/2 + gap
+    });
+  });
+
+  return Array.from(points);
+}
+
+// 检查底部支撑是否足够
+function hasAdequateSupport(position, boxDimensions, placedBoxes, gap) {
+  const SUPPORT_THRESHOLD = 0.7; // 要求70%的底面积有支撑
+  let supportedArea = 0;
+  const boxArea = boxDimensions.length * boxDimensions.width;
+
+  for (const placedBox of placedBoxes) {
+    if (Math.abs((placedBox.position.y + placedBox.carton.height/2) - (position.y - boxDimensions.height/2)) <= gap) {
+      const overlapArea = calculateOverlapArea(
+        position, boxDimensions,
+        placedBox.position, placedBox.carton
+      );
+      supportedArea += overlapArea;
+    }
+  }
+
+  return supportedArea >= boxArea * SUPPORT_THRESHOLD;
+}
+
+// 计算重叠面积
+function calculateOverlapArea(pos1, dim1, pos2, dim2) {
+  const xOverlap = Math.max(0,
+    Math.min(pos1.x + dim1.length/2, pos2.x + dim2.length/2) -
+    Math.max(pos1.x - dim1.length/2, pos2.x - dim2.length/2)
+  );
+
+  const zOverlap = Math.max(0,
+    Math.min(pos1.z + dim1.width/2, pos2.z + dim2.width/2) -
+    Math.max(pos1.z - dim1.width/2, pos2.z - dim2.width/2)
+  );
+
+  return xOverlap * zOverlap;
+}
+
+// 评估位置得分
+function evaluatePosition(position, boxDimensions, placedBoxes, containerSpace) {
+  let score = 0;
+  
+  // 优先选择较低的位置
+  score -= position.y * 2;
+  
+  // 优先靠近已放置的箱子
+  placedBoxes.forEach(placedBox => {
+    const distance = calculateDistance(position, placedBox.position);
+    score -= distance * 0.1;
+  });
+  
+  // 优先靠近容器边缘
+  score -= Math.min(
+    Math.abs(position.x - containerSpace.startX),
+    Math.abs(position.z - containerSpace.startZ)
+  ) * 0.5;
+
+  return score;
+}
+
+// 计算两点之间的距离
+function calculateDistance(pos1, pos2) {
+  return Math.sqrt(
+    Math.pow(pos1.x - pos2.x, 2) +
+    Math.pow(pos1.y - pos2.y, 2) +
+    Math.pow(pos1.z - pos2.z, 2)
+  );
+}
 
 // 检查两个箱子是否重叠
 function checkOverlap(box1Pos, box1Dim, box2Pos, box2Dim, gap = 2) {
@@ -89,26 +385,73 @@ function findSupportHeight(x, z, boxDimensions, placedBoxes) {
 
 // 检查位置是否有效
 function isValidPosition(position, boxDimensions, placedBoxes, containerDimensions) {
-  const BOX_GAP = 2;
-  const WALL_GAP = 5;
+  const BOX_GAP = 5;  // 增加箱子之间的间距
+  const WALL_GAP = 10; // 增加与墙壁的间距
+
+  // 计算当前箱子的边界
+  const boxMinX = position.x - boxDimensions.length/2;
+  const boxMaxX = position.x + boxDimensions.length/2;
+  const boxMinY = position.y - boxDimensions.height/2;
+  const boxMaxY = position.y + boxDimensions.height/2;
+  const boxMinZ = position.z - boxDimensions.width/2;
+  const boxMaxZ = position.z + boxDimensions.width/2;
+
+  // 计算容器的边界（考虑墙壁厚度和间距）
+  const containerMinX = -containerDimensions.internalLength/2 + containerDimensions.wallThickness + WALL_GAP;
+  const containerMaxX = containerDimensions.internalLength/2 - containerDimensions.wallThickness - WALL_GAP;
+  const containerMinY = -containerDimensions.internalHeight/2 + containerDimensions.wallThickness + WALL_GAP;
+  const containerMaxY = containerDimensions.internalHeight/2 - containerDimensions.wallThickness - WALL_GAP;
+  const containerMinZ = -containerDimensions.internalWidth/2 + containerDimensions.wallThickness + WALL_GAP;
+  const containerMaxZ = containerDimensions.internalWidth/2 - containerDimensions.wallThickness - WALL_GAP;
 
   // 检查是否超出容器边界
-  if (position.x - boxDimensions.length/2 < -containerDimensions.internalLength/2 + containerDimensions.wallThickness + WALL_GAP ||
-      position.x + boxDimensions.length/2 > containerDimensions.internalLength/2 - containerDimensions.wallThickness - WALL_GAP ||
-      position.y - boxDimensions.height/2 < -containerDimensions.internalHeight/2 + containerDimensions.wallThickness + WALL_GAP ||
-      position.y + boxDimensions.height/2 > containerDimensions.internalHeight/2 - containerDimensions.wallThickness - WALL_GAP ||
-      position.z - boxDimensions.width/2 < -containerDimensions.internalWidth/2 + containerDimensions.wallThickness + WALL_GAP ||
-      position.z + boxDimensions.width/2 > containerDimensions.internalWidth/2 - containerDimensions.wallThickness - WALL_GAP) {
-    console.log('Position out of bounds:', position);
+  if (boxMinX < containerMinX || boxMaxX > containerMaxX ||
+      boxMinY < containerMinY || boxMaxY > containerMaxY ||
+      boxMinZ < containerMinZ || boxMaxZ > containerMaxZ) {
     return false;
   }
 
-  // 检查与其他箱子的碰撞
+  // 检查与已放置箱子的碰撞（包括间距）
   for (const placedBox of placedBoxes) {
-    if (checkOverlap(position, boxDimensions, placedBox.position, placedBox.carton, BOX_GAP)) {
-      console.log('Overlap detected with:', placedBox);
+    const placedMinX = placedBox.position.x - placedBox.carton.length/2;
+    const placedMaxX = placedBox.position.x + placedBox.carton.length/2;
+    const placedMinY = placedBox.position.y - placedBox.carton.height/2;
+    const placedMaxY = placedBox.position.y + placedBox.carton.height/2;
+    const placedMinZ = placedBox.position.z - placedBox.carton.width/2;
+    const placedMaxZ = placedBox.position.z + placedBox.carton.width/2;
+
+    // 检查是否有重叠（考虑间距）
+    if (!(boxMaxX + BOX_GAP <= placedMinX - BOX_GAP || 
+          boxMinX - BOX_GAP >= placedMaxX + BOX_GAP ||
+          boxMaxY + BOX_GAP <= placedMinY - BOX_GAP || 
+          boxMinY - BOX_GAP >= placedMaxY + BOX_GAP ||
+          boxMaxZ + BOX_GAP <= placedMinZ - BOX_GAP || 
+          boxMinZ - BOX_GAP >= placedMaxZ + BOX_GAP)) {
       return false;
     }
+  }
+
+  // 检查底部支撑（除了第一层的箱子）
+  if (boxMinY > containerMinY + BOX_GAP) {
+    let hasSupport = false;
+    for (const placedBox of placedBoxes) {
+      const placedMaxY = placedBox.position.y + placedBox.carton.height/2;
+      
+      // 检查是否有箱子在正下方提供支撑
+      if (Math.abs(placedMaxY - boxMinY) <= BOX_GAP) {
+        // 检查水平方向的重叠
+        const overlapX = !(boxMaxX <= placedBox.position.x - placedBox.carton.length/2 ||
+                          boxMinX >= placedBox.position.x + placedBox.carton.length/2);
+        const overlapZ = !(boxMaxZ <= placedBox.position.z - placedBox.carton.width/2 ||
+                          boxMinZ >= placedBox.position.z + placedBox.carton.width/2);
+        
+        if (overlapX && overlapZ) {
+          hasSupport = true;
+          break;
+        }
+      }
+    }
+    if (!hasSupport) return false;
   }
 
   return true;
@@ -272,7 +615,7 @@ class ExtremePointSet {
   }
 }
 
-// 简单的位置查找算法
+// 修改简单的位置查找算法
 function findSimplePosition(boxDimensions, placedBoxes, containerDimensions) {
   console.log('Finding position for box:', boxDimensions);
   console.log('Placed boxes:', placedBoxes);
@@ -280,112 +623,58 @@ function findSimplePosition(boxDimensions, placedBoxes, containerDimensions) {
   const BOX_GAP = 2;
   const WALL_GAP = 5;
 
-  // 将容器尺寸转换为正值系统
-  const containerBounds = {
-    length: containerDimensions.internalLength,
-    width: containerDimensions.internalWidth,
-    height: containerDimensions.internalHeight,
-    wallThickness: containerDimensions.wallThickness
-  };
+  // 计算容器边界（使用中心点坐标系）
+  const containerMinX = -containerDimensions.internalLength/2 + containerDimensions.wallThickness + WALL_GAP;
+  const containerMaxX = containerDimensions.internalLength/2 - containerDimensions.wallThickness - WALL_GAP;
+  const containerMinY = -containerDimensions.internalHeight/2 + containerDimensions.wallThickness + WALL_GAP;
+  const containerMaxY = containerDimensions.internalHeight/2 - containerDimensions.wallThickness - WALL_GAP;
+  const containerMinZ = -containerDimensions.internalWidth/2 + containerDimensions.wallThickness + WALL_GAP;
+  const containerMaxZ = containerDimensions.internalWidth/2 - containerDimensions.wallThickness - WALL_GAP;
 
-  console.log('Container bounds:', containerBounds);
-
-  // 如果是第一个箱子
+  // 如果是第一个箱子，放在左后下角
   if (!placedBoxes || placedBoxes.length === 0) {
     return {
-      x: WALL_GAP + boxDimensions.length/2,
-      y: WALL_GAP + boxDimensions.height/2,
-      z: WALL_GAP + boxDimensions.width/2
+      x: containerMinX + boxDimensions.length/2,
+      y: containerMinY + boxDimensions.height/2,
+      z: containerMinZ + boxDimensions.width/2
     };
   }
 
-  // 初始化极点集合
-  const epSet = new ExtremePointSet(containerBounds);
-  console.log('Initialized EP set');
-
-  // 更新已放置箱子的极点
-  placedBoxes.forEach((box, index) => {
-    console.log(`Updating EP set for box ${index}:`, box);
-    // 确保所有已放置箱子的坐标都是正值
-    const adjustedPosition = {
-      x: Math.max(0, box.position.x),
-      y: Math.max(0, box.position.y),
-      z: Math.max(0, box.position.z)
-    };
-    epSet.updatePoints(box.carton, adjustedPosition, containerBounds);
-  });
-
-  // 获取所有极点
-  const points = epSet.getPoints();
-  console.log('Available extreme points:', points);
-
-  // 遍历所有极点，找到最佳放置位置
+  // 遍历所有可能的位置
   let bestPosition = null;
-  let minZ = Infinity;
-  let minY = Infinity;
-  let minX = Infinity;
+  let minY = Infinity;  // 优先选择底部
+  let minZ = Infinity;  // 其次选择后部
+  let minX = Infinity;  // 最后选择左侧
 
-  points.forEach((point, index) => {
-    console.log(`Checking point ${index}:`, point);
-    
-    const position = {
-      x: point.x + boxDimensions.length/2,
-      y: point.y + boxDimensions.height/2,
-      z: point.z + boxDimensions.width/2
-    };
+  // 从底部开始逐层搜索
+  for (let y = containerMinY; y <= containerMaxY - boxDimensions.height; y += BOX_GAP) {
+    // 从后向前搜索
+    for (let z = containerMinZ; z <= containerMaxZ - boxDimensions.width; z += BOX_GAP) {
+      // 从左向右搜索
+      for (let x = containerMinX; x <= containerMaxX - boxDimensions.length; x += BOX_GAP) {
+        const position = {
+          x: x + boxDimensions.length/2,
+          y: y + boxDimensions.height/2,
+          z: z + boxDimensions.width/2
+        };
 
-    console.log('Trying position:', position);
-
-    // 检查位置是否在容器范围内
-    if (position.x + boxDimensions.length/2 <= containerBounds.length - WALL_GAP &&
-        position.y + boxDimensions.height/2 <= containerBounds.height - WALL_GAP &&
-        position.z + boxDimensions.width/2 <= containerBounds.width - WALL_GAP) {
-      
-      if (isValidPosition(position, boxDimensions, placedBoxes, containerBounds)) {
-        console.log('Position is valid');
-        // 选择最靠前、最低、最左的位置
-        if (position.z < minZ || 
-           (position.z === minZ && position.y < minY) ||
-           (position.z === minZ && position.y === minY && position.x < minX)) {
-          bestPosition = position;
-          minZ = position.z;
-          minY = position.y;
-          minX = position.x;
-          console.log('New best position found:', bestPosition);
+        // 检查位置是否有效
+        if (isValidPosition(position, boxDimensions, placedBoxes, containerDimensions)) {
+          // 找到最低、最后、最左的有效位置
+          if (y < minY || 
+             (y === minY && z < minZ) ||
+             (y === minY && z === minZ && x < minX)) {
+            bestPosition = position;
+            minY = y;
+            minZ = z;
+            minX = x;
+          }
         }
       }
     }
-  });
+  }
 
-  console.log('Final best position:', bestPosition);
   return bestPosition;
-}
-
-// 检查位置是否有效
-function isValidPosition(position, boxDimensions, placedBoxes, containerBounds) {
-  const BOX_GAP = 2;
-  const WALL_GAP = 5;
-
-  // 检查是否在容器范围内
-  if (position.x - boxDimensions.length/2 < WALL_GAP ||
-      position.x + boxDimensions.length/2 > containerBounds.length - WALL_GAP ||
-      position.y - boxDimensions.height/2 < WALL_GAP ||
-      position.y + boxDimensions.height/2 > containerBounds.height - WALL_GAP ||
-      position.z - boxDimensions.width/2 < WALL_GAP ||
-      position.z + boxDimensions.width/2 > containerBounds.width - WALL_GAP) {
-    console.log('Position out of bounds:', position);
-    return false;
-  }
-
-  // 检查与其他箱子的碰撞
-  for (const placedBox of placedBoxes) {
-    if (checkOverlap(position, boxDimensions, placedBox.position, placedBox.carton, BOX_GAP)) {
-      console.log('Overlap detected with:', placedBox);
-      return false;
-    }
-  }
-
-  return true;
 }
 
 // 找到下一个有效位置
@@ -478,148 +767,169 @@ function calculatePositionScore(position, boxDimensions, placedBoxes, containerD
     const dy = Math.abs(position.y - placedBox.position.y);
     const dz = Math.abs(position.z - placedBox.position.z);
 
-    if (dx <= boxDimensions.l/2 + placedBox.carton.length/2 + BOX_GAP) score += 1;
-    if (dy <= boxDimensions.h/2 + placedBox.carton.height/2 + BOX_GAP) score += 1;
-    if (dz <= boxDimensions.w/2 + placedBox.carton.width/2 + BOX_GAP) score += 1;
+    if (dx <= boxDimensions.length/2 + placedBox.carton.length/2 + BOX_GAP) score += 1;
+    if (dy <= boxDimensions.height/2 + placedBox.carton.height/2 + BOX_GAP) score += 1;
+    if (dz <= boxDimensions.width/2 + placedBox.carton.width/2 + BOX_GAP) score += 1;
   }
 
   return score;
 }
 
+// 修改装箱算法，使用改进的极点算法（Extreme Point Algorithm）
 function findBestPositionEP(boxDimensions, placedBoxes, containerDimensions) {
-  try {
-    const { length: boxLength, width: boxWidth, height: boxHeight } = boxDimensions;
-    const { 
-      internalLength: containerLength, 
-      internalWidth: containerWidth, 
-      internalHeight: containerHeight,
-      wallThickness 
-    } = containerDimensions;
+  const { length: boxLength, width: boxWidth, height: boxHeight } = boxDimensions;
+  const { 
+    internalLength: containerLength, 
+    internalWidth: containerWidth, 
+    internalHeight: containerHeight,
+    wallThickness 
+  } = containerDimensions;
 
-    const WALL_GAP = 5;
-    const BOX_GAP = 2;
-    const STEP_SIZE = Math.min(BOX_GAP * 2, Math.min(boxLength, boxWidth, boxHeight) / 8);
+  const WALL_GAP = 5;
+  const BOX_GAP = 2;
 
-    // 计算容器的起始点（左后下角）
-    const startX = -containerLength/2 + wallThickness + WALL_GAP;
-    const startY = -containerHeight/2 + wallThickness + WALL_GAP;
-    const startZ = -containerWidth/2 + wallThickness + WALL_GAP;
+  // 计算容器的起始点（左后下角）
+  const startX = -containerLength/2 + wallThickness + WALL_GAP;
+  const startY = -containerHeight/2 + wallThickness + WALL_GAP;
+  const startZ = -containerWidth/2 + wallThickness + WALL_GAP;
 
-    // 增加更多的放置方向选项
-    const orientations = [
-      { l: boxLength, w: boxWidth, h: boxHeight },
-      { l: boxWidth, w: boxLength, h: boxHeight },
-      { l: boxLength, w: boxHeight, h: boxWidth },
-      { l: boxHeight, w: boxLength, h: boxWidth },
-      { l: boxWidth, w: boxHeight, h: boxLength },
-      { l: boxHeight, w: boxWidth, h: boxLength }
-    ];
+  // 增加所有可能的放置方向
+  const orientations = [
+    { l: boxLength, w: boxWidth, h: boxHeight },
+    { l: boxWidth, w: boxLength, h: boxHeight },
+    { l: boxLength, w: boxHeight, h: boxWidth },
+    { l: boxHeight, w: boxLength, h: boxWidth },
+    { l: boxWidth, w: boxHeight, h: boxLength },
+    { l: boxHeight, w: boxWidth, h: boxLength }
+  ];
 
-    // 创建空间索引
-    const occupiedSpaces = new Map();
-    placedBoxes.forEach(box => {
-      const { position: pos, carton } = box;
-      for (let x = pos.x - carton.length/2; x <= pos.x + carton.length/2; x += STEP_SIZE) {
-        for (let y = pos.y - carton.height/2; y <= pos.y + carton.height/2; y += STEP_SIZE) {
-          for (let z = pos.z - carton.width/2; z <= pos.z + carton.width/2; z += STEP_SIZE) {
-            const key = `${Math.floor(x/STEP_SIZE)},${Math.floor(y/STEP_SIZE)},${Math.floor(z/STEP_SIZE)}`;
-            occupiedSpaces.set(key, box);
-          }
-        }
-      }
-    });
+  let bestPosition = null;
+  let bestScore = -Infinity;
 
-    const potentialPoints = [];
+  // 对每个方向尝试放置
+  for (const orientation of orientations) {
+    // 生成极点集
+    const extremePoints = generateExtremePoints(placedBoxes, containerDimensions);
     
-    // 从底部开始逐层查找
-    for (let y = startY; y <= containerHeight/2 - wallThickness - WALL_GAP - boxHeight; y += STEP_SIZE) {
-      // 对每一层，从前到后搜索
-      for (let z = startZ; z <= containerWidth/2 - wallThickness - WALL_GAP - boxWidth; z += STEP_SIZE) {
-        // 从左到右搜索
-        for (let x = startX; x <= containerLength/2 - wallThickness - WALL_GAP - boxLength; x += STEP_SIZE) {
-          // 尝试每个方向
-          for (const orientation of orientations) {
-            const position = {
-              x: x + orientation.l/2,
-              y: y + orientation.h/2,
-              z: z + orientation.w/2
-            };
+    // 对每个极点尝试放置
+    for (const point of extremePoints) {
+      const position = {
+        x: point.x + orientation.l/2,
+        y: point.y + orientation.h/2,
+        z: point.z + orientation.w/2
+      };
 
-            let isValid = true;
-            // 检查与已放置箱子的碰撞
-            for (const placedBox of placedBoxes) {
-              const { position: pos, carton } = placedBox;
-              const dx = Math.abs(position.x - pos.x);
-              const dy = Math.abs(position.y - pos.y);
-              const dz = Math.abs(position.z - pos.z);
-              
-              if (dx < (orientation.l + carton.length)/2 + BOX_GAP &&
-                  dy < (orientation.h + carton.height)/2 + BOX_GAP &&
-                  dz < (orientation.w + carton.width)/2 + BOX_GAP) {
-                isValid = false;
-                break;
-              }
-            }
-
-            if (isValid) {
-              // 计算位置得分
-              let score = 0;
-              
-              // 优先选择靠近底部的位置
-              score += (containerHeight - position.y) * 2;
-              
-              // 优先选择靠近其他箱子的位置
-              for (const placedBox of placedBoxes) {
-                const { position: pos } = placedBox;
-                const distance = Math.sqrt(
-                  Math.pow(position.x - pos.x, 2) +
-                  Math.pow(position.y - pos.y, 2) +
-                  Math.pow(position.z - pos.z, 2)
-                );
-                if (distance < boxLength + boxWidth + boxHeight) {
-                  score += 10 / (distance + 1);
-                }
-              }
-              
-              // 优先选择靠近墙壁的位置
-              if (Math.abs(position.x - startX) < STEP_SIZE) score += 5;
-              if (Math.abs(position.z - startZ) < STEP_SIZE) score += 5;
-              if (Math.abs(position.y - startY) < STEP_SIZE) score += 5;
-
-              potentialPoints.push({
-                position,
-                score
-              });
-            }
-          }
+      // 验证位置是否有效（包括间距检查）
+      if (isValidPosition(position, orientation, placedBoxes, containerDimensions)) {
+        // 计算位置得分
+        const score = calculatePositionScore(position, orientation, placedBoxes, containerDimensions);
+        
+        if (score > bestScore) {
+          bestScore = score;
+          bestPosition = position;
         }
       }
     }
-
-    // 如果找到了可用位置，返回得分最高的
-    if (potentialPoints.length > 0) {
-      potentialPoints.sort((a, b) => b.score - a.score);
-      return potentialPoints[0].position;
-    }
-
-    // 如果是第一个箱子，返回起始位置
-    if (placedBoxes.length === 0) {
-      return {
-        x: startX + boxLength/2,
-        y: startY + boxHeight/2,
-        z: startZ + boxWidth/2
-      };
-    }
-
-    return null;
-  } catch (error) {
-    console.error('Error in findBestPositionEP:', error);
-    throw error;
   }
+
+  return bestPosition;
 }
 
 // 添加错误处理
 self.onerror = function(error) {
   console.error('Worker global error:', error);
   self.postMessage({ error: error.message });
-}; 
+};
+
+// 按层对已放置的箱子进行分组
+function groupBoxesByLayers(placedBoxes) {
+  const layers = [];
+  const tolerance = 5; // 允许的高度误差
+
+  placedBoxes.forEach(box => {
+    const boxBottomY = box.position.y - box.carton.height/2;
+    
+    // 查找box所属的层
+    let layerFound = false;
+    for (const layer of layers) {
+      const layerBottomY = layer[0].position.y - layer[0].carton.height/2;
+      
+      if (Math.abs(boxBottomY - layerBottomY) <= tolerance) {
+        layer.push(box);
+        layerFound = true;
+        break;
+      }
+    }
+    
+    if (!layerFound) {
+      layers.push([box]);
+    }
+  });
+
+  // 按Y坐标排序
+  return layers.sort((a, b) => {
+    const aY = a[0].position.y - a[0].carton.height/2;
+    const bY = b[0].position.y - b[0].carton.height/2;
+    return aY - bY;
+  });
+}
+
+// 计算层的高度
+function calculateLayerHeight(layer) {
+  if (!layer || layer.length === 0) return 0;
+  
+  return Math.max(...layer.map(box => 
+    box.position.y + box.carton.height/2
+  )) - Math.min(...layer.map(box => 
+    box.position.y - box.carton.height/2
+  ));
+}
+
+// 在当前层寻找合适的位置
+function findPositionInCurrentLayer(box, currentLayer, bounds, placedBoxes, BOX_GAP) {
+  const { startX, startZ, usableLength, usableWidth } = bounds;
+  
+  if (!currentLayer || currentLayer.length === 0) return null;
+
+  // 获取当前层的Y坐标
+  const layerY = currentLayer[0].position.y - currentLayer[0].carton.height/2;
+  
+  // 在当前层找到最右边的箱子
+  const rightmostBox = currentLayer.reduce((rightmost, current) => {
+    const currentRight = current.position.x + current.carton.length/2;
+    const rightmostRight = rightmost ? rightmost.position.x + rightmost.carton.length/2 : -Infinity;
+    return currentRight > rightmostRight ? current : rightmost;
+  }, null);
+
+  // 计算新位置
+  const newX = rightmostBox.position.x + rightmostBox.carton.length/2 + BOX_GAP + box.carton.length/2;
+  
+  // 检查是否超出容器边界
+  if (newX + box.carton.length/2 > startX + usableLength) {
+    // 尝试开始新的一行
+    const newRowZ = Math.max(...currentLayer.map(b => b.position.z + b.carton.width/2)) + BOX_GAP;
+    
+    if (newRowZ + box.carton.width <= startZ + usableWidth) {
+      const position = {
+        x: startX + box.carton.length/2,
+        y: layerY + box.carton.height/2,
+        z: newRowZ + box.carton.width/2
+      };
+      
+      // 验证位置是否有效
+      if (isValidPosition(position, box.carton, placedBoxes, bounds)) {
+        return position;
+      }
+    }
+    return null;
+  }
+
+  const position = {
+    x: newX,
+    y: layerY + box.carton.height/2,
+    z: rightmostBox.position.z
+  };
+
+  // 验证位置是否有效
+  return isValidPosition(position, box.carton, placedBoxes, bounds) ? position : null;
+} 
