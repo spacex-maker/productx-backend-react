@@ -8,6 +8,7 @@ const UpdateSysConfigModal = ({
   form,
   handleUpdateConfig,
   selectedConfig,
+  t
 }) => {
   useEffect(() => {
     if (isVisible && selectedConfig) {
@@ -22,12 +23,12 @@ const UpdateSysConfigModal = ({
 
   return (
     <Modal
-      title="修改配置"
+      title={t('editConfig')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      okText="确认"
-      cancelText="取消"
+      okText={t('confirm')}
+      cancelText={t('cancel')}
     >
       <Form form={form} onFinish={handleUpdateConfig}>
         <Form.Item name="id" hidden>
@@ -35,26 +36,26 @@ const UpdateSysConfigModal = ({
         </Form.Item>
 
         <Form.Item
-          label="配置键"
+          label={t('configKey')}
           name="configKey"
-          rules={[{ required: true, message: '请输入配置键' }]}
+          rules={[{ required: true, message: t('pleaseInputConfigKey') }]}
         >
           <Input disabled />
         </Form.Item>
 
         <Form.Item
-          label="配置值"
+          label={t('configValue')}
           name="configValue"
-          rules={[{ required: true, message: '请输入配置值' }]}
+          rules={[{ required: true, message: t('pleaseInputConfigValue') }]}
         >
-          <Input.TextArea rows={4} />
+          <Input.TextArea rows={4} placeholder={t('pleaseInputConfigValue')} />
         </Form.Item>
 
         <Form.Item
-          label="描述"
+          label={t('description')}
           name="description"
         >
-          <Input.TextArea rows={2} />
+          <Input.TextArea rows={2} placeholder={t('pleaseInputDescription')} />
         </Form.Item>
       </Form>
     </Modal>

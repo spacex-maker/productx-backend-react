@@ -8,6 +8,7 @@ const SysConfigTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  t
 }) => {
   return (
     <table className="table table-bordered table-striped">
@@ -25,10 +26,10 @@ const SysConfigTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {['配置键', '配置值', '描述', '创建时间', '更新时间'].map((field) => (
+          {[t('configKey'), t('configValue'), t('description'), t('createTime'), t('updateTime')].map((field) => (
             <th key={field}>{field}</th>
           ))}
-          <th className="fixed-column">操作</th>
+          <th className="fixed-column">{t('operations')}</th>
         </tr>
       </thead>
       <tbody>
@@ -56,7 +57,7 @@ const SysConfigTable = ({
             <td className="text-truncate">{item.updateTime}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
-                修改
+                {t('edit')}
               </Button>
             </td>
           </tr>

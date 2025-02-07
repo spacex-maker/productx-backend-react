@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination"
 import CurrencyTable from "src/views/base/sysCurrencies/CurrencyTable"
 import UpdateCurrencyModal from "src/views/base/sysCurrencies/UpdateCurrencyModal"
 import CurrencyCreateFormModal from "src/views/base/sysCurrencies/CurrencyCreateFormModal"
+import { useTranslation } from 'react-i18next'
 
 const { Option } = Select;
 
@@ -23,6 +24,7 @@ const updateCurrency = async (updateData) => {
 }
 
 const CurrencyList = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
   const [currentPage, setCurrent] = useState(1)
@@ -129,7 +131,7 @@ const CurrencyList = () => {
                 value={searchParams.currencyName}
                 onChange={handleSearchChange}
                 name="currencyName"
-                placeholder="英文名称"
+                placeholder={t('searchCurrencyNameEn')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -139,7 +141,7 @@ const CurrencyList = () => {
                 value={searchParams.descriptionZh}
                 onChange={handleSearchChange}
                 name="descriptionZh"
-                placeholder="搜索中文名称"
+                placeholder={t('searchCurrencyNameZh')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -149,7 +151,7 @@ const CurrencyList = () => {
                 value={searchParams.currencyCode}
                 onChange={handleSearchChange}
                 name="currencyCode"
-                placeholder="搜索货币代码"
+                placeholder={t('searchCurrencyCode')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -159,11 +161,11 @@ const CurrencyList = () => {
                 name="status"
                 onChange={(value) => handleSearchChange({target: {name: 'status', value}})}
                 allowClear
-                placeholder="是否启用"
+                placeholder={t('selectStatus')}
                 style={{ width: 150 }}
               >
-                <Select.Option value="true">启用</Select.Option>
-                <Select.Option value="false">禁用</Select.Option>
+                <Select.Option value="true">{t('enabled')}</Select.Option>
+                <Select.Option value="false">{t('disabled')}</Select.Option>
               </Select>
             </Col>
             <Col>
@@ -173,13 +175,13 @@ const CurrencyList = () => {
                   onClick={fetchData}
                   disabled={isLoading}
                 >
-                  {isLoading ? <Spin/> : '查询'}
+                  {isLoading ? <Spin/> : t('search')}
                 </Button>
                 <Button
                   type="primary" 
                   onClick={() => setIsCreateModalVisible(true)}
                 >
-                  新增货币
+                  {t('addCurrency')}
                 </Button>
                 <Button
                   type="primary"
@@ -187,10 +189,11 @@ const CurrencyList = () => {
                     url: '/manage/currency/delete-batch',
                     selectedRows,
                     fetchData,
+                    t,
                   })}
                   disabled={selectedRows.length === 0}
                 >
-                  批量删除
+                  {t('batchDelete')}
                 </Button>
               </Space>
             </Col>
@@ -209,6 +212,7 @@ const CurrencyList = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             handleDetailClick={handleDetailClick}
+            t={t}
           />
         </Spin>
       </div>

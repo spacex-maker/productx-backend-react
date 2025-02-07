@@ -8,8 +8,10 @@ import TmsContainerTable from "./TmsContainerTable"
 import UpdateTmsContainerModal from "./UpdateTmsContainerModel"
 import TmsContainerCreateFormModal from "./TmsContainerCreateFormModel"
 import TmsContainerDetail from "./TmsContainerDetail"
+import { useTranslation } from 'react-i18next'
 
 const TmsContainer = () => {
+  const { t } = useTranslation()
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
   const [currentPage, setCurrent] = useState(1)
@@ -45,8 +47,8 @@ const TmsContainer = () => {
         setTotalNum(response.totalNum)
       }
     } catch (error) {
-      console.error('获取数据失败', error)
-      message.error('获取数据失败')
+      console.error(t('fetchDataFailed'), error)
+      message.error(t('fetchDataFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -79,7 +81,7 @@ const TmsContainer = () => {
               <Input
                 value={searchParams.containerType}
                 onChange={(e) => handleSearchChange(e.target.value, 'containerType')}
-                placeholder="集装箱类型"
+                placeholder={t('containerType')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -91,13 +93,13 @@ const TmsContainer = () => {
                   onClick={fetchData}
                   disabled={isLoading}
                 >
-                  {isLoading ? <Spin /> : '查询'}
+                  {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button
                   type="primary"
                   onClick={() => setIsCreateModalVisible(true)}
                 >
-                  新增集装箱
+                  {t('addContainer')}
                 </Button>
                 <Button
                   type="primary"
@@ -105,10 +107,11 @@ const TmsContainer = () => {
                     url: '/manage/tms-container/delete-batch',
                     selectedRows,
                     fetchData,
+                    t,
                   })}
                   disabled={selectedRows.length === 0}
                 >
-                  批量删除
+                  {t('batchDelete')}
                 </Button>
               </Space>
             </Col>
@@ -129,6 +132,7 @@ const TmsContainer = () => {
               setSelectedContainer(container);
               setIsDetailModalVisible(true);
             }}
+            t={t}
           />
         </Spin>
       </div>
@@ -178,7 +182,7 @@ const TmsContainer = () => {
       />
 
       <Modal
-        title="集装箱详情"
+        title={t('containerDetail')}
         open={isDetailModalVisible}
         onCancel={() => {
           setIsDetailModalVisible(false);
@@ -192,7 +196,7 @@ const TmsContainer = () => {
         destroyOnClose={true}
       >
         {isDetailModalVisible && selectedContainer && (
-          <TmsContainerDetail container={selectedContainer} />
+          <TmsContainerDetail container={selectedContainer} t={t} />
         )}
       </Modal>
     </div>

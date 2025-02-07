@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Card, Descriptions, Row, Col, Button, Space } from 'antd';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { useTranslation } from 'react-i18next';
 
 const BasicInfo = ({ container }) => {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   const rendererRef = useRef(null);
   const sceneRef = useRef(null);
@@ -606,7 +608,7 @@ const BasicInfo = ({ container }) => {
       {/* 上方：3D模型展示 */}
       <Col span={24}>
         <Card 
-          title="3D模型展示" 
+          title={t('3dModel')} 
           bordered={false}
           bodyStyle={{ padding: '12px' }}
         >
@@ -628,7 +630,7 @@ const BasicInfo = ({ container }) => {
             {/* 左侧：集装箱规格 */}
             <Col span={16}>
               <Card 
-                title="集装箱规格" 
+                title={t('specifications')} 
                 bordered={false}
                 bodyStyle={{ padding: '12px' }}
                 size="small"
@@ -636,32 +638,32 @@ const BasicInfo = ({ container }) => {
                 <Row gutter={[16, 0]}>
                   <Col span={12}>
                     <Descriptions column={1} bordered size="small">
-                      <Descriptions.Item label="集装箱类型">
+                      <Descriptions.Item label={t('type')}>
                         {container.containerType}
                       </Descriptions.Item>
-                      <Descriptions.Item label="外部尺寸">
+                      <Descriptions.Item label={t('externalDimensions')}>
                         {`${container.externalLength} × ${container.externalWidth} × ${container.externalHeight} mm`}
                       </Descriptions.Item>
-                      <Descriptions.Item label="内部尺寸">
+                      <Descriptions.Item label={t('internalDimensions')}>
                         {`${container.internalLength} × ${container.internalWidth} × ${container.internalHeight} mm`}
                       </Descriptions.Item>
-                      <Descriptions.Item label="门尺寸">
+                      <Descriptions.Item label={t('doorDimensions')}>
                         {`${container.doorWidth} × ${container.doorHeight} mm`}
                       </Descriptions.Item>
                     </Descriptions>
                   </Col>
                   <Col span={12}>
                     <Descriptions column={1} bordered size="small">
-                      <Descriptions.Item label="标称体积">
+                      <Descriptions.Item label={t('nominalVolume')}>
                         {`${container.volume} m³`}
                       </Descriptions.Item>
-                      <Descriptions.Item label="最大载重">
+                      <Descriptions.Item label={t('maxPayload')}>
                         {`${container.maxPayload} kg / ${(container.maxPayload/1000).toFixed(1)} T`}
                       </Descriptions.Item>
-                      <Descriptions.Item label="自重">
+                      <Descriptions.Item label={t('tareWeight')}>
                         {`${container.tareWeight} kg / ${(container.tareWeight/1000).toFixed(1)} T`}
                       </Descriptions.Item>
-                      <Descriptions.Item label="总重">
+                      <Descriptions.Item label={t('grossWeight')}>
                         {`${container.maxPayload + container.tareWeight} kg / ${((container.maxPayload + container.tareWeight)/1000).toFixed(1)} T`}
                       </Descriptions.Item>
                     </Descriptions>
@@ -673,21 +675,21 @@ const BasicInfo = ({ container }) => {
             {/* 右侧：ISO标准 */}
             <Col span={8}>
               <Card 
-                title="ISO标准" 
+                title={t('isoStandards')} 
                 bordered={false}
                 bodyStyle={{ padding: '12px' }}
                 size="small"
               >
                 <Descriptions column={1} bordered size="small">
-                  <Descriptions.Item label="适用标准">
+                  <Descriptions.Item label={t('applicableStandards')}>
                     ISO 668 / 1496 / 6346
                   </Descriptions.Item>
-                  <Descriptions.Item label="角件规格">
+                  <Descriptions.Item label={t('cornerFittings')}>
                     178 × 162 × 118 mm
                   </Descriptions.Item>
                   {container.containerType.startsWith('20') && (
-                    <Descriptions.Item label="叉车口规格">
-                      352 × 115 mm，距端部 2050±50 mm
+                    <Descriptions.Item label={t('forkliftPockets')}>
+                      352 × 115 mm, {t('distanceFromEnd')} 2050±50 mm
                     </Descriptions.Item>
                   )}
                 </Descriptions>

@@ -7,8 +7,11 @@ import Pagination from 'src/components/common/Pagination';
 import ShippingMethodTable from './UserShippingMethodTable';
 import UpdateShippingMethodModal from './UpdateUserShippingMethodModal';
 import ShippingMethodCreateFormModal from './UserShippingMethodCreateFormModal';
+import { useTranslation } from 'react-i18next';
 
 const ShippingMethodList = () => {
+  const { t } = useTranslation();
+  
   const [data, setData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
@@ -46,7 +49,8 @@ const ShippingMethodList = () => {
         setTotalNum(response.totalNum);
       }
     } catch (error) {
-      console.error('获取数据失败', error);
+      console.error(t('fetchDataFailed'), error);
+      message.error(t('fetchDataFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -62,17 +66,27 @@ const ShippingMethodList = () => {
   };
 
   const handleCreateMethod = async (values) => {
-    await api.post('/manage/user-shipping-method/create', values);
-    setIsCreateModalVisible(false);
-    createForm.resetFields();
-    await fetchData();
+    try {
+      await api.post('/manage/user-shipping-method/create', values);
+      message.success(t('createSuccess'));
+      setIsCreateModalVisible(false);
+      createForm.resetFields();
+      await fetchData();
+    } catch (error) {
+      message.error(t('createFailed'));
+    }
   };
 
   const handleUpdateMethod = async (values) => {
-    await api.put('/manage/user-shipping-method/update', values);
-    setIsUpdateModalVisible(false);
-    updateForm.resetFields();
-    await fetchData();
+    try {
+      await api.put('/manage/user-shipping-method/update', values);
+      message.success(t('updateSuccess'));
+      setIsUpdateModalVisible(false);
+      updateForm.resetFields();
+      await fetchData();
+    } catch (error) {
+      message.error(t('updateFailed'));
+    }
   };
 
   const handleEditClick = (method) => {
@@ -93,7 +107,7 @@ const ShippingMethodList = () => {
                 value={searchParams.shippingMethod}
                 onChange={handleSearchChange}
                 name="shippingMethod"
-                placeholder="配送方式名称"
+                placeholder={t('shippingMethodName')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -105,13 +119,13 @@ const ShippingMethodList = () => {
                   onClick={fetchData}
                   disabled={isLoading}
                 >
-                  {isLoading ? <Spin /> : '查询'}
+                  {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button
                   type="primary"
                   onClick={() => setIsCreateModalVisible(true)}
                 >
-                  新增配送方式
+                  {t('addShippingMethod')}
                 </Button>
                 <Button
                   type="primary"
@@ -120,11 +134,12 @@ const ShippingMethodList = () => {
                       url: '/manage/user-shipping-method/delete',
                       selectedRows,
                       fetchData,
+                      t,
                     })
                   }
                   disabled={selectedRows.length === 0}
                 >
-                  批量删除
+                  {t('batchDelete')}
                 </Button>
               </Space>
             </Col>
@@ -141,6 +156,7 @@ const ShippingMethodList = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            t={t}
           />
         </Spin>
       </div>
@@ -156,6 +172,7 @@ const ShippingMethodList = () => {
         onCancel={() => setIsCreateModalVisible(false)}
         onFinish={handleCreateMethod}
         form={createForm}
+        t={t}
       />
       <UpdateShippingMethodModal
         isVisible={isUpdateModalVisible}
@@ -164,6 +181,7 @@ const ShippingMethodList = () => {
         form={updateForm}
         handleUpdateMethod={handleUpdateMethod}
         selectedMethod={selectedMethod}
+        t={t}
       />
     </div>
   );

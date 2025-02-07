@@ -199,98 +199,70 @@ const BankList = () => {
 
   return (
     <div>
-      <div className="mb-3">
-        <div className="search-container">
-          <Row gutter={[16, 16]}>
+      <div className="card">
+        <div className="card-body">
+          <Row gutter={16}>
             <Col>
               <Input
+                placeholder={t('enterBankName')}
                 value={searchParams.bankName}
                 onChange={handleSearchChange}
                 name="bankName"
-                placeholder="银行名称"
                 allowClear
                 style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
+                placeholder={t('enterSwiftCode')}
                 value={searchParams.swiftCode}
                 onChange={handleSearchChange}
                 name="swiftCode"
-                placeholder="SWIFT代码"
                 allowClear
                 style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Select
+                placeholder={t('selectCountry')}
                 value={searchParams.countryCode}
-                onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value }})}
-                placeholder="国家"
+                onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value } })}
                 allowClear
-                showSearch
                 loading={loadingCountries}
                 style={{ width: 150 }}
-                filterOption={(input, option) => {
-                  const country = countries.find(c => c.code === option.value);
-                  return (
-                    country?.name.toLowerCase().includes(input.toLowerCase()) ||
-                    country?.code.toLowerCase().includes(input.toLowerCase())
-                  );
-                }}
               >
                 {countries.map(country => countryOption(country))}
               </Select>
             </Col>
             <Col>
               <Input
+                placeholder={t('enterCity')}
                 value={searchParams.city}
                 onChange={handleSearchChange}
                 name="city"
-                placeholder="城市"
                 allowClear
                 style={{ width: 150 }}
               />
             </Col>
             <Col>
-              <Select
-                value={searchParams.status}
-                onChange={(value) => handleSearchChange({ target: { name: 'status', value }})}
-                allowClear
-                placeholder="是否支持"
-                style={{ width: 150 }}
-              >
-                <Select.Option value="true">支持</Select.Option>
-                <Select.Option value="false">不支持</Select.Option>
-              </Select>
-            </Col>
-            <Col>
               <Space>
-                <Button
-                  type="primary"
-                  onClick={fetchData}
-                  disabled={isLoading}
-                >
-                  {isLoading ? <Spin /> : '查询'}
+                <Button type="primary" onClick={fetchData}>
+                  {t('search')}
+                </Button>
+                <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
+                  {t('createBank')}
                 </Button>
                 <Button
                   type="primary"
-                  onClick={() => setIsCreateModalVisible(true)}
-                >
-                  新增银行
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() =>
-                    HandleBatchDelete({
-                      url: '/manage/bank/delete-batch',
-                      selectedRows,
-                      fetchData,
-                    })
-                  }
+                  onClick={() => HandleBatchDelete({
+                    url: '/manage/global-bank/delete-batch',
+                    selectedRows,
+                    fetchData,
+                    t,
+                  })}
                   disabled={selectedRows.length === 0}
                 >
-                  批量删除
+                  {t('batchDelete')}
                 </Button>
               </Space>
             </Col>

@@ -9,6 +9,7 @@ const CurrencyTable = ({
                          handleSelectRow,
                          handleStatusChange,
                          handleEditClick,
+                         t
                        }) => {
   return (
     <table className="table table-bordered table-striped">
@@ -26,11 +27,18 @@ const CurrencyTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', 'English Name', '中文名称', '货币代码', '符号', '状态'].map((field) => (
+        {[
+          'ID', 
+          t('currencyNameEn'), 
+          t('currencyNameZh'), 
+          t('currencyCode'), 
+          t('currencySymbol'), 
+          t('status')
+        ].map((field) => (
           <th key={field}>{field}</th>
         ))}
-        <th className="fixed-column"
-            key='操作'>操作
+        <th className="fixed-column">
+          {t('operations')}
         </th>
       </tr>
       </thead>
@@ -67,7 +75,7 @@ const CurrencyTable = ({
           </td>
           <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>
-              修改
+              {t('edit')}
             </Button>
           </td>
         </tr>

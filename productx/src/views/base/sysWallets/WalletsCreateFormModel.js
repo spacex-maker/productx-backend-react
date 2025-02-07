@@ -37,10 +37,12 @@ const WalletCreateFormModal = ({
 
   return (
     <Modal
-      title="新增钱包"
+      title={t('addWallet')}
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
+      okText={t('confirm')}
+      cancelText={t('cancel')}
     >
       <Form 
         form={form} 
@@ -48,23 +50,23 @@ const WalletCreateFormModal = ({
         autoComplete="off"
       >
         <Form.Item
-          label="密码"
+          label={t('password')}
           name="password"
-          rules={[{ required: true, message: '请输入钱包密码' }]}
+          rules={[{ required: true, message: t('pleaseInputPassword') }]}
         >
           <Input.Password 
-            placeholder="请输入密码" 
+            placeholder={t('pleaseInputPassword')} 
             autoComplete="new-password"
           />
         </Form.Item>
 
         <Form.Item
-          label="钱包类型"
+          label={t('walletType')}
           name="type"
-          rules={[{ required: true, message: '请选择钱包类型' }]}
+          rules={[{ required: true, message: t('pleaseSelectWalletType') }]}
         >
           <Select 
-            placeholder="请选择钱包类型" 
+            placeholder={t('pleaseSelectWalletType')} 
             allowClear
           >
             {cryptoCurrencies.map((crypto) => (
@@ -76,24 +78,24 @@ const WalletCreateFormModal = ({
         </Form.Item>
 
         <Form.Item
-          label="钱包标签"
+          label={t('walletLabel')}
           name="label"
-          rules={[{ required: true, message: '请输入钱包标签' }]}
+          rules={[{ required: true, message: t('pleaseInputWalletLabel') }]}
         >
           <Input 
-            placeholder="例如：My Wallet" 
+            placeholder={t('walletLabelExample')} 
             autoComplete="off"
           />
         </Form.Item>
 
         <Form.Item
-          label="国家码"
+          label={t('countryCode')}
           name="countryCode"
-          rules={[{ required: true, message: '请选择国家码' }]}
+          rules={[{ required: true, message: t('pleaseSelectCountry') }]}
         >
           <Select
             showSearch
-            placeholder="请选择国家"
+            placeholder={t('pleaseSelectCountry')}
             allowClear
             optionFilterProp="children"
             filterOption={(input, option) => {

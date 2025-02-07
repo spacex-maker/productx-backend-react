@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, InputNumber } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const UpdateTmsContainerModal = ({
   isVisible,
@@ -9,6 +10,8 @@ const UpdateTmsContainerModal = ({
   handleUpdateContainer,
   selectedContainer,
 }) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (isVisible && selectedContainer) {
       form.setFieldsValue(selectedContainer);
@@ -17,12 +20,12 @@ const UpdateTmsContainerModal = ({
 
   return (
     <Modal
-      title="修改集装箱"
+      title={t('updateContainer')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      okText="确认"
-      cancelText="取消"
+      okText={t('confirm')}
+      cancelText={t('cancel')}
       width={800}
     >
       <Form 
@@ -36,99 +39,99 @@ const UpdateTmsContainerModal = ({
         </Form.Item>
 
         <Form.Item
-          label="集装箱类型"
+          label={t('containerType')}
           name="containerType"
-          rules={[{ required: true, message: '请输入集装箱类型' }]}
+          rules={[{ required: true, message: t('pleaseEnterContainerType') }]}
         >
-          <Input placeholder="请输入集装箱类型" />
+          <Input placeholder={t('pleaseEnterContainerType')} />
         </Form.Item>
 
         <Form.Item
-          label="内部长度(mm)"
+          label={t('internalLength')}
           name="internalLength"
-          rules={[{ required: true, message: '请输入内部长度' }]}
+          rules={[{ required: true, message: t('pleaseEnterInternalLength') }]}
         >
-          <InputNumber placeholder="请输入内部长度" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterInternalLength')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="内部宽度(mm)"
+          label={t('internalWidth')}
           name="internalWidth"
-          rules={[{ required: true, message: '请输入内部宽度' }]}
+          rules={[{ required: true, message: t('pleaseEnterInternalWidth') }]}
         >
-          <InputNumber placeholder="请输入内部宽度" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterInternalWidth')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="内部高度(mm)"
+          label={t('internalHeight')}
           name="internalHeight"
-          rules={[{ required: true, message: '请输入内部高度' }]}
+          rules={[{ required: true, message: t('pleaseEnterInternalHeight') }]}
         >
-          <InputNumber placeholder="请输入内部高度" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterInternalHeight')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="外部长度(mm)"
+          label={t('externalLength')}
           name="externalLength"
-          rules={[{ required: true, message: '请输入外部长度' }]}
+          rules={[{ required: true, message: t('pleaseEnterExternalLength') }]}
         >
-          <InputNumber placeholder="请输入外部长度" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterExternalLength')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="外部宽度(mm)"
+          label={t('externalWidth')}
           name="externalWidth"
-          rules={[{ required: true, message: '请输入外部宽度' }]}
+          rules={[{ required: true, message: t('pleaseEnterExternalWidth') }]}
         >
-          <InputNumber placeholder="请输入外部宽度" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterExternalWidth')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="外部高度(mm)"
+          label={t('externalHeight')}
           name="externalHeight"
-          rules={[{ required: true, message: '请输入外部高度' }]}
+          rules={[{ required: true, message: t('pleaseEnterExternalHeight') }]}
         >
-          <InputNumber placeholder="请输入外部高度" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterExternalHeight')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="门宽(mm)"
+          label={t('doorWidth')}
           name="doorWidth"
-          rules={[{ required: true, message: '请输入门宽' }]}
+          rules={[{ required: true, message: t('pleaseEnterDoorWidth') }]}
         >
-          <InputNumber placeholder="请输入门宽" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterDoorWidth')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="门高(mm)"
+          label={t('doorHeight')}
           name="doorHeight"
-          rules={[{ required: true, message: '请输入门高' }]}
+          rules={[{ required: true, message: t('pleaseEnterDoorHeight') }]}
         >
-          <InputNumber placeholder="请输入门高" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterDoorHeight')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="体积(m³)"
+          label={t('volume')}
           name="volume"
-          rules={[{ required: true, message: '请输入体积' }]}
+          rules={[{ required: true, message: t('pleaseEnterVolume') }]}
         >
-          <InputNumber placeholder="请输入体积" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterVolume')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="最大载重(kg)"
+          label={t('maxPayload')}
           name="maxPayload"
-          rules={[{ required: true, message: '请输入最大载重' }]}
+          rules={[{ required: true, message: t('pleaseEnterMaxPayload') }]}
         >
-          <InputNumber placeholder="请输入最大载重" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterMaxPayload')} style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
-          label="自重(kg)"
+          label={t('tareWeight')}
           name="tareWeight"
-          rules={[{ required: true, message: '请输入自重' }]}
+          rules={[{ required: true, message: t('pleaseEnterTareWeight') }]}
         >
-          <InputNumber placeholder="请输入自重" style={{ width: '100%' }} />
+          <InputNumber placeholder={t('pleaseEnterTareWeight')} style={{ width: '100%' }} />
         </Form.Item>
       </Form>
     </Modal>
