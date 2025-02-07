@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, InputNumber } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const UpdateCurrencyModal = ({
                                isVisible,
@@ -9,6 +10,8 @@ const UpdateCurrencyModal = ({
                                handleUpdateCurrency,
                                selectedCurrency // 用于传递选中的货币信息
                              }) => {
+  const { t } = useTranslation();
+
   // 当模态框打开时，设置表单字段的值
   useEffect(() => {
     if (isVisible && selectedCurrency) {
@@ -23,12 +26,12 @@ const UpdateCurrencyModal = ({
 
   return (
     <Modal
-      title="修改货币"
+      title={t('updateCurrency')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      okText="确认"
-      cancelText="取消"
+      okText={t('confirm')}
+      cancelText={t('cancel')}
     >
       <Form form={form} onFinish={handleUpdateCurrency}>
         <Form.Item name="id" hidden>
@@ -36,27 +39,27 @@ const UpdateCurrencyModal = ({
         </Form.Item>
 
         <Form.Item
-          label="货币名称"
+          label={t('currencyName')}
           name="name"
-          rules={[{ required: true, message: '请输入货币名称' }]}
+          rules={[{ required: true, message: t('pleaseInputCurrencyName') }]}
           style={{ marginBottom: '8px' }} // 调整上下间距
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="货币代码"
+          label={t('currencyCode')}
           name="code"
-          rules={[{ required: true, message: '请输入货币代码' }]}
+          rules={[{ required: true, message: t('pleaseInputCurrencyCode') }]}
           style={{ marginBottom: '8px' }} // 调整上下间距
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="汇率"
+          label={t('exchangeRate')}
           name="exchangeRate"
-          rules={[{ required: true, message: '请输入汇率' }]}
+          rules={[{ required: true, message: t('pleaseInputExchangeRate') }]}
           style={{ marginBottom: '8px' }} // 调整上下间距
         >
           <InputNumber style={{ width: '100%' }} />

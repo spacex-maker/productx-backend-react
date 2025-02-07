@@ -6,6 +6,7 @@ import { CARTON_SIZES } from '../constants/cartonSizes';
 import { PALLET_SIZES } from '../constants/palletSizes';
 import * as TWEEN from 'tween.js';
 import { PlusOutlined, CalculatorOutlined, ReloadOutlined, ExperimentOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 // 定义极点类
 class ExtremePoint {
@@ -17,6 +18,8 @@ class ExtremePoint {
 }
 
 const LoadingSimulation = ({ container }) => {
+  const { t } = useTranslation();
+
   // 状态管理
   const [selectedBoxes, setSelectedBoxes] = useState([]);
   const [currentBox, setCurrentBox] = useState({
@@ -796,7 +799,7 @@ const LoadingSimulation = ({ container }) => {
   // 定义表格列
   const columns = [
     {
-      title: '箱型',
+      title: t('boxType'),
       dataIndex: 'carton',
       key: 'carton',
       render: (carton) => (
@@ -812,23 +815,23 @@ const LoadingSimulation = ({ container }) => {
               borderRadius: '2px'
             }} 
           />
-          <span>{carton.name} ({carton.length}×{carton.width}×{carton.height})</span>
+          <span>{t(carton.name)} ({carton.length}×{carton.width}×{carton.height})</span>
         </div>
       )
     },
     {
-      title: '数量',
+      title: t('quantity'),
       dataIndex: 'quantity',
       key: 'quantity'
     },
     {
-      title: '托盘',
+      title: t('pallet'),
       dataIndex: 'pallet',
       key: 'pallet',
-      render: (pallet) => pallet ? `${pallet.name}` : '不使用托盘'
+      render: (pallet) => pallet ? t(pallet.name) : t('noPallet')
     },
     {
-      title: '操作',
+      title: t('actions'),
       key: 'action',
       render: (_, record) => (
         <Button 
@@ -837,7 +840,7 @@ const LoadingSimulation = ({ container }) => {
             setSelectedBoxes(selectedBoxes.filter(box => box.id !== record.id));
           }}
         >
-          删除
+          {t('delete')}
         </Button>
       )
     }
@@ -845,7 +848,6 @@ const LoadingSimulation = ({ container }) => {
 
   // 修改进度显示组件
   const renderSimulationStatus = () => {
-    // 移除判断条件，始终显示进度
     return (
       <div style={{ marginTop: 16 }}>
         <Progress 
@@ -861,12 +863,12 @@ const LoadingSimulation = ({ container }) => {
           color: simulationState.error ? '#ff4d4f' : 'inherit',
           marginBottom: 8 
         }}>
-          {simulationState.currentStep || '等待开始模拟...'}
+          {simulationState.currentStep ? t(simulationState.currentStep) : t('waitingForSimulation')}
         </div>
         {simulationState.error && (
           <Alert
-            message="错误"
-            description={simulationState.error}
+            message={t('error')}
+            description={t(simulationState.error)}
             type="error"
             showIcon
           />
@@ -1048,7 +1050,7 @@ const LoadingSimulation = ({ container }) => {
       {/* 上方：3D模型展示 */}
       <Col span={24}>
         <Card 
-          title="3D装载模拟" 
+          title={t('3DLoadingSimulation')} 
           bordered={false}
           bodyStyle={{ padding: '12px' }}
         >
@@ -1070,7 +1072,7 @@ const LoadingSimulation = ({ container }) => {
             {/* 左侧：箱型选择和操作按钮 */}
             <Col span={16}>
               <Card 
-                title="装载配置" 
+                title={t('loadingConfiguration')} 
                 bordered={false}
                 bodyStyle={{ padding: '12px' }}
                 size="small"
@@ -1079,7 +1081,7 @@ const LoadingSimulation = ({ container }) => {
                   {/* 箱型选择区域 */}
                   <Space.Compact block>
                     <Select
-                      placeholder="选择箱型"
+                      placeholder={t('selectBoxType')}
                       value={currentBox.cartonId}
                       onChange={(value) => setCurrentBox({ ...currentBox, cartonId: value })}
                       style={{ width: '45%' }}
@@ -1090,7 +1092,7 @@ const LoadingSimulation = ({ container }) => {
                         <Select.Option 
                           key={box.id} 
                           value={box.id}
-                          label={box.name}
+                          label={t(box.name)}
                         >
                           <Space>
                             <div 
@@ -1103,7 +1105,7 @@ const LoadingSimulation = ({ container }) => {
                                 borderRadius: '2px'
                               }} 
                             />
-                            <span>{box.name} ({box.length}×{box.width}×{box.height})</span>
+                            <span>{t(box.name)} ({box.length}×{box.width}×{box.height})</span>
                           </Space>
                         </Select.Option>
                       ))}
@@ -1111,20 +1113,20 @@ const LoadingSimulation = ({ container }) => {
                     <InputNumber
                       style={{ width: '15%' }}
                       min={1}
-                      placeholder="数量"
+                      placeholder={t('quantity')}
                       value={currentBox.quantity}
                       onChange={(value) => setCurrentBox({ ...currentBox, quantity: value })}
                     />
                     <Select
                       style={{ width: '30%' }}
-                      placeholder="选择托盘"
+                      placeholder={t('selectPallet')}
                       allowClear
                       value={currentBox.palletId}
                       onChange={(value) => setCurrentBox({ ...currentBox, palletId: value })}
                     >
                       {PALLET_SIZES.map(pallet => (
                         <Select.Option key={pallet.id} value={pallet.id}>
-                          {pallet.name}
+                          {t(pallet.name)}
                         </Select.Option>
                       ))}
                     </Select>
@@ -1144,14 +1146,14 @@ const LoadingSimulation = ({ container }) => {
                       disabled={selectedBoxes.length === 0 || simulationState.isSimulating}
                       icon={<CalculatorOutlined />}
                     >
-                      计算装载方案
+                      {t('calculateLoadingPlan')}
                     </Button>
                     <Button 
                       onClick={handleReset}
                       disabled={simulationState.isSimulating}
                       icon={<ReloadOutlined />}
                     >
-                      重置
+                      {t('reset')}
                     </Button>
                     <Button 
                       type="dashed"
@@ -1159,7 +1161,7 @@ const LoadingSimulation = ({ container }) => {
                       disabled={simulationState.isSimulating || selectedBoxes.length > 0}
                       icon={<ExperimentOutlined />}
                     >
-                      测试数据
+                      {t('testData')}
                     </Button>
                   </Space>
 
@@ -1180,22 +1182,22 @@ const LoadingSimulation = ({ container }) => {
             {/* 右侧：装载统计 */}
             <Col span={8}>
               <Card 
-                title="装载统计" 
+                title={t('loadingStatistics')} 
                 bordered={false}
                 bodyStyle={{ padding: '12px' }}
                 size="small"
               >
                 <Descriptions column={1} bordered size="small">
-                  <Descriptions.Item label="已选箱数">
+                  <Descriptions.Item label={t('selectedBoxCount')}>
                     {selectedBoxes.reduce((sum, box) => sum + box.quantity, 0)} 个
                   </Descriptions.Item>
-                  <Descriptions.Item label="总体积">
+                  <Descriptions.Item label={t('totalVolume')}>
                     {(selectedBoxes.reduce((sum, box) => {
                       const boxVolume = (box.carton.length * box.carton.width * box.carton.height) / 1000000000;
                       return sum + (boxVolume * box.quantity);
                     }, 0)).toFixed(3)} m³
                   </Descriptions.Item>
-                  <Descriptions.Item label="空间利用率">
+                  <Descriptions.Item label={t('spaceUtilization')}>
                     {(selectedBoxes.reduce((sum, box) => {
                       const boxVolume = (box.carton.length * box.carton.width * box.carton.height) / 1000000000;
                       return sum + (boxVolume * box.quantity);

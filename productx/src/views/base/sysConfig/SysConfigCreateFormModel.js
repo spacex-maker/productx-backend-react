@@ -6,38 +6,39 @@ const SysConfigCreateFormModal = ({
   onCancel,
   onFinish,
   form,
+  t
 }) => {
   return (
     <Modal
-      title="新增配置"
+      title={t('addConfig')}
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
-      okText="确认"
-      cancelText="取消"
+      okText={t('confirm')}
+      cancelText={t('cancel')}
     >
       <Form form={form} onFinish={onFinish}>
         <Form.Item
-          label="配置键"
+          label={t('configKey')}
           name="configKey"
-          rules={[{ required: true, message: '请输入配置键' }]}
+          rules={[{ required: true, message: t('pleaseInputConfigKey') }]}
         >
-          <Input placeholder="请输入配置键" />
+          <Input placeholder={t('pleaseInputConfigKey')} />
         </Form.Item>
 
         <Form.Item
-          label="配置值"
+          label={t('configValue')}
           name="configValue"
-          rules={[{ required: true, message: '请输入配置值' }]}
+          rules={[{ required: true, message: t('pleaseInputConfigValue') }]}
         >
-          <Input.TextArea rows={4} placeholder="请输入配置值" />
+          <Input.TextArea rows={4} placeholder={t('pleaseInputConfigValue')} />
         </Form.Item>
 
         <Form.Item
-          label="描述"
+          label={t('description')}
           name="description"
         >
-          <Input.TextArea rows={2} placeholder="请输入描述信息" />
+          <Input.TextArea rows={2} placeholder={t('pleaseInputDescription')} />
         </Form.Item>
       </Form>
     </Modal>

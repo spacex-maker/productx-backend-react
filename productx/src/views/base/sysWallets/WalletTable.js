@@ -11,18 +11,19 @@ const WalletTable = ({
                        handleSelectRow,
                        handleStatusChange,
                        handleEditClick,
-                       countries = []
+                       countries = [],
+                       t
                      }) => {
 
   // 复制到剪贴板的功能
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address)
       .then(() => {
-        message.success('地址已复制到剪贴板');
+        message.success(t('addressCopied'));
       })
       .catch((err) => {
-        console.error('复制失败:', err);
-        message.error('复制失败');
+        console.error(t('copyFailed'), err);
+        message.error(t('copyFailed'));
       });
   };
   const handleBlockchainQuery = (address) => {
@@ -47,10 +48,10 @@ const WalletTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['钱包地址', '钱包类型', '钱包标签/别名', '国家码', '状态'].map((field) => (
+        {[t('walletAddress'), t('walletType'), t('walletLabel'), t('countryCode'), t('status')].map((field) => (
           <th key={field}>{field}</th>
         ))}
-        <th className="fixed-column" key="操作">操作</th>
+        <th className="fixed-column" key="操作">{t('operations')}</th>
       </tr>
       </thead>
       <tbody>
@@ -78,7 +79,6 @@ const WalletTable = ({
               </div>
               <Button
                 icon={<CopyOutlined/>}
-
                 onClick={() => handleCopy(item.address)}
                 style={{marginLeft: '8px'}}
               />
@@ -116,14 +116,13 @@ const WalletTable = ({
           </td>
           <td className="fixed-column">
             <Button type="link" onClick={() => handleEditClick(item)}>
-              修改
+              {t('edit')}
             </Button>
             <Button
               type="link"
-
               onClick={() => handleBlockchainQuery(item.address)}
             >
-              区块链浏览器
+              {t('blockchainBrowser')}
             </Button>
           </td>
         </tr>

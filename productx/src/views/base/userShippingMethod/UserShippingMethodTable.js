@@ -1,6 +1,5 @@
 import React from 'react';
-import { Switch, Tooltip, message } from 'antd';
-import { useTranslation } from 'react-i18next';
+import { Switch, Tooltip, message, Button } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
@@ -10,33 +9,32 @@ const ShippingMethodTable = ({
   selectedRows,
   handleSelectAll,
   handleSelectRow,
-  onStatusChange,
+  handleEditClick,
+  t
 }) => {
-  const { t } = useTranslation();
-
   const handleStatusChange = async (ids, status) => {
     try {
       await api.post('/manage/user-shipping-method/change-status', {
         ids: Array.isArray(ids) ? ids : [ids],
         status
       });
-      message.success('状态修改成功');
-      onStatusChange?.();
+      message.success(t('statusUpdateSuccess'));
     } catch (error) {
-      message.error('状态修改失败：' + (error.response?.data?.message || error.message));
+      message.error(t('statusUpdateFailed') + ': ' + (error.response?.data?.message || error.message));
     }
   };
 
   const columns = [
     'ID',
-    '配送方式名称',
+    t('shippingMethodName'),
     <span key="description">
-      配送方式描述 
-      <Tooltip title="此字段已做国际化处理">
+      {t('shippingMethodDesc')}
+      <Tooltip title={t('i18nFieldTip')}>
         <InfoCircleOutlined style={{ marginLeft: '4px' }} />
       </Tooltip>
     </span>,
-    '状态',
+    t('status'),
+    t('operations')
   ];
 
   return (
@@ -67,6 +65,8 @@ const ShippingMethodTable = ({
               <div className="custom-control custom-checkbox">
                 <input
                   type="checkbox"
+                  className="custom-control-input"
+                  id={`td_checkbox_${item.id}`}
                   checked={selectedRows.includes(item.id)}
                   onChange={() => handleSelectRow(item.id, data)}
                 />
@@ -78,14 +78,19 @@ const ShippingMethodTable = ({
             </td>
             <td className="text-truncate">{item.id}</td>
             <td className="text-truncate">{item.shippingMethod}</td>
-            <td className="text-truncate">{t(`${item.description}`)}</td>
+            <td className="text-truncate">{t(item.description)}</td>
             <td>
               <Switch
                 checked={item.status}
                 onChange={(checked) => handleStatusChange(item.id, checked)}
-                checkedChildren="启用"
-                unCheckedChildren="禁用"
+                checkedChildren={t('enabled')}
+                unCheckedChildren={t('disabled')}
               />
+            </td>
+            <td>
+              <Button type="link" onClick={() => handleEditClick(item)}>
+                {t('edit')}
+              </Button>
             </td>
           </tr>
         ))}

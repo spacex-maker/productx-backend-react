@@ -9,6 +9,7 @@ const TmsContainerTable = ({
   handleSelectRow,
   handleEditClick,
   handleViewDetail,
+  t
 }) => {
   return (
     <table className="table table-bordered table-striped">
@@ -26,19 +27,19 @@ const TmsContainerTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          <th>集装箱类型</th>
-          <th>内部长度(mm)</th>
-          <th>内部宽度(mm)</th>
-          <th>内部高度(mm)</th>
-          <th>外部长度(mm)</th>
-          <th>外部宽度(mm)</th>
-          <th>外部高度(mm)</th>
-          <th>门宽(mm)</th>
-          <th>门高(mm)</th>
-          <th>体积(m³)</th>
-          <th>最大载重(kg)</th>
-          <th>自重(kg)</th>
-          <th className="fixed-column">操作</th>
+          <th>{t('containerType')}</th>
+          <th>{t('internalLength')} (mm)</th>
+          <th>{t('internalWidth')} (mm)</th>
+          <th>{t('internalHeight')} (mm)</th>
+          <th>{t('externalLength')} (mm)</th>
+          <th>{t('externalWidth')} (mm)</th>
+          <th>{t('externalHeight')} (mm)</th>
+          <th>{t('doorWidth')} (mm)</th>
+          <th>{t('doorHeight')} (mm)</th>
+          <th>{t('volume')} (m³)</th>
+          <th>{t('maxPayload')} (kg)</th>
+          <th>{t('tareWeight')} (kg)</th>
+          <th className="fixed-column">{t('operations')}</th>
         </tr>
       </thead>
       <tbody>
@@ -74,10 +75,10 @@ const TmsContainerTable = ({
             <td className="fixed-column">
               <Space>
                 <Button type="link" onClick={() => handleViewDetail(item)}>
-                  查看
+                  {t('view')}
                 </Button>
                 <Button type="link" onClick={() => handleEditClick(item)}>
-                  修改
+                  {t('edit')}
                 </Button>
               </Space>
             </td>

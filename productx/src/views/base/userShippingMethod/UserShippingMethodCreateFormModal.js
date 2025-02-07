@@ -6,29 +6,30 @@ const ShippingMethodCreateFormModal = ({
   onCancel,
   onFinish,
   form,
+  t
 }) => {
   return (
     <Modal
-      title="新增配送方式"
+      title={t('addShippingMethod')}
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
-      okText="确认"
-      cancelText="取消"
+      okText={t('confirm')}
+      cancelText={t('cancel')}
     >
       <Form form={form} onFinish={onFinish}>
         <Form.Item
-          label="配送方式名称"
+          label={t('shippingMethodName')}
           name="shippingMethod"
-          rules={[{ required: true, message: '请输入配送方式名称' }]}
+          rules={[{ required: true, message: t('pleaseInputShippingMethod') }]}
         >
-          <Input />
+          <Input placeholder={t('pleaseInputShippingMethod')} />
         </Form.Item>
         <Form.Item
-          label="配送方式描述"
+          label={t('shippingMethodDesc')}
           name="description"
         >
-          <Input.TextArea />
+          <Input.TextArea placeholder={t('pleaseInputShippingMethodDesc')} />
         </Form.Item>
       </Form>
     </Modal>

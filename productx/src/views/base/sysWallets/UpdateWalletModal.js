@@ -10,7 +10,8 @@ const UpdateWalletModal = ({
                              form,
                              handleUpdateWallet,
                              selectedWallet,
-                             cryptoCurrencies
+                             cryptoCurrencies,
+                             t
                            }) => {
   useEffect(() => {
     if (isVisible && selectedWallet) {
@@ -26,12 +27,12 @@ const UpdateWalletModal = ({
 
   return (
     <Modal
-      title="修改钱包"
+      title={t('editWallet')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      okText="确认"
-      cancelText="取消"
+      okText={t('confirm')}
+      cancelText={t('cancel')}
     >
       <Form form={form} onFinish={handleUpdateWallet}>
         <Form.Item name="address" hidden>
@@ -39,21 +40,21 @@ const UpdateWalletModal = ({
         </Form.Item>
 
         <Form.Item
-          label="钱包地址"
+          label={t('walletAddress')}
           name="address"
-          rules={[{ required: true, message: '请输入钱包地址' }]}
+          rules={[{ required: true, message: t('pleaseInputWalletAddress') }]}
           style={{ marginBottom: '8px' }}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="钱包类型"
+          label={t('walletType')}
           name="type"
-          rules={[{ required: true, message: '请选择钱包类型' }]}
+          rules={[{ required: true, message: t('pleaseSelectWalletType') }]}
           style={{ marginBottom: '8px' }}
         >
-          <Select placeholder="请选择钱包类型" allowClear>
+          <Select placeholder={t('pleaseSelectWalletType')} allowClear>
             {cryptoCurrencies.map((crypto) => (
               <Option key={crypto.id} value={crypto.id}>
                 {crypto.name} ({crypto.symbol})
@@ -63,27 +64,27 @@ const UpdateWalletModal = ({
         </Form.Item>
 
         <Form.Item
-          label="钱包标签/别名"
+          label={t('walletLabel')}
           name="label"
-          rules={[{ required: true, message: '请输入钱包标签或别名' }]}
+          rules={[{ required: true, message: t('pleaseInputWalletLabel') }]}
           style={{ marginBottom: '8px' }}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="国家码"
+          label={t('countryCode')}
           name="countryCode"
-          rules={[{ required: true, message: '请输入国家码' }]}
+          rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
           style={{ marginBottom: '8px' }}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="余额"
+          label={t('balance')}
           name="balance"
-          rules={[{ required: true, message: '请输入余额' }]}
+          rules={[{ required: true, message: t('pleaseInputBalance') }]}
           style={{ marginBottom: '8px' }}
         >
           <Input />

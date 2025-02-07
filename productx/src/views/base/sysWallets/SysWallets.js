@@ -7,6 +7,7 @@ import Pagination from "src/components/common/Pagination"
 import WalletTable from "src/views/base/sysWallets/WalletTable"
 import UpdateWalletModal from "src/views/base/sysWallets/UpdateWalletModal"
 import WalletCreateFormModal from "src/views/base/sysWallets/WalletsCreateFormModel"
+import { useTranslation } from 'react-i18next'
 
 const updateWalletStatus = async (id, newStatus) => {
   await api.post('/manage/sys-wallets/change-status', { id, status: newStatus })
@@ -21,6 +22,8 @@ const updateWallet = async (updateData) => {
 }
 
 const WalletList = () => {
+  const { t } = useTranslation()
+  
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
   const [currentPage, setCurrent] = useState(1)
@@ -144,15 +147,15 @@ const WalletList = () => {
 
   return (
     <div>
-      <div className="mb-3">
-        <div className="search-container">
-          <Row gutter={[16, 16]}>
+      <div className="card">
+        <div className="card-body">
+          <Row gutter={16} className="mb-3">
             <Col>
               <Input
                 value={searchParams.address}
                 onChange={handleSearchChange}
                 name="address"
-                placeholder="钱包地址"
+                placeholder={t('pleaseInputWalletAddress')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -161,7 +164,7 @@ const WalletList = () => {
               <Select
                 name="type"
                 onChange={(value) => handleSearchChange({ target: { name: 'type', value } })}
-                placeholder="请选择钱包类型"
+                placeholder={t('pleaseSelectWalletType')}
                 allowClear
                 style={{ width: 150 }}
               >
@@ -177,7 +180,7 @@ const WalletList = () => {
                 value={searchParams.label}
                 onChange={handleSearchChange}
                 name="label"
-                placeholder="钱包标签/别名"
+                placeholder={t('pleaseInputWalletLabel')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -186,7 +189,7 @@ const WalletList = () => {
               <Select
                 name="countryCode"
                 onChange={(value) => handleSearchChange({ target: { name: 'countryCode', value } })}
-                placeholder="钱包所属国家"
+                placeholder={t('pleaseSelectCountry')}
                 allowClear
                 style={{ width: 150 }}
                 showSearch
@@ -221,13 +224,13 @@ const WalletList = () => {
                   onClick={fetchData}
                   disabled={isLoading}
                 >
-                  {isLoading ? <Spin /> : '查询'}
+                  {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button
                   type="primary"
                   onClick={() => setIsCreateModalVisible(true)}
                 >
-                  新增钱包
+                  {t('addWallet')}
                 </Button>
                 <Button
                   type="primary"
@@ -235,10 +238,11 @@ const WalletList = () => {
                     url: '/manage/sys-wallets/delete-batch',
                     selectedRows,
                     fetchData,
+                    t,
                   })}
                   disabled={selectedRows.length === 0}
                 >
-                  批量删除
+                  {t('batchDelete')}
                 </Button>
               </Space>
             </Col>
@@ -257,9 +261,11 @@ const WalletList = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             countries={countries}
+            t={t}
           />
         </Spin>
       </div>
+
       <Pagination
         totalPages={totalPages}
         current={currentPage}
@@ -267,6 +273,7 @@ const WalletList = () => {
         pageSize={pageSize}
         onPageSizeChange={setPageSize}
       />
+
       <WalletCreateFormModal
         isVisible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
@@ -274,7 +281,9 @@ const WalletList = () => {
         form={createForm}
         countries={countries}
         cryptoCurrencies={cryptoCurrencies}
+        t={t}
       />
+
       <UpdateWalletModal
         isVisible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
@@ -283,6 +292,7 @@ const WalletList = () => {
         handleUpdateWallet={handleUpdateWallet}
         selectedWallet={selectedWallet}
         cryptoCurrencies={cryptoCurrencies}
+        t={t}
       />
     </div>
   )

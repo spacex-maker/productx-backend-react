@@ -7,8 +7,11 @@ import Pagination from "src/components/common/Pagination"
 import SysConfigTable from "./SysConfigTable"
 import UpdateSysConfigModal from "./UpdateSysConfigModel"
 import SysConfigCreateFormModal from "./SysConfigCreateFormModel"
+import { useTranslation } from 'react-i18next'
 
 const SysConfig = () => {
+  const { t } = useTranslation()
+
   const [data, setData] = useState([])
   const [totalNum, setTotalNum] = useState(0)
   const [currentPage, setCurrent] = useState(1)
@@ -45,7 +48,7 @@ const SysConfig = () => {
       }
     } catch (error) {
       console.error('Failed to fetch data', error)
-      message.error('获取数据失败')
+      message.error(t('fetchDataFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -59,24 +62,24 @@ const SysConfig = () => {
   const handleCreateConfig = async (values) => {
     try {
       await api.post('/manage/sys-config/create', values)
-      message.success('创建成功')
+      message.success(t('createSuccess'))
       setIsCreateModalVisible(false)
       createForm.resetFields()
       await fetchData()
     } catch (error) {
-      message.error('创建失败')
+      message.error(t('createFailed'))
     }
   }
 
   const handleUpdateConfig = async (values) => {
     try {
       await api.post('/manage/sys-config/update', values)
-      message.success('更新成功')
+      message.success(t('updateSuccess'))
       setIsUpdateModalVisible(false)
       updateForm.resetFields()
       await fetchData()
     } catch (error) {
-      message.error('更新失败')
+      message.error(t('updateFailed'))
     }
   }
 
@@ -104,7 +107,7 @@ const SysConfig = () => {
                 value={searchParams.configKey}
                 onChange={handleSearchChange}
                 name="configKey"
-                placeholder="配置键"
+                placeholder={t('configKey')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -114,7 +117,7 @@ const SysConfig = () => {
                 value={searchParams.description}
                 onChange={handleSearchChange}
                 name="description"
-                placeholder="描述"
+                placeholder={t('description')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -126,13 +129,13 @@ const SysConfig = () => {
                   onClick={fetchData}
                   disabled={isLoading}
                 >
-                  {isLoading ? <Spin /> : '查询'}
+                  {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button
                   type="primary"
                   onClick={() => setIsCreateModalVisible(true)}
                 >
-                  新增配置
+                  {t('addConfig')}
                 </Button>
                 <Button
                   type="primary"
@@ -140,10 +143,11 @@ const SysConfig = () => {
                     url: '/manage/sys-config/delete-batch',
                     selectedRows,
                     fetchData,
+                    t,
                   })}
                   disabled={selectedRows.length === 0}
                 >
-                  批量删除
+                  {t('batchDelete')}
                 </Button>
               </Space>
             </Col>
@@ -160,6 +164,7 @@ const SysConfig = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            t={t}
           />
         </Spin>
       </div>
@@ -177,6 +182,7 @@ const SysConfig = () => {
         onCancel={() => setIsCreateModalVisible(false)}
         onFinish={handleCreateConfig}
         form={createForm}
+        t={t}
       />
 
       <UpdateSysConfigModal
@@ -186,6 +192,7 @@ const SysConfig = () => {
         form={updateForm}
         handleUpdateConfig={handleUpdateConfig}
         selectedConfig={selectedConfig}
+        t={t}
       />
     </div>
   )
