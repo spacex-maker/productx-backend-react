@@ -50,7 +50,8 @@ const LoadingSimulation = ({ container }) => {
     }
 
     if (controlsRef.current) {
-      controlsRef.current.dispose();
+      controlsRef.current.enabled = false;  // 禁用控制器
+      controlsRef.current.dispose();        // 释放控制器
       controlsRef.current = null;
     }
 
@@ -124,127 +125,65 @@ const LoadingSimulation = ({ container }) => {
       wallThickness 
     } = containerDimensions;
 
-    // 计算容器内部空间的边界
-    const minX = -containerLength/2 + wallThickness;
-    const maxX = containerLength/2 - wallThickness;
-    const minY = -containerHeight/2 + wallThickness;
-    const maxY = containerHeight/2 - wallThickness;
-    const minZ = -containerWidth/2 + wallThickness;
-    const maxZ = containerWidth/2 - wallThickness;
+    const WALL_GAP = 5;
+    const BOX_GAP = 2;
+    const STEP_SIZE = Math.max(BOX_GAP * 2, Math.min(boxLength, boxWidth, boxHeight) / 4);
 
-    // 设置最小间距（5mm）
-    const GAP = 5;
+    // 计算容器的起始点（左后下角）
+    const startX = -containerLength/2 + wallThickness + WALL_GAP;
+    const startY = -containerHeight/2 + wallThickness + WALL_GAP;
+    const startZ = -containerWidth/2 + wallThickness + WALL_GAP;
 
-    // 如果是第一个箱子，从起始点开始
-    if (placedBoxes.length === 0) {
-      return {
-        x: minX + boxLength/2,
-        y: minY + boxHeight/2,
-        z: minZ + boxWidth/2
-      };
-    }
-
-    // 获取最后放置的箱子
-    const lastBox = placedBoxes[placedBoxes.length - 1];
-    const lastPos = lastBox.position;
-
-    // 优先尝试的位置顺序（紧凑放置）
-    const tryPositions = [
-      // 1. 紧接着上一个箱子
-      {
-        x: lastPos.x + lastBox.carton.length/2 + boxLength/2 + GAP,
-        y: lastPos.y,
-        z: lastPos.z
-      },
-      // 2. 同一层的下一行
-      {
-        x: minX + boxLength/2,
-        y: lastPos.y,
-        z: lastPos.z + lastBox.carton.width/2 + boxWidth/2 + GAP
-      },
-      // 3. 上一层同样的位置
-      {
-        x: minX + boxLength/2,
-        y: lastPos.y + lastBox.carton.height/2 + boxHeight/2 + GAP,
-        z: minZ + boxWidth/2
-      }
+    // 优先使用默认方向
+    const orientations = [
+      { l: boxLength, w: boxWidth, h: boxHeight },
+      { l: boxWidth, w: boxLength, h: boxHeight }
     ];
 
-    // 检查位置是否有效
-    const isValidPosition = (pos) => {
-      // 检查是否在容器范围内
-      if (pos.x - boxLength/2 < minX || pos.x + boxLength/2 > maxX ||
-          pos.y - boxHeight/2 < minY || pos.y + boxHeight/2 > maxY ||
-          pos.z - boxWidth/2 < minZ || pos.z + boxWidth/2 > maxZ) {
-        return false;
-      }
+    // 创建空间索引
+    const occupiedSpaces = new Set();
+    placedBoxes.forEach(box => {
+      const { position: pos, carton } = box;
+      const key = `${Math.floor(pos.x/STEP_SIZE)},${Math.floor(pos.y/STEP_SIZE)},${Math.floor(pos.z/STEP_SIZE)}`;
+      occupiedSpaces.add(key);
+    });
 
-      // 检查与已放置箱子的碰撞
-      for (const placedBox of placedBoxes) {
-        const { position, carton } = placedBox;
-        
-        // 使用较小的间隙进行碰撞检测
-        if (Math.abs(pos.x - position.x) < (boxLength + carton.length)/2 + GAP &&
-            Math.abs(pos.y - position.y) < (boxHeight + carton.height)/2 + GAP &&
-            Math.abs(pos.z - position.z) < (boxWidth + carton.width)/2 + GAP) {
-          return false;
-        }
-      }
-      return true;
-    };
+    // 对每个方向尝试放置
+    for (const orientation of orientations) {
+      // 从底部开始，逐层尝试放置
+      for (let y = startY; y <= containerHeight/2 - wallThickness - WALL_GAP - orientation.h; y += STEP_SIZE) {
+        // 从左到右
+        for (let x = startX; x <= containerLength/2 - wallThickness - WALL_GAP - orientation.l; x += STEP_SIZE) {
+          // 从后到前
+          for (let z = startZ; z <= containerWidth/2 - wallThickness - WALL_GAP - orientation.w; z += STEP_SIZE) {
+            const position = {
+              x: x + orientation.l/2,
+              y: y + orientation.h/2,
+              z: z + orientation.w/2
+            };
 
-    // 先尝试优先位置
-    for (const pos of tryPositions) {
-      if (isValidPosition(pos)) {
-        return pos;
-      }
-    }
+            const key = `${Math.floor(x/STEP_SIZE)},${Math.floor(y/STEP_SIZE)},${Math.floor(z/STEP_SIZE)}`;
+            if (occupiedSpaces.has(key)) continue;
 
-    // 如果优先位置都不行，进行网格搜索
-    // 使用较小的网格尺寸以获得更紧凑的排列
-    const gridSize = Math.min(boxLength, boxWidth, boxHeight) / 2;
-
-    for (let y = minY; y <= maxY - boxHeight; y += gridSize) {
-      for (let z = minZ; z <= maxZ - boxWidth; z += gridSize) {
-        for (let x = minX; x <= maxX - boxLength; x += gridSize) {
-          const pos = {
-            x: x + boxLength/2,
-            y: y + boxHeight/2,
-            z: z + boxWidth/2
-          };
-
-          if (isValidPosition(pos)) {
-            // 找到最近的已放置箱子
-            let minDistance = Infinity;
-            let bestPos = pos;
-
-            // 尝试微调位置使其更紧凑
-            for (let dx = -GAP; dx <= GAP; dx += GAP) {
-              for (let dz = -GAP; dz <= GAP; dz += GAP) {
-                const adjustedPos = {
-                  x: pos.x + dx,
-                  y: pos.y,
-                  z: pos.z + dz
-                };
-
-                if (isValidPosition(adjustedPos)) {
-                  let totalDistance = 0;
-                  for (const placedBox of placedBoxes) {
-                    const dist = Math.abs(adjustedPos.x - placedBox.position.x) +
-                               Math.abs(adjustedPos.y - placedBox.position.y) +
-                               Math.abs(adjustedPos.z - placedBox.position.z);
-                    totalDistance += dist;
-                  }
-
-                  if (totalDistance < minDistance) {
-                    minDistance = totalDistance;
-                    bestPos = adjustedPos;
-                  }
-                }
+            // 快速碰撞检测
+            let isValid = true;
+            for (const placedBox of placedBoxes) {
+              const { position: pos, carton } = placedBox;
+              const dx = Math.abs(position.x - pos.x);
+              const dy = Math.abs(position.y - pos.y);
+              const dz = Math.abs(position.z - pos.z);
+              
+              if (dx < (orientation.l + carton.length)/2 + BOX_GAP &&
+                  dy < (orientation.h + carton.height)/2 + BOX_GAP &&
+                  dz < (orientation.w + carton.width)/2 + BOX_GAP) {
+                isValid = false;
+                break;
               }
             }
 
-            return bestPos;
+            if (isValid) {
+              return position;
+            }
           }
         }
       }
@@ -362,7 +301,7 @@ const LoadingSimulation = ({ container }) => {
       ));
       
       // 前方点
-      points.add(new ExtremePoint(
+      points.push(new ExtremePoint(
         position.x,
         position.y - carton.height/2,
         position.z - carton.width/2
@@ -412,9 +351,11 @@ const LoadingSimulation = ({ container }) => {
     return minDistance;
   };
 
-  // 修改计算装载方案函数，添加更多错误信息
+  // 修改计算装载方案函数，使用 requestAnimationFrame 来处理动画
   const calculateLoadingPlan = async () => {
     try {
+      console.log('Starting calculation...');
+      
       setSimulationState(prev => ({
         ...prev,
         isSimulating: true,
@@ -424,57 +365,101 @@ const LoadingSimulation = ({ container }) => {
         results: []
       }));
 
-      console.log('Container dimensions:', container);
-      console.log('Selected boxes:', selectedBoxes);
+      const sortedBoxes = [...selectedBoxes].sort((a, b) => {
+        const volumeA = a.carton.length * a.carton.width * a.carton.height;
+        const volumeB = b.carton.length * b.carton.width * b.carton.height;
+        return volumeB - volumeA;
+      });
 
-      const totalBoxes = selectedBoxes.reduce((sum, box) => sum + box.quantity, 0);
+      const totalBoxes = sortedBoxes.reduce((sum, box) => sum + box.quantity, 0);
       let processedBoxes = 0;
       const boxPositions = [];
-      
-      for (const box of selectedBoxes) {
-        const carton = box.carton;
-        console.log('Processing box:', carton);
-        
-        for (let i = 0; i < box.quantity; i++) {
-          const bestPosition = findBestPositionEP(
-            carton,
-            boxPositions,
-            {
-              ...container,
-              wallThickness: 100
+
+      // 创建 Worker 实例
+      const worker = new Worker(new URL('../workers/loadingWorker.js', import.meta.url));
+
+      const placeBoxes = () => {
+        return new Promise((resolve, reject) => {
+          let currentBoxIndex = 0;
+          let currentQuantityIndex = 0;
+
+          worker.onmessage = (e) => {
+            console.log('Received worker response:', e.data);
+
+            if (!e.data.success) {
+              console.error('Worker error:', e.data.error);
+              setSimulationState(prev => ({
+                ...prev,
+                isSimulating: false,
+                error: e.data.error || '计算过程出错，请重试',
+                needsReset: true
+              }));
+              worker.terminate();
+              resolve();
+              return;
             }
-          );
 
-          if (!bestPosition) {
-            console.log('Failed to place box. Current state:', {
-              processedBoxes,
-              totalBoxes,
-              currentBox: carton,
-              placedPositions: boxPositions
-            });
-            throw new Error(`无法为箱子 ${carton.name} (${processedBoxes + 1}/${totalBoxes}) 找到合适的位置。`);
-          }
+            const currentBox = sortedBoxes[currentBoxIndex];
+            const newBox = {
+              ...currentBox,
+              position: e.data.bestPosition
+            };
+            
+            boxPositions.push(newBox);
+            processedBoxes++;
 
-          const newBox = {
-            ...box,
-            position: bestPosition
+            setSimulationState(prev => ({
+              ...prev,
+              progress: Math.floor((processedBoxes / totalBoxes) * 100),
+              currentStep: `正在放置第 ${processedBoxes}/${totalBoxes} 个箱子...`,
+              results: [...boxPositions]
+            }));
+
+            currentQuantityIndex++;
+            if (currentQuantityIndex >= currentBox.quantity) {
+              currentBoxIndex++;
+              currentQuantityIndex = 0;
+            }
+
+            if (currentBoxIndex >= sortedBoxes.length) {
+              worker.terminate();
+              resolve();
+              return;
+            }
+
+            // 处理下一个箱子
+            setTimeout(() => {
+              worker.postMessage({
+                box: sortedBoxes[currentBoxIndex],
+                boxPositions,
+                container: {
+                  ...container,
+                  length: container.externalLength,
+                  width: container.externalWidth,
+                  height: container.externalHeight,
+                  wallThickness: container.wallThickness || 100
+                }
+              });
+            }, 30);
           };
-          boxPositions.push(newBox);
-          console.log(`Placed box ${processedBoxes + 1} at:`, bestPosition);
 
-          processedBoxes++;
-          setSimulationState(prev => ({
-            ...prev,
-            progress: Math.floor((processedBoxes / totalBoxes) * 100),
-            currentStep: `正在放置第 ${processedBoxes}/${totalBoxes} 个箱子...`,
-            results: [...boxPositions]
-          }));
+          // 开始处理第一个箱子
+          worker.postMessage({
+            box: sortedBoxes[0],
+            boxPositions,
+            container: {
+              ...container,
+              length: container.externalLength,
+              width: container.externalWidth,
+              height: container.externalHeight,
+              wallThickness: container.wallThickness || 100
+            }
+          });
+        });
+      };
 
-          await new Promise(resolve => setTimeout(resolve, 50));
-        }
-      }
+      await placeBoxes();
 
-      console.log('Loading completed successfully');
       setSimulationState(prev => ({
         ...prev,
         isSimulating: false,
@@ -489,15 +474,43 @@ const LoadingSimulation = ({ container }) => {
       setSimulationState(prev => ({
         ...prev,
         isSimulating: false,
-        error: error.message,
-        needsReset: true,
-        results: []
+        error: error.message || '计算过程出错，请重试',
+        needsReset: true
       }));
+    }
+  };
+
+  // 修改动画循环函数，确保动画和控制器更新同步
+  const animate = () => {
+    frameIdRef.current = requestAnimationFrame(animate);
+    
+    // 确保控制器始终更新
+    if (controlsRef.current) {
+      controlsRef.current.update();
+    }
+    
+    // 更新 TWEEN 动画
+    if (typeof TWEEN !== 'undefined') {
+      TWEEN.update();
+    }
+    
+    // 渲染场景
+    if (rendererRef.current && sceneRef.current && cameraRef.current) {
+      rendererRef.current.render(sceneRef.current, cameraRef.current);
     }
   };
 
   // 修改计算装载方案按钮的点击处理函数
   const handleCalculate = () => {
+    console.log('Calculate button clicked');
+    if (selectedBoxes.length === 0) {
+      setSimulationState(prev => ({
+        ...prev,
+        error: '请先添加箱子',
+        needsReset: true
+      }));
+      return;
+    }
     calculateLoadingPlan();
   };
 
@@ -714,12 +727,20 @@ const LoadingSimulation = ({ container }) => {
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
+    // 修改 OrbitControls 配置
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 2;
     controls.maxDistance = 20;
     controls.maxPolarAngle = Math.PI / 2;
+    controls.enableRotate = true;  // 确保旋转功能启用
+    controls.enableZoom = true;    // 确保缩放功能启用
+    controls.enablePan = true;     // 确保平移功能启用
+    controls.rotateSpeed = 1.0;    // 调整旋转速度
+    controls.zoomSpeed = 1.2;      // 调整缩放速度
+    controls.panSpeed = 0.8;       // 调整平移速度
+    controls.update();             // 初始更新控制器
     controlsRef.current = controls;
 
     // 添加光源
@@ -744,8 +765,21 @@ const LoadingSimulation = ({ container }) => {
 
     const animate = () => {
       frameIdRef.current = requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
+      
+      // 确保控制器始终更新
+      if (controlsRef.current) {
+        controlsRef.current.update();
+      }
+      
+      // 更新 TWEEN 动画
+      if (typeof TWEEN !== 'undefined') {
+        TWEEN.update();
+      }
+      
+      // 渲染场景
+      if (rendererRef.current && sceneRef.current && cameraRef.current) {
+        rendererRef.current.render(sceneRef.current, cameraRef.current);
+      }
     };
     animate();
   };
@@ -824,6 +858,14 @@ const LoadingSimulation = ({ container }) => {
       </div>
     );
   };
+
+  // 在组件顶部添加调试日志
+  useEffect(() => {
+    console.log('LoadingSimulation mounted');
+    return () => {
+      console.log('LoadingSimulation unmounted');
+    };
+  }, []);
 
   return (
     <Row gutter={[16, 16]}>
