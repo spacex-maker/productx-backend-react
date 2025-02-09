@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space, Image, Avatar, Spin, Card, Typography, Tag, Row, Col, List } from 'antd';
+import { Descriptions, Divider, Button, Popconfirm, Timeline, Modal, Space, Image, Avatar, Spin, Card, Typography, Tag, Row, Col, List, Tabs } from 'antd';
 import { useTranslation } from 'react-i18next'; // 导入 useTranslation
 import api from "src/axiosInstance";
 import { formatDate } from "src/components/common/Common";
@@ -45,87 +45,83 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
 
       return (
         <Modal
-          title="用户详情"
+          title={t('userDetail')}
           open={visible}
           onCancel={onCancel}
           footer={null}
           width={400}
-          styles={{ padding: '12px', fontSize: '12px' }}
         >
           {/* 用户基本信息 */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            padding: '8px',
-            marginBottom: '12px',
-            borderRadius: '2px'
-          }}>
-            <Avatar
-              size={48}
-              src={user.avatar}
-              icon={<UserOutlined />}
-            />
-            <div>
-              <div style={{ fontSize: '14px', fontWeight: '500' }}>
-                {user.nickname || user.username}
-              </div>
-              <div style={{ fontSize: '12px', color: '#666' }}>
-                ID: {user.id}
-              </div>
-              <div style={{
-                marginTop: '4px',
-                padding: '0 8px',
-                color: '#52c41a',
-                fontSize: '11px',
-                borderRadius: '10px',
-                display: 'inline-block'
-              }}>
-                信用分：{user.creditScore || 0}
-              </div>
-            </div>
-          </div>
+          <Card size="small" className="mb-3">
+            <Space align="start" size="middle">
+              <Avatar
+                size={64}
+                src={user.avatar}
+                icon={<UserOutlined />}
+              />
+              <Space direction="vertical" size={1}>
+                <Typography.Title level={5} className="mb-0">
+                  {user.nickname || user.username}
+                </Typography.Title>
+                <Typography.Text type="secondary">
+                  ID: {user.id}
+                </Typography.Text>
+                <Tag color="success">
+                  {t('creditScore')}: {user.creditScore || 0}
+                </Tag>
+              </Space>
+            </Space>
+          </Card>
 
           {/* 详细信息 */}
-          <Descriptions
-
-            column={1}
-            labelStyle={{
-              width: '80px',
-              fontSize: '11px',
-              color: '#666'
-            }}
-            contentStyle={{
-              fontSize: '11px'
-            }}
-          >
-            <Descriptions.Item
-              label={<><MailOutlined style={{ marginRight: '4px' }} />邮箱</>}
+          <Card size="small">
+            <Descriptions
+              column={1}
+              size="small"
             >
-              {user.email || '-'}
-            </Descriptions.Item>
-            <Descriptions.Item
-              label={<><PhoneOutlined style={{ marginRight: '4px' }} />电话</>}
-            >
-              {user.phoneNumber || '-'}
-            </Descriptions.Item>
-            <Descriptions.Item
-              label={<><HomeOutlined style={{ marginRight: '4px' }} />地址</>}
-            >
-              {[user.country, user.state, user.city, user.address]
-                .filter(Boolean)
-                .join(', ') || '-'}
-            </Descriptions.Item>
-            <Descriptions.Item label="邮编">
-              {user.postalCode || '-'}
-            </Descriptions.Item>
-            <Descriptions.Item label="简介">
-              {user.description || '-'}
-            </Descriptions.Item>
-            <Descriptions.Item label="注册时间">
-              {formatDate(user.createTime)}
-            </Descriptions.Item>
-          </Descriptions>
+              <Descriptions.Item 
+                label={
+                  <Space>
+                    <MailOutlined />
+                    {t('email')}
+                  </Space>
+                }
+              >
+                {user.email || '-'}
+              </Descriptions.Item>
+              <Descriptions.Item 
+                label={
+                  <Space>
+                    <PhoneOutlined />
+                    {t('phoneNumber')}
+                  </Space>
+                }
+              >
+                {user.phoneNumber || '-'}
+              </Descriptions.Item>
+              <Descriptions.Item 
+                label={
+                  <Space>
+                    <HomeOutlined />
+                    {t('address')}
+                  </Space>
+                }
+              >
+                {[user.country, user.state, user.city, user.address]
+                  .filter(Boolean)
+                  .join(', ') || '-'}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('postalCode')}>
+                {user.postalCode || '-'}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('description')}>
+                {user.description || '-'}
+              </Descriptions.Item>
+              <Descriptions.Item label={t('registerTime')}>
+                {formatDate(user.createTime)}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
         </Modal>
       );
     };
@@ -161,12 +157,267 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
     return paymentType;
   };
 
+  const tabItems = [
+    {
+      key: 'basic',
+      label: t('basicInfo'),
+      children: (
+        <>
+          {/* 买家和卖家信息 */}
+          <Card size="small" className="mb-2">
+            <Row gutter={16}>
+              {/* 买家信息 */}
+              <Col span={12}>
+                <Space direction="vertical" size="small">
+                  <Typography.Text type="secondary">
+                    <UserOutlined /> {t('buyerInfo')}
+                  </Typography.Text>
+                  <Space align="start" size="middle">
+                    <Avatar
+                      size={48}
+                      src={buyerDetail?.avatar}
+                      icon={<UserOutlined />}
+                      className="cursor-pointer"
+                      onClick={() => showUserDetail(buyerDetail)}
+                    />
+                    <Space direction="vertical" size={2}>
+                      <Typography.Text strong>
+                        {buyerDetail?.nickname || buyerDetail?.username || '-'}
+                      </Typography.Text>
+                      <Tag color="blue">
+                        {t('creditScore')}: {buyerDetail?.creditScore || 0}
+                      </Tag>
+                      <Typography.Text type="secondary" className="mt-1">
+                        <HomeOutlined className="mr-1" />
+                        {buyerDetail?.city}{buyerDetail?.country ? `, ${buyerDetail.country}` : ''}
+                      </Typography.Text>
+                    </Space>
+                  </Space>
+                </Space>
+              </Col>
+
+              {/* 卖家信息 */}
+              <Col span={12}>
+                <Space direction="vertical" size="small">
+                  <Typography.Text type="secondary">
+                    <ShopOutlined /> {t('sellerInfo')}
+                  </Typography.Text>
+                  <Space align="start" size="middle">
+                    <Avatar
+                      size={48}
+                      src={sellerDetail?.avatar}
+                      icon={<ShopOutlined />}
+                      className="cursor-pointer"
+                      onClick={() => showUserDetail(sellerDetail)}
+                    />
+                    <Space direction="vertical" size={2}>
+                      <Typography.Text strong>
+                        {sellerDetail?.nickname || sellerDetail?.username || '-'}
+                      </Typography.Text>
+                      <Tag color="success">
+                        {t('creditScore')}: {sellerDetail?.creditScore || 0}
+                      </Tag>
+                      <Typography.Text type="secondary" className="mt-1">
+                        <HomeOutlined className="mr-1" />
+                        {sellerDetail?.city}{sellerDetail?.country ? `, ${sellerDetail.country}` : ''}
+                      </Typography.Text>
+                    </Space>
+                  </Space>
+                </Space>
+              </Col>
+            </Row>
+          </Card>
+
+          {/* 订单基本信息 */}
+          <Card size="small" className="mb-2">
+            <Descriptions
+              column={2}
+              size="small"
+              bordered
+            >
+              <Descriptions.Item label={t('orderId')}>{userOrder.id}</Descriptions.Item>
+              <Descriptions.Item label={t('orderStatus')}>
+                <OrderStatus status={userOrder.orderStatus} />
+              </Descriptions.Item>
+              <Descriptions.Item label={t('paymentType')}>{parsePaymentType(userOrder.paymentType)}</Descriptions.Item>
+              <Descriptions.Item label={t('payTime')}>{formatDate(userOrder.payTime)}</Descriptions.Item>
+              <Descriptions.Item label={t('totalAmount')} span={2}>{userOrder.totalAmount} CNY</Descriptions.Item>
+            </Descriptions>
+          </Card>
+
+          {/* 收货信息 */}
+          <Card 
+            size="small" 
+            className="mb-2"
+            title={<><HomeOutlined /> {t('deliveryInfo')}</>}
+          >
+            <Descriptions
+              column={2}
+              size="small"
+              bordered
+            >
+              <Descriptions.Item label={t('receiverName')}>{userOrder.receiverName}</Descriptions.Item>
+              <Descriptions.Item label={t('phoneNumber')}>{userOrder.phoneNum}</Descriptions.Item>
+              <Descriptions.Item label={t('shippingMethod')}>{userOrder.shippingMethod}</Descriptions.Item>
+              <Descriptions.Item label={t('notes')}>{userOrder.notes || t('noNotes')}</Descriptions.Item>
+              <Descriptions.Item label={t('deliveryAddress')} span={2}>{userOrder.deliveryAddress}</Descriptions.Item>
+            </Descriptions>
+          </Card>
+
+          {/* 商品信息 */}
+          <Card 
+            title={t('orderItems')} 
+            size="small"
+            className="mb-2"
+          >
+            <List
+              dataSource={userProducts}
+              renderItem={(product) => (
+                <List.Item key={product.id}>
+                  <Row gutter={16} style={{ width: '100%' }}>
+                    {/* 左侧产品信息 */}
+                    <Col flex="auto">
+                      <Typography.Title level={5}>{product.productName}</Typography.Title>
+                      <Typography.Text type="secondary">
+                        {product.productDescription}
+                      </Typography.Text>
+                      <br />
+                      <Typography.Text type="secondary">
+                        {t('category')}: {product.category}
+                      </Typography.Text>
+                      <br />
+                      <Typography.Text type="secondary">
+                        {t('city')}: {product.city}
+                      </Typography.Text>
+                      <br />
+                      <Typography.Text type="danger">
+                        {product.price} CNY
+                        {product.originalPrice && (
+                          <Typography.Text type="secondary" delete className="ml-2">
+                            {product.originalPrice} CNY
+                          </Typography.Text>
+                        )}
+                      </Typography.Text>
+                    </Col>
+
+                    {/* 右侧图片区域 */}
+                    <Col flex="100px">
+                      <Space direction="vertical" size={4}>
+                        {/* 封面图 */}
+                        <Image
+                          width={100}
+                          height={75}
+                          src={product.imageCover}
+                          alt={product.productName}
+                        />
+
+                        {/* 图片网格 */}
+                        {Array.isArray(product.imageList) && product.imageList.length > 0 && (
+                          <Row gutter={[2, 2]}>
+                            {product.imageList.slice(0, 9).map((image, index) => (
+                              <Col span={8} key={index}>
+                                <div className="relative">
+                                  <Image
+                                    src={image}
+                                    alt={`${product.productName} ${index + 1}`}
+                                    width={32}
+                                    height={32}
+                                    preview={{
+                                      src: image,
+                                      mask: null
+                                    }}
+                                  />
+                                  {index === 8 && product.imageList.length > 9 && (
+                                    <Tag className="absolute-center">
+                                      +{product.imageList.length - 9}
+                                    </Tag>
+                                  )}
+                                </div>
+                              </Col>
+                            ))}
+                          </Row>
+                        )}
+                      </Space>
+                    </Col>
+                  </Row>
+                </List.Item>
+              )}
+            />
+          </Card>
+        </>
+      ),
+    },
+    {
+      key: 'history',
+      label: t('orderHistory'),
+      children: (
+        <Card 
+          size="small"
+          extra={
+            orderData.userOrder.orderStatus === 'PAID' && (
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => setShipModalVisible(true)}
+              >
+                {t('ship')}
+              </Button>
+            )
+          }
+        >
+          <Timeline>
+            {orderStatusHistories.map((history) => (
+              <Timeline.Item key={history.id} color="blue">
+                <Row justify="space-between">
+                  <Col>
+                    <Space direction="vertical" size={0}>
+                      <Typography.Text>{history.oldStatus} → {history.newStatus}</Typography.Text>
+                      <Typography.Text type="secondary">
+                        {t('operator')}: {history.createBy}
+                      </Typography.Text>
+                      {history.remarks && (
+                        <Typography.Text type="secondary">
+                          {history.remarks}
+                        </Typography.Text>
+                      )}
+                    </Space>
+                  </Col>
+                  <Col>
+                    <Typography.Text type="secondary">
+                      {formatDate(history.createTime)}
+                    </Typography.Text>
+                  </Col>
+                </Row>
+              </Timeline.Item>
+            ))}
+          </Timeline>
+        </Card>
+      ),
+    },
+  ];
+
   return (
     <Modal
       title={t('detail')}
       open={visible}
       onCancel={onCancel}
-      footer={null}
+      footer={
+        <Space size="small">
+          <Button size="small" onClick={onCancel}>
+            {t('close')}
+          </Button>
+          <Popconfirm
+            title={t('confirmCancel')}
+            onConfirm={() => console.log('取消订单')}
+            okText={t('yes')}
+            cancelText={t('no')}
+          >
+            <Button size="small" type="primary" danger>
+              {t('deleteOrder')}
+            </Button>
+          </Popconfirm>
+        </Space>
+      }
       width={800}
       styles={{
         body: {
@@ -177,369 +428,24 @@ const DetailOrderModal = ({ visible, orderId, onCancel }) => {
       }}
     >
       <Spin spinning={loading}>
-        {/* 将现有内容包裹在 Spin 组件中 */}
         {orderData && (
-          <>
-            {/* 买家和卖家信息 */}
-            <div style={{ marginBottom: '8px' }}>
-              <div style={{ display: 'flex', gap: '12px', padding: '8px' }}>
-                {/* 买家信息 */}
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '11px', color: '#666', marginBottom: '4px' }}>
-                    <UserOutlined style={{ fontSize: '11px' }}/>
-                    {t('buyerInfo')}
-                  </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}>
-                    <Avatar
-                      size={24}
-                      src={buyerDetail?.avatar}
-                      icon={<UserOutlined />}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => showUserDetail(buyerDetail)}
-                    />
-                    <div>
-                      <div style={{ fontSize: '11px', fontWeight: '500' }}>
-                        {buyerDetail?.nickname || buyerDetail?.username || '-'}
-                        <span style={{
-                          marginLeft: '4px',
-                          padding: '0 4px',
-                          background: '#e6f7ff',
-                          color: '#1890ff',
-                          fontSize: '10px',
-                          borderRadius: '2px'
-                        }}>
-                          {t('creditScore')}： {buyerDetail?.creditScore || 0}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: '11px', color: '#999' }}>
-                        {buyerDetail?.city}{buyerDetail?.country ? `, ${buyerDetail.country}` : ''}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <Divider type="vertical" style={{ height: 'auto', margin: '0' }} />
-
-                {/* 卖家信息 */}
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '11px', color: '#666', marginBottom: '4px' }}>
-                    <ShopOutlined style={{ fontSize: '11px' }}/>
-                    {t('sellerInfo')}
-                  </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}>
-                    <Avatar
-                      size={24}
-                      src={sellerDetail?.avatar}
-                      icon={<ShopOutlined />}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => showUserDetail(sellerDetail)}
-                    />
-                    <div>
-                      <div style={{ fontSize: '11px', fontWeight: '500' }}>
-                        {sellerDetail?.nickname || sellerDetail?.username || '-'}
-                        <span style={{
-                          marginLeft: '4px',
-                          padding: '0 4px',
-                          background: '#f6ffed',
-                          color: '#52c41a',
-                          fontSize: '10px',
-                          borderRadius: '2px'
-                        }}>
-                          {t('creditScore')}： {sellerDetail?.creditScore || 0}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: '11px', color: '#999' }}>
-                        {sellerDetail?.city}{sellerDetail?.country ? `, ${sellerDetail.country}` : ''}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 订单基本信息 */}
-            <Descriptions
-              bordered
-
-              column={2}
-              labelStyle={{
-                width: '90px',
-                padding: '4px 8px',
-                fontSize: '11px'
-              }}
-              contentStyle={{
-                padding: '4px 8px',
-                fontSize: '11px'
-              }}
-              style={{ marginBottom: '8px' }}
-            >
-              <Descriptions.Item label={t('orderId')}>{userOrder.id}</Descriptions.Item>
-              <Descriptions.Item label={t('orderStatus')}>
-                <OrderStatus status={userOrder.orderStatus} />
-              </Descriptions.Item>
-              <Descriptions.Item label={t('paymentType')}>{parsePaymentType(userOrder.paymentType)}</Descriptions.Item>
-              <Descriptions.Item label={t('payTime')}>{formatDate(userOrder.payTime)}</Descriptions.Item>
-              <Descriptions.Item label={t('totalAmount')} span={2}>{userOrder.totalAmount} CNY</Descriptions.Item>
-            </Descriptions>
-
-            {/* 收货信息 */}
-            <div style={{ marginBottom: '8px' }}>
-              <div style={{
-                padding: '4px 8px',
-                fontWeight: '500',
-                fontSize: '12px',
-                marginBottom: '4px',
-                display: 'flex',
-                alignItems: 'center'
-              }}>
-                <HomeOutlined style={{ marginRight: '4px' }} />
-                {t('deliveryInfo')}
-              </div>
-              <Descriptions
-                bordered
-
-                column={2}
-                labelStyle={{
-                  width: '90px',
-                  padding: '4px 8px',
-                  fontSize: '11px'
-                }}
-                contentStyle={{
-                  padding: '4px 8px',
-                  fontSize: '11px'
-                }}
-              >
-                <Descriptions.Item label={t('receiverName')}>{userOrder.receiverName}</Descriptions.Item>
-                <Descriptions.Item label={t('phoneNumber')}>{userOrder.phoneNum}</Descriptions.Item>
-                <Descriptions.Item label={t('shippingMethod')}>{userOrder.shippingMethod}</Descriptions.Item>
-                <Descriptions.Item label={t('notes')}>{userOrder.notes || t('noNotes')}</Descriptions.Item>
-                <Descriptions.Item label={t('deliveryAddress')} span={2}>{userOrder.deliveryAddress}</Descriptions.Item>
-              </Descriptions>
-            </div>
-
-            {/* 商品信息 */}
-            <div style={{ marginBottom: '8px' }}>
-              <div style={{
-                padding: '4px 8px',
-                fontWeight: '500',
-                fontSize: '12px',
-                marginBottom: '4px'
-              }}>
-                {t('orderItems')}
-              </div>
-              {userProducts.map((product) => (
-                <div
-                  key={product.id}
-                  style={{
-                    padding: '4px 8px',
-                    borderBottom: '1px solid #f0f0f0',
-                    fontSize: '12px',
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '8px'
-                  }}
-                >
-                  {/* 左侧产品信息 */}
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: '500' }}>{product.productName}</div>
-                    <div style={{ color: '#666', fontSize: '11px', marginTop: '2px' }}>
-                      {product.productDescription}
-                    </div>
-                    <div style={{ color: '#999', fontSize: '11px', marginTop: '2px' }}>
-                      {t('category')}: {product.category}
-                    </div>
-                    <div style={{ color: '#999', fontSize: '11px' }}>
-                      {t('city')}: {product.city}
-                    </div>
-                    <div style={{ fontSize: '11px', marginTop: '4px', color: '#ff4d4f' }}>
-                      <span>{product.price} CNY</span>
-                      {product.originalPrice && (
-                        <span style={{
-                          color: '#999',
-                          textDecoration: 'line-through',
-                          marginLeft: '8px'
-                        }}>
-                          {product.originalPrice} CNY
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* 右侧图片区域 */}
-                  <div style={{
-                    width: '100px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '4px'
-                  }}>
-                    {/* 封面图 */}
-                    <Image
-                      width={100}
-                      height={75}
-                      src={product.imageCover}
-                      alt={product.productName}
-                      style={{
-                        objectFit: 'cover',
-                        borderRadius: '2px'
-                      }}
-                    />
-
-                    {/* 图片网格 */}
-                    {product.imageList?.length > 0 && (
-                      <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
-                        gap: '2px',
-                        width: '100px'
-                      }}>
-                        {product.imageList.slice(0, 9).map((image, index) => (
-                          <div
-                            key={index}
-                            style={{
-                              position: 'relative',
-                              width: '32px',
-                              height: '32px'
-                            }}
-                          >
-                            <Image
-                              src={image}
-                              alt={`${product.productName} ${index + 1}`}
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                borderRadius: '2px'
-                              }}
-                              preview={{
-                                src: image, // 预览时显示原图
-                                mask: null // 移除预览遮罩文字
-                              }}
-                            />
-                            {index === 8 && product.imageList.length > 9 && (
-                              <div style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                color: '#fff',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '11px',
-                                borderRadius: '2px'
-                              }}>
-                                +{product.imageList.length - 9}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* 订单状态历史 */}
-            <div style={{ marginBottom: '8px' }}>
-              <div style={{
-                padding: '4px 8px',
-                fontWeight: '500',
-                fontSize: '12px',
-                marginBottom: '4px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <span>{t('orderHistory')}</span>
-                {orderData.userOrder.orderStatus === 'PAID' && (
-                  <Button
-                    type="primary"
-
-                    onClick={() => setShipModalVisible(true)}
-                    style={{ fontSize: '12px', height: '24px' }}
-                  >
-                    {t('ship')}
-                  </Button>
-                )}
-              </div>
-              <Timeline
-                style={{
-                  padding: '4px 8px',
-                  fontSize: '12px'
-                }}
-              >
-                {orderStatusHistories.map((history) => (
-                  <Timeline.Item
-                    key={history.id}
-                    color="blue"
-                    style={{ paddingBottom: '4px' }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <div>
-                        <div style={{ fontSize: '12px' }}>{history.oldStatus} → {history.newStatus}</div>
-                        <div style={{ color: '#999', fontSize: '11px' }}>
-                          {t('operator')}: {history.createBy}
-                        </div>
-                        {history.remarks && (
-                          <div style={{ color: '#666', fontSize: '11px' }}>
-                            {history.remarks}
-                          </div>
-                        )}
-                      </div>
-                      <div style={{ color: '#999', fontSize: '11px' }}>
-                        {formatDate(history.createTime)}
-                      </div>
-                    </div>
-                  </Timeline.Item>
-                ))}
-              </Timeline>
-            </div>
-
-            {/* 操作按钮 */}
-            <div style={{ textAlign: 'right', fontSize: '12px' }}>
-              <Space size={4}>
-                <Button  onClick={onCancel} style={{ fontSize: '12px', height: '24px' }}>
-                  {t('close')}
-                </Button>
-                <Popconfirm
-                  title={t('confirmCancel')}
-                  onConfirm={() => console.log('取消订单')}
-                  okText={t('yes')}
-                  cancelText={t('no')}
-                >
-                  <Button  type="primary" danger style={{ fontSize: '12px', height: '24px' }}>
-                    {t('deleteOrder')}
-                  </Button>
-                </Popconfirm>
-              </Space>
-            </div>
-
-            {/* 用户详情弹窗 */}
-            <UserDetailModal
-              visible={userDetailVisible}
-              user={currentUserDetail}
-              onCancel={() => setUserDetailVisible(false)}
-            />
-
-            {/* 发货弹窗 */}
-            <ShipOrderModal
-              visible={shipModalVisible}
-              onCancel={handleShipModalClose}
-              orderData={orderData}
-            />
-          </>
+          <Tabs items={tabItems} />
         )}
       </Spin>
+
+      {/* 用户详情弹窗 */}
+      <UserDetailModal
+        visible={userDetailVisible}
+        user={currentUserDetail}
+        onCancel={() => setUserDetailVisible(false)}
+      />
+
+      {/* 发货弹窗 */}
+      <ShipOrderModal
+        visible={shipModalVisible}
+        onCancel={handleShipModalClose}
+        orderData={orderData}
+      />
     </Modal>
   );
 };

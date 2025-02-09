@@ -19,6 +19,7 @@ import {
   Tag,
   message,
   Space,
+  Tabs,
 } from 'antd';
 import {
   GlobalOutlined,
@@ -93,7 +94,6 @@ const ContributorsList = ({ maintainers, loading }) => {
 
   return (
     <Card
-
       title={
         <Space>
           <TeamOutlined style={{ fontSize: '14px' }} />
@@ -111,7 +111,6 @@ const ContributorsList = ({ maintainers, loading }) => {
             return (
               <Col span={6} key={item.id}>
                 <Card
-
                   bordered={false}
                   bodyStyle={{
                     padding: '8px',
@@ -209,6 +208,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   const [maintainersLoading, setMaintainersLoading] = useState(false);
   const [historicalInputs, setHistoricalInputs] = useState({});
   const [lastSubmittedType, setLastSubmittedType] = useState(null);
+  const [activeTab, setActiveTab] = useState('basicInfo'); // 添加标签页状态
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [loadingStatus, setLoadingStatus] = useState(null);
 
   // 在组件加载时获取历史记录
   useEffect(() => {
@@ -352,7 +355,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         }}
       >
         <Input
-
           style={{
             width: 100,
             fontSize: '10px',
@@ -384,7 +386,22 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     },
   });
 
+  const handleSelectAll = (event, data) => {
+    const checked = event.target.checked;
+    setSelectAll(checked);
+    setSelectedRows(checked ? data.map(item => item.id) : []);
+  };
+
+  const handleSelectRow = (id, data) => {
+    const newSelectedRows = selectedRows.includes(id)
+      ? selectedRows.filter(rowId => rowId !== id)
+      : [...selectedRows, id];
+    setSelectedRows(newSelectedRows);
+    setSelectAll(newSelectedRows.length === data.length);
+  };
+
   const handleStatusChange = async (record, checked) => {
+    setLoadingStatus(record.id);
     try {
       await api.post('/manage/global-addresses/change-status', {
         id: record.id,
@@ -394,6 +411,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       fetchRegions(currentParentId);
     } catch (error) {
       console.error('状态切换失败:', error);
+    } finally {
+      setLoadingStatus(null);
     }
   };
 
@@ -586,7 +605,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         <Space size={4}>
           <Switch
             checked={record.status}
-
             onChange={(checked) => handleStatusChange(record, checked)}
             style={{
               transform: 'scale(0.8)',
@@ -596,7 +614,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           />
           <Button
             type="link"
-
             onClick={() => handleDrillDown(record)}
             style={{
               fontSize: '12px',
@@ -608,7 +625,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
           </Button>
           <Button
             type="link"
-
             onClick={() => handleEdit(record)}
             style={{
               fontSize: '12px',
@@ -629,7 +645,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
             <Button
               type="link"
               danger
-
               icon={<DeleteOutlined style={{ fontSize: '12px' }} />}
               style={{
                 padding: '0 4px',
@@ -719,120 +734,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
               />
             </Col>
           </Row>
-
-          {/* 国家统计卡片 */}
-          <Row gutter={[8, 8]} style={{ marginTop: '8px' }}>
-            <Col span={24}>
-              <CountryStatisticsCard country={country} />
-            </Col>
-          </Row>
-
-          {/* 四个指标统计卡片 */}
-          <Row gutter={[8, 8]} style={{ marginTop: '8px' }}>
-            {[
-              {
-                title: t('unemploymentRate'),
-                value: country?.unemploymentRate,
-                suffix: '%',
-                icon: <TeamOutlined />
-              },
-              {
-                title: t('educationLevel'),
-                value: country?.educationLevel,
-                formatter: val => val?.toFixed(1),
-                icon: <GlobalOutlined />
-              },
-              {
-                title: t('healthcareLevel'),
-                value: country?.healthcareLevel,
-                formatter: val => val?.toFixed(1),
-                icon: <GlobalOutlined />
-              },
-              {
-                title: t('internetPenetration'),
-                value: country?.internetPenetrationRate,
-                suffix: '%',
-                icon: <GlobalOutlined />
-              }
-            ].map((stat, index) => (
-              <Col span={6} key={index}>
-                <Card   >
-                  <Statistic
-                    title={<span style={{ fontSize: '12px' }}>{stat.title}</span>}
-                    value={stat.value}
-                    prefix={React.cloneElement(stat.icon, { style: { fontSize: '12px' } })}
-                    valueStyle={{ fontSize: '14px' }}
-                    formatter={stat.formatter}
-                    suffix={stat.suffix}
-                  />
-                </Card>
-              </Col>
-            ))}
-          </Row>
-
-          {/* 行政区划统计卡片 */}
-          <Row gutter={[8, 8]} style={{ marginTop: '8px' }}>
-            {[
-              {
-                title: currentRegion ? t('subRegionsCount') : t('regionsCount'),
-                value: regions.length,
-                icon: <EnvironmentOutlined />
-              },
-              {
-                title: t('totalPopulation'),
-                value: regions.reduce((sum, region) => sum + (region.population || 0), 0),
-                formatter: val => `${(val / 10000).toFixed(2)}${t('tenThousand')}`,
-                icon: <TeamOutlined />
-              },
-              {
-                title: t('totalArea'),
-                value: regions.reduce((sum, region) => sum + (region.areaKm2 || 0), 0),
-                formatter: val => `${val.toLocaleString()} km²`,
-                icon: <EnvironmentOutlined />
-              }
-            ].map((stat, index) => (
-              <Col span={8} key={index}>
-                <Card   >
-                  <Statistic
-                    title={<span style={{ fontSize: '12px' }}>{stat.title}</span>}
-                    value={stat.value}
-                    prefix={React.cloneElement(stat.icon, { style: { fontSize: '12px' } })}
-                    valueStyle={{ fontSize: '14px' }}
-                    formatter={stat.formatter}
-                  />
-                </Card>
-              </Col>
-            ))}
-          </Row>
-
-          {/* 面包屑和按钮 */}
-          <Row style={{ marginTop: '12px' }}>
-            <Col flex="auto">
-              <Space split="/">
-                {breadcrumb.map((item, index) => (
-                  <Button
-                    key={item.id}
-                    type="link"
-
-                    onClick={() => handleGoBack(index)}
-                    style={{ padding: '0', fontSize: '12px' }}
-                  >
-                    {item.name}
-                  </Button>
-                ))}
-              </Space>
-            </Col>
-            <Col>
-              <Button
-                type="primary"
-
-                icon={<PlusOutlined />}
-                onClick={handleAddModalOpen}
-              >
-                {t('addRegion')}
-              </Button>
-            </Col>
-          </Row>
         </div>
       }
       open={visible}
@@ -841,27 +742,232 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       footer={null}
       bodyStyle={{ padding: '12px' }}
     >
-      {/* 表格部分 */}
-      <Spin spinning={loading}>
-        {regions.length > 0 ? (
-          <Table
-            components={components}
-            columns={columns}
-            dataSource={filteredData}
+      <Tabs
+        activeKey={activeTab}
+        onChange={setActiveTab}
+        items={[
+          {
+            key: 'basicInfo',
+            label: t('basicInfo'),
+            children: (
+              <>
+                <Row gutter={[8, 8]}>
+                  <Col span={24}>
+                    <CountryStatisticsCard country={country} />
+                  </Col>
+                </Row>
+                
+                <Row gutter={[8, 8]} style={{ marginTop: '8px' }}>
+                  {[
+                    {
+                      title: t('unemploymentRate'),
+                      value: country?.unemploymentRate,
+                      suffix: '%',
+                      icon: <TeamOutlined />
+                    },
+                    {
+                      title: t('educationLevel'),
+                      value: country?.educationLevel,
+                      formatter: val => val?.toFixed(1),
+                      icon: <GlobalOutlined />
+                    },
+                    {
+                      title: t('healthcareLevel'),
+                      value: country?.healthcareLevel,
+                      formatter: val => val?.toFixed(1),
+                      icon: <GlobalOutlined />
+                    },
+                    {
+                      title: t('internetPenetration'),
+                      value: country?.internetPenetrationRate,
+                      suffix: '%',
+                      icon: <GlobalOutlined />
+                    }
+                  ].map((stat, index) => (
+                    <Col span={6} key={index}>
+                      <Card>
+                        <Statistic
+                          title={<span style={{ fontSize: '12px' }}>{stat.title}</span>}
+                          value={stat.value}
+                          prefix={React.cloneElement(stat.icon, { style: { fontSize: '12px' } })}
+                          valueStyle={{ fontSize: '14px' }}
+                          formatter={stat.formatter}
+                          suffix={stat.suffix}
+                        />
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </>
+            ),
+          },
+          {
+            key: 'regions',
+            label: t('region'),
+            children: (
+              <>
+                <Row style={{ marginBottom: '12px' }}>
+                  <Col flex="auto">
+                    <Space split="/">
+                      {breadcrumb.map((item, index) => (
+                        <Button
+                          key={item.id}
+                          type="link"
+                          onClick={() => handleGoBack(index)}
+                          style={{ padding: '0', fontSize: '12px' }}
+                        >
+                          {item.name}
+                        </Button>
+                      ))}
+                    </Space>
+                  </Col>
+                  <Col>
+                    <Button
+                      type="primary"
+                      icon={<PlusOutlined />}
+                      onClick={handleAddModalOpen}
+                    >
+                      {t('addRegion')}
+                    </Button>
+                  </Col>
+                </Row>
 
-            scroll={{ x: 1200, y: 400 }}
-            pagination={false}
-            rowKey="id"
-            bordered
-            style={{ marginTop: 8 }}
-            rowClassName={() => 'table-row-small'}
-          />
-        ) : (
-          <Empty description={<span style={{ fontSize: '12px' }}>{t('noData')}</span>} />
-        )}
-      </Spin>
+                <Spin spinning={loading}>
+                  {regions.length > 0 ? (
+                    <div style={{ 
+                      overflowX: 'auto', 
+                      overflowY: 'auto', 
+                      maxHeight: '600px',
+                      marginTop: '8px'  // 仅保留上边距
+                    }}>
+                      <table className="table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style={{ width: '40px' }}>
+                              <div className="custom-control custom-checkbox">
+                                <input
+                                  type="checkbox"
+                                  className="custom-control-input"
+                                  id="select_all"
+                                  checked={selectAll}
+                                  onChange={(event) => handleSelectAll(event, regions)}
+                                />
+                                <label className="custom-control-label" htmlFor="select_all"></label>
+                              </div>
+                            </th>
+                            <th style={{ minWidth: '160px' }}>{t('localName')}</th>
+                            <th style={{ minWidth: '160px' }}>{t('name')}</th>
+                            <th style={{ minWidth: '100px' }}>{t('shortName')}</th>
+                            <th style={{ minWidth: '100px' }}>{t('type')}</th>
+                            <th style={{ minWidth: '100px' }}>{t('zone')}</th>
+                            <th style={{ minWidth: '100px' }}>{t('capital')}</th>
+                            <th style={{ minWidth: '100px' }}>{t('population')}</th>
+                            <th style={{ minWidth: '100px' }}>{t('area')}</th>
+                            <th style={{ width: '60px' }}>{t('status')}</th>
+                            <th className="fixed-column" style={{ width: '150px' }}>{t('actions')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredData.map((item) => (
+                            <tr key={item.id} className="record-font">
+                              <td>
+                                <div className="custom-control custom-checkbox">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedRows.includes(item.id)}
+                                    onChange={() => handleSelectRow(item.id, regions)}
+                                  />
+                                  <label
+                                    className="custom-control-label"
+                                    htmlFor={`td_checkbox_${item.id}`}
+                                  ></label>
+                                </div>
+                              </td>
+                              <td className="text-truncate">
+                                <div style={{ padding: '4px 0' }}>
+                                  <div style={{ fontSize: '12px', fontWeight: 500 }}>{item.localName}</div>
+                                  <div style={{ fontSize: '11px', color: '#666' }}>{item.code}</div>
+                                </div>
+                              </td>
+                              <td className="text-truncate">
+                                <div style={{ padding: '4px 0' }}>
+                                  <div style={{ fontSize: '12px', fontWeight: 500 }}>{item.name}</div>
+                                  <div style={{ fontSize: '11px', color: '#666' }}>{item.enName}</div>
+                                </div>
+                              </td>
+                              <td className="text-truncate">{item.shortName}</td>
+                              <td className="text-truncate">
+                                <Tag color="blue" style={{ fontSize: '11px', padding: '0 4px' }}>
+                                  {item.type}
+                                </Tag>
+                              </td>
+                              <td className="text-truncate">{item.region}</td>
+                              <td className="text-truncate">{item.capital}</td>
+                              <td className="text-truncate text-right">
+                                {item.population ? `${(item.population / 10000).toFixed(2)}万` : '-'}
+                              </td>
+                              <td className="text-truncate text-right">
+                                {item.areaKm2 ? `${item.areaKm2.toLocaleString()} km²` : '-'}
+                              </td>
+                              <td>
+                                <label className="toggle-switch">
+                                  <input
+                                    type="checkbox"
+                                    checked={item.status}
+                                    onChange={(e) => handleStatusChange(item, e.target.checked)}
+                                    disabled={loadingStatus === item.id}
+                                  />
+                                  <span className="toggle-switch-slider"></span>
+                                </label>
+                              </td>
+                              <td className="fixed-column">
+                                <Space>
+                                  <Button 
+                                    type="link" 
+                                    onClick={() => handleDrillDown(item)}
+                                    style={{ padding: '0 4px', fontSize: '12px', height: '20px' }}
+                                  >
+                                    {t('detail')}
+                                  </Button>
+                                  <Button 
+                                    type="link" 
+                                    onClick={() => handleEdit(item)}
+                                    style={{ padding: '0 4px', fontSize: '12px', height: '20px' }}
+                                  >
+                                    {t('edit')}
+                                  </Button>
+                                  <Popconfirm
+                                    title={t('confirmDelete')}
+                                    onConfirm={() => handleDelete(item.id)}
+                                    okText={t('confirm')}
+                                    cancelText={t('cancel')}
+                                    okButtonProps={{ size: 'small' }}
+                                    cancelButtonProps={{ size: 'small' }}
+                                  >
+                                    <Button
+                                      type="link"
+                                      danger
+                                      icon={<DeleteOutlined style={{ fontSize: '12px' }} />}
+                                      style={{ padding: '0 4px', height: '20px' }}
+                                    />
+                                  </Popconfirm>
+                                </Space>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <Empty description={<span style={{ fontSize: '12px' }}>{t('noData')}</span>} />
+                  )}
+                </Spin>
+              </>
+            ),
+          },
+        ]}
+      />
 
-      {/* 模态框组件 */}
       <AddRegionModal
         visible={addModalVisible}
         onCancel={() => {
