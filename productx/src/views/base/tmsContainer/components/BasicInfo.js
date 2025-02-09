@@ -3,6 +3,7 @@ import { Card, Descriptions, Row, Col, Button, Space } from 'antd';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { useTranslation } from 'react-i18next';
+import { CompressOutlined, ExpandOutlined } from '@ant-design/icons';
 
 const BasicInfo = ({ container }) => {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ const BasicInfo = ({ container }) => {
   const controlsRef = useRef(null);
   const frameIdRef = useRef(null);
   const [showInternal, setShowInternal] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // 清理函数
   const cleanup = () => {
@@ -26,6 +28,7 @@ const BasicInfo = ({ container }) => {
     }
     if (rendererRef.current) {
       rendererRef.current.dispose();
+      rendererRef.current.forceContextLoss();
       if (rendererRef.current.domElement && rendererRef.current.domElement.parentNode) {
         rendererRef.current.domElement.parentNode.removeChild(rendererRef.current.domElement);
       }
@@ -44,10 +47,17 @@ const BasicInfo = ({ container }) => {
       }
       if (object.material) {
         if (Array.isArray(object.material)) {
-          object.material.forEach(material => material.dispose());
+          object.material.forEach(material => {
+            if (material.map) material.map.dispose();
+            material.dispose();
+          });
         } else {
+          if (object.material.map) object.material.map.dispose();
           object.material.dispose();
         }
+      }
+      if (object.dispose) {
+        object.dispose();
       }
     });
   };
@@ -135,24 +145,28 @@ const BasicInfo = ({ container }) => {
     // 确保使用外部尺寸渲染外部集装箱
     const containerGeometry = new THREE.BoxGeometry(
       container.externalLength * 0.001,
-      container.externalHeight * 0.001,  // 这里必须使用外部高度 2.591
-      container.externalWidth * 0.001
+      container.externalHeight * 0.001,
+      container.externalWidth * 0.001,
+      1, 1, 1  // 减少分段数
     );
     
-    // 创建发光材质
+    // 使用共享材质
     const containerMaterial = new THREE.MeshPhongMaterial({
-      color: 0x2c5282,  // 深蓝色
+      color: 0x2c5282,
       transparent: true,
       opacity: 0.7,
       shininess: 100,
-      side: THREE.DoubleSide,
+      side: THREE.FrontSide, // 只渲染正面
       depthWrite: true
     });
+
+    // 优化内存使用
+    containerGeometry.attributes.position.needsUpdate = false;
+    containerGeometry.attributes.normal.needsUpdate = false;
     
     const containerMesh = new THREE.Mesh(containerGeometry, containerMaterial);
-    containerMesh.position.y = 0;  // 确保位置正确
-    containerMesh.castShadow = true;
-    containerMesh.receiveShadow = true;
+    containerMesh.matrixAutoUpdate = false; // 禁用自动矩阵更新
+    containerMesh.updateMatrix();
     scene.add(containerMesh);
 
     // 添加边框发光效果
@@ -552,49 +566,77 @@ const BasicInfo = ({ container }) => {
 
     const renderer = new THREE.WebGLRenderer({ 
       antialias: true,
-      logarithmicDepthBuffer: true  // 添加对数深度缓冲，提高渲染精度
+      powerPreference: 'high-performance', // 优先使用高性能GPU
+      logarithmicDepthBuffer: true
     });
     renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio); // 设置像素比
-    renderer.shadowMap.enabled = true;  // 启用阴影
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;  // 使用柔和阴影
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // 限制最大像素比
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.minDistance = 2;  // 设置最小缩放距离
-    controls.maxDistance = 20;  // 设置最大缩放距离
-    controls.maxPolarAngle = Math.PI / 2;  // 限制相机垂直旋转角度，防止看到地面以下
+    controls.rotateSpeed = 0.8; // 调整旋转速度
+    controls.zoomSpeed = 0.8;   // 调整缩放速度
+    controls.panSpeed = 0.8;    // 调整平移速度
+    controls.minDistance = 2;
+    controls.maxDistance = 20;
+    controls.maxPolarAngle = Math.PI / 2;
     controlsRef.current = controls;
 
     // 创建集装箱模型
     createContainerModel(scene);
 
+    let lastFrameTime = performance.now();
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
     const animate = () => {
+      const currentTime = performance.now();
+      const deltaTime = currentTime - lastFrameTime;
+
+      if (deltaTime >= frameInterval) {
+        controls.update();
+        renderer.render(scene, camera);
+        lastFrameTime = currentTime - (deltaTime % frameInterval);
+      }
+
       frameIdRef.current = requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
     };
     animate();
   };
 
   // 监听容器尺寸变化
   useEffect(() => {
+    let resizeTimeout;
+    
     const handleResize = () => {
-      if (!containerRef.current || !rendererRef.current || !cameraRef.current) return;
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
       
-      const width = containerRef.current.clientWidth;
-      const height = containerRef.current.clientHeight;
-      
-      cameraRef.current.aspect = width / height;
-      cameraRef.current.updateProjectionMatrix();
-      rendererRef.current.setSize(width, height);
+      resizeTimeout = setTimeout(() => {
+        if (!containerRef.current || !rendererRef.current || !cameraRef.current) return;
+        
+        const width = containerRef.current.clientWidth;
+        const height = containerRef.current.clientHeight;
+        
+        cameraRef.current.aspect = width / height;
+        cameraRef.current.updateProjectionMatrix();
+        rendererRef.current.setSize(width, height);
+      }, 100); // 防抖处理
     };
 
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+      }
+    };
   }, []);
 
   // 初始化场景
@@ -602,6 +644,69 @@ const BasicInfo = ({ container }) => {
     initScene();
     return cleanup;
   }, [container]);
+
+  // 处理进入全屏
+  const enterFullscreen = async (element) => {
+    try {
+      if (element.requestFullscreen) {
+        await element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        await element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        await element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        await element.msRequestFullscreen();
+      }
+    } catch (err) {
+      console.error('Failed to enter fullscreen:', err);
+    }
+  };
+
+  // 处理退出全屏
+  const exitFullscreen = async () => {
+    try {
+      if (document.exitFullscreen) {
+        await document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        await document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        await document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        await document.msExitFullscreen();
+      }
+    } catch (err) {
+      console.error('Failed to exit fullscreen:', err);
+    }
+  };
+
+  // 监听全屏变化
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+      // 触发 resize 以更新渲染
+      window.dispatchEvent(new Event('resize'));
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      enterFullscreen(containerRef.current);
+    } else {
+      exitFullscreen();
+    }
+  };
 
   return (
     <Row gutter={[16, 16]}>
@@ -611,13 +716,21 @@ const BasicInfo = ({ container }) => {
           title={t('3dModel')} 
           bordered={false}
           bodyStyle={{ padding: '12px' }}
+          extra={
+            <Button 
+              type="primary" 
+              icon={isFullscreen ? <CompressOutlined /> : <ExpandOutlined />} 
+              onClick={toggleFullscreen}
+            />
+          }
         >
           <div 
             ref={containerRef} 
             style={{ 
-              width: '100%', 
+              width: '100%',
               height: '360px',
-              borderRadius: '8px'
+              borderRadius: '8px',
+              backgroundColor: '#f5f5f5'
             }} 
           />
         </Card>
