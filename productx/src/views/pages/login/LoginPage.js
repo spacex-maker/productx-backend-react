@@ -83,42 +83,31 @@ const ContentWrapper = styled(CContainer)`
 const LoginCard = styled(CCard)`
   background: linear-gradient(
     145deg,
-    rgba(30, 32, 47, 0.65) 0%,
-    rgba(35, 28, 54, 0.65) 100%
+    rgba(30, 32, 47, 0.85) 0%,
+    rgba(35, 28, 54, 0.85) 100%
   );
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  backdrop-filter: blur(12px);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(99, 102, 241, 0.1) inset;
   overflow: visible;
   position: relative;
-  border-radius: 16px;
+  border-radius: 24px;
   transform-style: preserve-3d;
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
-              opacity 0.8s ease,
-              scale 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(99, 102, 241, 0.2) inset;
+  }
+
   &.exit {
     transform: perspective(1000px) rotateY(720deg) translateZ(300px);
     opacity: 0;
     scale: 0.8;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(120deg, #6366f1, #8b5cf6);
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    border-radius: 16px;
-    z-index: -1;
-  }
-
-  &.exit:before {
-    opacity: 0.15;
   }
 
   & > div:first-child {
@@ -424,46 +413,72 @@ const LoginForm = styled(CForm)`
 
 const StyledInputGroup = styled(CInputGroup)`
   margin-bottom: 1.5rem;
+  position: relative;
+  transition: all 0.3s ease;
 
   .input-group-text {
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
     border-right: none;
     color: #8b5cf6;
     min-width: 46px;
     justify-content: center;
+    transition: all 0.3s ease;
 
     svg {
       width: 18px;
       height: 18px;
+      transition: all 0.3s ease;
     }
   }
 
-  &:last-of-type {
-    margin-bottom: 2rem;
+  &:hover {
+    transform: translateY(-2px);
+    
+    .input-group-text {
+      background: rgba(99, 102, 241, 0.2);
+      color: #6366f1;
+    }
+
+    input {
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+  }
+
+  &:focus-within {
+    transform: translateY(-2px);
+    
+    .input-group-text {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: #8b5cf6;
+      color: #6366f1;
+    }
+
+    input {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    }
   }
 `;
 
 const StyledInput = styled(CFormInput)`
   background: rgba(30, 32, 47, 0.95);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.3);
   border-left: none;
   color: #e2e8f0;
   transition: all 0.3s ease;
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
 
   &::placeholder {
-    color: #64748b;
+    color: rgba(100, 116, 139, 0.8);
   }
 
   &:focus {
     background: rgba(30, 32, 47, 0.98);
     border-color: #8b5cf6;
-    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
     color: #f1f5f9;
-  }
-
-  &:hover {
-    background: rgba(99, 102, 241, 0.1);
+    box-shadow: none;
   }
 `;
 
@@ -476,16 +491,50 @@ const StyledButton = styled(CButton)`
   ) !important;
   background-size: 200% auto !important;
   border: none;
-  padding: 0.625rem 1rem;
+  padding: 0.75rem 1.5rem;
   font-weight: 500;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
-  height: 42px;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 1rem;
+  height: 48px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+    transition: all 0.5s ease;
+  }
 
   &:hover {
     background-position: right center !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+    box-shadow: 
+      0 4px 20px rgba(139, 92, 246, 0.4),
+      0 0 0 2px rgba(139, 92, 246, 0.2) inset;
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 
+      0 2px 10px rgba(139, 92, 246, 0.3),
+      0 0 0 2px rgba(139, 92, 246, 0.3) inset;
   }
 
   &:disabled {
@@ -495,6 +544,8 @@ const StyledButton = styled(CButton)`
       #5d4b8b 100%
     ) !important;
     opacity: 0.7;
+    transform: none;
+    box-shadow: none;
   }
 `;
 
@@ -582,39 +633,100 @@ const StyledFormSelect = styled(CFormSelect)`
 `;
 
 const CaptchaInputGroup = styled(StyledInputGroup)`
+  height: 42px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: stretch;
+
+  .input-group-text {
+    padding: 0;
+    height: 100%;
+  }
+
   .captcha-wrapper {
     display: flex;
-    align-items: center;
-    padding: 4px;
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    align-items: stretch;
+    padding: 0;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
     border-right: none;
+    border-radius: 4px 0 0 4px;
     position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100px;
+    min-width: 100px;
+    height: 42px;
+
+    &:hover {
+      background: rgba(99, 102, 241, 0.2);
+      
+      img {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+      }
+    }
+
+    &:active img {
+      transform: scale(0.98);
+    }
 
     img {
-      height: 32px;
-      border-radius: 4px;
-      cursor: pointer;
+      height: 40px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      filter: brightness(1.05);
+      margin: auto;
+      display: block;
     }
+  }
 
-    .captcha-tooltip {
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(30, 32, 47, 0.95);
-      padding: 4px 12px;
-      color: #64748b;
-      font-size: 0.75rem;
-      border-radius: 4px;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
+  input {
+    height: 42px;
+    font-family: monospace;
+    letter-spacing: 2px;
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    line-height: 42px;
+    margin: 0;
+    
+    &::placeholder {
+      letter-spacing: normal;
+      font-size: 0.9rem;
+      font-family: inherit;
+      line-height: 42px;
     }
+  }
 
-    &:hover .captcha-tooltip {
-      opacity: 1;
+  .input-group {
+    height: 42px;
+    display: flex;
+    align-items: stretch;
+  }
+
+  &.loading .captcha-wrapper::before {
+    width: 18px;
+    height: 18px;
+    border-width: 1.5px;
+  }
+
+  &.refreshed .captcha-wrapper {
+    animation: refresh-success 0.5s ease;
+  }
+
+  @keyframes refresh-success {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 `;
@@ -884,8 +996,6 @@ const letterAnimationStyle3 = css`
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
       background: rgba(30, 32, 47, 0.95);
     }
 
@@ -1439,6 +1549,8 @@ const LoginPage = () => {
   const [showSlogan, setShowSlogan] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [animationStyle, setAnimationStyle] = useState(Math.floor(Math.random() * 5) + 1);
+  const [captchaLoading, setCaptchaLoading] = useState(false);
+  const [captchaRefreshed, setCaptchaRefreshed] = useState(false);
 
   const fadeIn = {
     hidden: { opacity: 0 },
@@ -1452,8 +1564,32 @@ const LoginPage = () => {
     refreshCaptcha();
   }, []);
 
-  const refreshCaptcha = () => {
-    setCaptcha(`${API_BASE_URL}/manage/base/system/captcha?${new Date().getTime()}`);
+  const refreshCaptcha = async () => {
+    setCaptchaLoading(true);
+    setCaptchaRefreshed(false);
+    
+    try {
+      const newCaptchaUrl = `${API_BASE_URL}/manage/base/system/captcha?${new Date().getTime()}`;
+      // 预加载图片
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = newCaptchaUrl;
+      });
+      
+      setCaptcha(newCaptchaUrl);
+      setCaptchaRefreshed(true);
+      
+      // 清除刷新成功状态
+      setTimeout(() => {
+        setCaptchaRefreshed(false);
+      }, 500);
+    } catch (error) {
+      message.error('验证码加载失败，请重试');
+    } finally {
+      setCaptchaLoading(false);
+    }
   };
 
   const handleSetBaseURL = () => {
@@ -1758,15 +1894,27 @@ const LoginPage = () => {
                         />
                       </StyledInputGroup>
 
-                      <CaptchaInputGroup>
+                      <CaptchaInputGroup 
+                        className={`
+                          ${captchaLoading ? 'loading' : ''} 
+                          ${captchaRefreshed ? 'refreshed' : ''}
+                        `}
+                      >
                         <div className="captcha-wrapper">
-                          <div className="captcha-tooltip">{t('clickToChange')}</div>
-                          <img src={captcha} alt={t('captcha')} onClick={refreshCaptcha} />
+                          <img 
+                            src={captcha} 
+                            alt="验证码" 
+                            onClick={refreshCaptcha}
+                            style={{ 
+                              opacity: captchaLoading ? 0.5 : 1
+                            }}
+                          />
                         </div>
                         <StyledInput
-                          placeholder="验证码"
+                          placeholder="请输入验证码"
                           value={verify}
                           onChange={(e) => setVerify(e.target.value)}
+                          maxLength={4}
                         />
                       </CaptchaInputGroup>
 
