@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { useTranslation } from 'react-i18next';
 import { CompressOutlined, ExpandOutlined } from '@ant-design/icons';
+import { createDimensionLine } from '../utils/dimensionUtils';
 
 const BasicInfo = ({ container }) => {
   const { t } = useTranslation();
@@ -245,12 +246,12 @@ const BasicInfo = ({ container }) => {
     canvas.width = 2048;
     canvas.height = 2048;
     
-    // 绘制科技感背景
-    context.fillStyle = '#1a365d';
+    // 完全不透明的背景
+    context.fillStyle = '#0a192f';
     context.fillRect(0, 0, canvas.width, canvas.height);
     
     // 添加网格线
-    context.strokeStyle = '#2c5282';
+    context.strokeStyle = '#1e3a8a';
     context.lineWidth = 2;
     const gridSize = 64;
     for (let i = 0; i < canvas.width; i += gridSize) {
@@ -266,21 +267,59 @@ const BasicInfo = ({ container }) => {
       context.stroke();
     }
     
-    // 绘制集装箱类型
-    context.font = 'bold 300px Arial';
-    context.fillStyle = '#60a5fa';
+    // 设置文字样式
+    context.font = 'bold 400px Arial';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
+    
+    // 多层文字渲染，创建更强的视觉效果
+    // 1. 外发光
     context.shadowColor = '#60a5fa';
-    context.shadowBlur = 30;
+    context.shadowBlur = 40;
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    
+    // 2. 多重描边
+    // 外层描边
+    context.strokeStyle = '#1e3a8a';
+    context.lineWidth = 24;
+    context.strokeText(container.containerType, canvas.width/2, canvas.height/2);
+    
+    // 内层描边
+    context.strokeStyle = '#60a5fa';
+    context.lineWidth = 16;
+    context.strokeText(container.containerType, canvas.width/2, canvas.height/2);
+    
+    // 3. 实心文字
+    context.fillStyle = '#ffffff';
     context.fillText(container.containerType, canvas.width/2, canvas.height/2);
+    
+    // 4. 内发光效果
+    context.shadowColor = '#ffffff';
+    context.shadowBlur = 10;
+    context.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    context.fillText(container.containerType, canvas.width/2, canvas.height/2);
+    
+    // 重置阴影
+    context.shadowColor = 'transparent';
+    context.shadowBlur = 0;
+    
+    // 添加微弱的渐变光晕
+    const gradient = context.createRadialGradient(
+      canvas.width/2, canvas.height/2, 0,
+      canvas.width/2, canvas.height/2, canvas.width/4
+    );
+    gradient.addColorStop(0, 'rgba(96, 165, 250, 0.2)');
+    gradient.addColorStop(1, 'rgba(96, 165, 250, 0)');
+    
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
     
     return canvas;
   };
 
   // 修改标注线函数
   const addDimensionLines = (scene) => {
-    // 使用完全相同的尺寸进行标注
     const externalLength = container.externalLength * 0.001;
     const externalWidth = container.externalWidth * 0.001;
     const externalHeight = container.externalHeight * 0.001;
@@ -289,22 +328,22 @@ const BasicInfo = ({ container }) => {
     const internalWidth = container.internalWidth * 0.001;
     const internalHeight = container.internalHeight * 0.001;
     
-    // 创建发光材质
     const externalLineMaterial = new THREE.LineBasicMaterial({ 
-      color: 0x00a8ff,  // 亮蓝色
+      color: 0x00a8ff,
       linewidth: 2
     });
     
     const internalLineMaterial = new THREE.LineBasicMaterial({ 
-      color: 0x60a5fa,  // 浅蓝色
+      color: 0x60a5fa,
       linewidth: 1
     });
     
+    // 修改底部标注的位置，将 Y 坐标抬高 0.2
     // 外部尺寸标注 - 长度（底部前方）
     createDimensionLine(
       scene,
-      new THREE.Vector3(-externalLength/2, -externalHeight/2, externalWidth/2 + 0.5),
-      new THREE.Vector3(externalLength/2, -externalHeight/2, externalWidth/2 + 0.5),
+      new THREE.Vector3(-externalLength/2, -externalHeight/2 + 0.2, externalWidth/2 + 0.5),
+      new THREE.Vector3(externalLength/2, -externalHeight/2 + 0.2, externalWidth/2 + 0.5),
       `${container.externalLength}mm`,
       '#00a8ff',
       externalLineMaterial,
@@ -314,8 +353,8 @@ const BasicInfo = ({ container }) => {
     // 外部尺寸标注 - 宽度（底部右侧）
     createDimensionLine(
       scene,
-      new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2, -externalWidth/2),
-      new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2, externalWidth/2),
+      new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2 + 0.2, -externalWidth/2),
+      new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2 + 0.2, externalWidth/2),
       `${container.externalWidth}mm`,
       '#00a8ff',
       externalLineMaterial,
@@ -365,147 +404,6 @@ const BasicInfo = ({ container }) => {
       internalLineMaterial,
       0.2
     );
-  };
-
-  // 修改标注线创建函数，添加高度标注的支持
-  const createDimensionLine = (scene, start, end, text, textColor, material, offset = 0.2) => {
-    // 判断是否是高度标注（通过检查起点和终点的y值是否不同）
-    const isHeight = start.y !== end.y;
-    
-    if (isHeight) {
-        // 创建从容器边缘到标识线的连接线
-        const startExtension = new THREE.BufferGeometry().setFromPoints([
-            start,
-            new THREE.Vector3(start.x + offset, start.y, start.z + offset)
-        ]);
-        const startLine = new THREE.Line(startExtension, material);
-        scene.add(startLine);
-
-        const endExtension = new THREE.BufferGeometry().setFromPoints([
-            end,
-            new THREE.Vector3(end.x + offset, end.y, end.z + offset)
-        ]);
-        const endLine = new THREE.Line(endExtension, material);
-        scene.add(endLine);
-
-        // 创建偏移后的主标注线
-        const mainLine = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(start.x + offset, start.y, start.z + offset),
-            new THREE.Vector3(end.x + offset, end.y, end.z + offset)
-        ]);
-        const line = new THREE.Line(mainLine, material);
-        scene.add(line);
-
-        // 添加箭头
-        createArrow(scene, 
-            new THREE.Vector3(start.x + offset, start.y, start.z + offset),
-            new THREE.Vector3(0, -1, 0),
-            0.08, Math.PI / 6, material);
-        createArrow(scene, 
-            new THREE.Vector3(end.x + offset, end.y, end.z + offset),
-            new THREE.Vector3(0, 1, 0),
-            0.08, Math.PI / 6, material);
-
-        // 添加文字标注
-        const midPoint = new THREE.Vector3(
-            start.x + offset,
-            (start.y + end.y) / 2,
-            start.z + offset
-        );
-        createTextLabel(scene, midPoint, text, textColor);
-    } else {
-        // 原有的长度和宽度标注逻辑保持不变
-        const direction = end.clone().sub(start).normalize();
-        const up = new THREE.Vector3(0, 1, 0);
-        const offsetDir = direction.clone().cross(up).normalize();
-        
-        const offsetStart = start.clone().add(offsetDir.clone().multiplyScalar(offset));
-        const offsetEnd = end.clone().add(offsetDir.clone().multiplyScalar(offset));
-        
-        const extensionGeometry1 = new THREE.BufferGeometry().setFromPoints([
-            start,
-            offsetStart
-        ]);
-        const extensionLine1 = new THREE.Line(extensionGeometry1, material);
-        scene.add(extensionLine1);
-        
-        const extensionGeometry2 = new THREE.BufferGeometry().setFromPoints([
-            end,
-            offsetEnd
-        ]);
-        const extensionLine2 = new THREE.Line(extensionGeometry2, material);
-        scene.add(extensionLine2);
-        
-        const points = [offsetStart, offsetEnd];
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const line = new THREE.Line(geometry, material);
-        scene.add(line);
-        
-        createArrow(scene, offsetStart, direction.clone().negate(), 0.08, Math.PI / 6, material);
-        createArrow(scene, offsetEnd, direction, 0.08, Math.PI / 6, material);
-        
-        const midPoint = offsetStart.clone().add(offsetEnd).multiplyScalar(0.5);
-        createTextLabel(scene, midPoint, text, textColor);
-    }
-  };
-
-  // 修改箭头创建函数，使其更小巧
-  const createArrow = (scene, position, direction, length, angle, material) => {
-    const leftDir = direction.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), angle);
-    const rightDir = direction.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), -angle);
-    
-    const points = [
-      position.clone().add(leftDir.multiplyScalar(length)),
-      position,
-      position.clone().add(rightDir.multiplyScalar(length))
-    ];
-    
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const arrow = new THREE.Line(geometry, material);
-    scene.add(arrow);
-  };
-
-  // 修改文字标注函数，使其更清晰
-  const createTextLabel = (scene, position, text, color) => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = 512;
-    canvas.height = 128;
-    
-    // 绘制背景
-    context.fillStyle = 'rgba(10, 25, 47, 0.85)';  // 深蓝色半透明背景
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    
-    // 添加边框
-    context.strokeStyle = '#00a8ff';  // 蓝色边框
-    context.lineWidth = 2;
-    context.strokeRect(2, 2, canvas.width-4, canvas.height-4);
-    
-    // 设置文字样式
-    context.font = 'bold 64px Arial';
-    context.fillStyle = '#ffffff';  // 白色文字
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.shadowColor = '#00a8ff';  // 文字发光效果
-    context.shadowBlur = 10;
-    
-    // 绘制文字
-    context.fillText(text, canvas.width/2, canvas.height/2);
-    
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.minFilter = THREE.LinearFilter;
-    texture.magFilter = THREE.LinearFilter;
-    
-    const spriteMaterial = new THREE.SpriteMaterial({
-      map: texture,
-      transparent: true
-    });
-    
-    const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.position.copy(position);
-    sprite.scale.set(1, 0.25, 1);  // 调整标签大小
-    
-    scene.add(sprite);
   };
 
   // 添加警示标记函数

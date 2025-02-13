@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Card, Empty, Spin, Space, Switch, Button, Tooltip } from 'antd';
-import { ZoomInOutlined, ZoomOutOutlined, UndoOutlined, BarChartOutlined } from '@ant-design/icons';
+import { ZoomInOutlined, ZoomOutOutlined, UndoOutlined, BarChartOutlined, ReloadOutlined } from '@ant-design/icons';
 import api from 'src/axiosInstance';
 import { createChart, CandlestickSeries, HistogramSeries } from 'lightweight-charts';
 
@@ -291,6 +291,13 @@ const QtsMarketDataChart = ({
       title={`${symbol} - ${interval}`}
       extra={
         <Space>
+          <Tooltip title="刷新">
+            <Button 
+              icon={<ReloadOutlined />} 
+              onClick={fetchKlineData}
+              loading={loading}
+            />
+          </Tooltip>
           <Tooltip title="放大">
             <Button icon={<ZoomInOutlined />} onClick={handleZoomIn} />
           </Tooltip>
