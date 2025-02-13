@@ -6,6 +6,7 @@ import QtsMarketDataTable from "./QtsMarketDataTable"
 import QtsMarketDataChart from "./QtsMarketDataChart"
 import dayjs from 'dayjs'
 import moment from 'moment'
+import { SearchOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
 
@@ -137,7 +138,10 @@ const QtsMarketData = () => {
       limit: 1000  // 设置较大的限制以获取足够的数据点
     };
 
-    setChartParams(params); // 直接设置图表参数，不需要额外的API调用
+    setChartParams(null);  // 先重置 chartParams
+    setTimeout(() => {     // 使用 setTimeout 确保状态更新
+      setChartParams(params);
+    }, 0);
   };
 
   // 处理列表查询
@@ -353,15 +357,6 @@ const QtsMarketData = () => {
                             exchangeName: value
                           });
                           fetchSymbols(value);
-                          // 当有其他必填项都有值时，触发查询
-                          const formValues = chartForm.getFieldsValue();
-                          if (value && formValues.interval && formValues.dateRange) {
-                            handleChartSearch({
-                              ...formValues,
-                              exchangeName: value,
-                              symbol: undefined
-                            });
-                          }
                         }}
                         options={exchanges.map(exchange => ({
                           label: exchange.exchangeName,
@@ -380,15 +375,6 @@ const QtsMarketData = () => {
                         loading={loadingSymbols}
                         disabled={!chartForm.getFieldValue('exchangeName')}
                         showSearch
-                        onChange={(value) => {
-                          const formValues = chartForm.getFieldsValue();
-                          if (value && formValues.exchangeName && formValues.interval && formValues.dateRange) {
-                            handleChartSearch({
-                              ...formValues,
-                              symbol: value
-                            });
-                          }
-                        }}
                         options={symbols.map(symbol => ({
                           label: symbol.symbol,
                           value: symbol.symbol
@@ -403,15 +389,6 @@ const QtsMarketData = () => {
                       <Select
                         placeholder="选择K线周期"
                         style={{ width: 150 }}
-                        onChange={(value) => {
-                          const formValues = chartForm.getFieldsValue();
-                          if (value && formValues.exchangeName && formValues.symbol && formValues.dateRange) {
-                            handleChartSearch({
-                              ...formValues,
-                              interval: value
-                            });
-                          }
-                        }}
                         options={INTERVALS}
                       />
                     </Form.Item>
@@ -435,18 +412,23 @@ const QtsMarketData = () => {
                           '最近6月': [dayjs().subtract(6, 'month'), dayjs()],
                           '最近1年': [dayjs().subtract(1, 'year'), dayjs()],
                         }}
-                        onChange={(dates) => {
-                          if (dates) {
-                            const formValues = chartForm.getFieldsValue();
-                            if (formValues.exchangeName && formValues.symbol && formValues.interval) {
-                              handleChartSearch({
-                                ...formValues,
-                                dateRange: dates
-                              });
-                            }
-                          }
-                        }}
                       />
+                    </Form.Item>
+
+                    <Form.Item>
+                      <Space>
+                        <Button 
+                          type="primary" 
+                          onClick={() => {
+                            const values = chartForm.getFieldsValue();
+                            handleChartSearch(values);
+                          }}
+                          icon={<SearchOutlined />}
+                          loading={isLoading}
+                        >
+                          查询
+                        </Button>
+                      </Space>
                     </Form.Item>
                   </Form>
                 </Card>

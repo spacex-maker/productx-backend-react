@@ -7,6 +7,7 @@ import { PALLET_SIZES } from '../constants/palletSizes';
 import * as TWEEN from 'tween.js';
 import { PlusOutlined, CalculatorOutlined, ReloadOutlined, ExperimentOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import { createDimensionLine } from '../utils/dimensionUtils';
 
 // 定义极点类
 class ExtremePoint {
@@ -19,6 +20,7 @@ class ExtremePoint {
 
 const LoadingSimulation = ({ container }) => {
   const { t } = useTranslation();
+  const [theme, setTheme] = useState('dark'); // 添加 theme 状态
 
   // 状态管理
   const [selectedBoxes, setSelectedBoxes] = useState([]);
@@ -531,7 +533,7 @@ const LoadingSimulation = ({ container }) => {
     cleanup();
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf5f5f5);  // 浅灰色背景
+    scene.background = new THREE.Color(0xf5f5f5);
     sceneRef.current = scene;
 
     const camera = new THREE.PerspectiveCamera(
@@ -588,14 +590,9 @@ const LoadingSimulation = ({ container }) => {
     directionalLight.shadow.camera.bottom = -15;
     scene.add(directionalLight);
 
-    // 添加地面网格
-    const gridHelper = new THREE.GridHelper(30, 60, 0x888888, 0xcccccc);
-    gridHelper.position.y = -container.externalHeight * 0.001 / 2;
-    scene.add(gridHelper);
-
     // 添加坐标轴辅助
     const axesHelper = new THREE.AxesHelper(5);
-    axesHelper.position.y = gridHelper.position.y + 0.001;
+    axesHelper.position.y = -container.externalHeight * 0.001 / 2 + 0.001;
     scene.add(axesHelper);
 
     // 创建集装箱模型和装箱模型
@@ -754,29 +751,98 @@ const LoadingSimulation = ({ container }) => {
         boxMesh.add(boxEdgesMesh);
       });
     }
-  };
 
-  // 添加文字标注函数
-  const createTextLabel = (scene, position, text, color) => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.width = 256;
-    canvas.height = 64;
-    
-    context.font = 'bold 36px Arial';
-    context.fillStyle = color;
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText(text, canvas.width/2, canvas.height/2);
-    
-    const texture = new THREE.CanvasTexture(canvas);
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-    const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.position.copy(position);
-    sprite.scale.set(1.5, 0.4, 1);
-    
-    scene.add(sprite);
-    return sprite;
+    // 修改标注线函数
+    const addDimensionLines = (scene) => {
+      // 使用完全相同的尺寸进行标注
+      const externalLength = container.externalLength * 0.001;
+      const externalWidth = container.externalWidth * 0.001;
+      const externalHeight = container.externalHeight * 0.001;
+      
+      const internalLength = container.internalLength * 0.001;
+      const internalWidth = container.internalWidth * 0.001;
+      const internalHeight = container.internalHeight * 0.001;
+      
+      // 创建发光材质
+      const externalLineMaterial = new THREE.LineBasicMaterial({ 
+        color: 0x00a8ff,  // 亮蓝色
+        linewidth: 2
+      });
+      
+      const internalLineMaterial = new THREE.LineBasicMaterial({ 
+        color: 0x60a5fa,  // 浅蓝色
+        linewidth: 1
+      });
+      
+      // 使用共享的工具函数创建标注
+      createDimensionLine(
+        scene,
+        new THREE.Vector3(-externalLength/2, -externalHeight/2 + 0.2, externalWidth/2 + 0.5),
+        new THREE.Vector3(externalLength/2, -externalHeight/2 + 0.2, externalWidth/2 + 0.5),
+        `${container.externalLength}mm`,
+        '#00a8ff',
+        externalLineMaterial,
+        0.3
+      );
+      
+      // 外部尺寸标注 - 宽度（底部右侧）
+      createDimensionLine(
+        scene,
+        new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2 + 0.2, -externalWidth/2),
+        new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2 + 0.2, externalWidth/2),
+        `${container.externalWidth}mm`,
+        '#00a8ff',
+        externalLineMaterial,
+        0.3
+      );
+      
+      // 外部尺寸标注 - 高度（右前方）
+      createDimensionLine(
+        scene,
+        new THREE.Vector3(externalLength/2 + 0.5, -externalHeight/2, externalWidth/2 + 0.5),
+        new THREE.Vector3(externalLength/2 + 0.5, externalHeight/2, externalWidth/2 + 0.5),
+        `${container.externalHeight}mm`,
+        '#00a8ff',
+        externalLineMaterial,
+        0.3
+      );
+
+      // 内部尺寸标注 - 长度（中部前方）
+      createDimensionLine(
+        scene,
+        new THREE.Vector3(-internalLength/2, 0, internalWidth/2 + 0.3),
+        new THREE.Vector3(internalLength/2, 0, internalWidth/2 + 0.3),
+        `${container.internalLength}mm`,
+        '#60a5fa',
+        internalLineMaterial,
+        0.2
+      );
+      
+      // 内部尺寸标注 - 宽度（中部右侧）
+      createDimensionLine(
+        scene,
+        new THREE.Vector3(internalLength/2 + 0.3, 0, -internalWidth/2),
+        new THREE.Vector3(internalLength/2 + 0.3, 0, internalWidth/2),
+        `${container.internalWidth}mm`,
+        '#60a5fa',
+        internalLineMaterial,
+        0.2
+      );
+      
+      // 内部尺寸标注 - 高度（右前方内侧）
+      createDimensionLine(
+        scene,
+        new THREE.Vector3(internalLength/2 + 0.3, -internalHeight/2, internalWidth/2 + 0.3),
+        new THREE.Vector3(internalLength/2 + 0.3, internalHeight/2, internalWidth/2 + 0.3),
+        `${container.internalHeight}mm`,
+        '#60a5fa',
+        internalLineMaterial,
+        0.2
+      );
+    };
+
+    // 在创建完集装箱模型后调用标注函数
+    addDimensionLines(scene);
   };
 
   // 监听容器尺寸变化
