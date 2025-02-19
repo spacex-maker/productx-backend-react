@@ -1332,6 +1332,14 @@
   "applicableStandards": "Normas aplicables",
   "cornerFittings": "Accesorios de esquina",
   "forkliftPockets": "Bolsillos para carretillas elevadoras",
-  "distanceFromEnd": "Distancia desde el extremo"
+  "distanceFromEnd": "Distancia desde el extremo",
+  "termsConditionsContent": "Contenido de Términos y Condiciones",
+  "privacyPolicyContent": "Contenido de Política de Privacidad",
+  "pleaseInputTermsConditionsContent": "Por favor, ingrese el contenido de términos y condiciones",
+  "pleaseInputPrivacyPolicyContent": "Por favor, ingrese el contenido de la política de privacidad",
+  "basicSettings": "Configuración básica",
+  "supportInfo": "Información de soporte",
+  "appSettings": "Configuración de la aplicación",
+  "legalDocuments": "Documentos legales"
 
 }

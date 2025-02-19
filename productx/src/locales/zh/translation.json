@@ -1348,5 +1348,13 @@
   "applicableStandards": "适用标准",
   "cornerFittings": "角件规格",
   "forkliftPockets": "叉车口规格",
-  "distanceFromEnd": "距端部"
+  "distanceFromEnd": "距端部",
+  "termsConditionsContent": "服务条款内容",
+  "privacyPolicyContent": "隐私政策内容",
+  "pleaseInputTermsConditionsContent": "请输入服务条款内容",
+  "pleaseInputPrivacyPolicyContent": "请输入隐私政策内容",
+  "basicSettings": "基本设置",
+  "supportInfo": "支持信息",
+  "appSettings": "应用设置",
+  "legalDocuments": "法律文档"
 }

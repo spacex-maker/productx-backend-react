@@ -1324,6 +1324,14 @@
   "applicableStandards": "Применимые стандарты",
   "cornerFittings": "Угловые крепления",
   "forkliftPockets": "Карманы для вилочного погрузчика",
-  "distanceFromEnd": "Расстояние от края"
+  "distanceFromEnd": "Расстояние от края",
+  "termsConditionsContent": "Содержание Условий использования",
+  "privacyPolicyContent": "Содержание Политики конфиденциальности",
+  "pleaseInputTermsConditionsContent": "Пожалуйста, введите содержание условий использования",
+  "pleaseInputPrivacyPolicyContent": "Пожалуйста, введите содержание политики конфиденциальности",
+  "basicSettings": "Основные настройки",
+  "supportInfo": "Информация о поддержке",
+  "appSettings": "Настройки приложения",
+  "legalDocuments": "Юридические документы"
 
 }

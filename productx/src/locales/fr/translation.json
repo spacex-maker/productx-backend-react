@@ -1332,6 +1332,13 @@
   "applicableStandards": "Normes applicables",
   "cornerFittings": "Coins de fixation",
   "forkliftPockets": "Poches pour chariot élévateur",
-  "distanceFromEnd": "Distance depuis l'extrémité"
-
+  "distanceFromEnd": "Distance depuis l'extrémité",
+  "termsConditionsContent": "Contenu des Conditions Générales",
+  "privacyPolicyContent": "Contenu de la Politique de Confidentialité",
+  "pleaseInputTermsConditionsContent": "Veuillez saisir le contenu des conditions générales",
+  "pleaseInputPrivacyPolicyContent": "Veuillez saisir le contenu de la politique de confidentialité",
+  "basicSettings": "Paramètres de base",
+  "supportInfo": "Informations de support",
+  "appSettings": "Paramètres de l'application",
+  "legalDocuments": "Documents légaux"
 }

@@ -1316,6 +1316,14 @@
   "applicableStandards": "Standard applicabili",
   "cornerFittings": "Angoli di fissaggio",
   "forkliftPockets": "Tasche per carrello elevatore",
-  "distanceFromEnd": "Distanza dalla fine"
+  "distanceFromEnd": "Distanza dalla fine",
+  "termsConditionsContent": "Contenuto Termini e Condizioni",
+  "privacyPolicyContent": "Contenuto Informativa sulla Privacy",
+  "pleaseInputTermsConditionsContent": "Inserisci il contenuto dei termini e condizioni",
+  "pleaseInputPrivacyPolicyContent": "Inserisci il contenuto dell'informativa sulla privacy",
+  "basicSettings": "Impostazioni di base",
+  "supportInfo": "Informazioni di supporto",
+  "appSettings": "Impostazioni dell'applicazione",
+  "legalDocuments": "Documenti legali"
 
 }
