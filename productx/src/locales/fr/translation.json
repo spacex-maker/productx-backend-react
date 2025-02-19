@@ -1340,5 +1340,7 @@
   "basicSettings": "Paramètres de base",
   "supportInfo": "Informations de support",
   "appSettings": "Paramètres de l'application",
-  "legalDocuments": "Documents légaux"
+  "legalDocuments": "Documents légaux",
+  "termsConditions": "Conditions Générales",
+  "privacyPolicy": "Politique de Confidentialité"
 }

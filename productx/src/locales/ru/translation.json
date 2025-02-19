@@ -1332,6 +1332,8 @@
   "basicSettings": "Основные настройки",
   "supportInfo": "Информация о поддержке",
   "appSettings": "Настройки приложения",
-  "legalDocuments": "Юридические документы"
+  "legalDocuments": "Юридические документы",
+  "termsConditions": "Условия использования",
+  "privacyPolicy": "Политика конфиденциальности"
 
 }

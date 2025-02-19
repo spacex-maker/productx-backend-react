@@ -1309,5 +1309,7 @@
   "basicSettings": "Grundeinstellungen",
   "supportInfo": "Support-Informationen",
   "appSettings": "App-Einstellungen",
-  "legalDocuments": "Rechtliche Dokumente"
+  "legalDocuments": "Rechtliche Dokumente",
+  "termsConditions": "Allgemeine Geschäftsbedingungen",
+  "privacyPolicy": "Datenschutzerklärung"
 }

@@ -1325,5 +1325,7 @@
   "basicSettings": "الإعدادات الأساسية",
   "supportInfo": "معلومات الدعم",
   "appSettings": "إعدادات التطبيق",
-  "legalDocuments": "المستندات القانونية"
+  "legalDocuments": "المستندات القانونية",
+  "termsConditions": "الشروط والأحكام",
+  "privacyPolicy": "سياسة الخصوصية"
 }

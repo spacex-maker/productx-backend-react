@@ -1331,5 +1331,7 @@
   "basicSettings": "기본 설정",
   "supportInfo": "지원 정보",
   "appSettings": "앱 설정",
-  "legalDocuments": "법적 문서"
+  "legalDocuments": "법적 문서",
+  "termsConditions": "이용약관",
+  "privacyPolicy": "개인정보처리방침"
 }

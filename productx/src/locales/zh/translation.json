@@ -1356,5 +1356,7 @@
   "basicSettings": "基本设置",
   "supportInfo": "支持信息",
   "appSettings": "应用设置",
-  "legalDocuments": "法律文档"
+  "legalDocuments": "法律文档",
+  "termsConditions": "服务条款",
+  "privacyPolicy": "隐私政策"
 }
