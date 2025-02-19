@@ -1315,6 +1315,15 @@
   "applicableStandards": "المعايير المطبقة",
   "cornerFittings": "زوايا الحاوية",
   "forkliftPockets": "جيوب الرافعة الشوكية",
-  "distanceFromEnd": "المسافة من النهاية"
+  "distanceFromEnd": "المسافة من النهاية",
 
+  "termsConditionsContent": "محتوى الشروط والأحكام",
+  "privacyPolicyContent": "محتوى سياسة الخصوصية",
+  "pleaseInputTermsConditionsContent": "الرجاء إدخال محتوى الشروط والأحكام",
+  "pleaseInputPrivacyPolicyContent": "الرجاء إدخال محتوى سياسة الخصوصية",
+
+  "basicSettings": "الإعدادات الأساسية",
+  "supportInfo": "معلومات الدعم",
+  "appSettings": "إعدادات التطبيق",
+  "legalDocuments": "المستندات القانونية"
 }

@@ -1323,5 +1323,13 @@
   "applicableStandards": "Applicable Standards",
   "cornerFittings": "Corner Fittings",
   "forkliftPockets": "Forklift Pockets",
-  "distanceFromEnd": "Distance from End"
+  "distanceFromEnd": "Distance from End",
+  "termsConditionsContent": "Terms and Conditions Content",
+  "privacyPolicyContent": "Privacy Policy Content",
+  "pleaseInputTermsConditionsContent": "Please input terms and conditions content",
+  "pleaseInputPrivacyPolicyContent": "Please input privacy policy content",
+  "basicSettings": "Basic Settings",
+  "supportInfo": "Support Information",
+  "appSettings": "Application Settings",
+  "legalDocuments": "Legal Documents"
 }

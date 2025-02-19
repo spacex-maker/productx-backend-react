@@ -1322,6 +1322,14 @@
   "applicableStandards": "適用規格",
   "cornerFittings": "コーナーフィッティング",
   "forkliftPockets": "フォークリフトポケット",
-  "distanceFromEnd": "端からの距離"
+  "distanceFromEnd": "端からの距離",
+  "termsConditionsContent": "利用規約の内容",
+  "privacyPolicyContent": "プライバシーポリシーの内容",
+  "pleaseInputTermsConditionsContent": "利用規約の内容を入力してください",
+  "pleaseInputPrivacyPolicyContent": "プライバシーポリシーの内容を入力してください",
+  "basicSettings": "基本設定",
+  "supportInfo": "サポート情報",
+  "appSettings": "アプリケーション設定",
+  "legalDocuments": "法的文書"
 
 }

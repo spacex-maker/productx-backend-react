@@ -15,6 +15,8 @@ import {
 import { Form, Switch, message, Select } from 'antd'; // 添加 Select
 import api from 'src/axiosInstance';
 import { useTranslation } from 'react-i18next';
+import ReactQuill from 'react-quill'; // 添加到文件顶部
+import 'react-quill/dist/quill.snow.css'; // 添加到文件顶部
 
 // 添加组件级样式
 const styles = {
@@ -58,7 +60,45 @@ const styles = {
   formLabel: {
     color: 'var(--cui-body-color)'
   },
+  richEditor: {
+    '.ql-toolbar': {
+      backgroundColor: 'var(--cui-input-bg)',
+      border: '1px solid var(--cui-input-border-color)',
+      borderBottom: 'none',
+    },
+    '.ql-container': {
+      backgroundColor: 'var(--cui-input-bg)',
+      border: '1px solid var(--cui-input-border-color)',
+      color: 'var(--cui-input-color)',
+      minHeight: '150px',
+    },
+    '.ql-editor.ql-blank::before': {
+      color: 'var(--cui-input-placeholder-color)',
+    }
+  }
 };
+
+// 将 modules 和 formats 配置移到组件外部作为常量
+const QUILL_MODULES = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'align': [] }],
+    ['link'],
+    ['clean']
+  ],
+};
+
+const QUILL_FORMATS = [
+  'header',
+  'bold', 'italic', 'underline', 'strike',
+  'list', 'bullet',
+  'color', 'background',
+  'align',
+  'link'
+];
 
 // 配置表单组件
 const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) => {
@@ -306,6 +346,19 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
             </div>
 
             <CRow>
+              {/* 基本设置组 */}
+              <CCol md={12}>
+                <h4 className="mb-3">{t('basicSettings')}</h4>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('clientName')}</span>}
+                  name="clientName"
+                  rules={[{ required: true, message: t('pleaseInput') + t('clientName') }]}
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('clientName')} />
+                </Form.Item>
+              </CCol>
               <CCol md={6}>
                 <Form.Item
                   label={<span style={styles.formLabel}>{t('languageCode')}</span>}
@@ -320,19 +373,7 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                       (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                     }
                     style={styles.select}
-                    dropdownStyle={{
-                      backgroundColor: '#ffffff'
-                    }}
                   />
-                </Form.Item>
-              </CCol>
-              <CCol md={6}>
-                <Form.Item
-                  label={<span style={styles.formLabel}>{t('clientName')}</span>}
-                  name="clientName"
-                  rules={[{ required: true, message: t('pleaseInput') + t('clientName') }]}
-                >
-                  <CFormInput placeholder={t('pleaseInput') + t('clientName')} />
                 </Form.Item>
               </CCol>
               <CCol md={6}>
@@ -348,9 +389,6 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                       (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                     }
                     style={styles.select}
-                    dropdownStyle={{
-                      backgroundColor: '#ffffff'
-                    }}
                   />
                 </Form.Item>
               </CCol>
@@ -367,27 +405,13 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                       (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                     }
                     style={styles.select}
-                    dropdownStyle={{
-                      backgroundColor: '#ffffff'
-                    }}
                   />
                 </Form.Item>
               </CCol>
+
+              {/* 支持信息组 */}
               <CCol md={12}>
-                <Form.Item
-                  label={<span style={styles.formLabel}>{t('privacyPolicyUrl')}</span>}
-                  name="privacyPolicyUrl"
-                >
-                  <CFormInput placeholder={t('pleaseInput') + t('privacyPolicyUrl')} />
-                </Form.Item>
-              </CCol>
-              <CCol md={12}>
-                <Form.Item
-                  label={<span style={styles.formLabel}>{t('termsConditionsUrl')}</span>}
-                  name="termsConditionsUrl"
-                >
-                  <CFormInput placeholder={t('pleaseInput') + t('termsConditionsUrl')} />
-                </Form.Item>
+                <h4 className="mt-4 mb-3">{t('supportInfo')}</h4>
               </CCol>
               <CCol md={6}>
                 <Form.Item
@@ -405,26 +429,22 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                   <CFormInput placeholder={t('pleaseInput') + t('supportPhone')} />
                 </Form.Item>
               </CCol>
+
+              {/* 应用设置组 */}
+              <CCol md={12}>
+                <h4 className="mt-4 mb-3">{t('appSettings')}</h4>
+              </CCol>
               <CCol md={6}>
                 <Form.Item
                   label={<span style={styles.formLabel}>{t('appVersion')}</span>}
                   name="appVersion"
                   rules={[
-                    {
-                      required: true,
-                      message: t('pleaseInput') + t('appVersion')
-                    },
-                    {
-                      pattern: /^\d+\.\d+\.\d+$/,
-                      message: t('versionFormatError')
-                    }
+                    { required: true, message: t('pleaseInput') + t('appVersion') },
+                    { pattern: /^\d+\.\d+\.\d+$/, message: t('versionFormatError') }
                   ]}
                   tooltip={t('versionFormatTip')}
                 >
-                  <CFormInput 
-                    placeholder="1.0.0" 
-                    maxLength={10}
-                  />
+                  <CFormInput placeholder="1.0.0" maxLength={10} />
                 </Form.Item>
               </CCol>
               <CCol md={6}>
@@ -442,6 +462,55 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                   valuePropName="checked"
                 >
                   <Switch />
+                </Form.Item>
+              </CCol>
+
+              {/* 法律文档组 */}
+              <CCol md={12}>
+                <h4 className="mt-4 mb-3">{t('legalDocuments')}</h4>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('termsConditionsUrl')}</span>}
+                  name="termsConditionsUrl"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('termsConditionsUrl')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('termsConditionsContent')}</span>}
+                  name="termsConditionsContent"
+                >
+                  <ReactQuill 
+                    theme="snow"
+                    modules={QUILL_MODULES}
+                    formats={QUILL_FORMATS}
+                    placeholder={t('pleaseInput') + t('termsConditionsContent')}
+                    style={{ ...styles.richEditor }}
+                  />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('privacyPolicyUrl')}</span>}
+                  name="privacyPolicyUrl"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('privacyPolicyUrl')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('privacyPolicyContent')}</span>}
+                  name="privacyPolicyContent"
+                >
+                  <ReactQuill 
+                    theme="snow"
+                    modules={QUILL_MODULES}
+                    formats={QUILL_FORMATS}
+                    placeholder={t('pleaseInput') + t('privacyPolicyContent')}
+                    style={{ ...styles.richEditor }}
+                  />
                 </Form.Item>
               </CCol>
             </CRow>
@@ -546,8 +615,7 @@ const ClientCountryConfig = () => {
                     <div style={styles.countryContent}>
                       <div style={styles.flagContainer}>
                         {country.flagImageUrl ? (
-                          <img 
-                            src={country.flagImageUrl} 
+                          <img                             src={country.flagImageUrl} 
                             alt={country.name}
                             style={styles.flagImage}
                           />
@@ -581,3 +649,4 @@ const ClientCountryConfig = () => {
 };
 
 export default ClientCountryConfig;
+

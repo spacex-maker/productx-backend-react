@@ -1299,6 +1299,15 @@
   "applicableStandards": "Anwendbare Standards",
   "cornerFittings": "Eckbeschläge",
   "forkliftPockets": "Gabelstaplertaschen",
-  "distanceFromEnd": "Abstand vom Ende"
+  "distanceFromEnd": "Abstand vom Ende",
 
+  "termsConditionsContent": "Inhalt der Allgemeinen Geschäftsbedingungen",
+  "privacyPolicyContent": "Inhalt der Datenschutzerklärung",
+  "pleaseInputTermsConditionsContent": "Bitte geben Sie den Inhalt der AGB ein",
+  "pleaseInputPrivacyPolicyContent": "Bitte geben Sie den Inhalt der Datenschutzerklärung ein",
+
+  "basicSettings": "Grundeinstellungen",
+  "supportInfo": "Support-Informationen",
+  "appSettings": "App-Einstellungen",
+  "legalDocuments": "Rechtliche Dokumente"
 }
