@@ -1331,5 +1331,7 @@
   "basicSettings": "Basic Settings",
   "supportInfo": "Support Information",
   "appSettings": "Application Settings",
-  "legalDocuments": "Legal Documents"
+  "legalDocuments": "Legal Documents",
+  "termsConditions": "Terms & Conditions",
+  "privacyPolicy": "Privacy Policy"
 }

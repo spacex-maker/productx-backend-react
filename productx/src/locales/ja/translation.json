@@ -1330,6 +1330,8 @@
   "basicSettings": "基本設定",
   "supportInfo": "サポート情報",
   "appSettings": "アプリケーション設定",
-  "legalDocuments": "法的文書"
+  "legalDocuments": "法的文書",
+  "termsConditions": "利用規約",
+  "privacyPolicy": "プライバシーポリシー"
 
 }
