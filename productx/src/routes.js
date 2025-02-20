@@ -177,6 +177,11 @@ const LogisticsProviderRoutesRouter = React.lazy(
 const QtsSystemLogRouter = React.lazy(() => import('./views/base/qtsSystemLog/QtsSystemLog'));
 
 const TmsContainerRouter = React.lazy(() => import('./views/base/tmsContainer/TmsContainer'));
+
+const UserShoppingCartRouter = React.lazy(
+  () => import('./views/base/userShoppingCart/UserShoppingCart'),
+);
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -663,6 +668,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <TmsContainerRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/userShoppingCart',
+    name: '用户购物车管理',
+    element: (
+      <PrivateRoute>
+        <UserShoppingCartRouter />
       </PrivateRoute>
     ),
   },
