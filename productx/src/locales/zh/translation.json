@@ -1358,5 +1358,13 @@
   "appSettings": "应用设置",
   "legalDocuments": "法律文档",
   "termsConditions": "服务条款",
-  "privacyPolicy": "隐私政策"
+  "privacyPolicy": "隐私政策",
+  "selectLanguage": "选择语言",
+  "confirmTitle": "确认操作",
+  "enableConfirmTitle": "确认启用所选语言？",
+  "disableConfirmTitle": "确认禁用所选语言？",
+  "affectedModules": "以下模块将受到影响",
+  "adminLanguageSetting": "后台管理系统语言设置",
+  "appLanguageSetting": "App端语言设置",
+  "termsOfService": "服务条款"
 }

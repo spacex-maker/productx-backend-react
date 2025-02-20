@@ -1332,6 +1332,15 @@
   "appSettings": "アプリケーション設定",
   "legalDocuments": "法的文書",
   "termsConditions": "利用規約",
-  "privacyPolicy": "プライバシーポリシー"
+  "privacyPolicy": "プライバシーポリシー",
+  "selectLanguage": "言語を選択",
+
+  "confirmTitle": "操作の確認",
+  "enableConfirmTitle": "選択した言語を有効にしますか？",
+  "disableConfirmTitle": "選択した言語を無効にしますか？",
+  "affectedModules": "以下のモジュールが影響を受けます",
+  "adminLanguageSetting": "管理システムの言語設定",
+  "appLanguageSetting": "アプリの言語設定",
+  "termsOfService": "利用規約"
 
 }

@@ -38,21 +38,16 @@ const styles = {
     gap: '12px'
   },
   flagContainer: {
-    width: 40,
-    height: 30,
-    borderRadius: '2px',
+    width: '48px',
+    height: '36px',
     overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid var(--cui-border-color)',
-    backgroundColor: 'var(--cui-body-bg)',
-    flexShrink: 0
+    borderRadius: '4px',
+    marginLeft: '16px',  // 添加左边距，与tab保持适当间距
   },
   flagImage: {
     width: '100%',
     height: '100%',
-    objectFit: 'cover'
+    objectFit: 'cover',
   },
   countryName: {
     flex: 1,
@@ -61,7 +56,7 @@ const styles = {
     whiteSpace: 'nowrap'
   },
   formLabel: {
-    color: 'var(--cui-body-color)'
+    fontWeight: 500,
   },
   richEditor: {
     '.ql-toolbar': {
@@ -78,6 +73,15 @@ const styles = {
     '.ql-editor.ql-blank::before': {
       color: 'var(--cui-input-placeholder-color)',
     }
+  },
+  legalHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '1rem'
+  },
+  languageSelector: {
+    minWidth: '200px'
   }
 };
 
@@ -112,6 +116,7 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
   const [currencies, setCurrencies] = useState([]);
   const [activeTab, setActiveTab] = useState('basic');
   const [activeLegalTab, setActiveLegalTab] = useState('terms');
+  const [selectedLegalLanguage, setSelectedLegalLanguage] = useState('en'); // 默认英语
 
   useEffect(() => {
     if (countryConfig) {
@@ -305,20 +310,83 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
     }
   }, [selectedCountry, languages, form]);
 
+  // 处理法律文件的多语言内容
+  useEffect(() => {
+    if (countryConfig) {
+      try {
+        // 直接设置对象值
+        form.setFieldsValue({
+          ...countryConfig,
+          termsConditionsContent: countryConfig.termsConditionsContent || {},
+          privacyPolicyContent: countryConfig.privacyPolicyContent || {}
+        });
+      } catch (e) {
+        console.error('设置表单数据失败:', e);
+        form.setFieldsValue({
+          termsConditionsContent: {},
+          privacyPolicyContent: {}
+        });
+      }
+    }
+  }, [countryConfig, form]);
+
+  // 在提交前处理数据
   const onFinish = async (values) => {
     setSubmitLoading(true);
     try {
-      await api.post('/manage/client-country-config/update', {
+      // 直接使用对象，不需要 JSON 转换
+      const submitValues = {
         ...values,
+        termsConditionsContent: values.termsConditionsContent || {},
+        privacyPolicyContent: values.privacyPolicyContent || {},
         id: countryConfig?.id,
         countryCode: selectedCountry.code
-      });
+      };
+      
+      await api.post('/manage/client-country-config/update', submitValues);
       message.success(t('updateSuccess'));
     } catch (error) {
       console.error('更新配置失败:', error);
       message.error(t('updateFailed'));
     } finally {
       setSubmitLoading(false);
+    }
+  };
+
+  // 处理法律文件内容变化
+  const handleLegalContentChange = (content, type) => {
+    const fieldName = type === 'terms' ? 'termsConditionsContent' : 'privacyPolicyContent';
+    
+    try {
+      // 获取当前表单中的值
+      let currentContent = form.getFieldValue(fieldName) || {};
+      
+      // 更新当前语言的内容
+      const updatedContent = {
+        ...currentContent,
+        [selectedLegalLanguage]: content
+      };
+      
+      // 直接更新表单值为对象
+      form.setFieldValue(fieldName, updatedContent);
+      
+    } catch (error) {
+      console.error('处理内容更新失败:', error);
+      // 如果出错，创建新的对象只包含当前语言
+      form.setFieldValue(fieldName, {
+        [selectedLegalLanguage]: content
+      });
+    }
+  };
+
+  // 获取当前语言的内容
+  const getCurrentLanguageContent = (fieldName) => {
+    try {
+      const content = form.getFieldValue(fieldName) || {};
+      return content[selectedLegalLanguage] || '';
+    } catch (error) {
+      console.error('获取内容失败:', error);
+      return '';
     }
   };
 
@@ -331,53 +399,46 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
           </div>
         ) : (
           <>
-            <CNav variant="tabs" className="mb-4">
-              <CNavItem>
-                <CNavLink
-                  active={activeTab === 'basic'}
-                  onClick={() => setActiveTab('basic')}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {t('basicSettings')}
-                </CNavLink>
-              </CNavItem>
-              <CNavItem>
-                <CNavLink
-                  active={activeTab === 'legal'}
-                  onClick={() => setActiveTab('legal')}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {t('legalDocuments')}
-                </CNavLink>
-              </CNavItem>
-            </CNav>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <CNav variant="tabs" style={{ flex: 1 }}>
+                <CNavItem>
+                  <CNavLink
+                    active={activeTab === 'basic'}
+                    onClick={() => setActiveTab('basic')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {t('basicSettings')}
+                  </CNavLink>
+                </CNavItem>
+                <CNavItem>
+                  <CNavLink
+                    active={activeTab === 'legal'}
+                    onClick={() => setActiveTab('legal')}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {t('legalDocuments')}
+                  </CNavLink>
+                </CNavItem>
+              </CNav>
+              
+              {selectedCountry.flagImageUrl && (
+                <div style={styles.flagContainer}>
+                  <img 
+                    src={selectedCountry.flagImageUrl} 
+                    alt={selectedCountry.name}
+                    style={styles.flagImage}
+                  />
+                </div>
+              )}
+            </div>
 
             <Form
               form={form}
               layout="vertical"
               onFinish={onFinish}
             >
-              <div className="d-flex align-items-center mb-4">
-                <div style={styles.flagContainer} className="me-3">
-                  {selectedCountry.flagImageUrl && (
-                    <img 
-                      src={selectedCountry.flagImageUrl} 
-                      alt={selectedCountry.name}
-                      style={styles.flagImage}
-                    />
-                  )}
-                </div>
-                <h2 style={styles.formLabel} className="mb-0">
-                  {selectedCountry.name} ({selectedCountry.code}) {t('clientConfig')}
-                </h2>
-              </div>
-
               {activeTab === 'basic' ? (
                 <CRow>
-                  {/* 基本设置组 */}
-                  <CCol md={12}>
-                    <h4 className="mb-3">{t('basicSettings')}</h4>
-                  </CCol>
                   <CCol md={6}>
                     <Form.Item
                       label={<span style={styles.formLabel}>{t('clientName')}</span>}
@@ -495,26 +556,43 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                 </CRow>
               ) : (
                 <>
-                  <CNav variant="pills" className="mb-4">
-                    <CNavItem>
-                      <CNavLink
-                        active={activeLegalTab === 'terms'}
-                        onClick={() => setActiveLegalTab('terms')}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        {t('termsConditions')}
-                      </CNavLink>
-                    </CNavItem>
-                    <CNavItem>
-                      <CNavLink
-                        active={activeLegalTab === 'privacy'}
-                        onClick={() => setActiveLegalTab('privacy')}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        {t('privacyPolicy')}
-                      </CNavLink>
-                    </CNavItem>
-                  </CNav>
+                  <div style={styles.legalHeader}>
+                    <CNav variant="pills">
+                      <CNavItem>
+                        <CNavLink
+                          active={activeLegalTab === 'terms'}
+                          onClick={() => setActiveLegalTab('terms')}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {t('termsConditions')}
+                        </CNavLink>
+                      </CNavItem>
+                      <CNavItem>
+                        <CNavLink
+                          active={activeLegalTab === 'privacy'}
+                          onClick={() => setActiveLegalTab('privacy')}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {t('privacyPolicy')}
+                        </CNavLink>
+                      </CNavItem>
+                    </CNav>
+                    
+                    <Form.Item
+                      label={<span style={styles.formLabel}>{t('selectLanguage')}</span>}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <Select
+                        value={selectedLegalLanguage}
+                        onChange={setSelectedLegalLanguage}
+                        options={languages.map(lang => ({
+                          value: lang.value,
+                          label: `${lang.nameNative} (${lang.nameEn})`
+                        }))}
+                        style={styles.languageSelector}
+                      />
+                    </Form.Item>
+                  </div>
 
                   <CRow>
                     {activeLegalTab === 'terms' ? (
@@ -529,8 +607,10 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                         </CCol>
                         <CCol md={12}>
                           <Form.Item
-                            label={<span style={styles.formLabel}>{t('termsConditionsContent')}</span>}
-                            name="termsConditionsContent"
+                            label={<span style={styles.formLabel}>
+                              {t('termsConditionsContent')} - {languages.find(l => l.value === selectedLegalLanguage)?.nameNative}
+                            </span>}
+                            name={['termsConditionsContent', selectedLegalLanguage]}
                           >
                             <ReactQuill 
                               theme="snow"
@@ -538,6 +618,7 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                               formats={QUILL_FORMATS}
                               placeholder={t('pleaseInput') + t('termsConditionsContent')}
                               style={{ ...styles.richEditor }}
+                              onChange={(content) => handleLegalContentChange(content, 'terms')}
                             />
                           </Form.Item>
                         </CCol>
@@ -554,8 +635,10 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                         </CCol>
                         <CCol md={12}>
                           <Form.Item
-                            label={<span style={styles.formLabel}>{t('privacyPolicyContent')}</span>}
-                            name="privacyPolicyContent"
+                            label={<span style={styles.formLabel}>
+                              {t('privacyPolicyContent')} - {languages.find(l => l.value === selectedLegalLanguage)?.nameNative}
+                            </span>}
+                            name={['privacyPolicyContent', selectedLegalLanguage]}
                           >
                             <ReactQuill 
                               theme="snow"
@@ -563,6 +646,7 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
                               formats={QUILL_FORMATS}
                               placeholder={t('pleaseInput') + t('privacyPolicyContent')}
                               style={{ ...styles.richEditor }}
+                              onChange={(content) => handleLegalContentChange(content, 'privacy')}
                             />
                           </Form.Item>
                         </CCol>

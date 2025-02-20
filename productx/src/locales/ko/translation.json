@@ -1333,5 +1333,13 @@
   "appSettings": "앱 설정",
   "legalDocuments": "법적 문서",
   "termsConditions": "이용약관",
-  "privacyPolicy": "개인정보처리방침"
+  "privacyPolicy": "개인정보처리방침",
+  "selectLanguage": "언어 선택",
+  "confirmTitle": "작업 확인",
+  "enableConfirmTitle": "선택한 언어를 활성화하시겠습니까?",
+  "disableConfirmTitle": "선택한 언어를 비활성화하시겠습니까?",
+  "affectedModules": "다음 모듈이 영향을 받습니다",
+  "adminLanguageSetting": "관리 시스템 언어 설정",
+  "appLanguageSetting": "앱 언어 설정",
+  "termsOfService": "서비스 이용약관"
 }
