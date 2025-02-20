@@ -1327,5 +1327,13 @@
   "appSettings": "إعدادات التطبيق",
   "legalDocuments": "المستندات القانونية",
   "termsConditions": "الشروط والأحكام",
-  "privacyPolicy": "سياسة الخصوصية"
+  "privacyPolicy": "سياسة الخصوصية",
+  "selectLanguage": "اختر اللغة",
+  "confirmTitle": "تأكيد العملية",
+  "enableConfirmTitle": "تأكيد تفعيل اللغات المحددة؟",
+  "disableConfirmTitle": "تأكيد تعطيل اللغات المحددة؟",
+  "affectedModules": "ستتأثر الوحدات التالية",
+  "adminLanguageSetting": "إعدادات لغة نظام الإدارة",
+  "appLanguageSetting": "إعدادات لغة التطبيق",
+  "termsOfService": "شروط الخدمة"
 }

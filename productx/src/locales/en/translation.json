@@ -1333,5 +1333,13 @@
   "appSettings": "Application Settings",
   "legalDocuments": "Legal Documents",
   "termsConditions": "Terms & Conditions",
-  "privacyPolicy": "Privacy Policy"
+  "privacyPolicy": "Privacy Policy",
+  "selectLanguage": "Select Language",
+  "confirmTitle": "Confirm Operation",
+  "enableConfirmTitle": "Confirm enable selected languages?",
+  "disableConfirmTitle": "Confirm disable selected languages?",
+  "affectedModules": "The following modules will be affected",
+  "adminLanguageSetting": "Admin System Language Settings",
+  "appLanguageSetting": "App Language Settings",
+  "termsOfService": "Terms of Service"
 }

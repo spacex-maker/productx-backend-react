@@ -1311,5 +1311,14 @@
   "appSettings": "App-Einstellungen",
   "legalDocuments": "Rechtliche Dokumente",
   "termsConditions": "Allgemeine Geschäftsbedingungen",
-  "privacyPolicy": "Datenschutzerklärung"
+  "privacyPolicy": "Datenschutzerklärung",
+  "selectLanguage": "Sprache auswählen",
+
+  "confirmTitle": "Operation bestätigen",
+  "enableConfirmTitle": "Ausgewählte Sprachen aktivieren?",
+  "disableConfirmTitle": "Ausgewählte Sprachen deaktivieren?",
+  "affectedModules": "Folgende Module werden betroffen sein",
+  "adminLanguageSetting": "Spracheinstellungen des Verwaltungssystems",
+  "appLanguageSetting": "App-Spracheinstellungen",
+  "termsOfService": "Nutzungsbedingungen"
 }

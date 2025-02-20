@@ -1334,6 +1334,15 @@
   "appSettings": "Настройки приложения",
   "legalDocuments": "Юридические документы",
   "termsConditions": "Условия использования",
-  "privacyPolicy": "Политика конфиденциальности"
+  "privacyPolicy": "Политика конфиденциальности",
+  "selectLanguage": "Выберите язык",
+
+  "confirmTitle": "Подтверждение операции",
+  "enableConfirmTitle": "Подтвердить включение выбранных языков?",
+  "disableConfirmTitle": "Подтвердить отключение выбранных языков?",
+  "affectedModules": "Будут затронуты следующие модули",
+  "adminLanguageSetting": "Языковые настройки системы администрирования",
+  "appLanguageSetting": "Языковые настройки приложения",
+  "termsOfService": "Условия использования"
 
 }

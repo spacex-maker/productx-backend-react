@@ -1326,6 +1326,14 @@
   "appSettings": "Impostazioni dell'applicazione",
   "legalDocuments": "Documenti legali",
   "termsConditions": "Termini e Condizioni",
-  "privacyPolicy": "Informativa sulla Privacy"
+  "privacyPolicy": "Informativa sulla Privacy",
+  "selectLanguage": "Seleziona lingua",
+  "confirmTitle": "Conferma operazione",
+  "enableConfirmTitle": "Confermare l'attivazione delle lingue selezionate?",
+  "disableConfirmTitle": "Confermare la disattivazione delle lingue selezionate?",
+  "affectedModules": "I seguenti moduli saranno interessati",
+  "adminLanguageSetting": "Impostazioni lingua sistema amministrativo",
+  "appLanguageSetting": "Impostazioni lingua applicazione",
+  "termsOfService": "Termini di servizio"
 
 }

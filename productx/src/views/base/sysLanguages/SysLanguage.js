@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Form, Input, message, Spin, Col, Row, Select, Space } from 'antd'
+import { Button, Form, Input, message, Spin, Col, Row, Select, Space, Modal } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
@@ -101,16 +101,37 @@ const SysLanguage = () => {
       return
     }
 
-    try {
-      await api.post('/manage/sys-languages/change-status', {
-        ids: ids,
-        status: status
-      })
-      message.success(t('updateSuccess'))
-      await fetchData()
-    } catch (error) {
-      message.error(t('updateFailed'))
-    }
+    const confirmContent = (
+      <div>
+        <p>{status ? t('enableConfirmTitle') : t('disableConfirmTitle')}</p>
+        <p>{t('affectedModules')}:</p>
+        <ul>
+          <li>{t('adminLanguageSetting')}</li>
+          <li>{t('appLanguageSetting')}</li>
+          <li>{t('privacyPolicy')}</li>
+          <li>{t('termsOfService')}</li>
+        </ul>
+      </div>
+    )
+
+    Modal.confirm({
+      title: t('confirmTitle'),
+      content: confirmContent,
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      onOk: async () => {
+        try {
+          await api.post('/manage/sys-languages/change-status', {
+            ids: ids,
+            status: status
+          })
+          message.success(t('updateSuccess'))
+          await fetchData()
+        } catch (error) {
+          message.error(t('updateFailed'))
+        }
+      }
+    })
   }
 
   const handleEditClick = (language) => {
