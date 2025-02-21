@@ -1341,6 +1341,17 @@
   "affectedModules": "以下のモジュールが影響を受けます",
   "adminLanguageSetting": "管理システムの言語設定",
   "appLanguageSetting": "アプリの言語設定",
-  "termsOfService": "利用規約"
-
+  "termsOfService": "利用規約",
+  "searchTerm": "検索キーワード",
+  "totalSearchCount": "総検索回数",
+  "mobileSearchCount": "モバイル検索回数",
+  "desktopSearchCount": "デスクトップ検索回数",
+  "tabletSearchCount": "タブレット検索回数",
+  "lastSearchedAt": "最終検索日時",
+  "categoryId": "カテゴリーID",
+  "pleaseInputSearchTerm": "検索キーワードを入力してください",
+  "pleaseInputLanguage": "言語を入力してください",
+  "pleaseInputCategoryId": "カテゴリーIDを入力してください",
+  "addHotSearch": "人気検索を追加",
+  "editHotSearch": "人気検索を編集"
 }

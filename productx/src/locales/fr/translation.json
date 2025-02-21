@@ -1350,5 +1350,17 @@
   "affectedModules": "Les modules suivants seront affectés",
   "adminLanguageSetting": "Paramètres de langue du système d'administration",
   "appLanguageSetting": "Paramètres de langue de l'application",
-  "termsOfService": "Conditions d'utilisation"
+  "termsOfService": "Conditions d'utilisation",
+  "searchTerm": "Terme de recherche",
+  "totalSearchCount": "Nombre total de recherches",
+  "mobileSearchCount": "Recherches sur mobile",
+  "desktopSearchCount": "Recherches sur ordinateur",
+  "tabletSearchCount": "Recherches sur tablette",
+  "lastSearchedAt": "Dernière recherche",
+  "categoryId": "ID de catégorie",
+  "pleaseInputSearchTerm": "Veuillez saisir le terme de recherche",
+  "pleaseInputLanguage": "Veuillez saisir la langue",
+  "pleaseInputCategoryId": "Veuillez saisir l'ID de catégorie",
+  "addHotSearch": "Ajouter une recherche populaire",
+  "editHotSearch": "Modifier la recherche populaire"
 }

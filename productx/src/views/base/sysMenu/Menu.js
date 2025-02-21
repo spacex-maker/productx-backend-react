@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, message, Select, Space, Tag, Switch, Spin, Modal } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, CaretRightOutlined, UserOutlined, TeamOutlined, ShoppingCartOutlined, ShopOutlined, SettingOutlined, DashboardOutlined } from '@ant-design/icons';
 import * as icons from '@coreui/icons';
 import CIcon from '@coreui/icons-react';
 import api from 'src/axiosInstance';
@@ -8,6 +8,9 @@ import styled from 'styled-components';
 import AddMenuModal from './AddMenuModal';
 import EditMenuModal from './EditMenuModal';
 import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import * as AntdIcons from '@ant-design/icons';
 
 const StyledTreeContainer = styled.div`
   // 隐藏默认的 toggle 图标
@@ -157,6 +160,49 @@ const StyledTreeContainer = styled.div`
   }
 `;
 
+// 创建 Ant Design 图标映射
+const antIcons = {
+  UserOutlined,
+  TeamOutlined,
+  ShoppingCartOutlined,
+  ShopOutlined,
+  SettingOutlined,
+  DashboardOutlined,
+}
+
+// 创建 Font Awesome 图标映射
+const faIcons = {
+  'user': fas['user'],
+  'users': fas['users'],
+  'shopping-cart': fas['shopping-cart'],
+  'store': fas['store'],
+  'cog': fas['cog'],
+  'tachometer-alt': fas['tachometer-alt'],
+}
+
+// 修改渲染图标的通用函数
+const renderMenuIcon = (iconName) => {
+  if (!iconName) return null
+
+  // CoreUI 图标
+  if (iconName.startsWith('cil')) {
+    return <CIcon icon={icons[iconName]} className="menu-icon" />
+  }
+  
+  // Ant Design 图标
+  if (iconName.endsWith('Outlined') || iconName.endsWith('Filled') || iconName.endsWith('TwoTone')) {
+    const AntIcon = AntdIcons[iconName]
+    return AntIcon ? <AntIcon className="menu-icon" /> : null
+  }
+  
+  // Font Awesome 图标
+  if (fas[iconName]) {
+    return <FontAwesomeIcon icon={fas[iconName]} className="menu-icon" />
+  }
+
+  return null
+}
+
 const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -173,7 +219,7 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
             <div style={{ width: 28 }} />
           )}
           <div className="node-info">
-            {item.icon && <CIcon icon={icons[item.icon]} className="menu-icon" />}
+            {renderMenuIcon(item.icon)}
             <span>{item.name}</span>
             {item.component === 'CNavGroup' && (
               <Tag color="blue" className="menu-tag">
@@ -188,6 +234,11 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
             {item.component === 'CNavTitle' && (
               <Tag color="orange" className="menu-tag">
                 标题
+              </Tag>
+            )}
+            {item.badgeText && (
+              <Tag color={item.badgeColor} className="menu-tag">
+                {item.badgeText}
               </Tag>
             )}
             <Tag color="purple">{item.path || '无路径'}</Tag>
@@ -213,7 +264,6 @@ const MenuNode = ({ item, onAdd, onEdit, onDelete, onStatusChange }) => {
             </Space>
           </div>
           <Switch
-
             checked={item.status}
             onChange={(checked) => onStatusChange(item.id, checked)}
             checkedChildren="启用"
@@ -251,32 +301,6 @@ const MenuList = () => {
   const [currentItem, setCurrentItem] = useState(null);
   const { t } = useTranslation();
 
-  // 图标选项
-  const iconOptions = [
-    'cilSpeedometer',
-    'cilHeadphones',
-    'cilList',
-    'cilFolder',
-    'cilStorage',
-    'cilGlobeAlt',
-    'cilBuilding',
-    'cilPeople',
-    'cilGroup',
-    'cilShieldAlt',
-    'cilLockLocked',
-    'cilTruck',
-    'cilCalculator',
-    'cilMoney',
-    'cilBank',
-    'cilWallet',
-    'cilDevices',
-    'cilBasket',
-    'cilUser',
-    'cilSettings',
-  ];
-
-  // 组件类型选项
-  const componentOptions = ['CNavGroup', 'CNavItem', 'CNavTitle'];
 
   // 获取菜单数据
   const fetchMenuData = async () => {

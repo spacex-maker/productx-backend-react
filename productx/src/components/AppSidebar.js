@@ -11,6 +11,9 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import * as icons from '@coreui/icons';
+import * as AntdIcons from '@ant-design/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 import { AppSidebarNav } from './AppSidebarNav';
 import { sygnet } from 'src/assets/brand/sygnet';
 import api from 'src/axiosInstance';
@@ -105,7 +108,7 @@ const AppSidebar = () => {
     // 基础配置
     const baseItem = {
       component: Component,
-      name: t(`menu.${navItem.name}`), // 使用 t 函数，添加 menu 前缀
+      name: t(`menu.${navItem.name}`),
     };
 
     // 添加路径（如果存在）
@@ -115,9 +118,23 @@ const AppSidebar = () => {
 
     // 处理图标
     if (navItem.icon) {
-      const icon = icons[navItem.icon];
-      if (icon) {
-        baseItem.icon = <CIcon icon={icon} customClassName="nav-icon" />;
+      // CoreUI 图标
+      if (navItem.icon.startsWith('cil')) {
+        const icon = icons[navItem.icon];
+        if (icon) {
+          baseItem.icon = <CIcon icon={icon} customClassName="nav-icon" />;
+        }
+      }
+      // Ant Design 图标
+      else if (navItem.icon.endsWith('Outlined') || navItem.icon.endsWith('Filled') || navItem.icon.endsWith('TwoTone')) {
+        const AntIcon = AntdIcons[navItem.icon];
+        if (AntIcon) {
+          baseItem.icon = <AntIcon className="nav-icon" />;
+        }
+      }
+      // Font Awesome 图标
+      else if (fas[navItem.icon]) {
+        baseItem.icon = <FontAwesomeIcon icon={fas[navItem.icon]} className="nav-icon" />;
       }
     }
 
@@ -125,7 +142,7 @@ const AppSidebar = () => {
     if (navItem.badgeText) {
       baseItem.badge = {
         color: navItem.badgeColor || 'info',
-        text: t(`badge.${navItem.badgeText}`), // 徽章文本也使用 t 函数
+        text: t(`badge.${navItem.badgeText}`),
       };
     }
 

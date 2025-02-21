@@ -1335,5 +1335,17 @@
   "affectedModules": "ستتأثر الوحدات التالية",
   "adminLanguageSetting": "إعدادات لغة نظام الإدارة",
   "appLanguageSetting": "إعدادات لغة التطبيق",
-  "termsOfService": "شروط الخدمة"
+  "termsOfService": "شروط الخدمة",
+  "searchTerm": "مصطلح البحث",
+  "totalSearchCount": "إجمالي عمليات البحث",
+  "mobileSearchCount": "عمليات البحث من الجوال",
+  "desktopSearchCount": "عمليات البحث من سطح المكتب",
+  "tabletSearchCount": "عمليات البحث من الأجهزة اللوحية",
+  "lastSearchedAt": "آخر بحث",
+  "categoryId": "معرف الفئة",
+  "pleaseInputSearchTerm": "الرجاء إدخال مصطلح البحث",
+  "pleaseInputLanguage": "الرجاء إدخال اللغة",
+  "pleaseInputCategoryId": "الرجاء إدخال معرف الفئة",
+  "addHotSearch": "إضافة بحث شائع",
+  "editHotSearch": "تعديل البحث الشائع"
 }

@@ -1343,6 +1343,19 @@
   "affectedModules": "Будут затронуты следующие модули",
   "adminLanguageSetting": "Языковые настройки системы администрирования",
   "appLanguageSetting": "Языковые настройки приложения",
-  "termsOfService": "Условия использования"
+  "termsOfService": "Условия использования",
+
+  "searchTerm": "Поисковый запрос",
+  "totalSearchCount": "Общее количество поисков",
+  "mobileSearchCount": "Поиски с мобильных",
+  "desktopSearchCount": "Поиски с компьютеров",
+  "tabletSearchCount": "Поиски с планшетов",
+  "lastSearchedAt": "Последний поиск",
+  "categoryId": "ID категории",
+  "pleaseInputSearchTerm": "Пожалуйста, введите поисковый запрос",
+  "pleaseInputLanguage": "Пожалуйста, введите язык",
+  "pleaseInputCategoryId": "Пожалуйста, введите ID категории",
+  "addHotSearch": "Добавить популярный поиск",
+  "editHotSearch": "Редактировать популярный поиск"
 
 }

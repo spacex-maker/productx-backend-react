@@ -182,6 +182,10 @@ const UserShoppingCartRouter = React.lazy(
   () => import('./views/base/userShoppingCart/UserShoppingCart'),
 );
 
+const UserProductHotSearchRouter = React.lazy(
+  () => import('./views/base/userProductHotSearch/UserProductHotSearch'),
+);
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -677,6 +681,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <UserShoppingCartRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/userProductHotSearch',
+    name: '用户产品热搜管理',
+    element: (
+      <PrivateRoute>
+        <UserProductHotSearchRouter />
       </PrivateRoute>
     ),
   },
