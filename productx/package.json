@@ -75,7 +75,10 @@
     "tough-cookie": "^5.0.0",
     "tween.js": "^16.6.0",
     "uuid": "^9.0.0",
-    "xml2js": "^0.6.2"
+    "xml2js": "^0.6.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "react-quill": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/config-array": "latest",

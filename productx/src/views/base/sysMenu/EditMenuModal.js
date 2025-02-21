@@ -1,17 +1,44 @@
-import React from 'react'
-import { Modal, Form, Input, Select, Space, Switch } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Modal, Form, Input, Select, Space, Switch, Tabs } from 'antd'
 import { 
   MenuOutlined, 
   LinkOutlined, 
   AppstoreOutlined,
   TagOutlined,
-  BgColorsOutlined
+  BgColorsOutlined,
+  UserOutlined,
+  TeamOutlined,
+  ShoppingCartOutlined,
+  ShopOutlined,
+  SettingOutlined,
+  DashboardOutlined,
 } from '@ant-design/icons'
 import CIcon from '@coreui/icons-react'
 import * as icons from '@coreui/icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { 
+  faUser, 
+  faUsers, 
+  faShoppingCart,
+  faStore,
+  faCog,
+  faTachometerAlt,
+} from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next'
+import IconSelectModal from './IconSelectModal'
 
 const { Option } = Select
+const { TabPane } = Tabs
+
+// 创建 Ant Design 图标映射
+const antIcons = {
+  UserOutlined,
+  TeamOutlined,
+  ShoppingCartOutlined,
+  ShopOutlined,
+  SettingOutlined,
+  DashboardOutlined,
+}
 
 const EditMenuModal = ({ 
   visible, 
@@ -22,9 +49,77 @@ const EditMenuModal = ({
   componentOptions = ['CNavGroup', 'CNavItem', 'CNavTitle']
 }) => {
   const { t } = useTranslation()
+  const [iconModalVisible, setIconModalVisible] = useState(false)
 
-  // 获取所有 CoreUI 图标
-  const allIconOptions = Object.keys(icons).filter(key => key.startsWith('cil'));
+  // 获取所有图标
+  const getAllIcons = () => {
+    return {
+      coreui: Object.keys(icons).filter(key => key.startsWith('cil')),
+      antd: Object.keys(antIcons),
+      fontawesome: ['user', 'users', 'shopping-cart', 'store', 'cog', 'tachometer-alt']
+    }
+  }
+
+  // 渲染图标选项
+  const renderIconOption = (iconType, iconName) => {
+    switch(iconType) {
+      case 'coreui':
+        return (
+          <Space align="center">
+            <CIcon 
+              icon={icons[iconName]} 
+              className="menu-icon"
+              style={{ width: '16px', height: '16px' }}
+            />
+            <span>{iconName}</span>
+          </Space>
+        )
+      case 'antd':
+        const AntIcon = antIcons[iconName]
+        return (
+          <Space align="center">
+            <AntIcon className="menu-icon" />
+            <span>{iconName}</span>
+          </Space>
+        )
+      case 'fontawesome':
+        const faIcon = {
+          'user': faUser,
+          'users': faUsers,
+          'shopping-cart': faShoppingCart,
+          'store': faStore,
+          'cog': faCog,
+          'tachometer-alt': faTachometerAlt,
+        }[iconName]
+        return (
+          <Space align="center">
+            <FontAwesomeIcon icon={faIcon} className="menu-icon" />
+            <span>{iconName}</span>
+          </Space>
+        )
+    }
+  }
+
+  const handleIconSelect = (iconName) => {
+    form.setFieldValue('icon', iconName)
+    setIconModalVisible(false)
+  }
+
+  useEffect(() => {
+    if (visible && currentItem) {
+      form.setFieldsValue({
+        id: currentItem.id,
+        parentId: currentItem.parentId,
+        name: currentItem.name,
+        path: currentItem.path,
+        icon: currentItem.icon,
+        component: currentItem.component,
+        badgeText: currentItem.badgeText,
+        badgeColor: currentItem.badgeColor,
+        status: currentItem.status,
+      });
+    }
+  }, [visible, currentItem, form]);
 
   return (
     <Modal
@@ -38,10 +133,7 @@ const EditMenuModal = ({
       okText={t('confirm')}
       cancelText={t('cancel')}
     >
-      <Form
-        form={form}
-        layout="vertical"
-      >
+      <Form form={form} layout="vertical">
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
@@ -53,17 +145,17 @@ const EditMenuModal = ({
         <Form.Item
           label={<Space><MenuOutlined /> {t('menuName')}</Space>}
           name="name"
-          rules={[{ required: true, message: t('pleaseEnterMenuName') }]}
+          rules={[{ required: true, message: t('pleaseInputMenuName') }]}
         >
-          <Input placeholder={t('pleaseEnterMenuName')} />
+          <Input placeholder={t('pleaseInputMenuName')} />
         </Form.Item>
 
         <Form.Item
           label={<Space><LinkOutlined /> {t('menuPath')}</Space>}
           name="path"
-          rules={[{ required: true, message: t('pleaseEnterMenuPath') }]}
+          rules={[{ required: true, message: t('pleaseInputMenuPath') }]}
         >
-          <Input placeholder={t('menuPathPlaceholder')} />
+          <Input placeholder={t('pleaseInputMenuPath')} />
         </Form.Item>
 
         <Form.Item
@@ -71,22 +163,12 @@ const EditMenuModal = ({
           name="icon"
           rules={[{ required: true, message: t('pleaseSelectIcon') }]}
         >
-          <Select
+          <Input
+            readOnly
             placeholder={t('pleaseSelectIcon')}
-            showSearch
-            optionFilterProp="children"
-            dropdownMatchSelectWidth={false}
-            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          >
-            {allIconOptions.map(icon => (
-              <Option key={icon} value={icon}>
-                <Space>
-                  <CIcon icon={icons[icon]} className="menu-icon" />
-                  {icon}
-                </Space>
-              </Option>
-            ))}
-          </Select>
+            onClick={() => setIconModalVisible(true)}
+            suffix={<AppstoreOutlined />}
+          />
         </Form.Item>
 
         <Form.Item
@@ -131,8 +213,14 @@ const EditMenuModal = ({
           />
         </Form.Item>
       </Form>
-    </Modal>
-  )
-}
 
-export default EditMenuModal 
+      <IconSelectModal
+        visible={iconModalVisible}
+        onCancel={() => setIconModalVisible(false)}
+        onSelect={handleIconSelect}
+      />
+    </Modal>
+  );
+};
+
+export default EditMenuModal; 

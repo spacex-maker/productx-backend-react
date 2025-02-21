@@ -1351,6 +1351,19 @@
   "affectedModules": "Los siguientes módulos se verán afectados",
   "adminLanguageSetting": "Configuración de idioma del sistema de administración",
   "appLanguageSetting": "Configuración de idioma de la aplicación",
-  "termsOfService": "Términos de servicio"
+  "termsOfService": "Términos de servicio",
+
+  "searchTerm": "Término de búsqueda",
+  "totalSearchCount": "Total de búsquedas",
+  "mobileSearchCount": "Búsquedas en móvil",
+  "desktopSearchCount": "Búsquedas en escritorio",
+  "tabletSearchCount": "Búsquedas en tablet",
+  "lastSearchedAt": "Última búsqueda",
+  "categoryId": "ID de categoría",
+  "pleaseInputSearchTerm": "Por favor ingrese el término de búsqueda",
+  "pleaseInputLanguage": "Por favor ingrese el idioma",
+  "pleaseInputCategoryId": "Por favor ingrese el ID de categoría",
+  "addHotSearch": "Agregar búsqueda popular",
+  "editHotSearch": "Editar búsqueda popular"
 
 }

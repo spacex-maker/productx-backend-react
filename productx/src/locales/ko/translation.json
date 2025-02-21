@@ -1341,5 +1341,17 @@
   "affectedModules": "다음 모듈이 영향을 받습니다",
   "adminLanguageSetting": "관리 시스템 언어 설정",
   "appLanguageSetting": "앱 언어 설정",
-  "termsOfService": "서비스 이용약관"
+  "termsOfService": "서비스 이용약관",
+  "searchTerm": "검색어",
+  "totalSearchCount": "총 검색 횟수",
+  "mobileSearchCount": "모바일 검색 횟수",
+  "desktopSearchCount": "데스크톱 검색 횟수",
+  "tabletSearchCount": "태블릿 검색 횟수",
+  "lastSearchedAt": "마지막 검색 시간",
+  "categoryId": "카테고리 ID",
+  "pleaseInputSearchTerm": "검색어를 입력해주세요",
+  "pleaseInputLanguage": "언어를 입력해주세요",
+  "pleaseInputCategoryId": "카테고리 ID를 입력해주세요",
+  "addHotSearch": "인기 검색어 추가",
+  "editHotSearch": "인기 검색어 수정"
 }

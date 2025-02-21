@@ -1366,5 +1366,17 @@
   "affectedModules": "以下模块将受到影响",
   "adminLanguageSetting": "后台管理系统语言设置",
   "appLanguageSetting": "App端语言设置",
-  "termsOfService": "服务条款"
+  "termsOfService": "服务条款",
+  "searchTerm": "搜索关键词",
+  "totalSearchCount": "总搜索次数",
+  "mobileSearchCount": "移动端搜索次数",
+  "desktopSearchCount": "桌面端搜索次数",
+  "tabletSearchCount": "平板端搜索次数",
+  "lastSearchedAt": "最后搜索时间",
+  "categoryId": "分类ID",
+  "pleaseInputSearchTerm": "请输入搜索关键词",
+  "pleaseInputLanguage": "请输入语言",
+  "pleaseInputCategoryId": "请输入分类ID",
+  "addHotSearch": "添加热门搜索",
+  "editHotSearch": "编辑热门搜索"
 }

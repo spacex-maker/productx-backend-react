@@ -1341,5 +1341,17 @@
   "affectedModules": "The following modules will be affected",
   "adminLanguageSetting": "Admin System Language Settings",
   "appLanguageSetting": "App Language Settings",
-  "termsOfService": "Terms of Service"
+  "termsOfService": "Terms of Service",
+  "searchTerm": "Search Term",
+  "totalSearchCount": "Total Search Count",
+  "mobileSearchCount": "Mobile Search Count",
+  "desktopSearchCount": "Desktop Search Count",
+  "tabletSearchCount": "Tablet Search Count",
+  "lastSearchedAt": "Last Searched At",
+  "categoryId": "Category ID",
+  "pleaseInputSearchTerm": "Please input search term",
+  "pleaseInputLanguage": "Please input language",
+  "pleaseInputCategoryId": "Please input category ID",
+  "addHotSearch": "Add Hot Search",
+  "editHotSearch": "Edit Hot Search"
 }
