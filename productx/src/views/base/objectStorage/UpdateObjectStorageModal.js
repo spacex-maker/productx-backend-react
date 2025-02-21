@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Switch, Typography, Divider } from 'antd';
+import { Modal, Form, Input, Switch, Typography, Row, Col, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
   CloudOutlined,
@@ -21,13 +21,18 @@ const UpdateObjectStorageModal = ({
   const { t } = useTranslation();
 
   const styles = {
-    formItem: {
-      marginBottom: '8px'
-    },
     icon: {
-      fontSize: '12px',
       color: '#1890ff',
-      marginRight: '4px'
+      marginRight: '8px'
+    },
+    modalTitle: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    sectionTitle: {
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: '16px'
     }
   };
 
@@ -51,7 +56,7 @@ const UpdateObjectStorageModal = ({
   return (
     <Modal
       title={
-        <span style={{ fontSize: '12px' }}>
+        <span style={styles.modalTitle}>
           <CloudOutlined style={styles.icon} />
           {t('updateStorage')}
         </span>
@@ -59,7 +64,7 @@ const UpdateObjectStorageModal = ({
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
-      width={500}
+      width={800}
       maskClosable={false}
     >
       <Form form={form} onFinish={handleUpdateStorage} layout="vertical">
@@ -67,93 +72,112 @@ const UpdateObjectStorageModal = ({
           <Input />
         </Form.Item>
 
-        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
+        <Title level={5} style={styles.sectionTitle}>
           <KeyOutlined style={styles.icon} />
           {t('credentials')}
         </Title>
-        <Divider style={{ margin: '8px 0' }} />
 
-        <Form.Item
-          label={t('accessKey')}
-          name="accessKey"
-          rules={[{ required: true, message: t('pleaseEnterAccessKey') }]}
-          style={styles.formItem}
-        >
-          <Input placeholder={t('enterAccessKey')} />
-        </Form.Item>
+        <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item
+              label={t('accessKey')}
+              name="accessKey"
+              rules={[{ required: true, message: t('pleaseEnterAccessKey') }]}
+            >
+              <Input placeholder={t('enterAccessKey')} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('secretKey')}
+              name="secretKey"
+              rules={[{ required: true, message: t('pleaseEnterSecretKey') }]}
+            >
+              <Input.Password placeholder={t('enterSecretKey')} />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          label={t('secretKey')}
-          name="secretKey"
-          rules={[{ required: true, message: t('pleaseEnterSecretKey') }]}
-          style={styles.formItem}
-        >
-          <Input.Password placeholder={t('enterSecretKey')} />
-        </Form.Item>
-
-        <Title level={5} style={{ fontSize: '12px', marginBottom: '8px' }}>
+        <Title level={5} style={styles.sectionTitle}>
           <GlobalOutlined style={styles.icon} />
           {t('configuration')}
         </Title>
-        <Divider style={{ margin: '8px 0' }} />
 
-        <Form.Item
-          label={t('region')}
-          name="region"
-          rules={[{ required: true, message: t('pleaseEnterRegion') }]}
-          style={styles.formItem}
-        >
-          <Input placeholder={t('enterRegion')} />
-        </Form.Item>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item
+              label={t('region')}
+              name="region"
+              rules={[{ required: true, message: t('pleaseEnterRegion') }]}
+            >
+              <Input placeholder={t('enterRegion')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('bucketName')}
+              name="bucketName"
+              rules={[{ required: true, message: t('pleaseEnterBucketName') }]}
+            >
+              <Input placeholder={t('enterBucketName')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('endpoint')}
+              name="endpoint"
+              rules={[{ required: true, message: t('pleaseEnterEndpoint') }]}
+            >
+              <Input placeholder={t('enterEndpoint')} />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          label={t('bucketName')}
-          name="bucketName"
-          rules={[{ required: true, message: t('pleaseEnterBucketName') }]}
-          style={styles.formItem}
-        >
-          <Input placeholder={t('enterBucketName')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('endpoint')}
-          name="endpoint"
-          rules={[{ required: true, message: t('pleaseEnterEndpoint') }]}
-          style={styles.formItem}
-        >
-          <Input placeholder={t('enterEndpoint')} />
-        </Form.Item>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item
+              label={t('tags')}
+              name="tags"
+            >
+              <Input placeholder={t('enterTags')} />
+            </Form.Item>
+          </Col>
+          <Col span={16}>
+            <div style={{ display: 'flex', gap: '24px', marginTop: '29px' }}>
+              <Form.Item
+                name="isActive"
+                label={t('isActive')}
+                valuePropName="checked"
+                style={{ marginBottom: 0 }}
+              >
+                <Switch 
+                  checkedChildren={t('yes')} 
+                  unCheckedChildren={t('no')} 
+                />
+              </Form.Item>
+              <Form.Item
+                name="isDefault"
+                label={t('isDefault')}
+                valuePropName="checked"
+                style={{ marginBottom: 0 }}
+              >
+                <Switch 
+                  checkedChildren={t('yes')} 
+                  unCheckedChildren={t('no')} 
+                />
+              </Form.Item>
+            </div>
+          </Col>
+        </Row>
 
         <Form.Item
           label={t('description')}
           name="description"
-          style={styles.formItem}
         >
-          <Input.TextArea placeholder={t('enterDescription')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('tags')}
-          name="tags"
-          style={styles.formItem}
-        >
-          <Input placeholder={t('enterTags')} />
-        </Form.Item>
-
-        <Form.Item
-          name="isActive"
-          valuePropName="checked"
-          style={styles.formItem}
-        >
-          <Switch checkedChildren={t('yes')} unCheckedChildren={t('no')} />
-        </Form.Item>
-
-        <Form.Item
-          name="isDefault"
-          valuePropName="checked"
-          style={styles.formItem}
-        >
-          <Switch checkedChildren={t('yes')} unCheckedChildren={t('no')} />
+          <Input.TextArea 
+            placeholder={t('enterDescription')} 
+            rows={3}
+          />
         </Form.Item>
       </Form>
     </Modal>

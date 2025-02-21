@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Descriptions, Card, Tag, Typography, Divider, Button, message, Tooltip } from 'antd';
+import { Modal, Descriptions, Typography, Button, message, Tooltip, Space, Tag, Tabs } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
   CloudOutlined,
@@ -28,50 +28,6 @@ const ObjectStorageDetailModal = ({
   const [verifyStatus, setVerifyStatus] = useState(null);
   const [lastVerifyTime, setLastVerifyTime] = useState(null);
   const [validationTime, setValidationTime] = useState(null);
-
-  const styles = {
-    card: {
-      marginBottom: '8px',
-      fontSize: '10px'
-    },
-    icon: {
-      fontSize: '12px',
-      color: '#1890ff',
-      marginRight: '4px'
-    },
-    cardTitle: {
-      fontSize: '10px',
-      margin: 0,
-      padding: '4px 0',
-      display: 'flex',
-      alignItems: 'center'
-    },
-    descriptions: {
-      fontSize: '10px',
-      '& th.ant-descriptions-item-label': {
-        fontSize: '10px !important',
-        padding: '4px 8px !important'
-      },
-      '& td.ant-descriptions-item-content': {
-        fontSize: '10px !important',
-        padding: '4px 8px !important'
-      }
-    },
-    tag: {
-      fontSize: '10px',
-      lineHeight: '16px',
-      height: '16px',
-      padding: '0 4px'
-    },
-    modalBody: {
-      padding: '12px'
-    },
-    verifyButton: {
-      fontSize: '10px',
-      height: '20px',
-      padding: '0 8px'
-    }
-  };
 
   const getStatusTagColor = (status) => {
     const colorMap = {
@@ -158,83 +114,21 @@ const ObjectStorageDetailModal = ({
     );
   };
 
-  return (
-    <Modal
-      title={
-        <span style={styles.cardTitle}>
-          <CloudOutlined style={styles.icon} />
-          {t('storageDetail')}
-        </span>
-      }
-      open={isVisible}
-      onCancel={onCancel}
-      width={700}
-      footer={null}
-      bodyStyle={styles.modalBody}
-      className="storage-detail-modal"
-    >
-      <style>
-        {`
-          .storage-detail-modal .ant-card-head {
-            min-height: 24px !important;
-            padding: 0 8px !important;
-          }
-          .storage-detail-modal .ant-card-body {
-            padding: 8px !important;
-          }
-          .storage-detail-modal .ant-descriptions-item-label,
-          .storage-detail-modal .ant-descriptions-item-content {
-            font-size: 10px !important;
-            padding: 4px 8px !important;
-            line-height: 1.2 !important;
-          }
-          .storage-detail-modal .ant-tag {
-            font-size: 10px !important;
-            line-height: 16px !important;
-            height: 16px !important;
-            padding: 0 4px !important;
-            margin: 0 !important;
-          }
-          .storage-detail-modal .ant-descriptions-bordered .ant-descriptions-item-label {
-            background-color: #fafafa;
-            font-weight: normal !important;
-          }
-        `}
-      </style>
-
-      <Card
-
-        style={styles.card}
-        headStyle={styles.cardTitle}
-        bodyStyle={{ padding: '8px' }}
-        title={
-          <span style={styles.cardTitle}>
-            <DatabaseOutlined style={styles.icon} />
-            {t('basicInfo')}
-          </span>
-        }
-        extra={
-          <Button
-            type="primary"
-
-            onClick={handleVerify}
-            loading={verifying}
-            style={styles.verifyButton}
-          >
-            {t('verifyConfig')}
-          </Button>
-        }
-      >
-        <Descriptions
-          column={2}
-
-          bordered
-          style={styles.descriptions}
-        >
+  const items = [
+    {
+      key: 'basic',
+      label: (
+        <Space>
+          <DatabaseOutlined />
+          {t('basicInfo')}
+        </Space>
+      ),
+      children: (
+        <Descriptions bordered column={2}>
           <Descriptions.Item label={t('id')}>{selectedStorage?.id}</Descriptions.Item>
           <Descriptions.Item label={t('status')}>
             {selectedStorage?.status && (
-              <Tag color={getStatusTagColor(selectedStorage.status)} style={styles.tag}>
+              <Tag color={getStatusTagColor(selectedStorage.status)}>
                 {t(selectedStorage.status)}
               </Tag>
             )}
@@ -242,144 +136,102 @@ const ObjectStorageDetailModal = ({
           <Descriptions.Item label={t('storageProvider')}>{selectedStorage?.storageProvider}</Descriptions.Item>
           <Descriptions.Item label={t('storageType')}>{selectedStorage?.storageType}</Descriptions.Item>
           <Descriptions.Item label={t('accountName')}>{selectedStorage?.accountName}</Descriptions.Item>
-          <Descriptions.Item label={t('description')}>{selectedStorage?.description}</Descriptions.Item>
-          <Descriptions.Item label={t('configStatus')} span={2}>
-            {getVerifyStatusTag()}
-          </Descriptions.Item>
+          <Descriptions.Item label={t('configStatus')}>{getVerifyStatusTag()}</Descriptions.Item>
+          <Descriptions.Item label={t('description')} span={2}>{selectedStorage?.description}</Descriptions.Item>
         </Descriptions>
-      </Card>
-
-      <Card
-
-        style={styles.card}
-        headStyle={styles.cardTitle}
-        bodyStyle={{ padding: '8px' }}
-        title={
-          <span style={styles.cardTitle}>
-            <KeyOutlined style={styles.icon} />
-            {t('credentials')}
-          </span>
-        }
-      >
-        <Descriptions
-          column={2}
-
-          bordered
-          style={styles.descriptions}
-        >
+      )
+    },
+    {
+      key: 'credentials',
+      label: (
+        <Space>
+          <KeyOutlined />
+          {t('credentials')}
+        </Space>
+      ),
+      children: (
+        <Descriptions bordered column={2}>
           <Descriptions.Item label={t('accessKey')}>{selectedStorage?.accessKey}</Descriptions.Item>
           <Descriptions.Item label={t('secretKey')}>******</Descriptions.Item>
         </Descriptions>
-      </Card>
-
-      <Card
-
-        style={styles.card}
-        headStyle={styles.cardTitle}
-        bodyStyle={{ padding: '8px' }}
-        title={
-          <span style={styles.cardTitle}>
-            <GlobalOutlined style={styles.icon} />
-            {t('storageConfig')}
-          </span>
-        }
-      >
-        <Descriptions
-          column={2}
-
-          bordered
-          style={styles.descriptions}
-        >
+      )
+    },
+    {
+      key: 'storage',
+      label: (
+        <Space>
+          <GlobalOutlined />
+          {t('storageConfig')}
+        </Space>
+      ),
+      children: (
+        <Descriptions bordered column={2}>
           <Descriptions.Item label={t('region')}>{selectedStorage?.region}</Descriptions.Item>
           <Descriptions.Item label={t('country')}>{selectedStorage?.country || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('bucketName')}>{selectedStorage?.bucketName}</Descriptions.Item>
           <Descriptions.Item label={t('endpoint')}>{selectedStorage?.endpoint}</Descriptions.Item>
           <Descriptions.Item label={t('isActive')}>
-            <Tag color={selectedStorage?.isActive ? 'success' : 'default'} style={styles.tag}>
+            <Tag color={selectedStorage?.isActive ? 'success' : 'default'}>
               {selectedStorage?.isActive ? t('yes') : t('no')}
             </Tag>
           </Descriptions.Item>
           <Descriptions.Item label={t('isDefault')}>
-            <Tag color={selectedStorage?.isDefault ? 'blue' : 'default'} style={styles.tag}>
+            <Tag color={selectedStorage?.isDefault ? 'blue' : 'default'}>
               {selectedStorage?.isDefault ? t('yes') : t('no')}
             </Tag>
           </Descriptions.Item>
         </Descriptions>
-      </Card>
-
-      <Card
-
-        style={styles.card}
-        headStyle={styles.cardTitle}
-        bodyStyle={{ padding: '8px' }}
-        title={
-          <span style={styles.cardTitle}>
-            <SecurityScanOutlined style={styles.icon} />
-            {t('securityConfig')}
-          </span>
-        }
-      >
-        <Descriptions
-          column={2}
-
-          bordered
-          style={styles.descriptions}
-        >
+      )
+    },
+    {
+      key: 'security',
+      label: (
+        <Space>
+          <SecurityScanOutlined />
+          {t('securityConfig')}
+        </Space>
+      ),
+      children: (
+        <Descriptions bordered column={2}>
           <Descriptions.Item label={t('encryptionType')}>{selectedStorage?.encryptionType || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('isEncrypted')}>
-            <Tag color={selectedStorage?.isEncrypted ? 'success' : 'default'} style={styles.tag}>
+            <Tag color={selectedStorage?.isEncrypted ? 'success' : 'default'}>
               {selectedStorage?.isEncrypted ? t('yes') : t('no')}
             </Tag>
           </Descriptions.Item>
           <Descriptions.Item label={t('encryptionKey')}>{selectedStorage?.encryptionKey || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('compliance')}>{selectedStorage?.compliance || '-'}</Descriptions.Item>
         </Descriptions>
-      </Card>
-
-      <Card
-
-        style={styles.card}
-        headStyle={styles.cardTitle}
-        bodyStyle={{ padding: '8px' }}
-        title={
-          <span style={styles.cardTitle}>
-            <SettingOutlined style={styles.icon} />
-            {t('advancedConfig')}
-          </span>
-        }
-      >
-        <Descriptions
-          column={2}
-
-          bordered
-          style={styles.descriptions}
-        >
+      )
+    },
+    {
+      key: 'advanced',
+      label: (
+        <Space>
+          <SettingOutlined />
+          {t('advancedConfig')}
+        </Space>
+      ),
+      children: (
+        <Descriptions bordered column={2}>
           <Descriptions.Item label={t('apiUrl')}>{selectedStorage?.apiUrl || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('apiVersion')}>{selectedStorage?.apiVersion || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('maxStorageSize')}>{selectedStorage?.maxStorageSize || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('maxRequestLimit')}>{selectedStorage?.maxRequestLimit || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('tags')} span={2}>{selectedStorage?.tags || '-'}</Descriptions.Item>
         </Descriptions>
-      </Card>
-
-      <Card
-
-        style={styles.card}
-        headStyle={styles.cardTitle}
-        bodyStyle={{ padding: '8px' }}
-        title={
-          <span style={styles.cardTitle}>
-            <HistoryOutlined style={styles.icon} />
-            {t('auditInfo')}
-          </span>
-        }
-      >
-        <Descriptions
-          column={2}
-
-          bordered
-          style={styles.descriptions}
-        >
+      )
+    },
+    {
+      key: 'audit',
+      label: (
+        <Space>
+          <HistoryOutlined />
+          {t('auditInfo')}
+        </Space>
+      ),
+      children: (
+        <Descriptions bordered column={2}>
           <Descriptions.Item label={t('createTime')}>{selectedStorage?.createTime}</Descriptions.Item>
           <Descriptions.Item label={t('createBy')}>{selectedStorage?.createBy || '-'}</Descriptions.Item>
           <Descriptions.Item label={t('updateTime')}>{selectedStorage?.updateTime}</Descriptions.Item>
@@ -387,7 +239,31 @@ const ObjectStorageDetailModal = ({
           <Descriptions.Item label={t('lastCheckedAt')}>{selectedStorage?.lastCheckedAt}</Descriptions.Item>
           <Descriptions.Item label={t('errorInfo')}>{selectedStorage?.errorMessage || '-'}</Descriptions.Item>
         </Descriptions>
-      </Card>
+      )
+    }
+  ];
+
+  return (
+    <Modal
+      title={
+        <Space>
+          <CloudOutlined style={{ color: '#1890ff' }} />
+          {t('storageDetail')}
+        </Space>
+      }
+      open={isVisible}
+      onCancel={onCancel}
+      width={800}
+      footer={[
+        <Button key="verify" type="primary" onClick={handleVerify} loading={verifying}>
+          {t('verifyConfig')}
+        </Button>,
+        <Button key="close" onClick={onCancel}>
+          {t('close')}
+        </Button>
+      ]}
+    >
+      <Tabs items={items} />
     </Modal>
   );
 };
