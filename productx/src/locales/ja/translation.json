@@ -1353,5 +1353,26 @@
   "pleaseInputLanguage": "言語を入力してください",
   "pleaseInputCategoryId": "カテゴリーIDを入力してください",
   "addHotSearch": "人気検索を追加",
-  "editHotSearch": "人気検索を編集"
+  "editHotSearch": "人気検索を編集",
+
+  "appearanceSettings": "外観設定",
+  
+  "primaryColor": "プライマリカラー",
+  "secondaryColor": "セカンダリカラー",
+  "fontSize": "フォントサイズ",
+  "buttonStyle": "ボタンスタイル",
+  "appLogoUrl": "アプリロゴURL",
+  "backgroundImageUrl": "背景画像URL",
+  "splashScreenUrl": "スプラッシュ画面URL",
+  "homeLayout": "ホームレイアウト",
+  "customText": "カスタムテキスト",
+  
+  "small": "小",
+  "large": "大",
+  "rounded": "丸み",
+  "square": "四角",
+  "pill": "ピル型",
+  "grid": "グリッド",
+  "list": "リスト",
+  "default": "デフォルト"
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
+import DefaultAvatar from 'src/components/DefaultAvatar';
 
 const UserTable = ({
                      data,
@@ -13,6 +14,14 @@ const UserTable = ({
                      handleDetailClick
                    }) => {
   const { t } = useTranslation(); // 使用 useTranslation 获取 t 函数
+
+  const columns = [
+    t('userInfo'), // 移除独立的 ID 列
+    t('nickname'),
+    t('email'),
+    t('address'),
+    t('status')
+  ];
 
   return (
     <table className="table table-bordered table-striped">
@@ -30,8 +39,8 @@ const UserTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {['ID', 'avatar', 'username', 'nickname', 'email', 'address', 'status'].map((field) => (
-          <th key={field}>{t(field)}</th>
+        {columns.map((field) => (
+          <th key={field}>{field}</th>
         ))}
         <th className="fixed-column" key='操作'>{t('action')}</th>
       </tr>
@@ -54,15 +63,28 @@ const UserTable = ({
               ></label>
             </div>
           </td>
-          <td className="text-truncate">{item.id}</td>
-          <td className="text-truncate">
-            <img
-              src={item.avatar} // 假设 user.avatar 是头像的 URL
-              alt={`${item.nickname}的头像`}
-              style={{width: '40px', height: '40px', borderRadius: '25%'}} // 设置为40px的图片并圆形显示
-            />
+          <td>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {item.avatar ? (
+                <img
+                  src={item.avatar}
+                  alt={`${item.username}的头像`}
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    objectFit: 'cover',
+                    borderRadius: '50%'
+                  }}
+                />
+              ) : (
+                <DefaultAvatar name={item.username} size={40} />
+              )}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontWeight: '500' }}>{item.username}</span>
+                <span style={{ fontSize: '12px', color: '#8c8c8c' }}>ID: {item.id}</span>
+              </div>
+            </div>
           </td>
-          <td className="text-truncate">{item.username}</td>
           <td className="text-truncate">{item.nickname}</td>
           <td className="text-truncate">{item.email}</td>
           <td className="address-cell">

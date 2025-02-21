@@ -120,9 +120,16 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
 
   useEffect(() => {
     if (countryConfig) {
-      form.setFieldsValue(countryConfig);
-    } else {
-      form.resetFields();
+      // 解构出 uiConfig
+      const { uiConfig, ...basicConfig } = countryConfig;
+      
+      // 合并基础配置和 UI 配置
+      const formValues = {
+        ...basicConfig,
+        ...(uiConfig || {}) // 使用空对象作为默认值，避免 uiConfig 为 null 时解构报错
+      };
+      
+      form.setFieldsValue(formValues);
     }
   }, [countryConfig, form]);
 
@@ -332,18 +339,21 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
 
   // 在提交前处理数据
   const onFinish = async (values) => {
+    if (!selectedCountry?.code) {
+      message.error(t('pleaseSelectCountry'));
+      return;
+    }
+
     setSubmitLoading(true);
     try {
-      // 直接使用对象，不需要 JSON 转换
-      const submitValues = {
+      // 直接提交表单值，因为已经是平铺的结构了
+      const submitData = {
         ...values,
-        termsConditionsContent: values.termsConditionsContent || {},
-        privacyPolicyContent: values.privacyPolicyContent || {},
         id: countryConfig?.id,
         countryCode: selectedCountry.code
       };
       
-      await api.post('/manage/client-country-config/update', submitValues);
+      await api.post('/manage/client-country-config/update', submitData);
       message.success(t('updateSuccess'));
     } catch (error) {
       console.error('更新配置失败:', error);
@@ -390,291 +400,401 @@ const CountryConfigForm = ({ countryConfig, selectedCountry, isLoading, form }) 
     }
   };
 
-  return (
-    <CCard>
-      <CCardBody>
-        {isLoading ? (
+  if (isLoading || !selectedCountry) {
+    return (
+      <CCard>
+        <CCardBody>
           <div className="text-center">
             <CSpinner color="primary" />
           </div>
-        ) : (
-          <>
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <CNav variant="tabs" style={{ flex: 1 }}>
-                <CNavItem>
-                  <CNavLink
-                    active={activeTab === 'basic'}
-                    onClick={() => setActiveTab('basic')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {t('basicSettings')}
-                  </CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink
-                    active={activeTab === 'legal'}
-                    onClick={() => setActiveTab('legal')}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {t('legalDocuments')}
-                  </CNavLink>
-                </CNavItem>
-              </CNav>
-              
-              {selectedCountry.flagImageUrl && (
-                <div style={styles.flagContainer}>
-                  <img 
-                    src={selectedCountry.flagImageUrl} 
-                    alt={selectedCountry.name}
-                    style={styles.flagImage}
-                  />
-                </div>
-              )}
+        </CCardBody>
+      </CCard>
+    );
+  }
+
+  return (
+    <CCard>
+      <CCardBody>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <CNav variant="tabs" style={{ flex: 1 }}>
+            <CNavItem>
+              <CNavLink
+                active={activeTab === 'basic'}
+                onClick={() => setActiveTab('basic')}
+                style={{ cursor: 'pointer' }}
+              >
+                {t('basicSettings')}
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                active={activeTab === 'appearance'}
+                onClick={() => setActiveTab('appearance')}
+                style={{ cursor: 'pointer' }}
+              >
+                {t('appearanceSettings')}
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                active={activeTab === 'legal'}
+                onClick={() => setActiveTab('legal')}
+                style={{ cursor: 'pointer' }}
+              >
+                {t('legalDocuments')}
+              </CNavLink>
+            </CNavItem>
+          </CNav>
+          
+          {selectedCountry.flagImageUrl && (
+            <div style={styles.flagContainer}>
+              <img 
+                src={selectedCountry.flagImageUrl} 
+                alt={selectedCountry.name}
+                style={styles.flagImage}
+              />
             </div>
+          )}
+        </div>
 
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={onFinish}
-            >
-              {activeTab === 'basic' ? (
-                <CRow>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('clientName')}</span>}
-                      name="clientName"
-                      rules={[{ required: true, message: t('pleaseInput') + t('clientName') }]}
-                    >
-                      <CFormInput placeholder={t('pleaseInput') + t('clientName')} />
-                    </Form.Item>
-                  </CCol>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('languageCode')}</span>}
-                      name="languageCode"
-                      rules={[{ required: true, message: t('pleaseInput') + t('languageCode') }]}
-                    >
-                      <Select
-                        showSearch
-                        placeholder={t('pleaseInput') + t('languageCode')}
-                        options={languages}
-                        filterOption={(input, option) =>
-                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        style={styles.select}
-                      />
-                    </Form.Item>
-                  </CCol>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('currency')}</span>}
-                      name="currency"
-                    >
-                      <Select
-                        showSearch
-                        placeholder={t('pleaseInput') + t('currency')}
-                        options={currencies}
-                        filterOption={(input, option) =>
-                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        style={styles.select}
-                      />
-                    </Form.Item>
-                  </CCol>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('timezone')}</span>}
-                      name="timezone"
-                    >
-                      <Select
-                        showSearch
-                        placeholder={t('pleaseInput') + t('timezone')}
-                        options={timezones}
-                        filterOption={(input, option) =>
-                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        style={styles.select}
-                      />
-                    </Form.Item>
-                  </CCol>
-
-                  {/* 支持信息组 */}
-                  <CCol md={12}>
-                    <h4 className="mt-4 mb-3">{t('supportInfo')}</h4>
-                  </CCol>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('supportEmail')}</span>}
-                      name="supportEmail"
-                    >
-                      <CFormInput placeholder={t('pleaseInput') + t('supportEmail')} />
-                    </Form.Item>
-                  </CCol>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('supportPhone')}</span>}
-                      name="supportPhone"
-                    >
-                      <CFormInput placeholder={t('pleaseInput') + t('supportPhone')} />
-                    </Form.Item>
-                  </CCol>
-
-                  {/* 应用设置组 */}
-                  <CCol md={12}>
-                    <h4 className="mt-4 mb-3">{t('appSettings')}</h4>
-                  </CCol>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('appVersion')}</span>}
-                      name="appVersion"
-                      rules={[
-                        { required: true, message: t('pleaseInput') + t('appVersion') },
-                        { pattern: /^\d+\.\d+\.\d+$/, message: t('versionFormatError') }
-                      ]}
-                      tooltip={t('versionFormatTip')}
-                    >
-                      <CFormInput placeholder="1.0.0" maxLength={10} />
-                    </Form.Item>
-                  </CCol>
-                  <CCol md={6}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('downloadUrl')}</span>}
-                      name="downloadUrl"
-                    >
-                      <CFormInput placeholder={t('pleaseInput') + t('downloadUrl')} />
-                    </Form.Item>
-                  </CCol>
-                  <CCol md={12}>
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('updateRequired')}</span>}
-                      name="updateRequired"
-                      valuePropName="checked"
-                    >
-                      <Switch />
-                    </Form.Item>
-                  </CCol>
-                </CRow>
-              ) : (
-                <>
-                  <div style={styles.legalHeader}>
-                    <CNav variant="pills">
-                      <CNavItem>
-                        <CNavLink
-                          active={activeLegalTab === 'terms'}
-                          onClick={() => setActiveLegalTab('terms')}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          {t('termsConditions')}
-                        </CNavLink>
-                      </CNavItem>
-                      <CNavItem>
-                        <CNavLink
-                          active={activeLegalTab === 'privacy'}
-                          onClick={() => setActiveLegalTab('privacy')}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          {t('privacyPolicy')}
-                        </CNavLink>
-                      </CNavItem>
-                    </CNav>
-                    
-                    <Form.Item
-                      label={<span style={styles.formLabel}>{t('selectLanguage')}</span>}
-                      style={{ marginBottom: 0 }}
-                    >
-                      <Select
-                        value={selectedLegalLanguage}
-                        onChange={setSelectedLegalLanguage}
-                        options={languages.map(lang => ({
-                          value: lang.value,
-                          label: `${lang.nameNative} (${lang.nameEn})`
-                        }))}
-                        style={styles.languageSelector}
-                      />
-                    </Form.Item>
-                  </div>
-
-                  <CRow>
-                    {activeLegalTab === 'terms' ? (
-                      <>
-                        <CCol md={12}>
-                          <Form.Item
-                            label={<span style={styles.formLabel}>{t('termsConditionsUrl')}</span>}
-                            name="termsConditionsUrl"
-                          >
-                            <CFormInput placeholder={t('pleaseInput') + t('termsConditionsUrl')} />
-                          </Form.Item>
-                        </CCol>
-                        <CCol md={12}>
-                          <Form.Item
-                            label={<span style={styles.formLabel}>
-                              {t('termsConditionsContent')} - {languages.find(l => l.value === selectedLegalLanguage)?.nameNative}
-                            </span>}
-                            name={['termsConditionsContent', selectedLegalLanguage]}
-                          >
-                            <ReactQuill 
-                              theme="snow"
-                              modules={QUILL_MODULES}
-                              formats={QUILL_FORMATS}
-                              placeholder={t('pleaseInput') + t('termsConditionsContent')}
-                              style={{ ...styles.richEditor }}
-                              onChange={(content) => handleLegalContentChange(content, 'terms')}
-                            />
-                          </Form.Item>
-                        </CCol>
-                      </>
-                    ) : (
-                      <>
-                        <CCol md={12}>
-                          <Form.Item
-                            label={<span style={styles.formLabel}>{t('privacyPolicyUrl')}</span>}
-                            name="privacyPolicyUrl"
-                          >
-                            <CFormInput placeholder={t('pleaseInput') + t('privacyPolicyUrl')} />
-                          </Form.Item>
-                        </CCol>
-                        <CCol md={12}>
-                          <Form.Item
-                            label={<span style={styles.formLabel}>
-                              {t('privacyPolicyContent')} - {languages.find(l => l.value === selectedLegalLanguage)?.nameNative}
-                            </span>}
-                            name={['privacyPolicyContent', selectedLegalLanguage]}
-                          >
-                            <ReactQuill 
-                              theme="snow"
-                              modules={QUILL_MODULES}
-                              formats={QUILL_FORMATS}
-                              placeholder={t('pleaseInput') + t('privacyPolicyContent')}
-                              style={{ ...styles.richEditor }}
-                              onChange={(content) => handleLegalContentChange(content, 'privacy')}
-                            />
-                          </Form.Item>
-                        </CCol>
-                      </>
-                    )}
-                  </CRow>
-                </>
-              )}
-
-              <div className="d-flex justify-content-end mt-4">
-                <CButton 
-                  color="primary" 
-                  type="submit"
-                  disabled={submitLoading}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+        >
+          {activeTab === 'basic' ? (
+            <CRow>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('clientName')}</span>}
+                  name="clientName"
+                  rules={[{ required: true, message: t('pleaseInput') + t('clientName') }]}
                 >
-                  {submitLoading ? (
-                    <>
-                      <CSpinner size="sm" className="me-2" />
-                      {t('saving')}
-                    </>
-                  ) : (
-                    t('save')
-                  )}
-                </CButton>
+                  <CFormInput placeholder={t('pleaseInput') + t('clientName')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('languageCode')}</span>}
+                  name="languageCode"
+                  rules={[{ required: true, message: t('pleaseInput') + t('languageCode') }]}
+                >
+                  <Select
+                    showSearch
+                    placeholder={t('pleaseInput') + t('languageCode')}
+                    options={languages}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    style={styles.select}
+                  />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('currency')}</span>}
+                  name="currency"
+                >
+                  <Select
+                    showSearch
+                    placeholder={t('pleaseInput') + t('currency')}
+                    options={currencies}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    style={styles.select}
+                  />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('timezone')}</span>}
+                  name="timezone"
+                >
+                  <Select
+                    showSearch
+                    placeholder={t('pleaseInput') + t('timezone')}
+                    options={timezones}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    style={styles.select}
+                  />
+                </Form.Item>
+              </CCol>
+
+              {/* 支持信息组 */}
+              <CCol md={12}>
+                <h4 className="mt-4 mb-3">{t('supportInfo')}</h4>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('supportEmail')}</span>}
+                  name="supportEmail"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('supportEmail')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('supportPhone')}</span>}
+                  name="supportPhone"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('supportPhone')} />
+                </Form.Item>
+              </CCol>
+
+              {/* 应用设置组 */}
+              <CCol md={12}>
+                <h4 className="mt-4 mb-3">{t('appSettings')}</h4>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('appVersion')}</span>}
+                  name="appVersion"
+                  rules={[
+                    { required: true, message: t('pleaseInput') + t('appVersion') },
+                    { pattern: /^\d+\.\d+\.\d+$/, message: t('versionFormatError') }
+                  ]}
+                  tooltip={t('versionFormatTip')}
+                >
+                  <CFormInput placeholder="1.0.0" maxLength={10} />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('downloadUrl')}</span>}
+                  name="downloadUrl"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('downloadUrl')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('updateRequired')}</span>}
+                  name="updateRequired"
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </CCol>
+            </CRow>
+          ) : activeTab === 'appearance' ? (
+            <CRow>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('primaryColor')}</span>}
+                  name="primaryColor"
+                >
+                  <CFormInput type="color" />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('secondaryColor')}</span>}
+                  name="secondaryColor"
+                >
+                  <CFormInput type="color" />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('fontSize')}</span>}
+                  name="fontSize"
+                >
+                  <Select
+                    options={[
+                      { value: 'small', label: t('small') },
+                      { value: 'medium', label: t('medium') },
+                      { value: 'large', label: t('large') }
+                    ]}
+                  />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('buttonStyle')}</span>}
+                  name="buttonStyle"
+                >
+                  <Select
+                    options={[
+                      { value: 'rounded', label: t('rounded') },
+                      { value: 'flat', label: t('flat') },
+                      { value: 'outlined', label: t('outlined') }
+                    ]}
+                  />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('appLogoUrl')}</span>}
+                  name="appLogoUrl"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('appLogoUrl')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('backgroundImageUrl')}</span>}
+                  name="backgroundImageUrl"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('backgroundImageUrl')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('splashScreenUrl')}</span>}
+                  name="splashScreenUrl"
+                >
+                  <CFormInput placeholder={t('pleaseInput') + t('splashScreenUrl')} />
+                </Form.Item>
+              </CCol>
+              <CCol md={6}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('homeLayout')}</span>}
+                  name="homeLayout"
+                >
+                  <Select
+                    options={[
+                      { value: 'default', label: t('default') },
+                      { value: 'grid', label: t('grid') },
+                      { value: 'list', label: t('list') }
+                    ]}
+                  />
+                </Form.Item>
+              </CCol>
+              <CCol md={12}>
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('customText')}</span>}
+                  name="customText"
+                >
+                  <CFormInput
+                    as="textarea" 
+                    rows={3}
+                    placeholder={t('pleaseInput') + t('customText')}
+                  />
+                </Form.Item>
+              </CCol>
+            </CRow>
+          ) : (
+            <>
+              <div style={styles.legalHeader}>
+                <CNav variant="pills">
+                  <CNavItem>
+                    <CNavLink
+                      active={activeLegalTab === 'terms'}
+                      onClick={() => setActiveLegalTab('terms')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {t('termsConditions')}
+                    </CNavLink>
+                  </CNavItem>
+                  <CNavItem>
+                    <CNavLink
+                      active={activeLegalTab === 'privacy'}
+                      onClick={() => setActiveLegalTab('privacy')}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {t('privacyPolicy')}
+                    </CNavLink>
+                  </CNavItem>
+                </CNav>
+                
+                <Form.Item
+                  label={<span style={styles.formLabel}>{t('selectLanguage')}</span>}
+                    style={{ marginBottom: 0 }}
+                >
+                  <Select
+                    value={selectedLegalLanguage}
+                    onChange={setSelectedLegalLanguage}
+                    options={languages.map(lang => ({
+                      value: lang.value,
+                      label: `${lang.nameNative} (${lang.nameEn})`
+                    }))}
+                    style={styles.languageSelector}
+                  />
+                </Form.Item>
               </div>
-            </Form>
-          </>
-        )}
+
+              <CRow>
+                {activeLegalTab === 'terms' ? (
+                  <>
+                    <CCol md={12}>
+                      <Form.Item
+                        label={<span style={styles.formLabel}>{t('termsConditionsUrl')}</span>}
+                        name="termsConditionsUrl"
+                      >
+                        <CFormInput placeholder={t('pleaseInput') + t('termsConditionsUrl')} />
+                      </Form.Item>
+                    </CCol>
+                    <CCol md={12}>
+                      <Form.Item
+                        label={<span style={styles.formLabel}>
+                          {t('termsConditionsContent')} - {languages.find(l => l.value === selectedLegalLanguage)?.nameNative}
+                        </span>}
+                        name={['termsConditionsContent', selectedLegalLanguage]}
+                      >
+                        <ReactQuill 
+                          theme="snow"
+                          modules={QUILL_MODULES}
+                          formats={QUILL_FORMATS}
+                          placeholder={t('pleaseInput') + t('termsConditionsContent')}
+                          style={{ ...styles.richEditor }}
+                          onChange={(content) => handleLegalContentChange(content, 'terms')}
+                        />
+                      </Form.Item>
+                    </CCol>
+                  </>
+                ) : (
+                  <>
+                    <CCol md={12}>
+                      <Form.Item
+                        label={<span style={styles.formLabel}>{t('privacyPolicyUrl')}</span>}
+                        name="privacyPolicyUrl"
+                      >
+                        <CFormInput placeholder={t('pleaseInput') + t('privacyPolicyUrl')} />
+                      </Form.Item>
+                    </CCol>
+                    <CCol md={12}>
+                      <Form.Item
+                        label={<span style={styles.formLabel}>
+                          {t('privacyPolicyContent')} - {languages.find(l => l.value === selectedLegalLanguage)?.nameNative}
+                        </span>}
+                        name={['privacyPolicyContent', selectedLegalLanguage]}
+                      >
+                        <ReactQuill 
+                          theme="snow"
+                          modules={QUILL_MODULES}
+                          formats={QUILL_FORMATS}
+                          placeholder={t('pleaseInput') + t('privacyPolicyContent')}
+                          style={{ ...styles.richEditor }}
+                          onChange={(content) => handleLegalContentChange(content, 'privacy')}
+                        />
+                      </Form.Item>
+                    </CCol>
+                  </>
+                )}
+              </CRow>
+            </>
+          )}
+
+          <div className="d-flex justify-content-end mt-4">
+            <CButton 
+              color="primary" 
+              type="submit"
+              disabled={submitLoading}
+            >
+              {submitLoading ? (
+                <>
+                  <CSpinner size="sm" className="me-2" />
+                  {t('saving')}
+                </>
+              ) : (
+                t('save')
+              )}
+            </CButton>
+          </div>
+        </Form>
       </CCardBody>
     </CCard>
   );

@@ -1356,6 +1356,26 @@
   "pleaseInputLanguage": "Пожалуйста, введите язык",
   "pleaseInputCategoryId": "Пожалуйста, введите ID категории",
   "addHotSearch": "Добавить популярный поиск",
-  "editHotSearch": "Редактировать популярный поиск"
+  "editHotSearch": "Редактировать популярный поиск",
 
+  "appearanceSettings": "Настройки внешнего вида",
+  
+  "primaryColor": "Основной цвет",
+  "secondaryColor": "Дополнительный цвет",
+  "fontSize": "Размер шрифта",
+  "buttonStyle": "Стиль кнопок",
+  "appLogoUrl": "URL логотипа приложения",
+  "backgroundImageUrl": "URL фонового изображения",
+  "splashScreenUrl": "URL заставки",
+  "homeLayout": "Макет главной страницы",
+  "customText": "Пользовательский текст",
+  
+  "small": "Маленький",
+  "large": "Большой",
+  "rounded": "Закругленный",
+  "square": "Квадратный",
+  "pill": "Капсула",
+  "grid": "Сетка",
+  "list": "Список",
+  "default": "По умолчанию"
 }

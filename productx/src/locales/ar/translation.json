@@ -1347,5 +1347,26 @@
   "pleaseInputLanguage": "الرجاء إدخال اللغة",
   "pleaseInputCategoryId": "الرجاء إدخال معرف الفئة",
   "addHotSearch": "إضافة بحث شائع",
-  "editHotSearch": "تعديل البحث الشائع"
+  "editHotSearch": "تعديل البحث الشائع",
+
+  "appearanceSettings": "إعدادات المظهر",
+  
+  "primaryColor": "اللون الأساسي",
+  "secondaryColor": "اللون الثانوي",
+  "fontSize": "حجم الخط",
+  "buttonStyle": "نمط الزر",
+  "appLogoUrl": "رابط شعار التطبيق",
+  "backgroundImageUrl": "رابط صورة الخلفية",
+  "splashScreenUrl": "رابط شاشة البداية",
+  "homeLayout": "تخطيط الصفحة الرئيسية",
+  "customText": "نص مخصص",
+  
+  "small": "صغير",
+  "large": "كبير",
+  "rounded": "مستدير",
+  "square": "مربع",
+  "pill": "كبسولة",
+  "grid": "شبكة",
+  "list": "قائمة",
+  "default": "افتراضي"
 }
