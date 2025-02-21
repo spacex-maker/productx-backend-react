@@ -29,10 +29,31 @@ const UserProductHotSearch = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false)
   const [updateForm] = Form.useForm()
   const [selectedRecord, setSelectedRecord] = useState(null)
+  const [countries, setCountries] = useState([]);
+  const [loadingCountries, setLoadingCountries] = useState(false);
 
   useEffect(() => {
     fetchData()
   }, [currentPage, pageSize, searchParams])
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        setLoadingCountries(true);
+        const response = await api.get('/manage/countries/list-all-enable');
+        if (response) {
+          setCountries(response);
+        }
+      } catch (error) {
+        console.error('Failed to fetch countries:', error);
+        message.error(t('fetchCountriesFailed'));
+      } finally {
+        setLoadingCountries(false);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   const fetchData = async () => {
     setIsLoading(true)
@@ -105,6 +126,26 @@ const UserProductHotSearch = () => {
     handleSelectRow,
   } = UseSelectableRows()
 
+  const countryOption = (country) => (
+    <Select.Option key={country.id} value={country.code}>
+      <Space>
+        <img 
+          src={country.flagImageUrl} 
+          alt={country.name}
+          style={{ 
+            width: 20, 
+            height: 15, 
+            objectFit: 'cover',
+            borderRadius: 2,
+            border: '1px solid #f0f0f0'
+          }}
+        />
+        <span>{country.name}</span>
+        <span style={{ color: '#999' }}>({country.code})</span>
+      </Space>
+    </Select.Option>
+  );
+
   return (
     <div>
       <div className="mb-3">
@@ -121,14 +162,24 @@ const UserProductHotSearch = () => {
               />
             </Col>
             <Col>
-              <Input
-                value={searchParams.countryCode}
-                onChange={handleSearchChange}
-                name="countryCode"
+              <Select
                 placeholder={t('countryCode')}
+                value={searchParams.countryCode}
+                onChange={(value) => handleSelectChange(value, 'countryCode')}
                 allowClear
+                loading={loadingCountries}
                 style={{ width: 150 }}
-              />
+                showSearch
+                filterOption={(input, option) => {
+                  const country = countries.find(c => c.code === option.value);
+                  return (
+                    country?.name.toLowerCase().includes(input.toLowerCase()) ||
+                    country?.code.toLowerCase().includes(input.toLowerCase())
+                  );
+                }}
+              >
+                {countries.map(country => countryOption(country))}
+              </Select>
             </Col>
             <Col>
               <Input

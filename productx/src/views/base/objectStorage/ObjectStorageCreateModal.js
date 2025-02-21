@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, Switch, Typography, Divider, Select, message, Row, Col } from 'antd';
+import { Modal, Form, Input, Switch, Typography, Divider, Select, message, Row, Col, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import api from 'src/axiosInstance';
 import {
@@ -120,33 +120,21 @@ const ObjectStorageCreateModal = ({
   };
 
   const styles = {
-    formItem: {
-      marginBottom: '8px'
-    },
     icon: {
-      fontSize: '12px',
       color: '#1890ff',
-      marginRight: '4px'
-    },
-    select: {
-      fontSize: '10px'
+      marginRight: '8px'
     },
     modalTitle: {
-      fontSize: '10px',
       display: 'flex',
       alignItems: 'center'
     },
     sectionTitle: {
-      fontSize: '10px',
-      marginBottom: '8px',
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      marginBottom: '16px'
     },
-    input: {
-      fontSize: '10px'
-    },
-    switch: {
-      fontSize: '10px'
+    divider: {
+      margin: '16px 0'
     }
   };
 
@@ -161,80 +149,28 @@ const ObjectStorageCreateModal = ({
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
-      width={500}
+      width={800}
       maskClosable={false}
-      className="storage-create-modal"
     >
-      <style>
-        {`
-          .storage-create-modal .ant-form-item-label > label {
-            font-size: 10px !important;
-            height: 20px !important;
-          }
-          .storage-create-modal .ant-input {
-            font-size: 10px !important;
-            padding: 4px 8px !important;
-          }
-          .storage-create-modal .ant-select-selector {
-            font-size: 10px !important;
-            height: 24px !important;
-          }
-          .storage-create-modal .ant-select-selection-item {
-            line-height: 22px !important;
-            font-size: 10px !important;
-          }
-          .storage-create-modal .ant-select-dropdown {
-            font-size: 10px !important;
-          }
-          .storage-create-modal .ant-select-item {
-            font-size: 10px !important;
-            min-height: 24px !important;
-            line-height: 22px !important;
-            padding: 2px 8px !important;
-          }
-          .storage-create-modal .ant-form-item {
-            margin-bottom: 8px !important;
-          }
-          .storage-create-modal .ant-input-password {
-            font-size: 10px !important;
-          }
-          .storage-create-modal .ant-input-password input {
-            font-size: 10px !important;
-          }
-          .storage-create-modal .ant-switch {
-            font-size: 10px !important;
-          }
-          .storage-create-modal .ant-modal-body {
-            padding: 12px !important;
-          }
-          .storage-create-modal .ant-divider {
-            margin: 8px 0 !important;
-          }
-          .storage-create-modal .ant-form-item-explain {
-            font-size: 10px !important;
-            min-height: 16px !important;
-          }
-        `}
-      </style>
-
-      <Form form={form} onFinish={onFinish} layout="vertical">
+      <Form 
+        form={form} 
+        onFinish={onFinish} 
+        layout="vertical"
+      >
         <Title level={5} style={styles.sectionTitle}>
           <DatabaseOutlined style={styles.icon} />
           {t('basicInfo')}
         </Title>
-        <Divider style={{ margin: '8px 0' }} />
 
-        <Row gutter={16}>
-          <Col span={12}>
+        <Row gutter={24}>
+          <Col span={8}>
             <Form.Item
               label={t('storageProvider')}
               name="storageProvider"
               rules={[{ required: true, message: t('pleaseSelectStorageProvider') }]}
-              style={styles.formItem}
             >
               <Select 
                 placeholder={t('selectStorageProvider')}
-                style={styles.select}
                 onChange={handleProviderChange}
               >
                 {STORAGE_PROVIDERS.map(provider => (
@@ -245,16 +181,14 @@ const ObjectStorageCreateModal = ({
               </Select>
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item
               label={t('storageType')}
               name="storageType"
               rules={[{ required: true, message: t('pleaseSelectStorageType') }]}
-              style={styles.formItem}
             >
               <Select
                 placeholder={t('selectStorageType')}
-                style={styles.select}
                 disabled={!selectedProvider}
               >
                 {getStorageTypeOptions().map(type => (
@@ -265,219 +199,203 @@ const ObjectStorageCreateModal = ({
               </Select>
             </Form.Item>
           </Col>
-        </Row>
-
-        <Form.Item
-          label={t('country')}
-          name="country"
-          rules={[{ required: true, message: t('pleaseSelectCountry') }]}
-          style={styles.formItem}
-        >
-          <Select
-            showSearch
-            loading={loading}
-            placeholder={t('selectCountry')}
-            style={styles.select}
-            dropdownMatchSelectWidth={false}
-            optionLabelProp="label"
-            filterOption={(input, option) => {
-              const searchText = [
-                option?.name,
-                option?.code,
-                option?.continent,
-                option?.capital,
-                option?.officialLanguages
-              ].join('').toLowerCase();
-              return searchText.includes(input.toLowerCase());
-            }}
-          >
-            {(countries || []).map(country => (
-              <Select.Option 
-                key={country.code} 
-                value={country.code}
-                label={
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <img 
-                      src={country.flagImageUrl} 
-                      alt={country.name}
-                      style={{ 
-                        width: '16px', 
-                        height: '12px',
-                        objectFit: 'cover',
-                        borderRadius: '2px'
-                      }} 
-                    />
-                    {country.name} ({country.code})
-                  </div>
-                }
-                name={country.name}
-                {...country}
+          <Col span={8}>
+            <Form.Item
+              label={t('country')}
+              name="country"
+              rules={[{ required: true, message: t('pleaseSelectCountry') }]}
+            >
+              <Select
+                showSearch
+                loading={loading}
+                placeholder={t('selectCountry')}
+                optionLabelProp="label"
+                filterOption={(input, option) => {
+                  const searchText = [
+                    option?.name,
+                    option?.code,
+                    option?.continent,
+                    option?.capital,
+                    option?.officialLanguages
+                  ].join('').toLowerCase();
+                  return searchText.includes(input.toLowerCase());
+                }}
               >
-                <div style={{ 
-                  fontSize: '10px',
-                  display: 'flex',
-                  gap: '8px'
-                }}>
-                  <img 
-                    src={country.flagImageUrl} 
-                    alt={country.name}
-                    style={{ 
-                      width: '24px', 
-                      height: '18px',
-                      objectFit: 'cover',
-                      borderRadius: '2px',
-                      alignSelf: 'center'
-                    }} 
-                  />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 'bold' }}>
-                      {country.name} ({country.code})
-                    </div>
-                    <div style={{ color: '#666' }}>
-                      {country.continent} | {country.capital} | {country.officialLanguages}
-                    </div>
-                    <div style={{ color: '#888' }}>
-                      {t('population')}: {country.population?.toLocaleString()} | 
-                      {t('timezone')}: {country.timezone} | 
-                      {t('currency')}: {country.currency}
-                    </div>
-                  </div>
-                </div>
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
+                {(countries || []).map(country => (
+                  <Select.Option 
+                    key={country.code} 
+                    value={country.code}
+                    label={
+                      <Space>
+                        <img 
+                          src={country.flagImageUrl} 
+                          alt={country.name}
+                          style={{ 
+                            width: 20, 
+                            height: 15, 
+                            objectFit: 'cover',
+                            borderRadius: 2
+                          }} 
+                        />
+                        {country.name} ({country.code})
+                      </Space>
+                    }
+                    name={country.name}
+                    {...country}
+                  >
+                    <Space align="start">
+                      <img 
+                        src={country.flagImageUrl} 
+                        alt={country.name}
+                        style={{ 
+                          width: 24, 
+                          height: 18, 
+                          objectFit: 'cover',
+                          borderRadius: 2
+                        }} 
+                      />
+                      <div>
+                        <div style={{ fontWeight: 500 }}>
+                          {country.name} ({country.code})
+                        </div>
+                        <div style={{ color: '#666', fontSize: 12 }}>
+                          {country.continent} | {country.capital}
+                        </div>
+                      </div>
+                    </Space>
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Title level={5} style={styles.sectionTitle}>
           <KeyOutlined style={styles.icon} />
           {t('credentials')}
         </Title>
-        <Divider style={{ margin: '8px 0' }} />
 
-        <Form.Item
-          label={t('accessKey')}
-          name="accessKey"
-          rules={[{ required: true, message: t('pleaseEnterAccessKey') }]}
-          style={styles.formItem}
-        >
-          <Input style={styles.input} placeholder={t('enterAccessKey')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('secretKey')}
-          name="secretKey"
-          rules={[{ required: true, message: t('pleaseEnterSecretKey') }]}
-          style={styles.formItem}
-        >
-          <Input.Password style={styles.input} placeholder={t('enterSecretKey')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('aesKey')}
-          name="aesKey"
-          tooltip={t('aesKeyTooltip')}
-          rules={[{ required: true, message: t('pleaseEnterAesKey') }]}
-          style={styles.formItem}
-        >
-          <Input.Password style={styles.input} placeholder={t('enterAesKey')} />
-        </Form.Item>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Form.Item
+              label={t('accessKey')}
+              name="accessKey"
+              rules={[{ required: true, message: t('pleaseEnterAccessKey') }]}
+            >
+              <Input placeholder={t('enterAccessKey')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('secretKey')}
+              name="secretKey"
+              rules={[{ required: true, message: t('pleaseEnterSecretKey') }]}
+            >
+              <Input.Password placeholder={t('enterSecretKey')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('aesKey')}
+              name="aesKey"
+              tooltip={t('aesKeyTooltip')}
+              rules={[{ required: true, message: t('pleaseEnterAesKey') }]}
+            >
+              <Input.Password placeholder={t('enterAesKey')} />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Title level={5} style={styles.sectionTitle}>
           <GlobalOutlined style={styles.icon} />
           {t('configuration')}
         </Title>
-        <Divider style={{ margin: '8px 0' }} />
 
-        <Row gutter={16}>
-          <Col span={12}>
+        <Row gutter={24}>
+          <Col span={8}>
             <Form.Item
               label={t('region')}
               name="region"
               rules={[{ required: true, message: t('pleaseEnterRegion') }]}
-              style={styles.formItem}
             >
-              <Input style={styles.input} placeholder={t('enterRegion')} />
+              <Input placeholder={t('enterRegion')} />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item
               label={t('bucketName')}
               name="bucketName"
               rules={[{ required: true, message: t('pleaseEnterBucketName') }]}
-              style={styles.formItem}
             >
-              <Input style={styles.input} placeholder={t('enterBucketName')} />
+              <Input placeholder={t('enterBucketName')} />
             </Form.Item>
           </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={12}>
+          <Col span={8}>
             <Form.Item
               label={t('endpoint')}
               name="endpoint"
               rules={[{ required: true, message: t('pleaseEnterEndpoint') }]}
-              style={styles.formItem}
             >
-              <Input style={styles.input} placeholder={t('enterEndpoint')} />
+              <Input placeholder={t('enterEndpoint')} />
             </Form.Item>
           </Col>
-          <Col span={12}>
+        </Row>
+
+        <Row gutter={24}>
+          <Col span={8}>
             <Form.Item
               label={t('accountName')}
               name="accountName"
               rules={[{ required: true, message: t('pleaseEnterAccountName') }]}
-              style={styles.formItem}
             >
-              <Input style={styles.input} placeholder={t('enterAccountName')} />
+              <Input placeholder={t('enterAccountName')} />
             </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('tags')}
+              name="tags"
+            >
+              <Input placeholder={t('enterTags')} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <div style={{ display: 'flex', gap: '24px', marginTop: '29px' }}>
+              <Form.Item
+                name="isActive"
+                label={t('isActive')}
+                valuePropName="checked"
+                style={{ marginBottom: 0 }}
+              >
+                <Switch 
+                  checkedChildren={t('yes')} 
+                  unCheckedChildren={t('no')} 
+                />
+              </Form.Item>
+              <Form.Item
+                name="isDefault"
+                label={t('isDefault')}
+                valuePropName="checked"
+                style={{ marginBottom: 0 }}
+              >
+                <Switch 
+                  checkedChildren={t('yes')} 
+                  unCheckedChildren={t('no')} 
+                />
+              </Form.Item>
+            </div>
           </Col>
         </Row>
 
         <Form.Item
           label={t('description')}
           name="description"
-          style={styles.formItem}
         >
-          <Input.TextArea style={styles.input} placeholder={t('enterDescription')} />
+          <Input.TextArea 
+            placeholder={t('enterDescription')} 
+            rows={3}
+          />
         </Form.Item>
-
-        <Form.Item
-          label={t('tags')}
-          name="tags"
-          style={styles.formItem}
-        >
-          <Input style={styles.input} placeholder={t('enterTags')} />
-        </Form.Item>
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="isActive"
-              label={t('isActive')}
-              style={styles.formItem}
-            >
-              <Switch 
-                style={styles.switch}
-                checkedChildren={t('yes')} 
-                unCheckedChildren={t('no')} 
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="isDefault"
-              label={t('isDefault')}
-              style={styles.formItem}
-            >
-              <Switch 
-                style={styles.switch}
-                checkedChildren={t('yes')} 
-                unCheckedChildren={t('no')} 
-              />
-            </Form.Item>
-          </Col>
-        </Row>
       </Form>
     </Modal>
   );
