@@ -1346,6 +1346,25 @@
   "pleaseInputLanguage": "Inserisci la lingua",
   "pleaseInputCategoryId": "Inserisci l'ID categoria",
   "addHotSearch": "Aggiungi ricerca popolare",
-  "editHotSearch": "Modifica ricerca popolare"
+  "editHotSearch": "Modifica ricerca popolare",
 
+  "appearanceSettings": "Impostazioni aspetto",
+  "primaryColor": "Colore primario",
+  "secondaryColor": "Colore secondario",
+  "fontSize": "Dimensione carattere",
+  "buttonStyle": "Stile pulsante",
+  "appLogoUrl": "URL logo app",
+  "backgroundImageUrl": "URL immagine di sfondo",
+  "splashScreenUrl": "URL schermata iniziale",
+  "homeLayout": "Layout home",
+  "customText": "Testo personalizzato",
+  
+  "small": "Piccolo",
+  "large": "Grande",
+  "rounded": "Arrotondato",
+  "square": "Quadrato",
+  "pill": "Pillola",
+  "grid": "Griglia",
+  "list": "Lista",
+  "default": "Predefinito"
 }

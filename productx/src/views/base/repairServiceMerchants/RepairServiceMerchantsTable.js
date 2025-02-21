@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button, Image, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
+import DefaultAvatar from 'src/components/DefaultAvatar';
 
 const RepairServiceMerchantsTable = ({
   data,
@@ -15,7 +15,6 @@ const RepairServiceMerchantsTable = ({
 }) => {
   const { t } = useTranslation();
 
-  // 服务类型标签的颜色映射
   const serviceTypeColors = useMemo(() => ({
     'mobileRepair': 'blue',
     'computerRepair': 'cyan',
@@ -27,7 +26,6 @@ const RepairServiceMerchantsTable = ({
     'other': 'default'
   }), []);
 
-  // 处理服务类型数据，确保它是数组
   const getServiceTypes = (types) => {
     if (!types) return [];
     if (Array.isArray(types)) return types;
@@ -35,23 +33,13 @@ const RepairServiceMerchantsTable = ({
   };
 
   const columns = [
-    {
-      title: t('serviceTypes'),
-      dataIndex: 'serviceTypes',
-      render: (types) => (
-        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-          {getServiceTypes(types).map(type => (
-            <Tag 
-              key={type} 
-              color={serviceTypeColors[type]}
-              style={{ margin: 0, fontSize: '10px', lineHeight: '16px', padding: '0 4px' }}
-            >
-              {t(type)}
-            </Tag>
-          ))}
-        </div>
-      )
-    },
+    t('merchantInfo'),
+    t('contactInfo'),
+    t('serviceTypes'),
+    t('businessStatus'),
+    t('rating'),
+    t('createTime'),
+    t('updateTime')
   ];
 
   return (
@@ -70,18 +58,9 @@ const RepairServiceMerchantsTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          <th>ID</th>
-          <th>{t('merchantName')}</th>
-          <th>{t('logo')}</th>
-          <th>{t('contactPerson')}</th>
-          <th>{t('contactPhone')}</th>
-          <th>{t('contactEmail')}</th>
-          <th>{t('address')}</th>
-          <th>{t('serviceTypes')}</th>
-          <th>{t('businessStatus')}</th>
-          <th>{t('rating')}</th>
-          <th>{t('createTime')}</th>
-          <th>{t('updateTime')}</th>
+          {columns.map((field) => (
+            <th key={field}>{field}</th>
+          ))}
           <th className="fixed-column">{t('operation')}</th>
         </tr>
       </thead>
@@ -101,22 +80,37 @@ const RepairServiceMerchantsTable = ({
                 ></label>
               </div>
             </td>
-            <td>{item.id}</td>
-            <td>{item.merchantName}</td>
             <td>
-              {item.merchantLogo && (
-                <Image
-                  src={item.merchantLogo}
-                  alt={item.merchantName}
-                  style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                />
-              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {item.merchantLogo ? (
+                  <Image
+                    src={item.merchantLogo}
+                    alt={item.merchantName}
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      objectFit: 'cover',
+                      borderRadius: '4px'
+                    }}
+                  />
+                ) : (
+                  <DefaultAvatar name={item.merchantName} size={40} />
+                )}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontWeight: '500' }}>{item.merchantName}</span>
+                  <span style={{ fontSize: '12px', color: '#8c8c8c' }}>ID: {item.id}</span>
+                </div>
+              </div>
             </td>
-            <td>{item.contactPerson}</td>
-            <td>{item.contactPhone}</td>
-            <td>{item.contactEmail}</td>
             <td>
-              {item.province} {item.city} {item.address}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div>{item.contactPerson}</div>
+                <div>{item.contactPhone}</div>
+                <div>{item.contactEmail}</div>
+                <div style={{ fontSize: '12px', color: '#8c8c8c' }}>
+                  {item.province} {item.city} {item.address}
+                </div>
+              </div>
             </td>
             <td>
               <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>

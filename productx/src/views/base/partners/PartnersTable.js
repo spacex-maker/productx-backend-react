@@ -16,8 +16,7 @@ const PartnersTable = ({
 
   const columns = [
     'ID',
-    t('partnerName'),
-    'Logo',
+    t('partnerInfo'),
     t('websiteUrl'),
     t('description'),
     t('businessStatus'),
@@ -31,7 +30,7 @@ const PartnersTable = ({
     <table className="table table-bordered table-striped">
       <thead>
         <tr>
-          <th>
+          <th className="align-middle">
             <div className="custom-control custom-checkbox">
               <input
                 type="checkbox"
@@ -44,15 +43,15 @@ const PartnersTable = ({
             </div>
           </th>
           {columns.map((field) => (
-            <th key={field}>{field}</th>
+            <th key={field} className="align-middle">{field}</th>
           ))}
-          <th className="fixed-column">{t('operation')}</th>
+          <th className="fixed-column align-middle">{t('operation')}</th>
         </tr>
       </thead>
       <tbody>
         {data.map((item) => (
           <tr key={item.id} className="record-font">
-            <td>
+            <td className="align-middle">
               <div className="custom-control custom-checkbox">
                 <input
                   type="checkbox"
@@ -65,22 +64,29 @@ const PartnersTable = ({
                 ></label>
               </div>
             </td>
-            <td className="text-truncate">{item.id}</td>
-            <td className="text-truncate">{item.name}</td>
-            <td>
-              <Image
-                src={item.logoUrl}
-                alt={item.name}
-                style={{ width: '50px', height: '50px' }}
-              />
+            <td className="text-truncate align-middle">{item.id}</td>
+            <td className="align-middle">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Image
+                  src={item.logoUrl}
+                  alt={item.name}
+                  style={{ 
+                    width: '40px', 
+                    height: '40px',
+                    objectFit: 'cover',
+                    borderRadius: '4px'
+                  }}
+                />
+                <span style={{ fontWeight: '500' }}>{item.name}</span>
+              </div>
             </td>
-            <td className="text-truncate">
+            <td className="text-truncate align-middle">
               <a href={item.websiteUrl} target="_blank" rel="noopener noreferrer">
                 {item.websiteUrl}
               </a>
             </td>
-            <td className="text-truncate">{item.description}</td>
-            <td>
+            <td className="text-truncate align-middle">{item.description}</td>
+            <td className="align-middle">
               <label className="toggle-switch">
                 <input
                   type="checkbox"
@@ -90,11 +96,11 @@ const PartnersTable = ({
                 <span className="toggle-switch-slider"></span>
               </label>
             </td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td className="text-truncate">{item.updateTime}</td>
-            <td className="text-truncate">{item.createBy}</td>
-            <td className="text-truncate">{item.updateBy}</td>
-            <td className="fixed-column">
+            <td className="text-truncate align-middle">{item.createTime}</td>
+            <td className="text-truncate align-middle">{item.updateTime}</td>
+            <td className="text-truncate align-middle">{item.createBy}</td>
+            <td className="text-truncate align-middle">{item.updateBy}</td>
+            <td className="fixed-column align-middle">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}
               </Button>

@@ -1333,5 +1333,26 @@
   "pleaseInputLanguage": "Bitte Sprache eingeben",
   "pleaseInputCategoryId": "Bitte Kategorie-ID eingeben",
   "addHotSearch": "Beliebte Suche hinzufügen",
-  "editHotSearch": "Beliebte Suche bearbeiten"
+  "editHotSearch": "Beliebte Suche bearbeiten",
+
+  "appearanceSettings": "Darstellungseinstellungen",
+  
+  "primaryColor": "Primärfarbe",
+  "secondaryColor": "Sekundärfarbe",
+  "fontSize": "Schriftgröße",
+  "buttonStyle": "Schaltflächenstil",
+  "appLogoUrl": "App-Logo-URL",
+  "backgroundImageUrl": "Hintergrundbild-URL",
+  "splashScreenUrl": "Startbildschirm-URL",
+  "homeLayout": "Startseiten-Layout",
+  "customText": "Benutzerdefinierter Text",
+  
+  "small": "Klein",
+  "large": "Groß",
+  "rounded": "Abgerundet",
+  "square": "Quadratisch",
+  "pill": "Pillenform",
+  "grid": "Raster",
+  "list": "Liste",
+  "default": "Standard"
 }

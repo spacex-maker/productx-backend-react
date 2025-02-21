@@ -1353,5 +1353,26 @@
   "pleaseInputLanguage": "Please input language",
   "pleaseInputCategoryId": "Please input category ID",
   "addHotSearch": "Add Hot Search",
-  "editHotSearch": "Edit Hot Search"
+  "editHotSearch": "Edit Hot Search",
+
+  "appearanceSettings": "Appearance Settings",
+  
+  "primaryColor": "Primary Color",
+  "secondaryColor": "Secondary Color",
+  "fontSize": "Font Size",
+  "buttonStyle": "Button Style",
+  "appLogoUrl": "App Logo URL",
+  "backgroundImageUrl": "Background Image URL",
+  "splashScreenUrl": "Splash Screen URL",
+  "homeLayout": "Home Layout",
+  "customText": "Custom Text",
+  
+  "small": "Small",
+  "large": "Large",
+  "rounded": "Rounded",
+  "square": "Square",
+  "pill": "Pill",
+  "grid": "Grid",
+  "list": "List",
+  "default": "Default"
 }
