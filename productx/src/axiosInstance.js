@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 export const API_CONFIG = {
   TEST: 'http://34.92.193.186:8090',
   TEST2: 'http://34.92.218.25:18090',
-  PROD: 'https://protx.cn',
+  PROD: 'https://admin.anakkix.cn',
   LOCAL: 'http://localhost:8090',
 };
 

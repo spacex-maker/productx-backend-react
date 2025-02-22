@@ -12,8 +12,8 @@ export const BASE_URL = {
     name: '测试(测试库1)，主机16c60g-内网-北京',
   },
   PROD: {
-    url: 'https://protx.cn',
-    name: '生产(测试库1)，主机2c2g-谷歌云-香港',
+    url: 'https://admin.anakkix.cn',
+    name: '生产(测试库1)，主机2c2g-腾讯云-南京',
   },
   LOCAL: {
     url: 'http://localhost:8090',
