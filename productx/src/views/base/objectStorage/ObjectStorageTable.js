@@ -1,6 +1,7 @@
 import React from 'react';
-import { Tag, Button } from 'antd';
+import { Tag, Button, Image } from 'antd';
 import { useTranslation } from 'react-i18next';
+import DefaultAvatar from 'src/components/DefaultAvatar';
 
 const ObjectStorageTable = ({
   data,
@@ -23,6 +24,19 @@ const ObjectStorageTable = ({
     return colorMap[status] || 'default';
   };
 
+  const columns = [
+    t('storageInfo'),
+    t('storageProvider'),
+    t('storageType'),
+    t('region'),
+    t('accountName'),
+    t('isActive'),
+    t('isDefault'),
+    t('status'),
+    t('createTime'),
+    t('updateTime'),
+  ];
+
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -39,22 +53,10 @@ const ObjectStorageTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          {[
-            'id',
-            'storageProvider',
-            'storageType',
-            'region',
-            'bucketName',
-            'accountName',
-            'isActive',
-            'isDefault',
-            'status',
-            'createTime',
-            'updateTime',
-          ].map((field) => (
-            <th key={field}>{t(field)}</th>
+          {columns.map((field) => (
+            <th key={field}>{field}</th>
           ))}
-          <th>{t('operations')}</th>
+          <th className="fixed-column">{t('operations')}</th>
         </tr>
       </thead>
       <tbody>
@@ -71,11 +73,31 @@ const ObjectStorageTable = ({
                 <label className="custom-control-label"></label>
               </div>
             </td>
-            <td className="text-truncate">{item.id}</td>
+            <td>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {item.previewUrl ? (
+                  <Image
+                    src={item.previewUrl}
+                    alt={item.bucketName}
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      objectFit: 'cover',
+                      borderRadius: '4px'
+                    }}
+                  />
+                ) : (
+                  <DefaultAvatar name={item.bucketName} size={40} />
+                )}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontWeight: '500' }}>{item.bucketName}</span>
+                  <span style={{ fontSize: '12px', color: '#8c8c8c' }}>ID: {item.id}</span>
+                </div>
+              </div>
+            </td>
             <td className="text-truncate">{item.storageProvider}</td>
             <td className="text-truncate">{item.storageType}</td>
             <td className="text-truncate">{item.region}</td>
-            <td className="text-truncate">{item.bucketName}</td>
             <td className="text-truncate">{item.accountName}</td>
             <td className="text-center">
               <Tag color={item.isActive ? 'success' : 'default'}>
@@ -92,11 +114,11 @@ const ObjectStorageTable = ({
             </td>
             <td className="text-truncate">{item.createTime}</td>
             <td className="text-truncate">{item.updateTime}</td>
-            <td>
-              <Button type="link"    onClick={() => handleDetailClick(item)}>
+            <td className="fixed-column">
+              <Button type="link" onClick={() => handleDetailClick(item)}>
                 {t('detail')}
               </Button>
-              <Button type="link"    onClick={() => handleEditClick(item)}>
+              <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}
               </Button>
             </td>
