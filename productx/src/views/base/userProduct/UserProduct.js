@@ -2,9 +2,10 @@ import React, { useRef, useState } from 'react';
 import { Button, Form, Input, Select, Row, Col, Space, message } from 'antd';
 import { useTranslation } from 'react-i18next';
 import UserProductTable from './UserProductTable';
-import { getProductListService, deleteProductService, updateProductService } from 'src/service/product.service';
+import { getProductListService, deleteProductService } from 'src/service/product.service';
 import DetailUserProductModal from './DetailUserProductModal';
 import UpdateUserProductModal from './UpdateUserProductModal';
+import AddUserProductModal from './AddUserProductModal';
 
 const UserProduct = () => {
   const { t } = useTranslation();
@@ -14,9 +15,12 @@ const UserProduct = () => {
   const [data, setData] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [detailModalVisible, setDetailModalVisible] = useState(false);
-  const [updateModalVisible, setUpdateModalVisible] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // Modal 相关状态
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
 
   // 加载数据
   const loadData = async (values = {}) => {
@@ -60,14 +64,19 @@ const UserProduct = () => {
 
   // 编辑
   const onTableEditItem = (item) => {
-    setSelectedProduct(item);
-    setUpdateModalVisible(true);
+    setCurrentItem(item);
+    setUpdateVisible(true);
   };
 
   // 查看详情
   const onTableViewItem = (item) => {
-    setSelectedProduct(item);
-    setDetailModalVisible(true);
+    console.log('查看详情', item);
+    if (!item?.id) {
+      message.error(t('invalidProduct'));
+      return;
+    }
+    setDetailVisible(true);
+    setCurrentItem(item);
   };
 
   // 删除
@@ -76,20 +85,6 @@ const UserProduct = () => {
     if (!error) {
       message.success(t('deleteSuccess'));
       loadData();
-    }
-  };
-
-  // 添加更新处理函数
-  const handleUpdate = async (values) => {
-    try {
-      const [error] = await updateProductService(values);
-      if (!error) {
-        message.success(t('updateSuccess'));
-        setUpdateModalVisible(false);
-        loadData();
-      }
-    } catch (error) {
-      console.error('Update failed:', error);
     }
   };
 
@@ -145,7 +140,7 @@ const UserProduct = () => {
                 </Button>
                 <Button
                   type="primary"
-                  onClick={() => console.log('create')}
+                  onClick={() => setCreateVisible(true)}
                 >
                   {t('createProduct')}
                 </Button>
@@ -174,28 +169,36 @@ const UserProduct = () => {
         />
       </div>
 
+      {/* 详情 Modal */}
       <DetailUserProductModal
-        open={detailModalVisible}
-        onCancel={() => setDetailModalVisible(false)}
-        productId={selectedProduct?.id}
+        open={detailVisible}
+        onCancel={() => {
+          setDetailVisible(false);
+          setCurrentItem(null);
+        }}
+        productId={currentItem?.id}
       />
 
+      {/* 编辑 Modal */}
       <UpdateUserProductModal
-        open={updateModalVisible}
+        open={updateVisible}
         onCancel={() => {
-          setUpdateModalVisible(false);
+          setUpdateVisible(false);
+          setCurrentItem(null);
           updateForm.resetFields();
         }}
-        onOk={() => {
-          updateForm.validateFields().then((values) => {
-            handleUpdate({
-              ...values,
-              id: selectedProduct.id
-            });
-          });
-        }}
         form={updateForm}
-        selectedProduct={selectedProduct}
+        selectedProduct={currentItem}
+      />
+
+      {/* 创建 Modal */}
+      <AddUserProductModal
+        open={createVisible}
+        onCancel={() => setCreateVisible(false)}
+        onOk={() => {
+          setCreateVisible(false);
+          loadData();
+        }}
       />
     </div>
   );

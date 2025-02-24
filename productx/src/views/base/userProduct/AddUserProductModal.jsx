@@ -33,11 +33,12 @@ import { useModal } from 'src/hooks/useModal';
 import { getCategoryListService } from 'src/service/category.service';
 import { ConsumerAvatar } from 'src/components';
 
-const AddUserProductModal = (props) => {
-  // eslint-disable-next-line react/prop-types
-  const { form, ...modalProps } = props;
+const AddUserProductModal = ({ open, onCancel, onOk }) => {
   const { t } = useTranslation();
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const [cosInstance, setCosInstance] = useState(null);
+  const [categoryList, setCategoryList] = useState([]);
   const bucketName = 'px-1258150206';
   const region = 'ap-nanjing';
   const [userOptions, setUserOptions] = useState([]);
@@ -46,9 +47,7 @@ const AddUserProductModal = (props) => {
   const [cities, setCities] = useState([]);
   const [citySearchLoading, setCitySearchLoading] = useState(false);
 
-  const [categoryList, setCategoryList] = useState([]);
-
-  // 初始化 COS 实例
+  // COS 初始化
   const initCOS = async () => {
     try {
       const response = await api.get(`/manage/tencent/cos-credential?bucketName=${bucketName}`);
@@ -249,12 +248,31 @@ const AddUserProductModal = (props) => {
     jsonModal.open();
   };
 
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const values = await form.validateFields();
+      await onOk(values);
+      form.resetFields();
+    } catch (error) {
+      console.error('Submit failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    form.resetFields();
+    onCancel();
+  };
+
   return (
     <Modal
-      title={t('addNewProduct')}
-      {...modalProps}
-      okText={t('submit')}
-      cancelText={t('cancel')}
+      title={t('createProduct')}
+      open={open}
+      onOk={handleSubmit}
+      onCancel={handleCancel}
+      confirmLoading={loading}
       width={600}
       maskClosable={false}
       destroyOnClose
@@ -274,7 +292,10 @@ const AddUserProductModal = (props) => {
         form={form}
         layout="vertical"
         colon={false}
-        initialValues={{ status: true }}
+        initialValues={{
+          stock: 1,
+          status: 0
+        }}
         preserve={false}
       >
         <Row gutter={8}>
@@ -387,10 +408,15 @@ const AddUserProductModal = (props) => {
               }
               rules={[
                 { required: true, message: t('enterStock') },
-                { type: 'number', min: 1, max: 999999999, message: t('productNameMaxLength') },
+                { type: 'number', min: 1, max: 999999999, message: t('stockRange') },
               ]}
             >
-              <InputNumber placeholder={t('enterStock')} style={{ width: '100%' }} min={0} />
+              <InputNumber
+                placeholder={t('enterStock')}
+                style={{ width: '100%' }}
+                min={1}
+                defaultValue={1}
+              />
             </Form.Item>
           </Col>
           <Col span={16}>
