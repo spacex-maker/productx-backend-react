@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Modal, Input, message, Spin } from 'antd';
+import { Modal, Input, message, Spin, Form, Select, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { CodeOutlined } from '@ant-design/icons';
 import { createProductByJsonService } from 'src/service/product.service';
+import { searchUserService } from 'src/service/user.service';
+import { ConsumerAvatar } from 'src/components';
 
 const placeholder = `{
   "api": "mtop.taobao.idlemtopsearch.pc.search",
@@ -57,15 +59,38 @@ const placeholder = `{
 }`;
 
 const CreateProductJsonModal = (props) => {
-  // eslint-disable-next-line react/prop-types
   const { open, onOk, onCancel } = props;
   const { t } = useTranslation();
   const [jsonContent, setJsonContent] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userOptions, setUserOptions] = useState([]);
+  const [userSearchLoading, setUserSearchLoading] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [form] = Form.useForm();
+
+  const onSearch = async (value) => {
+    if (!value) {
+      setUserOptions([]);
+      return;
+    }
+    setUserSearchLoading(true);
+    try {
+      const [error, response] = await searchUserService(value);
+      if (!error && Array.isArray(response)) {
+        setUserOptions(response);
+      }
+    } finally {
+      setUserSearchLoading(false);
+    }
+  };
 
   const _onOk = async () => {
     if (!jsonContent.trim()) {
       message.error(t('jsonContentRequired'));
+      return;
+    }
+    if (!selectedUserId) {
+      message.error(t('pleaseSelectUser'));
       return;
     }
     try {
@@ -75,19 +100,26 @@ const CreateProductJsonModal = (props) => {
       return message.error(t('invalidJson'));
     }
     setLoading(true);
-    const [error] = await createProductByJsonService(jsonContent);
+    const [error] = await createProductByJsonService({
+      jsonContent,
+      userId: selectedUserId
+    });
     if (error) {
       setLoading(false);
       return message.error(t('创建失败'));
     }
     message.success(t('创建成功'));
     setJsonContent('');
+    setSelectedUserId(null);
+    form.resetFields();
     onOk();
     setLoading(false);
   };
 
   const _onCancel = () => {
     setJsonContent('');
+    setSelectedUserId(null);
+    form.resetFields();
     onCancel();
   };
 
@@ -111,34 +143,62 @@ const CreateProductJsonModal = (props) => {
       confirmLoading={loading}
     >
       <Spin spinning={loading}>
-        <div style={{ marginBottom: '15px' }}>
-          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>获取JSON数据步骤：</div>
-          <ol style={{ paddingLeft: '20px', margin: 0 }}>
-            <li>
-              打开
-              <a href="https://www.goofish.com" target="_blank" rel="noopener noreferrer">
-                闲鱼网页版
-              </a>
-              ，进入任意分类页面（需显示分页按钮）
-            </li>
-            <li>按 F12 打开浏览器开发者工具</li>
-            <li>点击 XHR 选项，过滤出 XHR 请求</li>
-            <li>点击垃圾桶图标，清理当前所有请求记录</li>
-            <li>点击分页按钮切换到第二页</li>
-            <li>在请求记录中找到并复制完整的 JSON 响应数据，粘贴到下方输入框</li>
-          </ol>
-        </div>
+        <Form form={form} layout="vertical">
+          <Form.Item
+            label={t('selectUser')}
+            required
+            style={{ marginBottom: '15px' }}
+          >
+            <Select
+              showSearch
+              value={selectedUserId}
+              placeholder={t('searchUser')}
+              loading={userSearchLoading}
+              onSearch={onSearch}
+              onChange={(value) => setSelectedUserId(value)}
+              filterOption={false}
+              style={{ width: '100%' }}
+            >
+              {userOptions.map((user) => (
+                <Select.Option key={user.id} value={user.id}>
+                  <Space>
+                    <ConsumerAvatar consumer={user} />
+                    <span>{user.nickname || user.username}</span>
+                  </Space>
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
 
-        <Input.TextArea
-          style={{
-            fontFamily: 'Monaco, Menlo, Ubuntu Mono, Consolas, source-code-pro, monospace',
-            fontSize: '12px',
-            minHeight: '300px',
-          }}
-          value={jsonContent}
-          onChange={onInputChange}
-          placeholder={placeholder}
-        />
+          <div style={{ marginBottom: '15px' }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>获取JSON数据步骤：</div>
+            <ol style={{ paddingLeft: '20px', margin: 0 }}>
+              <li>
+                打开
+                <a href="https://www.goofish.com" target="_blank" rel="noopener noreferrer">
+                  闲鱼网页版
+                </a>
+                ，进入任意分类页面（需显示分页按钮）
+              </li>
+              <li>按 F12 打开浏览器开发者工具</li>
+              <li>点击 XHR 选项，过滤出 XHR 请求</li>
+              <li>点击垃圾桶图标，清理当前所有请求记录</li>
+              <li>点击分页按钮切换到第二页</li>
+              <li>在请求记录中找到并复制完整的 JSON 响应数据，粘贴到下方输入框</li>
+            </ol>
+          </div>
+
+          <Input.TextArea
+            style={{
+              fontFamily: 'Monaco, Menlo, Ubuntu Mono, Consolas, source-code-pro, monospace',
+              fontSize: '12px',
+              minHeight: '300px',
+            }}
+            value={jsonContent}
+            onChange={onInputChange}
+            placeholder={placeholder}
+          />
+        </Form>
       </Spin>
     </Modal>
   );

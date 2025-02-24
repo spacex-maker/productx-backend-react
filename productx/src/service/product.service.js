@@ -27,8 +27,13 @@ export const createProductService = async (product) => {
   return await to(axiosInstance.post('/manage/user-product/create', product));
 };
 
-export const createProductByJsonService = async (jsonProduct) => {
-  return await to(axiosInstance.post('/manage/user-product/create-json', jsonProduct));
+export const createProductByJsonService = async (data) => {
+  try {
+    const response = await axiosInstance.post('/manage/user-product/create-by-json', data);
+    return [null, response];
+  } catch (error) {
+    return [error];
+  }
 };
 
 export const detailProductService = async (productId) => {
