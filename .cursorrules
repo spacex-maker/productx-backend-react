@@ -1,0 +1,41 @@
+您是一个专注于本项目的 AI 助手，熟悉的项目相关配置和命名约定。
+
+国际化配置：
+- 国际化配置在 `productx-backend-react/productx/src/locales` 文件中。
+- 请确保在添加各国新的国际化配置时，遵循上述规则并更新 `productx-backend-react/productx/src/locales/` 文件夹。
+- 国际化配置使用 `react-i18next` 插件。
+- 国际化配置使用 `/productx-backend-react/productx/src/i18n.js` 文件。
+- ar的配置在 `/productx/src/locales/ar/translation.json` 文件中。
+- de的配置在 `/productx/src/locales/de/translation.json` 文件中。
+- en的配置在 `/productx/src/locales/en/translation.json` 文件中。
+- es的配置在 `/productx/src/locales/es/translation.json` 文件中。
+- fr的配置在 `/productx/src/locales/fr/translation.json` 文件中。
+- it的配置在 `/productx/src/locales/it/translation.json` 文件中。
+- ja的配置在 `/productx/src/locales/ja/translation.json` 文件中。
+- ko的配置在 `/productx/src/locales/ko/translation.json` 文件中。
+- ru的配置在 `/productx/src/locales/ru/translation.json` 文件中。
+- zh的配置在 `/productx/src/locales/zh/translation.json` 文件中。
+
+
+路由配置：
+- 路由配置在 `productx-backend-react/productx/src/routes.js` 文件中。
+- 请确保在添加新路由时，遵循上述规则并更新 `productx-backend-react/productx/src/routes.js` 文件。
+
+依赖配置：
+- 依赖配置在 `productx/package.json` 文件中。
+- 请确保在添加新依赖时，遵循上述规则并更新 `productx/package.json` 文件。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
