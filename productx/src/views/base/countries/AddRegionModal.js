@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Row, Col, InputNumber } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const AddRegionModal = ({ visible, onCancel, onOk, form, handleTypeChange }) => {
   const { t } = useTranslation();
+
+  // 添加自动填写国家代码的处理函数
+  const handleCodeChange = (e) => {
+    const regionCode = e.target.value;
+    if (regionCode && regionCode.length >= 2) {
+      const countryCode = regionCode.substring(0, 2);
+      form.setFieldValue('countryCode', countryCode);
+    }
+  };
+
+  // 在模态框显示时重置特定字段，但保留行政区划编码和国家代码
+  useEffect(() => {
+    if (visible) {
+      // 获取当前的行政区划编码和国家代码
+      const currentCode = form.getFieldValue('code');
+      const currentCountryCode = form.getFieldValue('countryCode');
+      
+      // 重置表单，然后重新设置要保留的字段
+      form.resetFields();
+      
+      // 恢复行政区划编码和国家代码
+      form.setFieldsValue({
+        code: currentCode,
+        countryCode: currentCountryCode
+      });
+    }
+  }, [visible, form]);
 
   return (
     <Modal
@@ -18,7 +45,7 @@ const AddRegionModal = ({ visible, onCancel, onOk, form, handleTypeChange }) => 
         form={form}
         onFinish={onOk}
         layout="vertical"
-
+        autoComplete="off"
       >
         <Row gutter={8}>
           <Col span={12}>

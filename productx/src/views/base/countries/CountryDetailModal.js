@@ -212,6 +212,10 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [loadingStatus, setLoadingStatus] = useState(null);
+  const [savedFields, setSavedFields] = useState({
+    code: '',
+    countryCode: ''
+  });
 
   // 在组件加载时获取历史记录
   useEffect(() => {
@@ -226,23 +230,6 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
       }
     }
   }, []);
-
-  // 监听模态框打开状态，自动填充数据
-  useEffect(() => {
-    if (addModalVisible && lastSubmittedType && historicalInputs[lastSubmittedType]) {
-      const lastData = historicalInputs[lastSubmittedType];
-      console.log('Auto filling last submitted data:', lastData);
-
-      // 只排除 code、name 和 id，保留其他所有字段
-      const { code, name, id, timestamp, ...autoFillData } = lastData;
-
-      // 设置类型和其他数据
-      addForm.setFieldsValue({
-        type: lastSubmittedType,
-        ...autoFillData
-      });
-    }
-  }, [addModalVisible, lastSubmittedType, historicalInputs]);
 
   // 修改表单样式定义
   const formStyles = {
@@ -269,14 +256,8 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
     const type = e.target.value.trim();
     console.log('Type input changed:', type);
 
+    // 直接设置类型值，不重置表单
     addForm.setFieldValue('type', type);
-
-    const historicalData = historicalInputs[type];
-    if (historicalData) {
-      console.log('Found historical data:', historicalData);
-      const { code, name, id, timestamp, ...autoFillData } = historicalData;
-      addForm.setFieldsValue(autoFillData);
-    }
   };
 
   useEffect(() => {
@@ -659,6 +640,11 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
 
   const handleAddModalOpen = () => {
     addForm.resetFields(); // 先清空表单
+    // 恢复保存的字段
+    addForm.setFieldsValue({
+      code: savedFields.code,
+      countryCode: savedFields.countryCode
+    });
     setAddModalVisible(true);
   };
 
@@ -673,25 +659,26 @@ const CountryDetailModal = ({ visible, country, onCancel }) => {
         type: values.type ? values.type.trim() : 'ADMINISTRATIVE_DIVISION'
       };
 
-      await api.post('/manage/global-addresses/create', params);
+      // 保存字段到状态中
+      setSavedFields({
+        code: values.code,
+        countryCode: values.countryCode
+      });
 
-      if (values.type) {
-        const newHistory = {
-          ...historicalInputs,
-          [values.type]: {
-            ...values,
-            timestamp: Date.now()
-          }
-        };
-        localStorage.setItem('regionFormHistory', JSON.stringify(newHistory));
-        setHistoricalInputs(newHistory);
-        localStorage.setItem('lastSubmittedType', values.type);
-        setLastSubmittedType(values.type);
-      }
+      await api.post('/manage/global-addresses/create', params);
 
       message.success(t('addSuccess'));
       setAddModalVisible(false);
-      addForm.resetFields();
+      
+      // 重置表单但保留保存的字段
+      setTimeout(() => {
+        addForm.resetFields();
+        addForm.setFieldsValue({
+          code: values.code,
+          countryCode: values.countryCode
+        });
+      }, 0);
+      
       fetchRegions(currentParentId);
     } catch (error) {
       console.error('新增失败:', error);
