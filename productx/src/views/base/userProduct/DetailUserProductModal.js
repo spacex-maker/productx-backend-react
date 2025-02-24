@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Descriptions, Divider, Image, Tag, Space, Empty } from 'antd';
+import { Modal, Descriptions, Divider, Image, Tag, Space, Empty, Avatar } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from 'src/components/common/Common';
-import { CheckCircleOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, EditOutlined, StopOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import { detailProductService } from 'src/service/product.service';
-import { ConsumerAvatar, useConsumerAvatar } from 'src/components';
 
 const DetailUserProductModal = (props) => {
-  // eslint-disable-next-line react/prop-types
   const { productId, ...modalProps } = props;
   const { t } = useTranslation();
   const [productData, setProductData] = useState(null);
-  const consumer = useConsumerAvatar(productData?.userId);
 
   useEffect(() => {
     if (productId) {
@@ -71,15 +68,29 @@ const DetailUserProductModal = (props) => {
       width={800}
       maskClosable={false}
     >
-      <Descriptions column={2}  bordered>
+      <Descriptions column={2} bordered>
         <Descriptions.Item label={t('productStatus')} span={2}>
           {productData && renderStatus(productData.status)}
         </Descriptions.Item>
         <Descriptions.Item label={t('productId')} span={2}>
-          {productData.id}
+          {productData?.id}
         </Descriptions.Item>
         <Descriptions.Item label={t('userId')} span={2}>
-          <ConsumerAvatar consumer={consumer}></ConsumerAvatar>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {productData?.userId && productData?.avatar ? (
+              <Avatar 
+                src={productData.avatar} 
+                icon={<UserOutlined />} 
+                size="small"
+              />
+            ) : (
+              <Avatar 
+                icon={<UserOutlined />} 
+                size="small"
+              />
+            )}
+            <span>{productData?.userId || t('unknown')}</span>
+          </div>
         </Descriptions.Item>
         <Descriptions.Item label={t('productName')} span={2}>
           {productData.productName}
@@ -104,53 +115,37 @@ const DetailUserProductModal = (props) => {
         </Descriptions.Item>
       </Descriptions>
 
-      <Divider style={{ margin: '24px 0' }} />
+      <Divider style={{ margin: '12px 0' }} />
 
       <div className="product-description">
-        <div style={{ color: '#666', marginBottom: '8px' }}>{t('productDescription')}:</div>
+        <div style={{ marginBottom: '4px' }}>{t('productDescription')}:</div>
         <div style={{ whiteSpace: 'pre-wrap' }}>
-          {productData.productDescription || <Empty description={t('noDescription')} />}
+          {productData.productDescription}
         </div>
       </div>
 
-      <Divider style={{ margin: '24px 0' }} />
-
       <div className="image-gallery">
-        <div style={{ color: '#666', marginBottom: '8px' }}>{t('coverImage')}:</div>
-        <div style={{ width: '200px' }}>
+        <div style={{ marginBottom: '4px' }}>{t('coverImage')}:</div>
+        <div style={{ width: '25%' }}>
           {productData.imageCover ? (
-            <Image 
-              src={productData.imageCover} 
-              alt="cover"
-              style={{ borderRadius: '8px' }}
-            />
+            <Image src={productData.imageCover} alt="cover" />
           ) : (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description={t('noCoverImage')}
-              style={{ 
-                padding: '32px 16px',
-                border: '1px dashed #d9d9d9',
-                borderRadius: '8px'
-              }}
+              style={{ padding: '20px' }}
             />
           )}
         </div>
       </div>
 
-      <Divider style={{ margin: '24px 0' }} />
-
       <div className="image-gallery">
-        <div style={{ color: '#666', marginBottom: '8px' }}>{t('productImages')}:</div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ marginBottom: '4px' }}>{t('productImages')}:</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {Array.isArray(productData.imageList) && productData.imageList.length > 0 ? (
             productData.imageList.map((image, index) => (
-              <div key={index} style={{ width: '200px' }}>
-                <Image 
-                  src={image} 
-                  alt={`product-${index + 1}`}
-                  style={{ borderRadius: '8px' }}
-                />
+              <div key={index} style={{ width: '24%', margin: '0 0.5% 1%' }}>
+                <Image key={index} src={image} alt={`product-${index + 1}`} />
               </div>
             ))
           ) : (
@@ -158,11 +153,7 @@ const DetailUserProductModal = (props) => {
               <Empty
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                 description={t('noProductImages')}
-                style={{ 
-                  padding: '32px 16px',
-                  border: '1px dashed #d9d9d9',
-                  borderRadius: '8px'
-                }}
+                style={{ padding: '20px' }}
               />
             </div>
           )}
