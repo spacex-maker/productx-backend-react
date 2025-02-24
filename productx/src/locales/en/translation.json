@@ -1374,5 +1374,6 @@
   "pill": "Pill",
   "grid": "Grid",
   "list": "List",
-  "default": "Default"
+  "default": "Default",
+  "productInfo": "Product Info"
 }

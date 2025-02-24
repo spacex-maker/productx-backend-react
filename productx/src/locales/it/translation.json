@@ -1366,5 +1366,6 @@
   "pill": "Pillola",
   "grid": "Griglia",
   "list": "Lista",
-  "default": "Predefinito"
+  "default": "Predefinito",
+  "productInfo": "Info Prodotto"
 }

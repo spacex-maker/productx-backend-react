@@ -1396,5 +1396,6 @@
   "pill": "胶囊形",
   "grid": "网格",
   "list": "列表",
-  "default": "默认"
+  "default": "默认",
+  "productInfo": "商品信息"
 }

@@ -76,6 +76,11 @@ const ResizableTitle = (props) => {
 const ContributorsList = ({ maintainers, loading }) => {
   const { t } = useTranslation();
 
+  // 对维护人按照维护数量进行排序
+  const sortedMaintainers = useMemo(() => {
+    return [...maintainers].sort((a, b) => b.count - a.count);
+  }, [maintainers]);
+
   const getContributorColor = (count) => {
     if (count >= 100000) return '#f50'; // 红色
     if (count >= 10000) return '#722ed1'; // 紫色
@@ -104,7 +109,7 @@ const ContributorsList = ({ maintainers, loading }) => {
     >
       <Spin spinning={loading}>
         <Row gutter={[8, 8]}>
-          {maintainers.map((item) => {
+          {sortedMaintainers.map((item, index) => {
             const color = getContributorColor(item.count);
             const title = getContributorTitle(item.count);
 
@@ -136,11 +141,18 @@ const ContributorsList = ({ maintainers, loading }) => {
                         <div style={{
                           fontSize: '12px',
                           fontWeight: 500,
-                          color: '#000000d9',
+                          color: color,
                           width: '80px',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
+                          whiteSpace: 'nowrap',
+                          textShadow: `0 0 10px ${color}40`,
+                          transition: 'all 0.3s ease',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            textShadow: `0 0 15px ${color}80`,
+                            transform: 'scale(1.02)'
+                          }
                         }}>
                           {item.username}
                         </div>

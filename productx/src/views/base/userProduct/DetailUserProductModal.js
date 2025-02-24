@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Descriptions, Divider, Image, Tag, Space } from 'antd';
+import { Modal, Descriptions, Divider, Image, Tag, Space, Empty } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { formatDate } from 'src/components/common/Common';
 import { CheckCircleOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -104,38 +104,68 @@ const DetailUserProductModal = (props) => {
         </Descriptions.Item>
       </Descriptions>
 
-      <Divider style={{ margin: '12px 0' }} />
+      <Divider style={{ margin: '24px 0' }} />
 
       <div className="product-description">
-        <div style={{ color: '#666', marginBottom: '4px' }}>{t('productDescription')}:</div>
-        <div
-          style={{
-            background: '#fafafa',
-            padding: '8px',
-            borderRadius: '2px',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          {productData.productDescription}
+        <div style={{ color: '#666', marginBottom: '8px' }}>{t('productDescription')}:</div>
+        <div style={{ whiteSpace: 'pre-wrap' }}>
+          {productData.productDescription || <Empty description={t('noDescription')} />}
         </div>
       </div>
 
+      <Divider style={{ margin: '24px 0' }} />
+
       <div className="image-gallery">
-        <div style={{ color: '#666', marginBottom: '4px' }}>{t('coverImage')}:</div>
-        <div style={{ width: '25%' }}>
-          <Image src={productData.imageCover} alt="cover" />
+        <div style={{ color: '#666', marginBottom: '8px' }}>{t('coverImage')}:</div>
+        <div style={{ width: '200px' }}>
+          {productData.imageCover ? (
+            <Image 
+              src={productData.imageCover} 
+              alt="cover"
+              style={{ borderRadius: '8px' }}
+            />
+          ) : (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={t('noCoverImage')}
+              style={{ 
+                padding: '32px 16px',
+                border: '1px dashed #d9d9d9',
+                borderRadius: '8px'
+              }}
+            />
+          )}
         </div>
       </div>
+
+      <Divider style={{ margin: '24px 0' }} />
+
       <div className="image-gallery">
-        <div style={{ color: '#666', marginBottom: '4px' }}>{t('productImages')}:</div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {productData.imageList &&
-            productData.imageList.length > 0 &&
+        <div style={{ color: '#666', marginBottom: '8px' }}>{t('productImages')}:</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+          {Array.isArray(productData.imageList) && productData.imageList.length > 0 ? (
             productData.imageList.map((image, index) => (
-              <div key={index} style={{ width: '24%', margin: '0 0.5% 1%' }}>
-                <Image key={index} src={image} alt={`product-${index + 1}`} />
+              <div key={index} style={{ width: '200px' }}>
+                <Image 
+                  src={image} 
+                  alt={`product-${index + 1}`}
+                  style={{ borderRadius: '8px' }}
+                />
               </div>
-            ))}
+            ))
+          ) : (
+            <div style={{ width: '100%' }}>
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={t('noProductImages')}
+                style={{ 
+                  padding: '32px 16px',
+                  border: '1px dashed #d9d9d9',
+                  borderRadius: '8px'
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </Modal>

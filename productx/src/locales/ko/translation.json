@@ -1371,5 +1371,6 @@
   "pill": "알약형",
   "grid": "그리드",
   "list": "목록",
-  "default": "기본"
+  "default": "기본",
+  "productInfo": "제품 정보"
 }
