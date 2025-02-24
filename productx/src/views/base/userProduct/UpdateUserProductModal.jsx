@@ -173,36 +173,47 @@ const UpdateUserProductModal = (props) => {
     }
   };
 
-  // 修改 normFile 函数，在表单提交时转换格式
+  // 修改 normFile 函数
   const normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
     }
-    return e?.fileList.map((file) => ({
-      ...file,
+    // 确保返回的是数组格式
+    return e?.fileList ? e.fileList.map(file => ({
+      uid: file.uid,
+      name: file.name,
+      status: file.status,
       url: file.response?.url || file.url,
-    }));
+    })) : [];
   };
 
   useEffect(() => {
     if (modalProps.open && selectedProduct) {
-      const coverImage = selectedProduct.imageCover
-        ? [
-            {
-              uid: '-1',
-              name: 'cover.jpg',
-              status: 'done',
-              url: selectedProduct.imageCover,
-            },
-          ]
+      // 修改图片数据的格式化方式
+      const coverImage = selectedProduct.imageCover ? [{
+        uid: '-1',
+        name: 'cover.jpg',
+        status: 'done',
+        url: selectedProduct.imageCover,
+      }] : [];
+
+      const imageList = Array.isArray(selectedProduct.imageList) 
+        ? selectedProduct.imageList.map((url, index) => ({
+            uid: `-${index + 1}`,
+            name: `image-${index + 1}.jpg`,
+            status: 'done',
+            url: url,
+          }))
         : [];
+
       const category = (selectedProduct.category?.split(',') ?? []).map(Number);
+      
       form.setFieldsValue({
         ...selectedProduct,
         category: category,
         status: selectedProduct.status,
         imageCover: coverImage,
-        imageList: selectedProduct.imageList || [],
+        imageList: imageList,
       });
     }
   }, [modalProps.open, selectedProduct, form]);
@@ -375,11 +386,19 @@ const UpdateUserProductModal = (props) => {
           getValueFromEvent={normFile}
           rules={[{ required: true, message: t('uploadCoverImage') }]}
         >
-          <Upload listType="picture-card" maxCount={1} customRequest={customRequest}>
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>{t('upload')}</div>
-            </div>
+          <Upload 
+            listType="picture-card" 
+            maxCount={1} 
+            customRequest={customRequest}
+            accept="image/*"
+          >
+            {/* 只有当没有图片时才显示上传按钮 */}
+            {form.getFieldValue('imageCover')?.length < 1 && (
+              <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>{t('upload')}</div>
+              </div>
+            )}
           </Upload>
         </Form.Item>
 
@@ -389,7 +408,12 @@ const UpdateUserProductModal = (props) => {
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
-          <Upload listType="picture-card" multiple customRequest={customRequest}>
+          <Upload 
+            listType="picture-card" 
+            multiple 
+            customRequest={customRequest}
+            accept="image/*"
+          >
             <div>
               <PlusOutlined />
               <div style={{ marginTop: 8 }}>{t('upload')}</div>
