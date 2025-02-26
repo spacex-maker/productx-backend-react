@@ -1355,5 +1355,23 @@
   "grid": "Raster",
   "list": "Liste",
   "default": "Standard",
-  "productInfo": "Produktinfo"
+  "productInfo": "Produktinfo",
+
+  "walletDetails": "Wallet-Details",
+  "privateKey": "Privater Schlüssel",
+  "transactionHistory": "Transaktionsverlauf",
+  "enterPassword": "Passwort eingeben",
+  "pleaseEnterPassword": "Bitte Passwort eingeben",
+  "passwordPlaceholder": "Bitte Admin-Passwort eingeben",
+  "retrievePrivateKey": "Privaten Schlüssel abrufen",
+  "privateKeyRetrieved": "Privater Schlüssel erfolgreich abgerufen",
+  "failedToRetrievePrivateKey": "Abrufen des privaten Schlüssels fehlgeschlagen",
+  "incorrectPassword": "Falsches Passwort",
+  "privateKeyCopied": "Privater Schlüssel kopiert",
+  "privateKeyWarning": "Warnung: Teilen Sie Ihren privaten Schlüssel niemals mit anderen. Jeder mit Ihrem privaten Schlüssel hat volle Kontrolle über Ihre Wallet-Vermögenswerte.",
+  "transactionHistoryComingSoon": "Transaktionsverlauf-Funktion kommt bald",
+  "wallet_passwordWarningTitle": "Passwort-Sicherheitswarnung",
+  "wallet_passwordWarningDescription": "Bitte beachten Sie: Das System speichert Ihr Wallet-Passwort nicht. Bitte bewahren Sie es sicher auf.",
+  "wallet_passwordWarningPoint1": "Wenn Sie Ihr Passwort vergessen, können Sie den privaten Schlüssel Ihrer Wallet nicht einsehen.",
+  "wallet_passwordWarningPoint2": "Wir empfehlen die Verwendung eines sicheren Passwort-Managers, um Ihr Passwort zu speichern."
 }

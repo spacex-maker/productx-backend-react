@@ -1,21 +1,19 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select } from 'antd';
-
-const { Option } = Select;
+import { Modal, Form, Input } from 'antd';
 
 const UpdateWalletModal = ({
-                             isVisible,
-                             onCancel,
-                             onOk,
-                             form,
-                             handleUpdateWallet,
-                             selectedWallet,
-                             cryptoCurrencies,
-                             t
-                           }) => {
+  isVisible,
+  onCancel,
+  onOk,
+  form,
+  handleUpdateWallet,
+  selectedWallet,
+  t
+}) => {
   useEffect(() => {
     if (isVisible && selectedWallet) {
       form.setFieldsValue({
+        id: selectedWallet.id,
         address: selectedWallet.address,
         type: selectedWallet.type,
         label: selectedWallet.label,
@@ -35,57 +33,34 @@ const UpdateWalletModal = ({
       cancelText={t('cancel')}
     >
       <Form form={form} onFinish={handleUpdateWallet}>
+        <Form.Item name="id" hidden>
+          <Input />
+        </Form.Item>
         <Form.Item name="address" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="type" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="countryCode" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="balance" hidden>
           <Input />
         </Form.Item>
 
         <Form.Item
           label={t('walletAddress')}
-          name="address"
-          rules={[{ required: true, message: t('pleaseInputWalletAddress') }]}
-          style={{ marginBottom: '8px' }}
+          style={{ marginBottom: '16px' }}
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={t('walletType')}
-          name="type"
-          rules={[{ required: true, message: t('pleaseSelectWalletType') }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Select placeholder={t('pleaseSelectWalletType')} allowClear>
-            {cryptoCurrencies.map((crypto) => (
-              <Option key={crypto.id} value={crypto.id}>
-                {crypto.name} ({crypto.symbol})
-              </Option>
-            ))}
-          </Select>
+          <Input value={selectedWallet?.address} disabled />
         </Form.Item>
 
         <Form.Item
           label={t('walletLabel')}
           name="label"
           rules={[{ required: true, message: t('pleaseInputWalletLabel') }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={t('countryCode')}
-          name="countryCode"
-          rules={[{ required: true, message: t('pleaseInputCountryCode') }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={t('balance')}
-          name="balance"
-          rules={[{ required: true, message: t('pleaseInputBalance') }]}
-          style={{ marginBottom: '8px' }}
+          style={{ marginBottom: '16px' }}
         >
           <Input />
         </Form.Item>

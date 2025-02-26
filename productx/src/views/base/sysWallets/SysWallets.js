@@ -8,6 +8,7 @@ import WalletTable from "src/views/base/sysWallets/WalletTable"
 import UpdateWalletModal from "src/views/base/sysWallets/UpdateWalletModal"
 import WalletCreateFormModal from "src/views/base/sysWallets/WalletsCreateFormModel"
 import { useTranslation } from 'react-i18next'
+import WalletDetailModal from "src/views/base/sysWallets/WalletDetailModal"
 
 const updateWalletStatus = async (id, newStatus) => {
   await api.post('/manage/sys-wallets/change-status', { id, status: newStatus })
@@ -43,6 +44,8 @@ const WalletList = () => {
   const [selectedWallet, setSelectedWallet] = useState(null)
   const [countries, setCountries] = useState([]);  // 存储获取到的国家列表
   const [cryptoCurrencies, setCryptoCurrencies] = useState([]);  // 存储获取到的钱包类型列表
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [selectedWalletForDetail, setSelectedWalletForDetail] = useState(null);
 
   // 获取国家列表
   useEffect(() => {
@@ -125,10 +128,22 @@ const WalletList = () => {
   }
 
   const handleUpdateWallet = async (values) => {
-    await updateWallet(values)
-    setIsUpdateModalVisible(false)
-    updateForm.resetFields()
-    await fetchData()
+    try {
+      setIsLoading(true)
+      // 只发送 id 和 label 字段
+      await updateWallet({
+        id: values.id,
+        label: values.label
+      })
+      message.success(t('updateSuccess'))
+      setIsUpdateModalVisible(false)
+      fetchData()
+    } catch (error) {
+      console.error('更新钱包失败:', error)
+      message.error(t('updateFailed'))
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const totalPages = Math.ceil(totalNum / pageSize)
@@ -143,6 +158,11 @@ const WalletList = () => {
   const handleEditClick = (wallet) => {
     setSelectedWallet(wallet);
     setIsUpdateModalVisible(true);
+  };
+
+  const handleViewDetails = (wallet) => {
+    setSelectedWalletForDetail(wallet);
+    setIsDetailModalVisible(true);
   };
 
   return (
@@ -260,6 +280,7 @@ const WalletList = () => {
             handleSelectRow={handleSelectRow}
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
+            handleViewDetails={handleViewDetails}
             countries={countries}
             t={t}
           />
@@ -293,6 +314,16 @@ const WalletList = () => {
         selectedWallet={selectedWallet}
         cryptoCurrencies={cryptoCurrencies}
         t={t}
+      />
+
+      <WalletDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => {
+          setIsDetailModalVisible(false);
+          setSelectedWalletForDetail(null);
+        }}
+        wallet={selectedWalletForDetail}
+        countries={countries}
       />
     </div>
   )

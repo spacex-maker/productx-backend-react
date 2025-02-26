@@ -1397,5 +1397,22 @@
   "grid": "网格",
   "list": "列表",
   "default": "默认",
-  "productInfo": "商品信息"
+  "productInfo": "商品信息",
+  "walletDetails": "钱包详情",
+  "privateKey": "私钥",
+  "transactionHistory": "交易历史",
+  "enterPassword": "输入密码",
+  "pleaseEnterPassword": "请输入密码",
+  "passwordPlaceholder": "请输入管理员密码",
+  "retrievePrivateKey": "获取私钥",
+  "privateKeyRetrieved": "私钥获取成功",
+  "failedToRetrievePrivateKey": "获取私钥失败",
+  "incorrectPassword": "密码不正确",
+  "privateKeyCopied": "私钥已复制",
+  "privateKeyWarning": "警告：请勿将私钥泄露给任何人，拥有私钥即可控制钱包资产",
+  "transactionHistoryComingSoon": "交易历史功能即将推出",
+  "wallet_passwordWarningTitle": "密码安全警告",
+  "wallet_passwordWarningDescription": "请注意：系统不会存储您的钱包密码，请务必妥善保管。",
+  "wallet_passwordWarningPoint1": "如果您忘记密码，将无法查看钱包私钥。",
+  "wallet_passwordWarningPoint2": "建议使用安全的密码管理工具保存您的密码。"
 }

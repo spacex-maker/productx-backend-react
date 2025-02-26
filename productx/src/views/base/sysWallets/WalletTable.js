@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, message, Space} from 'antd';
-import {CopyOutlined} from '@ant-design/icons';
+import {CopyOutlined, EyeOutlined} from '@ant-design/icons';
 import api from 'src/axiosInstance';
 
 const WalletTable = ({
@@ -11,6 +11,7 @@ const WalletTable = ({
                        handleSelectRow,
                        handleStatusChange,
                        handleEditClick,
+                       handleViewDetails,
                        countries = [],
                        t
                      }) => {
@@ -115,6 +116,9 @@ const WalletTable = ({
             </label>
           </td>
           <td className="fixed-column">
+            <Button type="link" onClick={() => handleViewDetails(item)}>
+              <EyeOutlined /> {t('details')}
+            </Button>
             <Button type="link" onClick={() => handleEditClick(item)}>
               {t('edit')}
             </Button>

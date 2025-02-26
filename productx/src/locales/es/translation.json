@@ -1386,5 +1386,22 @@
   "grid": "Cuadrícula",
   "list": "Lista",
   "default": "Predeterminado",
-  "productInfo": "Info del Producto"
+  "productInfo": "Info del Producto",
+  "walletDetails": "Detalles de la billetera",
+  "privateKey": "Clave privada",
+  "transactionHistory": "Historial de transacciones",
+  "enterPassword": "Ingresar contraseña",
+  "pleaseEnterPassword": "Por favor ingrese la contraseña",
+  "passwordPlaceholder": "Por favor ingrese la contraseña de administrador",
+  "retrievePrivateKey": "Recuperar clave privada",
+  "privateKeyRetrieved": "Clave privada recuperada con éxito",
+  "failedToRetrievePrivateKey": "Error al recuperar la clave privada",
+  "incorrectPassword": "Contraseña incorrecta",
+  "privateKeyCopied": "Clave privada copiada",
+  "privateKeyWarning": "Advertencia: Nunca comparta su clave privada con nadie. Cualquier persona con su clave privada tiene control total sobre los activos de su billetera.",
+  "transactionHistoryComingSoon": "Función de historial de transacciones próximamente",
+  "wallet_passwordWarningTitle": "Advertencia de seguridad de contraseña",
+  "wallet_passwordWarningDescription": "Tenga en cuenta: El sistema no almacena la contraseña de su billetera. Por favor, manténgala segura.",
+  "wallet_passwordWarningPoint1": "Si olvida su contraseña, no podrá ver la clave privada de su billetera.",
+  "wallet_passwordWarningPoint2": "Recomendamos usar un administrador de contraseñas seguro para guardar su contraseña."
 }

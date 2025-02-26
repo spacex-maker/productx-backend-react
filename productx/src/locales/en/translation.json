@@ -1375,5 +1375,22 @@
   "grid": "Grid",
   "list": "List",
   "default": "Default",
-  "productInfo": "Product Info"
+  "productInfo": "Product Info",
+  "walletDetails": "Wallet Details",
+  "privateKey": "Private Key",
+  "transactionHistory": "Transaction History",
+  "enterPassword": "Enter Password",
+  "pleaseEnterPassword": "Please enter password",
+  "passwordPlaceholder": "Please enter admin password",
+  "retrievePrivateKey": "Retrieve Private Key",
+  "privateKeyRetrieved": "Private key retrieved successfully",
+  "failedToRetrievePrivateKey": "Failed to retrieve private key",
+  "incorrectPassword": "Incorrect password",
+  "privateKeyCopied": "Private key copied",
+  "privateKeyWarning": "Warning: Never share your private key with anyone. Anyone with your private key has full control of your wallet assets.",
+  "transactionHistoryComingSoon": "Transaction history feature coming soon",
+  "wallet_passwordWarningTitle": "Password Security Warning",
+  "wallet_passwordWarningDescription": "Please note: The system does not store your wallet password. Please keep it safe.",
+  "wallet_passwordWarningPoint1": "If you forget your password, you will not be able to view your wallet's private key.",
+  "wallet_passwordWarningPoint2": "We recommend using a secure password manager to save your password."
 }

@@ -27,19 +27,12 @@ const CurrencyTable = ({
             <label className="custom-control-label" htmlFor="select_all"></label>
           </div>
         </th>
-        {[
-          'ID', 
-          t('currencyNameEn'), 
-          t('currencyNameZh'), 
-          t('currencyCode'), 
-          t('currencySymbol'), 
-          t('status')
-        ].map((field) => (
-          <th key={field}>{field}</th>
-        ))}
-        <th className="fixed-column">
-          {t('operations')}
-        </th>
+        <th>{t('currencyNameEn')}</th>
+        <th>{t('currencyNameZh')}</th>
+        <th>{t('currencyCode')}</th>
+        <th>{t('currencySymbol')}</th>
+        <th>{t('status')}</th>
+        <th className="fixed-column">{t('operations')}</th>
       </tr>
       </thead>
       <tbody>
@@ -58,8 +51,10 @@ const CurrencyTable = ({
               ></label>
             </div>
           </td>
-          <td className="text-truncate">{item.id}</td>
-          <td className="text-truncate">{item.currencyName}</td>
+          <td className="text-truncate">
+            <div>{item.currencyName}</div>
+            <div>{item.id}</div>
+          </td>
           <td className="text-truncate">{item.descriptionZh}</td>
           <td className="text-truncate">{item.currencyCode}</td>
           <td className="text-truncate">{item.symbol}</td>
