@@ -1381,5 +1381,22 @@
   "grid": "Grille",
   "list": "Liste",
   "default": "Par défaut",
-  "productInfo": "Info Produit"
+  "productInfo": "Info Produit",
+  "walletDetails": "Détails du portefeuille",
+  "privateKey": "Clé privée",
+  "transactionHistory": "Historique des transactions",
+  "enterPassword": "Entrer le mot de passe",
+  "pleaseEnterPassword": "Veuillez entrer le mot de passe",
+  "passwordPlaceholder": "Veuillez entrer le mot de passe administrateur",
+  "retrievePrivateKey": "Récupérer la clé privée",
+  "privateKeyRetrieved": "Clé privée récupérée avec succès",
+  "failedToRetrievePrivateKey": "Échec de la récupération de la clé privée",
+  "incorrectPassword": "Mot de passe incorrect",
+  "privateKeyCopied": "Clé privée copiée",
+  "privateKeyWarning": "Avertissement : Ne partagez jamais votre clé privée avec qui que ce soit. Toute personne possédant votre clé privée a un contrôle total sur les actifs de votre portefeuille.",
+  "transactionHistoryComingSoon": "Fonctionnalité d'historique des transactions à venir",
+  "wallet_passwordWarningTitle": "Avertissement de sécurité du mot de passe",
+  "wallet_passwordWarningDescription": "Veuillez noter : Le système ne stocke pas votre mot de passe de portefeuille. Veuillez le conserver en lieu sûr.",
+  "wallet_passwordWarningPoint1": "Si vous oubliez votre mot de passe, vous ne pourrez pas voir la clé privée de votre portefeuille.",
+  "wallet_passwordWarningPoint2": "Nous vous recommandons d'utiliser un gestionnaire de mots de passe sécurisé pour sauvegarder votre mot de passe."
 }

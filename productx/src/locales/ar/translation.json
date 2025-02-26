@@ -1369,5 +1369,22 @@
   "grid": "شبكة",
   "list": "قائمة",
   "default": "افتراضي",
-  "productInfo": "معلومات المنتج"
+  "productInfo": "معلومات المنتج",
+  "walletDetails": "تفاصيل المحفظة",
+  "privateKey": "المفتاح الخاص",
+  "transactionHistory": "سجل المعاملات",
+  "enterPassword": "أدخل كلمة المرور",
+  "pleaseEnterPassword": "الرجاء إدخال كلمة المرور",
+  "passwordPlaceholder": "الرجاء إدخال كلمة مرور المسؤول",
+  "retrievePrivateKey": "استرجاع المفتاح الخاص",
+  "privateKeyRetrieved": "تم استرجاع المفتاح الخاص بنجاح",
+  "failedToRetrievePrivateKey": "فشل في استرجاع المفتاح الخاص",
+  "incorrectPassword": "كلمة مرور غير صحيحة",
+  "privateKeyCopied": "تم نسخ المفتاح الخاص",
+  "privateKeyWarning": "تحذير: لا تشارك مفتاحك الخاص مع أي شخص. أي شخص لديه مفتاحك الخاص لديه سيطرة كاملة على أصول محفظتك.",
+  "transactionHistoryComingSoon": "ميزة سجل المعاملات قادمة قريبًا",
+  "wallet_passwordWarningTitle": "تحذير أمان كلمة المرور",
+  "wallet_passwordWarningDescription": "يرجى ملاحظة: النظام لا يخزن كلمة مرور محفظتك. يرجى الاحتفاظ بها في مكان آمن.",
+  "wallet_passwordWarningPoint1": "إذا نسيت كلمة المرور، لن تتمكن من عرض المفتاح الخاص بمحفظتك.",
+  "wallet_passwordWarningPoint2": "نوصي باستخدام مدير كلمات مرور آمن لحفظ كلمة المرور الخاصة بك."
 }

@@ -1367,5 +1367,22 @@
   "grid": "Griglia",
   "list": "Lista",
   "default": "Predefinito",
-  "productInfo": "Info Prodotto"
+  "productInfo": "Info Prodotto",
+  "walletDetails": "Dettagli del portafoglio",
+  "privateKey": "Chiave privata",
+  "transactionHistory": "Cronologia delle transazioni",
+  "enterPassword": "Inserisci password",
+  "pleaseEnterPassword": "Per favore inserisci la password",
+  "passwordPlaceholder": "Per favore inserisci la password di amministratore",
+  "retrievePrivateKey": "Recupera chiave privata",
+  "privateKeyRetrieved": "Chiave privata recuperata con successo",
+  "failedToRetrievePrivateKey": "Impossibile recuperare la chiave privata",
+  "incorrectPassword": "Password errata",
+  "privateKeyCopied": "Chiave privata copiata",
+  "privateKeyWarning": "Avvertenza: Non condividere mai la tua chiave privata con nessuno. Chiunque abbia la tua chiave privata ha il controllo completo sui tuoi asset nel portafoglio.",
+  "transactionHistoryComingSoon": "Funzionalità di cronologia delle transazioni in arrivo",
+  "wallet_passwordWarningTitle": "Avviso di sicurezza della password",
+  "wallet_passwordWarningDescription": "Nota bene: Il sistema non memorizza la password del tuo portafoglio. Si prega di conservarla in modo sicuro.",
+  "wallet_passwordWarningPoint1": "Se dimentichi la password, non potrai visualizzare la chiave privata del tuo portafoglio.",
+  "wallet_passwordWarningPoint2": "Consigliamo di utilizzare un gestore di password sicuro per salvare la tua password."
 }
