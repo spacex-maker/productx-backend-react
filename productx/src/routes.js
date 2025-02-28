@@ -186,6 +186,8 @@ const UserProductHotSearchRouter = React.lazy(
   () => import('./views/base/userProductHotSearch/UserProductHotSearch'),
 );
 
+const UserRequirementsRouter = React.lazy(() => import('./views/base/userRequirements/UserRequirements'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -690,6 +692,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <UserProductHotSearchRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/userRequirements',
+    name: '用户需求管理',
+    element: (
+      <PrivateRoute>
+        <UserRequirementsRouter />
       </PrivateRoute>
     ),
   },
