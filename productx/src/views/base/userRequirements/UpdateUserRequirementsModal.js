@@ -12,26 +12,26 @@ const UpdateUserRequirementsModal = ({
   t
 }) => {
   const priorityOptions = [
-    { value: '低', label: t('低') },
-    { value: '中', label: t('中') },
-    { value: '高', label: t('高') },
-    { value: '紧急', label: t('紧急') },
+    { value: 'LOW', label: t('priorityLow') },
+    { value: 'MEDIUM', label: t('priorityMedium') },
+    { value: 'HIGH', label: t('priorityHigh') },
+    { value: 'URGENT', label: t('priorityUrgent') },
   ];
 
   const statusOptions = [
-    { value: 'PENDING', label: t('待处理') },
-    { value: 'IN_PROGRESS', label: t('进行中') },
-    { value: 'COMPLETED', label: t('已完成') },
-    { value: 'REJECTED', label: t('已拒绝') },
-    { value: 'ARCHIVED', label: t('已归档') },
+    { value: 'PENDING', label: t('statusPending') },
+    { value: 'IN_PROGRESS', label: t('statusInProgress') },
+    { value: 'COMPLETED', label: t('statusCompleted') },
+    { value: 'REJECTED', label: t('statusRejected') },
+    { value: 'ARCHIVED', label: t('statusArchived') },
   ];
 
   const categoryOptions = [
-    { value: '功能新增', label: t('功能新增') },
-    { value: 'Bug修复', label: t('Bug修复') },
-    { value: '性能优化', label: t('性能优化') },
-    { value: 'UI优化', label: t('UI优化') },
-    { value: '安全问题', label: t('安全问题') },
+    { value: '功能新增', label: t('categoryNewFeature') },
+    { value: 'Bug修复', label: t('categoryBugFix') },
+    { value: '性能优化', label: t('categoryPerformance') },
+    { value: 'UI优化', label: t('categoryUI') },
+    { value: '安全问题', label: t('categorySecurity') },
   ];
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const UpdateUserRequirementsModal = ({
 
   return (
     <Modal
-      title={t('编辑需求')}
+      title={t('editRequirement')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
@@ -66,84 +66,84 @@ const UpdateUserRequirementsModal = ({
         </Form.Item>
 
         <Form.Item
-          label={t('需求标题')}
+          label={t('requirementTitle')}
           name="title"
-          rules={[{ required: true, message: t('请输入需求标题') }]}
+          rules={[{ required: true, message: t('pleaseEnterTitle') }]}
         >
-          <Input placeholder={t('请输入需求标题')} />
+          <Input placeholder={t('pleaseEnterTitle')} />
         </Form.Item>
 
         <Form.Item
-          label={t('需求描述')}
+          label={t('requirementDescription')}
           name="description"
-          rules={[{ required: true, message: t('请输入需求描述') }]}
+          rules={[{ required: true, message: t('pleaseEnterDescription') }]}
         >
-          <Input.TextArea rows={4} placeholder={t('请输入需求描述')} />
+          <Input.TextArea rows={4} placeholder={t('pleaseEnterDescription')} />
         </Form.Item>
 
         <Form.Item
-          label={t('提交用户ID')}
+          label={t('submitterId')}
           name="userId"
         >
-          <Input placeholder={t('请输入提交用户ID')} />
+          <Input placeholder={t('pleaseEnterSubmitterId')} />
         </Form.Item>
 
         <Form.Item
-          label={t('优先级')}
+          label={t('priority')}
           name="priority"
-          rules={[{ required: true, message: t('请选择优先级') }]}
+          rules={[{ required: true, message: t('pleaseSelectPriority') }]}
         >
           <Select
-            placeholder={t('请选择优先级')}
+            placeholder={t('pleaseSelectPriority')}
             options={priorityOptions}
           />
         </Form.Item>
 
         <Form.Item
-          label={t('状态')}
+          label={t('status')}
           name="status"
-          rules={[{ required: true, message: t('请选择状态') }]}
+          rules={[{ required: true, message: t('pleaseSelectStatus') }]}
         >
           <Select
-            placeholder={t('请选择状态')}
+            placeholder={t('pleaseSelectStatus')}
             options={statusOptions}
           />
         </Form.Item>
 
         <Form.Item
-          label={t('类别')}
+          label={t('category')}
           name="category"
-          rules={[{ required: true, message: t('请选择类别') }]}
+          rules={[{ required: true, message: t('pleaseSelectCategory') }]}
         >
           <Select
-            placeholder={t('请选择类别')}
+            placeholder={t('pleaseSelectCategory')}
             options={categoryOptions}
           />
         </Form.Item>
 
         <Form.Item
-          label={t('预计完成日期')}
+          label={t('expectedCompletionDate')}
           name="expectedCompletionDate"
         >
           <DatePicker
             style={{ width: '100%' }}
             format="YYYY-MM-DD"
-            placeholder={t('请选择预计完成日期')}
+            placeholder={t('pleaseSelectExpectedDate')}
           />
         </Form.Item>
 
         <Form.Item
-          label={t('拒绝原因')}
+          label={t('rejectionReason')}
           name="rejectedReason"
         >
-          <Input.TextArea rows={2} placeholder={t('请输入拒绝原因')} />
+          <Input.TextArea rows={2} placeholder={t('pleaseEnterRejectionReason')} />
         </Form.Item>
 
         <Form.Item
-          label={t('完成说明')}
+          label={t('completionNotes')}
           name="completionNotes"
         >
-          <Input.TextArea rows={2} placeholder={t('请输入完成说明')} />
+          <Input.TextArea rows={2} placeholder={t('pleaseEnterCompletionNotes')} />
         </Form.Item>
       </Form>
     </Modal>

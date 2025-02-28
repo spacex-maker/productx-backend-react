@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Space } from 'antd';
+import { Table, Space, Button } from 'antd';
+import moment from 'moment';
 
 const UserRequirementsTable = ({
   data,
@@ -11,83 +12,137 @@ const UserRequirementsTable = ({
   handleStatusClick,
   t
 }) => {
+  const columns = [
+    {
+      title: (
+        <input
+          type="checkbox"
+          checked={selectAll}
+          onChange={handleSelectAll}
+        />
+      ),
+      dataIndex: 'select',
+      width: 50,
+      render: (_, record) => (
+        <input
+          type="checkbox"
+          checked={selectedRows.includes(record.id)}
+          onChange={() => handleSelectRow(record.id)}
+        />
+      ),
+    },
+    {
+      title: t('requirementTitle'),
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: t('requirementDescription'),
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: t('submitterId'),
+      dataIndex: 'userId',
+      key: 'userId',
+    },
+    {
+      title: t('priority'),
+      dataIndex: 'priority',
+      key: 'priority',
+      render: (priority) => {
+        const priorityMap = {
+          'LOW': t('priorityLow'),
+          'MEDIUM': t('priorityMedium'),
+          'HIGH': t('priorityHigh'),
+          'URGENT': t('priorityUrgent'),
+        };
+        return priorityMap[priority] || priority;
+      },
+    },
+    {
+      title: t('status'),
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        const statusMap = {
+          'PENDING': t('statusPending'),
+          'IN_PROGRESS': t('statusInProgress'),
+          'COMPLETED': t('statusCompleted'),
+          'REJECTED': t('statusRejected'),
+          'ARCHIVED': t('statusArchived'),
+        };
+        return statusMap[status] || status;
+      },
+    },
+    {
+      title: t('category'),
+      dataIndex: 'category',
+      key: 'category',
+      render: (category) => {
+        const categoryMap = {
+          '功能新增': t('categoryNewFeature'),
+          'Bug修复': t('categoryBugFix'),
+          '性能优化': t('categoryPerformance'),
+          'UI优化': t('categoryUI'),
+          '安全问题': t('categorySecurity'),
+        };
+        return categoryMap[category] || category;
+      },
+    },
+    {
+      title: t('expectedCompletionDate'),
+      dataIndex: 'expectedCompletionDate',
+      key: 'expectedCompletionDate',
+      render: (date) => date ? moment(date).format('YYYY-MM-DD') : '',
+    },
+    {
+      title: t('rejectionReason'),
+      dataIndex: 'rejectedReason',
+      key: 'rejectedReason',
+    },
+    {
+      title: t('completionNotes'),
+      dataIndex: 'completionNotes',
+      key: 'completionNotes',
+    },
+    {
+      title: t('createTime'),
+      dataIndex: 'createTime',
+      key: 'createTime',
+      render: (time) => moment(time).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      title: t('updateTime'),
+      dataIndex: 'updateTime',
+      key: 'updateTime',
+      render: (time) => moment(time).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      title: t('operation'),
+      key: 'operation',
+      fixed: 'right',
+      width: 200,
+      render: (_, record) => (
+        <Space>
+          <Button type="link" onClick={() => handleEditClick(record)}>
+            {t('edit')}
+          </Button>
+          <Button type="link" onClick={() => handleStatusClick(record)}>
+            {t('updateStatus')}
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+
   return (
-    <table className="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>
-            <div className="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="select_all"
-                checked={selectAll}
-                onChange={(event) => handleSelectAll(event, data)}
-              />
-              <label className="custom-control-label" htmlFor="select_all"></label>
-            </div>
-          </th>
-          {[
-            t('需求标题'),
-            t('需求描述'),
-            t('提交用户ID'),
-            t('优先级'),
-            t('状态'),
-            t('类别'),
-            t('预计完成日期'),
-            t('拒绝原因'),
-            t('完成说明'),
-            t('创建时间'),
-            t('更新时间')
-          ].map((field) => (
-            <th key={field}>{field}</th>
-          ))}
-          <th className="fixed-column">{t('operations')}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item) => (
-          <tr key={item.id} className="record-font">
-            <td>
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  id={`td_checkbox_${item.id}`}
-                  checked={selectedRows.includes(item.id)}
-                  onChange={() => handleSelectRow(item.id, data)}
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor={`td_checkbox_${item.id}`}
-                ></label>
-              </div>
-            </td>
-            <td className="text-truncate">{item.title}</td>
-            <td className="text-truncate">{item.description}</td>
-            <td className="text-truncate">{item.userId}</td>
-            <td className="text-truncate">{item.priority}</td>
-            <td className="text-truncate">{item.status}</td>
-            <td className="text-truncate">{item.category}</td>
-            <td className="text-truncate">{item.expectedCompletionDate}</td>
-            <td className="text-truncate">{item.rejectedReason}</td>
-            <td className="text-truncate">{item.completionNotes}</td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td className="text-truncate">{item.updateTime}</td>
-            <td className="fixed-column">
-              <Space>
-                <Button type="link" onClick={() => handleEditClick(item)}>
-                  {t('edit')}
-                </Button>
-                <Button type="link" onClick={() => handleStatusClick(item)}>
-                  {t('更新状态')}
-                </Button>
-              </Space>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Table
+      columns={columns}
+      dataSource={data}
+      rowKey="id"
+      scroll={{ x: true }}
+    />
   );
 };
 

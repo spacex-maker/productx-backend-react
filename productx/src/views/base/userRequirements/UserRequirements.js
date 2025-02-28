@@ -5,8 +5,8 @@ import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from "src/components/common/Pagination";
 import UserRequirementsTable from "./UserRequirementsTable";
-import UpdateUserRequirementsModal from "./UpdateUserRequirementsModel";
-import UserRequirementsCreateFormModal from "./UserRequirementsCreateFormModel";
+import UpdateUserRequirementsModal from "./UpdateUserRequirementsModal";
+import UserRequirementsCreateFormModal from "./UserRequirementsCreateFormModal";
 import UpdateStatusModal from './UpdateStatusModal';
 import { useTranslation } from 'react-i18next';
 
@@ -34,11 +34,11 @@ const UserRequirements = () => {
   const [selectedRequirement, setSelectedRequirement] = useState(null);
 
   const statusOptions = [
-    { value: 'PENDING', label: t('待处理') },
-    { value: 'IN_PROGRESS', label: t('进行中') },
-    { value: 'COMPLETED', label: t('已完成') },
-    { value: 'REJECTED', label: t('已拒绝') },
-    { value: 'ARCHIVED', label: t('已归档') },
+    { value: 'PENDING', label: t('statusPending') },
+    { value: 'IN_PROGRESS', label: t('statusInProgress') },
+    { value: 'COMPLETED', label: t('statusCompleted') },
+    { value: 'REJECTED', label: t('statusRejected') },
+    { value: 'ARCHIVED', label: t('statusArchived') },
   ];
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const UserRequirements = () => {
   const handleUpdateStatus = async () => {
     try {
       const values = await statusForm.validateFields();
-      await api.post('/user-requirements/update-status', values);
+      await api.post('/manage/user-requirements/update-status', values);
       message.success(t('updateSuccess'));
       setIsStatusModalVisible(false);
       statusForm.resetFields();
@@ -139,7 +139,7 @@ const UserRequirements = () => {
               <Input
                 value={searchParams.title}
                 onChange={(e) => handleSearchChange('title', e.target.value)}
-                placeholder={t('需求标题')}
+                placeholder={t('requirementTitle')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -148,7 +148,7 @@ const UserRequirements = () => {
               <Select
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange('status', value)}
-                placeholder={t('需求状态')}
+                placeholder={t('status')}
                 allowClear
                 style={{ width: 150 }}
                 options={statusOptions}
@@ -158,7 +158,7 @@ const UserRequirements = () => {
               <Input
                 value={searchParams.category}
                 onChange={(e) => handleSearchChange('category', e.target.value)}
-                placeholder={t('需求类别')}
+                placeholder={t('category')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -167,7 +167,7 @@ const UserRequirements = () => {
               <Input
                 value={searchParams.userId}
                 onChange={(e) => handleSearchChange('userId', e.target.value)}
-                placeholder={t('提交用户ID')}
+                placeholder={t('submitterId')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -178,7 +178,7 @@ const UserRequirements = () => {
                   {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
-                  {t('添加需求')}
+                  {t('addRequirement')}
                 </Button>
                 <Button
                   type="primary"
