@@ -10,11 +10,11 @@ const UpdateStatusModal = ({
   t
 }) => {
   const statusOptions = [
-    { value: 'PENDING', label: t('待处理') },
-    { value: 'IN_PROGRESS', label: t('进行中') },
-    { value: 'COMPLETED', label: t('已完成') },
-    { value: 'REJECTED', label: t('已拒绝') },
-    { value: 'ARCHIVED', label: t('已归档') },
+    { value: 'PENDING', label: t('statusPending') },
+    { value: 'IN_PROGRESS', label: t('statusInProgress') },
+    { value: 'COMPLETED', label: t('statusCompleted') },
+    { value: 'REJECTED', label: t('statusRejected') },
+    { value: 'ARCHIVED', label: t('statusArchived') },
   ];
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const UpdateStatusModal = ({
 
   return (
     <Modal
-      title={t('更新状态')}
+      title={t('updateStatus')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
@@ -45,33 +45,33 @@ const UpdateStatusModal = ({
         </Form.Item>
 
         <Form.Item
-          label={t('状态')}
+          label={t('status')}
           name="status"
-          rules={[{ required: true, message: t('请选择状态') }]}
+          rules={[{ required: true, message: t('pleaseSelectStatus') }]}
         >
           <Select
-            placeholder={t('请选择状态')}
+            placeholder={t('pleaseSelectStatus')}
             options={statusOptions}
           />
         </Form.Item>
 
         {status === 'REJECTED' && (
           <Form.Item
-            label={t('拒绝原因')}
+            label={t('rejectionReason')}
             name="rejectedReason"
-            rules={[{ required: true, message: t('请输入拒绝原因') }]}
+            rules={[{ required: true, message: t('pleaseEnterRejectionReason') }]}
           >
-            <Input.TextArea rows={2} placeholder={t('请输入拒绝原因')} />
+            <Input.TextArea rows={2} placeholder={t('pleaseEnterRejectionReason')} />
           </Form.Item>
         )}
 
         {status === 'COMPLETED' && (
           <Form.Item
-            label={t('完成说明')}
+            label={t('completionNotes')}
             name="completionNotes"
-            rules={[{ required: true, message: t('请输入完成说明') }]}
+            rules={[{ required: true, message: t('pleaseEnterCompletionNotes') }]}
           >
-            <Input.TextArea rows={2} placeholder={t('请输入完成说明')} />
+            <Input.TextArea rows={2} placeholder={t('pleaseEnterCompletionNotes')} />
           </Form.Item>
         )}
       </Form>
