@@ -236,10 +236,8 @@ const ApiSection = styled.div`
   background: rgba(99, 102, 241, 0.05);
   border-radius: 12px;
   border: 1px solid rgba(99, 102, 241, 0.1);
-  transition: all 0.3s ease;
+  transition: transform 0.3s steps(3), opacity 0.3s steps(3);
   opacity: ${(props) => (props.$visible ? 1 : 0)};
-  transform: translateY(${(props) => (props.$visible ? '0' : '-20px')});
-  height: ${(props) => (props.$visible ? 'auto' : '0')};
   pointer-events: ${(props) => (props.$visible ? 'all' : 'none')};
 `;
 
@@ -1530,6 +1528,21 @@ const GlowingText = styled.div`
   animation: glow 6s ease-in-out infinite;
 `;
 
+const RegisterLink = styled.a`
+  background: linear-gradient(120deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
+  }
+`;
+
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [historyUsernames, setHistoryUsernames] = useState([]);
@@ -1947,7 +1960,9 @@ const LoginPage = () => {
                           </GithubButton>
                         </CCol>
                         <CCol xs={12} className="text-center">
-                          <ForgotPasswordLink>{t('forgetPassword')}</ForgotPasswordLink>
+                          <RegisterLink href="/register">
+                            {t('register')}
+                          </RegisterLink>
                         </CCol>
                       </CRow>
                     </LoginForm>
