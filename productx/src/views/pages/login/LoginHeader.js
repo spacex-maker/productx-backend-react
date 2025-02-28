@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -112,7 +112,7 @@ const RegisterButton = styled(Button)`
   }
 `;
 
-const LoginHeader = () => {
+const LoginHeader = memo(({ title }) => {
   // 动画配置
   const { t, i18n } = useTranslation(); // 获取 i18n 实例
   const logoVariants = {
@@ -191,6 +191,6 @@ const LoginHeader = () => {
       </motion.div>
     </HeaderWrapper>
   );
-};
+});
 
 export default LoginHeader;
