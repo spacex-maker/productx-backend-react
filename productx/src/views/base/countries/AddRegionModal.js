@@ -20,10 +20,10 @@ const AddRegionModal = ({ visible, onCancel, onOk, form, handleTypeChange }) => 
       // 获取当前的行政区划编码和国家代码
       const currentCode = form.getFieldValue('code');
       const currentCountryCode = form.getFieldValue('countryCode');
-      
+
       // 重置表单，然后重新设置要保留的字段
       form.resetFields();
-      
+
       // 恢复行政区划编码和国家代码
       form.setFieldsValue({
         code: currentCode,
