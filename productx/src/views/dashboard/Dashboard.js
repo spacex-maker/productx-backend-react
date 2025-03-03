@@ -14,6 +14,11 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CNav,
+  CNavItem,
+  CNavLink,
+  CTabContent,
+  CTabPane
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -33,6 +38,7 @@ import 'dayjs/locale/zh-cn'
 import locale from 'antd/locale/zh_CN'
 import { ConfigProvider } from 'antd'
 import * as echarts from 'echarts';
+import ServerMonitor from './ServerMonitor'
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
 import avatar2 from 'src/assets/images/avatars/2.jpg'
@@ -50,6 +56,7 @@ const Dashboard = () => {
   const [endDate, setEndDate] = useState(dayjs())
   const [growthStats, setGrowthStats] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [activeTab, setActiveTab] = useState(1)
 
   useEffect(() => {
     fetchGrowthStats()
@@ -462,61 +469,97 @@ const Dashboard = () => {
   }
 
   return (
-    <ConfigProvider locale={locale}>
-      <CCard className="mb-2">
-        <CCardBody className="d-flex align-items-center py-2">
-          <small className="text-medium-emphasis me-2">选择时间范围：</small>
-          <RangePicker
-            defaultValue={[startDate, endDate]}
-            onChange={handleDateRangeChange}
-            format="YYYY-MM-DD"
+    <>
+      <CCard className="mb-4">
+        <CCardBody>
+          <CNav variant="tabs">
+            <CNavItem>
+              <CNavLink
+                active={activeTab === 1}
+                onClick={() => setActiveTab(1)}
+                style={{ cursor: 'pointer' }}
+              >
+                Overview
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink
+                active={activeTab === 2}
+                onClick={() => setActiveTab(2)}
+                style={{ cursor: 'pointer' }}
+              >
+                Server Monitor
+              </CNavLink>
+            </CNavItem>
+          </CNav>
+          <CTabContent>
+            <CTabPane role="tabpanel" visible={activeTab === 1}>
+              <div className="pt-3">
+                <ConfigProvider locale={locale}>
+                  <CCard className="mb-2">
+                    <CCardBody className="d-flex align-items-center py-2">
+                      <small className="text-medium-emphasis me-2">选择时间范围：</small>
+                      <RangePicker
+                        defaultValue={[startDate, endDate]}
+                        onChange={handleDateRangeChange}
+                        format="YYYY-MM-DD"
+                        style={{ fontSize: '12px' }}
+                      />
+                    </CCardBody>
+                  </CCard>
 
-            style={{ fontSize: '12px' }}
-          />
+                  {renderMetricsCards()}
+
+                  <CRow className="mb-4">
+                    <CCol sm={12}>
+                      <CCard>
+                        <CCardHeader>用户数据分析</CCardHeader>
+                        <CCardBody>
+                          <Spin spinning={isLoading}>
+                            <CRow>
+                              <CCol sm={8}>
+                                <ReactECharts option={getUserGrowthOption()} style={{height: '400px'}}/>
+                              </CCol>
+                              <CCol sm={4}>
+                                <ReactECharts option={getRegionDistributionOption()} style={{height: '400px'}}/>
+                              </CCol>
+                            </CRow>
+                          </Spin>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                  </CRow>
+
+                  <CRow>
+                    <CCol sm={6}>
+                      <CCard>
+                        <CCardHeader>设备使用分析</CCardHeader>
+                        <CCardBody>
+                          <ReactECharts option={getDeviceDistributionOption()} style={{height: '300px'}}/>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                    <CCol sm={6}>
+                      <CCard>
+                        <CCardHeader>新用户来源分析</CCardHeader>
+                        <CCardBody>
+                          <ReactECharts option={getUserSourceOption()} style={{height: '300px'}}/>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                  </CRow>
+                </ConfigProvider>
+              </div>
+            </CTabPane>
+            <CTabPane role="tabpanel" visible={activeTab === 2}>
+              <div className="pt-3">
+                <ServerMonitor />
+              </div>
+            </CTabPane>
+          </CTabContent>
         </CCardBody>
       </CCard>
-
-      {renderMetricsCards()}
-
-      <CRow className="mb-4">
-        <CCol sm={12}>
-          <CCard>
-            <CCardHeader>用户数据分析</CCardHeader>
-            <CCardBody>
-              <Spin spinning={isLoading}>
-                <CRow>
-                  <CCol sm={8}>
-                    <ReactECharts option={getUserGrowthOption()} style={{height: '400px'}}/>
-                  </CCol>
-                  <CCol sm={4}>
-                    <ReactECharts option={getRegionDistributionOption()} style={{height: '400px'}}/>
-                  </CCol>
-                </CRow>
-              </Spin>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-
-      <CRow>
-        <CCol sm={6}>
-          <CCard>
-            <CCardHeader>设备使用分析</CCardHeader>
-            <CCardBody>
-              <ReactECharts option={getDeviceDistributionOption()} style={{height: '300px'}}/>
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol sm={6}>
-          <CCard>
-            <CCardHeader>新用户来源分析</CCardHeader>
-            <CCardBody>
-              <ReactECharts option={getUserSourceOption()} style={{height: '300px'}}/>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
-    </ConfigProvider>
+    </>
   )
 }
 
