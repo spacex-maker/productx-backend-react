@@ -1450,5 +1450,10 @@
   "selectCountry": "Sélectionner le pays",
   "buckets": "Compartiments",
   "bucketInfo": "Informations sur le compartiment",
-  "creationDate": "Date de création"
+  "creationDate": "Date de création",
+  "addCredential": "Ajouter des informations d'identification",
+  "editCredential": "Modifier les informations d'identification",
+  "pleaseInputAccessKey": "Veuillez saisir la clé d'accès",
+  "pleaseInputSecretKey": "Veuillez saisir la clé secrète",
+  "pleaseSelectType": "Veuillez sélectionner le type"
 }

@@ -1429,5 +1429,13 @@
   "buckets": "Buckets",
   "bucketInfo": "Bucket-Informationen",
   "bucketName": "Bucket-Name",
-  "creationDate": "Erstellungsdatum"
+  "creationDate": "Erstellungsdatum",
+
+  "addCredential": "Anmeldeinformationen hinzufügen",
+  "editCredential": "Anmeldeinformationen bearbeiten",
+  "accessKey": "Zugriffsschlüssel",
+  "secretKey": "Geheimer Schlüssel",
+  "pleaseInputAccessKey": "Bitte geben Sie den Zugriffsschlüssel ein",
+  "pleaseInputSecretKey": "Bitte geben Sie den geheimen Schlüssel ein",
+  "pleaseSelectType": "Bitte wählen Sie den Typ aus"
 }

@@ -1439,5 +1439,10 @@
   "selectCountry": "اختر البلد",
   "buckets": "الحاويات",
   "bucketInfo": "معلومات الحاوية",
-  "creationDate": "تاريخ الإنشاء"
+  "creationDate": "تاريخ الإنشاء",
+  "addCredential": "إضافة بيانات الاعتماد",
+  "editCredential": "تعديل بيانات الاعتماد",
+  "pleaseInputAccessKey": "الرجاء إدخال مفتاح الوصول",
+  "pleaseInputSecretKey": "الرجاء إدخال المفتاح السري",
+  "pleaseSelectType": "الرجاء اختيار النوع"
 }

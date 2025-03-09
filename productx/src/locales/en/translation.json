@@ -1443,5 +1443,7 @@
   "selectCountry": "Select Country",
   "buckets": "Buckets",
   "bucketInfo": "Bucket Information",
-  "creationDate": "Creation Date"
+  "creationDate": "Creation Date",
+  "addCredential": "Add Credential",
+  "editCredential": "Edit Credential"
 }
