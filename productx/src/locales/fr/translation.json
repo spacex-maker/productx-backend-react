@@ -1447,5 +1447,8 @@
   "pleaseInputIconUrl": "Veuillez saisir l'URL de l'icône",
   "provider": "Fournisseur",
   "providerAndCountry": "Fournisseur/Pays",
-  "selectCountry": "Sélectionner le pays"
+  "selectCountry": "Sélectionner le pays",
+  "buckets": "Compartiments",
+  "bucketInfo": "Informations sur le compartiment",
+  "creationDate": "Date de création"
 }

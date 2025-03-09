@@ -1431,5 +1431,8 @@
   "pleaseInputIconUrl": "Пожалуйста, введите URL иконки",
   "provider": "Поставщик",
   "providerAndCountry": "Поставщик/Страна",
-  "selectCountry": "Выберите страну"
+  "selectCountry": "Выберите страну",
+  "buckets": "Корзины",
+  "bucketInfo": "Информация о корзине",
+  "creationDate": "Дата создания"
 }
