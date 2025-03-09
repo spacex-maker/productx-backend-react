@@ -1423,5 +1423,6 @@
   "pleaseInputValidUrl": "Bitte geben Sie eine gültige URL ein",
   "pleaseInputIconUrl": "Bitte geben Sie die Symbol-URL ein",
   "provider": "Anbieter",
-  "providerAndCountry": "Anbieter/Land"
+  "providerAndCountry": "Anbieter/Land",
+  "selectCountry": "Land auswählen"
 }

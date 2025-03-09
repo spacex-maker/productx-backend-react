@@ -1446,5 +1446,6 @@
   "pleaseInputValidUrl": "Veuillez saisir une URL valide",
   "pleaseInputIconUrl": "Veuillez saisir l'URL de l'icône",
   "provider": "Fournisseur",
-  "providerAndCountry": "Fournisseur/Pays"
+  "providerAndCountry": "Fournisseur/Pays",
+  "selectCountry": "Sélectionner le pays"
 }

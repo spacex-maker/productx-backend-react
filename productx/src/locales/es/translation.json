@@ -1451,5 +1451,6 @@
   "pleaseInputValidUrl": "Por favor ingrese una URL válida",
   "pleaseInputIconUrl": "Por favor ingrese la URL del icono",
   "provider": "Proveedor",
-  "providerAndCountry": "Proveedor/País"
+  "providerAndCountry": "Proveedor/País",
+  "selectCountry": "Seleccionar país"
 }

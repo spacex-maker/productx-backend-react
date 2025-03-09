@@ -1437,5 +1437,6 @@
   "pleaseInputValidUrl": "유효한 URL을 입력하세요",
   "pleaseInputIconUrl": "아이콘 URL을 입력하세요",
   "provider": "서비스 제공자",
-  "providerAndCountry": "서비스 제공자/국가"
+  "providerAndCountry": "서비스 제공자/국가",
+  "selectCountry": "국가 선택"
 }
