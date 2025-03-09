@@ -1449,5 +1449,18 @@
   "categoryBugFix": "Bug修复",
   "categoryPerformance": "性能优化",
   "categoryUI": "UI优化",
-  "categorySecurity": "安全问题"
+  "categorySecurity": "安全问题",
+  "addProvider": "添加云服务提供商",
+  "editProvider": "编辑云服务提供商",
+  "providerName": "提供商名称",
+  "serviceType": "服务类型",
+  "iconImg": "图标地址",
+  "discontinued": "已停售",
+  "pleaseInputProviderName": "请输入提供商名称",
+  "pleaseSelectServiceType": "请选择服务类型",
+  "pleaseInputWebsite": "请输入网站地址",
+  "pleaseInputValidUrl": "请输入有效的URL地址",
+  "pleaseInputIconUrl": "请输入图标地址",
+  "provider": "服务商",
+  "providerAndCountry": "服务商/国家"
 }

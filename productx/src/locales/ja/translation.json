@@ -1427,5 +1427,18 @@
   "categoryBugFix": "バグ修正",
   "categoryPerformance": "パフォーマンス改善",
   "categoryUI": "UI改善",
-  "categorySecurity": "セキュリティ問題"
+  "categorySecurity": "セキュリティ問題",
+  "addProvider": "クラウドプロバイダーを追加",
+  "editProvider": "クラウドプロバイダーを編集",
+  "providerName": "プロバイダー名",
+  "serviceType": "サービスタイプ",
+  "iconImg": "アイコンURL",
+  "discontinued": "提供終了",
+  "pleaseInputProviderName": "プロバイダー名を入力してください",
+  "pleaseSelectServiceType": "サービスタイプを選択してください",
+  "pleaseInputWebsite": "ウェブサイトURLを入力してください",
+  "pleaseInputValidUrl": "有効なURLを入力してください",
+  "pleaseInputIconUrl": "アイコンURLを入力してください",
+  "provider": "プロバイダー",
+  "providerAndCountry": "プロバイダー/国"
 }

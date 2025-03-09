@@ -5,8 +5,8 @@ import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from "src/components/common/Pagination"
 import SysConfigTable from "./SysConfigTable"
-import UpdateSysConfigModal from "./UpdateSysConfigModel"
-import SysConfigCreateFormModal from "./SysConfigCreateFormModel"
+import UpdateSysConfigModel from "./UpdateSysConfigModel"
+import SysConfigCreateFormModel from "./SysConfigCreateFormModel"
 import { useTranslation } from 'react-i18next'
 
 const SysConfig = () => {
@@ -177,7 +177,7 @@ const SysConfig = () => {
         onPageSizeChange={setPageSize}
       />
 
-      <SysConfigCreateFormModal
+      <SysConfigCreateFormModel
         isVisible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
         onFinish={handleCreateConfig}
@@ -185,7 +185,7 @@ const SysConfig = () => {
         t={t}
       />
 
-      <UpdateSysConfigModal
+      <UpdateSysConfigModel
         isVisible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
         onOk={() => updateForm.submit()}

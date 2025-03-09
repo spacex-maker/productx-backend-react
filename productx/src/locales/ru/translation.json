@@ -1417,5 +1417,18 @@
   "categoryBugFix": "Исправление ошибки",
   "categoryPerformance": "Оптимизация производительности",
   "categoryUI": "Оптимизация интерфейса",
-  "categorySecurity": "Проблема безопасности"
+  "categorySecurity": "Проблема безопасности",
+  "addProvider": "Добавить облачного провайдера",
+  "editProvider": "Редактировать облачного провайдера",
+  "providerName": "Имя провайдера",
+  "serviceType": "Тип услуги",
+  "iconImg": "URL иконки",
+  "discontinued": "Прекращено",
+  "pleaseInputProviderName": "Пожалуйста, введите имя провайдера",
+  "pleaseSelectServiceType": "Пожалуйста, выберите тип услуги",
+  "pleaseInputWebsite": "Пожалуйста, введите URL сайта",
+  "pleaseInputValidUrl": "Пожалуйста, введите действительный URL",
+  "pleaseInputIconUrl": "Пожалуйста, введите URL иконки",
+  "provider": "Поставщик",
+  "providerAndCountry": "Поставщик/Страна"
 }

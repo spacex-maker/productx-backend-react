@@ -188,6 +188,9 @@ const UserProductHotSearchRouter = React.lazy(
 
 const UserRequirementsRouter = React.lazy(() => import('./views/base/userRequirements/UserRequirements'));
 
+const MsxCloudProvidersRouter = React.lazy(() => import('./views/base/msxCloudProviders/MsxCloudProviders'));
+
+const MsxCloudProviderRegionsRouter = React.lazy(() => import('./views/base/msxCloudProviderRegions/MsxCloudProviderRegions'));
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -701,6 +704,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <UserRequirementsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/msxCloudProviders',
+    name: 'MSX云提供商管理',
+    element: (
+      <PrivateRoute>
+        <MsxCloudProvidersRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/msxCloudProviderRegions',
+    name: 'MSX云提供商区域管理',
+    element: (
+      <PrivateRoute>
+        <MsxCloudProviderRegionsRouter />
       </PrivateRoute>
     ),
   },
