@@ -1419,5 +1419,18 @@
   "categoryBugFix": "Correzione bug",
   "categoryPerformance": "Ottimizzazione prestazioni",
   "categoryUI": "Ottimizzazione UI",
-  "categorySecurity": "Problema di sicurezza"
+  "categorySecurity": "Problema di sicurezza",
+  "addProvider": "Aggiungi provider cloud",
+  "editProvider": "Modifica provider cloud",
+  "providerName": "Nome del provider",
+  "serviceType": "Tipo di servizio",
+  "iconImg": "URL dell'icona",
+  "discontinued": "Discontinuato",
+  "pleaseInputProviderName": "Inserisci il nome del provider",
+  "pleaseSelectServiceType": "Seleziona il tipo di servizio",
+  "pleaseInputWebsite": "Inserisci l'URL del sito web",
+  "pleaseInputValidUrl": "Inserisci un URL valido",
+  "pleaseInputIconUrl": "Inserisci l'URL dell'icona",
+  "provider": "Provider",
+  "providerAndCountry": "Provider/Paese"
 }

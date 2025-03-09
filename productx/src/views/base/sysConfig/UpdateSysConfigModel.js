@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input } from 'antd';
 
-const UpdateSysConfigModal = ({
+const UpdateSysConfigModel = ({
   isVisible,
   onCancel,
   onOk,
@@ -62,4 +62,4 @@ const UpdateSysConfigModal = ({
   );
 };
 
-export default UpdateSysConfigModal;
+export default UpdateSysConfigModel;

@@ -1409,5 +1409,19 @@
   "categoryBugFix": "Fehlerbehebung",
   "categoryPerformance": "Leistungsoptimierung",
   "categoryUI": "UI-Optimierung",
-  "categorySecurity": "Sicherheitsproblem"
+  "categorySecurity": "Sicherheitsproblem",
+
+  "addProvider": "Cloud-Anbieter hinzufügen",
+  "editProvider": "Cloud-Anbieter bearbeiten",
+  "providerName": "Anbieter-Name",
+  "serviceType": "Service-Typ",
+  "iconImg": "Symbol-URL",
+  "discontinued": "Eingestellt",
+  "pleaseInputProviderName": "Bitte geben Sie den Anbieter-Namen ein",
+  "pleaseSelectServiceType": "Bitte wählen Sie den Service-Typ aus",
+  "pleaseInputWebsite": "Bitte geben Sie die Website-URL ein",
+  "pleaseInputValidUrl": "Bitte geben Sie eine gültige URL ein",
+  "pleaseInputIconUrl": "Bitte geben Sie die Symbol-URL ein",
+  "provider": "Anbieter",
+  "providerAndCountry": "Anbieter/Land"
 }

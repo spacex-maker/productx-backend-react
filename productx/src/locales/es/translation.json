@@ -1438,5 +1438,18 @@
   "categoryBugFix": "Corrección de Error",
   "categoryPerformance": "Optimización de Rendimiento",
   "categoryUI": "Optimización de UI",
-  "categorySecurity": "Problema de Seguridad"
+  "categorySecurity": "Problema de Seguridad",
+  "addProvider": "Agregar proveedor de nube",
+  "editProvider": "Editar proveedor de nube",
+  "providerName": "Nombre del proveedor",
+  "serviceType": "Tipo de servicio",
+  "iconImg": "URL del icono",
+  "discontinued": "Descontinuado",
+  "pleaseInputProviderName": "Por favor ingrese el nombre del proveedor",
+  "pleaseSelectServiceType": "Por favor seleccione el tipo de servicio",
+  "pleaseInputWebsite": "Por favor ingrese la URL del sitio web",
+  "pleaseInputValidUrl": "Por favor ingrese una URL válida",
+  "pleaseInputIconUrl": "Por favor ingrese la URL del icono",
+  "provider": "Proveedor",
+  "providerAndCountry": "Proveedor/País"
 }

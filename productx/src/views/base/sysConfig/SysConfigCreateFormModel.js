@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Form, Input } from 'antd';
 
-const SysConfigCreateFormModal = ({
+const SysConfigCreateFormModel = ({
   isVisible,
   onCancel,
   onFinish,
@@ -45,4 +45,4 @@ const SysConfigCreateFormModal = ({
   );
 };
 
-export default SysConfigCreateFormModal;
+export default SysConfigCreateFormModel;

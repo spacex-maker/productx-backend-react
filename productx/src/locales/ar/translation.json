@@ -1422,5 +1422,18 @@
   "categoryBugFix": "إصلاح خطأ",
   "categoryPerformance": "تحسين الأداء",
   "categoryUI": "تحسين واجهة المستخدم",
-  "categorySecurity": "مشكلة أمنية"
+  "categorySecurity": "مشكلة أمنية",
+  "addProvider": "إضافة مزود خدمة سحابية",
+  "editProvider": "تعديل مزود الخدمة السحابية",
+  "providerName": "اسم المزود",
+  "serviceType": "نوع الخدمة",
+  "iconImg": "رابط الأيقونة",
+  "discontinued": "متوقف",
+  "pleaseInputProviderName": "الرجاء إدخال اسم المزود",
+  "pleaseSelectServiceType": "الرجاء اختيار نوع الخدمة",
+  "pleaseInputWebsite": "الرجاء إدخال رابط الموقع",
+  "pleaseInputValidUrl": "الرجاء إدخال رابط صحيح",
+  "pleaseInputIconUrl": "الرجاء إدخال رابط الأيقونة",
+  "provider": "مزود الخدمة",
+  "providerAndCountry": "مزود الخدمة/البلد"
 }
