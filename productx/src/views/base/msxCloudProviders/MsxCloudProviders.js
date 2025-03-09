@@ -9,6 +9,7 @@ import UpdateMsxCloudProvidersModel from "./UpdateMsxCloudProvidersModel";
 import MsxCloudProvidersCreateFormModel from "./MsxCloudProvidersCreateFormModel";
 import { useTranslation } from 'react-i18next';
 import MsxCloudProviderRegionsModal from './MsxCloudProviderRegionsModal';
+import MsxCloudProviderBucketsModal from './MsxCloudProviderBucketsModal';
 
 const MsxCloudProviders = () => {
   const { t } = useTranslation();
@@ -33,7 +34,9 @@ const MsxCloudProviders = () => {
   const [countries, setCountries] = useState([]);
   const [loadingCountries, setLoadingCountries] = useState(false);
   const [isRegionsModalVisible, setIsRegionsModalVisible] = useState(false);
+  const [isBucketsModalVisible, setIsBucketsModalVisible] = useState(false);
   const [selectedProviderForRegions, setSelectedProviderForRegions] = useState(null);
+  const [selectedProviderForBuckets, setSelectedProviderForBuckets] = useState(null);
 
   const statusOptions = [
     { value: 'ACTIVE', label: t('active') },
@@ -94,6 +97,7 @@ const MsxCloudProviders = () => {
 
   const handleSearchChange = (name, value) => {
     setSearchParams((prevParams) => ({ ...prevParams, [name]: value }));
+    setCurrent(1);
   };
 
   const handleCreateProvider = async (values) => {
@@ -128,6 +132,11 @@ const MsxCloudProviders = () => {
   const handleRegionsClick = (provider) => {
     setSelectedProviderForRegions(provider);
     setIsRegionsModalVisible(true);
+  };
+
+  const handleBucketsClick = (provider) => {
+    setSelectedProviderForBuckets(provider);
+    setIsBucketsModalVisible(true);
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -257,6 +266,7 @@ const MsxCloudProviders = () => {
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
             handleRegionsClick={handleRegionsClick}
+            handleBucketsClick={handleBucketsClick}
             countries={countries}
             t={t}
           />
@@ -300,6 +310,14 @@ const MsxCloudProviders = () => {
         providerName={selectedProviderForRegions?.providerName}
         t={t}
         countries={countries}
+      />
+
+      <MsxCloudProviderBucketsModal
+        isVisible={isBucketsModalVisible}
+        onCancel={() => setIsBucketsModalVisible(false)}
+        providerId={selectedProviderForBuckets?.id}
+        providerName={selectedProviderForBuckets?.providerName}
+        t={t}
       />
     </div>
   );

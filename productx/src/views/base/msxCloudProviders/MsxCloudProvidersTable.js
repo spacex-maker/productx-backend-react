@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Tag, Space } from 'antd';
-import { EnvironmentOutlined } from '@ant-design/icons';
+import { Button, Tag, Space, Avatar } from 'antd';
+import { EnvironmentOutlined, DatabaseOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
 const MsxCloudProvidersTable = ({
@@ -11,6 +11,7 @@ const MsxCloudProvidersTable = ({
   handleSelectRow,
   handleEditClick,
   handleRegionsClick,
+  handleBucketsClick,
   t,
   countries
 }) => {
@@ -78,7 +79,33 @@ const MsxCloudProvidersTable = ({
                 ></label>
               </div>
             </td>
-            <td className="text-truncate">{item.providerName}</td>
+            <td className="text-truncate">
+              <Space>
+                {item.iconImg ? (
+                  <img
+                    src={item.iconImg}
+                    alt={item.providerName}
+                    style={{
+                      width: 24,
+                      height: 24,
+                      objectFit: 'contain',
+                      verticalAlign: 'middle',
+                    }}
+                  />
+                ) : (
+                  <Avatar
+                    size={24}
+                    style={{
+                      backgroundColor: '#f56a00',
+                      verticalAlign: 'middle',
+                    }}
+                  >
+                    {item.providerName.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
+                <span>{item.providerName}</span>
+              </Space>
+            </td>
             <td className="text-truncate">
               {item.countryCode && (
                 <Space>
@@ -119,6 +146,13 @@ const MsxCloudProvidersTable = ({
                 >
                   {t('regions')}
                 </Button>
+                <Button 
+                  type="link" 
+                  onClick={() => handleBucketsClick(item)}
+                  icon={<DatabaseOutlined />}
+                >
+                  {t('buckets')}
+                </Button>
               </Space>
             </td>
           </tr>
@@ -136,6 +170,7 @@ MsxCloudProvidersTable.propTypes = {
   handleSelectRow: PropTypes.func.isRequired,
   handleEditClick: PropTypes.func.isRequired,
   handleRegionsClick: PropTypes.func.isRequired,
+  handleBucketsClick: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   countries: PropTypes.array.isRequired
 };

@@ -1432,5 +1432,9 @@
   "pleaseInputValidUrl": "Inserisci un URL valido",
   "pleaseInputIconUrl": "Inserisci l'URL dell'icona",
   "provider": "Provider",
-  "providerAndCountry": "Provider/Paese"
+  "providerAndCountry": "Provider/Paese",
+  "selectCountry": "Seleziona paese",
+  "buckets": "Bucket",
+  "bucketInfo": "Informazioni sul bucket",
+  "creationDate": "Data di creazione"
 }

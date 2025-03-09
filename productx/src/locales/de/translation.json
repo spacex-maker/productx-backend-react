@@ -1424,5 +1424,10 @@
   "pleaseInputIconUrl": "Bitte geben Sie die Symbol-URL ein",
   "provider": "Anbieter",
   "providerAndCountry": "Anbieter/Land",
-  "selectCountry": "Land auswählen"
+  "selectCountry": "Land auswählen",
+
+  "buckets": "Buckets",
+  "bucketInfo": "Bucket-Informationen",
+  "bucketName": "Bucket-Name",
+  "creationDate": "Erstellungsdatum"
 }

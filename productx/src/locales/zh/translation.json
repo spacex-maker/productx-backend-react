@@ -1463,5 +1463,8 @@
   "pleaseInputIconUrl": "请输入图标地址",
   "provider": "服务商",
   "providerAndCountry": "服务商/国家",
-  "selectCountry": "选择国家"
+  "selectCountry": "选择国家",
+  "buckets": "存储桶",
+  "bucketInfo": "存储桶信息",
+  "creationDate": "创建日期"
 }

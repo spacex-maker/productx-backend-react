@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Table, Space, Tag, Input, Select } from 'antd';
+import { Modal, Space, Tag, Input, Select } from 'antd';
 import PropTypes from 'prop-types';
 import api from 'src/axiosInstance';
 
@@ -65,46 +65,6 @@ const MsxCloudProviderRegionsModal = ({
     return country;
   };
 
-  const columns = [
-    {
-      title: t('country'),
-      key: 'countryCode',
-      render: (_, record) => (
-        <Space>
-          <img
-            src={getCountryInfo(record.countryCode).flagImageUrl}
-            alt={record.countryCode}
-            style={{
-              width: 20,
-              height: 15,
-              objectFit: 'cover',
-              borderRadius: 2,
-              border: '1px solid #f0f0f0'
-            }}
-          />
-          <span>{getCountryInfo(record.countryCode).name}</span>
-        </Space>
-      )
-    },
-    {
-      title: t('regionCode'),
-      dataIndex: 'regionCode'
-    },
-    {
-      title: t('regionName'),
-      dataIndex: 'regionName'
-    },
-    {
-      title: t('status'),
-      dataIndex: 'status',
-      render: (status) => (
-        <Tag color={status === 'ACTIVE' ? 'success' : 'warning'}>
-          {t(status.toLowerCase())}
-        </Tag>
-      )
-    }
-  ];
-
   return (
     <Modal
       title={`${t('regionInfo')} - ${providerName}`}
@@ -168,14 +128,50 @@ const MsxCloudProviderRegionsModal = ({
           />
         </Space>
       </div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        loading={loading}
-        rowKey="id"
-        pagination={false}
-        scroll={{ y: 400 }}
-      />
+      <div className="table-responsive">
+        <table className="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>{t('country')}</th>
+              <th>{t('regionCode')}</th>
+              <th>{t('regionName')}</th>
+              <th>{t('status')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.id} className="record-font">
+                <td className="text-truncate">
+                  {item.countryCode && (
+                    <Space>
+                      <img
+                        src={getCountryInfo(item.countryCode).flagImageUrl}
+                        alt={item.countryCode}
+                        style={{
+                          width: 20,
+                          height: 15,
+                          objectFit: 'cover',
+                          borderRadius: 2,
+                          border: '1px solid #f0f0f0',
+                          verticalAlign: 'middle'
+                        }}
+                      />
+                      <span>{getCountryInfo(item.countryCode).name}</span>
+                    </Space>
+                  )}
+                </td>
+                <td className="text-truncate">{item.regionCode}</td>
+                <td className="text-truncate">{item.regionName}</td>
+                <td className="text-truncate">
+                  <Tag color={item.status === 'ACTIVE' ? 'success' : 'warning'}>
+                    {t(item.status.toLowerCase())}
+                  </Tag>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </Modal>
   );
 };

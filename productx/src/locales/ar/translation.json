@@ -1437,5 +1437,7 @@
   "provider": "مزود الخدمة",
   "providerAndCountry": "مزود الخدمة/البلد",
   "selectCountry": "اختر البلد",
-  "country": "البلد"
+  "buckets": "الحاويات",
+  "bucketInfo": "معلومات الحاوية",
+  "creationDate": "تاريخ الإنشاء"
 }

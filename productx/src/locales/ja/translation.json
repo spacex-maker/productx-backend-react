@@ -1441,5 +1441,8 @@
   "pleaseInputIconUrl": "アイコンURLを入力してください",
   "provider": "プロバイダー",
   "providerAndCountry": "プロバイダー/国",
-  "selectCountry": "国を選択"
+  "selectCountry": "国を選択",
+  "buckets": "バケット",
+  "bucketInfo": "バケット情報",
+  "creationDate": "作成日"
 }

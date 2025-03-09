@@ -1452,5 +1452,8 @@
   "pleaseInputIconUrl": "Por favor ingrese la URL del icono",
   "provider": "Proveedor",
   "providerAndCountry": "Proveedor/País",
-  "selectCountry": "Seleccionar país"
+  "selectCountry": "Seleccionar país",
+  "buckets": "Buckets",
+  "bucketInfo": "Información del bucket",
+  "creationDate": "Fecha de creación"
 }
