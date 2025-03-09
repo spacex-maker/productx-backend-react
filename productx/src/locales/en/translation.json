@@ -1439,5 +1439,6 @@
   "pleaseInputValidUrl": "Please enter a valid URL",
   "pleaseInputIconUrl": "Please enter icon URL",
   "provider": "Provider",
-  "providerAndCountry": "Provider/Country"
+  "providerAndCountry": "Provider/Country",
+  "selectCountry": "Select Country"
 }

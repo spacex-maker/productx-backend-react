@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Tag, Space } from 'antd';
+import { EnvironmentOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
 const MsxCloudProvidersTable = ({
@@ -9,6 +10,7 @@ const MsxCloudProvidersTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  handleRegionsClick,
   t,
   countries
 }) => {
@@ -106,9 +108,18 @@ const MsxCloudProvidersTable = ({
             <td className="text-truncate">{item.createTime}</td>
             <td className="text-truncate">{item.updateTime}</td>
             <td className="fixed-column">
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                {t('edit')}
-              </Button>
+              <Space>
+                <Button type="link" onClick={() => handleEditClick(item)}>
+                  {t('edit')}
+                </Button>
+                <Button 
+                  type="link" 
+                  onClick={() => handleRegionsClick(item)}
+                  icon={<EnvironmentOutlined />}
+                >
+                  {t('regions')}
+                </Button>
+              </Space>
             </td>
           </tr>
         ))}
@@ -124,6 +135,7 @@ MsxCloudProvidersTable.propTypes = {
   handleSelectAll: PropTypes.func.isRequired,
   handleSelectRow: PropTypes.func.isRequired,
   handleEditClick: PropTypes.func.isRequired,
+  handleRegionsClick: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   countries: PropTypes.array.isRequired
 };

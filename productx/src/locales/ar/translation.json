@@ -1435,5 +1435,7 @@
   "pleaseInputValidUrl": "الرجاء إدخال رابط صحيح",
   "pleaseInputIconUrl": "الرجاء إدخال رابط الأيقونة",
   "provider": "مزود الخدمة",
-  "providerAndCountry": "مزود الخدمة/البلد"
+  "providerAndCountry": "مزود الخدمة/البلد",
+  "selectCountry": "اختر البلد",
+  "country": "البلد"
 }

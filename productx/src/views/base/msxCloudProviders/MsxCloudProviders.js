@@ -8,6 +8,7 @@ import MsxCloudProvidersTable from "./MsxCloudProvidersTable";
 import UpdateMsxCloudProvidersModel from "./UpdateMsxCloudProvidersModel";
 import MsxCloudProvidersCreateFormModel from "./MsxCloudProvidersCreateFormModel";
 import { useTranslation } from 'react-i18next';
+import MsxCloudProviderRegionsModal from './MsxCloudProviderRegionsModal';
 
 const MsxCloudProviders = () => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ const MsxCloudProviders = () => {
     providerName: '',
     countryCode: undefined,
     serviceType: '',
-    status: undefined,
+    status: 'ACTIVE',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +32,8 @@ const MsxCloudProviders = () => {
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [countries, setCountries] = useState([]);
   const [loadingCountries, setLoadingCountries] = useState(false);
+  const [isRegionsModalVisible, setIsRegionsModalVisible] = useState(false);
+  const [selectedProviderForRegions, setSelectedProviderForRegions] = useState(null);
 
   const statusOptions = [
     { value: 'ACTIVE', label: t('active') },
@@ -120,6 +123,11 @@ const MsxCloudProviders = () => {
   const handleEditClick = (provider) => {
     setSelectedProvider(provider);
     setIsUpdateModalVisible(true);
+  };
+
+  const handleRegionsClick = (provider) => {
+    setSelectedProviderForRegions(provider);
+    setIsRegionsModalVisible(true);
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -248,6 +256,7 @@ const MsxCloudProviders = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            handleRegionsClick={handleRegionsClick}
             countries={countries}
             t={t}
           />
@@ -282,6 +291,15 @@ const MsxCloudProviders = () => {
         t={t}
         statusOptions={statusOptions}
         serviceTypeOptions={serviceTypeOptions}
+      />
+
+      <MsxCloudProviderRegionsModal
+        isVisible={isRegionsModalVisible}
+        onCancel={() => setIsRegionsModalVisible(false)}
+        providerId={selectedProviderForRegions?.id}
+        providerName={selectedProviderForRegions?.providerName}
+        t={t}
+        countries={countries}
       />
     </div>
   );

@@ -1430,5 +1430,6 @@
   "pleaseInputValidUrl": "Пожалуйста, введите действительный URL",
   "pleaseInputIconUrl": "Пожалуйста, введите URL иконки",
   "provider": "Поставщик",
-  "providerAndCountry": "Поставщик/Страна"
+  "providerAndCountry": "Поставщик/Страна",
+  "selectCountry": "Выберите страну"
 }
