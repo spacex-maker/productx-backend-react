@@ -1436,5 +1436,7 @@
   "selectCountry": "Seleziona paese",
   "buckets": "Bucket",
   "bucketInfo": "Informazioni sul bucket",
-  "creationDate": "Data di creazione"
+  "creationDate": "Data di creazione",
+  "addCredential": "Aggiungi credenziali",
+  "editCredential": "Modifica credenziali"
 }

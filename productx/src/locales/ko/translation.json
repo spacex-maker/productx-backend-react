@@ -1441,5 +1441,10 @@
   "selectCountry": "국가 선택",
   "buckets": "버킷",
   "bucketInfo": "버킷 정보",
-  "creationDate": "생성일"
+  "creationDate": "생성일",
+  "addCredential": "자격 증명 추가",
+  "editCredential": "자격 증명 편집",
+  "pleaseInputAccessKey": "액세스 키를 입력하세요",
+  "pleaseInputSecretKey": "시크릿 키를 입력하세요",
+  "pleaseSelectType": "유형을 선택하세요"
 }

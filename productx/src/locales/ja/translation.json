@@ -1444,5 +1444,10 @@
   "selectCountry": "国を選択",
   "buckets": "バケット",
   "bucketInfo": "バケット情報",
-  "creationDate": "作成日"
+  "creationDate": "作成日",
+  "addCredential": "認証情報を追加",
+  "editCredential": "認証情報を編集",
+  "pleaseInputAccessKey": "アクセスキーを入力してください",
+  "pleaseInputSecretKey": "シークレットキーを入力してください",
+  "pleaseSelectType": "タイプを選択してください"
 }

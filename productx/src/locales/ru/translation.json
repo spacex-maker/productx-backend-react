@@ -1434,5 +1434,10 @@
   "selectCountry": "Выберите страну",
   "buckets": "Корзины",
   "bucketInfo": "Информация о корзине",
-  "creationDate": "Дата создания"
+  "creationDate": "Дата создания",
+  "addCredential": "Добавить учетные данные",
+  "editCredential": "Редактировать учетные данные",
+  "pleaseInputAccessKey": "Пожалуйста, введите ключ доступа",
+  "pleaseInputSecretKey": "Пожалуйста, введите секретный ключ",
+  "pleaseSelectType": "Пожалуйста, выберите тип"
 }
