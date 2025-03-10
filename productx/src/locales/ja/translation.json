@@ -1449,5 +1449,6 @@
   "editCredential": "認証情報を編集",
   "pleaseInputAccessKey": "アクセスキーを入力してください",
   "pleaseInputSecretKey": "シークレットキーを入力してください",
-  "pleaseSelectType": "タイプを選択してください"
+  "pleaseSelectType": "タイプを選択してください",
+  "pleaseSelectCredential": "認証情報を選択してください"
 }

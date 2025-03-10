@@ -1457,5 +1457,9 @@
   "bucketInfo": "Información del bucket",
   "creationDate": "Fecha de creación",
   "addCredential": "Agregar credenciales",
-  "editCredential": "Editar credenciales"
+  "editCredential": "Editar credenciales",
+  "pleaseInputAccessKey": "Por favor ingrese la clave de acceso",
+  "pleaseInputSecretKey": "Por favor ingrese la clave secreta",
+  "pleaseSelectType": "Por favor seleccione el tipo",
+  "pleaseSelectCredential": "Por favor seleccione las credenciales"
 }
