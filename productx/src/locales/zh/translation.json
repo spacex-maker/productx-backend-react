@@ -1471,5 +1471,6 @@
   "editCredential": "编辑凭证",
   "pleaseInputAccessKey": "请输入访问密钥",
   "pleaseInputSecretKey": "请输入访问密钥密文",
-  "pleaseSelectType": "请选择类型"
+  "pleaseSelectType": "请选择类型",
+  "pleaseSelectCredential": "请选择凭证"
 }

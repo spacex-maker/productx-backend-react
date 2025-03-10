@@ -1445,5 +1445,9 @@
   "bucketInfo": "Bucket Information",
   "creationDate": "Creation Date",
   "addCredential": "Add Credential",
-  "editCredential": "Edit Credential"
+  "editCredential": "Edit Credential",
+  "pleaseInputAccessKey": "Please input access key",
+  "pleaseInputSecretKey": "Please input secret key",
+  "pleaseSelectType": "Please select type",
+  "pleaseSelectCredential": "Please select credential"
 }

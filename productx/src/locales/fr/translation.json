@@ -1455,5 +1455,6 @@
   "editCredential": "Modifier les informations d'identification",
   "pleaseInputAccessKey": "Veuillez saisir la clé d'accès",
   "pleaseInputSecretKey": "Veuillez saisir la clé secrète",
-  "pleaseSelectType": "Veuillez sélectionner le type"
+  "pleaseSelectType": "Veuillez sélectionner le type",
+  "pleaseSelectCredential": "Veuillez sélectionner les informations d'identification"
 }
