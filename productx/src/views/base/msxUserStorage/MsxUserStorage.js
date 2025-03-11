@@ -4,12 +4,12 @@ import { Button, Form, Input, message, Spin, Col, Row, Space, Select } from 'ant
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
-import MsxCloudCredentialsTable from './MsxCloudCredentialsTable';
-import UpdateMsxCloudCredentialsModel from './UpdateMsxCloudCredentialsModel';
-import MsxCloudCredentialsCreateFormModel from './MsxCloudCredentialsCreateFormModel';
+import MsxUserStorageTable from './MsxUserStorageTable';
+import UpdateMsxUserStorageModel from './UpdateMsxUserStorageModel';
+import MsxUserStorageCreateFormModel from './MsxUserStorageCreateFormModel';
 import { useTranslation } from 'react-i18next';
 
-const MsxCloudCredentials = () => {
+const MsxUserStorage = () => {
   const { t } = useTranslation();
 
   const [data, setData] = useState([]);
@@ -17,9 +17,10 @@ const MsxCloudCredentials = () => {
   const [currentPage, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchParams, setSearchParams] = useState({
-    name: '',
-    type: undefined,
+    userId: '',
+    nodeName: '',
     status: undefined,
+    nodeType: undefined,
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -27,17 +28,18 @@ const MsxCloudCredentials = () => {
   const [createForm] = Form.useForm();
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
-  const [selectedCredential, setSelectedCredential] = useState(null);
+  const [selectedStorage, setSelectedStorage] = useState(null);
 
-  const typeOptions = [
-    { value: 'COS', label: 'COS' },
-    { value: 'OSS', label: 'OSS' },
-    { value: 'S3', label: 'S3' },
+  const nodeTypeOptions = [
+    { value: 'STANDARD', label: t('standardStorage') },
+    { value: 'LOW_FREQ', label: t('lowFreqStorage') },
+    { value: 'ARCHIVE', label: t('archiveStorage') },
   ];
 
   const statusOptions = [
-    { value: true, label: t('enabled') },
-    { value: false, label: t('disabled') },
+    { value: 'ACTIVE', label: t('activeStatus') },
+    { value: 'INACTIVE', label: t('inactiveStatus') },
+    { value: 'DISABLED', label: t('disabledStatus') },
   ];
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const MsxCloudCredentials = () => {
       const filteredParams = Object.fromEntries(
         Object.entries(searchParams).filter(([_, value]) => value !== undefined && value !== '')
       );
-      const response = await api.get('/manage/cloud-credentials/page', {
+      const response = await api.get('/manage/msx-user-storage/page', {
         params: { currentPage, pageSize, ...filteredParams },
       });
 
@@ -71,9 +73,9 @@ const MsxCloudCredentials = () => {
     setCurrent(1);
   };
 
-  const handleCreateCredential = async (values) => {
+  const handleCreateStorage = async (values) => {
     try {
-      await api.post('/manage/cloud-credentials/create', values);
+      await api.post('/manage/msx-user-storage/create', values);
       message.success(t('createSuccess'));
       setIsCreateModalVisible(false);
       createForm.resetFields();
@@ -83,9 +85,9 @@ const MsxCloudCredentials = () => {
     }
   };
 
-  const handleUpdateCredential = async (values) => {
+  const handleUpdateStorage = async (values) => {
     try {
-      await api.post('/manage/cloud-credentials/update', values);
+      await api.post('/manage/msx-user-storage/update', values);
       message.success(t('updateSuccess'));
       setIsUpdateModalVisible(false);
       updateForm.resetFields();
@@ -95,8 +97,8 @@ const MsxCloudCredentials = () => {
     }
   };
 
-  const handleEditClick = (credential) => {
-    setSelectedCredential(credential);
+  const handleEditClick = (storage) => {
+    setSelectedStorage(storage);
     setIsUpdateModalVisible(true);
   };
 
@@ -116,21 +118,30 @@ const MsxCloudCredentials = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                value={searchParams.name}
-                onChange={(e) => handleSearchChange('name', e.target.value)}
-                placeholder={t('name')}
+                value={searchParams.userId}
+                onChange={(e) => handleSearchChange('userId', e.target.value)}
+                placeholder={t('userId')}
+                allowClear
+                style={{ width: 200 }}
+              />
+            </Col>
+            <Col>
+              <Input
+                value={searchParams.nodeName}
+                onChange={(e) => handleSearchChange('nodeName', e.target.value)}
+                placeholder={t('nodeName')}
                 allowClear
                 style={{ width: 200 }}
               />
             </Col>
             <Col>
               <Select
-                value={searchParams.type}
-                onChange={(value) => handleSearchChange('type', value)}
-                placeholder={t('type')}
+                value={searchParams.nodeType}
+                onChange={(value) => handleSearchChange('nodeType', value)}
+                placeholder={t('nodeType')}
                 allowClear
                 style={{ width: 150 }}
-                options={typeOptions}
+                options={nodeTypeOptions}
               />
             </Col>
             <Col>
@@ -149,12 +160,12 @@ const MsxCloudCredentials = () => {
                   {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
-                  {t('addCredential')}
+                  {t('addStorage')}
                 </Button>
                 <Button
                   type="primary"
                   onClick={() => HandleBatchDelete({
-                    url: '/manage/cloud-credentials/delete-batch',
+                    url: '/manage/msx-user-storage/delete-batch',
                     selectedRows,
                     fetchData,
                     t,
@@ -171,7 +182,7 @@ const MsxCloudCredentials = () => {
 
       <div className="table-responsive">
         <Spin spinning={isLoading}>
-          <MsxCloudCredentialsTable
+          <MsxUserStorageTable
             data={data}
             selectAll={selectAll}
             selectedRows={selectedRows}
@@ -191,29 +202,29 @@ const MsxCloudCredentials = () => {
         onPageSizeChange={setPageSize}
       />
 
-      <MsxCloudCredentialsCreateFormModel
+      <MsxUserStorageCreateFormModel
         isVisible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
-        onFinish={handleCreateCredential}
+        onFinish={handleCreateStorage}
         form={createForm}
         t={t}
-        typeOptions={typeOptions}
+        nodeTypeOptions={nodeTypeOptions}
         statusOptions={statusOptions}
       />
 
-      <UpdateMsxCloudCredentialsModel
+      <UpdateMsxUserStorageModel
         isVisible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
         onOk={() => updateForm.submit()}
         form={updateForm}
-        handleUpdateCredential={handleUpdateCredential}
-        selectedCredential={selectedCredential}
+        handleUpdateStorage={handleUpdateStorage}
+        selectedStorage={selectedStorage}
         t={t}
-        typeOptions={typeOptions}
+        nodeTypeOptions={nodeTypeOptions}
         statusOptions={statusOptions}
       />
     </div>
   );
 };
 
-export default MsxCloudCredentials;
+export default MsxUserStorage;

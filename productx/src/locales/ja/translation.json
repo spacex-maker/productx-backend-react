@@ -273,7 +273,12 @@
     "热门搜索": "人気の検索",
     "网站申请管理": "ウェブサイト申請管理",
     "用户需求": "ユーザーの要求",
-    "购物车管理": "ショッピングカート管理"
+    "购物车管理": "ショッピングカート管理",
+    "MSX存储系统": "MSXストレージシステム",
+    "存储服务商管理": "ストレージサービスプロバイダー管理",
+    "存储区域管理": "ストレージエリア管理",
+    "凭证管理": "認証情報管理",
+    "用户存储节点管理": "ユーザーストレージノード管理"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -1361,7 +1366,7 @@
   "editHotSearch": "人気検索を編集",
 
   "appearanceSettings": "外観設定",
-  
+
   "primaryColor": "プライマリカラー",
   "secondaryColor": "セカンダリカラー",
   "fontSize": "フォントサイズ",
@@ -1371,7 +1376,7 @@
   "splashScreenUrl": "スプラッシュ画面URL",
   "homeLayout": "ホームレイアウト",
   "customText": "カスタムテキスト",
-  
+
   "small": "小",
   "large": "大",
   "rounded": "丸み",
@@ -1450,5 +1455,28 @@
   "pleaseInputAccessKey": "アクセスキーを入力してください",
   "pleaseInputSecretKey": "シークレットキーを入力してください",
   "pleaseSelectType": "タイプを選択してください",
-  "pleaseSelectCredential": "認証情報を選択してください"
+  "pleaseSelectCredential": "認証情報を選択してください",
+  "addStorage": "ストレージを追加",
+  "editStorage": "ストレージを編集",
+  "pleaseInputUserId": "ユーザーIDを入力してください",
+  "pleaseInputNodeName": "ノード名を入力してください",
+  "pleaseSelectNodeCloud": "クラウドプロバイダーを選択してください",
+  "pleaseSelectNodeType": "ノードタイプを選択してください",
+  "nodeTypeTooltip": "ノードタイプはストレージサービスレベルを決定します",
+  "pleaseSelectNodeRegion": "ノードリージョンを選択してください",
+  "pleaseInputStorageLimit": "ストレージ制限を入力してください",
+  "pleaseInputBandwidthLimit": "帯域幅制限を入力してください",
+  "nodeName": "ノード名",
+  "nodeCloud": "クラウドプロバイダー",
+  "nodeType": "ノードタイプ",
+  "nodeRegion": "ノードリージョン",
+  "storageLimit": "ストレージ制限",
+  "storageUsed": "使用済みストレージ",
+  "bandwidthLimit": "帯域幅制限",
+  "standardStorage": "標準ストレージ",
+  "lowFreqStorage": "低頻度ストレージ",
+  "archiveStorage": "アーカイブストレージ",
+  "activeStatus": "アクティブ",
+  "inactiveStatus": "非アクティブ",
+  "disabledStatus": "無効"
 }

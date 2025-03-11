@@ -273,7 +273,12 @@
     "热门搜索": "Búsqueda popular",
     "网站申请管理": "Gestión de solicitudes de sitios web",
     "用户需求": "Demandas del usuario",
-    "购物车管理": "Gestión del carrito de compras"
+    "购物车管理": "Gestión del carrito de compras",
+    "MSX存储系统": "Sistema de almacenamiento MSX",
+    "存储服务商管理": "Gestión de proveedores de almacenamiento",
+    "存储区域管理": "Gestión de regiones de almacenamiento",
+    "凭证管理": "Gestión de credenciales",
+    "用户存储节点管理": "Gestión de nodos de almacenamiento de usuario"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",
@@ -1372,7 +1377,7 @@
   "editHotSearch": "Editar búsqueda popular",
 
   "appearanceSettings": "Configuración de apariencia",
-  
+
   "primaryColor": "Color primario",
   "secondaryColor": "Color secundario",
   "fontSize": "Tamaño de fuente",
@@ -1382,7 +1387,7 @@
   "splashScreenUrl": "URL de pantalla de inicio",
   "homeLayout": "Diseño de inicio",
   "customText": "Texto personalizado",
-  
+
   "small": "Pequeño",
   "large": "Grande",
   "rounded": "Redondeado",
@@ -1461,5 +1466,28 @@
   "pleaseInputAccessKey": "Por favor ingrese la clave de acceso",
   "pleaseInputSecretKey": "Por favor ingrese la clave secreta",
   "pleaseSelectType": "Por favor seleccione el tipo",
-  "pleaseSelectCredential": "Por favor seleccione las credenciales"
+  "pleaseSelectCredential": "Por favor seleccione las credenciales",
+  "addStorage": "Agregar almacenamiento",
+  "editStorage": "Editar almacenamiento",
+  "pleaseInputUserId": "Por favor ingrese el ID de usuario",
+  "pleaseInputNodeName": "Por favor ingrese el nombre del nodo",
+  "pleaseSelectNodeCloud": "Por favor seleccione el proveedor de nube",
+  "pleaseSelectNodeType": "Por favor seleccione el tipo de nodo",
+  "nodeTypeTooltip": "El tipo de nodo determina el nivel de servicio de almacenamiento",
+  "pleaseSelectNodeRegion": "Por favor seleccione la región",
+  "pleaseInputStorageLimit": "Por favor ingrese el límite de almacenamiento",
+  "pleaseInputBandwidthLimit": "Por favor ingrese el límite de ancho de banda",
+  "nodeName": "Nombre del nodo",
+  "nodeCloud": "Proveedor de nube",
+  "nodeType": "Tipo de nodo",
+  "nodeRegion": "Región",
+  "storageLimit": "Límite de almacenamiento",
+  "storageUsed": "Almacenamiento usado",
+  "bandwidthLimit": "Límite de ancho de banda",
+  "standardStorage": "Almacenamiento estándar",
+  "lowFreqStorage": "Almacenamiento de baja frecuencia",
+  "archiveStorage": "Almacenamiento de archivo",
+  "activeStatus": "Activo",
+  "inactiveStatus": "Inactivo",
+  "disabledStatus": "Deshabilitado"
 }
