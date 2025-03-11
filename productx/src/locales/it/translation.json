@@ -266,7 +266,12 @@
     "热门搜索": "Ricerca popolare",
     "网站申请管理": "Gestione delle richieste di siti web",
     "用户需求": "Esigenze dell'utente",
-    "购物车管理": "Gestione del carrello"
+    "购物车管理": "Gestione del carrello",
+    "MSX存储系统": "Sistema di archiviazione MSX",
+    "存储服务商管理": "Gestione dei fornitori di archiviazione",
+    "存储区域管理": "Gestione delle regioni di archiviazione",
+    "凭证管理": "Gestione delle credenziali",
+    "用户存储节点管理": "Gestione dei nodi di archiviazione utente"
   },
   "confirmDelete": "Conferma eliminazione",
   "countryName": "Nome del paese",
@@ -1363,7 +1368,7 @@
   "splashScreenUrl": "URL schermata iniziale",
   "homeLayout": "Layout home",
   "customText": "Testo personalizzato",
-  
+
   "small": "Piccolo",
   "large": "Grande",
   "rounded": "Arrotondato",
@@ -1442,5 +1447,28 @@
   "pleaseInputAccessKey": "Inserisci la chiave di accesso",
   "pleaseInputSecretKey": "Inserisci la chiave segreta",
   "pleaseSelectType": "Seleziona il tipo",
-  "pleaseSelectCredential": "Seleziona le credenziali"
+  "pleaseSelectCredential": "Seleziona le credenziali",
+  "addStorage": "Aggiungi storage",
+  "editStorage": "Modifica storage",
+  "pleaseInputUserId": "Inserisci l'ID utente",
+  "pleaseInputNodeName": "Inserisci il nome del nodo",
+  "pleaseSelectNodeCloud": "Seleziona il provider cloud",
+  "pleaseSelectNodeType": "Seleziona il tipo di nodo",
+  "nodeTypeTooltip": "Il tipo di nodo determina il livello di servizio di storage",
+  "pleaseSelectNodeRegion": "Seleziona la regione",
+  "pleaseInputStorageLimit": "Inserisci il limite di storage",
+  "pleaseInputBandwidthLimit": "Inserisci il limite di banda",
+  "nodeName": "Nome nodo",
+  "nodeCloud": "Provider cloud",
+  "nodeType": "Tipo nodo",
+  "nodeRegion": "Regione",
+  "storageLimit": "Limite storage",
+  "storageUsed": "Storage utilizzato",
+  "bandwidthLimit": "Limite banda",
+  "standardStorage": "Storage standard",
+  "lowFreqStorage": "Storage a bassa frequenza",
+  "archiveStorage": "Storage archivio",
+  "activeStatus": "Attivo",
+  "inactiveStatus": "Inattivo",
+  "disabledStatus": "Disabilitato"
 }

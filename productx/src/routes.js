@@ -194,6 +194,8 @@ const MsxCloudProviderRegionsRouter = React.lazy(() => import('./views/base/msxC
 
 const MsxCloudCredentialsRouter = React.lazy(() => import('./views/base/msxCloudCredentials/MsxCloudCredentials'));
 
+const MsxUserStorageRouter = React.lazy(() => import('./views/base/msxUserStorage/MsxUserStorage'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -734,6 +736,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <MsxCloudCredentialsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/msxUserStorage',
+    name: 'MSX用户存储管理',
+    element: (
+      <PrivateRoute>
+        <MsxUserStorageRouter />
       </PrivateRoute>
     ),
   },

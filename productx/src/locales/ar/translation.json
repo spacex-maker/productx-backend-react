@@ -273,7 +273,12 @@
     "热门搜索": "البحث الشائع",
     "网站申请管理": "إدارة طلبات الموقع",
     "用户需求": "احتياجات المستخدم",
-    "购物车管理": "إدارة عربة التسوق"
+    "购物车管理": "إدارة عربة التسوق",
+    "MSX存储系统": "نظام تخزين MSX",
+    "存储服务商管理": "إدارة مزودي خدمة التخزين",
+    "存储区域管理": "إدارة مناطق التخزين",
+    "凭证管理": "إدارة بيانات الاعتماد",
+    "用户存储节点管理": "إدارة عقد تخزين المستخدم"
   },
   "confirmDelete": "تأكيد الحذف",
   "countryName": "اسم الدولة",
@@ -1355,7 +1360,7 @@
   "editHotSearch": "تعديل البحث الشائع",
 
   "appearanceSettings": "إعدادات المظهر",
-  
+
   "primaryColor": "اللون الأساسي",
   "secondaryColor": "اللون الثانوي",
   "fontSize": "حجم الخط",
@@ -1365,7 +1370,7 @@
   "splashScreenUrl": "رابط شاشة البداية",
   "homeLayout": "تخطيط الصفحة الرئيسية",
   "customText": "نص مخصص",
-  
+
   "small": "صغير",
   "large": "كبير",
   "rounded": "مستدير",
@@ -1444,5 +1449,29 @@
   "editCredential": "تعديل بيانات الاعتماد",
   "pleaseInputAccessKey": "الرجاء إدخال مفتاح الوصول",
   "pleaseInputSecretKey": "الرجاء إدخال المفتاح السري",
-  "pleaseSelectType": "الرجاء اختيار النوع"
+  "pleaseSelectType": "الرجاء اختيار النوع",
+
+  "addStorage": "إضافة تخزين",
+  "editStorage": "تعديل التخزين",
+  "pleaseInputUserId": "الرجاء إدخال معرف المستخدم",
+  "pleaseInputNodeName": "الرجاء إدخال اسم العقدة",
+  "pleaseSelectNodeCloud": "الرجاء اختيار مزود السحابة",
+  "pleaseSelectNodeType": "الرجاء اختيار نوع العقدة",
+  "nodeTypeTooltip": "نوع العقدة يحدد مستوى خدمة التخزين",
+  "pleaseSelectNodeRegion": "الرجاء اختيار المنطقة",
+  "pleaseInputStorageLimit": "الرجاء إدخال حد التخزين",
+  "pleaseInputBandwidthLimit": "الرجاء إدخال حد النطاق الترددي",
+  "nodeName": "اسم العقدة",
+  "nodeCloud": "مزود السحابة",
+  "nodeType": "نوع العقدة",
+  "nodeRegion": "المنطقة",
+  "storageLimit": "حد التخزين",
+  "storageUsed": "التخزين المستخدم",
+  "bandwidthLimit": "حد النطاق الترددي",
+  "standardStorage": "تخزين قياسي",
+  "lowFreqStorage": "تخزين منخفض التردد",
+  "archiveStorage": "تخزين أرشيفي",
+  "activeStatus": "نشط",
+  "inactiveStatus": "غير نشط",
+  "disabledStatus": "معطل"
 }

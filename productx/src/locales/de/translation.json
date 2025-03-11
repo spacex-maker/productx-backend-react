@@ -272,7 +272,13 @@
     "热门搜索": "Beliebte Suche",
     "网站申请管理": "Website-Antragsverwaltung",
     "用户需求": "Benutzeranforderungen",
-    "购物车管理": "Warenkorbverwaltung"
+    "购物车管理": "Warenkorbverwaltung",
+    "MSX存储系统": "MSX-Speichersystem",
+    "存储服务商管理": "Verwaltung von Speicheranbietern",
+    "存储区域管理": "Verwaltung von Speicherregionen",
+    "凭证管理": "Anmeldeinformationsverwaltung",
+    "用户存储节点管理": "Verwaltung von Benutzerspeicherknoten"
+
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -1341,7 +1347,7 @@
   "editHotSearch": "Beliebte Suche bearbeiten",
 
   "appearanceSettings": "Darstellungseinstellungen",
-  
+
   "primaryColor": "Primärfarbe",
   "secondaryColor": "Sekundärfarbe",
   "fontSize": "Schriftgröße",
@@ -1351,7 +1357,7 @@
   "splashScreenUrl": "Startbildschirm-URL",
   "homeLayout": "Startseiten-Layout",
   "customText": "Benutzerdefinierter Text",
-  
+
   "small": "Klein",
   "large": "Groß",
   "rounded": "Abgerundet",
@@ -1438,5 +1444,29 @@
   "pleaseInputAccessKey": "Bitte geben Sie den Zugriffsschlüssel ein",
   "pleaseInputSecretKey": "Bitte geben Sie den geheimen Schlüssel ein",
   "pleaseSelectType": "Bitte wählen Sie den Typ aus",
-  "pleaseSelectCredential": "Bitte wählen Sie die Anmeldeinformationen aus"
+  "pleaseSelectCredential": "Bitte wählen Sie die Anmeldeinformationen aus",
+
+  "addStorage": "Speicher hinzufügen",
+  "editStorage": "Speicher bearbeiten",
+  "pleaseInputUserId": "Bitte Benutzer-ID eingeben",
+  "pleaseInputNodeName": "Bitte Knotennamen eingeben",
+  "pleaseSelectNodeCloud": "Bitte Cloud-Anbieter auswählen",
+  "pleaseSelectNodeType": "Bitte Knotentyp auswählen",
+  "nodeTypeTooltip": "Der Knotentyp bestimmt das Speicherdienstniveau",
+  "pleaseSelectNodeRegion": "Bitte Region auswählen",
+  "pleaseInputStorageLimit": "Bitte Speicherlimit eingeben",
+  "pleaseInputBandwidthLimit": "Bitte Bandbreitenlimit eingeben",
+  "nodeName": "Knotenname",
+  "nodeCloud": "Cloud-Anbieter",
+  "nodeType": "Knotentyp",
+  "nodeRegion": "Region",
+  "storageLimit": "Speicherlimit",
+  "storageUsed": "Genutzter Speicher",
+  "bandwidthLimit": "Bandbreitenlimit",
+  "standardStorage": "Standardspeicher",
+  "lowFreqStorage": "Niedrigfrequenzspeicher",
+  "archiveStorage": "Archivspeicher",
+  "activeStatus": "Aktiv",
+  "inactiveStatus": "Inaktiv",
+  "disabledStatus": "Deaktiviert"
 }

@@ -265,7 +265,12 @@
     "热门搜索": "Hot Search",
     "网站申请管理": "Website Application Management",
     "用户需求": "User Demands",
-    "购物车管理": "Shopping Cart Management"
+    "购物车管理": "Shopping Cart Management",
+    "MSX存储系统": "MSX Storage System",
+    "存储服务商管理": "Storage Service Provider Management",
+    "存储区域管理": "Storage Region Management",
+    "凭证管理": "Credential Management",
+    "用户存储节点管理": "User Storage Node Management"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
@@ -1361,7 +1366,7 @@
   "editHotSearch": "Edit Hot Search",
 
   "appearanceSettings": "Appearance Settings",
-  
+
   "primaryColor": "Primary Color",
   "secondaryColor": "Secondary Color",
   "fontSize": "Font Size",
@@ -1371,7 +1376,7 @@
   "splashScreenUrl": "Splash Screen URL",
   "homeLayout": "Home Layout",
   "customText": "Custom Text",
-  
+
   "small": "Small",
   "large": "Large",
   "rounded": "Rounded",
@@ -1449,5 +1454,28 @@
   "pleaseInputAccessKey": "Please input access key",
   "pleaseInputSecretKey": "Please input secret key",
   "pleaseSelectType": "Please select type",
-  "pleaseSelectCredential": "Please select credential"
+  "pleaseSelectCredential": "Please select credential",
+  "addStorage": "Add Storage",
+  "editStorage": "Edit Storage",
+  "pleaseInputUserId": "Please input user ID",
+  "pleaseInputNodeName": "Please input node name",
+  "pleaseSelectNodeCloud": "Please select node cloud",
+  "pleaseSelectNodeType": "Please select node type",
+  "nodeTypeTooltip": "Node type determines the storage service level",
+  "pleaseSelectNodeRegion": "Please select node region",
+  "pleaseInputStorageLimit": "Please input storage limit",
+  "pleaseInputBandwidthLimit": "Please input bandwidth limit",
+  "nodeName": "Node Name",
+  "nodeCloud": "Node Cloud",
+  "nodeType": "Node Type",
+  "nodeRegion": "Node Region",
+  "storageLimit": "Storage Limit",
+  "storageUsed": "Storage Used",
+  "bandwidthLimit": "Bandwidth Limit",
+  "standardStorage": "Standard Storage",
+  "lowFreqStorage": "Low-frequency Storage",
+  "archiveStorage": "Archive Storage",
+  "activeStatus": "Active",
+  "inactiveStatus": "Inactive",
+  "disabledStatus": "Disabled"
 }

@@ -58,7 +58,7 @@ const AdminPermission = () => {
         Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null),
       );
       const response = await api.get('/manage/admin-permissions/list', {
-        params: { currentPage, size: pageSize, ...filteredParams },
+        params: { currentPage, pageSize, ...filteredParams },
       });
 
       if (response && response.data) {
