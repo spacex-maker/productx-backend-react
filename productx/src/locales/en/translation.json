@@ -1473,9 +1473,16 @@
   "storageUsed": "Storage Used",
   "bandwidthLimit": "Bandwidth Limit",
   "standardStorage": "Standard Storage",
-  "lowFreqStorage": "Low-frequency Storage",
+  "lowFreqStorage": "Low Frequency Storage",
   "archiveStorage": "Archive Storage",
   "activeStatus": "Active",
   "inactiveStatus": "Inactive",
-  "disabledStatus": "Disabled"
+  "disabledStatus": "Disabled",
+  "addBucket": "Add Bucket",
+  "editBucket": "Edit Bucket",
+  "providerId": "Provider ID",
+  "pleaseInputBucketName": "Please input bucket name",
+  "pleaseInputProviderId": "Please input provider ID",
+  "pleaseSelectStorageType": "Please select storage type",
+  "pleaseInputRemark": "Please input remark"
 }

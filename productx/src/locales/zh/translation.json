@@ -1500,5 +1500,12 @@
   "archiveStorage": "归档存储",
   "activeStatus": "活跃",
   "inactiveStatus": "不活跃",
-  "disabledStatus": "已禁用"
+  "disabledStatus": "已禁用",
+  "addBucket": "添加存储桶",
+  "editBucket": "编辑存储桶",
+  "providerId": "提供商ID",
+  "pleaseInputBucketName": "请输入存储桶名称",
+  "pleaseInputProviderId": "请输入提供商ID",
+  "pleaseSelectStorageType": "请选择存储类型",
+  "pleaseInputRemark": "请输入备注"
 }

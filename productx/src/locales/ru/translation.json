@@ -1468,5 +1468,12 @@
   "archiveStorage": "Архивное хранилище",
   "activeStatus": "Активный",
   "inactiveStatus": "Неактивный",
-  "disabledStatus": "Отключен"
+  "disabledStatus": "Отключен",
+  "addBucket": "Добавить бакет",
+  "editBucket": "Редактировать бакет",
+  "providerId": "ID провайдера",
+  "pleaseInputBucketName": "Пожалуйста, введите имя бакета",
+  "pleaseInputProviderId": "Пожалуйста, введите ID провайдера",
+  "pleaseSelectStorageType": "Пожалуйста, выберите тип хранилища",
+  "pleaseInputRemark": "Пожалуйста, введите примечание"
 }

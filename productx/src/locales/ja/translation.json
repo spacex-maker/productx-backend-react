@@ -1478,5 +1478,12 @@
   "archiveStorage": "アーカイブストレージ",
   "activeStatus": "アクティブ",
   "inactiveStatus": "非アクティブ",
-  "disabledStatus": "無効"
+  "disabledStatus": "無効",
+  "addBucket": "バケットを追加",
+  "editBucket": "バケットを編集",
+  "providerId": "プロバイダーID",
+  "pleaseInputBucketName": "バケット名を入力してください",
+  "pleaseInputProviderId": "プロバイダーIDを入力してください",
+  "pleaseSelectStorageType": "ストレージタイプを選択してください",
+  "pleaseInputRemark": "備考を入力してください"
 }

@@ -1475,5 +1475,12 @@
   "archiveStorage": "아카이브 스토리지",
   "activeStatus": "활성",
   "inactiveStatus": "비활성",
-  "disabledStatus": "비활성화"
+  "disabledStatus": "비활성화",
+  "addBucket": "버킷 추가",
+  "editBucket": "버킷 편집",
+  "providerId": "제공자 ID",
+  "pleaseInputBucketName": "버킷 이름을 입력하세요",
+  "pleaseInputProviderId": "제공자 ID를 입력하세요",
+  "pleaseSelectStorageType": "스토리지 유형을 선택하세요",
+  "pleaseInputRemark": "비고를 입력하세요"
 }
