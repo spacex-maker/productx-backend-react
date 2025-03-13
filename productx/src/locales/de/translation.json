@@ -1468,5 +1468,14 @@
   "archiveStorage": "Archivspeicher",
   "activeStatus": "Aktiv",
   "inactiveStatus": "Inaktiv",
-  "disabledStatus": "Deaktiviert"
+  "disabledStatus": "Deaktiviert",
+
+  "addBucket": "Bucket hinzufügen",
+  "editBucket": "Bucket bearbeiten",
+  "providerId": "Anbieter-ID",
+  "storageType": "Speichertyp",
+  "pleaseInputBucketName": "Bitte Bucket-Namen eingeben",
+  "pleaseInputProviderId": "Bitte Anbieter-ID eingeben",
+  "pleaseSelectStorageType": "Bitte Speichertyp auswählen",
+  "pleaseInputRemark": "Bitte Bemerkung eingeben"
 }

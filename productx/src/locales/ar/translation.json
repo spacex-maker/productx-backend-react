@@ -1473,5 +1473,25 @@
   "archiveStorage": "تخزين أرشيفي",
   "activeStatus": "نشط",
   "inactiveStatus": "غير نشط",
-  "disabledStatus": "معطل"
+  "disabledStatus": "معطل",
+
+  "addBucket": "إضافة حاوية",
+  "editBucket": "تعديل الحاوية",
+  "bucketName": "اسم الحاوية",
+  "providerId": "معرف الموفر",
+  "regionName": "اسم المنطقة",
+  "storageType": "نوع التخزين",
+  "status": "الحالة",
+  "remark": "ملاحظة",
+  "pleaseInputBucketName": "الرجاء إدخال اسم الحاوية",
+  "pleaseInputProviderId": "الرجاء إدخال معرف الموفر",
+  "pleaseInputRegionName": "الرجاء إدخال اسم المنطقة",
+  "pleaseSelectStorageType": "الرجاء اختيار نوع التخزين",
+  "pleaseSelectStatus": "الرجاء اختيار الحالة",
+  "pleaseInputRemark": "الرجاء إدخال ملاحظة",
+  "standardStorage": "تخزين قياسي",
+  "lowFreqStorage": "تخزين منخفض التردد",
+  "archiveStorage": "تخزين الأرشيف",
+  "enabled": "مفعل",
+  "disabled": "معطل"
 }
