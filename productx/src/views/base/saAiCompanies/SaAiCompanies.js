@@ -213,6 +213,12 @@ const SaAiCompanies = () => {
                 </Button>
                 <Button
                   type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('add')}
+                </Button>
+                <Button
+                  type="primary"
                   onClick={() => handleStatusChange(selectedRows, true)}
                   disabled={selectedRows.length === 0}
                 >

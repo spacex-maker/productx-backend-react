@@ -869,8 +869,8 @@
   "inputChineseName": "请输入中文名称",
   "inputNativeName": "请输入本地名称",
 
-  "addTitle": "新增语言",
-  "editTitle": "修改语言",
+  "addTitle": "新增",
+  "editTitle": "修改",
   "selectRecord": "请选择要修改的记录",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "修改启用状态将影响管理系统和应用中的语言选项",
@@ -1562,5 +1562,6 @@
   "sortOrder": "排序",
   "pleaseInputSortOrder": "请输入排序值",
   "lang": "语言",
-  "pleaseSelectLang": "请选择语言"
+  "pleaseSelectLang": "请选择语言",
+  "companyInfo": "公司信息"
 }

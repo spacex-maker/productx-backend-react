@@ -829,8 +829,8 @@
   "inputChineseName": "Bitte geben Sie den chinesischen Namen ein",
   "inputNativeName": "Bitte geben Sie den einheimischen Namen ein",
 
-  "addTitle": "Neue Sprache hinzufügen",
-  "editTitle": "Sprache bearbeiten",
+  "addTitle": "Erstellen",
+  "editTitle": "Bearbeiten",
   "selectRecord": "Bitte wählen Sie die zu ändernden Datensätze aus",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "Das Ändern des Aktivierungsstatus wirkt sich auf die Sprachoptionen im Admin-System und in der App aus",
@@ -1533,5 +1533,6 @@
   "sortOrder": "Sortierreihenfolge",
   "pleaseInputSortOrder": "Bitte Sortierwert eingeben",
   "lang": "Sprache",
-  "pleaseSelectLang": "Bitte Sprache auswählen"
+  "pleaseSelectLang": "Bitte Sprache auswählen",
+  "companyInfo": "Unternehmensinformationen"
 }

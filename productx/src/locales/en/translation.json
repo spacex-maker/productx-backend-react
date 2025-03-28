@@ -853,8 +853,8 @@
   "inputChineseName": "Please enter the Chinese name",
   "inputNativeName": "Please enter the native name",
 
-  "addTitle": "Add New Language",
-  "editTitle": "Edit Language",
+  "addTitle": "Create",
+  "editTitle": "Edit",
   "selectRecord": "Please select records to modify",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "Modifying enable status will affect language options in admin system and App",
@@ -1259,7 +1259,7 @@
   "pleaseInputWalletLabel": "Please enter wallet label",
   "pleaseInputCountryCode": "Please enter country code",
   "pleaseInputBalance": "Please enter balance",
-  "pleaseInputPassword": "Please enter wallet password",
+  "pleaseInputPassword": "Please input password",
   "walletLabelExample": "For example: My Wallet",
   "addressCopied": "Address copied to clipboard",
   "blockchainBrowser": "Blockchain Explorer",
@@ -1539,5 +1539,6 @@
   "sortOrder": "Sort Order",
   "pleaseInputSortOrder": "Please input sort order value",
   "lang": "Language",
-  "pleaseSelectLang": "Please select language"
+  "pleaseSelectLang": "Please select language",
+  "companyInfo": "Company Information"
 }

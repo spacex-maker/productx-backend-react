@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
-import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
+import { Button, Avatar, Space } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const SaAiCompaniesTable = ({
@@ -30,8 +29,7 @@ const SaAiCompaniesTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          <th>{t('companyCode')}</th>
-          <th>{t('companyName')}</th>
+          <th>{t('companyInfo')}</th>
           <th>{t('headquarters')}</th>
           <th>{t('defaultModel')}</th>
           <th>{t('foundedYear')}</th>
@@ -57,8 +55,23 @@ const SaAiCompaniesTable = ({
                 ></label>
               </div>
             </td>
-            <td>{item.companyCode}</td>
-            <td>{item.companyName}</td>
+            <td>
+              <Space align="center" size={12}>
+                <Avatar 
+                  src={item.logoPath} 
+                  shape="square" 
+                  size={40}
+                  style={{ 
+                    backgroundColor: '#f0f2f5',
+                    verticalAlign: 'middle' 
+                  }}
+                />
+                <div>
+                  <div style={{ fontWeight: 500 }}>{item.companyName}</div>
+                  <div style={{ color: '#666', fontSize: '12px' }}>{item.companyCode}</div>
+                </div>
+              </Space>
+            </td>
             <td>{item.headquarters}</td>
             <td>{item.defaultModel}</td>
             <td>{item.foundedYear}</td>

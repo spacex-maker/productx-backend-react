@@ -861,8 +861,8 @@
   "inputChineseName": "Пожалуйста, введите китайское название",
   "inputNativeName": "Пожалуйста, введите родное название",
 
-  "addTitle": "Добавить новый язык",
-  "editTitle": "Редактировать язык",
+  "addTitle": "Создать",
+  "editTitle": "Изменить",
   "selectRecord": "Пожалуйста, выберите записи для изменения",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "Изменение состояния включения повлияет на языковые настройки в системе администрирования и приложении",
@@ -1260,7 +1260,7 @@
   "pleaseInputWalletLabel": "Пожалуйста, введите метку кошелька",
   "pleaseInputCountryCode": "Пожалуйста, введите код страны",
   "pleaseInputBalance": "Пожалуйста, введите баланс",
-  "pleaseInputPassword": "Пожалуйста, введите пароль кошелька",
+  "pleaseInputPassword": "Пожалуйста, введите пароль",
   "walletLabelExample": "Например: Мой кошелек",
   "addressCopied": "Адрес скопирован в буфер обмена",
   "blockchainBrowser": "Браузер блокчейна",
@@ -1530,5 +1530,6 @@
   "sortOrder": "Порядок сортировки",
   "pleaseInputSortOrder": "Пожалуйста, введите значение сортировки",
   "lang": "Язык",
-  "pleaseSelectLang": "Пожалуйста, выберите язык"
+  "pleaseSelectLang": "Пожалуйста, выберите язык",
+  "companyInfo": "Информация о компании"
 }

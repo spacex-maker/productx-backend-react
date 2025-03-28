@@ -843,8 +843,8 @@
   "inputChineseName": "يرجى إدخال الاسم الصيني",
   "inputNativeName": "يرجى إدخال الاسم الأصلي",
 
-  "addTitle": "إضافة لغة جديدة",
-  "editTitle": "تعديل اللغة",
+  "addTitle": "إنشاء",
+  "editTitle": "تعديل",
   "selectRecord": "يرجى اختيار السجلات لتعديلها",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "تعديل حالة التمكين سيؤثر على خيارات اللغة في نظام الإدارة والتطبيق",
@@ -1536,5 +1536,6 @@
   "sortOrder": "ترتيب الفرز",
   "pleaseInputSortOrder": "الرجاء إدخال قيمة الفرز",
   "lang": "اللغة",
-  "pleaseSelectLang": "الرجاء اختيار اللغة"
+  "pleaseSelectLang": "الرجاء اختيار اللغة",
+  "companyInfo": "معلومات الشركة"
 }

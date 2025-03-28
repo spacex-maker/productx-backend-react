@@ -1537,5 +1537,6 @@
   "sortOrder": "정렬 순서",
   "pleaseInputSortOrder": "정렬 값을 입력해주세요",
   "lang": "언어",
-  "pleaseSelectLang": "언어를 선택해주세요"
+  "pleaseSelectLang": "언어를 선택해주세요",
+  "companyInfo": "회사 정보"
 }

@@ -854,8 +854,8 @@
   "inputChineseName": "Inserisci il nome cinese",
   "inputNativeName": "Inserisci il nome nativo",
 
-  "addTitle": "Aggiungi nuova lingua",
-  "editTitle": "Modifica lingua",
+  "addTitle": "Creare",
+  "editTitle": "Modificare",
   "selectRecord": "Seleziona i record da modificare",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "Modificare lo stato di abilitazione influirà sulle opzioni della lingua nel sistema di amministrazione e nell'app",
@@ -1532,5 +1532,6 @@
   "sortOrder": "Ordine",
   "pleaseInputSortOrder": "Inserisci il valore dell'ordine",
   "lang": "Lingua",
-  "pleaseSelectLang": "Seleziona una lingua"
+  "pleaseSelectLang": "Seleziona una lingua",
+  "companyInfo": "Informazioni sull'azienda"
 }

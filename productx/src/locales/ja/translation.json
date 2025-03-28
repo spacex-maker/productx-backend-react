@@ -861,8 +861,8 @@
   "inputChineseName": "中国語名を入力してください",
   "inputNativeName": "ネイティブ名を入力してください",
 
-  "addTitle": "新しい言語を追加",
-  "editTitle": "言語を編集",
+  "addTitle": "作成",
+  "editTitle": "編集",
   "selectRecord": "変更するレコードを選択してください",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "有効状態の変更は、管理システムおよびアプリ内の言語オプションに影響を与えます",
@@ -1257,7 +1257,7 @@
   "pleaseInputWalletLabel": "ウォレットラベルを入力してください",
   "pleaseInputCountryCode": "国コードを入力してください",
   "pleaseInputBalance": "残高を入力してください",
-  "pleaseInputPassword": "ウォレットのパスワードを入力してください",
+  "pleaseInputPassword": "パスワードを入力してください",
   "walletLabelExample": "例：マイウォレット",
   "addressCopied": "アドレスがクリップボードにコピーされました",
   "blockchainBrowser": "ブロックチェーンブラウザ",
@@ -1539,5 +1539,6 @@
   "sortOrder": "並び順",
   "pleaseInputSortOrder": "並び順の値を入力してください",
   "lang": "言語",
-  "pleaseSelectLang": "言語を選択してください"
+  "pleaseSelectLang": "言語を選択してください",
+  "companyInfo": "会社情報"
 }

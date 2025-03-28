@@ -861,8 +861,8 @@
   "inputChineseName": "Por favor, ingrese el nombre en chino",
   "inputNativeName": "Por favor, ingrese el nombre nativo",
 
-  "addTitle": "Agregar nuevo idioma",
-  "editTitle": "Editar idioma",
+  "addTitle": "Crear",
+  "editTitle": "Editar",
   "selectRecord": "Por favor, seleccione los registros a modificar",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "Modificar el estado de habilitación afectará las opciones de idioma en el sistema de administración y la aplicación",
@@ -1268,7 +1268,7 @@
   "pleaseInputWalletLabel": "Por favor, ingrese la etiqueta de la billetera",
   "pleaseInputCountryCode": "Por favor, ingrese el código de país",
   "pleaseInputBalance": "Por favor, ingrese el saldo",
-  "pleaseInputPassword": "Por favor, ingrese la contraseña de la billetera",
+  "pleaseInputPassword": "Por favor, ingrese la contraseña",
   "walletLabelExample": "Por ejemplo: Mi Billetera",
   "addressCopied": "Dirección copiada al portapapeles",
   "blockchainBrowser": "Explorador de blockchain",
@@ -1551,5 +1551,6 @@
   "sortOrder": "Orden de Clasificación",
   "pleaseInputSortOrder": "Por favor ingrese el valor de clasificación",
   "lang": "Idioma",
-  "pleaseSelectLang": "Por favor seleccione el idioma"
+  "pleaseSelectLang": "Por favor seleccione el idioma",
+  "companyInfo": "Información de la empresa"
 }

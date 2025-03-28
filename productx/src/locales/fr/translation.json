@@ -861,8 +861,8 @@
   "inputChineseName": "Veuillez entrer le nom chinois",
   "inputNativeName": "Veuillez entrer le nom natif",
 
-  "addTitle": "Ajouter une nouvelle langue",
-  "editTitle": "Modifier la langue",
+  "addTitle": "Créer",
+  "editTitle": "Modifier",
   "selectRecord": "Veuillez sélectionner les enregistrements à modifier",
 
   "modifyingEnableStatusWillAffectLanguageOptions": "Modifier le statut d'activation affectera les options de langue dans le système d'administration et l'application",
@@ -1546,5 +1546,6 @@
   "sortOrder": "Ordre de tri",
   "pleaseInputSortOrder": "Veuillez saisir la valeur de tri",
   "lang": "Langue",
-  "pleaseSelectLang": "Veuillez sélectionner une langue"
+  "pleaseSelectLang": "Veuillez sélectionner une langue",
+  "companyInfo": "Informations sur l'entreprise"
 }
