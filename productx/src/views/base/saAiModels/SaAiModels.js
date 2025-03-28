@@ -5,6 +5,8 @@ import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
 import SaAiModelsTable from './SaAiModelsTable';
+import UpdateSaAiModelsModel from './UpdateSaAiModelsModel';
+import SaAiModelsCreateFormModal from './SaAiModelsCreateFormModel';
 import { useTranslation } from 'react-i18next';
 
 const SaAiModels = () => {
@@ -22,6 +24,9 @@ const SaAiModels = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -60,6 +65,29 @@ const SaAiModels = () => {
     setCurrent(1);
   };
 
+  const handleCreateModel = async (values) => {
+    try {
+      await api.post('/manage/sa-ai-models/create', values);
+      message.success(t('createSuccess'));
+      setIsCreateModalVisible(false);
+      await fetchData();
+    } catch (error) {
+      message.error(t('createFailed'));
+    }
+  };
+
+  const handleUpdateModel = async (values) => {
+    try {
+      await api.post('/manage/sa-ai-models/update', values);
+      message.success(t('updateSuccess'));
+      setIsUpdateModalVisible(false);
+      setSelectedModel(null);
+      await fetchData();
+    } catch (error) {
+      message.error(t('updateFailed'));
+    }
+  };
+
   const handleStatusChange = async (ids, status) => {
     if (!Array.isArray(ids)) {
       ids = [ids];
@@ -80,6 +108,11 @@ const SaAiModels = () => {
     } catch (error) {
       message.error(t('updateFailed'));
     }
+  };
+
+  const handleEditClick = (model) => {
+    setSelectedModel(model);
+    setIsUpdateModalVisible(true);
   };
 
   const handleEnableStatusChange = async (id, event) => {
@@ -177,6 +210,12 @@ const SaAiModels = () => {
                 >
                   {t('batchDelete')}
                 </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsCreateModalVisible(true)}
+                >
+                  {t('addNew')}
+                </Button>
               </Space>
             </Col>
           </Row>
@@ -191,7 +230,7 @@ const SaAiModels = () => {
             selectedRows={selectedRows}
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
-            handleEditClick={() => {}}
+            handleEditClick={handleEditClick}
             handleEnableStatusChange={handleEnableStatusChange}
           />
         </Spin>
@@ -203,6 +242,24 @@ const SaAiModels = () => {
         onPageChange={setCurrent}
         pageSize={pageSize}
         onPageSizeChange={handlePageSizeChange}
+      />
+
+      <SaAiModelsCreateFormModal
+        visible={isCreateModalVisible}
+        onCancel={() => setIsCreateModalVisible(false)}
+        onOk={handleCreateModel}
+        confirmLoading={isLoading}
+      />
+
+      <UpdateSaAiModelsModel
+        visible={isUpdateModalVisible}
+        onCancel={() => {
+          setIsUpdateModalVisible(false);
+          setSelectedModel(null);
+        }}
+        onOk={handleUpdateModel}
+        initialValues={selectedModel}
+        confirmLoading={isLoading}
       />
     </div>
   );
