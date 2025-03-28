@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Col, Row, Select, Space } from 'antd';
+import { Button, Form, Input, message, Spin, Col, Row, Select, Space, Modal } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
-import SaProjectTable from './SaProjectTable';
-import UpdateSaProjectModel from './UpdateSaProjectModel';
-import SaProjectCreateFormModel from './SaProjectCreateFormModel';
-import SaProjectDetailModel from './SaProjectDetailModel';
+import SaAiAgentRoleTable from './SaAiAgentRoleTable';
+import UpdateSaAiAgentRoleModel from './UpdateSaAiAgentRoleModel';
+import SaAiAgentRoleCreateFormModal from './SaAiAgentRoleCreateFormModal';
 import { useTranslation } from 'react-i18next';
 
-const SaProject = () => {
+const SaAiAgentRole = () => {
   const { t } = useTranslation();
   
   const [data, setData] = useState([]);
@@ -18,10 +17,11 @@ const SaProject = () => {
   const [currentPage, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchParams, setSearchParams] = useState({
-    userId: '',
     name: '',
+    category: '',
+    parentId: null,
     status: '',
-    visibility: ''
+    lang: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,8 +29,7 @@ const SaProject = () => {
   const [createForm] = Form.useForm();
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -40,19 +39,25 @@ const SaProject = () => {
     setIsLoading(true);
     try {
       const filteredParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, value]) => value !== '')
+        Object.entries(searchParams).filter(([_, value]) => value !== '' && value !== null)
       );
-      const response = await api.get('/manage/sa-project/list', {
+      
+      // 将状态值转换为布尔类型
+      if (filteredParams.status === 'active') {
+        filteredParams.status = true;
+      } else if (filteredParams.status === 'inactive') {
+        filteredParams.status = false;
+      }
+
+      const { data, totalNum } = await api.get('/manage/sa-ai-agent-role/list', {
         params: { currentPage, pageSize: pageSize, ...filteredParams },
       });
 
-      if (response) {
-        setData(response.data);
-        setTotalNum(response.data.totalNum);
-      }
+      setData(data);
+      setTotalNum(totalNum);
     } catch (error) {
       console.error('获取数据失败', error);
-      message.error(t('loadDataFailed'));
+      message.error('获取数据失败');
     } finally {
       setIsLoading(false);
     }
@@ -69,27 +74,27 @@ const SaProject = () => {
     setCurrent(1);
   };
 
-  const handleCreateProject = async (values) => {
+  const handleCreateRole = async (values) => {
     try {
-      await api.post('/manage/sa-project/create', values);
-      message.success(t('createSuccess'));
+      await api.post('/manage/sa-ai-agent-role/create', values);
+      message.success('创建成功');
       setIsCreateModalVisible(false);
       createForm.resetFields();
       await fetchData();
     } catch (error) {
-      message.error(t('createFailed'));
+      message.error('创建失败');
     }
   };
 
-  const handleUpdateProject = async (values) => {
+  const handleUpdateRole = async (values) => {
     try {
-      await api.post('/manage/sa-project/update', values);
-      message.success(t('updateSuccess'));
+      await api.post('/manage/sa-ai-agent-role/update', values);
+      message.success('更新成功');
       setIsUpdateModalVisible(false);
       updateForm.resetFields();
       await fetchData();
     } catch (error) {
-      message.error(t('updateFailed'));
+      message.error('更新失败');
     }
   };
 
@@ -103,26 +108,33 @@ const SaProject = () => {
       return;
     }
 
-    try {
-      await api.post('/manage/sa-project/change-status', {
-        ids: ids,
-        status: status,
-      });
-      message.success(t('updateSuccess'));
-      await fetchData();
-    } catch (error) {
-      message.error(t('updateFailed'));
-    }
+    Modal.confirm({
+      title: t('confirmTitle'),
+      content: status === 'active' ? t('enableConfirmTitle') : t('disableConfirmTitle'),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      onOk: async () => {
+        try {
+          await api.post('/manage/sa-ai-agent-role/change-status', {
+            ids: ids,
+            status: status,
+          });
+          message.success(t('updateSuccess'));
+          await fetchData();
+        } catch (error) {
+          message.error(t('updateFailed'));
+        }
+      },
+    });
   };
 
-  const handleEditClick = (project) => {
-    setSelectedProject(project);
+  const handleEditClick = (role) => {
+    setSelectedRole(role);
     setIsUpdateModalVisible(true);
   };
 
-  const handleDetailClick = (project) => {
-    setSelectedProject(project);
-    setIsDetailModalVisible(true);
+  const handleEnableStatusChange = async (id, event) => {
+    await handleStatusChange(id, event.target.checked ? 'active' : 'inactive');
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -146,20 +158,31 @@ const SaProject = () => {
           <Row gutter={[16, 16]}>
             <Col>
               <Input
-                value={searchParams.userId}
+                value={searchParams.name}
                 onChange={handleSearchChange}
-                name="userId"
-                placeholder={t('userId')}
+                name="name"
+                placeholder={t('roleName')}
                 allowClear
                 style={{ width: 150 }}
               />
             </Col>
             <Col>
               <Input
-                value={searchParams.name}
+                value={searchParams.category}
                 onChange={handleSearchChange}
-                name="name"
-                placeholder={t('projectName')}
+                name="category"
+                placeholder={t('category')}
+                allowClear
+                style={{ width: 150 }}
+              />
+            </Col>
+            <Col>
+              <Input
+                value={searchParams.parentId}
+                onChange={handleSearchChange}
+                name="parentId"
+                placeholder={t('parentId')}
+                type="number"
                 allowClear
                 style={{ width: 150 }}
               />
@@ -168,25 +191,32 @@ const SaProject = () => {
               <Select
                 value={searchParams.status}
                 onChange={(value) => handleSelectChange(value, 'status')}
-                placeholder={t('status')}
+                placeholder={t('selectStatus')}
                 style={{ width: 150 }}
                 allowClear
               >
                 <Select.Option value="active">{t('active')}</Select.Option>
                 <Select.Option value="inactive">{t('inactive')}</Select.Option>
-                <Select.Option value="archived">{t('archived')}</Select.Option>
               </Select>
             </Col>
             <Col>
               <Select
-                value={searchParams.visibility}
-                onChange={(value) => handleSelectChange(value, 'visibility')}
-                placeholder={t('visibility')}
+                value={searchParams.lang}
+                onChange={(value) => handleSelectChange(value, 'lang')}
+                placeholder={t('selectLang')}
                 style={{ width: 150 }}
                 allowClear
               >
-                <Select.Option value="public">{t('public')}</Select.Option>
-                <Select.Option value="private">{t('private')}</Select.Option>
+                <Select.Option value="zh">中文</Select.Option>
+                <Select.Option value="en">English</Select.Option>
+                <Select.Option value="ja">日本語</Select.Option>
+                <Select.Option value="ko">한국어</Select.Option>
+                <Select.Option value="fr">Français</Select.Option>
+                <Select.Option value="de">Deutsch</Select.Option>
+                <Select.Option value="es">Español</Select.Option>
+                <Select.Option value="it">Italiano</Select.Option>
+                <Select.Option value="ru">Русский</Select.Option>
+                <Select.Option value="ar">العربية</Select.Option>
               </Select>
             </Col>
             <Col>
@@ -211,7 +241,7 @@ const SaProject = () => {
                 <Button
                   type="primary"
                   onClick={() => HandleBatchDelete({
-                    url: '/manage/sa-project/delete-batch',
+                    url: '/manage/sa-ai-agent-role/delete-batch',
                     selectedRows,
                     fetchData,
                   })}
@@ -233,15 +263,14 @@ const SaProject = () => {
 
       <div className="table-responsive">
         <Spin spinning={isLoading}>
-          <SaProjectTable
+          <SaAiAgentRoleTable
             data={data}
             selectAll={selectAll}
             selectedRows={selectedRows}
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
-            handleStatusChange={handleStatusChange}
-            handleDetailClick={handleDetailClick}
+            handleEnableStatusChange={handleEnableStatusChange}
           />
         </Spin>
       </div>
@@ -254,28 +283,22 @@ const SaProject = () => {
         onPageSizeChange={handlePageSizeChange}
       />
 
-      <SaProjectCreateFormModel
+      <SaAiAgentRoleCreateFormModal
         visible={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
-        onOk={handleCreateProject}
+        onOk={handleCreateRole}
         confirmLoading={isLoading}
       />
 
-      <UpdateSaProjectModel
+      <UpdateSaAiAgentRoleModel
         visible={isUpdateModalVisible}
         onCancel={() => setIsUpdateModalVisible(false)}
-        onOk={handleUpdateProject}
-        initialValues={selectedProject}
+        onOk={handleUpdateRole}
+        initialValues={selectedRole}
         confirmLoading={isLoading}
-      />
-
-      <SaProjectDetailModel
-        visible={isDetailModalVisible}
-        onCancel={() => setIsDetailModalVisible(false)}
-        projectData={selectedProject}
       />
     </div>
   );
 };
 
-export default SaProject;
+export default SaAiAgentRole;

@@ -29,6 +29,12 @@
 - pageSize：分页大小
 - currentPage：当前页
 
+接口拦截器：
+- 接口拦截器在 `productx/src/axiosInstance.js` 文件中。
+- 必须注意productx/src/axiosInstance.js已经做了一些处理，不要再下层多次处理data
+
+添加翻译配置时：
+- 请确保在添加新翻译时，请直接在配置末尾添加，我自己校对重复的情况。
 
 
 
