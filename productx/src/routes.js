@@ -198,6 +198,12 @@ const MsxUserStorageRouter = React.lazy(() => import('./views/base/msxUserStorag
 
 const MsxStorageBucketRouter = React.lazy(() => import('./views/base/msxStorageBucket/MsxStorageBucket'));
 
+const SaAiCompaniesRouter = React.lazy(() => import('./views/base/saAiCompanies/SaAiCompanies'));
+
+const SaAiAgentRouter = React.lazy(() => import('./views/base/saAiAgent/SaAiAgent'));
+
+const SaProjectRouter = React.lazy(() => import('./views/base/saProject/SaProject'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -756,6 +762,33 @@ const routes = [
     element: (
       <PrivateRoute>
         <MsxStorageBucketRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/saAiCompanies',
+    name: 'AI公司管理',
+    element: (
+      <PrivateRoute>
+        <SaAiCompaniesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/saAiAgent',
+    name: 'AI代理管理',
+    element: (
+      <PrivateRoute>
+        <SaAiAgentRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/saProject',
+    name: 'AI项目管理',
+    element: (
+      <PrivateRoute>
+        <SaProjectRouter />
       </PrivateRoute>
     ),
   },
