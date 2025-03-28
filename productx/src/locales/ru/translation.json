@@ -1531,5 +1531,22 @@
   "pleaseInputSortOrder": "Пожалуйста, введите значение сортировки",
   "lang": "Язык",
   "pleaseSelectLang": "Пожалуйста, выберите язык",
-  "companyInfo": "Информация о компании"
+  "companyInfo": "Информация о компании",
+  "modelName": "Название модели",
+  "modelCode": "Код модели",
+  "companyId": "ID компании",
+  "releaseYear": "Год выпуска",
+  "contextLength": "Длина контекста",
+  "thoughtChainLength": "Длина цепочки мыслей",
+  "outputLength": "Длина вывода",
+  "apiBaseUrl": "Базовый URL API",
+  "pleaseInputModelName": "Пожалуйста, введите название модели",
+  "pleaseInputModelCode": "Пожалуйста, введите код модели",
+  "pleaseInputCompanyCode": "Пожалуйста, введите код компании",
+  "pleaseInputCompanyId": "Пожалуйста, введите ID компании",
+  "pleaseSelectReleaseYear": "Пожалуйста, выберите год выпуска",
+  "pleaseInputContextLength": "Пожалуйста, введите длину контекста",
+  "pleaseInputThoughtChainLength": "Пожалуйста, введите длину цепочки мыслей",
+  "pleaseInputOutputLength": "Пожалуйста, введите длину вывода",
+  "pleaseInputApiBaseUrl": "Пожалуйста, введите базовый URL API"
 }

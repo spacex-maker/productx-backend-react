@@ -1563,5 +1563,22 @@
   "pleaseInputSortOrder": "请输入排序值",
   "lang": "语言",
   "pleaseSelectLang": "请选择语言",
-  "companyInfo": "公司信息"
+  "companyInfo": "公司信息",
+  "modelName": "模型名称",
+  "modelCode": "模型代码",
+  "companyId": "公司ID",
+  "releaseYear": "发布年份",
+  "contextLength": "上下文长度",
+  "thoughtChainLength": "思维链长度",
+  "outputLength": "输出长度",
+  "apiBaseUrl": "API基础URL",
+  "pleaseInputModelName": "请输入模型名称",
+  "pleaseInputModelCode": "请输入模型代码",
+  "pleaseInputCompanyCode": "请输入公司代码",
+  "pleaseInputCompanyId": "请输入公司ID",
+  "pleaseSelectReleaseYear": "请选择发布年份",
+  "pleaseInputContextLength": "请输入上下文长度",
+  "pleaseInputThoughtChainLength": "请输入思维链长度",
+  "pleaseInputOutputLength": "请输入输出长度",
+  "pleaseInputApiBaseUrl": "请输入API基础URL"
 }

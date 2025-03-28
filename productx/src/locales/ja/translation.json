@@ -1540,5 +1540,22 @@
   "pleaseInputSortOrder": "並び順の値を入力してください",
   "lang": "言語",
   "pleaseSelectLang": "言語を選択してください",
-  "companyInfo": "会社情報"
+  "companyInfo": "会社情報",
+  "modelName": "モデル名",
+  "modelCode": "モデルコード",
+  "companyId": "会社ID",
+  "releaseYear": "リリース年",
+  "contextLength": "コンテキスト長",
+  "thoughtChainLength": "思考チェーン長",
+  "outputLength": "出力長",
+  "apiBaseUrl": "APIベースURL",
+  "pleaseInputModelName": "モデル名を入力してください",
+  "pleaseInputModelCode": "モデルコードを入力してください",
+  "pleaseInputCompanyCode": "会社コードを入力してください",
+  "pleaseInputCompanyId": "会社IDを入力してください",
+  "pleaseSelectReleaseYear": "リリース年を選択してください",
+  "pleaseInputContextLength": "コンテキスト長を入力してください",
+  "pleaseInputThoughtChainLength": "思考チェーン長を入力してください",
+  "pleaseInputOutputLength": "出力長を入力してください",
+  "pleaseInputApiBaseUrl": "APIベースURLを入力してください"
 }

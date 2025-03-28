@@ -42,9 +42,9 @@ const SaAiModels = () => {
         params: { currentPage, pageSize, ...filteredParams },
       });
 
-      if (response?.data?.data) {
-        setData(response.data.data.data);
-        setTotalNum(response.data.data.totalNum);
+      if (response) {
+        setData(response.data);
+        setTotalNum(response.totalNum);
       }
     } catch (error) {
       console.error('获取数据失败', error);

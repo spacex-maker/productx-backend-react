@@ -1533,5 +1533,22 @@
   "pleaseInputSortOrder": "Inserisci il valore dell'ordine",
   "lang": "Lingua",
   "pleaseSelectLang": "Seleziona una lingua",
-  "companyInfo": "Informazioni sull'azienda"
+  "companyInfo": "Informazioni sull'azienda",
+  "modelName": "Nome del modello",
+  "modelCode": "Codice del modello",
+  "companyId": "ID azienda",
+  "releaseYear": "Anno di rilascio",
+  "contextLength": "Lunghezza del contesto",
+  "thoughtChainLength": "Lunghezza della catena di pensiero",
+  "outputLength": "Lunghezza output",
+  "apiBaseUrl": "URL base API",
+  "pleaseInputModelName": "Inserisci il nome del modello",
+  "pleaseInputModelCode": "Inserisci il codice del modello",
+  "pleaseInputCompanyCode": "Inserisci il codice azienda",
+  "pleaseInputCompanyId": "Inserisci l'ID azienda",
+  "pleaseSelectReleaseYear": "Seleziona l'anno di rilascio",
+  "pleaseInputContextLength": "Inserisci la lunghezza del contesto",
+  "pleaseInputThoughtChainLength": "Inserisci la lunghezza della catena di pensiero",
+  "pleaseInputOutputLength": "Inserisci la lunghezza dell'output",
+  "pleaseInputApiBaseUrl": "Inserisci l'URL base dell'API"
 }

@@ -1540,5 +1540,22 @@
   "pleaseInputSortOrder": "Please input sort order value",
   "lang": "Language",
   "pleaseSelectLang": "Please select language",
-  "companyInfo": "Company Information"
+  "companyInfo": "Company Information",
+  "modelName": "Model Name",
+  "modelCode": "Model Code",
+  "companyId": "Company ID",
+  "releaseYear": "Release Year",
+  "contextLength": "Context Length",
+  "thoughtChainLength": "Thought Chain Length",
+  "outputLength": "Output Length",
+  "apiBaseUrl": "API Base URL",
+  "pleaseInputModelName": "Please input model name",
+  "pleaseInputModelCode": "Please input model code",
+  "pleaseInputCompanyCode": "Please input company code",
+  "pleaseInputCompanyId": "Please input company ID",
+  "pleaseSelectReleaseYear": "Please select release year",
+  "pleaseInputContextLength": "Please input context length",
+  "pleaseInputThoughtChainLength": "Please input thought chain length",
+  "pleaseInputOutputLength": "Please input output length",
+  "pleaseInputApiBaseUrl": "Please input API base URL"
 }

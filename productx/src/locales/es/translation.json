@@ -1552,5 +1552,22 @@
   "pleaseInputSortOrder": "Por favor ingrese el valor de clasificación",
   "lang": "Idioma",
   "pleaseSelectLang": "Por favor seleccione el idioma",
-  "companyInfo": "Información de la empresa"
+  "companyInfo": "Información de la empresa",
+  "modelName": "Nombre del modelo",
+  "modelCode": "Código del modelo",
+  "companyId": "ID de la empresa",
+  "releaseYear": "Año de lanzamiento",
+  "contextLength": "Longitud del contexto",
+  "thoughtChainLength": "Longitud de la cadena de pensamiento",
+  "outputLength": "Longitud de salida",
+  "apiBaseUrl": "URL base de la API",
+  "pleaseInputModelName": "Por favor ingrese el nombre del modelo",
+  "pleaseInputModelCode": "Por favor ingrese el código del modelo",
+  "pleaseInputCompanyCode": "Por favor ingrese el código de la empresa",
+  "pleaseInputCompanyId": "Por favor ingrese el ID de la empresa",
+  "pleaseSelectReleaseYear": "Por favor seleccione el año de lanzamiento",
+  "pleaseInputContextLength": "Por favor ingrese la longitud del contexto",
+  "pleaseInputThoughtChainLength": "Por favor ingrese la longitud de la cadena de pensamiento",
+  "pleaseInputOutputLength": "Por favor ingrese la longitud de salida",
+  "pleaseInputApiBaseUrl": "Por favor ingrese la URL base de la API"
 }

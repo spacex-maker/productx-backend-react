@@ -1537,5 +1537,22 @@
   "pleaseInputSortOrder": "الرجاء إدخال قيمة الفرز",
   "lang": "اللغة",
   "pleaseSelectLang": "الرجاء اختيار اللغة",
-  "companyInfo": "معلومات الشركة"
+  "companyInfo": "معلومات الشركة",
+  "modelName": "اسم النموذج",
+  "modelCode": "رمز النموذج",
+  "companyId": "معرف الشركة",
+  "releaseYear": "سنة الإصدار",
+  "contextLength": "طول السياق",
+  "thoughtChainLength": "طول سلسلة الأفكار",
+  "outputLength": "طول المخرجات",
+  "apiBaseUrl": "عنوان API الأساسي",
+  "pleaseInputModelName": "الرجاء إدخال اسم النموذج",
+  "pleaseInputModelCode": "الرجاء إدخال رمز النموذج",
+  "pleaseInputCompanyCode": "الرجاء إدخال رمز الشركة",
+  "pleaseInputCompanyId": "الرجاء إدخال معرف الشركة",
+  "pleaseSelectReleaseYear": "الرجاء اختيار سنة الإصدار",
+  "pleaseInputContextLength": "الرجاء إدخال طول السياق",
+  "pleaseInputThoughtChainLength": "الرجاء إدخال طول سلسلة الأفكار",
+  "pleaseInputOutputLength": "الرجاء إدخال طول المخرجات",
+  "pleaseInputApiBaseUrl": "الرجاء إدخال عنوان API الأساسي"
 }

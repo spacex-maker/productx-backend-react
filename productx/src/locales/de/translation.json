@@ -1534,5 +1534,22 @@
   "pleaseInputSortOrder": "Bitte Sortierwert eingeben",
   "lang": "Sprache",
   "pleaseSelectLang": "Bitte Sprache auswählen",
-  "companyInfo": "Unternehmensinformationen"
+  "companyInfo": "Unternehmensinformationen",
+  "modelName": "Modellname",
+  "modelCode": "Modellcode",
+  "companyId": "Firmen-ID",
+  "releaseYear": "Erscheinungsjahr",
+  "contextLength": "Kontextlänge",
+  "thoughtChainLength": "Gedankenkettenlänge",
+  "outputLength": "Ausgabelänge",
+  "apiBaseUrl": "API-Basis-URL",
+  "pleaseInputModelName": "Bitte Modellnamen eingeben",
+  "pleaseInputModelCode": "Bitte Modellcode eingeben",
+  "pleaseInputCompanyCode": "Bitte Firmencode eingeben",
+  "pleaseInputCompanyId": "Bitte Firmen-ID eingeben",
+  "pleaseSelectReleaseYear": "Bitte Erscheinungsjahr auswählen",
+  "pleaseInputContextLength": "Bitte Kontextlänge eingeben",
+  "pleaseInputThoughtChainLength": "Bitte Gedankenkettenlänge eingeben",
+  "pleaseInputOutputLength": "Bitte Ausgabelänge eingeben",
+  "pleaseInputApiBaseUrl": "Bitte API-Basis-URL eingeben"
 }
