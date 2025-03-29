@@ -115,7 +115,7 @@ const SaAiAgentRole = () => {
       cancelText: t('cancel'),
       onOk: async () => {
         try {
-          await api.put('/manage/sa-ai-agent-role/change-status', {
+          await api.post('/manage/sa-ai-agent-role/change-status', {
             ids: ids,
             status: status,
           });

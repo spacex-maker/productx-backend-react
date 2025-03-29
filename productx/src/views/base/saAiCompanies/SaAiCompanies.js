@@ -109,7 +109,7 @@ const SaAiCompanies = () => {
       cancelText: t('cancel'),
       onOk: async () => {
         try {
-          await api.put('/manage/sa-ai-companies/change-status', {
+          await api.post('/manage/sa-ai-companies/change-status', {
             ids: ids,
             status: status,
           });
