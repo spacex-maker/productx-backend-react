@@ -99,7 +99,7 @@ const SaAiModels = () => {
     }
 
     try {
-      await api.post('/manage/sa-ai-models/change-status', {
+      await api.put('/manage/sa-ai-models/change-status', {
         ids: ids,
         status: status,
       });
