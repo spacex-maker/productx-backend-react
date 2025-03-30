@@ -208,6 +208,8 @@ const SaAiAgentRoleRouter = React.lazy(() => import('./views/base/saAiAgentRole/
 
 const SaAiModelsRouter = React.lazy(() => import('./views/base/saAiModels/SaAiModels'));
 
+const SaIndustryRouter = React.lazy(() => import('./views/base/saIndustry/SaIndustry'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -811,6 +813,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <SaAiModelsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/saIndustry',
+    name: '行业管理',
+    element: (
+      <PrivateRoute>
+        <SaIndustryRouter />
       </PrivateRoute>
     ),
   },

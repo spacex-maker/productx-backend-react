@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Avatar, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const SaAiAgentTable = ({
@@ -12,6 +12,19 @@ const SaAiAgentTable = ({
   handleEnableStatusChange,
 }) => {
   const { t } = useTranslation();
+
+  const getModelTypeColor = (modelType) => {
+    switch (modelType) {
+      case 'gpt-4-turbo':
+        return 'purple';
+      case 'gpt-4':
+        return 'blue';
+      case 'gpt-3.5-turbo':
+        return 'green';
+      default:
+        return 'default';
+    }
+  };
 
   return (
     <table className="table table-bordered table-striped">
@@ -29,8 +42,7 @@ const SaAiAgentTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          <th>{t('userId')}</th>
-          <th>{t('agentName')}</th>
+          <th>{t('agentInfo')}</th>
           <th>{t('modelType')}</th>
           <th>{t('roles')}</th>
           <th>{t('mbtiCode')}</th>
@@ -52,15 +64,21 @@ const SaAiAgentTable = ({
                   checked={selectedRows.includes(item.id)}
                   onChange={() => handleSelectRow(item.id, data)}
                 />
-                <label
-                  className="custom-control-label"
-                  htmlFor={`td_checkbox_${item.id}`}
-                ></label>
+                <label className="custom-control-label" htmlFor={`td_checkbox_${item.id}`}></label>
               </div>
             </td>
-            <td>{item.userId}</td>
-            <td>{item.name}</td>
-            <td>{item.modelType}</td>
+            <td>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Avatar src={item.avatarUrl} size={40} />
+                <div>
+                  <div style={{ fontWeight: 'bold' }}>{item.name}</div>
+                  <div style={{ color: '#666', fontSize: '12px' }}>ID: {item.userId}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <Tag color={getModelTypeColor(item.modelType)}>{item.modelType}</Tag>
+            </td>
             <td>{item.roles}</td>
             <td>{item.mbtiCode}</td>
             <td>{item.temperature}</td>
