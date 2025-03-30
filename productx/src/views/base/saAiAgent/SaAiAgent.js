@@ -16,6 +16,7 @@ const SaAiAgent = () => {
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [companiesData, setCompaniesData] = useState([]);
   const [searchParams, setSearchParams] = useState({
     userId: '',
     name: '',
@@ -34,7 +35,18 @@ const SaAiAgent = () => {
 
   useEffect(() => {
     fetchData();
+    fetchCompaniesAndModels();
   }, [currentPage, pageSize, searchParams]);
+
+  useEffect(() => {
+    console.log('companiesData 发生变化:', companiesData);
+  }, [companiesData]);
+
+  const fetchCompaniesAndModels = async () => {
+      const response = await api.get('/manage/sa-ai-companies/company-and-model-tree');
+      setCompaniesData(response);
+
+  };
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -46,9 +58,10 @@ const SaAiAgent = () => {
         params: { currentPage, pageSize: pageSize, ...filteredParams },
       });
 
-      if (response) {
-        setData(response.data);
-        setTotalNum(response.totalNum);
+      if (response && typeof response === 'object') {
+        const { data = [], totalNum = 0 } = response;
+        setData(data);
+        setTotalNum(totalNum);
       }
     } catch (error) {
       console.error('获取数据失败', error);
@@ -284,17 +297,25 @@ const SaAiAgent = () => {
 
       <SaAiAgentCreateFormModal
         visible={isCreateModalVisible}
-        onCancel={() => setIsCreateModalVisible(false)}
+        onCancel={() => {
+          setIsCreateModalVisible(false);
+          createForm.resetFields();
+        }}
         onOk={handleCreateAgent}
         confirmLoading={isLoading}
+        companiesData={companiesData || []}
       />
 
       <UpdateSaAiAgentModel
         visible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
+        onCancel={() => {
+          setIsUpdateModalVisible(false);
+          updateForm.resetFields();
+        }}
         onOk={handleUpdateAgent}
         initialValues={selectedAgent}
         confirmLoading={isLoading}
+        companiesData={companiesData || []}
       />
     </div>
   );

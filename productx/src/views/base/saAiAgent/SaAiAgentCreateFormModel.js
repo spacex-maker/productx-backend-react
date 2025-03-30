@@ -1,15 +1,41 @@
-import React from 'react';
-import { Modal, Form, Input, InputNumber, Select, Row, Col } from 'antd';
+import React, { useState } from 'react';
+import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 const SaAiAgentCreateFormModal = ({
   visible,
   onCancel,
   onOk,
-  confirmLoading
+  confirmLoading,
+  companiesData = []
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
+  const [selectedCompany, setSelectedCompany] = useState(null);
+
+  console.log('创建表单收到的公司数据:', companiesData);
+
+  const handleCompanyChange = (value) => {
+    console.log('选择的公司:', value);
+    setSelectedCompany(value.value);
+    form.setFieldsValue({ modelType: undefined });
+  };
+
+  const tagRender = (props) => {
+    const { label, value, closable, onClose } = props;
+    const company = companiesData.find(c => c.id === value);
+    return (
+      <Tag 
+        closable={closable}
+        onClose={onClose}
+        style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+      >
+        <Avatar src={company?.logoPath} size="small" />
+        {label}
+      </Tag>
+    );
+  };
 
   return (
     <Modal
@@ -63,12 +89,47 @@ const SaAiAgentCreateFormModal = ({
         </Row>
 
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               name="avatarUrl"
               label={t('avatarUrl')}
             >
               <Input placeholder="images/avatars/example.png" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name="companyId"
+              label={t('company')}
+              rules={[{ required: true, message: t('pleaseSelectCompany') }]}
+            >
+              <Select 
+                placeholder={t('pleaseSelectCompany')}
+                onChange={handleCompanyChange}
+                labelInValue
+                optionLabelProp="label"
+              >
+                {companiesData?.map((company) => (
+                  <Select.Option 
+                    key={company.id} 
+                    value={company.id}
+                    label={
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Avatar src={company.logoPath} size="small" />
+                        <span>{company.companyName}</span>
+                      </div>
+                    }
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <Avatar src={company.logoPath} size="small" />
+                      <span>{company.companyName}</span>
+                    </div>
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -77,10 +138,23 @@ const SaAiAgentCreateFormModal = ({
               label={t('modelType')}
               rules={[{ required: true, message: t('pleaseSelectModelType') }]}
             >
-              <Select placeholder={t('pleaseSelectModelType')}>
-                <Select.Option value="gpt-4-turbo">GPT-4 Turbo</Select.Option>
-                <Select.Option value="gpt-4">GPT-4</Select.Option>
-                <Select.Option value="gpt-3.5-turbo">GPT-3.5 Turbo</Select.Option>
+              <Select 
+                placeholder={t('pleaseSelectModelType')}
+                disabled={!selectedCompany}
+              >
+                {console.log('选中的公司ID:', selectedCompany)}
+                {companiesData?.find(c => c.id === selectedCompany)?.models.map(model => {
+                  console.log('渲染模型:', model);
+                  return (
+                    <Select.Option 
+                      key={model.id} 
+                      value={model.modelCode}
+                      title={model.description}
+                    >
+                      {model.modelName}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </Col>
@@ -183,6 +257,24 @@ const SaAiAgentCreateFormModal = ({
       </Form>
     </Modal>
   );
+};
+
+SaAiAgentCreateFormModal.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onOk: PropTypes.func.isRequired,
+  confirmLoading: PropTypes.bool.isRequired,
+  companiesData: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    companyName: PropTypes.string,
+    logoPath: PropTypes.string,
+    models: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      modelCode: PropTypes.string,
+      modelName: PropTypes.string,
+      description: PropTypes.string
+    }))
+  }))
 };
 
 export default SaAiAgentCreateFormModal;
