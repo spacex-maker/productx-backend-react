@@ -277,8 +277,14 @@
     "存储服务商管理": "Verwaltung von Speicheranbietern",
     "存储区域管理": "Verwaltung von Speicherregionen",
     "凭证管理": "Anmeldeinformationsverwaltung",
-    "用户存储节点管理": "Verwaltung von Benutzerspeicherknoten"
-
+    "用户存储节点管理": "Verwaltung von Benutzerspeicherknoten",
+    "SA-AI系统": "SA-AI-System",
+    "AI公司": "KI-Unternehmen",
+    "AI项目": "KI-Projekt",
+    "AI角色": "KI-Rolle",
+    "AI模型管理": "KI-Modellverwaltung",
+    "AI行业": "KI-Branche",
+    "AI代理": "KI-Agent"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",

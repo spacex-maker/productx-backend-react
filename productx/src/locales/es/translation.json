@@ -278,7 +278,14 @@
     "存储服务商管理": "Gestión de proveedores de almacenamiento",
     "存储区域管理": "Gestión de regiones de almacenamiento",
     "凭证管理": "Gestión de credenciales",
-    "用户存储节点管理": "Gestión de nodos de almacenamiento de usuario"
+    "用户存储节点管理": "Gestión de nodos de almacenamiento de usuario",
+    "SA-AI系统": "Sistema SA-AI",
+    "AI公司": "Empresa de IA",
+    "AI项目": "Proyecto de IA",
+    "AI角色": "Rol de IA",
+    "AI模型管理": "Gestión de modelos de IA",
+    "AI行业": "Industria de IA",
+    "AI代理": "Agente de IA"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",

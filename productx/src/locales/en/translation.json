@@ -270,7 +270,14 @@
     "存储服务商管理": "Storage Service Provider Management",
     "存储区域管理": "Storage Region Management",
     "凭证管理": "Credential Management",
-    "用户存储节点管理": "User Storage Node Management"
+    "用户存储节点管理": "User Storage Node Management",
+    "SA-AI系统": "SA-AI System",
+    "AI公司": "AI Company",
+    "AI项目": "AI Project",
+    "AI角色": "AI Role",
+    "AI模型管理": "AI Model Management",
+    "AI行业": "AI Industry",
+    "AI代理": "AI Agent"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
