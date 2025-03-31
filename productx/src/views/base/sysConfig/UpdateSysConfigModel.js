@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input } from 'antd';
 
 const UpdateSysConfigModel = ({
@@ -10,6 +10,8 @@ const UpdateSysConfigModel = ({
   selectedConfig,
   t
 }) => {
+  const [isConfigValueModified, setIsConfigValueModified] = useState(false);
+
   useEffect(() => {
     if (isVisible && selectedConfig) {
       form.setFieldsValue({
@@ -18,19 +20,39 @@ const UpdateSysConfigModel = ({
         configValue: selectedConfig.configValue,
         description: selectedConfig.description,
       });
+      setIsConfigValueModified(false);
     }
   }, [isVisible, selectedConfig, form]);
+
+  const handleFormSubmit = (values) => {
+    // 只有当配置值被修改过时，才包含在提交数据中
+    const submitData = {
+      id: values.id,
+      configKey: values.configKey,
+      description: values.description,
+    };
+
+    if (isConfigValueModified) {
+      submitData.configValue = values.configValue;
+    }
+
+    handleUpdateConfig(submitData);
+  };
+
+  const handleConfigValueChange = () => {
+    setIsConfigValueModified(true);
+  };
 
   return (
     <Modal
       title={t('editConfig')}
       open={isVisible}
       onCancel={onCancel}
-      onOk={onOk}
+      onOk={() => form.submit()}
       okText={t('confirm')}
       cancelText={t('cancel')}
     >
-      <Form form={form} onFinish={handleUpdateConfig}>
+      <Form form={form} onFinish={handleFormSubmit}>
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
@@ -48,7 +70,11 @@ const UpdateSysConfigModel = ({
           name="configValue"
           rules={[{ required: true, message: t('pleaseInputConfigValue') }]}
         >
-          <Input.TextArea rows={4} placeholder={t('pleaseInputConfigValue')} />
+          <Input.TextArea 
+            rows={4} 
+            placeholder={t('pleaseInputConfigValue')}
+            onChange={handleConfigValueChange}
+          />
         </Form.Item>
 
         <Form.Item
