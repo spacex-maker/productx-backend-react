@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/anakki-web-manage.iml" filepath="$PROJECT_DIR$/.idea/anakki-web-manage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/productx-backend-react.iml" filepath="$PROJECT_DIR$/.idea/productx-backend-react.iml" />
     </modules>
   </component>
 </project>
