@@ -285,7 +285,10 @@
     "AI角色": "Rol de IA",
     "AI模型管理": "Gestión de modelos de IA",
     "AI行业": "Industria de IA",
-    "AI代理": "Agente de IA"
+    "AI代理": "Agente de IA",
+    "运维系统": "Sistema de operaciones",
+    "服务器管理": "Gestión de servidores",
+    "管理员日志": "Registro de administrador"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",
@@ -1619,5 +1622,17 @@
   "add": "Agregar",
   "changeStatusConfirmTitle": "¿Está seguro de que desea cambiar el estado?",
   "dns": "DNS",
-  "inputDns": "Por favor, ingrese el DNS"
+  "inputDns": "Por favor, ingrese el DNS",
+  "adminLoginLogs": "Registros de inicio de sesión de administrador",
+  "loginTime": "Hora de inicio de sesión",
+  "loginIp": "IP de inicio de sesión",
+  "loginStatus": "Estado de inicio de sesión",
+  "loginSuccess": "Inicio de sesión exitoso",
+  "loginFailed": "Inicio de sesión fallido",
+  "failedAttempts": "Intentos fallidos",
+  "userAgent": "Agente de usuario",
+  "searchLoginLogs": "Buscar registros de inicio de sesión",
+  "selectLoginStatus": "Seleccionar estado de inicio de sesión",
+  "startTime": "Hora de inicio",
+  "endTime": "Hora de fin"
 }

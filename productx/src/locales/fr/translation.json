@@ -285,7 +285,10 @@
     "AI角色": "Rôle IA",
     "AI模型管理": "Gestion des modèles IA",
     "AI行业": "Industrie de l'IA",
-    "AI代理": "Agent IA"
+    "AI代理": "Agent IA",
+    "运维系统": "Système d’exploitation",
+    "服务器管理": "Gestion des serveurs",
+    "管理员日志": "Journaux d'administration"
   },
   "confirmDelete": "Confirmer la suppression",
   "countryName": "Nom du pays",
@@ -1614,5 +1617,17 @@
   "add": "Ajouter",
   "changeStatusConfirmTitle": "Êtes-vous sûr de vouloir changer le statut ?",
   "dns": "DNS",
-  "inputDns": "Veuillez saisir le DNS"
+  "inputDns": "Veuillez saisir le DNS",
+  "adminLoginLogs": "Journaux de connexion administrateur",
+  "loginTime": "Heure de connexion",
+  "loginIp": "IP de connexion",
+  "loginStatus": "État de connexion",
+  "loginSuccess": "Connexion réussie",
+  "loginFailed": "Échec de connexion",
+  "failedAttempts": "Tentatives échouées",
+  "userAgent": "Agent utilisateur",
+  "searchLoginLogs": "Rechercher les journaux de connexion",
+  "selectLoginStatus": "Sélectionner l'état de connexion",
+  "startTime": "Heure de début",
+  "endTime": "Heure de fin"
 }

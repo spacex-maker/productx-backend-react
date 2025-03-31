@@ -212,6 +212,8 @@ const SaIndustryRouter = React.lazy(() => import('./views/base/saIndustry/SaIndu
 
 const ServerInstancesRouter = React.lazy(() => import('./views/base/serverInstances/ServerInstances'));
 
+const AdminLoginLogsRouter = React.lazy(() => import('./views/base/adminLoginLogs/AdminLoginLogs'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -833,6 +835,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <ServerInstancesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/adminLoginLogs',
+    name: '管理员日志',
+    element: (
+      <PrivateRoute>
+        <AdminLoginLogsRouter />
       </PrivateRoute>
     ),
   },

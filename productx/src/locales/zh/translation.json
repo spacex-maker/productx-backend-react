@@ -285,7 +285,10 @@
     "AI角色": "AI角色",
     "AI模型管理": "AI模型管理",
     "AI行业": "AI行业",
-    "AI代理": "AI代理"
+    "AI代理": "AI代理",
+    "运维系统": "运维系统",
+    "服务器管理": "服务器管理",
+    "管理员日志": "管理员日志"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -1630,5 +1633,17 @@
   "add": "新增",
   "changeStatusConfirmTitle": "确定要更改吗？",
   "dns": "DNS",
-  "inputDns": "请输入DNS"
+  "inputDns": "请输入DNS",
+  "adminLoginLogs": "管理员登录日志",
+  "loginTime": "登录时间",
+  "loginIp": "登录IP",
+  "loginStatus": "登录状态",
+  "loginSuccess": "登录成功",
+  "loginFailed": "登录失败",
+  "failedAttempts": "失败尝试次数",
+  "userAgent": "用户代理",
+  "searchLoginLogs": "搜索登录日志",
+  "selectLoginStatus": "选择登录状态",
+  "startTime": "开始时间",
+  "endTime": "结束时间"
 }

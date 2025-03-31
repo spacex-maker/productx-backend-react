@@ -278,7 +278,10 @@
     "AI角色": "Ruolo AI",
     "AI模型管理": "Gestione modelli AI",
     "AI行业": "Industria AI",
-    "AI代理": "Agente AI"
+    "AI代理": "Agente AI",
+    "运维系统": "Sistema operativo",
+    "服务器管理": "Gestione server",
+    "管理员日志": "Log di amministrazione"
   },
   "confirmDelete": "Conferma eliminazione",
   "countryName": "Nome del paese",
@@ -1598,5 +1601,17 @@
   "payAsYouGoBidding": "Pagamento a consumo - Offerta",
   "subscription": "Abbonamento",
   "add": "Aggiungi",
-  "changeStatusConfirmTitle": "Sei sicuro di voler cambiare lo stato?"
+  "changeStatusConfirmTitle": "Sei sicuro di voler cambiare lo stato?",
+  "adminLoginLogs": "Registri di accesso amministratore",
+  "loginTime": "Ora di accesso",
+  "loginIp": "IP di accesso",
+  "loginStatus": "Stato di accesso",
+  "loginSuccess": "Accesso riuscito",
+  "loginFailed": "Accesso fallito",
+  "failedAttempts": "Tentativi falliti",
+  "userAgent": "User Agent",
+  "searchLoginLogs": "Cerca registri di accesso",
+  "selectLoginStatus": "Seleziona stato di accesso",
+  "startTime": "Ora di inizio",
+  "endTime": "Ora di fine"
 }

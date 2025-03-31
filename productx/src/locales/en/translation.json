@@ -277,7 +277,10 @@
     "AI角色": "AI Role",
     "AI模型管理": "AI Model Management",
     "AI行业": "AI Industry",
-    "AI代理": "AI Agent"
+    "AI代理": "AI Agent",
+    "运维系统": "Operations System",
+    "服务器管理": "Server Management",
+    "管理员日志": "Admin Logs"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
@@ -1607,5 +1610,17 @@
   "add": "Add",
   "changeStatusConfirmTitle": "Are you sure you want to change the status?",
   "dns": "DNS",
-  "inputDns": "Please input DNS"
+  "inputDns": "Please input DNS",
+  "adminLoginLogs": "Admin Login Logs",
+  "loginTime": "Login Time",
+  "loginIp": "Login IP",
+  "loginStatus": "Login Status",
+  "loginSuccess": "Login Success",
+  "loginFailed": "Login Failed",
+  "failedAttempts": "Failed Attempts",
+  "userAgent": "User Agent",
+  "searchLoginLogs": "Search Login Logs",
+  "selectLoginStatus": "Select Login Status",
+  "startTime": "Start Time",
+  "endTime": "End Time"
 }

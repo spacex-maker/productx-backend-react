@@ -284,7 +284,10 @@
     "AI角色": "KI-Rolle",
     "AI模型管理": "KI-Modellverwaltung",
     "AI行业": "KI-Branche",
-    "AI代理": "KI-Agent"
+    "AI代理": "KI-Agent",
+    "运维系统": "Betriebssystem",
+    "服务器管理": "Serververwaltung",
+    "管理员日志": "Admin-Protokolle"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -1600,5 +1603,17 @@
   "add": "Hinzufügen",
   "changeStatusConfirmTitle": "Möchten Sie den Status wirklich ändern?",
   "dns": "DNS",
-  "inputDns": "Bitte geben Sie den DNS ein"
+  "inputDns": "Bitte geben Sie den DNS ein",
+  "adminLoginLogs": "Administrator-Anmeldeprotokolle",
+  "loginTime": "Anmeldezeit",
+  "loginIp": "Anmelde-IP",
+  "loginStatus": "Anmeldestatus",
+  "loginSuccess": "Anmeldung erfolgreich",
+  "loginFailed": "Anmeldung fehlgeschlagen",
+  "failedAttempts": "Fehlgeschlagene Versuche",
+  "userAgent": "Benutzer-Agent",
+  "searchLoginLogs": "Anmeldeprotokolle durchsuchen",
+  "selectLoginStatus": "Anmeldestatus auswählen",
+  "startTime": "Startzeit",
+  "endTime": "Endzeit"
 }

@@ -285,7 +285,10 @@
     "AI角色": "AI役割",
     "AI模型管理": "AIモデル管理",
     "AI行业": "AI業界",
-    "AI代理": "AIエージェント"
+    "AI代理": "AIエージェント",
+    "运维系统": "運用システム",
+    "服务器管理": "サーバー管理",
+    "管理员日志": "管理者ログ"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -1607,5 +1610,17 @@
   "add": "追加",
   "changeStatusConfirmTitle": "ステータスを変更してもよろしいですか？",
   "dns": "DNS",
-  "inputDns": "DNSを入力してください"
+  "inputDns": "DNSを入力してください",
+  "adminLoginLogs": "管理者ログイン履歴",
+  "loginTime": "ログイン時間",
+  "loginIp": "ログインIP",
+  "loginStatus": "ログイン状態",
+  "loginSuccess": "ログイン成功",
+  "loginFailed": "ログイン失敗",
+  "failedAttempts": "失敗試行回数",
+  "userAgent": "ユーザーエージェント",
+  "searchLoginLogs": "ログイン履歴を検索",
+  "selectLoginStatus": "ログイン状態を選択",
+  "startTime": "開始時間",
+  "endTime": "終了時間"
 }
