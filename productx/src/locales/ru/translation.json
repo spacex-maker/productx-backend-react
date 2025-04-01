@@ -1613,5 +1613,10 @@
   "searchLoginLogs": "Поиск журналов входа",
   "selectLoginStatus": "Выберите статус входа",
   "startTime": "Время начала",
-  "endTime": "Время окончания"
+  "endTime": "Время окончания",
+  "loginDetail": "Детали Входа",
+  "viewDetail": "Просмотр Деталей",
+  "device": "Информация об Устройстве",
+  "browser": "Браузер",
+  "failReason": "Причина Ошибки"
 }

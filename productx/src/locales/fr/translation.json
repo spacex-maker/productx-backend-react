@@ -286,7 +286,7 @@
     "AI模型管理": "Gestion des modèles IA",
     "AI行业": "Industrie de l'IA",
     "AI代理": "Agent IA",
-    "运维系统": "Système d’exploitation",
+    "运维系统": "Système d'exploitation",
     "服务器管理": "Gestion des serveurs",
     "管理员日志": "Journaux d'administration"
   },
@@ -1629,5 +1629,10 @@
   "searchLoginLogs": "Rechercher les journaux de connexion",
   "selectLoginStatus": "Sélectionner l'état de connexion",
   "startTime": "Heure de début",
-  "endTime": "Heure de fin"
+  "endTime": "Heure de fin",
+  "loginDetail": "Détails de Connexion",
+  "viewDetail": "Voir les Détails",
+  "device": "Informations sur l'Appareil",
+  "browser": "Navigateur",
+  "failReason": "Raison de l'Échec"
 }

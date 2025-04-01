@@ -1613,5 +1613,10 @@
   "searchLoginLogs": "Cerca registri di accesso",
   "selectLoginStatus": "Seleziona stato di accesso",
   "startTime": "Ora di inizio",
-  "endTime": "Ora di fine"
+  "endTime": "Ora di fine",
+  "loginDetail": "Dettagli di Accesso",
+  "viewDetail": "Visualizza Dettagli",
+  "device": "Informazioni sul Dispositivo",
+  "browser": "Browser",
+  "failReason": "Motivo del Fallimento"
 }

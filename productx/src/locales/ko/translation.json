@@ -1620,5 +1620,10 @@
   "searchLoginLogs": "로그인 기록 검색",
   "selectLoginStatus": "로그인 상태 선택",
   "startTime": "시작 시간",
-  "endTime": "종료 시간"
+  "endTime": "종료 시간",
+  "loginDetail": "로그인 상세",
+  "viewDetail": "상세 보기",
+  "device": "기기 정보",
+  "browser": "브라우저",
+  "failReason": "실패 사유"
 }

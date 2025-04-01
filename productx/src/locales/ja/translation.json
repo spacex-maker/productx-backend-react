@@ -1622,5 +1622,10 @@
   "searchLoginLogs": "ログイン履歴を検索",
   "selectLoginStatus": "ログイン状態を選択",
   "startTime": "開始時間",
-  "endTime": "終了時間"
+  "endTime": "終了時間",
+  "loginDetail": "ログイン詳細",
+  "viewDetail": "詳細を見る",
+  "device": "デバイス情報",
+  "browser": "ブラウザ",
+  "failReason": "失敗理由"
 }

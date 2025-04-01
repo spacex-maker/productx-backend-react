@@ -1645,5 +1645,10 @@
   "searchLoginLogs": "搜索登录日志",
   "selectLoginStatus": "选择登录状态",
   "startTime": "开始时间",
-  "endTime": "结束时间"
+  "endTime": "结束时间",
+  "loginDetail": "登录详情",
+  "viewDetail": "查看详情",
+  "device": "设备信息",
+  "browser": "浏览器",
+  "failReason": "失败原因"
 }

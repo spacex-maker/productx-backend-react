@@ -1634,5 +1634,10 @@
   "searchLoginLogs": "Buscar registros de inicio de sesión",
   "selectLoginStatus": "Seleccionar estado de inicio de sesión",
   "startTime": "Hora de inicio",
-  "endTime": "Hora de fin"
+  "endTime": "Hora de fin",
+  "loginDetail": "Detalles de Inicio de Sesión",
+  "viewDetail": "Ver Detalles",
+  "device": "Información del Dispositivo",
+  "browser": "Navegador",
+  "failReason": "Motivo del Fallo"
 }

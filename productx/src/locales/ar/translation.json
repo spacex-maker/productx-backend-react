@@ -1619,5 +1619,10 @@
   "searchLoginLogs": "بحث سجلات الدخول",
   "selectLoginStatus": "اختر حالة تسجيل الدخول",
   "startTime": "وقت البدء",
-  "endTime": "وقت الانتهاء"
+  "endTime": "وقت الانتهاء",
+  "loginDetail": "تفاصيل تسجيل الدخول",
+  "viewDetail": "عرض التفاصيل",
+  "device": "معلومات الجهاز",
+  "browser": "المتصفح",
+  "failReason": "سبب الفشل"
 }

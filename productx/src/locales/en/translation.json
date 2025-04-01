@@ -1622,5 +1622,10 @@
   "searchLoginLogs": "Search Login Logs",
   "selectLoginStatus": "Select Login Status",
   "startTime": "Start Time",
-  "endTime": "End Time"
+  "endTime": "End Time",
+  "loginDetail": "Login Details",
+  "viewDetail": "View Details",
+  "device": "Device Info",
+  "browser": "Browser",
+  "failReason": "Failure Reason"
 }
