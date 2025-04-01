@@ -111,9 +111,9 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
   };
 
   // 组件加载时获取密钥
-  useEffect(() => {
-    fetchApiKey();
-  }, []);
+  // useEffect(() => {
+  //   fetchApiKey();
+  // }, []);
 
   // 获取历史会话列表
   const fetchSessions = async () => {
@@ -181,7 +181,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
       }
 
       const data = await api.post('/manage/chat/send', payload);
-      
+
       const aiMessage = {
         type: 'ai',
         content: data.content,
@@ -189,7 +189,7 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
       };
 
       setMessages(prev => [...prev, aiMessage]);
-      
+
       // 如果是新会话，保存会话ID
       if (!sessionId && data.sessionId) {
         setSessionId(data.sessionId);
@@ -360,15 +360,15 @@ const XAIChat = ({ isFloating = false, onClose, onToggleFloating }) => {
   };
 
   // 如果没有密钥，显示加载状态
-  if (!apiKey) {
-    return (
-      <StyledCard $isFloating={isFloating}>
-        <LoadingWrapper>
-          <CSpinner color="primary"/>
-        </LoadingWrapper>
-      </StyledCard>
-    );
-  }
+  // if (!apiKey) {
+  //   return (
+  //     <StyledCard $isFloating={isFloating}>
+  //       <LoadingWrapper>
+  //         <CSpinner color="primary"/>
+  //       </LoadingWrapper>
+  //     </StyledCard>
+  //   );
+  // }
 
   return (
     <StyledCard $isFloating={isFloating}>
@@ -1061,7 +1061,7 @@ const NewSessionButton = styled(CButton)`
   justify-content: center;
   gap: 8px;
   padding: 8px 16px;
-  
+
   &:hover {
     background: var(--cui-primary);
     color: white;
