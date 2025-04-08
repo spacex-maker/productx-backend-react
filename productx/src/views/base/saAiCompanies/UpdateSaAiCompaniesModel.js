@@ -14,21 +14,26 @@ const UpdateSaAiCompaniesModel = ({
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (initialValues) {
+    if (visible && initialValues) {
       const values = {
         ...initialValues,
         foundedYear: initialValues.foundedYear ? moment(initialValues.foundedYear) : null
       };
       form.setFieldsValue(values);
     }
-  }, [initialValues, form]);
+  }, [initialValues, form, visible]);
+
+  const handleCancel = () => {
+    form.resetFields();
+    onCancel();
+  };
 
   return (
     <Modal
       title={t('editTitle')}
       open={visible}
       width={800}
-      onCancel={onCancel}
+      onCancel={handleCancel}
       onOk={() => {
         form.validateFields()
           .then((values) => {

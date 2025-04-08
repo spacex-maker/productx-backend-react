@@ -279,7 +279,10 @@ const SaAiCompanies = () => {
 
       <UpdateSaAiCompaniesModel
         visible={isUpdateModalVisible}
-        onCancel={() => setIsUpdateModalVisible(false)}
+        onCancel={() => {
+          setIsUpdateModalVisible(false);
+          setSelectedCompany(null);
+        }}
         onOk={handleUpdateCompany}
         initialValues={selectedCompany}
         confirmLoading={isLoading}
