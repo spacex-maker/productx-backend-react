@@ -1625,5 +1625,9 @@
   "viewDetail": "상세 보기",
   "device": "기기 정보",
   "browser": "브라우저",
-  "failReason": "실패 사유"
+  "failReason": "실패 사유",
+  "userAiAgent": "사용자 AI 에이전트",
+  "systemAiAgent": "시스템 AI 에이전트",
+  "addSystemTitle": "시스템 AI 에이전트 추가",
+  "company": "회사"
 }

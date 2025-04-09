@@ -1620,5 +1620,9 @@
   "viewDetail": "Details Anzeigen",
   "device": "Geräteinformationen",
   "browser": "Browser",
-  "failReason": "Fehlergrund"
+  "failReason": "Fehlergrund",
+  "userAiAgent": "Benutzer-KI-Agent",
+  "systemAiAgent": "System-KI-Agent",
+  "addSystemTitle": "System-KI-Agent hinzufügen",
+  "company": "Unternehmen"
 }

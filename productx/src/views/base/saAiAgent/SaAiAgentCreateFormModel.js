@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag } from 'antd';
+import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag, Switch } from 'antd';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 

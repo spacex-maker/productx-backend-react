@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag, Switch } from 'antd';
+import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-const UpdateSaAiAgentModel = ({
+const UpdateSaAiAgentSystemModel = ({
   visible,
   onCancel,
   onOk,
@@ -31,21 +31,6 @@ const UpdateSaAiAgentModel = ({
     setSelectedCompany(value.value);
   };
 
-  const tagRender = (props) => {
-    const { label, value, closable, onClose } = props;
-    const company = companiesData.find(c => c.id === value);
-    return (
-      <Tag 
-        closable={closable}
-        onClose={onClose}
-        style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-      >
-        <Avatar src={company?.logoPath} size="small" />
-        {label}
-      </Tag>
-    );
-  };
-
   return (
     <Modal
       title={t('editTitle')}
@@ -68,16 +53,7 @@ const UpdateSaAiAgentModel = ({
         layout="vertical"
       >
         <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="userId"
-              label={t('userId')}
-              rules={[{ required: true, message: t('pleaseInputUserId') }]}
-            >
-              <Input disabled placeholder={t('pleaseInputUserId')} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               name="name"
               label={t('agentName')}
@@ -206,6 +182,38 @@ const UpdateSaAiAgentModel = ({
           </Col>
         </Row>
 
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name="temperature"
+              label={t('temperature')}
+              rules={[{ required: true, message: t('pleaseInputTemperature') }]}
+            >
+              <InputNumber
+                min={0}
+                max={2}
+                step={0.1}
+                placeholder={t('pleaseInputTemperature')}
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="maxTokens"
+              label={t('maxTokens')}
+              rules={[{ required: true, message: t('pleaseInputMaxTokens') }]}
+            >
+              <InputNumber
+                min={1}
+                max={32000}
+                placeholder={t('pleaseInputMaxTokens')}
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
         <Form.Item
           name="prompt"
           label={t('prompt')}
@@ -218,60 +226,18 @@ const UpdateSaAiAgentModel = ({
             maxLength={500}
           />
         </Form.Item>
-
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="temperature"
-              label={t('temperature')}
-              rules={[{ required: true, message: t('pleaseInputTemperature') }]}
-            >
-              <InputNumber 
-                min={0} 
-                max={2} 
-                step={0.1} 
-                style={{ width: '100%' }} 
-                placeholder={t('pleaseInputTemperature')}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="maxTokens"
-              label={t('maxTokens')}
-              rules={[{ required: true, message: t('pleaseInputMaxTokens') }]}
-            >
-              <InputNumber 
-                min={1} 
-                max={4096} 
-                style={{ width: '100%' }} 
-                placeholder={t('pleaseInputMaxTokens')}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
       </Form>
     </Modal>
   );
 };
 
-UpdateSaAiAgentModel.propTypes = {
+UpdateSaAiAgentSystemModel.propTypes = {
   visible: PropTypes.bool.isRequired,
   onCancel: PropTypes.func.isRequired,
   onOk: PropTypes.func.isRequired,
   initialValues: PropTypes.object,
-  confirmLoading: PropTypes.bool.isRequired,
-  companiesData: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    companyName: PropTypes.string,
-    logoPath: PropTypes.string,
-    models: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      modelCode: PropTypes.string,
-      modelName: PropTypes.string,
-      description: PropTypes.string
-    }))
-  }))
+  confirmLoading: PropTypes.bool,
+  companiesData: PropTypes.array
 };
 
-export default UpdateSaAiAgentModel;
+export default UpdateSaAiAgentSystemModel; 

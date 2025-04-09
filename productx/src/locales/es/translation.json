@@ -1639,5 +1639,9 @@
   "viewDetail": "Ver Detalles",
   "device": "Información del Dispositivo",
   "browser": "Navegador",
-  "failReason": "Motivo del Fallo"
+  "failReason": "Motivo del Fallo",
+  "userAiAgent": "Agente IA de Usuario",
+  "systemAiAgent": "Agente IA del Sistema",
+  "addSystemTitle": "Agregar Agente IA del Sistema",
+  "company": "Empresa"
 }

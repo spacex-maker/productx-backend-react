@@ -1650,5 +1650,10 @@
   "viewDetail": "查看详情",
   "device": "设备信息",
   "browser": "浏览器",
-  "failReason": "失败原因"
+  "failReason": "失败原因",
+  "userAiAgent": "用户AI助手",
+  "systemAiAgent": "系统AI助手",
+  "addSystemTitle": "添加系统AI助手",
+  "company": "公司",
+  "pleaseSelectCompany": "请选择公司"
 }

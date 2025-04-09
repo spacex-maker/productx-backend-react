@@ -1627,5 +1627,9 @@
   "viewDetail": "詳細を見る",
   "device": "デバイス情報",
   "browser": "ブラウザ",
-  "failReason": "失敗理由"
+  "failReason": "失敗理由",
+  "userAiAgent": "ユーザーAIエージェント",
+  "systemAiAgent": "システムAIエージェント",
+  "addSystemTitle": "システムAIエージェントを追加",
+  "company": "会社"
 }

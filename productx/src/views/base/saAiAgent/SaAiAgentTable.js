@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Avatar, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 const SaAiAgentTable = ({
   data,
@@ -72,7 +73,7 @@ const SaAiAgentTable = ({
                 <Avatar src={item.avatarUrl} size={40} />
                 <div>
                   <div style={{ fontWeight: 'bold' }}>{item.name}</div>
-                  <div style={{ color: '#666', fontSize: '12px' }}>ID: {item.userId}</div>
+                  {item.userId && <div style={{ color: '#666', fontSize: '12px' }}>ID: {item.userId}</div>}
                 </div>
               </div>
             </td>
@@ -103,6 +104,27 @@ const SaAiAgentTable = ({
       </tbody>
     </table>
   );
+};
+
+SaAiAgentTable.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    userId: PropTypes.string,
+    name: PropTypes.string,
+    avatarUrl: PropTypes.string,
+    modelType: PropTypes.string,
+    roles: PropTypes.string,
+    mbtiCode: PropTypes.string,
+    temperature: PropTypes.number,
+    maxTokens: PropTypes.number,
+    status: PropTypes.string
+  })).isRequired,
+  selectAll: PropTypes.bool.isRequired,
+  selectedRows: PropTypes.arrayOf(PropTypes.number).isRequired,
+  handleSelectAll: PropTypes.func.isRequired,
+  handleSelectRow: PropTypes.func.isRequired,
+  handleEditClick: PropTypes.func.isRequired,
+  handleEnableStatusChange: PropTypes.func.isRequired
 };
 
 export default SaAiAgentTable;
