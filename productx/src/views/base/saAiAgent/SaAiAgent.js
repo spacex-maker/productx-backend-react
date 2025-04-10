@@ -47,30 +47,30 @@ const SaAiAgent = () => {
   }, [companiesData]);
 
   const fetchCompaniesAndModels = async () => {
-      const response = await api.get('/manage/sa-ai-companies/company-and-model-tree');
-      setCompaniesData(response);
-
+    try {
+      const companies = await api.get('/manage/sa-ai-companies/company-and-model-tree');
+      setCompaniesData(companies);
+    } catch (error) {
+      console.error('获取公司和模型数据失败:', error);
+      message.error(t('fetchFailed'));
+    }
   };
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const filteredParams = Object.entries(searchParams).filter(([_, value]) => value !== '');
-      
       const url = activeTab === 'user' ? '/manage/sa-ai-agent/list' : '/manage/sa-ai-agent/list-system';
       
-      const response = await api.get(url, {
-        params: { currentPage, pageSize: pageSize, ...filteredParams },
+      const { data, totalNum } = await api.get(url, {
+        params: { currentPage, pageSize: pageSize, ...Object.fromEntries(filteredParams) },
       });
 
-      if (response && typeof response === 'object') {
-        const { data = [], totalNum = 0 } = response;
-        setData(data);
-        setTotalNum(totalNum);
-      }
+      setData(data || []);
+      setTotalNum(totalNum || 0);
     } catch (error) {
       console.error('获取数据失败', error);
-      message.error('获取数据失败');
+      message.error(t('fetchFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -92,6 +92,7 @@ const SaAiAgent = () => {
       const submitData = {
         name: values.name,
         avatarUrl: values.avatarUrl,
+        bgImg: values.bgImg,
         modelType: values.modelType,
         roles: values.roles,
         mbtiCode: values.mbtiCode,
@@ -115,13 +116,21 @@ const SaAiAgent = () => {
 
   const handleUpdateAgent = async (values) => {
     try {
-      await api.post('/manage/sa-ai-agent/update', values);
-      message.success('更新成功');
-      setIsUpdateModalVisible(false);
-      updateForm.resetFields();
-      await fetchData();
+      const submitData = {
+        ...values,
+        id: values.id,
+        bgImg: values.bgImg,
+      };
+      const response = await api.post('/manage/sa-ai-agent/update', submitData);
+      if (response) {
+        message.success(t('updateSuccess'));
+        setIsUpdateModalVisible(false);
+        updateForm.resetFields();
+        await fetchData();
+      }
     } catch (error) {
-      message.error('更新失败');
+      console.error('更新失败:', error);
+      message.error(error.response?.data?.message || t('updateFailed'));
     }
   };
 

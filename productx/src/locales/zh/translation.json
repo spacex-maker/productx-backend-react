@@ -1655,5 +1655,10 @@
   "systemAiAgent": "系统AI助手",
   "addSystemTitle": "添加系统AI助手",
   "company": "公司",
-  "pleaseSelectCompany": "请选择公司"
+  "pleaseSelectCompany": "请选择公司",
+  "bgImg": "背景图片",
+  "bgImgUrl": "背景图片地址",
+  "uploading": "上传中",
+  "uploadSuccess": "上传成功",
+  "uploadFailed": "上传失败"
 }

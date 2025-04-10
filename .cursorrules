@@ -29,12 +29,15 @@
 - pageSize：分页大小
 - currentPage：当前页
 
-接口拦截器：
+API请求：
 - 接口拦截器在 `productx/src/axiosInstance.js` 文件中。
-- 必须注意productx/src/axiosInstance.js已经做了一些处理，不要再下层多次处理data
+- 非常重要：必须注意productx/src/axiosInstance.js已经做了一些处理，不要再下层多次处理data
 
 添加翻译配置时：
 - 请确保在添加新翻译时，请直接在配置末尾添加，我自己校对重复的情况。
+
+上传图片：
+- manage模组下，后台管理上传图片使用MultipartFile类，上传图片接口为/manage/image/upload上传图片成功后，返回图片url。然后创建和修改接口就可以使用此url填充图片字段。
 
 
 

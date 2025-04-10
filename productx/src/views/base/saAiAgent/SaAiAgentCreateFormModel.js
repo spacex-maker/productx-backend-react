@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag, Switch } from 'antd';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import ImageUpload from 'src/components/common/ImageUpload';
 
 const SaAiAgentCreateFormModal = ({
   visible,
@@ -13,6 +14,8 @@ const SaAiAgentCreateFormModal = ({
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [bgImgUrl, setBgImgUrl] = useState('');
 
   console.log('创建表单收到的公司数据:', companiesData);
 
@@ -44,6 +47,8 @@ const SaAiAgentCreateFormModal = ({
       width={800}
       onCancel={() => {
         form.resetFields();
+        setAvatarUrl('');
+        setBgImgUrl('');
         onCancel();
       }}
       onOk={() => {
@@ -51,6 +56,8 @@ const SaAiAgentCreateFormModal = ({
           .then((values) => {
             onOk(values);
             form.resetFields();
+            setAvatarUrl('');
+            setBgImgUrl('');
           })
           .catch((info) => {
             console.log('Validate Failed:', info);
@@ -67,6 +74,26 @@ const SaAiAgentCreateFormModal = ({
           status: 'active'
         }}
       >
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item
+              name="bgImg"
+              label={t('bgImg')}
+              rules={[{ required: true, message: t('pleaseUploadBgImg') }]}
+            >
+              <ImageUpload 
+                imageUrl={bgImgUrl}
+                onImageChange={(url) => {
+                  setBgImgUrl(url);
+                  form.setFieldsValue({ bgImg: url });
+                }}
+                type="background"
+                tipText={t('bgImgTip')}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -89,13 +116,25 @@ const SaAiAgentCreateFormModal = ({
         </Row>
 
         <Row gutter={16}>
-          <Col span={24}>
+          <Col span={8}>
             <Form.Item
               name="avatarUrl"
               label={t('avatarUrl')}
+              style={{ marginBottom: 0 }}
             >
-              <Input placeholder="images/avatars/example.png" />
+              <ImageUpload 
+                imageUrl={avatarUrl}
+                onImageChange={(url) => {
+                  setAvatarUrl(url);
+                  form.setFieldsValue({ avatarUrl: url });
+                }}
+                type="avatar"
+                tipText={t('avatarTip')}
+              />
             </Form.Item>
+          </Col>
+          <Col span={16}>
+            {/* 空白占位 */}
           </Col>
         </Row>
 
@@ -219,7 +258,7 @@ const SaAiAgentCreateFormModal = ({
             rows={4} 
             placeholder={t('pleaseInputPrompt')}
             showCount
-            maxLength={500}
+            maxLength={1000}
           />
         </Form.Item>
 

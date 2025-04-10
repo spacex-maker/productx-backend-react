@@ -1,18 +1,69 @@
-import React, { useState } from 'react';
-import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag } from 'antd';
+import React, { useState, useEffect } from 'react';
+import {
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Row,
+  Col,
+  Avatar,
+  Tag,
+  message,
+  Upload,
+  Button,
+  Image,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import api from 'src/axiosInstance';
+import { UploadOutlined } from '@ant-design/icons';
+import ImageUpload from 'src/components/common/ImageUpload';
+
+const MBTI_OPTIONS = [
+  'ISTJ',
+  'ISFJ',
+  'INFJ',
+  'INTJ',
+  'ISTP',
+  'ISFP',
+  'INFP',
+  'INTP',
+  'ESTP',
+  'ESFP',
+  'ENFP',
+  'ENTP',
+  'ESTJ',
+  'ESFJ',
+  'ENFJ',
+  'ENTJ',
+];
+
+const STATUS_OPTIONS = [
+  { value: 'active', label: 'active' },
+  { value: 'inactive', label: 'inactive' },
+  { value: 'archived', label: 'archived' },
+];
+
+const tagRenderPropTypes = {
+  label: PropTypes.node.isRequired,
+  value: PropTypes.any.isRequired,
+  closable: PropTypes.bool,
+  onClose: PropTypes.func,
+};
 
 const SaAiAgentSystemCreateFormModal = ({
   visible,
   onCancel,
   onOk,
   confirmLoading,
-  companiesData = []
+  companiesData = [],
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [bgImgUrl, setBgImgUrl] = useState('');
 
   const handleCompanyChange = (value) => {
     setSelectedCompany(value.value);
@@ -34,6 +85,14 @@ const SaAiAgentSystemCreateFormModal = ({
     );
   };
 
+  tagRender.propTypes = tagRenderPropTypes;
+
+  const initialValues = {
+    temperature: 0.7,
+    maxTokens: 2000,
+    status: 'active',
+  };
+
   return (
     <Modal
       title={t('addSystemTitle')}
@@ -41,6 +100,8 @@ const SaAiAgentSystemCreateFormModal = ({
       width={800}
       onCancel={() => {
         form.resetFields();
+        setAvatarUrl('');
+        setBgImgUrl('');
         onCancel();
       }}
       onOk={() => {
@@ -49,6 +110,8 @@ const SaAiAgentSystemCreateFormModal = ({
             onOk({ ...values, isSystem: true })
               .then(() => {
                 form.resetFields();
+                setAvatarUrl('');
+                setBgImgUrl('');
               });
           })
           .catch((info) => {
@@ -60,14 +123,30 @@ const SaAiAgentSystemCreateFormModal = ({
       <Form
         form={form}
         layout="vertical"
-        initialValues={{
-          temperature: 0.7,
-          maxTokens: 2000,
-          status: 'active'
-        }}
+        initialValues={initialValues}
       >
         <Row gutter={16}>
           <Col span={24}>
+            <Form.Item
+              name="bgImg"
+              label={t('bgImg')}
+              rules={[{ required: true, message: t('pleaseUploadBgImg') }]}
+            >
+              <ImageUpload 
+                imageUrl={bgImgUrl}
+                onImageChange={(url) => {
+                  setBgImgUrl(url);
+                  form.setFieldsValue({ bgImg: url });
+                }}
+                type="background"
+                tipText={t('bgImgTip')}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={16}>
             <Form.Item
               name="name"
               label={t('agentName')}
@@ -76,12 +155,21 @@ const SaAiAgentSystemCreateFormModal = ({
               <Input placeholder={t('pleaseInputAgentName')} />
             </Form.Item>
           </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item name="avatarUrl" label={t('avatarUrl')}>
-              <Input placeholder="images/avatars/example.png" />
+          <Col span={8}>
+            <Form.Item
+              name="avatarUrl"
+              label={t('avatarUrl')}
+              style={{ marginBottom: 0 }}
+            >
+              <ImageUpload 
+                imageUrl={avatarUrl}
+                onImageChange={(url) => {
+                  setAvatarUrl(url);
+                  form.setFieldsValue({ avatarUrl: url });
+                }}
+                type="avatar"
+                tipText={t('avatarTip')}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -91,13 +179,13 @@ const SaAiAgentSystemCreateFormModal = ({
             <Form.Item
               name="companyId"
               label={t('company')}
-              rules={[{ required: true, message: t('pleaseSelectCompany') }]}
             >
               <Select
                 placeholder={t('pleaseSelectCompany')}
                 onChange={handleCompanyChange}
                 labelInValue
                 optionLabelProp="label"
+                allowClear
               >
                 {companiesData?.map((company) => (
                   <Select.Option
@@ -125,19 +213,17 @@ const SaAiAgentSystemCreateFormModal = ({
               label={t('modelType')}
               rules={[{ required: true, message: t('pleaseSelectModelType') }]}
             >
-              <Select placeholder={t('pleaseSelectModelType')} disabled={!selectedCompany}>
-                {companiesData
-                  ?.find((c) => c.id === selectedCompany)
-                  ?.models.map((model) => (
-                    <Select.Option
-                      key={model.id}
-                      value={model.modelCode}
-                      title={model.description}
-                    >
-                      {model.modelName}
-                    </Select.Option>
-                  ))}
-              </Select>
+              {selectedCompany ? (
+                <Select placeholder={t('pleaseSelectModelType')} allowClear>
+                  {companiesData
+                    ?.find((c) => c.id === selectedCompany)
+                    ?.models.map((model) => (
+                      <Select.Option key={model.id} value={model.modelCode} title={model.description}>{model.description}</Select.Option>
+                    ))}
+                </Select>
+              ) : (
+                <Input placeholder={t('pleaseInputModelType')} />
+              )}
             </Form.Item>
           </Col>
         </Row>
@@ -158,22 +244,9 @@ const SaAiAgentSystemCreateFormModal = ({
               rules={[{ required: true, message: t('pleaseInputMbtiCode') }]}
             >
               <Select placeholder={t('pleaseSelectMbtiCode')}>
-                <Select.Option value="ISTJ">ISTJ</Select.Option>
-                <Select.Option value="ISFJ">ISFJ</Select.Option>
-                <Select.Option value="INFJ">INFJ</Select.Option>
-                <Select.Option value="INTJ">INTJ</Select.Option>
-                <Select.Option value="ISTP">ISTP</Select.Option>
-                <Select.Option value="ISFP">ISFP</Select.Option>
-                <Select.Option value="INFP">INFP</Select.Option>
-                <Select.Option value="INTP">INTP</Select.Option>
-                <Select.Option value="ESTP">ESTP</Select.Option>
-                <Select.Option value="ESFP">ESFP</Select.Option>
-                <Select.Option value="ENFP">ENFP</Select.Option>
-                <Select.Option value="ENTP">ENTP</Select.Option>
-                <Select.Option value="ESTJ">ESTJ</Select.Option>
-                <Select.Option value="ESFJ">ESFJ</Select.Option>
-                <Select.Option value="ENFJ">ENFJ</Select.Option>
-                <Select.Option value="ENTJ">ENTJ</Select.Option>
+                {MBTI_OPTIONS.map((mbtiOption) => (
+                  <Select.Option key={mbtiOption} value={mbtiOption}>{mbtiOption}</Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
@@ -184,9 +257,9 @@ const SaAiAgentSystemCreateFormModal = ({
               rules={[{ required: true, message: t('pleaseSelectStatus') }]}
             >
               <Select placeholder={t('pleaseSelectStatus')}>
-                <Select.Option value="active">{t('active')}</Select.Option>
-                <Select.Option value="inactive">{t('inactive')}</Select.Option>
-                <Select.Option value="archived">{t('archived')}</Select.Option>
+                {STATUS_OPTIONS.map((statusOption) => (
+                  <Select.Option key={statusOption.value} value={statusOption.value}>{t(statusOption.label)}</Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
@@ -197,7 +270,7 @@ const SaAiAgentSystemCreateFormModal = ({
           label={t('prompt')}
           rules={[{ required: true, message: t('pleaseInputPrompt') }]}
         >
-          <Input.TextArea rows={4} placeholder={t('pleaseInputPrompt')} showCount maxLength={500} />
+          <Input.TextArea rows={4} placeholder={t('pleaseInputPrompt')} showCount maxLength={1000} />
         </Form.Item>
 
         <Row gutter={16}>

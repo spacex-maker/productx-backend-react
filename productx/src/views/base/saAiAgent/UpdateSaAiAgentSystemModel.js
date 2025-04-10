@@ -1,7 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Select, Row, Col, Avatar, Tag } from 'antd';
+import {
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Row,
+  Col,
+  Avatar,
+  Tag,
+  Upload,
+  message,
+  Button,
+  Image,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
+import api from 'src/axiosInstance';
+import ImageUpload from 'src/components/common/ImageUpload';
+import './updateSaAiAgentStyle.css';
 
 const UpdateSaAiAgentSystemModel = ({
   visible,
@@ -9,27 +27,56 @@ const UpdateSaAiAgentSystemModel = ({
   onOk,
   initialValues,
   confirmLoading,
-  companiesData
+  companiesData,
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [bgImgUrl, setBgImgUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (initialValues) {
+    if (visible && initialValues) {
       form.setFieldsValue(initialValues);
+      setBgImgUrl(initialValues.bgImg || '');
+      setImageUrl(initialValues.avatarUrl || '');
       // 根据当前模型找到对应的公司
-      const company = companiesData?.find(c => 
-        c.models.some(m => m.modelCode === initialValues.modelType)
+      const company = companiesData?.find((c) => 
+        c.models.some((m) => m.modelCode === initialValues.modelType)
       );
       setSelectedCompany(company?.id);
     }
-  }, [initialValues, form, companiesData]);
+  }, [visible, initialValues, form, companiesData]);
 
   const handleCompanyChange = (value) => {
-    form.setFieldsValue({ modelType: undefined });
-    setSelectedCompany(value.value);
+    const companyId = value?.value;
+    form.setFieldsValue({
+      modelType: undefined,
+      companyId,
+    });
+    setSelectedCompany(companyId);
   };
+
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
+      await onOk(values);
+    } catch (error) {
+      console.error('Form validation failed:', error);
+      message.error(t('formValidationFailed'));
+    }
+  };
+
+  const columns = [
+    {
+      title: t('name'),
+      dataIndex: 'name',
+      render: (c) => <Tag>{c}</Tag>,
+    },
+  ];
 
   return (
     <Modal
@@ -37,23 +84,42 @@ const UpdateSaAiAgentSystemModel = ({
       open={visible}
       width={800}
       onCancel={onCancel}
-      onOk={() => {
-        form.validateFields()
-          .then((values) => {
-            onOk({ ...values, id: initialValues?.id });
-          })
-          .catch((info) => {
-            console.log('Validate Failed:', info);
-          });
-      }}
+      onOk={handleOk}
       confirmLoading={confirmLoading}
     >
       <Form
         form={form}
         layout="vertical"
       >
+        <Form.Item
+          name="id"
+          hidden
+        >
+          <Input />
+        </Form.Item>
+
         <Row gutter={16}>
           <Col span={24}>
+            <Form.Item
+              name="bgImg"
+              label={t('bgImg')}
+              rules={[{ required: true, message: t('pleaseUploadBgImg') }]}
+            >
+              <ImageUpload 
+                imageUrl={bgImgUrl}
+                onImageChange={(url) => {
+                  setBgImgUrl(url);
+                  form.setFieldsValue({ bgImg: url });
+                }}
+                type="background"
+                tipText={t('bgImgTip')}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={16}>
             <Form.Item
               name="name"
               label={t('agentName')}
@@ -62,15 +128,21 @@ const UpdateSaAiAgentSystemModel = ({
               <Input placeholder={t('pleaseInputAgentName')} />
             </Form.Item>
           </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={24}>
+          <Col span={8}>
             <Form.Item
               name="avatarUrl"
               label={t('avatarUrl')}
+              style={{ marginBottom: 0 }}
             >
-              <Input placeholder="images/avatars/example.png" />
+              <ImageUpload 
+                imageUrl={imageUrl}
+                onImageChange={(url) => {
+                  setImageUrl(url);
+                  form.setFieldsValue({ avatarUrl: url });
+                }}
+                type="avatar"
+                tipText={t('avatarTip')}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -80,7 +152,6 @@ const UpdateSaAiAgentSystemModel = ({
             <Form.Item
               name="companyId"
               label={t('company')}
-              rules={[{ required: true, message: t('pleaseSelectCompany') }]}
             >
               <Select 
                 placeholder={t('pleaseSelectCompany')}
@@ -88,6 +159,7 @@ const UpdateSaAiAgentSystemModel = ({
                 value={selectedCompany}
                 labelInValue
                 optionLabelProp="label"
+                allowClear
               >
                 {companiesData?.map((company) => (
                   <Select.Option 
@@ -115,20 +187,26 @@ const UpdateSaAiAgentSystemModel = ({
               label={t('modelType')}
               rules={[{ required: true, message: t('pleaseSelectModelType') }]}
             >
-              <Select 
-                placeholder={t('pleaseSelectModelType')}
-                disabled={!selectedCompany}
-              >
-                {companiesData?.find(c => c.id === selectedCompany)?.models.map(model => (
-                  <Select.Option 
-                    key={model.id} 
-                    value={model.modelCode}
-                    title={model.description}
-                  >
-                    {model.modelName}
-                  </Select.Option>
-                ))}
-              </Select>
+              {selectedCompany ? (
+                <Select 
+                  placeholder={t('pleaseSelectModelType')}
+                  allowClear
+                >
+                  {companiesData
+                    ?.find((c) => c.id === selectedCompany)
+                    ?.models.map((model) => (
+                      <Select.Option
+                        key={model.id}
+                        value={model.modelCode}
+                        title={model.description}
+                      >
+                        {model.description}
+                      </Select.Option>
+                    ))}
+                </Select>
+              ) : (
+                <Input placeholder={t('pleaseInputModelType')} />
+              )}
             </Form.Item>
           </Col>
         </Row>
@@ -223,7 +301,7 @@ const UpdateSaAiAgentSystemModel = ({
             rows={4} 
             placeholder={t('pleaseInputPrompt')}
             showCount
-            maxLength={500}
+            maxLength={1000}
           />
         </Form.Item>
       </Form>

@@ -215,7 +215,7 @@ const UpdateSaAiAgentModel = ({
             rows={4} 
             placeholder={t('pleaseInputPrompt')}
             showCount
-            maxLength={500}
+            maxLength={1000}
           />
         </Form.Item>
 
