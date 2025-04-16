@@ -46,6 +46,19 @@ const SaProjectDetailModel = ({
       label: t('projectInfo'),
       children: (
         <Descriptions bordered column={1}>
+          <Descriptions.Item label={t('userInfo')}>
+            <Space align="center" size={12}>
+              <Avatar src={projectData?.avatar} size={48} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <Text strong style={{ fontSize: '16px' }}>{projectData?.nickname}</Text>
+                <div style={{ display: 'flex', gap: '8px', color: '#666' }}>
+                  <Text type="secondary">{projectData?.username}</Text>
+                  <Text type="secondary">•</Text>
+                  <Text type="secondary">ID: {projectData?.userId}</Text>
+                </div>
+              </div>
+            </Space>
+          </Descriptions.Item>
           <Descriptions.Item label={t('projectName')}>{projectData?.name}</Descriptions.Item>
           <Descriptions.Item label={t('description')}>{projectData?.description}</Descriptions.Item>
           <Descriptions.Item label={t('visibility')}>{t(projectData?.visibility)}</Descriptions.Item>

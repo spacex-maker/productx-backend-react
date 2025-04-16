@@ -1660,5 +1660,21 @@
   "bgImgUrl": "背景图片地址",
   "uploading": "上传中",
   "uploadSuccess": "上传成功",
-  "uploadFailed": "上传失败"
+  "pleaseInputContent": "请输入评论内容",
+  "auditReason": "审核原因",
+  "pleaseInputAuditReason": "请输入审核原因",
+  "interaction": "互动数据",
+  "likeCount": "点赞数",
+  "replyCount": "回复数",
+  "hotScore": "热度值",
+  "ipInfo": "IP信息",
+  "ipAddress": "IP地址",
+  "batchApprove": "批量通过",
+  "batchBlock": "批量屏蔽",
+  "approveConfirmTitle": "确定要通过所选评论吗？",
+  "blockConfirmTitle": "确定要屏蔽所选评论吗？",
+  "approve": "通过",
+  "block": "屏蔽",
+  "blocked": "已屏蔽",
+  "unknown": "未知状态"
 }
