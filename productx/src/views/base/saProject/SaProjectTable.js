@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, Avatar, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 const SaProjectTable = ({
@@ -30,7 +30,7 @@ const SaProjectTable = ({
               <label className="custom-control-label" htmlFor="select_all"></label>
             </div>
           </th>
-          <th>{t('userId')}</th>
+          <th>{t('userInfo')}</th>
           <th>{t('projectName')}</th>
           <th>{t('description')}</th>
           <th>{t('visibility')}</th>
@@ -58,7 +58,17 @@ const SaProjectTable = ({
                 ></label>
               </div>
             </td>
-            <td>{item.userId}</td>
+            <td>
+              <Space align="center" size={12}>
+                <Avatar src={item.avatar} size={40} />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Tooltip title={`ID: ${item.userId}`}>
+                    <span style={{ fontWeight: 'bold' }}>{item.nickname}</span>
+                  </Tooltip>
+                  <span style={{ fontSize: '12px', color: '#666' }}>{item.username}</span>
+                </div>
+              </Space>
+            </td>
             <td>{item.name}</td>
             <td>{item.description}</td>
             <td>{t(item.visibility)}</td>
