@@ -175,5 +175,15 @@
   "promptTokens": "Token yêu cầu",
   "completionTokens": "Token phản hồi",
   "totalTokens": "Tổng token",
-  "durationMs": "Thời gian (ms)"
+  "durationMs": "Thời gian (ms)",
+  "coinType": "Loại tiền tệ",
+  "changeType": "Loại thay đổi",
+  "amount": "Số tiền",
+  "balanceBeforeChange": "Số dư trước khi thay đổi",
+  "balanceAfterChange": "Số dư sau khi thay đổi",
+  "aiModelFee": "Phí mô hình AI",
+  "frozen": "Đã đóng băng",
+  "unfrozen": "Đã mở đóng băng",
+  "deposit": "Nạp tiền",
+  "withdraw": "Rút tiền"
 } 

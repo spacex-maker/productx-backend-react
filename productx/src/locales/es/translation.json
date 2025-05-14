@@ -290,7 +290,8 @@
     "服务器管理": "Gestión de servidores",
     "管理员日志": "Registro de administrador",
     "Token使用日志": "Registro de uso de tokens",
-    "AI助手评论": "Comentarios del asistente de IA"
+    "AI助手评论": "Comentarios del asistente de IA",
+    "用户账务记录": "Registro de cambios de cuenta de usuario"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",
@@ -1674,5 +1675,16 @@
   "promptTokens": "Tokens de solicitud",
   "completionTokens": "Tokens de respuesta",
   "totalTokens": "Total de tokens",
-  "durationMs": "Duración (ms)"
+  "durationMs": "Duración (ms)",
+  
+  "coinType": "Tipo de moneda",
+  "changeType": "Tipo de cambio",
+  "amount": "Importe",
+  "balanceBeforeChange": "Saldo antes del cambio",
+  "balanceAfterChange": "Saldo después del cambio",
+  "aiModelFee": "Tarifa por modelo de IA",
+  "frozen": "Congelado",
+  "unfrozen": "Descongelado",
+  "deposit": "Depósito",
+  "withdraw": "Retiro"
 }

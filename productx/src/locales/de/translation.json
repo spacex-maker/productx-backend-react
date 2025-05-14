@@ -289,7 +289,8 @@
     "服务器管理": "Serververwaltung",
     "管理员日志": "Admin-Protokolle",
     "Token使用日志": "Token-Verwendung-Protokolle",
-    "AI助手评论": "AI-Assistent-Kommentare"
+    "AI助手评论": "AI-Assistent-Kommentare",
+    "用户账务记录": "Benutzerkontenänderungsprotokolle"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -1655,5 +1656,16 @@
   "promptTokens": "Anfrage-Tokens",
   "completionTokens": "Antwort-Tokens",
   "totalTokens": "Gesamttokens",
-  "durationMs": "Dauer (ms)"
+  "durationMs": "Dauer (ms)",
+  
+  "coinType": "Währungstyp",
+  "changeType": "Änderungstyp",
+  "amount": "Betrag",
+  "balanceBeforeChange": "Guthaben vor Änderung",
+  "balanceAfterChange": "Guthaben nach Änderung",
+  "aiModelFee": "KI-Modellgebühr",
+  "frozen": "Eingefroren",
+  "unfrozen": "Aufgetaut",
+  "deposit": "Einzahlung",
+  "withdraw": "Auszahlung"
 }

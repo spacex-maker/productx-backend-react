@@ -290,7 +290,8 @@
     "服务器管理": "서버 관리",
     "管理员日志": "관리자 로그",
     "Token使用日志": "토큰 사용 로그",
-    "AI助手评论": "AI 도우미 댓글"
+    "AI助手评论": "AI 도우미 댓글",
+    "用户账务记录": "사용자 계정 변경 로그"
   },
   "confirmDelete": "삭제 확인",
   "countryName": "국가 이름",
@@ -1660,5 +1661,16 @@
   "promptTokens": "프롬프트 토큰",
   "completionTokens": "완성 토큰",
   "totalTokens": "총 토큰",
-  "durationMs": "소요 시간(ms)"
+  "durationMs": "소요 시간(ms)",
+  
+  "coinType": "코인 유형",
+  "changeType": "변경 유형",
+  "amount": "금액",
+  "balanceBeforeChange": "변경 전 잔액",
+  "balanceAfterChange": "변경 후 잔액",
+  "aiModelFee": "AI 모델 요금",
+  "frozen": "동결됨",
+  "unfrozen": "동결 해제됨",
+  "deposit": "입금",
+  "withdraw": "출금"
 }

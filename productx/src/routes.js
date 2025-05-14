@@ -220,6 +220,8 @@ const SaAiAgentCommentRouter = React.lazy(() => import('./views/base/saAiAgentCo
 
 const SaAiTokenUsageLogRouter = React.lazy(() => import('./views/base/saAiTokenUsageLog/SaAiTokenUsageLog'));
 
+const UserAccountChangeLogRouter = React.lazy(() => import('./views/base/userAccountChangeLog/UserAccountChangeLog'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -877,6 +879,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <SaAiTokenUsageLogRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/userAccountChangeLog',
+    name: '用户账务记录',
+    element: (
+      <PrivateRoute>
+        <UserAccountChangeLogRouter />
       </PrivateRoute>
     ),
   },

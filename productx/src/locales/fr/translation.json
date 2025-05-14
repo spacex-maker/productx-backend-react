@@ -290,7 +290,8 @@
     "服务器管理": "Gestion des serveurs",
     "管理员日志": "Journaux d'administration",
     "Token使用日志": "Journaux d'utilisation des jetons",
-    "AI助手评论": "Commentaires de l'assistant IA"
+    "AI助手评论": "Commentaires de l'assistant IA",
+    "用户账务记录": "Enregistrements de modifications de compte utilisateur"
   },
   "confirmDelete": "Confirmer la suppression",
   "countryName": "Nom du pays",
@@ -1669,5 +1670,16 @@
   "promptTokens": "Jetons de demande",
   "completionTokens": "Jetons de réponse",
   "totalTokens": "Total des jetons",
-  "durationMs": "Durée (ms)"
+  "durationMs": "Durée (ms)",
+  
+  "coinType": "Type de monnaie",
+  "changeType": "Type de changement",
+  "amount": "Montant",
+  "balanceBeforeChange": "Solde avant changement",
+  "balanceAfterChange": "Solde après changement",
+  "aiModelFee": "Frais de modèle IA",
+  "frozen": "Gelé",
+  "unfrozen": "Dégelé",
+  "deposit": "Dépôt",
+  "withdraw": "Retrait"
 }

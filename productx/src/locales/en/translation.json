@@ -282,7 +282,8 @@
     "服务器管理": "Server Management",
     "管理员日志": "Admin Logs",
     "Token使用日志": "Token Usage Logs",
-    "AI助手评论": "AI Assistant Comments"
+    "AI助手评论": "AI Assistant Comments",
+    "用户账务记录": "User Account Change Records"
   },
   "confirmDelete": "Confirm Delete",
   "countryName": "Country Name",
@@ -1662,5 +1663,15 @@
   "promptTokens": "Prompt Tokens",
   "completionTokens": "Completion Tokens",
   "totalTokens": "Total Tokens",
-  "durationMs": "Duration (ms)"
+  "durationMs": "Duration (ms)",
+  "coinType": "Coin Type",
+  "changeType": "Change Type",
+  "amount": "Amount",
+  "balanceBeforeChange": "Balance Before Change",
+  "balanceAfterChange": "Balance After Change",
+  "aiModelFee": "AI Model Fee",
+  "frozen": "Frozen",
+  "unfrozen": "Unfrozen",
+  "deposit": "Deposit",
+  "withdraw": "Withdraw"
 }

@@ -290,7 +290,8 @@
     "服务器管理": "服务器管理",
     "管理员日志": "管理员日志",
     "AI助手评论": "AI助手评论",
-    "Token使用日志": "Token使用日志"
+    "Token使用日志": "Token使用日志",
+    "用户账务记录": "用户账务记录"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -1685,5 +1686,16 @@
   "promptTokens": "提示令牌数",
   "completionTokens": "完成令牌数",
   "totalTokens": "总令牌数",
-  "durationMs": "耗时(毫秒)"
+  "durationMs": "耗时(毫秒)",
+  
+  "coinType": "币种类型",
+  "changeType": "变更类型",
+  "amount": "变更金额",
+  "balanceBeforeChange": "变更前余额",
+  "balanceAfterChange": "变更后余额",
+  "aiModelFee": "AI模型费用",
+  "frozen": "冻结",
+  "unfrozen": "解冻",
+  "deposit": "充值",
+  "withdraw": "提现"
 }
