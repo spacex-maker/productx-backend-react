@@ -287,7 +287,9 @@
     "AI代理": "KI-Agent",
     "运维系统": "Betriebssystem",
     "服务器管理": "Serververwaltung",
-    "管理员日志": "Admin-Protokolle"
+    "管理员日志": "Admin-Protokolle",
+    "Token使用日志": "Token-Verwendung-Protokolle",
+    "AI助手评论": "AI-Assistent-Kommentare"
   },
   "confirmDelete": "Löschen bestätigen",
   "countryName": "Landname",
@@ -1646,5 +1648,12 @@
   "bgImg": "Hintergrundbild",
   "bgImgUrl": "Hintergrundbild-URL",
   "uploading": "Wird hochgeladen",
-  "uploadSuccess": "Upload erfolgreich"
+  "uploadSuccess": "Upload erfolgreich",
+  "tokens": "Tokens",
+  "cost": "Kosten",
+  "duration": "Dauer",
+  "promptTokens": "Anfrage-Tokens",
+  "completionTokens": "Antwort-Tokens",
+  "totalTokens": "Gesamttokens",
+  "durationMs": "Dauer (ms)"
 }

@@ -288,7 +288,9 @@
     "AI代理": "Agente de IA",
     "运维系统": "Sistema de operaciones",
     "服务器管理": "Gestión de servidores",
-    "管理员日志": "Registro de administrador"
+    "管理员日志": "Registro de administrador",
+    "Token使用日志": "Registro de uso de tokens",
+    "AI助手评论": "Comentarios del asistente de IA"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",
@@ -1665,5 +1667,12 @@
   "bgImg": "Imagen de fondo",
   "bgImgUrl": "URL de imagen de fondo",
   "uploading": "Subiendo",
-  "uploadSuccess": "Subida exitosa"
+  "uploadSuccess": "Subida exitosa",
+  "tokens": "Tokens",
+  "cost": "Costo",
+  "duration": "Duración",
+  "promptTokens": "Tokens de solicitud",
+  "completionTokens": "Tokens de respuesta",
+  "totalTokens": "Total de tokens",
+  "durationMs": "Duración (ms)"
 }

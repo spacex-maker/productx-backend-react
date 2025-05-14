@@ -288,7 +288,9 @@
     "AI代理": "AI代理",
     "运维系统": "运维系统",
     "服务器管理": "服务器管理",
-    "管理员日志": "管理员日志"
+    "管理员日志": "管理员日志",
+    "AI助手评论": "AI助手评论",
+    "Token使用日志": "Token使用日志"
   },
   "confirmDelete": "确认删除",
   "countryName": "国家名称",
@@ -1676,5 +1678,12 @@
   "approve": "通过",
   "block": "屏蔽",
   "blocked": "已屏蔽",
-  "unknown": "未知状态"
+  "unknown": "未知状态",
+  "tokens": "令牌数",
+  "cost": "消耗费用",
+  "duration": "耗时",
+  "promptTokens": "提示令牌数",
+  "completionTokens": "完成令牌数",
+  "totalTokens": "总令牌数",
+  "durationMs": "耗时(毫秒)"
 }

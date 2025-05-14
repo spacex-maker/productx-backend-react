@@ -218,6 +218,8 @@ const UserLoginLogsRouter = React.lazy(() => import('./views/base/userLoginLogs/
 
 const SaAiAgentCommentRouter = React.lazy(() => import('./views/base/saAiAgentComment/SaAiAgentComment'));
 
+const SaAiTokenUsageLogRouter = React.lazy(() => import('./views/base/saAiTokenUsageLog/SaAiTokenUsageLog'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -866,6 +868,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <SaAiAgentCommentRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/saAiTokenUsageLog',
+    name: 'Token使用日志',
+    element: (
+      <PrivateRoute>
+        <SaAiTokenUsageLogRouter />
       </PrivateRoute>
     ),
   },

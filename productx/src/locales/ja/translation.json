@@ -288,7 +288,9 @@
     "AI代理": "AIエージェント",
     "运维系统": "運用システム",
     "服务器管理": "サーバー管理",
-    "管理员日志": "管理者ログ"
+    "管理员日志": "管理者ログ",
+    "Token使用日志": "トークン使用ログ",
+    "AI助手评论": "AIアシスタントコメント"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -1653,5 +1655,12 @@
   "bgImg": "背景画像",
   "bgImgUrl": "背景画像URL",
   "uploading": "アップロード中",
-  "uploadSuccess": "アップロード成功"
+  "uploadSuccess": "アップロード成功",
+  "tokens": "トークン",
+  "cost": "コスト",
+  "duration": "所要時間",
+  "promptTokens": "プロンプトトークン",
+  "completionTokens": "完了トークン",
+  "totalTokens": "合計トークン",
+  "durationMs": "所要時間（ms）"
 }

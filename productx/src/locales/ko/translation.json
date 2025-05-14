@@ -288,7 +288,9 @@
     "AI代理": "AI 에이전트",
     "运维系统": "운영 시스템",
     "服务器管理": "서버 관리",
-    "管理员日志": "관리자 로그"
+    "管理员日志": "관리자 로그",
+    "Token使用日志": "토큰 사용 로그",
+    "AI助手评论": "AI 도우미 댓글"
   },
   "confirmDelete": "삭제 확인",
   "countryName": "국가 이름",
@@ -1651,5 +1653,12 @@
   "bgImg": "배경 이미지",
   "bgImgUrl": "배경 이미지 URL",
   "uploading": "업로드 중",
-  "uploadSuccess": "업로드 성공"
+  "uploadSuccess": "업로드 성공",
+  "tokens": "토큰",
+  "cost": "비용",
+  "duration": "소요 시간",
+  "promptTokens": "프롬프트 토큰",
+  "completionTokens": "완성 토큰",
+  "totalTokens": "총 토큰",
+  "durationMs": "소요 시간(ms)"
 }

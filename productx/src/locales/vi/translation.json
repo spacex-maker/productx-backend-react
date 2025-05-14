@@ -167,5 +167,13 @@
   "termsConditionsContent": "Nội dung Điều khoản và Điều kiện",
   "privacyPolicyContent": "Nội dung Chính sách Bảo mật",
   "pleaseInputTermsConditionsContent": "Vui lòng nhập nội dung Điều khoản và Điều kiện",
-  "pleaseInputPrivacyPolicyContent": "Vui lòng nhập nội dung Chính sách Bảo mật"
+  "pleaseInputPrivacyPolicyContent": "Vui lòng nhập nội dung Chính sách Bảo mật",
+  "unknown": "Không xác định",
+  "tokens": "Token",
+  "cost": "Chi phí",
+  "duration": "Thời gian",
+  "promptTokens": "Token yêu cầu",
+  "completionTokens": "Token phản hồi",
+  "totalTokens": "Tổng token",
+  "durationMs": "Thời gian (ms)"
 } 
