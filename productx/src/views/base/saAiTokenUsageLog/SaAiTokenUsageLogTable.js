@@ -68,7 +68,10 @@ const SaAiTokenUsageLogTable = ({
                   alt="avatar"
                   style={{ width: '24px', height: '24px', borderRadius: '50%' }}
                 />
-                <span>{item.nickname}</span>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span>{item.nickname}</span>
+                  <span style={{ color: '#666', fontSize: '12px' }}>{item.username}</span>
+                </div>
                 <span style={{ color: '#999', fontSize: '12px' }}>({item.userId})</span>
               </div>
             </td>
