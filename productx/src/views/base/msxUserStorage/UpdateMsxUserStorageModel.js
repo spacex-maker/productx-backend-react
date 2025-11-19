@@ -2,6 +2,12 @@ import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, InputNumber, Switch } from 'antd';
 import PropTypes from 'prop-types';
 
+// 字节转GB
+const bytesToGB = (bytes) => {
+  if (!bytes || bytes === 0) return 0;
+  return parseFloat((bytes / (1024 * 1024 * 1024)).toFixed(2));
+};
+
 const UpdateMsxUserStorageModel = ({
   isVisible,
   onCancel,
@@ -36,7 +42,7 @@ const UpdateMsxUserStorageModel = ({
         nodeRegion: selectedStorage.nodeRegion,
         status: selectedStorage.status,
         isDefault: selectedStorage.isDefault,
-        storageLimit: selectedStorage.storageLimit,
+        storageLimit: bytesToGB(selectedStorage.storageLimit),
         bandwidthLimit: selectedStorage.bandwidthLimit,
       });
     }
@@ -61,54 +67,53 @@ const UpdateMsxUserStorageModel = ({
         <Form.Item
           label={t('userId')}
           name="userId"
-          rules={[{ required: true, message: t('pleaseInputUserId') }]}
         >
           <InputNumber
             style={{ width: '100%' }}
             placeholder={t('pleaseInputUserId')}
             min={1}
+            disabled
           />
         </Form.Item>
 
         <Form.Item
           label={t('nodeName')}
           name="nodeName"
-          rules={[{ required: true, message: t('pleaseInputNodeName') }]}
         >
-          <Input placeholder={t('pleaseInputNodeName')} />
+          <Input placeholder={t('pleaseInputNodeName')} disabled />
         </Form.Item>
 
         <Form.Item
           label={t('nodeCloud')}
           name="nodeCloud"
-          rules={[{ required: true, message: t('pleaseSelectNodeCloud') }]}
         >
           <Select
             placeholder={t('pleaseSelectNodeCloud')}
             options={cloudOptions}
+            disabled
           />
         </Form.Item>
 
         <Form.Item
           label={t('nodeType')}
           name="nodeType"
-          rules={[{ required: true, message: t('pleaseSelectNodeType') }]}
           tooltip={t('nodeTypeTooltip')}
         >
           <Select
             placeholder={t('pleaseSelectNodeType')}
             options={nodeTypeOptions}
+            disabled
           />
         </Form.Item>
 
         <Form.Item
           label={t('nodeRegion')}
           name="nodeRegion"
-          rules={[{ required: true, message: t('pleaseSelectNodeRegion') }]}
         >
           <Select
             placeholder={t('pleaseSelectNodeRegion')}
             options={regionOptions}
+            disabled
           />
         </Form.Item>
 
@@ -140,6 +145,8 @@ const UpdateMsxUserStorageModel = ({
             style={{ width: '100%' }}
             placeholder={t('pleaseInputStorageLimit')}
             min={0}
+            precision={2}
+            addonAfter="GB"
           />
         </Form.Item>
 

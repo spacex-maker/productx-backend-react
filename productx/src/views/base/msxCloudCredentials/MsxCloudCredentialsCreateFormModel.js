@@ -1,6 +1,8 @@
-import React from 'react';
-import { Modal, Form, Input, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Form, Input, Select, Space } from 'antd';
 import PropTypes from 'prop-types';
+
+const { Option } = Select;
 
 const MsxCloudCredentialsCreateFormModel = ({
   isVisible,
@@ -10,7 +12,62 @@ const MsxCloudCredentialsCreateFormModel = ({
   t,
   typeOptions,
   statusOptions,
+  providers,
 }) => {
+  const [selectedProviderId, setSelectedProviderId] = useState(null);
+
+  // 判断是否为腾讯云
+  const isTencentCloud = (providerId) => {
+    const checkId = providerId || selectedProviderId;
+    if (!checkId || !providers.length) return false;
+    const provider = providers.find((p) => p.id === checkId);
+    return provider && (provider.providerName?.includes('腾讯') || provider.providerName?.includes('Tencent') || provider.providerName?.toLowerCase().includes('tencent'));
+  };
+
+  // 监听服务商选择变化
+  const handleProviderChange = (providerId) => {
+    setSelectedProviderId(providerId);
+    // 如果不是腾讯云，清空appId
+    if (!isTencentCloud(providerId)) {
+      form.setFieldsValue({ appId: undefined });
+    }
+  };
+
+  // 当弹窗打开时，如果有已选择的服务商，设置状态
+  useEffect(() => {
+    if (isVisible) {
+      const currentProviderId = form.getFieldValue('providerId');
+      if (currentProviderId) {
+        setSelectedProviderId(currentProviderId);
+      } else {
+        setSelectedProviderId(null);
+      }
+    } else {
+      // 弹窗关闭时重置
+      setSelectedProviderId(null);
+    }
+  }, [isVisible, form]);
+
+  // 渲染服务商选项
+  const providerOption = (provider) => (
+    <Option key={provider.id} value={provider.id}>
+      <Space>
+        {provider.iconImg && (
+          <img 
+            src={provider.iconImg} 
+            alt={provider.providerName}
+            style={{ 
+              width: 20, 
+              height: 20, 
+              objectFit: 'contain',
+              verticalAlign: 'middle'
+            }}
+          />
+        )}
+        <span>{provider.providerName}</span>
+      </Space>
+    </Option>
+  );
   return (
     <Modal
       title={t('addCredential')}
@@ -36,6 +93,32 @@ const MsxCloudCredentialsCreateFormModel = ({
         </Form.Item>
 
         <Form.Item
+          label={t('provider')}
+          name="providerId"
+          rules={[{ required: true, message: t('pleaseSelectProvider') }]}
+        >
+          <Select
+            showSearch
+            placeholder={t('selectProvider')}
+            optionFilterProp="children"
+            filterOption={(input, option) => {
+              const provider = providers.find((p) => p.id === option.value);
+              return provider?.providerName.toLowerCase().includes(input.toLowerCase());
+            }}
+            dropdownMatchSelectWidth={false}
+            popupMatchSelectWidth={false}
+            listHeight={256}
+            dropdownStyle={{ 
+              minWidth: 250,
+              maxWidth: 300
+            }}
+            onChange={handleProviderChange}
+          >
+            {providers.map((provider) => providerOption(provider))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
           label={t('accessKey')}
           name="accessKey"
           rules={[{ required: true, message: t('pleaseInputAccessKey') }]}
@@ -50,6 +133,15 @@ const MsxCloudCredentialsCreateFormModel = ({
         >
           <Input.Password placeholder={t('pleaseInputSecretKey')} />
         </Form.Item>
+
+        {isTencentCloud() && (
+          <Form.Item
+            label={t('appId')}
+            name="appId"
+          >
+            <Input placeholder={t('pleaseInputAppId')} />
+          </Form.Item>
+        )}
 
         <Form.Item
           label={t('type')}
@@ -86,6 +178,7 @@ MsxCloudCredentialsCreateFormModel.propTypes = {
   t: PropTypes.func.isRequired,
   typeOptions: PropTypes.array.isRequired,
   statusOptions: PropTypes.array.isRequired,
+  providers: PropTypes.array.isRequired,
 };
 
 export default MsxCloudCredentialsCreateFormModel;

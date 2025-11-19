@@ -1507,6 +1507,7 @@
   "nodeRegion": "节点区域",
   "storageLimit": "存储限制",
   "storageUsed": "已用存储",
+  "storageUsage": "存储使用情况",
   "bandwidthLimit": "带宽限制",
   "standardStorage": "标准存储",
   "lowFreqStorage": "低频存储",
@@ -1697,5 +1698,16 @@
   "frozen": "冻结",
   "unfrozen": "解冻",
   "deposit": "充值",
-  "withdraw": "提现"
+  "withdraw": "提现",
+  "appId": "腾讯云APPID",
+  "pleaseInputAppId": "请输入腾讯云APPID（用于存储桶名称格式：bucketname-appid）",
+  "pleaseSelectProvider": "请选择服务提供商",
+  "selectProvider": "选择服务提供商",
+  "fetchProvidersFailed": "获取服务商列表失败",
+  "fetchCredentialsFailed": "获取凭证列表失败",
+  "objectCount": "对象数量",
+  "totalSize": "总大小",
+  "sync": "同步",
+  "syncSuccess": "同步成功",
+  "syncFailed": "同步失败"
 }

@@ -1482,6 +1482,7 @@
   "nodeRegion": "노드 지역",
   "storageLimit": "스토리지 제한",
   "storageUsed": "사용된 스토리지",
+  "storageUsage": "스토리지 사용량",
   "bandwidthLimit": "대역폭 제한",
   "standardStorage": "표준 스토리지",
   "lowFreqStorage": "저빈도 스토리지",

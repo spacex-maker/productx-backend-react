@@ -1484,6 +1484,7 @@
   "nodeRegion": "ノードリージョン",
   "storageLimit": "ストレージ制限",
   "storageUsed": "使用済みストレージ",
+  "storageUsage": "ストレージ使用状況",
   "bandwidthLimit": "帯域幅制限",
   "standardStorage": "標準ストレージ",
   "lowFreqStorage": "低頻度ストレージ",

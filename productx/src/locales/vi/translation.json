@@ -185,5 +185,8 @@
   "frozen": "Đã đóng băng",
   "unfrozen": "Đã mở đóng băng",
   "deposit": "Nạp tiền",
-  "withdraw": "Rút tiền"
+  "withdraw": "Rút tiền",
+  "storageLimit": "Giới hạn lưu trữ",
+  "storageUsed": "Đã sử dụng lưu trữ",
+  "storageUsage": "Tình trạng sử dụng lưu trữ"
 } 

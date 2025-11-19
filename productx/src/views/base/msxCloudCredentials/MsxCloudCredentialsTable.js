@@ -31,6 +31,7 @@ const MsxCloudCredentialsTable = ({
             t('name'),
             t('accessKey'),
             t('secretKey'),
+            t('appId'),
             t('type'),
             t('status'),
             t('createTime'),
@@ -62,6 +63,7 @@ const MsxCloudCredentialsTable = ({
             <td className="text-truncate">{item.name}</td>
             <td className="text-truncate">{item.accessKey}</td>
             <td className="text-truncate">{item.secretKey}</td>
+            <td className="text-truncate">{item.appId || '-'}</td>
             <td className="text-truncate">{item.type}</td>
             <td className="text-truncate">
               <Tag color={item.status ? 'success' : 'warning'}>

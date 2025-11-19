@@ -7,7 +7,10 @@ import Pagination from 'src/components/common/Pagination';
 import MsxStorageBucketTable from './MsxStorageBucketTable';
 import UpdateMsxStorageBucketModel from './UpdateMsxStorageBucketModel';
 import MsxStorageBucketCreateFormModel from './MsxStorageBucketCreateFormModel';
+import MsxStorageBucketDetailModal from './MsxStorageBucketDetailModal';
 import { useTranslation } from 'react-i18next';
+
+const { Option } = Select;
 
 const MsxStorageBucket = () => {
   const { t } = useTranslation();
@@ -30,6 +33,10 @@ const MsxStorageBucket = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedBucket, setSelectedBucket] = useState(null);
+  const [providers, setProviders] = useState([]);
+  const [loadingProviders, setLoadingProviders] = useState(false);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [selectedBucketId, setSelectedBucketId] = useState(null);
 
   const storageTypeOptions = [
     { value: 'STANDARD', label: t('standardStorage') },
@@ -41,6 +48,47 @@ const MsxStorageBucket = () => {
     { value: true, label: t('enabled') },
     { value: false, label: t('disabled') },
   ];
+
+  // 获取服务商列表
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        setLoadingProviders(true);
+        const response = await api.get('/manage/msx-cloud-providers/list-enable');
+        if (response) {
+          setProviders(response);
+        }
+      } catch (error) {
+        console.error('Failed to fetch providers:', error);
+        message.error(t('fetchProvidersFailed'));
+      } finally {
+        setLoadingProviders(false);
+      }
+    };
+
+    fetchProviders();
+  }, [t]);
+
+  // 渲染服务商选项
+  const providerOption = (provider) => (
+    <Option key={provider.id} value={provider.id}>
+      <Space>
+        {provider.iconImg && (
+          <img 
+            src={provider.iconImg} 
+            alt={provider.providerName}
+            style={{ 
+              width: 20, 
+              height: 20, 
+              objectFit: 'contain',
+              verticalAlign: 'middle'
+            }}
+          />
+        )}
+        <span>{provider.providerName}</span>
+      </Space>
+    </Option>
+  );
 
   useEffect(() => {
     fetchData();
@@ -102,6 +150,22 @@ const MsxStorageBucket = () => {
     setIsUpdateModalVisible(true);
   };
 
+  const handleDetailClick = (bucket) => {
+    setSelectedBucketId(bucket.id);
+    setIsDetailModalVisible(true);
+  };
+
+  const handleDeleteClick = async (bucketId) => {
+    try {
+      await api.delete(`/manage/storage-bucket/${bucketId}`);
+      message.success(t('deleteSuccess'));
+      await fetchData();
+    } catch (error) {
+      console.error('Failed to delete bucket:', error);
+      message.error(t('deleteFailed'));
+    }
+  };
+
   const totalPages = Math.ceil(totalNum / pageSize);
 
   const {
@@ -109,6 +173,7 @@ const MsxStorageBucket = () => {
     selectAll,
     handleSelectAll,
     handleSelectRow,
+    resetSelection,
   } = UseSelectableRows();
 
   return (
@@ -126,13 +191,29 @@ const MsxStorageBucket = () => {
               />
             </Col>
             <Col>
-              <Input
+              <Select
+                placeholder={t('selectProvider')}
                 value={searchParams.providerId}
-                onChange={(e) => handleSearchChange('providerId', e.target.value)}
-                placeholder={t('providerId')}
+                onChange={(value) => handleSearchChange('providerId', value)}
                 allowClear
-                style={{ width: 200 }}
-              />
+                loading={loadingProviders}
+                style={{ minWidth: 200 }}
+                showSearch
+                optionFilterProp="children"
+                filterOption={(input, option) => {
+                  const provider = providers.find((p) => p.id === option.value);
+                  return provider?.providerName.toLowerCase().includes(input.toLowerCase());
+                }}
+                dropdownMatchSelectWidth={false}
+                popupMatchSelectWidth={false}
+                listHeight={256}
+                dropdownStyle={{ 
+                  minWidth: 250,
+                  maxWidth: 300
+                }}
+              >
+                {providers.map((provider) => providerOption(provider))}
+              </Select>
             </Col>
             <Col>
               <Input
@@ -176,8 +257,8 @@ const MsxStorageBucket = () => {
                   onClick={() => HandleBatchDelete({
                     url: '/manage/storage-bucket/delete-batch',
                     selectedRows,
+                    resetSelection,
                     fetchData,
-                    t,
                   })}
                   disabled={selectedRows.length === 0}
                 >
@@ -198,6 +279,9 @@ const MsxStorageBucket = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            handleDetailClick={handleDetailClick}
+            handleDeleteClick={handleDeleteClick}
+            providers={providers}
             t={t}
           />
         </Spin>
@@ -219,6 +303,7 @@ const MsxStorageBucket = () => {
         t={t}
         storageTypeOptions={storageTypeOptions}
         statusOptions={statusOptions}
+        providers={providers}
       />
 
       <UpdateMsxStorageBucketModel
@@ -229,8 +314,15 @@ const MsxStorageBucket = () => {
         handleUpdateBucket={handleUpdateBucket}
         selectedBucket={selectedBucket}
         t={t}
-        storageTypeOptions={storageTypeOptions}
-        statusOptions={statusOptions}
+      />
+
+      <MsxStorageBucketDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => {
+          setIsDetailModalVisible(false);
+          setSelectedBucketId(null);
+        }}
+        bucketId={selectedBucketId}
       />
     </div>
   );

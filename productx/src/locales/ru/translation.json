@@ -1475,6 +1475,7 @@
   "nodeRegion": "Регион",
   "storageLimit": "Лимит хранилища",
   "storageUsed": "Использовано хранилища",
+  "storageUsage": "Использование хранилища",
   "bandwidthLimit": "Лимит пропускной способности",
   "standardStorage": "Стандартное хранилище",
   "lowFreqStorage": "Хранилище низкой частоты",

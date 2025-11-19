@@ -87,7 +87,12 @@ const MsxUserStorage = () => {
 
   const handleUpdateStorage = async (values) => {
     try {
-      await api.post('/manage/msx-user-storage/update', values);
+      // 将存储限制从GB转换为字节
+      const submitValues = {
+        ...values,
+        storageLimit: values.storageLimit ? Math.round(values.storageLimit * 1024 * 1024 * 1024) : 0,
+      };
+      await api.post('/manage/msx-user-storage/update', submitValues);
       message.success(t('updateSuccess'));
       setIsUpdateModalVisible(false);
       updateForm.resetFields();

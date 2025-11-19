@@ -1484,6 +1484,7 @@
   "nodeRegion": "Node Region",
   "storageLimit": "Storage Limit",
   "storageUsed": "Storage Used",
+  "storageUsage": "Storage Usage",
   "bandwidthLimit": "Bandwidth Limit",
   "standardStorage": "Standard Storage",
   "lowFreqStorage": "Low Frequency Storage",
@@ -1673,5 +1674,16 @@
   "frozen": "Frozen",
   "unfrozen": "Unfrozen",
   "deposit": "Deposit",
-  "withdraw": "Withdraw"
+  "withdraw": "Withdraw",
+  "appId": "Tencent Cloud APPID",
+  "pleaseInputAppId": "Please enter Tencent Cloud APPID (for bucket name format: bucketname-appid)",
+  "pleaseSelectProvider": "Please select provider",
+  "selectProvider": "Select Provider",
+  "fetchProvidersFailed": "Failed to fetch providers list",
+  "fetchCredentialsFailed": "Failed to fetch credentials list",
+  "objectCount": "Object Count",
+  "totalSize": "Total Size",
+  "sync": "Sync",
+  "syncSuccess": "Sync successful",
+  "syncFailed": "Sync failed"
 }

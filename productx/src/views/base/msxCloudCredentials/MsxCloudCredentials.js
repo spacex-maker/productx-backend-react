@@ -28,12 +28,34 @@ const MsxCloudCredentials = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedCredential, setSelectedCredential] = useState(null);
+  const [providers, setProviders] = useState([]);
+  const [loadingProviders, setLoadingProviders] = useState(false);
 
   const typeOptions = [
     { value: 'COS', label: 'COS' },
     { value: 'OSS', label: 'OSS' },
     { value: 'S3', label: 'S3' },
   ];
+
+  // 获取服务商列表
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        setLoadingProviders(true);
+        const response = await api.get('/manage/msx-cloud-providers/list-enable');
+        if (response) {
+          setProviders(response);
+        }
+      } catch (error) {
+        console.error('Failed to fetch providers:', error);
+        message.error(t('fetchProvidersFailed') || '获取服务商列表失败');
+      } finally {
+        setLoadingProviders(false);
+      }
+    };
+
+    fetchProviders();
+  }, [t]);
 
   const statusOptions = [
     { value: true, label: t('enabled') },
@@ -199,6 +221,7 @@ const MsxCloudCredentials = () => {
         t={t}
         typeOptions={typeOptions}
         statusOptions={statusOptions}
+        providers={providers}
       />
 
       <UpdateMsxCloudCredentialsModel
@@ -211,6 +234,7 @@ const MsxCloudCredentials = () => {
         t={t}
         typeOptions={typeOptions}
         statusOptions={statusOptions}
+        providers={providers}
       />
     </div>
   );

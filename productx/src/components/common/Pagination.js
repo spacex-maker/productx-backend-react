@@ -20,6 +20,8 @@ const Pagination = ({ totalPages, current, onPageChange, pageSize, onPageSizeCha
     const size = parseInt(event.target.value, 10);
     if (!isNaN(size) && size > 0) {
       onPageSizeChange(size);
+      // 切换每页显示条数时，重置到第一页
+      onPageChange(1);
     }
   };
   const { t } = useTranslation(); // 使用 t() 方法进行翻译

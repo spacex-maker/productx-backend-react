@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select, InputNumber } from 'antd';
+import { Modal, Form, Input, Switch } from 'antd';
 import PropTypes from 'prop-types';
 
 const UpdateMsxStorageBucketModel = ({
@@ -10,19 +10,13 @@ const UpdateMsxStorageBucketModel = ({
   handleUpdateBucket,
   selectedBucket,
   t,
-  storageTypeOptions,
-  statusOptions,
 }) => {
   useEffect(() => {
     if (selectedBucket && isVisible) {
       form.setFieldsValue({
         id: selectedBucket.id,
-        bucketName: selectedBucket.bucketName,
-        providerId: selectedBucket.providerId,
-        regionName: selectedBucket.regionName,
-        storageType: selectedBucket.storageType,
-        status: selectedBucket.status,
-        remark: selectedBucket.remark,
+        status: selectedBucket.status ?? false,
+        remark: selectedBucket.remark || '',
       });
     }
   }, [selectedBucket, isVisible, form]);
@@ -35,7 +29,7 @@ const UpdateMsxStorageBucketModel = ({
       onOk={onOk}
       okText={t('confirm')}
       cancelText={t('cancel')}
-      width={560}
+      width={520}
       maskClosable={false}
     >
       <Form 
@@ -48,52 +42,13 @@ const UpdateMsxStorageBucketModel = ({
         </Form.Item>
 
         <Form.Item
-          label={t('bucketName')}
-          name="bucketName"
-          rules={[{ required: true, message: t('pleaseInputBucketName') }]}
-        >
-          <Input placeholder={t('pleaseInputBucketName')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('providerId')}
-          name="providerId"
-          rules={[{ required: true, message: t('pleaseInputProviderId') }]}
-        >
-          <InputNumber
-            style={{ width: '100%' }}
-            placeholder={t('pleaseInputProviderId')}
-            min={1}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('regionName')}
-          name="regionName"
-          rules={[{ required: true, message: t('pleaseInputRegionName') }]}
-        >
-          <Input placeholder={t('pleaseInputRegionName')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('storageType')}
-          name="storageType"
-          rules={[{ required: true, message: t('pleaseSelectStorageType') }]}
-        >
-          <Select
-            placeholder={t('pleaseSelectStorageType')}
-            options={storageTypeOptions}
-          />
-        </Form.Item>
-
-        <Form.Item
           label={t('status')}
           name="status"
-          rules={[{ required: true, message: t('pleaseSelectStatus') }]}
+          valuePropName="checked"
         >
-          <Select
-            placeholder={t('pleaseSelectStatus')}
-            options={statusOptions}
+          <Switch 
+            checkedChildren={t('enabled')}
+            unCheckedChildren={t('disabled')}
           />
         </Form.Item>
 
@@ -101,7 +56,12 @@ const UpdateMsxStorageBucketModel = ({
           label={t('remark')}
           name="remark"
         >
-          <Input.TextArea placeholder={t('pleaseInputRemark')} />
+          <Input.TextArea 
+            placeholder={t('pleaseInputRemark')}
+            rows={4}
+            showCount
+            maxLength={500}
+          />
         </Form.Item>
       </Form>
     </Modal>
@@ -116,8 +76,6 @@ UpdateMsxStorageBucketModel.propTypes = {
   handleUpdateBucket: PropTypes.func.isRequired,
   selectedBucket: PropTypes.object,
   t: PropTypes.func.isRequired,
-  storageTypeOptions: PropTypes.array.isRequired,
-  statusOptions: PropTypes.array.isRequired,
 };
 
 export default UpdateMsxStorageBucketModel;

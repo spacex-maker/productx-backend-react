@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tag, Space } from 'antd';
+import { Button, Tag, Space, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
 
 const MsxStorageBucketTable = ({
@@ -9,8 +9,28 @@ const MsxStorageBucketTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  handleDetailClick,
+  handleDeleteClick,
+  providers,
   t,
 }) => {
+  // 根据providerId获取提供商信息
+  const getProviderInfo = (providerId) => {
+    return providers.find((p) => p.id === providerId);
+  };
+
+  // 格式化文件大小
+  const formatFileSize = (bytes) => {
+    if (!bytes && bytes !== 0) return '-';
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let size = bytes;
+    let unitIndex = 0;
+    while (size >= 1024 && unitIndex < units.length - 1) {
+      size /= 1024;
+      unitIndex++;
+    }
+    return `${size.toFixed(2)} ${units[unitIndex]}`;
+  };
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -33,6 +53,8 @@ const MsxStorageBucketTable = ({
             t('regionName'),
             t('storageType'),
             t('status'),
+            t('objectCount'),
+            t('totalSize'),
             t('remark'),
             t('createTime'),
             t('operations')
@@ -60,7 +82,32 @@ const MsxStorageBucketTable = ({
               </div>
             </td>
             <td className="text-truncate">{item.bucketName}</td>
-            <td className="text-truncate">{item.providerId}</td>
+            <td className="text-truncate">
+              {(() => {
+                const provider = getProviderInfo(item.providerId);
+                if (provider) {
+                  const iconUrl = provider.providerIcon || provider.iconImg;
+                  return (
+                    <Space>
+                      {iconUrl && (
+                        <img 
+                          src={iconUrl} 
+                          alt={provider.providerName || ''}
+                          style={{ 
+                            width: 20, 
+                            height: 20, 
+                            objectFit: 'contain',
+                            verticalAlign: 'middle'
+                          }}
+                        />
+                      )}
+                      <span>{provider.providerName || item.providerId}</span>
+                    </Space>
+                  );
+                }
+                return item.providerId;
+              })()}
+            </td>
             <td className="text-truncate">{item.regionName}</td>
             <td className="text-truncate">{item.storageType}</td>
             <td className="text-truncate">
@@ -68,12 +115,33 @@ const MsxStorageBucketTable = ({
                 {item.status ? t('enabled') : t('disabled')}
               </Tag>
             </td>
+            <td className="text-truncate">
+              {item.objectCount !== undefined ? item.objectCount.toLocaleString() : '-'}
+            </td>
+            <td className="text-truncate">
+              {formatFileSize(item.totalSize)}
+            </td>
             <td className="text-truncate">{item.remark}</td>
             <td className="text-truncate">{item.createTime}</td>
             <td className="fixed-column">
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                {t('edit')}
-              </Button>
+              <Space>
+                <Button type="link" onClick={() => handleDetailClick(item)}>
+                  {t('detail')}
+                </Button>
+                <Button type="link" onClick={() => handleEditClick(item)}>
+                  {t('edit')}
+                </Button>
+                <Popconfirm
+                  title={t('confirmDelete?')}
+                  onConfirm={() => handleDeleteClick(item.id)}
+                  okText={t('yes')}
+                  cancelText={t('no')}
+                >
+                  <Button type="link" danger>
+                    {t('delete')}
+                  </Button>
+                </Popconfirm>
+              </Space>
             </td>
           </tr>
         ))}
@@ -89,6 +157,9 @@ MsxStorageBucketTable.propTypes = {
   handleSelectAll: PropTypes.func.isRequired,
   handleSelectRow: PropTypes.func.isRequired,
   handleEditClick: PropTypes.func.isRequired,
+  handleDetailClick: PropTypes.func.isRequired,
+  handleDeleteClick: PropTypes.func.isRequired,
+  providers: PropTypes.array,
   t: PropTypes.func.isRequired,
 };
 

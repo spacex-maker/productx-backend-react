@@ -1477,6 +1477,7 @@
   "nodeRegion": "Regione",
   "storageLimit": "Limite storage",
   "storageUsed": "Storage utilizzato",
+  "storageUsage": "Utilizzo storage",
   "bandwidthLimit": "Limite banda",
   "standardStorage": "Storage standard",
   "lowFreqStorage": "Storage a bassa frequenza",
