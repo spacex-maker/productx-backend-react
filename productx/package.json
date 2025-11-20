@@ -41,7 +41,6 @@
     "cos-nodejs-sdk-v5": "^2.14.6",
     "dayjs": "^1.11.13",
     "echarts": "^5.5.1",
-    "echarts-for-react": "^3.0.2",
     "feather-icons": "^4.29.2",
     "framer-motion": "^11.18.0",
     "i18next": "^23.16.8",

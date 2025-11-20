@@ -1666,5 +1666,6 @@
   "frozen": "Congelato",
   "unfrozen": "Scongelato",
   "deposit": "Deposito",
-  "withdraw": "Prelievo"
+  "withdraw": "Prelievo",
+  "pingEndpoint": "Endpoint Ping"
 }

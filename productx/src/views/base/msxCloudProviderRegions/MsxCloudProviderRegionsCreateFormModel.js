@@ -142,6 +142,13 @@ const MsxCloudProviderRegionsCreateFormModel = ({
         </Form.Item>
 
         <Form.Item
+          label={t('pingEndpoint')}
+          name="pingEndpoint"
+        >
+          <Input placeholder={t('pingEndpoint')} />
+        </Form.Item>
+
+        <Form.Item
           label={t('status')}
           name="status"
           rules={[{ required: true, message: t('pleaseSelectStatus') }]}

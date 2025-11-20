@@ -1673,5 +1673,6 @@
   "frozen": "동결됨",
   "unfrozen": "동결 해제됨",
   "deposit": "입금",
-  "withdraw": "출금"
+  "withdraw": "출금",
+  "pingEndpoint": "Ping 엔드포인트"
 }

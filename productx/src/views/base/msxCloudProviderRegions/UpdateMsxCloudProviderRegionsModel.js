@@ -24,6 +24,7 @@ const UpdateMsxCloudProviderRegionsModel = ({
         countryCode: selectedRegion.countryCode,
         regionCode: selectedRegion.regionCode,
         regionName: selectedRegion.regionName,
+        pingEndpoint: selectedRegion.pingEndpoint,
         status: selectedRegion.status,
       });
     }
@@ -158,6 +159,13 @@ const UpdateMsxCloudProviderRegionsModel = ({
           rules={[{ required: true, message: t('pleaseInputRegionName') }]}
         >
           <Input placeholder={t('pleaseInputRegionName')} />
+        </Form.Item>
+
+        <Form.Item
+          label={t('pingEndpoint')}
+          name="pingEndpoint"
+        >
+          <Input placeholder={t('pingEndpoint')} />
         </Form.Item>
 
         <Form.Item

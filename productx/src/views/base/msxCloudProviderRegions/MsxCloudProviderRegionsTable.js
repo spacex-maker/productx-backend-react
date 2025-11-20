@@ -9,6 +9,7 @@ const MsxCloudProviderRegionsTable = ({
   handleSelectAll,
   handleSelectRow,
   handleEditClick,
+  handleViewClick,
   countries,
   providers,
   t,
@@ -45,6 +46,7 @@ const MsxCloudProviderRegionsTable = ({
             t('providerAndCountry'),
             t('regionCode'),
             t('regionName'),
+            t('pingEndpoint'),
             t('status'),
             t('createTime'),
             t('updateTime'),
@@ -111,6 +113,7 @@ const MsxCloudProviderRegionsTable = ({
             </td>
             <td className="text-truncate">{item.regionCode}</td>
             <td className="text-truncate">{item.regionName}</td>
+            <td className="text-truncate">{item.pingEndpoint || '-'}</td>
             <td className="text-truncate">
               {item.status === 'ACTIVE' ? (
                 <Tag color="success">{t('active')}</Tag>
@@ -121,9 +124,14 @@ const MsxCloudProviderRegionsTable = ({
             <td className="text-truncate">{item.createTime}</td>
             <td className="text-truncate">{item.updateTime}</td>
             <td className="fixed-column">
-              <Button type="link" onClick={() => handleEditClick(item)}>
-                {t('edit')}
-              </Button>
+              <Space size={0}>
+                <Button type="link" onClick={() => handleViewClick(item)}>
+                  {t('detail')}
+                </Button>
+                <Button type="link" onClick={() => handleEditClick(item)}>
+                  {t('edit')}
+                </Button>
+              </Space>
             </td>
           </tr>
         ))}
@@ -139,6 +147,7 @@ MsxCloudProviderRegionsTable.propTypes = {
   handleSelectAll: PropTypes.func.isRequired,
   handleSelectRow: PropTypes.func.isRequired,
   handleEditClick: PropTypes.func.isRequired,
+  handleViewClick: PropTypes.func.isRequired,
   countries: PropTypes.array.isRequired,
   providers: PropTypes.array.isRequired,
   t: PropTypes.func.isRequired,

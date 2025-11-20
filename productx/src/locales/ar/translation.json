@@ -1672,5 +1672,6 @@
   "frozen": "مجمد",
   "unfrozen": "غير مجمد",
   "deposit": "إيداع",
-  "withdraw": "سحب"
+  "withdraw": "سحب",
+  "pingEndpoint": "Ping Endpoint"
 }

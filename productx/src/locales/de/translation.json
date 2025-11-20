@@ -1668,5 +1668,6 @@
   "frozen": "Eingefroren",
   "unfrozen": "Aufgetaut",
   "deposit": "Einzahlung",
-  "withdraw": "Auszahlung"
+  "withdraw": "Auszahlung",
+  "pingEndpoint": "Ping-Endpunkt"
 }

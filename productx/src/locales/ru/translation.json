@@ -1666,5 +1666,7 @@
   "frozen": "Заморожено",
   "unfrozen": "Разморожено",
   "deposit": "Пополнение",
-  "withdraw": "Вывод"
+  "withdraw": "Вывод",
+  "pingEndpoint": "Пинг-эндпоинт",
+  "pleaseInputPingEndpoint": "Введите пинг-эндпоинт"
 }

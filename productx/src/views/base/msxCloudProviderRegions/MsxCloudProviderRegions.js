@@ -8,6 +8,7 @@ import MsxCloudProviderRegionsTable from './MsxCloudProviderRegionsTable';
 import UpdateMsxCloudProviderRegionsModel from './UpdateMsxCloudProviderRegionsModel';
 import MsxCloudProviderRegionsCreateFormModel from './MsxCloudProviderRegionsCreateFormModel';
 import { useTranslation } from 'react-i18next';
+import MsxCloudProviderRegionsDetailModal from './MsxCloudProviderRegionsDetailModal';
 
 const { Option } = Select;
 
@@ -35,6 +36,8 @@ const MsxCloudProviderRegions = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedRegion, setSelectedRegion] = useState(null);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [detailRegion, setDetailRegion] = useState(null);
 
   const statusOptions = [
     { value: 'ACTIVE', label: t('active') },
@@ -186,6 +189,11 @@ const MsxCloudProviderRegions = () => {
     setIsUpdateModalVisible(true);
   };
 
+  const handleViewClick = (region) => {
+    setDetailRegion(region);
+    setIsDetailModalVisible(true);
+  };
+
   const totalPages = Math.ceil(totalNum / pageSize);
 
   const {
@@ -307,6 +315,7 @@ const MsxCloudProviderRegions = () => {
             handleSelectAll={handleSelectAll}
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
+            handleViewClick={handleViewClick}
             countries={countries}
             providers={providers}
             t={t}
@@ -344,6 +353,18 @@ const MsxCloudProviderRegions = () => {
         statusOptions={statusOptions}
         countries={countries}
         providers={providers}
+      />
+
+      <MsxCloudProviderRegionsDetailModal
+        isVisible={isDetailModalVisible}
+        onCancel={() => {
+          setIsDetailModalVisible(false);
+          setDetailRegion(null);
+        }}
+        region={detailRegion}
+        countries={countries}
+        providers={providers}
+        t={t}
       />
     </div>
   );

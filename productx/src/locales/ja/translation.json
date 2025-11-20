@@ -1675,5 +1675,6 @@
   "frozen": "凍結",
   "unfrozen": "凍結解除",
   "deposit": "入金",
-  "withdraw": "出金"
+  "withdraw": "出金",
+  "pingEndpoint": "Pingエンドポイント"
 }

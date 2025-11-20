@@ -1685,5 +1685,6 @@
   "totalSize": "Total Size",
   "sync": "Sync",
   "syncSuccess": "Sync successful",
-  "syncFailed": "Sync failed"
+  "syncFailed": "Sync failed",
+  "pingEndpoint": "Ping Endpoint"
 }
