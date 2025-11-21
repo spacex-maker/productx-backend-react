@@ -1746,5 +1746,18 @@
   "supportVideoEdit": "支持视频编辑",
   "supportCameraMotion": "支持镜头运动",
   "supportCharacterConsistency": "支持人物一致性",
-  "supportReference": "支持参考图/风格参考"
+  "supportReference": "支持参考图/风格参考",
+  "invalidJSONFormat": "无效的 JSON 格式，请检查输入内容",
+  "formatJSON": "格式化 JSON",
+  "formatSuccess": "JSON 格式化成功",
+  "kvConfig": "KV配置",
+  "visualConfig": "界面化配置",
+  "comingSoon": "功能开发中...",
+  "creationTypeSettings": "创作类型设置",
+  "textToImage": "文生图",
+  "textToVideo": "文生视频",
+  "imageToImage": "图生图",
+  "imageToVideo": "图生视频",
+  "saveSuccess": "保存成功",
+  "saveFailed": "保存失败"
 }

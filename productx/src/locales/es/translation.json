@@ -1724,5 +1724,18 @@
   "supportVideoEdit": "Soporta Edición de Video",
   "supportCameraMotion": "Soporta Movimiento de Cámara",
   "supportCharacterConsistency": "Soporta Consistencia de Personajes",
-  "supportReference": "Soporta Imagen de Referencia/Referencia de Estilo"
+  "supportReference": "Soporta Imagen de Referencia/Referencia de Estilo",
+  "invalidJSONFormat": "Formato JSON inválido. Por favor, verifique su entrada.",
+  "formatJSON": "Formatear JSON",
+  "formatSuccess": "JSON formateado exitosamente",
+  "kvConfig": "Configuración KV",
+  "visualConfig": "Configuración Visual",
+  "comingSoon": "Próximamente...",
+  "creationTypeSettings": "Configuración de Tipo de Creación",
+  "textToImage": "Texto a Imagen",
+  "textToVideo": "Texto a Video",
+  "imageToImage": "Imagen a Imagen",
+  "imageToVideo": "Imagen a Video",
+  "saveSuccess": "Guardado Exitosamente",
+  "saveFailed": "Error al Guardar"
 }

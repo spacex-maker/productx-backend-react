@@ -198,6 +198,8 @@ const MsxUserStorageRouter = React.lazy(() => import('./views/base/msxUserStorag
 
 const MsxStorageBucketRouter = React.lazy(() => import('./views/base/msxStorageBucket/MsxStorageBucket'));
 
+const SiteSettingsRouter = React.lazy(() => import('./views/base/siteSettings/SiteSettings'));
+
 const SaAiCompaniesRouter = React.lazy(() => import('./views/base/saAiCompanies/SaAiCompanies'));
 
 const SaAiAgentRouter = React.lazy(() => import('./views/base/saAiAgent/SaAiAgent'));
@@ -762,6 +764,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <MsxCloudCredentialsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/siteSettings',
+    name: '网站配置管理',
+    element: (
+      <PrivateRoute>
+        <SiteSettingsRouter />
       </PrivateRoute>
     ),
   },

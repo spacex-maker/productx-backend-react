@@ -1704,5 +1704,18 @@
   "supportVideoEdit": "Поддержка редактирования видео",
   "supportCameraMotion": "Поддержка движения камеры",
   "supportCharacterConsistency": "Поддержка согласованности персонажей",
-  "supportReference": "Поддержка эталонного изображения/стиля"
+  "supportReference": "Поддержка эталонного изображения/стиля",
+  "invalidJSONFormat": "Неверный формат JSON. Пожалуйста, проверьте ввод.",
+  "formatJSON": "Форматировать JSON",
+  "formatSuccess": "JSON успешно отформатирован",
+  "kvConfig": "KV Конфигурация",
+  "visualConfig": "Визуальная Конфигурация",
+  "comingSoon": "Скоро...",
+  "creationTypeSettings": "Настройки Типа Создания",
+  "textToImage": "Текст в Изображение",
+  "textToVideo": "Текст в Видео",
+  "imageToImage": "Изображение в Изображение",
+  "imageToVideo": "Изображение в Видео",
+  "saveSuccess": "Успешно Сохранено",
+  "saveFailed": "Ошибка Сохранения"
 }

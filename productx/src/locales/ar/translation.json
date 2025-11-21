@@ -1709,5 +1709,18 @@
   "supportVideoEdit": "دعم تحرير الفيديو",
   "supportCameraMotion": "دعم حركة الكاميرا",
   "supportCharacterConsistency": "دعم اتساق الشخصيات",
-  "supportReference": "دعم صورة المرجع/مرجع النمط"
+  "supportReference": "دعم صورة المرجع/مرجع النمط",
+  "invalidJSONFormat": "تنسيق JSON غير صالح. يرجى التحقق من الإدخال.",
+  "formatJSON": "تنسيق JSON",
+  "formatSuccess": "تم تنسيق JSON بنجاح",
+  "kvConfig": "إعدادات KV",
+  "visualConfig": "الإعدادات المرئية",
+  "comingSoon": "قريباً...",
+  "creationTypeSettings": "إعدادات نوع الإبداع",
+  "textToImage": "نص إلى صورة",
+  "textToVideo": "نص إلى فيديو",
+  "imageToImage": "صورة إلى صورة",
+  "imageToVideo": "صورة إلى فيديو",
+  "saveSuccess": "تم الحفظ بنجاح",
+  "saveFailed": "فشل الحفظ"
 }

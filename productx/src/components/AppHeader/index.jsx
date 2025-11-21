@@ -820,7 +820,7 @@ const AppHeader = () => {
   );
 
   return (
-    <CHeader position="sticky" className="mb-4">
+    <CHeader position="sticky">
       <CContainer fluid>
         <CHeaderToggler onClick={toggleSidebar}>
           <CIcon icon={cilMenu} size="lg" />

@@ -1719,5 +1719,18 @@
   "supportVideoEdit": "Prise en Charge Édition Vidéo",
   "supportCameraMotion": "Prise en Charge Mouvement Caméra",
   "supportCharacterConsistency": "Prise en Charge Cohérence Personnages",
-  "supportReference": "Prise en Charge Image de Référence/Référence de Style"
+  "supportReference": "Prise en Charge Image de Référence/Référence de Style",
+  "invalidJSONFormat": "Format JSON invalide. Veuillez vérifier votre saisie.",
+  "formatJSON": "Formater JSON",
+  "formatSuccess": "JSON formaté avec succès",
+  "kvConfig": "Configuration KV",
+  "visualConfig": "Configuration Visuelle",
+  "comingSoon": "Bientôt disponible...",
+  "creationTypeSettings": "Paramètres de Type de Création",
+  "textToImage": "Texte vers Image",
+  "textToVideo": "Texte vers Vidéo",
+  "imageToImage": "Image vers Image",
+  "imageToVideo": "Image vers Vidéo",
+  "saveSuccess": "Enregistré avec Succès",
+  "saveFailed": "Échec de l'Enregistrement"
 }

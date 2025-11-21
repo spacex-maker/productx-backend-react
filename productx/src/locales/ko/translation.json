@@ -1710,5 +1710,18 @@
   "supportVideoEdit": "비디오 편집 지원",
   "supportCameraMotion": "카메라 모션 지원",
   "supportCharacterConsistency": "캐릭터 일관성 지원",
-  "supportReference": "참조 이미지/스타일 참조 지원"
+  "supportReference": "참조 이미지/스타일 참조 지원",
+  "invalidJSONFormat": "잘못된 JSON 형식입니다. 입력 내용을 확인하세요.",
+  "formatJSON": "JSON 포맷",
+  "formatSuccess": "JSON 포맷이 성공했습니다",
+  "kvConfig": "KV 설정",
+  "visualConfig": "시각적 설정",
+  "comingSoon": "곧 출시 예정...",
+  "creationTypeSettings": "창작 유형 설정",
+  "textToImage": "텍스트에서 이미지",
+  "textToVideo": "텍스트에서 비디오",
+  "imageToImage": "이미지에서 이미지",
+  "imageToVideo": "이미지에서 비디오",
+  "saveSuccess": "저장 성공",
+  "saveFailed": "저장 실패"
 }

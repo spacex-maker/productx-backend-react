@@ -1712,5 +1712,18 @@
   "supportVideoEdit": "動画編集サポート",
   "supportCameraMotion": "カメラモーションサポート",
   "supportCharacterConsistency": "キャラクター一貫性サポート",
-  "supportReference": "参照画像/スタイル参照サポート"
+  "supportReference": "参照画像/スタイル参照サポート",
+  "invalidJSONFormat": "無効なJSON形式です。入力内容を確認してください。",
+  "formatJSON": "JSONをフォーマット",
+  "formatSuccess": "JSONのフォーマットが成功しました",
+  "kvConfig": "KV設定",
+  "visualConfig": "視覚的設定",
+  "comingSoon": "近日公開...",
+  "creationTypeSettings": "創作タイプ設定",
+  "textToImage": "テキストから画像",
+  "textToVideo": "テキストから動画",
+  "imageToImage": "画像から画像",
+  "imageToVideo": "画像から動画",
+  "saveSuccess": "保存成功",
+  "saveFailed": "保存失敗"
 }

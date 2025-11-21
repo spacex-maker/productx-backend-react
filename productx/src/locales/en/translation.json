@@ -1722,5 +1722,17 @@
   "supportVideoEdit": "Support Video Edit",
   "supportCameraMotion": "Support Camera Motion",
   "supportCharacterConsistency": "Support Character Consistency",
-  "supportReference": "Support Reference Image/Style Reference"
+  "supportReference": "Support Reference Image/Style Reference",
+  "formatJSON": "Format JSON",
+  "formatSuccess": "JSON formatted successfully",
+  "kvConfig": "KV Config",
+  "visualConfig": "Visual Config",
+  "comingSoon": "Coming soon...",
+  "creationTypeSettings": "Creation Type Settings",
+  "textToImage": "Text to Image",
+  "textToVideo": "Text to Video",
+  "imageToImage": "Image to Image",
+  "imageToVideo": "Image to Video",
+  "saveSuccess": "Save Success",
+  "saveFailed": "Save Failed"
 }
