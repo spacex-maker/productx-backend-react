@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Select, Row, Col, DatePicker } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Modal, Form, Input, InputNumber, Select, Row, Col, DatePicker, Space, Switch } from 'antd';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
+import api from 'src/axiosInstance';
 
 const UpdateSaAiModelsModel = ({
   visible,
@@ -12,6 +13,15 @@ const UpdateSaAiModelsModel = ({
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
+  const [companies, setCompanies] = useState([]);
+  const [loadingCompanies, setLoadingCompanies] = useState(false);
+  const [modelType, setModelType] = useState('llm');
+
+  useEffect(() => {
+    if (visible) {
+      fetchCompanies();
+    }
+  }, [visible]);
 
   useEffect(() => {
     if (initialValues) {
@@ -20,8 +30,23 @@ const UpdateSaAiModelsModel = ({
         releaseYear: initialValues.releaseYear ? moment(initialValues.releaseYear) : null
       };
       form.setFieldsValue(values);
+      setModelType(initialValues.modelType || 'llm');
     }
   }, [initialValues, form]);
+
+  const fetchCompanies = async () => {
+    setLoadingCompanies(true);
+    try {
+      const response = await api.get('/manage/sa-ai-companies/enabled');
+      if (response && Array.isArray(response)) {
+        setCompanies(response);
+      }
+    } catch (error) {
+      console.error('Failed to fetch companies:', error);
+    } finally {
+      setLoadingCompanies(false);
+    }
+  };
 
   return (
     <Modal
@@ -32,8 +57,11 @@ const UpdateSaAiModelsModel = ({
       onOk={() => {
         form.validateFields()
           .then((values) => {
+            // 根据 companyId 获取 companyCode
+            const selectedCompany = companies.find(c => c.id === values.companyId);
             const submitValues = {
               ...values,
+              companyCode: selectedCompany?.companyCode || initialValues?.companyCode || '',
               releaseYear: values.releaseYear ? values.releaseYear.format('YYYY-MM-DD') : null,
               id: initialValues?.id
             };
@@ -50,22 +78,44 @@ const UpdateSaAiModelsModel = ({
         layout="vertical"
       >
         <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="companyCode"
-              label={t('companyCode')}
-              rules={[{ required: true, message: t('pleaseInputCompanyCode') }]}
-            >
-              <Input placeholder={t('pleaseInputCompanyCode')} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               name="companyId"
               label={t('companyId')}
-              rules={[{ required: true, message: t('pleaseInputCompanyId') }]}
+              rules={[{ required: true, message: t('pleaseSelectCompany') }]}
             >
-              <InputNumber style={{ width: '100%' }} placeholder={t('pleaseInputCompanyId')} />
+              <Select
+                placeholder={t('pleaseSelectCompany')}
+                loading={loadingCompanies}
+                disabled
+                showSearch
+                filterOption={(input, option) => {
+                  const company = companies.find(c => c.id === option.value);
+                  if (!company) return false;
+                  return company.companyName.toLowerCase().includes(input.toLowerCase()) ||
+                         company.companyCode.toLowerCase().includes(input.toLowerCase());
+                }}
+              >
+                {companies.map((company) => (
+                  <Select.Option key={company.id} value={company.id}>
+                    <Space>
+                      {company.logoPath && (
+                        <img
+                          src={company.logoPath}
+                          alt={company.companyName}
+                          style={{
+                            width: 20,
+                            height: 20,
+                            objectFit: 'contain',
+                            borderRadius: 4,
+                          }}
+                        />
+                      )}
+                      <span>{company.companyName}</span>
+                    </Space>
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </Col>
         </Row>
@@ -94,11 +144,15 @@ const UpdateSaAiModelsModel = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name="releaseYear"
-              label={t('releaseYear')}
-              rules={[{ required: true, message: t('pleaseSelectReleaseYear') }]}
+              name="modelType"
+              label={t('modelType')}
             >
-              <DatePicker style={{ width: '100%' }} />
+              <Select disabled>
+                <Select.Option value="llm">LLM</Select.Option>
+                <Select.Option value="image">Image</Select.Option>
+                <Select.Option value="video">Video</Select.Option>
+                <Select.Option value="multimodal">Multimodal</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -116,33 +170,275 @@ const UpdateSaAiModelsModel = ({
         </Row>
 
         <Row gutter={16}>
-          <Col span={8}>
+          <Col span={12}>
             <Form.Item
-              name="contextLength"
-              label={t('contextLength')}
-              rules={[{ required: true, message: t('pleaseInputContextLength') }]}
+              name="releaseYear"
+              label={t('releaseYear')}
             >
-              <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputContextLength')} />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              name="thoughtChainLength"
-              label={t('thoughtChainLength')}
-            >
-              <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputThoughtChainLength')} />
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item
-              name="outputLength"
-              label={t('outputLength')}
-              rules={[{ required: true, message: t('pleaseInputOutputLength') }]}
-            >
-              <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputOutputLength')} />
+              <DatePicker style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </Row>
+
+        {/* LLM 类型字段 */}
+        {(modelType === 'llm' || modelType === 'multimodal') && (
+          <>
+            <Row gutter={16}>
+              <Col span={8}>
+                <Form.Item
+                  name="contextLength"
+                  label={t('contextLength')}
+                  rules={modelType === 'llm' ? [{ required: true, message: t('pleaseInputContextLength') }] : []}
+                >
+                  <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputContextLength')} />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="thoughtChainLength"
+                  label={t('thoughtChainLength')}
+                >
+                  <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputThoughtChainLength')} />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="outputLength"
+                  label={t('outputLength')}
+                  rules={modelType === 'llm' ? [{ required: true, message: t('pleaseInputOutputLength') }] : []}
+                >
+                  <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputOutputLength')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="inputPrice"
+                  label={t('inputPrice')}
+                >
+                  <InputNumber style={{ width: '100%' }} min={0} step={0.01} placeholder={t('pleaseInputInputPrice')} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="outputPrice"
+                  label={t('outputPrice')}
+                >
+                  <InputNumber style={{ width: '100%' }} min={0} step={0.01} placeholder={t('pleaseInputOutputPrice')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="currency"
+                  label={t('currency')}
+                >
+                  <Input placeholder={t('pleaseInputCurrency')} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="unit"
+                  label={t('unit')}
+                >
+                  <Input placeholder={t('pleaseInputUnit')} />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
+
+        {/* Image 类型字段 */}
+        {(modelType === 'image' || modelType === 'multimodal') && (
+          <>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="imageDefaultResolution"
+                  label={t('imageDefaultResolution')}
+                >
+                  <Input placeholder={t('pleaseInputImageDefaultResolution')} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="imageMaxResolution"
+                  label={t('imageMaxResolution')}
+                >
+                  <Input placeholder={t('pleaseInputImageMaxResolution')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="imageAspectRatios"
+                  label={t('imageAspectRatios')}
+                >
+                  <Input placeholder={t('pleaseInputImageAspectRatios')} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="imageFormats"
+                  label={t('imageFormats')}
+                >
+                  <Input placeholder={t('pleaseInputImageFormats')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="supportControlnet"
+                  label={t('supportControlnet')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="supportInpaint"
+                  label={t('supportInpaint')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
+
+        {/* Video 类型字段 */}
+        {(modelType === 'video' || modelType === 'multimodal') && (
+          <>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="videoDefaultResolution"
+                  label={t('videoDefaultResolution')}
+                >
+                  <Input placeholder={t('pleaseInputVideoDefaultResolution')} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="videoMaxResolution"
+                  label={t('videoMaxResolution')}
+                >
+                  <Input placeholder={t('pleaseInputVideoMaxResolution')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={8}>
+                <Form.Item
+                  name="videoDuration"
+                  label={t('videoDuration')}
+                >
+                  <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputVideoDuration')} />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="videoFps"
+                  label={t('videoFps')}
+                >
+                  <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputVideoFps')} />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item
+                  name="videoMaxFrames"
+                  label={t('videoMaxFrames')}
+                >
+                  <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputVideoMaxFrames')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="videoAspectRatios"
+                  label={t('videoAspectRatios')}
+                >
+                  <Input placeholder={t('pleaseInputVideoAspectRatios')} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="videoFormats"
+                  label={t('videoFormats')}
+                >
+                  <Input placeholder={t('pleaseInputVideoFormats')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="supportImg2video"
+                  label={t('supportImg2video')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="supportVideoEdit"
+                  label={t('supportVideoEdit')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="supportCameraMotion"
+                  label={t('supportCameraMotion')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="supportCharacterConsistency"
+                  label={t('supportCharacterConsistency')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="supportReference"
+                  label={t('supportReference')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
 
         <Form.Item
           name="apiBaseUrl"
@@ -155,7 +451,6 @@ const UpdateSaAiModelsModel = ({
         <Form.Item
           name="description"
           label={t('description')}
-          rules={[{ required: true, message: t('pleaseInputDescription') }]}
         >
           <Input.TextArea rows={4} placeholder={t('pleaseInputDescription')} />
         </Form.Item>
