@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, InputNumber, Select, Row, Col, DatePicker, Space, Switch } from 'antd';
 import { useTranslation } from 'react-i18next';
 import api from 'src/axiosInstance';
+import ImageUpload from 'src/components/common/ImageUpload';
 
 const SaAiModelsCreateFormModal = ({
   visible,
@@ -13,15 +14,20 @@ const SaAiModelsCreateFormModal = ({
   const { t } = useTranslation();
   const [companies, setCompanies] = useState([]);
   const [loadingCompanies, setLoadingCompanies] = useState(false);
+  const [taskTypes, setTaskTypes] = useState([]);
+  const [loadingTaskTypes, setLoadingTaskTypes] = useState(false);
   const [modelType, setModelType] = useState('llm');
+  const [coverImageUrl, setCoverImageUrl] = useState('');
 
   useEffect(() => {
     if (visible) {
       fetchCompanies();
-    } else {
+      fetchTaskTypes();
+      } else {
       // 弹窗关闭时清空表单
       form.resetFields();
-      setModelType('llm');
+      setModelType('');
+      setCoverImageUrl('');
     }
   }, [visible, form]);
 
@@ -39,6 +45,45 @@ const SaAiModelsCreateFormModal = ({
     }
   };
 
+  const fetchTaskTypes = async () => {
+    setLoadingTaskTypes(true);
+    try {
+      const response = await api.get('/manage/base/task-types/list');
+      if (response && Array.isArray(response)) {
+        setTaskTypes(response);
+      }
+    } catch (error) {
+      console.error('Failed to fetch task types:', error);
+    } finally {
+      setLoadingTaskTypes(false);
+    }
+  };
+
+  // 判断是否为生图相关的任务类型
+  const isImageTaskType = (taskTypeCode) => {
+    const imageTaskTypes = [
+      't2i', 'i2i', 'upscale', 'restore', 'inpainting', 
+      'outpainting', 'style_transfer', 'remove_bg', 'colorize', 'enhance'
+    ];
+    return imageTaskTypes.includes(taskTypeCode);
+  };
+
+  // 判断是否为生视频相关的任务类型
+  const isVideoTaskType = (taskTypeCode) => {
+    const videoTaskTypes = [
+      't2v', 'i2v', 'v2v', 'video_upscale', 'video_enhance', 'a2v'
+    ];
+    return videoTaskTypes.includes(taskTypeCode);
+  };
+
+  // 判断是否为文本/LLM相关的任务类型
+  const isTextTaskType = (taskTypeCode) => {
+    const textTaskTypes = [
+      'chat', 'qa', 'completion', 'rewrite', 'translate', 'summarize'
+    ];
+    return textTaskTypes.includes(taskTypeCode);
+  };
+
   return (
     <Modal
       title={t('addTitle')}
@@ -46,7 +91,7 @@ const SaAiModelsCreateFormModal = ({
       width={800}
       onCancel={() => {
         form.resetFields();
-        setModelType('llm');
+        setModelType('');
         onCancel();
       }}
       onOk={() => {
@@ -57,7 +102,24 @@ const SaAiModelsCreateFormModal = ({
             const submitValues = {
               ...values,
               companyCode: selectedCompany?.companyCode || '',
-              releaseYear: values.releaseYear ? values.releaseYear.format('YYYY-MM-DD') : null
+              releaseYear: values.releaseYear ? values.releaseYear.format('YYYY-MM-DD') : null,
+              cover_image: values.coverImage || '',
+              // 将 imageAspectRatios 数组转换为逗号分隔的字符串
+              imageAspectRatios: Array.isArray(values.imageAspectRatios) 
+                ? values.imageAspectRatios.join(',') 
+                : values.imageAspectRatios,
+              // 将 videoAspectRatios 数组转换为逗号分隔的字符串
+              videoAspectRatios: Array.isArray(values.videoAspectRatios) 
+                ? values.videoAspectRatios.join(',') 
+                : values.videoAspectRatios,
+              // 将 videoFormats 数组转换为逗号分隔的字符串
+              videoFormats: Array.isArray(values.videoFormats) 
+                ? values.videoFormats.join(',') 
+                : values.videoFormats,
+              // 将 videoAspectResolution 数组转换为逗号分隔的字符串
+              videoAspectResolution: Array.isArray(values.videoAspectResolution) 
+                ? values.videoAspectResolution.join(',') 
+                : values.videoAspectResolution
             };
             onOk(submitValues);
           })
@@ -71,10 +133,7 @@ const SaAiModelsCreateFormModal = ({
         form={form}
         layout="vertical"
         initialValues={{
-          status: true,
-          modelType: 'llm',
-          contextLength: 4096,
-          outputLength: 4096
+          status: true
         }}
       >
         <Row gutter={16}>
@@ -149,12 +208,22 @@ const SaAiModelsCreateFormModal = ({
             >
               <Select 
                 placeholder={t('pleaseSelectModelType')}
+                loading={loadingTaskTypes}
                 onChange={(value) => setModelType(value)}
+                showSearch
+                filterOption={(input, option) => {
+                  const taskType = taskTypes.find(t => t.code === option.value);
+                  if (!taskType) return false;
+                  return taskType.englishName.toLowerCase().includes(input.toLowerCase()) ||
+                         taskType.description.toLowerCase().includes(input.toLowerCase()) ||
+                         taskType.code.toLowerCase().includes(input.toLowerCase());
+                }}
               >
-                <Select.Option value="llm">LLM</Select.Option>
-                <Select.Option value="image">Image</Select.Option>
-                <Select.Option value="video">Video</Select.Option>
-                <Select.Option value="multimodal">Multimodal</Select.Option>
+                {taskTypes.map((taskType) => (
+                  <Select.Option key={taskType.code} value={taskType.code}>
+                    {taskType.englishName} ({taskType.description})
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
@@ -183,15 +252,34 @@ const SaAiModelsCreateFormModal = ({
           </Col>
         </Row>
 
-        {/* LLM 类型字段 */}
-        {(modelType === 'llm' || modelType === 'multimodal') && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item
+              name="coverImage"
+              label={t('coverImage')}
+            >
+              <ImageUpload
+                imageUrl={coverImageUrl}
+                onImageChange={(url) => {
+                  setCoverImageUrl(url);
+                  form.setFieldsValue({ coverImage: url });
+                }}
+                type="background"
+                tipText={t('coverImageTip')}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* LLM/文本 类型字段 */}
+        {isTextTaskType(modelType) && (
           <>
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item
                   name="contextLength"
                   label={t('contextLength')}
-                  rules={modelType === 'llm' ? [{ required: true, message: t('pleaseInputContextLength') }] : []}
+                  rules={[{ required: true, message: t('pleaseInputContextLength') }]}
                 >
                   <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputContextLength')} />
                 </Form.Item>
@@ -208,7 +296,7 @@ const SaAiModelsCreateFormModal = ({
                 <Form.Item
                   name="outputLength"
                   label={t('outputLength')}
-                  rules={modelType === 'llm' ? [{ required: true, message: t('pleaseInputOutputLength') }] : []}
+                  rules={[{ required: true, message: t('pleaseInputOutputLength') }]}
                 >
                   <InputNumber style={{ width: '100%' }} min={1} placeholder={t('pleaseInputOutputLength')} />
                 </Form.Item>
@@ -240,7 +328,10 @@ const SaAiModelsCreateFormModal = ({
                   name="currency"
                   label={t('currency')}
                 >
-                  <Input placeholder={t('pleaseInputCurrency')} />
+                  <Select placeholder={t('pleaseSelectCurrency')}>
+                    <Select.Option value="USD">USD (美元)</Select.Option>
+                    <Select.Option value="CNY">CNY (人民币)</Select.Option>
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -256,7 +347,7 @@ const SaAiModelsCreateFormModal = ({
         )}
 
         {/* Image 类型字段 */}
-        {(modelType === 'image' || modelType === 'multimodal') && (
+        {isImageTaskType(modelType) && (
           <>
             <Row gutter={16}>
               <Col span={12}>
@@ -283,7 +374,21 @@ const SaAiModelsCreateFormModal = ({
                   name="imageAspectRatios"
                   label={t('imageAspectRatios')}
                 >
-                  <Input placeholder={t('pleaseInputImageAspectRatios')} />
+                  <Select
+                    mode="multiple"
+                    placeholder={t('pleaseSelectImageAspectRatios')}
+                    allowClear
+                    style={{ width: '100%' }}
+                  >
+                    <Select.Option value="16:9">16:9 (横屏)</Select.Option>
+                    <Select.Option value="9:16">9:16 (竖屏)</Select.Option>
+                    <Select.Option value="4:3">4:3 (传统横屏)</Select.Option>
+                    <Select.Option value="3:4">3:4 (传统竖屏)</Select.Option>
+                    <Select.Option value="1:1">1:1 (正方形)</Select.Option>
+                    <Select.Option value="21:9">21:9 (超宽屏)</Select.Option>
+                    <Select.Option value="2:1">2:1 (宽屏)</Select.Option>
+                    <Select.Option value="1:2">1:2 (竖屏宽)</Select.Option>
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -320,7 +425,7 @@ const SaAiModelsCreateFormModal = ({
         )}
 
         {/* Video 类型字段 */}
-        {(modelType === 'video' || modelType === 'multimodal') && (
+        {isVideoTaskType(modelType) && (
           <>
             <Row gutter={16}>
               <Col span={12}>
@@ -328,7 +433,21 @@ const SaAiModelsCreateFormModal = ({
                   name="videoDefaultResolution"
                   label={t('videoDefaultResolution')}
                 >
-                  <Input placeholder={t('pleaseInputVideoDefaultResolution')} />
+                  <Select
+                    placeholder={t('pleaseSelectVideoDefaultResolution')}
+                    allowClear
+                    showSearch
+                    filterOption={(input, option) => {
+                      const label = option?.children || option?.label || '';
+                      return String(label).toLowerCase().includes(input.toLowerCase());
+                    }}
+                  >
+                    <Select.Option value="854x480">854x480 (480p SD)</Select.Option>
+                    <Select.Option value="1280x720">1280x720 (720p HD)</Select.Option>
+                    <Select.Option value="1920x1080">1920x1080 (1080p Full HD)</Select.Option>
+                    <Select.Option value="2560x1440">2560x1440 (1440p 2K)</Select.Option>
+                    <Select.Option value="3840x2160">3840x2160 (2160p 4K UHD)</Select.Option>
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -337,6 +456,32 @@ const SaAiModelsCreateFormModal = ({
                   label={t('videoMaxResolution')}
                 >
                   <Input placeholder={t('pleaseInputVideoMaxResolution')} />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item
+                  name="videoAspectResolution"
+                  label={t('videoAspectResolution')}
+                >
+                  <Select
+                    mode="multiple"
+                    placeholder={t('pleaseSelectVideoAspectResolution')}
+                    allowClear
+                    showSearch
+                    filterOption={(input, option) => {
+                      const label = option?.children || option?.label || '';
+                      return String(label).toLowerCase().includes(input.toLowerCase());
+                    }}
+                  >
+                    <Select.Option value="854x480">854x480 (480p SD)</Select.Option>
+                    <Select.Option value="1280x720">1280x720 (720p HD)</Select.Option>
+                    <Select.Option value="1920x1080">1920x1080 (1080p Full HD)</Select.Option>
+                    <Select.Option value="2560x1440">2560x1440 (1440p 2K)</Select.Option>
+                    <Select.Option value="3840x2160">3840x2160 (2160p 4K UHD)</Select.Option>
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>
@@ -374,7 +519,21 @@ const SaAiModelsCreateFormModal = ({
                   name="videoAspectRatios"
                   label={t('videoAspectRatios')}
                 >
-                  <Input placeholder={t('pleaseInputVideoAspectRatios')} />
+                  <Select
+                    mode="multiple"
+                    placeholder={t('pleaseSelectVideoAspectRatios')}
+                    allowClear
+                    style={{ width: '100%' }}
+                  >
+                    <Select.Option value="16:9">16:9 (横屏)</Select.Option>
+                    <Select.Option value="9:16">9:16 (竖屏)</Select.Option>
+                    <Select.Option value="4:3">4:3 (传统横屏)</Select.Option>
+                    <Select.Option value="3:4">3:4 (传统竖屏)</Select.Option>
+                    <Select.Option value="1:1">1:1 (正方形)</Select.Option>
+                    <Select.Option value="21:9">21:9 (超宽屏)</Select.Option>
+                    <Select.Option value="2:1">2:1 (宽屏)</Select.Option>
+                    <Select.Option value="1:2">1:2 (竖屏宽)</Select.Option>
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -382,7 +541,45 @@ const SaAiModelsCreateFormModal = ({
                   name="videoFormats"
                   label={t('videoFormats')}
                 >
-                  <Input placeholder={t('pleaseInputVideoFormats')} />
+                  <Select
+                    mode="multiple"
+                    placeholder={t('pleaseSelectVideoFormats')}
+                    allowClear
+                    style={{ width: '100%' }}
+                  >
+                    <Select.Option value="mp4">MP4</Select.Option>
+                    <Select.Option value="avi">AVI</Select.Option>
+                    <Select.Option value="mov">MOV</Select.Option>
+                    <Select.Option value="webm">WebM</Select.Option>
+                    <Select.Option value="mkv">MKV</Select.Option>
+                    <Select.Option value="flv">FLV</Select.Option>
+                    <Select.Option value="wmv">WMV</Select.Option>
+                    <Select.Option value="m4v">M4V</Select.Option>
+                    <Select.Option value="3gp">3GP</Select.Option>
+                    <Select.Option value="ogv">OGV</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="outputPrice"
+                  label={t('videoOutputPrice')}
+                >
+                  <InputNumber style={{ width: '100%' }} min={0} step={0.01} placeholder={t('pleaseInputVideoOutputPrice')} />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="currency"
+                  label={t('currency')}
+                >
+                  <Select placeholder={t('pleaseSelectCurrency')}>
+                    <Select.Option value="USD">USD (美元)</Select.Option>
+                    <Select.Option value="CNY">CNY (人民币)</Select.Option>
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>

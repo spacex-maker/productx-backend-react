@@ -188,5 +188,14 @@
   "withdraw": "Rút tiền",
   "storageLimit": "Giới hạn lưu trữ",
   "storageUsed": "Đã sử dụng lưu trữ",
-  "storageUsage": "Tình trạng sử dụng lưu trữ"
+  "storageUsage": "Tình trạng sử dụng lưu trữ",
+  "videoAspectResolution": "Độ phân giải được hỗ trợ",
+  "pleaseSelectVideoAspectResolution": "Vui lòng chọn độ phân giải được hỗ trợ",
+  "pleaseSelectVideoDefaultResolution": "Vui lòng chọn độ phân giải video mặc định",
+  "pleaseSelectVideoFormats": "Vui lòng chọn định dạng video",
+  "pleaseSelectVideoAspectRatios": "Vui lòng chọn tỷ lệ khung hình video",
+  "videoOutputPrice": "Giá đầu ra video (mỗi giây)",
+  "pleaseInputVideoOutputPrice": "Vui lòng nhập giá đầu ra video (mỗi giây)",
+  "coverImage": "Ảnh bìa",
+  "coverImageTip": "Tải lên ảnh bìa mô hình, tỷ lệ khuyến nghị 2:1"
 } 

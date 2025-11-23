@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Space, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
+import api from 'src/axiosInstance';
 
 const SaAiModelsTable = ({
   data,
@@ -12,13 +13,59 @@ const SaAiModelsTable = ({
   handleEnableStatusChange,
 }) => {
   const { t } = useTranslation();
+  const [taskTypes, setTaskTypes] = useState([]);
+
+  useEffect(() => {
+    fetchTaskTypes();
+  }, []);
+
+  const fetchTaskTypes = async () => {
+    try {
+      const response = await api.get('/manage/base/task-types/list');
+      if (response && Array.isArray(response)) {
+        setTaskTypes(response);
+      }
+    } catch (error) {
+      console.error('Failed to fetch task types:', error);
+    }
+  };
+
+  // 判断是否为生图相关的任务类型
+  const isImageTaskType = (taskTypeCode) => {
+    const imageTaskTypes = [
+      't2i', 'i2i', 'upscale', 'restore', 'inpainting', 
+      'outpainting', 'style_transfer', 'remove_bg', 'colorize', 'enhance'
+    ];
+    return imageTaskTypes.includes(taskTypeCode);
+  };
+
+  // 判断是否为生视频相关的任务类型
+  const isVideoTaskType = (taskTypeCode) => {
+    const videoTaskTypes = [
+      't2v', 'i2v', 'v2v', 'video_upscale', 'video_enhance', 'a2v'
+    ];
+    return videoTaskTypes.includes(taskTypeCode);
+  };
+
+  // 判断是否为文本/LLM相关的任务类型
+  const isTextTaskType = (taskTypeCode) => {
+    const textTaskTypes = [
+      'chat', 'qa', 'completion', 'rewrite', 'translate', 'summarize'
+    ];
+    return textTaskTypes.includes(taskTypeCode);
+  };
 
   // 根据模型类型渲染详细信息
   const renderModelDetails = (item) => {
     const { modelType } = item;
     const details = [];
 
-    if (modelType === 'llm' || modelType === 'multimodal') {
+    // 兼容旧数据格式
+    const isTextType = isTextTaskType(modelType) || modelType === 'llm' || modelType === 'multimodal';
+    const isImageType = isImageTaskType(modelType) || modelType === 'image' || modelType === 'multimodal';
+    const isVideoType = isVideoTaskType(modelType) || modelType === 'video' || modelType === 'multimodal';
+
+    if (isTextType) {
       if (item.contextLength) {
         details.push(`${t('contextLength')}: ${item.contextLength}`);
       }
@@ -36,7 +83,7 @@ const SaAiModelsTable = ({
       }
     }
 
-    if (modelType === 'image' || modelType === 'multimodal') {
+    if (isImageType) {
       if (item.imageDefaultResolution) {
         details.push(`${t('imageDefaultResolution')}: ${item.imageDefaultResolution}`);
       }
@@ -54,7 +101,7 @@ const SaAiModelsTable = ({
       }
     }
 
-    if (modelType === 'video' || modelType === 'multimodal') {
+    if (isVideoType) {
       if (item.videoDefaultResolution) {
         details.push(`${t('videoDefaultResolution')}: ${item.videoDefaultResolution}`);
       }
@@ -69,6 +116,15 @@ const SaAiModelsTable = ({
       }
       if (item.videoFormats) {
         details.push(`${t('videoFormats')}: ${item.videoFormats}`);
+      }
+      if (item.videoAspectRatios) {
+        details.push(`${t('videoAspectRatios')}: ${item.videoAspectRatios}`);
+      }
+      if (item.videoAspectResolution) {
+        details.push(`${t('videoAspectResolution')}: ${item.videoAspectResolution}`);
+      }
+      if (item.outputPrice !== null && item.outputPrice !== undefined) {
+        details.push(`${t('videoOutputPrice')}: ${item.outputPrice}${item.currency ? ` ${item.currency}` : ''}/秒`);
       }
       const videoFeatures = [];
       if (item.supportImg2video) videoFeatures.push(t('supportImg2video'));
@@ -96,6 +152,11 @@ const SaAiModelsTable = ({
 
   // 获取模型类型标签
   const getModelTypeTag = (modelType) => {
+    const taskType = taskTypes.find(t => t.code === modelType);
+    if (taskType) {
+      return <Tag color="blue">{taskType.englishName}</Tag>;
+    }
+    // 兼容旧数据，保留原有的类型映射
     const typeMap = {
       'llm': { text: 'LLM', color: 'blue' },
       'image': { text: 'Image', color: 'green' },
@@ -167,9 +228,23 @@ const SaAiModelsTable = ({
               </Space>
             </td>
             <td>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <span style={{ fontWeight: '500' }}>{item.modelName}</span>
-                <span style={{ fontSize: '12px', color: '#666' }}>{item.modelCode}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {(item.coverImage || item.cover_image) && (
+                  <img
+                    src={item.coverImage || item.cover_image}
+                    alt={item.modelName}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      objectFit: 'cover',
+                      borderRadius: 4,
+                    }}
+                  />
+                )}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <span style={{ fontWeight: '500' }}>{item.modelName}</span>
+                  <span style={{ fontSize: '12px', color: '#666' }}>{item.modelCode}</span>
+                </div>
               </div>
             </td>
             <td>{getModelTypeTag(item.modelType)}</td>
