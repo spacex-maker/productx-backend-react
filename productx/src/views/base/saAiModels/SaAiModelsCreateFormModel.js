@@ -119,7 +119,19 @@ const SaAiModelsCreateFormModal = ({
               // 将 videoAspectResolution 数组转换为逗号分隔的字符串
               videoAspectResolution: Array.isArray(values.videoAspectResolution) 
                 ? values.videoAspectResolution.join(',') 
-                : values.videoAspectResolution
+                : values.videoAspectResolution,
+              // 将 videoDurationEnum 数组转换为逗号分隔的字符串
+              videoDurationEnum: Array.isArray(values.videoDurationEnum) 
+                ? values.videoDurationEnum.join(',') 
+                : values.videoDurationEnum,
+              // 将 videoSupportStyle 数组转换为逗号分隔的字符串
+              videoSupportStyle: Array.isArray(values.videoSupportStyle) 
+                ? values.videoSupportStyle.join(',') 
+                : values.videoSupportStyle,
+              // 将 videoAspectRatiosEnum 数组转换为逗号分隔的字符串
+              videoAspectRatiosEnum: Array.isArray(values.videoAspectRatiosEnum) 
+                ? values.videoAspectRatiosEnum.join(',') 
+                : values.videoAspectRatiosEnum
             };
             onOk(submitValues);
           })
@@ -634,6 +646,85 @@ const SaAiModelsCreateFormModal = ({
                   valuePropName="checked"
                 >
                   <Switch />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="videoQuality"
+                  label={t('videoQuality')}
+                >
+                  <Select placeholder={t('pleaseSelectVideoQuality')}>
+                    <Select.Option value="standard">Standard (标准)</Select.Option>
+                    <Select.Option value="high">High (高清)</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="videoRemoveWatermark"
+                  label={t('videoRemoveWatermark')}
+                  valuePropName="checked"
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="videoDurationEnum"
+                  label={t('videoDurationEnum')}
+                >
+                  <Select
+                    mode="multiple"
+                    placeholder={t('pleaseSelectVideoDurationEnum')}
+                    allowClear
+                    style={{ width: '100%' }}
+                  >
+                    <Select.Option value="10">10秒</Select.Option>
+                    <Select.Option value="15">15秒</Select.Option>
+                    <Select.Option value="25">25秒</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="videoSupportStyle"
+                  label={t('videoSupportStyle')}
+                >
+                  <Select
+                    mode="multiple"
+                    placeholder={t('pleaseSelectVideoSupportStyle')}
+                    allowClear
+                    style={{ width: '100%' }}
+                  >
+                    <Select.Option value="fun">Fun (有趣)</Select.Option>
+                    <Select.Option value="normal">Normal (正常)</Select.Option>
+                    <Select.Option value="spicy">Spicy (辛辣)</Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="videoAspectRatiosEnum"
+                  label={t('videoAspectRatiosEnum')}
+                >
+                  <Select
+                    mode="multiple"
+                    placeholder={t('pleaseSelectVideoAspectRatiosEnum')}
+                    allowClear
+                    style={{ width: '100%' }}
+                  >
+                    <Select.Option value="portrait">Portrait (竖屏)</Select.Option>
+                    <Select.Option value="landscape">Landscape (横屏)</Select.Option>
+                  </Select>
                 </Form.Item>
               </Col>
             </Row>

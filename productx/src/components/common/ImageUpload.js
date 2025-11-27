@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, message, Image, Spin, Progress } from 'antd';
+import { Upload, message, Image, Spin, Progress, Modal } from 'antd';
 import { PlusOutlined, EyeOutlined, EditOutlined, LoadingOutlined, CheckCircleFilled } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -18,6 +18,7 @@ const ImageUpload = ({
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const containerRef = useRef(null);
+  const videoRef = useRef(null);
   const [containerHeight, setContainerHeight] = useState(type === 'avatar' ? 100 : 120);
 
   // 监听容器宽度变化，保持2:1宽高比
@@ -37,6 +38,17 @@ const ImageUpload = ({
       };
     }
   }, [type]);
+
+  // 文件上传前验证
+  const beforeUpload = (file) => {
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    if (!isImage && !isVideo) {
+      message.error(t('pleaseUploadImageOrVideoFile') || '只能上传图片或视频文件！');
+      return false;
+    }
+    return true;
+  };
 
   // 处理上传
   const handleUpload = async (file) => {
@@ -77,13 +89,30 @@ const ImageUpload = ({
     }
   };
 
+  // 判断是否为视频文件
+  const isVideoFile = (url) => {
+    if (!url) return false;
+    const videoExtensions = ['.mp4', '.mov', '.avi', '.webm', '.mkv', '.flv', '.wmv', '.m4v', '.3gp', '.ogv'];
+    return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+  };
+
   // 预览处理
   const handlePreview = (e) => {
     e.stopPropagation();
     setPreviewVisible(true);
   };
+
+  // 关闭预览时暂停视频
+  const handlePreviewCancel = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+    setPreviewVisible(false);
+  };
   
   const iconSize = type === 'avatar' ? 24 : 30;
+  const isVideo = isVideoFile(imageUrl);
 
   // 渲染头像上传组件
   if (type === 'avatar') {
@@ -156,7 +185,16 @@ const ImageUpload = ({
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {imageUrl ? (
           <div style={avatarContainerStyle}>
-            <img src={imageUrl} alt="Avatar" style={avatarImageStyle} />
+            {isVideo ? (
+              <video
+                src={imageUrl}
+                style={avatarImageStyle}
+                muted
+                playsInline
+              />
+            ) : (
+              <img src={imageUrl} alt="Avatar" style={avatarImageStyle} />
+            )}
             {loading ? (
               <div style={loadingOverlayStyle}>
                 <Spin indicator={<LoadingOutlined style={{ fontSize: 24, color: '#1890ff' }} spin />} />
@@ -175,8 +213,9 @@ const ImageUpload = ({
                   <EyeOutlined style={{ fontSize: 16, color: '#1890ff' }} />
                 </button>
                 <Upload
-                  accept="image/*"
+                  accept="image/*,video/*"
                   showUploadList={false}
+                  beforeUpload={beforeUpload}
                   customRequest={({ file }) => handleUpload(file)}
                   className="full-width-upload"
                 >
@@ -186,21 +225,41 @@ const ImageUpload = ({
                 </Upload>
               </div>
             )}
-            <Image
-              style={{ display: 'none' }}
-              src={imageUrl}
-              preview={{
-                visible: previewVisible,
-                onVisibleChange: setPreviewVisible,
-                src: imageUrl,
-              }}
-            />
+            {!isVideo && (
+              <Image
+                style={{ display: 'none' }}
+                src={imageUrl}
+                preview={{
+                  visible: previewVisible,
+                  onVisibleChange: setPreviewVisible,
+                  src: imageUrl,
+                }}
+              />
+            )}
+            {isVideo && (
+              <Modal
+                open={previewVisible}
+                footer={null}
+                onCancel={handlePreviewCancel}
+                width="90%"
+                style={{ maxWidth: '1200px' }}
+                zIndex={2000}
+              >
+                <video
+                  ref={videoRef}
+                  controls
+                  style={{ width: '100%' }}
+                  src={imageUrl}
+                />
+              </Modal>
+            )}
           </div>
         ) : (
           <Upload
             name="file"
-            accept="image/*"
+            accept="image/*,video/*"
             showUploadList={false}
+            beforeUpload={beforeUpload}
             customRequest={({ file }) => handleUpload(file)}
             className="full-width-upload"
           >
@@ -231,12 +290,21 @@ const ImageUpload = ({
       <div ref={containerRef} style={{ width: '100%', display: 'block' }}>
         {imageUrl ? (
           <div className="bg-upload-container" style={{ width: '100%', height: `${containerHeight}px`, position: 'relative' }}>
-            <Image
-              src={imageUrl}
-              alt="background"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              preview={{ visible: previewVisible, onVisibleChange: setPreviewVisible }}
-            />
+            {isVideo ? (
+              <video
+                src={imageUrl}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                muted
+                playsInline
+              />
+            ) : (
+              <Image
+                src={imageUrl}
+                alt="background"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                preview={{ visible: previewVisible, onVisibleChange: setPreviewVisible }}
+              />
+            )}
             {loading ? (
               <div style={{
                 position: 'absolute',
@@ -289,8 +357,9 @@ const ImageUpload = ({
                   <EyeOutlined style={{ fontSize: 16, color: '#1890ff' }} />
                 </button>
                 <Upload
-                  accept="image/*"
+                  accept="image/*,video/*"
                   showUploadList={false}
+                  beforeUpload={beforeUpload}
                   customRequest={({ file }) => handleUpload(file)}
                   className="full-width-upload"
                 >
@@ -311,12 +380,30 @@ const ImageUpload = ({
                 </Upload>
               </div>
             )}
+            {isVideo && (
+              <Modal
+                open={previewVisible}
+                footer={null}
+                onCancel={handlePreviewCancel}
+                width="90%"
+                style={{ maxWidth: '1200px' }}
+                zIndex={2000}
+              >
+                <video
+                  ref={videoRef}
+                  controls
+                  style={{ width: '100%' }}
+                  src={imageUrl}
+                />
+              </Modal>
+            )}
           </div>
         ) : (
           <Upload
             name="file"
-            accept="image/*"
+            accept="image/*,video/*"
             showUploadList={false}
+            beforeUpload={beforeUpload}
             customRequest={({ file }) => handleUpload(file)}
             style={{ width: '100%', display: 'block' }}
             className="full-width-upload"

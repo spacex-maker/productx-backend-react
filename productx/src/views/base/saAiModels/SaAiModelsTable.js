@@ -55,6 +55,13 @@ const SaAiModelsTable = ({
     return textTaskTypes.includes(taskTypeCode);
   };
 
+  // 判断是否为视频文件
+  const isVideoFile = (url) => {
+    if (!url) return false;
+    const videoExtensions = ['.mp4', '.mov', '.avi', '.webm', '.mkv', '.flv', '.wmv', '.m4v', '.3gp', '.ogv'];
+    return videoExtensions.some(ext => url.toLowerCase().endsWith(ext));
+  };
+
   // 根据模型类型渲染详细信息
   const renderModelDetails = (item) => {
     const { modelType } = item;
@@ -230,16 +237,30 @@ const SaAiModelsTable = ({
             <td>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {(item.coverImage || item.cover_image) && (
-                  <img
-                    src={item.coverImage || item.cover_image}
-                    alt={item.modelName}
-                    style={{
+                  (() => {
+                    const coverUrl = item.coverImage || item.cover_image;
+                    const isVideo = isVideoFile(coverUrl);
+                    const coverStyle = {
                       width: 40,
                       height: 40,
                       objectFit: 'cover',
                       borderRadius: 4,
-                    }}
-                  />
+                    };
+                    return isVideo ? (
+                      <video
+                        src={coverUrl}
+                        style={coverStyle}
+                        muted
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={coverUrl}
+                        alt={item.modelName}
+                        style={coverStyle}
+                      />
+                    );
+                  })()
                 )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <span style={{ fontWeight: '500' }}>{item.modelName}</span>
