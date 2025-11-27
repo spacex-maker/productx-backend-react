@@ -212,6 +212,8 @@ const SaAiModelsRouter = React.lazy(() => import('./views/base/saAiModels/SaAiMo
 
 const SaIndustryRouter = React.lazy(() => import('./views/base/saIndustry/SaIndustry'));
 
+const SaAiVideoIndustriesRouter = React.lazy(() => import('./views/base/saAiVideoIndustries/SaAiVideoIndustries'));
+
 const ServerInstancesRouter = React.lazy(() => import('./views/base/serverInstances/ServerInstances'));
 
 const AdminLoginLogsRouter = React.lazy(() => import('./views/base/adminLoginLogs/AdminLoginLogs'));
@@ -845,6 +847,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <SaIndustryRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/saAiVideoIndustries',
+    name: 'AI视频行业管理',
+    element: (
+      <PrivateRoute>
+        <SaAiVideoIndustriesRouter />
       </PrivateRoute>
     ),
   },
