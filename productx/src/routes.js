@@ -228,6 +228,8 @@ const UserAccountChangeLogRouter = React.lazy(() => import('./views/base/userAcc
 
 const UserFeedbackRouter = React.lazy(() => import('./views/base/userFeedback/UserFeedback'));
 
+const CreemProductConfigRouter = React.lazy(() => import('./views/base/creemProductConfig/CreemProductConfig'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -921,6 +923,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <UserFeedbackRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/creemProductConfig',
+    name: 'Creem产品配置',
+    element: (
+      <PrivateRoute>
+        <CreemProductConfigRouter />
       </PrivateRoute>
     ),
   },
