@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, message, Image, Spin, Progress, Modal } from 'antd';
+import { Upload, message, Image, Spin, Progress, Modal, Switch } from 'antd';
 import { PlusOutlined, EyeOutlined, EditOutlined, LoadingOutlined, CheckCircleFilled } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -17,6 +17,7 @@ const ImageUpload = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [enableCompress, setEnableCompress] = useState(false);
   const containerRef = useRef(null);
   const videoRef = useRef(null);
   const [containerHeight, setContainerHeight] = useState(type === 'avatar' ? 100 : 120);
@@ -50,15 +51,120 @@ const ImageUpload = ({
     return true;
   };
 
+  // 图片压缩函数
+  const compressImage = (file, targetSizeKB = 500, minSizeKB = 300, maxSizeKB = 700) => {
+    return new Promise((resolve, reject) => {
+      const fileSizeKB = file.size / 1024;
+      
+      // 如果文件大小已经在目标范围内，直接返回
+      if (fileSizeKB >= minSizeKB && fileSizeKB <= maxSizeKB) {
+        resolve(file);
+        return;
+      }
+
+      // 如果文件小于最小目标大小，也不压缩
+      if (fileSizeKB < minSizeKB) {
+        resolve(file);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // 计算压缩后的尺寸（保持宽高比）
+          let width = img.width;
+          let height = img.height;
+          const maxDimension = 1920; // 最大尺寸限制
+          
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = (height / width) * maxDimension;
+              width = maxDimension;
+            } else {
+              width = (width / height) * maxDimension;
+              height = maxDimension;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          // 绘制图片
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // 尝试不同的质量值来达到目标文件大小
+          const tryCompress = (quality) => {
+            canvas.toBlob(
+              (blob) => {
+                if (!blob) {
+                  reject(new Error('压缩失败'));
+                  return;
+                }
+                
+                const blobSizeKB = blob.size / 1024;
+                
+                // 如果文件大小在目标范围内，或者质量已经很低了，就使用这个结果
+                if ((blobSizeKB >= minSizeKB && blobSizeKB <= maxSizeKB) || quality <= 0.1) {
+                  const compressedFile = new File([blob], file.name, {
+                    type: file.type,
+                    lastModified: Date.now(),
+                  });
+                  resolve(compressedFile);
+                } else if (blobSizeKB > maxSizeKB && quality > 0.1) {
+                  // 如果还是太大，继续降低质量
+                  tryCompress(Math.max(0.1, quality - 0.1));
+                } else if (blobSizeKB < minSizeKB && quality < 0.9) {
+                  // 如果太小了，稍微提高质量
+                  tryCompress(Math.min(0.9, quality + 0.1));
+                } else {
+                  // 其他情况直接使用
+                  const compressedFile = new File([blob], file.name, {
+                    type: file.type,
+                    lastModified: Date.now(),
+                  });
+                  resolve(compressedFile);
+                }
+              },
+              file.type,
+              quality
+            );
+          };
+          
+          // 从0.8开始尝试
+          tryCompress(0.8);
+        };
+        img.onerror = () => reject(new Error('图片加载失败'));
+        img.src = e.target.result;
+      };
+      reader.onerror = () => reject(new Error('文件读取失败'));
+      reader.readAsDataURL(file);
+    });
+  };
+
   // 处理上传
   const handleUpload = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
       setLoading(true);
       setUploadProgress(0);
       setUploadSuccess(false);
+      
+      // 如果是图片文件且启用了压缩，先压缩
+      let fileToUpload = file;
+      if (file.type.startsWith('image/') && enableCompress) {
+        try {
+          fileToUpload = await compressImage(file);
+        } catch (error) {
+          console.error('图片压缩失败:', error);
+          message.warning(t('imageCompressFailed') || '图片压缩失败，将上传原图');
+        }
+      }
+
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
       
       const response = await api.post('/manage/image/upload', formData, {
         onUploadProgress: (progressEvent) => {
@@ -279,7 +385,19 @@ const ImageUpload = ({
             </div>
           </Upload>
         )}
-        {tipText && <div style={{ color: '#999', fontSize: 12 }}>{tipText}</div>}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {tipText && <div style={{ color: '#999', fontSize: 12 }}>{tipText}</div>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Switch
+              checked={enableCompress}
+              onChange={setEnableCompress}
+              size="small"
+            />
+            <span style={{ fontSize: 12, color: '#666' }}>
+              {t('enableImageCompress') || '压缩图片 (300-700KB)'}
+            </span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -437,7 +555,19 @@ const ImageUpload = ({
           </Upload>
         )}
       </div>
-      {tipText && <div style={{ color: '#999', fontSize: 12 }}>{tipText}</div>}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {tipText && <div style={{ color: '#999', fontSize: 12 }}>{tipText}</div>}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Switch
+            checked={enableCompress}
+            onChange={setEnableCompress}
+            size="small"
+          />
+          <span style={{ fontSize: 12, color: '#666' }}>
+            {t('enableImageCompress') || '压缩图片 (300-700KB)'}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

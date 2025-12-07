@@ -230,6 +230,8 @@ const UserFeedbackRouter = React.lazy(() => import('./views/base/userFeedback/Us
 
 const CreemProductConfigRouter = React.lazy(() => import('./views/base/creemProductConfig/CreemProductConfig'));
 
+const SysChannelRouter = React.lazy(() => import('./views/base/sysChannel/SysChannel'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -932,6 +934,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <CreemProductConfigRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/sysChannel',
+    name: '频道管理',
+    element: (
+      <PrivateRoute>
+        <SysChannelRouter />
       </PrivateRoute>
     ),
   },
