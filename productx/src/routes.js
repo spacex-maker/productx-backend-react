@@ -232,6 +232,10 @@ const CreemProductConfigRouter = React.lazy(() => import('./views/base/creemProd
 
 const SysChannelRouter = React.lazy(() => import('./views/base/sysChannel/SysChannel'));
 
+const ListCommunityPostsRouter = React.lazy(() => import('./views/base/communityPost/ListCommunityPosts'));
+
+const ListSysDailyChallengesRouter = React.lazy(() => import('./views/base/sysDailyChallenge/ListSysDailyChallenges'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -943,6 +947,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <SysChannelRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/communityPost',
+    name: '社区帖子管理',
+    element: (
+      <PrivateRoute>
+        <ListCommunityPostsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/sysDailyChallenge',
+    name: '每日挑战管理',
+    element: (
+      <PrivateRoute>
+        <ListSysDailyChallengesRouter />
       </PrivateRoute>
     ),
   },
