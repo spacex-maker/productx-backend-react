@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import ImageUpload from 'src/components/common/ImageUpload';
+import MediaListUpload from 'src/components/common/MediaListUpload';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -19,14 +20,32 @@ const UpdateCommunityPostModal = ({
 }) => {
   const [coverUrl, setCoverUrl] = useState('');
 
+  // 将媒体URL转换为JSON字符串
+  const convertMediaUrlsToJson = (mediaUrls) => {
+    if (!mediaUrls) return '[]';
+    try {
+      if (typeof mediaUrls === 'string') {
+        // 如果已经是JSON格式，直接返回
+        if (mediaUrls.trim().startsWith('[')) {
+          return mediaUrls;
+        }
+        // 如果是多行文本，转换为数组
+        const lines = mediaUrls.split('\n').filter(line => line.trim());
+        return JSON.stringify(lines);
+      }
+      if (Array.isArray(mediaUrls)) {
+        return JSON.stringify(mediaUrls);
+      }
+      return '[]';
+    } catch (e) {
+      return '[]';
+    }
+  };
+
   useEffect(() => {
     if (selectedPost && isVisible) {
       const coverUrlValue = selectedPost.coverUrl || '';
-      const mediaUrlsValue = selectedPost.mediaUrls 
-        ? (typeof selectedPost.mediaUrls === 'string' 
-            ? selectedPost.mediaUrls 
-            : JSON.stringify(selectedPost.mediaUrls))
-        : '[]';
+      const mediaUrlsValue = convertMediaUrlsToJson(selectedPost.mediaUrls);
       const generationParamsValue = selectedPost.generationParams
         ? (typeof selectedPost.generationParams === 'string'
             ? selectedPost.generationParams
@@ -57,6 +76,10 @@ const UpdateCommunityPostModal = ({
       setCoverUrl('');
     }
   }, [selectedPost, isVisible, form]);
+
+  const handleMediaUrlsChange = (jsonString) => {
+    form.setFieldsValue({ mediaUrls: jsonString });
+  };
 
   return (
     <Modal
@@ -108,29 +131,32 @@ const UpdateCommunityPostModal = ({
         </Form.Item>
 
         <Form.Item
-          label="媒体地址列表 (JSON数组)"
+          label="媒体地址列表"
           name="mediaUrls"
           rules={[
-            { required: true, message: '请输入媒体地址列表' },
+            { required: true, message: '请至少添加一个媒体' },
             {
               validator: (_, value) => {
-                if (!value) return Promise.reject(new Error('请输入媒体地址列表'));
+                if (!value) {
+                  return Promise.reject(new Error('请至少添加一个媒体'));
+                }
                 try {
                   const urls = typeof value === 'string' ? JSON.parse(value) : value;
                   if (!Array.isArray(urls) || urls.length === 0) {
-                    return Promise.reject(new Error('媒体地址列表必须是非空数组'));
+                    return Promise.reject(new Error('请至少添加一个媒体'));
                   }
                   return Promise.resolve();
                 } catch (error) {
-                  return Promise.reject(new Error('媒体地址列表必须是有效的JSON数组格式'));
+                  return Promise.reject(new Error('媒体地址列表格式错误'));
                 }
               }
             }
           ]}
         >
-          <TextArea 
-            rows={4}
-            placeholder='请输入JSON数组格式的媒体地址，如: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"]'
+          <MediaListUpload
+            mediaUrls={form.getFieldValue('mediaUrls') || '[]'}
+            onChange={handleMediaUrlsChange}
+            maxCount={10}
           />
         </Form.Item>
 

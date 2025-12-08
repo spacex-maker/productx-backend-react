@@ -22,17 +22,31 @@ const SysDailyChallengeTable = ({
     return statusMap[status] || { label: '未知', color: 'default' };
   };
 
-  const renderCoverPreview = (coverUrl) => {
-    if (!coverUrl) return '-';
+  const renderChallengeInfo = (item) => {
+    const statusInfo = getStatusLabel(item.status);
     return (
-      <Image
-        src={coverUrl}
-        alt="封面"
-        width={60}
-        height={60}
-        style={{ objectFit: 'cover', borderRadius: 4 }}
-        preview={false}
-      />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {item.coverUrl ? (
+          <Image
+            src={item.coverUrl}
+            alt="封面"
+            width={60}
+            height={60}
+            style={{ objectFit: 'cover', borderRadius: 4, flexShrink: 0 }}
+            preview={false}
+          />
+        ) : (
+          <div style={{ width: 60, height: 60, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f0f0', borderRadius: 4 }}>
+            <span style={{ color: '#999' }}>-</span>
+          </div>
+        )}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ marginBottom: '4px', fontWeight: 500 }} title={item.title}>
+            {item.title || '-'}
+          </div>
+          <Tag color={statusInfo.color}>{statusInfo.label}</Tag>
+        </div>
+      </div>
     );
   };
 
@@ -54,9 +68,7 @@ const SysDailyChallengeTable = ({
           </th>
           {[
             'ID',
-            '封面',
-            '挑战主题',
-            '状态',
+            '挑战信息',
             '开始时间',
             '结束时间',
             '投票截止时间',
@@ -69,7 +81,6 @@ const SysDailyChallengeTable = ({
       </thead>
       <tbody>
         {data.map((item) => {
-          const statusInfo = getStatusLabel(item.status);
           return (
             <tr key={item.id} className="record-font">
               <td>
@@ -88,13 +99,7 @@ const SysDailyChallengeTable = ({
                 </div>
               </td>
               <td className="text-truncate">{item.id}</td>
-              <td>{renderCoverPreview(item.coverUrl)}</td>
-              <td className="text-truncate" title={item.title}>
-                {item.title || '-'}
-              </td>
-              <td className="text-truncate">
-                <Tag color={statusInfo.color}>{statusInfo.label}</Tag>
-              </td>
+              <td style={{ minWidth: '200px' }}>{renderChallengeInfo(item)}</td>
               <td className="text-truncate">{item.startTime ? formatDate(item.startTime) : '-'}</td>
               <td className="text-truncate">{item.endTime ? formatDate(item.endTime) : '-'}</td>
               <td className="text-truncate">{item.votingEndTime ? formatDate(item.votingEndTime) : '-'}</td>

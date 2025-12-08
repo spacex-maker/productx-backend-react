@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tag, Image } from 'antd';
+import { Button, Tag, Image, Avatar } from 'antd';
 import PropTypes from 'prop-types';
 
 const CommunityPostTable = ({
@@ -66,7 +66,7 @@ const CommunityPostTable = ({
           {[
             'ID',
             '预览',
-            '用户ID',
+            '用户',
             '标题',
             '媒体类型',
             '状态',
@@ -105,7 +105,21 @@ const CommunityPostTable = ({
               </td>
               <td className="text-truncate">{item.id}</td>
               <td>{renderMediaPreview(item)}</td>
-              <td className="text-truncate">{item.userId}</td>
+              <td className="text-truncate">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Avatar 
+                    src={item.avatar} 
+                    size={40}
+                    style={{ flexShrink: 0 }}
+                  >
+                    {item.username ? item.username.charAt(0).toUpperCase() : 'U'}
+                  </Avatar>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <span title={item.username}>{item.username || '-'}</span>
+                    <span style={{ fontSize: '12px', color: '#999' }}>ID: {item.userId || '-'}</span>
+                  </div>
+                </div>
+              </td>
               <td className="text-truncate" title={item.title}>
                 {item.title || '-'}
               </td>
