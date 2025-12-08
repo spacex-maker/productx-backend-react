@@ -17,10 +17,10 @@ const UserFeedbackTable = ({
 }) => {
   const getFeedbackTypeLabel = (type) => {
     const typeMap = {
-      'suggestion': '功能建议',
-      'bug': '缺陷反馈',
-      'question': '使用咨询',
-      'other': '其他'
+      'suggestion': t('suggestion'),
+      'bug': t('bug'),
+      'question': t('question'),
+      'other': t('other')
     };
     return typeMap[type] || type;
   };
@@ -46,10 +46,10 @@ const UserFeedbackTable = ({
 
   const getStatusLabel = (status) => {
     const statusMap = {
-      'PENDING': '待处理',
-      'PROCESSING': '处理中',
-      'RESOLVED': '已解决',
-      'CLOSED': '已关闭'
+      'PENDING': t('pending'),
+      'PROCESSING': t('processing'),
+      'RESOLVED': t('resolved'),
+      'CLOSED': t('closed')
     };
     return statusMap[status] || status;
   };
@@ -71,14 +71,14 @@ const UserFeedbackTable = ({
             </div>
           </th>
           <th>ID</th>
-          <th>用户ID</th>
-          <th>反馈类型</th>
-          <th>标题</th>
-          <th>优先级</th>
-          <th>状态</th>
-          <th>联系方式</th>
-          <th>创建时间</th>
-          <th className="fixed-column">操作</th>
+          <th>{t('userId')}</th>
+          <th>{t('feedbackType')}</th>
+          <th>{t('title')}</th>
+          <th>{t('priority')}</th>
+          <th>{t('status')}</th>
+          <th>{t('contact')}</th>
+          <th>{t('createTime')}</th>
+          <th className="fixed-column">{t('actions')}</th>
         </tr>
       </thead>
       <tbody>
@@ -100,7 +100,7 @@ const UserFeedbackTable = ({
               </div>
             </td>
             <td>{item.id}</td>
-            <td>{item.userId || '匿名'}</td>
+            <td>{item.userId || t('anonymous')}</td>
             <td>{getFeedbackTypeLabel(item.feedbackType)}</td>
             <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {item.title}
@@ -117,10 +117,10 @@ const UserFeedbackTable = ({
                 style={{ width: 100 }}
                 size="small"
               >
-                <Option value="PENDING">待处理</Option>
-                <Option value="PROCESSING">处理中</Option>
-                <Option value="RESOLVED">已解决</Option>
-                <Option value="CLOSED">已关闭</Option>
+                <Option value="PENDING">{t('pending')}</Option>
+                <Option value="PROCESSING">{t('processing')}</Option>
+                <Option value="RESOLVED">{t('resolved')}</Option>
+                <Option value="CLOSED">{t('closed')}</Option>
               </Select>
             </td>
             <td>{item.contact || '-'}</td>

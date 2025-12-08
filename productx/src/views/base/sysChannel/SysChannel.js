@@ -38,15 +38,15 @@ const SysChannel = () => {
   ];
 
   const typeOptions = [
-    { value: 'SYSTEM', label: '系统推荐' },
-    { value: 'TAG', label: '标签聚合' },
-    { value: 'MANUAL', label: '人工维护' },
+    { value: 'SYSTEM', label: t('systemRecommend') || '系统推荐' },
+    { value: 'TAG', label: t('tagAggregation') || '标签聚合' },
+    { value: 'MANUAL', label: t('manualMaintenance') || '人工维护' },
   ];
 
   const layoutModeOptions = [
-    { value: 'MASONRY', label: '瀑布流' },
-    { value: 'GRID', label: '网格' },
-    { value: 'FEED', label: '单列视频流' },
+    { value: 'MASONRY', label: t('masonry') || '瀑布流' },
+    { value: 'GRID', label: t('grid') || '网格' },
+    { value: 'FEED', label: t('feed') || '单列视频流' },
   ];
 
   useEffect(() => {

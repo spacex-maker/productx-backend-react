@@ -15,7 +15,7 @@ const UserFeedbackCreateFormModal = ({
 
   return (
     <Modal
-      title="创建反馈"
+      title={t('createFeedback')}
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
@@ -30,65 +30,65 @@ const UserFeedbackCreateFormModal = ({
         wrapperCol={{ span: 16 }}
       >
         <Form.Item
-          label="用户ID"
+          label={t('userId')}
           name="userId"
         >
           <InputNumber 
-            placeholder="留空表示匿名反馈" 
+            placeholder={t('anonymousFeedback')} 
             style={{ width: '100%' }} 
             min={1}
           />
         </Form.Item>
 
         <Form.Item
-          label="反馈类型"
+          label={t('feedbackType')}
           name="feedbackType"
-          rules={[{ required: true, message: '请选择反馈类型' }]}
+          rules={[{ required: true, message: t('pleaseSelectFeedbackType') }]}
         >
-          <Select placeholder="请选择反馈类型">
-            <Option value="suggestion">功能建议</Option>
-            <Option value="bug">缺陷反馈</Option>
-            <Option value="question">使用咨询</Option>
-            <Option value="other">其他</Option>
+          <Select placeholder={t('pleaseSelectFeedbackType')}>
+            <Option value="suggestion">{t('suggestion')}</Option>
+            <Option value="bug">{t('bug')}</Option>
+            <Option value="question">{t('question')}</Option>
+            <Option value="other">{t('other')}</Option>
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="反馈标题"
+          label={t('feedbackTitle')}
           name="title"
-          rules={[{ required: true, message: '请输入反馈标题' }]}
+          rules={[{ required: true, message: t('pleaseInputFeedbackTitle') }]}
         >
-          <Input placeholder="请输入反馈标题" />
+          <Input placeholder={t('pleaseInputFeedbackTitle')} />
         </Form.Item>
 
         <Form.Item
-          label="反馈内容"
+          label={t('feedbackContent')}
           name="content"
-          rules={[{ required: true, message: '请输入反馈内容' }]}
+          rules={[{ required: true, message: t('pleaseInputFeedbackContent') }]}
         >
           <TextArea 
-            placeholder="请输入反馈详细内容" 
+            placeholder={t('pleaseInputFeedbackContent')} 
             rows={6}
           />
         </Form.Item>
 
         <Form.Item
-          label="优先级"
+          label={t('priority')}
           name="priority"
           initialValue="MEDIUM"
         >
-          <Select placeholder="请选择优先级">
-            <Option value="LOW">低</Option>
-            <Option value="MEDIUM">中</Option>
-            <Option value="HIGH">高</Option>
+          <Select placeholder={t('pleaseSelectPriority')}>
+            <Option value="LOW">{t('low')}</Option>
+            <Option value="MEDIUM">{t('medium')}</Option>
+            <Option value="HIGH">{t('high')}</Option>
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="联系方式"
+          label={t('contact')}
           name="contact"
         >
-          <Input placeholder="邮箱或手机号（可选）" />
+          <Input placeholder={t('contactPlaceholder')} />
         </Form.Item>
       </Form>
     </Modal>

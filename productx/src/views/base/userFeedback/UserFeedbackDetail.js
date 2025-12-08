@@ -13,10 +13,10 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
 
   const getFeedbackTypeLabel = (type) => {
     const typeMap = {
-      'suggestion': '功能建议',
-      'bug': '缺陷反馈',
-      'question': '使用咨询',
-      'other': '其他'
+      'suggestion': t('suggestion'),
+      'bug': t('bug'),
+      'question': t('question'),
+      'other': t('other')
     };
     return typeMap[type] || type;
   };
@@ -42,10 +42,10 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
 
   const getStatusLabel = (status) => {
     const statusMap = {
-      'PENDING': '待处理',
-      'PROCESSING': '处理中',
-      'RESOLVED': '已解决',
-      'CLOSED': '已关闭'
+      'PENDING': t('pending'),
+      'PROCESSING': t('processing'),
+      'RESOLVED': t('resolved'),
+      'CLOSED': t('closed')
     };
     return statusMap[status] || status;
   };
@@ -74,7 +74,7 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
 
   const handleReplySubmit = () => {
     if (!replyContent.trim()) {
-      message.warning('请输入回复内容');
+      message.warning(t('pleaseInputReplyContent'));
       return;
     }
     onReply(feedback.id, replyContent);
@@ -85,47 +85,47 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
   return (
     <div>
       <Descriptions bordered column={2}>
-        <Descriptions.Item label="反馈ID">{feedback.id}</Descriptions.Item>
-        <Descriptions.Item label="用户ID">{feedback.userId || '匿名'}</Descriptions.Item>
-        <Descriptions.Item label="反馈类型">
+        <Descriptions.Item label={t('feedbackId')}>{feedback.id}</Descriptions.Item>
+        <Descriptions.Item label={t('userId')}>{feedback.userId || t('anonymous')}</Descriptions.Item>
+        <Descriptions.Item label={t('feedbackType')}>
           {getFeedbackTypeLabel(feedback.feedbackType)}
         </Descriptions.Item>
-        <Descriptions.Item label="优先级">
+        <Descriptions.Item label={t('priority')}>
           <Tag color={getPriorityColor(feedback.priority)}>
             {feedback.priority}
           </Tag>
         </Descriptions.Item>
-        <Descriptions.Item label="处理状态">
+        <Descriptions.Item label={t('processingStatus')}>
           <Tag color={getStatusColor(feedback.status)}>
             {getStatusLabel(feedback.status)}
           </Tag>
         </Descriptions.Item>
-        <Descriptions.Item label="联系方式">{feedback.contact || '-'}</Descriptions.Item>
-        <Descriptions.Item label="反馈标题" span={2}>
+        <Descriptions.Item label={t('contact')}>{feedback.contact || '-'}</Descriptions.Item>
+        <Descriptions.Item label={t('feedbackTitle')} span={2}>
           {feedback.title}
         </Descriptions.Item>
-        <Descriptions.Item label="反馈内容" span={2}>
+        <Descriptions.Item label={t('feedbackContent')} span={2}>
           <div style={{ whiteSpace: 'pre-wrap', maxHeight: '200px', overflow: 'auto' }}>
             {feedback.content}
           </div>
         </Descriptions.Item>
         {feedback.adminReply && (
           <>
-            <Descriptions.Item label="管理员回复" span={2}>
+            <Descriptions.Item label={t('adminReply')} span={2}>
               <div style={{ whiteSpace: 'pre-wrap', maxHeight: '200px', overflow: 'auto' }}>
                 {feedback.adminReply}
               </div>
             </Descriptions.Item>
-            <Descriptions.Item label="回复时间">
+            <Descriptions.Item label={t('adminReplyTime')}>
               {feedback.adminReplyTime || '-'}
             </Descriptions.Item>
           </>
         )}
-        <Descriptions.Item label="创建时间">{feedback.createTime}</Descriptions.Item>
-        <Descriptions.Item label="更新时间">{feedback.updateTime || '-'}</Descriptions.Item>
-        <Descriptions.Item label="创建人">{feedback.createBy || '-'}</Descriptions.Item>
-        <Descriptions.Item label="更新人">{feedback.updateBy || '-'}</Descriptions.Item>
-        <Descriptions.Item label="附件列表" span={2}>
+        <Descriptions.Item label={t('createTime')}>{feedback.createTime}</Descriptions.Item>
+        <Descriptions.Item label={t('updateTime')}>{feedback.updateTime || '-'}</Descriptions.Item>
+        <Descriptions.Item label={t('createdBy')}>{feedback.createBy || '-'}</Descriptions.Item>
+        <Descriptions.Item label={t('updatedBy')}>{feedback.updateBy || '-'}</Descriptions.Item>
+        <Descriptions.Item label={t('attachmentList')} span={2}>
           {feedback.attachments && feedback.attachments.length > 0 ? (
             <Card 
               size="small" 
@@ -209,7 +209,7 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
                                   }}
                                   preview={{
                                     src: attachment.filePath,
-                                    mask: '点击预览',
+                                    mask: t('clickToPreview'),
                                   }}
                                 />
                               </div>
@@ -226,7 +226,7 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
                             target="_blank"
                             size="small"
                           >
-                            预览
+                            {t('preview')}
                           </Button>
                         )}
                         <Button
@@ -236,7 +236,7 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
                           download
                           size="small"
                         >
-                          下载
+                          {t('download')}
                         </Button>
                       </Space>
                     </List.Item>
@@ -245,7 +245,7 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
               />
             </Card>
           ) : (
-            <span style={{ color: token.colorTextTertiary }}>无附件</span>
+            <span style={{ color: token.colorTextTertiary }}>{t('noAttachments')}</span>
           )}
         </Descriptions.Item>
       </Descriptions>
@@ -257,7 +257,7 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
             onClick={() => setReplyVisible(true)}
             disabled={feedback.status === 'CLOSED'}
           >
-            回复反馈
+            {t('replyFeedback')}
           </Button>
           <Button 
             onClick={() => {
@@ -265,27 +265,27 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
               onStatusChange(feedback.id, newStatus);
             }}
           >
-            {feedback.status === 'RESOLVED' ? '关闭反馈' : '标记已解决'}
+            {feedback.status === 'RESOLVED' ? t('closeFeedback') : t('markResolved')}
           </Button>
         </Space>
       </div>
 
       <Modal
-        title="回复反馈"
+        title={t('replyFeedback')}
         open={replyVisible}
         onOk={handleReplySubmit}
         onCancel={() => {
           setReplyVisible(false);
           setReplyContent('');
         }}
-        okText="确定"
-        cancelText="取消"
+        okText={t('confirm')}
+        cancelText={t('cancel')}
       >
         <TextArea
           rows={6}
           value={replyContent}
           onChange={(e) => setReplyContent(e.target.value)}
-          placeholder="请输入回复内容"
+          placeholder={t('pleaseInputReplyContent')}
         />
       </Modal>
     </div>

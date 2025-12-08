@@ -44,7 +44,7 @@ const SysChannelCreateFormModal = ({
 
   return (
     <Modal
-      title={t('add') || '添加频道'}
+      title={t('addChannel') || t('add') || '添加频道'}
       open={isVisible}
       onCancel={onCancel}
       onOk={() => form.submit()}
@@ -67,36 +67,41 @@ const SysChannelCreateFormModal = ({
           isActive: true,
         }}
       >
-        <Form.Item
-          label={t('channelKey') || '频道标识'}
-          name="channelKey"
-          rules={[{ required: true, message: t('pleaseInputChannelKey') || '请输入频道标识' }]}
-        >
-          <Input placeholder={t('pleaseInputChannelKey') || '请输入频道标识 (如: anime-art)'} />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('channelKey') || '频道标识'}
+              name="channelKey"
+              rules={[{ required: true, message: t('pleaseInputChannelKey') || '请输入频道标识' }]}
+            >
+              <Input placeholder={t('pleaseInputChannelKeyExample') || t('pleaseInputChannelKey') || '请输入频道标识 (如: anime-art)'} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('name') || '显示名称'}
+              name="name"
+              rules={[{ required: true, message: t('pleaseInputName') || '请输入显示名称' }]}
+            >
+              <Input placeholder={t('pleaseInputName') || '请输入显示名称'} />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item
-          label={t('name') || '显示名称'}
-          name="name"
-          rules={[{ required: true, message: t('pleaseInputName') || '请输入显示名称' }]}
-        >
-          <Input placeholder={t('pleaseInputName') || '请输入显示名称'} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('description') || '频道简介'}
+          label={t('channelDescription') || t('description') || '频道简介'}
           name="description"
         >
           <TextArea 
             rows={3}
-            placeholder={t('pleaseInputDescription') || '请输入频道简介'}
+            placeholder={t('pleaseInputChannelDescription') || t('pleaseInputDescription') || '请输入频道简介'}
           />
         </Form.Item>
 
         <Row gutter={16}>
-          <Col span={8}>
+          <Col span={12}>
             <Form.Item
-              label={t('iconUrl') || '小图标'}
+              label={t('icon') || t('iconUrl') || '小图标'}
               name="iconUrl"
             >
               <ImageUpload
@@ -110,12 +115,9 @@ const SysChannelCreateFormModal = ({
               />
             </Form.Item>
           </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
-              label={t('coverUrl') || '封面图/Banner'}
+              label={t('coverUrl') || t('coverBanner') || '封面图/Banner'}
               name="coverUrl"
             >
               <ImageUpload
@@ -131,39 +133,45 @@ const SysChannelCreateFormModal = ({
           </Col>
         </Row>
 
-        <Form.Item
-          label={t('themeColor') || '主题色'}
-          name="themeColor"
-          getValueFromEvent={(color) => color.toHexString()}
-        >
-          <ColorPicker showText format="hex" />
-        </Form.Item>
-
-        <Form.Item
-          label={t('layoutMode') || '布局模式'}
-          name="layoutMode"
-        >
-          <Select placeholder={t('pleaseSelectLayoutMode') || '请选择布局模式'}>
-            {layoutModeOptions.map((layout) => (
-              <Option key={layout.value} value={layout.value}>
-                {layout.label}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label={t('type') || '类型'}
-          name="type"
-        >
-          <Select placeholder={t('pleaseSelectType') || '请选择类型'}>
-            {typeOptions.map((type) => (
-              <Option key={type.value} value={type.value}>
-                {type.label}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={8}>
+            <Form.Item
+              label={t('themeColor') || '主题色'}
+              name="themeColor"
+              getValueFromEvent={(color) => color.toHexString()}
+            >
+              <ColorPicker showText format="hex" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('layoutMode') || '布局模式'}
+              name="layoutMode"
+            >
+              <Select placeholder={t('pleaseSelectLayoutMode') || '请选择布局模式'}>
+                {layoutModeOptions.map((layout) => (
+                  <Option key={layout.value} value={layout.value}>
+                    {layout.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('type') || '类型'}
+              name="type"
+            >
+              <Select placeholder={t('pleaseSelectType') || '请选择类型'}>
+                {typeOptions.map((type) => (
+                  <Option key={type.value} value={type.value}>
+                    {type.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item
           label={t('filterConfig') || '聚合规则JSON'}
@@ -176,36 +184,46 @@ const SysChannelCreateFormModal = ({
           />
         </Form.Item>
 
-        <Form.Item
-          label={t('isVipOnly') || 'VIP专属频道'}
-          name="isVipOnly"
-          valuePropName="checked"
-        >
-          <Switch />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('isVipOnly') || 'VIP专属频道'}
+              name="isVipOnly"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('allowUserPost') || '允许用户发布'}
+              name="allowUserPost"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          label={t('allowUserPost') || '允许用户发布'}
-          name="allowUserPost"
-          valuePropName="checked"
-        >
-          <Switch />
-        </Form.Item>
-
-        <Form.Item
-          label={t('sortOrder') || '排序权重'}
-          name="sortOrder"
-        >
-          <InputNumber min={0} style={{ width: '100%' }} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('status') || '是否启用'}
-          name="isActive"
-          valuePropName="checked"
-        >
-          <Switch />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('sortOrder') || t('sortWeight') || '排序权重'}
+              name="sortOrder"
+            >
+              <InputNumber min={0} style={{ width: '100%' }} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('status') || '是否启用'}
+              name="isActive"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

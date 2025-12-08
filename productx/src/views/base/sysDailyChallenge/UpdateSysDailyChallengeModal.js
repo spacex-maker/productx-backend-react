@@ -46,7 +46,7 @@ const UpdateSysDailyChallengeModal = ({
       }
     } catch (error) {
       console.error('获取模型列表失败', error);
-      message.error('获取模型列表失败');
+      message.error(t('fetchModelListFailed'));
     } finally {
       setLoadingModels(false);
     }
@@ -67,7 +67,7 @@ const UpdateSysDailyChallengeModal = ({
 
   const handleFinishFailed = (errorInfo) => {
     console.error('表单验证失败', errorInfo);
-    message.error('请检查表单输入是否正确');
+    message.error(t('pleaseCheckFormInput'));
   };
 
   useEffect(() => {
@@ -107,7 +107,7 @@ const UpdateSysDailyChallengeModal = ({
 
   return (
     <Modal
-      title={t('edit') || '编辑挑战'}
+      title={t('editChallenge')}
       open={isVisible}
       onCancel={onCancel}
       onOk={async () => {
@@ -122,15 +122,15 @@ const UpdateSysDailyChallengeModal = ({
         } catch (error) {
           console.error('表单验证失败或提交失败', error);
           if (error.errorFields) {
-            message.error('请检查表单输入是否正确');
+            message.error(t('pleaseCheckFormInput'));
           } else {
             // 如果 handleUpdateChallenge 内部已经处理了错误，这里不需要再显示
             console.error('更新失败', error);
           }
         }
       }}
-      okText={t('confirm') || '确认'}
-      cancelText={t('cancel') || '取消'}
+      okText={t('confirm')}
+      cancelText={t('cancel')}
       width={800}
       maskClosable={false}
     >
@@ -145,27 +145,27 @@ const UpdateSysDailyChallengeModal = ({
         </Form.Item>
 
         <Form.Item
-          label="挑战主题"
+          label={t('challengeTitle')}
           name="title"
-          rules={[{ required: true, message: '请输入挑战主题' }]}
+          rules={[{ required: true, message: t('pleaseEnterChallengeTitle') }]}
         >
-          <Input placeholder="请输入挑战主题（如: Cyberpunk Cat）" maxLength={100} />
+          <Input placeholder={t('challengeTitlePlaceholder')} maxLength={100} />
         </Form.Item>
 
         <Form.Item
-          label="详细规则描述"
+          label={t('detailedRulesDescription')}
           name="description"
         >
           <TextArea 
             rows={4}
-            placeholder="请输入详细规则描述"
+            placeholder={t('pleaseEnterDetailedRulesDescription')}
           />
         </Form.Item>
 
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="活动封面图"
+              label={t('activityCoverImage')}
               name="coverUrl"
             >
               <ImageUpload
@@ -175,13 +175,13 @@ const UpdateSysDailyChallengeModal = ({
                   form.setFieldsValue({ coverUrl: url });
                 }}
                 type="background"
-                tipText="建议上传横向图片，推荐比例：16:9"
+                tipText={t('uploadHorizontalImageTip')}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label="图生图底图（可选）"
+              label={t('imageToImageBaseImage')}
               name="referenceImageUrl"
             >
               <ImageUpload
@@ -191,30 +191,30 @@ const UpdateSysDailyChallengeModal = ({
                   form.setFieldsValue({ referenceImageUrl: url });
                 }}
                 type="background"
-                tipText="图生图的底图（可选）"
+                tipText={t('imageToImageBaseImageTip')}
               />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
-          label="必须包含的Tag (JSON数组)"
+          label={t('requiredTags')}
           name="requiredTags"
         >
           <TextArea 
             rows={2}
-            placeholder='请输入JSON数组格式的Tag，如: ["cyberpunk", "neon"]'
+            placeholder={t('requiredTagsPlaceholder')}
           />
         </Form.Item>
 
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="指定模型Key"
+              label={t('specifiedModelKey')}
               name="requiredModel"
             >
               <Select 
-                placeholder="请选择模型（可选）" 
+                placeholder={t('pleaseSelectModel')} 
                 allowClear
                 loading={loadingModels}
                 showSearch
@@ -235,10 +235,10 @@ const UpdateSysDailyChallengeModal = ({
           </Col>
           <Col span={12}>
             <Form.Item
-              label="状态"
+              label={t('status')}
               name="status"
             >
-              <Select placeholder="请选择状态">
+              <Select placeholder={t('pleaseSelectStatus')}>
                 {statusOptions.map((status) => (
                   <Option key={status.value} value={status.value}>
                     {status.label}
@@ -252,52 +252,52 @@ const UpdateSysDailyChallengeModal = ({
         <Row gutter={16}>
           <Col span={8}>
             <Form.Item
-              label="开始投稿时间"
+              label={t('submissionStartTime')}
               name="startTime"
             >
               <DatePicker 
                 showTime 
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: '100%' }}
-                placeholder="请选择开始投稿时间"
+                placeholder={t('pleaseSelectSubmissionStartTime')}
               />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              label="投稿截止时间"
+              label={t('submissionDeadline')}
               name="endTime"
             >
               <DatePicker 
                 showTime 
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: '100%' }}
-                placeholder="请选择投稿截止时间"
+                placeholder={t('pleaseSelectSubmissionDeadline')}
               />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
-              label="投票/公示截止时间"
+              label={t('votingAnnouncementDeadline')}
               name="votingEndTime"
             >
               <DatePicker 
                 showTime 
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: '100%' }}
-                placeholder="请选择投票/公示截止时间"
+                placeholder={t('pleaseSelectVotingAnnouncementDeadline')}
               />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
-          label="奖励配置 (JSON)"
+          label={t('rewardsConfig')}
           name="rewardsConfig"
         >
           <TextArea 
             rows={3}
-            placeholder='请输入JSON格式的奖励配置，如: {"1st": 500, "2nd": 300, "participation": 5}'
+            placeholder={t('rewardsConfigPlaceholder')}
           />
         </Form.Item>
       </Form>

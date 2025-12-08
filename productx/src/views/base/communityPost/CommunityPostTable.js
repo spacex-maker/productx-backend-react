@@ -13,18 +13,18 @@ const CommunityPostTable = ({
 }) => {
   const getStatusLabel = (status) => {
     const statusMap = {
-      0: { label: '审核中', color: 'processing' },
-      1: { label: '公开', color: 'success' },
-      2: { label: '私有', color: 'default' },
-      9: { label: '违规下架', color: 'error' },
+      0: { label: t('underReview') || '审核中', color: 'processing' },
+      1: { label: t('public') || '公开', color: 'success' },
+      2: { label: t('private') || '私有', color: 'default' },
+      9: { label: t('violationRemoved') || '违规下架', color: 'error' },
     };
-    return statusMap[status] || { label: '未知', color: 'default' };
+    return statusMap[status] || { label: t('unknown') || '未知', color: 'default' };
   };
 
   const getMediaTypeLabel = (mediaType) => {
     const typeMap = {
-      'IMAGE': '图片',
-      'VIDEO': '视频',
+      'IMAGE': t('image') || '图片',
+      'VIDEO': t('video') || '视频',
     };
     return typeMap[mediaType] || mediaType;
   };
@@ -38,7 +38,7 @@ const CommunityPostTable = ({
     return (
       <Image
         src={mediaUrl}
-        alt="预览"
+        alt={t('preview') || '预览'}
         width={60}
         height={60}
         style={{ objectFit: 'cover', borderRadius: 4 }}
@@ -64,18 +64,18 @@ const CommunityPostTable = ({
             </div>
           </th>
           {[
-            'ID',
-            '预览',
-            '用户',
-            '标题',
-            '媒体类型',
-            '状态',
-            '是否精选',
-            '频道ID',
-            '浏览量',
-            '点赞数',
-            '评论数',
-            '收藏数',
+            t('id') || 'ID',
+            t('preview') || '预览',
+            t('user') || '用户',
+            t('title') || '标题',
+            t('mediaType') || '媒体类型',
+            t('status') || '状态',
+            t('isFeatured') || '是否精选',
+            t('channelId') || '频道ID',
+            t('viewCount') || '浏览量',
+            t('likeCount') || '点赞数',
+            t('commentCount') || '评论数',
+            t('collectCount') || '收藏数',
             t('createTime'),
             t('operations')
           ].map((field) => (
@@ -131,9 +131,9 @@ const CommunityPostTable = ({
               </td>
               <td className="text-truncate">
                 {item.isFeatured ? (
-                  <Tag color="gold">是</Tag>
+                  <Tag color="gold">{t('yes') || '是'}</Tag>
                 ) : (
-                  <Tag>否</Tag>
+                  <Tag>{t('no') || '否'}</Tag>
                 )}
               </td>
               <td className="text-truncate">{item.channelId || '-'}</td>

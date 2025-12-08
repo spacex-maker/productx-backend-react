@@ -76,7 +76,7 @@ const UserFeedback = () => {
       }
     } catch (error) {
       console.error('获取数据失败', error)
-      message.error('获取数据失败')
+      message.error(t('fetchDataFailed'))
     } finally {
       setIsLoading(false)
     }
@@ -118,11 +118,11 @@ const UserFeedback = () => {
         setSelectedFeedback(response)
         setIsDetailModalVisible(true)
       } else {
-        message.error('获取详情失败：数据为空')
+        message.error(t('fetchDetailFailedEmpty'))
       }
     } catch (error) {
       console.error('获取详情失败:', error)
-      message.error('获取详情失败：' + (error.response?.data?.message || error.message))
+      message.error(t('fetchDetailFailed') + ': ' + (error.response?.data?.message || error.message))
     }
   }
 
@@ -131,10 +131,10 @@ const UserFeedback = () => {
       await api.post('/manage/user-feedback/reply', null, {
         params: { id, adminReply }
       })
-      message.success('回复成功')
+      message.success(t('replySuccess'))
       await fetchData()
     } catch (error) {
-      message.error('回复失败')
+      message.error(t('replyFailed'))
     }
   }
 
@@ -143,10 +143,10 @@ const UserFeedback = () => {
       await api.post('/manage/user-feedback/update-status', null, {
         params: { id, status }
       })
-      message.success('状态更新成功')
+      message.success(t('statusUpdateSuccess'))
       await fetchData()
     } catch (error) {
-      message.error('状态更新失败')
+      message.error(t('statusUpdateFailed'))
     }
   }
 
@@ -168,7 +168,7 @@ const UserFeedback = () => {
               <Input
                 value={searchParams.userId}
                 onChange={(e) => handleSearchChange(e.target.value, 'userId')}
-                placeholder="用户ID"
+                placeholder={t('userId')}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -177,48 +177,48 @@ const UserFeedback = () => {
               <Select
                 value={searchParams.feedbackType}
                 onChange={(value) => handleSearchChange(value, 'feedbackType')}
-                placeholder="反馈类型"
+                placeholder={t('feedbackType')}
                 allowClear
                 style={{ width: 150 }}
               >
-                <Option value="suggestion">功能建议</Option>
-                <Option value="bug">缺陷反馈</Option>
-                <Option value="question">使用咨询</Option>
-                <Option value="other">其他</Option>
+                <Option value="suggestion">{t('suggestion')}</Option>
+                <Option value="bug">{t('bug')}</Option>
+                <Option value="question">{t('question')}</Option>
+                <Option value="other">{t('other')}</Option>
               </Select>
             </Col>
             <Col>
               <Select
                 value={searchParams.priority}
                 onChange={(value) => handleSearchChange(value, 'priority')}
-                placeholder="优先级"
+                placeholder={t('priority')}
                 allowClear
                 style={{ width: 150 }}
               >
-                <Option value="LOW">低</Option>
-                <Option value="MEDIUM">中</Option>
-                <Option value="HIGH">高</Option>
+                <Option value="LOW">{t('low')}</Option>
+                <Option value="MEDIUM">{t('medium')}</Option>
+                <Option value="HIGH">{t('high')}</Option>
               </Select>
             </Col>
             <Col>
               <Select
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange(value, 'status')}
-                placeholder="处理状态"
+                placeholder={t('processingStatus')}
                 allowClear
                 style={{ width: 150 }}
               >
-                <Option value="PENDING">待处理</Option>
-                <Option value="PROCESSING">处理中</Option>
-                <Option value="RESOLVED">已解决</Option>
-                <Option value="CLOSED">已关闭</Option>
+                <Option value="PENDING">{t('pending')}</Option>
+                <Option value="PROCESSING">{t('processing')}</Option>
+                <Option value="RESOLVED">{t('resolved')}</Option>
+                <Option value="CLOSED">{t('closed')}</Option>
               </Select>
             </Col>
             <Col>
               <Input
                 value={searchParams.title}
                 onChange={(e) => handleSearchChange(e.target.value, 'title')}
-                placeholder="反馈标题"
+                placeholder={t('feedbackTitle')}
                 allowClear
                 style={{ width: 200 }}
               />
@@ -228,7 +228,7 @@ const UserFeedback = () => {
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
                 onChange={handleDateRangeChange}
-                placeholder={['开始时间', '结束时间']}
+                placeholder={[t('startTime'), t('endTime')]}
               />
             </Col>
             <Col>
@@ -244,7 +244,7 @@ const UserFeedback = () => {
                   type="primary"
                   onClick={() => setIsCreateModalVisible(true)}
                 >
-                  创建反馈
+                  {t('createFeedback')}
                 </Button>
                 <Button
                   type="primary"
@@ -296,12 +296,12 @@ const UserFeedback = () => {
         onFinish={async (values) => {
           try {
             await api.post('/manage/user-feedback/create', values)
-            message.success('创建成功')
+            message.success(t('createSuccess'))
             setIsCreateModalVisible(false)
             createForm.resetFields()
             await fetchData()
           } catch (error) {
-            message.error('创建失败')
+            message.error(t('createFailed'))
           }
         }}
         form={createForm}
@@ -315,19 +315,19 @@ const UserFeedback = () => {
         handleUpdateFeedback={async (values) => {
           try {
             await api.put('/manage/user-feedback/update', values)
-            message.success('更新成功')
+            message.success(t('updateSuccess'))
             setIsUpdateModalVisible(false)
             updateForm.resetFields()
             await fetchData()
           } catch (error) {
-            message.error('更新失败')
+            message.error(t('updateFailed'))
           }
         }}
         selectedFeedback={selectedFeedback}
       />
 
       <Modal
-        title="反馈详情"
+        title={t('feedbackDetail')}
         open={isDetailModalVisible}
         onCancel={() => {
           setIsDetailModalVisible(false)

@@ -35,15 +35,15 @@ const ListCommunityPosts = () => {
   const [selectedPost, setSelectedPost] = useState(null);
 
   const statusOptions = [
-    { value: 0, label: '审核中' },
-    { value: 1, label: '公开' },
-    { value: 2, label: '私有' },
-    { value: 9, label: '违规下架' },
+    { value: 0, label: t('underReview') || '审核中' },
+    { value: 1, label: t('public') || '公开' },
+    { value: 2, label: t('private') || '私有' },
+    { value: 9, label: t('violationRemoved') || '违规下架' },
   ];
 
   const mediaTypeOptions = [
-    { value: 'IMAGE', label: '图片' },
-    { value: 'VIDEO', label: '视频' },
+    { value: 'IMAGE', label: t('image') || '图片' },
+    { value: 'VIDEO', label: t('video') || '视频' },
   ];
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const ListCommunityPosts = () => {
               <Input
                 value={searchParams.userId}
                 onChange={(e) => handleSearchChange('userId', e.target.value)}
-                placeholder="用户ID"
+                placeholder={t('userId') || '用户ID'}
                 allowClear
                 style={{ width: 150 }}
               />
@@ -145,7 +145,7 @@ const ListCommunityPosts = () => {
               <Input
                 value={searchParams.title}
                 onChange={(e) => handleSearchChange('title', e.target.value)}
-                placeholder="标题"
+                placeholder={t('title') || '标题'}
                 allowClear
                 style={{ width: 200 }}
               />
@@ -154,7 +154,7 @@ const ListCommunityPosts = () => {
               <Select
                 value={searchParams.mediaType}
                 onChange={(value) => handleSearchChange('mediaType', value)}
-                placeholder="媒体类型"
+                placeholder={t('mediaType') || '媒体类型'}
                 allowClear
                 style={{ width: 150 }}
               >
@@ -169,7 +169,7 @@ const ListCommunityPosts = () => {
               <Select
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange('status', value)}
-                placeholder="状态"
+                placeholder={t('status') || '状态'}
                 allowClear
                 style={{ width: 150 }}
               >
@@ -184,19 +184,19 @@ const ListCommunityPosts = () => {
               <Select
                 value={searchParams.isFeatured}
                 onChange={(value) => handleSearchChange('isFeatured', value)}
-                placeholder="是否精选"
+                placeholder={t('isFeatured') || '是否精选'}
                 allowClear
                 style={{ width: 150 }}
               >
-                <Option value={true}>是</Option>
-                <Option value={false}>否</Option>
+                <Option value={true}>{t('yes') || '是'}</Option>
+                <Option value={false}>{t('no') || '否'}</Option>
               </Select>
             </Col>
             <Col>
               <Input
                 value={searchParams.channelId}
                 onChange={(e) => handleSearchChange('channelId', e.target.value)}
-                placeholder="频道ID"
+                placeholder={t('channelId') || '频道ID'}
                 allowClear
                 style={{ width: 150 }}
               />

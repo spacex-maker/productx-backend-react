@@ -31,10 +31,10 @@ const ListSysDailyChallenges = () => {
   const [selectedChallenge, setSelectedChallenge] = useState(null);
 
   const statusOptions = [
-    { value: 0, label: '未开始' },
-    { value: 1, label: '进行中' },
-    { value: 2, label: '评审中' },
-    { value: 3, label: '已结束' },
+    { value: 0, label: t('statusNotStarted') },
+    { value: 1, label: t('statusInProgress') },
+    { value: 2, label: t('statusUnderReview') },
+    { value: 3, label: t('statusEnded') },
   ];
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ListSysDailyChallenges = () => {
       }
     } catch (error) {
       console.error('Failed to fetch data', error);
-      message.error(t('fetchDataFailed') || '获取数据失败');
+      message.error(t('fetchDataFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -82,12 +82,12 @@ const ListSysDailyChallenges = () => {
         votingEndTime: values.votingEndTime ? values.votingEndTime.format('YYYY-MM-DD HH:mm:ss') : null,
       };
       await api.post('/manage/sys-daily-challenge/create', formattedValues);
-      message.success(t('createSuccess') || '创建成功');
+      message.success(t('createSuccess'));
       setIsCreateModalVisible(false);
       createForm.resetFields();
       await fetchData();
     } catch (error) {
-      message.error(t('createFailed') || '创建失败');
+      message.error(t('createFailed'));
     }
   };
 
@@ -101,12 +101,12 @@ const ListSysDailyChallenges = () => {
         votingEndTime: values.votingEndTime ? values.votingEndTime.format('YYYY-MM-DD HH:mm:ss') : null,
       };
       await api.post('/manage/sys-daily-challenge/update', formattedValues);
-      message.success(t('updateSuccess') || '更新成功');
+      message.success(t('updateSuccess'));
       setIsUpdateModalVisible(false);
       updateForm.resetFields();
       await fetchData();
     } catch (error) {
-      message.error(t('updateFailed') || '更新失败');
+      message.error(t('updateFailed'));
     }
   };
 
@@ -134,7 +134,7 @@ const ListSysDailyChallenges = () => {
               <Input
                 value={searchParams.title}
                 onChange={(e) => handleSearchChange('title', e.target.value)}
-                placeholder="挑战主题"
+                placeholder={t('challengeTitle')}
                 allowClear
                 style={{ width: 200 }}
               />
@@ -143,7 +143,7 @@ const ListSysDailyChallenges = () => {
               <Select
                 value={searchParams.status}
                 onChange={(value) => handleSearchChange('status', value)}
-                placeholder="状态"
+                placeholder={t('status')}
                 allowClear
                 style={{ width: 150 }}
               >
@@ -160,7 +160,7 @@ const ListSysDailyChallenges = () => {
                   {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
-                  {t('add') || '添加'}
+                  {t('add')}
                 </Button>
                 <Button
                   type="primary"
@@ -172,7 +172,7 @@ const ListSysDailyChallenges = () => {
                   })}
                   disabled={selectedRows.length === 0}
                 >
-                  {t('batchDelete') || '批量删除'}
+                  {t('batchDelete')}
                 </Button>
               </Space>
             </Col>

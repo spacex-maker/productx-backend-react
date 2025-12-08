@@ -14,12 +14,12 @@ const SysDailyChallengeTable = ({
 }) => {
   const getStatusLabel = (status) => {
     const statusMap = {
-      0: { label: '未开始', color: 'default' },
-      1: { label: '进行中', color: 'processing' },
-      2: { label: '评审中', color: 'warning' },
-      3: { label: '已结束', color: 'success' },
+      0: { label: t('statusNotStarted'), color: 'default' },
+      1: { label: t('statusInProgress'), color: 'processing' },
+      2: { label: t('statusUnderReview'), color: 'warning' },
+      3: { label: t('statusEnded'), color: 'success' },
     };
-    return statusMap[status] || { label: '未知', color: 'default' };
+    return statusMap[status] || { label: t('unknown'), color: 'default' };
   };
 
   const renderChallengeInfo = (item) => {
@@ -29,7 +29,7 @@ const SysDailyChallengeTable = ({
         {item.coverUrl ? (
           <Image
             src={item.coverUrl}
-            alt="封面"
+            alt={t('cover')}
             width={60}
             height={60}
             style={{ objectFit: 'cover', borderRadius: 4, flexShrink: 0 }}
@@ -68,10 +68,10 @@ const SysDailyChallengeTable = ({
           </th>
           {[
             'ID',
-            '挑战信息',
-            '开始时间',
-            '结束时间',
-            '投票截止时间',
+            t('challengeInfo'),
+            t('startTime'),
+            t('endTime'),
+            t('votingEndTime'),
             t('createTime'),
             t('operations')
           ].map((field) => (
@@ -106,7 +106,7 @@ const SysDailyChallengeTable = ({
               <td className="text-truncate">{item.createTime}</td>
               <td className="fixed-column">
                 <Button type="link" onClick={() => handleEditClick(item)}>
-                  {t('edit') || '编辑'}
+                  {t('edit')}
                 </Button>
               </td>
             </tr>

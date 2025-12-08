@@ -33,10 +33,10 @@ const UserFeedbackUpdateModal = ({
 
   const getFeedbackTypeLabel = (type) => {
     const typeMap = {
-      'suggestion': '功能建议',
-      'bug': '缺陷反馈',
-      'question': '使用咨询',
-      'other': '其他'
+      'suggestion': t('suggestion'),
+      'bug': t('bug'),
+      'question': t('question'),
+      'other': t('other')
     };
     return typeMap[type] || type;
   };
@@ -52,7 +52,7 @@ const UserFeedbackUpdateModal = ({
 
   return (
     <Modal
-      title="更新反馈"
+      title={t('updateFeedback')}
       open={isVisible}
       onCancel={onCancel}
       onOk={onOk}
@@ -80,21 +80,21 @@ const UserFeedbackUpdateModal = ({
           border: `1px solid ${token.colorBorderSecondary}`
         }}>
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>反馈类型：</span>
+            <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>{t('feedbackType')}：</span>
             <Tag color="blue" style={{ marginLeft: '8px' }}>
               {selectedFeedback && getFeedbackTypeLabel(selectedFeedback.feedbackType)}
             </Tag>
           </div>
           
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>反馈标题：</span>
+            <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>{t('feedbackTitle')}：</span>
             <span style={{ marginLeft: '8px', fontWeight: 500, color: token.colorText }}>
               {selectedFeedback?.title}
             </span>
           </div>
           
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>反馈内容：</span>
+            <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>{t('feedbackContent')}：</span>
             <div style={{ 
               marginLeft: '8px', 
               marginTop: '4px',
@@ -113,7 +113,7 @@ const UserFeedbackUpdateModal = ({
           
           {selectedFeedback?.contact && (
             <div>
-              <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>联系方式：</span>
+              <span style={{ color: token.colorTextSecondary, fontSize: '13px' }}>{t('contact')}：</span>
               <span style={{ marginLeft: '8px', color: token.colorText }}>{selectedFeedback.contact}</span>
             </div>
           )}
@@ -123,51 +123,51 @@ const UserFeedbackUpdateModal = ({
 
         {/* 可编辑字段 */}
         <Form.Item
-          label="优先级"
+          label={t('priority')}
           name="priority"
-          rules={[{ required: true, message: '请选择优先级' }]}
+          rules={[{ required: true, message: t('pleaseSelectPriority') }]}
         >
-          <Select placeholder="请选择优先级" style={{ width: '100%' }}>
+          <Select placeholder={t('pleaseSelectPriority')} style={{ width: '100%' }}>
             <Option value="LOW">
-              <Tag color="default">低</Tag> 低优先级
+              <Tag color="default">{t('low')}</Tag> {t('low')} {t('priority')}
             </Option>
             <Option value="MEDIUM">
-              <Tag color="processing">中</Tag> 中优先级
+              <Tag color="processing">{t('medium')}</Tag> {t('medium')} {t('priority')}
             </Option>
             <Option value="HIGH">
-              <Tag color="error">高</Tag> 高优先级
+              <Tag color="error">{t('high')}</Tag> {t('high')} {t('priority')}
             </Option>
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="处理状态"
+          label={t('processingStatus')}
           name="status"
-          rules={[{ required: true, message: '请选择处理状态' }]}
+          rules={[{ required: true, message: t('pleaseSelectStatus') }]}
         >
-          <Select placeholder="请选择处理状态" style={{ width: '100%' }}>
+          <Select placeholder={t('pleaseSelectStatus')} style={{ width: '100%' }}>
             <Option value="PENDING">
-              <Tag color="default">待处理</Tag>
+              <Tag color="default">{t('pending')}</Tag>
             </Option>
             <Option value="PROCESSING">
-              <Tag color="processing">处理中</Tag>
+              <Tag color="processing">{t('processing')}</Tag>
             </Option>
             <Option value="RESOLVED">
-              <Tag color="success">已解决</Tag>
+              <Tag color="success">{t('resolved')}</Tag>
             </Option>
             <Option value="CLOSED">
-              <Tag color="error">已关闭</Tag>
+              <Tag color="error">{t('closed')}</Tag>
             </Option>
           </Select>
         </Form.Item>
 
         <Form.Item
-          label="管理员回复"
+          label={t('adminReply')}
           name="adminReply"
-          extra="回复后会自动更新回复时间"
+          extra={t('replyTime')}
         >
           <TextArea 
-            placeholder="请输入管理员回复内容，用户可以看到此回复" 
+            placeholder={t('pleaseInputReplyContent')} 
             rows={5}
             showCount
             maxLength={1000}

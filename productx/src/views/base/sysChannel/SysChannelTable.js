@@ -13,18 +13,18 @@ const SysChannelTable = ({
 }) => {
   const getTypeLabel = (type) => {
     const typeMap = {
-      'SYSTEM': '系统推荐',
-      'TAG': '标签聚合',
-      'MANUAL': '人工维护',
+      'SYSTEM': t('systemRecommend') || '系统推荐',
+      'TAG': t('tagAggregation') || '标签聚合',
+      'MANUAL': t('manualMaintenance') || '人工维护',
     };
     return typeMap[type] || type;
   };
 
   const getLayoutModeLabel = (layoutMode) => {
     const layoutMap = {
-      'MASONRY': '瀑布流',
-      'GRID': '网格',
-      'FEED': '单列视频流',
+      'MASONRY': t('masonry') || '瀑布流',
+      'GRID': t('grid') || '网格',
+      'FEED': t('feed') || '单列视频流',
     };
     return layoutMap[layoutMode] || layoutMode;
   };
@@ -46,12 +46,12 @@ const SysChannelTable = ({
             </div>
           </th>
           {[
-            'ID',
+            t('id') || 'ID',
             t('channelKey') || '频道标识',
             t('name') || '显示名称',
             t('type') || '类型',
             t('layoutMode') || '布局模式',
-            t('isVipOnly') || 'VIP专属',
+            t('isVipOnly') || t('vipOnly') || 'VIP专属',
             t('allowUserPost') || '允许用户发布',
             t('sortOrder') || '排序',
             t('status'),
@@ -96,16 +96,16 @@ const SysChannelTable = ({
             </td>
             <td className="text-truncate">
               {item.isVipOnly ? (
-                <Tag color="gold">是</Tag>
+                <Tag color="gold">{t('yes') || '是'}</Tag>
               ) : (
-                <Tag>否</Tag>
+                <Tag>{t('no') || '否'}</Tag>
               )}
             </td>
             <td className="text-truncate">
               {item.allowUserPost ? (
-                <Tag color="success">是</Tag>
+                <Tag color="success">{t('yes') || '是'}</Tag>
               ) : (
-                <Tag color="default">否</Tag>
+                <Tag color="default">{t('no') || '否'}</Tag>
               )}
             </td>
             <td className="text-truncate">{item.sortOrder || 0}</td>
