@@ -34,36 +34,50 @@ const { Option } = Select;
 const TrendingPanel = () => {
   const [trendingNews, setTrendingNews] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [queryMode, setQueryMode] = useState('default'); // default, category, aggregated
   const [limit, setLimit] = useState(10);
-  const [category, setCategory] = useState('科技');
   const [viewMode, setViewMode] = useState('table'); // table, list
+  const [newsType, setNewsType] = useState('general'); // general: 综合新闻, science: 科学探索
 
   useEffect(() => {
     fetchTrendingNews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryMode, limit, category]);
+  }, [limit, newsType]);
 
   const fetchTrendingNews = async () => {
     setLoading(true);
     try {
-      let url = '';
-      let params = { limit };
-
-      if (queryMode === 'default') {
-        url = '/manage/operation-tools/trending/news';
-      } else if (queryMode === 'category') {
-        url = '/manage/operation-tools/trending/news/category';
-        params.category = category;
-      } else if (queryMode === 'aggregated') {
-        url = '/manage/operation-tools/trending/aggregated';
-      }
-
-      const response = await api.get(url, { params });
+      // 切换类型时，直接调用刷新接口获取对应类型的最新数据
+      const response = await api.post('/manage/operation-tools/trending/refresh', null, {
+        params: { 
+          limit: limit,
+          type: newsType
+        }
+      });
       setTrendingNews(Array.isArray(response) ? response : []);
     } catch (error) {
       console.error('获取热点新闻失败', error);
       message.error('获取热点新闻失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefreshNews = async () => {
+    setLoading(true);
+    try {
+      const response = await api.post('/manage/operation-tools/trending/refresh', null, {
+        params: { 
+          limit: 20,
+          type: newsType // 传递新闻类型参数
+        }
+      });
+      const typeName = newsType === 'science' ? '科学探索' : '综合新闻';
+      message.success(`刷新成功！已获取最新${typeName}数据`);
+      // 刷新完成后重新加载列表
+      fetchTrendingNews();
+    } catch (error) {
+      console.error('刷新热点失败', error);
+      message.error('刷新失败，请查看日志');
     } finally {
       setLoading(false);
     }
@@ -289,15 +303,17 @@ const TrendingPanel = () => {
         style={{ marginBottom: 20 }}
       >
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
-          <Radio.Group
-            value={queryMode}
-            onChange={(e) => setQueryMode(e.target.value)}
-            buttonStyle="solid"
-          >
-            <Radio.Button value="default">综合热点</Radio.Button>
-            <Radio.Button value="category">分类热点</Radio.Button>
-            <Radio.Button value="aggregated">聚合热点</Radio.Button>
-          </Radio.Group>
+          <Space wrap>
+            <span>新闻类型：</span>
+            <Radio.Group
+              value={newsType}
+              onChange={(e) => setNewsType(e.target.value)}
+              buttonStyle="solid"
+            >
+              <Radio.Button value="general">综合新闻</Radio.Button>
+              <Radio.Button value="science">科学探索</Radio.Button>
+            </Radio.Group>
+          </Space>
 
           <Space wrap>
             <span>显示前</span>
@@ -309,31 +325,24 @@ const TrendingPanel = () => {
               style={{ width: 80 }}
             />
             <span>条</span>
-
-            {queryMode === 'category' && (
-              <>
-                <span style={{ marginLeft: 20 }}>分类：</span>
-                <Select
-                  value={category}
-                  onChange={setCategory}
-                  style={{ width: 120 }}
-                >
-                  <Option value="科技">科技</Option>
-                  <Option value="娱乐">娱乐</Option>
-                  <Option value="体育">体育</Option>
-                  <Option value="财经">财经</Option>
-                  <Option value="游戏">游戏</Option>
-                  <Option value="健康">健康</Option>
-                  <Option value="社会">社会</Option>
-                </Select>
-              </>
-            )}
           </Space>
         </Space>
       </Card>
 
       {/* 内容区域 */}
-      <Card title={`热点新闻 Top ${trendingNews.length}`}>
+      <Card 
+        title={`${newsType === 'science' ? '科学探索' : '综合新闻'} Top ${trendingNews.length}`}
+        extra={
+          <Button
+            type="primary"
+            icon={<ReloadOutlined />}
+            onClick={handleRefreshNews}
+            loading={loading}
+          >
+            从API刷新
+          </Button>
+        }
+      >
         <Spin spinning={loading}>
           {trendingNews.length === 0 ? (
             <Empty description="暂无热点数据" />
