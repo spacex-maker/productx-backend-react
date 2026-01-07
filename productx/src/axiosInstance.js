@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { getNavigate } from './utils/navigationService';
 
 // 定义环境配置
 export const API_CONFIG = {
@@ -104,16 +104,69 @@ axiosInstance.interceptors.response.use(
     }
   },
   (error) => {
+    console.log('===== axios 拦截器捕获到错误 =====', error); // 调试日志
+    
     if (error.response) {
       // 判断状态码
-      const { status, error: errorType, message } = error.response.data;
+      const status = error.response.status;
+      const { error: errorType, message: errorMsg } = error.response.data || {};
+
+      console.log('错误响应状态码:', status, '完整响应:', error.response); // 调试日志
 
       if (status === 401) {
-        message.warning('未授权，请重新登录', 4);
-        // 这里可以执行一些操作例如重定向到登录页
+        console.log('✅ 检测到 401，立即执行跳转'); // 调试日志
+        
+        // 清除token和用户信息
+        localStorage.removeItem('jwtManageToken');
+        localStorage.removeItem('currentUser');
+        
+        // 显示提示信息
+        message.warning('未授权，请重新登录');
+        
+        // 立即跳转，不使用延迟
+        const navigate = getNavigate();
+        console.log('导航函数:', navigate); // 调试日志
+        
+        if (navigate) {
+          console.log('🚀 使用 React Router navigate 跳转'); // 调试日志
+          try {
+            navigate('/login');
+            console.log('✅ navigate 执行完成'); // 调试日志
+          } catch (navError) {
+            console.error('❌ navigate 执行失败:', navError); // 调试日志
+            window.location.href = '#/login';
+          }
+        } else {
+          console.log('⚠️ 导航服务未初始化，使用 window.location 跳转'); // 调试日志
+          window.location.href = '#/login';
+        }
       } else {
-        message.error(`请求失败: ${message || errorType}`, 4);
+        message.error(`请求失败: ${errorMsg || errorType || '未知错误'}`, 4);
       }
+    } else if (error.request) {
+      console.log('网络错误，可能是 401 被 CORS 拦截'); // 调试日志
+      
+      // 检查是否是 401 被 CORS 拦截导致的网络错误
+      // 如果没有 token，很可能是未授权导致的
+      const token = localStorage.getItem('jwtManageToken');
+      if (!token) {
+        console.log('⚠️ 没有 token，可能是 401 被 CORS 拦截，跳转登录页'); // 调试日志
+        localStorage.removeItem('jwtManageToken');
+        localStorage.removeItem('currentUser');
+        message.warning('登录已过期，请重新登录');
+        
+        const navigate = getNavigate();
+        if (navigate) {
+          navigate('/login');
+        } else {
+          window.location.href = '#/login';
+        }
+      } else {
+        message.error('网络错误，请检查网络连接', 4);
+      }
+    } else {
+      console.log('其他错误:', error.message); // 调试日志
+      message.error(`请求失败: ${error.message || '未知错误'}`, 4);
     }
     return Promise.reject(error);
   },

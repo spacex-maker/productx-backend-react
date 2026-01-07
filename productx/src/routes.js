@@ -230,6 +230,10 @@ const UserFeedbackRouter = React.lazy(() => import('./views/base/userFeedback/Us
 
 const CreemProductConfigRouter = React.lazy(() => import('./views/base/creemProductConfig/CreemProductConfig'));
 
+const SaAiAgentConfigRouter = React.lazy(() => import('./views/base/saAiAgentConfig/SaAiAgentConfig'));
+
+const OperationToolsRouter = React.lazy(() => import('./views/base/operationTools/OperationTools'));
+
 const SysChannelRouter = React.lazy(() => import('./views/base/sysChannel/SysChannel'));
 
 const ListCommunityPostsRouter = React.lazy(() => import('./views/base/communityPost/ListCommunityPosts'));
@@ -821,6 +825,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <SaAiAgentRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/saAiAgentConfig',
+    name: 'AI代理配置',
+    element: (
+      <PrivateRoute>
+        <SaAiAgentConfigRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/operationTools',
+    name: 'AI运营工具',
+    element: (
+      <PrivateRoute>
+        <OperationToolsRouter />
       </PrivateRoute>
     ),
   },

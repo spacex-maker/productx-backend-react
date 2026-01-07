@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { CSpinner, useColorModes } from '@coreui/react';
 import { setCurrentUser } from './store/user';
@@ -8,6 +8,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { ConfigProvider } from 'antd';
 import { CustomTheme } from './config/theme';
 import GlobalAIChat from './components/GlobalAIChat';
+import { setNavigate } from './utils/navigationService';
 
 // 添加全局样式
 const GlobalStyle = createGlobalStyle`
@@ -53,6 +54,16 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'));
 
 const defaultTheme = 'light';
 const themeLocalStorageKey = 'coreui-free-react-admin-template-theme';
+
+// 内部组件用于设置导航服务
+const NavigationSetter = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    setNavigate(navigate);
+  }, [navigate]);
+  return null;
+};
+
 const App = () => {
   const { colorMode, isColorModeSet, setColorMode } = useColorModes(themeLocalStorageKey);
   const dispatch = useDispatch();
@@ -88,6 +99,7 @@ const App = () => {
   return (
     <ConfigProvider theme={theme}>
       <HashRouter>
+        <NavigationSetter />
         <GlobalStyle />
         <Suspense
           fallback={

@@ -24,6 +24,22 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'AI代理配置',
+    to: '/sys/saAiAgentConfig',
+    icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'AI运营工具',
+    to: '/sys/operationTools',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+    badge: {
+      color: 'success',
+      text: 'NEW',
+    },
+  },
+  {
+    component: CNavItem,
     name: '控制台',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
