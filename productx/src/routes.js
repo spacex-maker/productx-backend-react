@@ -240,6 +240,10 @@ const ListCommunityPostsRouter = React.lazy(() => import('./views/base/community
 
 const ListSysDailyChallengesRouter = React.lazy(() => import('./views/base/sysDailyChallenge/ListSysDailyChallenges'));
 
+const AiImageScenariosRouter = React.lazy(() => import('./views/base/aiImageScenarios/AiImageScenarios'));
+
+const AiImageScenarioCategoriesRouter = React.lazy(() => import('./views/base/aiImageScenarioCategories/AiImageScenarioCategories'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -987,6 +991,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <ListSysDailyChallengesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/aiImageScenarios',
+    name: 'AI生图场景配置',
+    element: (
+      <PrivateRoute>
+        <AiImageScenariosRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/aiImageScenarioCategories',
+    name: 'AI生图场景分类',
+    element: (
+      <PrivateRoute>
+        <AiImageScenarioCategoriesRouter />
       </PrivateRoute>
     ),
   },
