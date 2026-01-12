@@ -244,6 +244,8 @@ const AiImageScenariosRouter = React.lazy(() => import('./views/base/aiImageScen
 
 const AiImageScenarioCategoriesRouter = React.lazy(() => import('./views/base/aiImageScenarioCategories/AiImageScenarioCategories'));
 
+const CommunityRoleRouter = React.lazy(() => import('./views/base/communityRole/CommunityRole'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -1009,6 +1011,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <AiImageScenarioCategoriesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/communityRole',
+    name: '社区管理',
+    element: (
+      <PrivateRoute>
+        <CommunityRoleRouter />
       </PrivateRoute>
     ),
   },
