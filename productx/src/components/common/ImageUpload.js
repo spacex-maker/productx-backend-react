@@ -451,9 +451,11 @@ const ImageUpload = ({
                   right: 0,
                   bottom: 0,
                   display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
                   zIndex: 10,
+                  padding: '8px',
+                  gap: '8px',
                 }}
               >
                 <button
@@ -462,14 +464,14 @@ const ImageUpload = ({
                   style={{
                     width: 32,
                     height: 32,
-                    margin: '0 4px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    background: 'rgba(255, 255, 255, 0.9)',
                     border: 'none',
                     borderRadius: '50%',
                     cursor: 'pointer',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                   }}
                 >
                   <EyeOutlined style={{ fontSize: 16, color: '#1890ff' }} />
@@ -484,14 +486,14 @@ const ImageUpload = ({
                   <div style={{
                     width: 32,
                     height: 32,
-                    margin: '0 4px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'rgba(255, 255, 255, 0.8)',
+                    background: 'rgba(255, 255, 255, 0.9)',
                     border: 'none',
                     borderRadius: '50%',
                     cursor: 'pointer',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                   }}>
                     <EditOutlined style={{ fontSize: 16, color: '#1890ff' }} />
                   </div>
@@ -564,7 +566,7 @@ const ImageUpload = ({
             size="small"
           />
           <span style={{ fontSize: 12, color: '#666' }}>
-            {t('enableImageCompress') || '压缩图片 (300-700KB)'}
+            {t('enableImageCompress') || t('compressImage') || '压缩图片 (300-700KB)'}
           </span>
         </div>
       </div>

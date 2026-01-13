@@ -1881,5 +1881,7 @@
   "mediaTypeDisabled": "Тип медиа (отключен)",
   "statusPublic": "Публичный",
   "statusPrivate": "Приватный",
-  "statusViolationRemoved": "Удалено за нарушение"
+  "statusViolationRemoved": "Удалено за нарушение",
+  "enableImageCompress": "Включить сжатие изображений",
+  "compressImage": "Сжать изображение (300-700KB)"
 }

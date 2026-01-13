@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, message, Image, Button, Space, Input } from 'antd';
-import { PlusOutlined, DeleteOutlined, EditOutlined, EyeOutlined, LinkOutlined } from '@ant-design/icons';
+import { Upload, message, Image, Button, Space, Input, theme } from 'antd';
+import { PlusOutlined, DeleteOutlined, EditOutlined, EyeOutlined, LinkOutlined, DownloadOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import api from 'src/axiosInstance';
 
@@ -9,6 +9,7 @@ const MediaListUpload = ({
   onChange,
   maxCount = 10,
 }) => {
+  const { token } = theme.useToken();
   const [mediaList, setMediaList] = useState([]);
   const [editingIndex, setEditingIndex] = useState(-1);
   const [editingUrl, setEditingUrl] = useState('');
@@ -111,6 +112,22 @@ const MediaListUpload = ({
     setEditingUrl('');
   };
 
+  // 下载媒体文件
+  const handleDownload = (url, index) => {
+    try {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `media-${index + 1}`;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('下载失败:', error);
+      message.error('下载失败，请检查文件链接');
+    }
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
@@ -207,6 +224,14 @@ const MediaListUpload = ({
                   />
                   <Button
                     type="text"
+                    icon={<DownloadOutlined />}
+                    size="small"
+                    style={{ color: '#fff' }}
+                    onClick={() => handleDownload(url, index)}
+                    title="下载"
+                  />
+                  <Button
+                    type="text"
                     icon={<DeleteOutlined />}
                     size="small"
                     danger
@@ -247,7 +272,7 @@ const MediaListUpload = ({
               style={{
                 width: '120px',
                 height: '120px',
-                border: '1px dashed #d9d9d9',
+                border: `1px dashed ${token.colorBorder}`,
                 borderRadius: '4px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -255,7 +280,7 @@ const MediaListUpload = ({
                 justifyContent: 'center',
                 cursor: 'pointer',
                 gap: '8px',
-                backgroundColor: '#fafafa',
+                backgroundColor: token.colorBgContainer,
               }}
             >
               <PlusOutlined style={{ fontSize: 24, color: '#1890ff' }} />

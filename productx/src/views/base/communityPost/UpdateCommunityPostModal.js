@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col, Avatar } from 'antd';
+import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col, Avatar, theme } from 'antd';
 import PropTypes from 'prop-types';
 import ImageUpload from 'src/components/common/ImageUpload';
 import MediaListUpload from 'src/components/common/MediaListUpload';
@@ -19,6 +19,7 @@ const UpdateCommunityPostModal = ({
   statusOptions,
   mediaTypeOptions,
 }) => {
+  const { token } = theme.useToken();
   const [coverUrl, setCoverUrl] = useState('');
   const [channelList, setChannelList] = useState([]);
   const [challengeList, setChallengeList] = useState([]);
@@ -171,25 +172,31 @@ const UpdateCommunityPostModal = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label={t('titleDisabled') || t('title') || '标题'}
+              label={t('title') || '标题'}
               name="title"
             >
-              <Input placeholder={t('enterTitleOptional') || '请输入标题（可选）'} maxLength={100} disabled />
+              <Input placeholder={t('enterTitleOptional') || '请输入标题（可选）'} maxLength={100} />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label={t('mediaTypeDisabled') || t('mediaType') || '媒体类型'}
+              label={t('mediaType') || '媒体类型'}
               name="mediaType"
-              rules={[{ required: true, message: t('selectMediaType') || '请选择媒体类型' }]}
             >
-              <Select placeholder={t('selectMediaType') || '请选择媒体类型'} disabled>
-                {mediaTypeOptions.map((type) => (
-                  <Option key={type.value} value={type.value}>
-                    {type.label}
-                  </Option>
-                ))}
-              </Select>
+              <div style={{
+                padding: '4px 11px',
+                minHeight: '32px',
+                border: `1px solid ${token.colorBorder}`,
+                borderRadius: '6px',
+                backgroundColor: token.colorFillTertiary,
+                display: 'flex',
+                alignItems: 'center',
+                color: token.colorTextSecondary,
+                fontSize: '14px',
+                cursor: 'not-allowed'
+              }}>
+                {mediaTypeOptions.find(type => type.value === form.getFieldValue('mediaType'))?.label || '-'}
+              </div>
             </Form.Item>
           </Col>
         </Row>

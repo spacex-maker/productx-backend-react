@@ -327,5 +327,7 @@
   "mediaTypeDisabled": "Loại phương tiện (đã tắt)",
   "statusPublic": "Công khai",
   "statusPrivate": "Riêng tư",
-  "statusViolationRemoved": "Đã xóa do vi phạm"
+  "statusViolationRemoved": "Đã xóa do vi phạm",
+  "enableImageCompress": "Bật nén hình ảnh",
+  "compressImage": "Nén hình ảnh (300-700KB)"
 } 

@@ -1880,5 +1880,7 @@
   "mediaTypeDisabled": "Tipo di media (disabilitato)",
   "statusPublic": "Pubblico",
   "statusPrivate": "Privato",
-  "statusViolationRemoved": "Rimosso per violazione"
+  "statusViolationRemoved": "Rimosso per violazione",
+  "enableImageCompress": "Abilita compressione immagine",
+  "compressImage": "Comprimi immagine (300-700KB)"
 }

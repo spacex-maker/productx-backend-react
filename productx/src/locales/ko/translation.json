@@ -1887,5 +1887,7 @@
   "mediaTypeDisabled": "미디어 유형 (비활성화)",
   "statusPublic": "공개",
   "statusPrivate": "비공개",
-  "statusViolationRemoved": "위반으로 제거됨"
+  "statusViolationRemoved": "위반으로 제거됨",
+  "enableImageCompress": "이미지 압축 활성화",
+  "compressImage": "이미지 압축 (300-700KB)"
 }

@@ -1932,5 +1932,7 @@
   "mediaTypeDisabled": "媒体类型（已禁用）",
   "statusPublic": "公开",
   "statusPrivate": "私有",
-  "statusViolationRemoved": "违规下架"
+  "statusViolationRemoved": "违规下架",
+  "enableImageCompress": "启用图片压缩",
+  "compressImage": "压缩图片 (300-700KB)"
 }

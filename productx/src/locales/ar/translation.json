@@ -1886,5 +1886,7 @@
   "mediaTypeDisabled": "نوع الوسائط (معطل)",
   "statusPublic": "عام",
   "statusPrivate": "خاص",
-  "statusViolationRemoved": "تمت الإزالة بسبب الانتهاك"
+  "statusViolationRemoved": "تمت الإزالة بسبب الانتهاك",
+  "enableImageCompress": "تفعيل ضغط الصورة",
+  "compressImage": "ضغط الصورة (300-700KB)"
 }

@@ -1889,5 +1889,7 @@
   "mediaTypeDisabled": "メディアタイプ（無効）",
   "statusPublic": "公開",
   "statusPrivate": "非公開",
-  "statusViolationRemoved": "違反により削除"
+  "statusViolationRemoved": "違反により削除",
+  "enableImageCompress": "画像圧縮を有効にする",
+  "compressImage": "画像を圧縮 (300-700KB)"
 }
