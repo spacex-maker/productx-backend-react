@@ -59,6 +59,7 @@ const SysDailyChallengeCreateModal = ({
   const [referenceImageUrl, setReferenceImageUrl] = useState('');
   const [modelList, setModelList] = useState([]);
   const [loadingModels, setLoadingModels] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
     if (!isVisible) {
@@ -199,8 +200,11 @@ const SysDailyChallengeCreateModal = ({
           delete formattedValues.rewardThirdBadge;
           delete formattedValues.rewardThirdTokens;
           
-          // 直接调用 onFinish
-          onFinish(formattedValues);
+          // 设置加载状态
+          setConfirmLoading(true);
+          
+          // 调用 onFinish 并等待完成
+          await onFinish(formattedValues);
         } catch (error) {
           console.error('表单验证失败或提交失败', error);
           if (error.errorFields) {
@@ -208,8 +212,11 @@ const SysDailyChallengeCreateModal = ({
           } else {
             console.error('创建失败', error);
           }
+        } finally {
+          setConfirmLoading(false);
         }
       }}
+      confirmLoading={confirmLoading}
       okText={t('confirm')}
       cancelText={t('cancel')}
       width={800}
@@ -256,6 +263,7 @@ const SysDailyChallengeCreateModal = ({
                 }}
                 type="background"
                 tipText={t('uploadHorizontalImageTip')}
+                defaultCompress={true}
               />
             </Form.Item>
           </Col>
@@ -272,6 +280,7 @@ const SysDailyChallengeCreateModal = ({
                 }}
                 type="background"
                 tipText={t('imageToImageBaseImageTip')}
+                defaultCompress={true}
               />
             </Form.Item>
           </Col>

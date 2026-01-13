@@ -47,9 +47,7 @@ const SysChannelTable = ({
           </th>
           {[
             t('id') || 'ID',
-            t('channelKey') || '频道标识',
-            t('name') || '显示名称',
-            t('type') || '类型',
+            t('channelInfo') || '频道信息',
             t('layoutMode') || '布局模式',
             t('isVipOnly') || t('vipOnly') || 'VIP专属',
             t('allowUserPost') || '允许用户发布',
@@ -82,14 +80,34 @@ const SysChannelTable = ({
               </div>
             </td>
             <td className="text-truncate">{item.id}</td>
-            <td className="text-truncate">
-              <div style={{ fontWeight: 500 }}>{item.channelKey}</div>
-            </td>
-            <td className="text-truncate" title={item.name}>
-              {item.name || '-'}
-            </td>
-            <td className="text-truncate">
-              <Tag>{getTypeLabel(item.type)}</Tag>
+            <td>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {item.coverUrl && (
+                  <img
+                    src={item.coverUrl}
+                    alt={item.name || item.channelKey}
+                    style={{
+                      width: '150px',
+                      height: '84px',
+                      objectFit: 'cover',
+                      borderRadius: '4px',
+                      flexShrink: 0,
+                    }}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                )}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 500, marginBottom: '4px' }}>
+                    {item.channelKey}
+                  </div>
+                  <div style={{ marginBottom: '4px', color: '#666' }}>
+                    {item.name || '-'}
+                  </div>
+                  <Tag>{getTypeLabel(item.type)}</Tag>
+                </div>
+              </div>
             </td>
             <td className="text-truncate">
               {getLayoutModeLabel(item.layoutMode)}

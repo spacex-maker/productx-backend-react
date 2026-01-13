@@ -130,6 +130,7 @@ const UpdateSysChannelModal = ({
                 }}
                 type="avatar"
                 tipText={t('iconUrlTip') || '建议上传正方形图标，推荐尺寸：100x100px'}
+                defaultCompress={true}
               />
             </Form.Item>
           </Col>
@@ -146,6 +147,7 @@ const UpdateSysChannelModal = ({
                 }}
                 type="background"
                 tipText={t('coverUrlTip') || '建议上传横向图片，推荐比例：2:1'}
+                defaultCompress={true}
               />
             </Form.Item>
           </Col>

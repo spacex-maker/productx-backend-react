@@ -74,20 +74,15 @@ const ListSysDailyChallenges = () => {
 
   const handleCreateChallenge = async (values) => {
     try {
-      // 转换日期时间格式
-      const formattedValues = {
-        ...values,
-        startTime: values.startTime ? values.startTime.format('YYYY-MM-DD HH:mm:ss') : null,
-        endTime: values.endTime ? values.endTime.format('YYYY-MM-DD HH:mm:ss') : null,
-        votingEndTime: values.votingEndTime ? values.votingEndTime.format('YYYY-MM-DD HH:mm:ss') : null,
-      };
-      await api.post('/manage/sys-daily-challenge/create', formattedValues);
+      // 值已经在模态框中格式化过了，直接使用
+      await api.post('/manage/sys-daily-challenge/create', values);
       message.success(t('createSuccess'));
       setIsCreateModalVisible(false);
       createForm.resetFields();
       await fetchData();
     } catch (error) {
       message.error(t('createFailed'));
+      throw error; // 抛出错误，让模态框知道请求失败
     }
   };
 

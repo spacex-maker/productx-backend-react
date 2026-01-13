@@ -11,13 +11,14 @@ const ImageUpload = ({
   onImageChange,
   type = 'background',
   tipText,
+  defaultCompress = false,
 }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [enableCompress, setEnableCompress] = useState(false);
+  const [enableCompress, setEnableCompress] = useState(defaultCompress);
   const containerRef = useRef(null);
   const videoRef = useRef(null);
   const [containerHeight, setContainerHeight] = useState(type === 'avatar' ? 100 : 120);
@@ -68,79 +69,130 @@ const ImageUpload = ({
         return;
       }
 
+      // 添加超时处理，避免无限等待（根据文件大小调整超时时间）
+      const timeoutDuration = fileSizeKB > 1000 ? 60000 : 45000; // 大于1MB的文件给60秒，其他45秒
+      const timeout = setTimeout(() => {
+        reject(new Error('压缩超时'));
+      }, timeoutDuration);
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        const img = new Image();
+        // 使用 window.Image 确保使用浏览器原生的 Image 构造函数
+        const img = new window.Image();
         img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          // 计算压缩后的尺寸（保持宽高比）
-          let width = img.width;
-          let height = img.height;
-          const maxDimension = 1920; // 最大尺寸限制
-          
-          if (width > maxDimension || height > maxDimension) {
-            if (width > height) {
-              height = (height / width) * maxDimension;
-              width = maxDimension;
-            } else {
-              width = (width / height) * maxDimension;
-              height = maxDimension;
+          try {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 计算压缩后的尺寸（保持宽高比）
+            let width = img.width;
+            let height = img.height;
+            const maxDimension = 1920; // 最大尺寸限制
+            
+            if (width > maxDimension || height > maxDimension) {
+              if (width > height) {
+                height = (height / width) * maxDimension;
+                width = maxDimension;
+              } else {
+                width = (width / height) * maxDimension;
+                height = maxDimension;
+              }
             }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // 绘制图片
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // 确定输出格式：对于 PNG 等格式，转换为 JPEG 以获得更好的压缩效果
+            const outputType = file.type === 'image/png' ? 'image/jpeg' : (file.type || 'image/jpeg');
+            const outputFileName = file.name.replace(/\.(png|gif|bmp)$/i, '.jpg');
+            
+            // 尝试不同的质量值来达到目标文件大小
+            let attemptCount = 0;
+            const maxAttempts = 15; // 减少尝试次数，避免超时
+            
+            const tryCompress = (quality) => {
+              attemptCount++;
+              if (attemptCount > maxAttempts) {
+                clearTimeout(timeout);
+                // 如果尝试次数过多，使用当前质量的结果
+                canvas.toBlob(
+                  (blob) => {
+                    if (blob) {
+                      const compressedFile = new File([blob], outputFileName, {
+                        type: outputType,
+                        lastModified: Date.now(),
+                      });
+                      resolve(compressedFile);
+                    } else {
+                      clearTimeout(timeout);
+                      reject(new Error('压缩失败：无法生成blob'));
+                    }
+                  },
+                  outputType,
+                  0.7
+                );
+                return;
+              }
+
+              canvas.toBlob(
+                (blob) => {
+                  if (!blob) {
+                    clearTimeout(timeout);
+                    reject(new Error('压缩失败：无法生成blob'));
+                    return;
+                  }
+                  
+                  const blobSizeKB = blob.size / 1024;
+                  
+                  // 如果文件大小在目标范围内，或者质量已经很低了，就使用这个结果
+                  if ((blobSizeKB >= minSizeKB && blobSizeKB <= maxSizeKB) || quality <= 0.15) {
+                    clearTimeout(timeout);
+                    const compressedFile = new File([blob], outputFileName, {
+                      type: outputType,
+                      lastModified: Date.now(),
+                    });
+                    resolve(compressedFile);
+                  } else if (blobSizeKB > maxSizeKB && quality > 0.15) {
+                    // 如果还是太大，继续降低质量（步长更大，加快压缩速度）
+                    tryCompress(Math.max(0.15, quality - 0.15));
+                  } else if (blobSizeKB < minSizeKB && quality < 0.9) {
+                    // 如果太小了，稍微提高质量
+                    tryCompress(Math.min(0.9, quality + 0.1));
+                  } else {
+                    // 其他情况直接使用
+                    clearTimeout(timeout);
+                    const compressedFile = new File([blob], outputFileName, {
+                      type: outputType,
+                      lastModified: Date.now(),
+                    });
+                    resolve(compressedFile);
+                  }
+                },
+                outputType,
+                quality
+              );
+            };
+            
+            // 从0.8开始尝试
+            tryCompress(0.8);
+          } catch (error) {
+            clearTimeout(timeout);
+            reject(error);
           }
-          
-          canvas.width = width;
-          canvas.height = height;
-          
-          // 绘制图片
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          // 尝试不同的质量值来达到目标文件大小
-          const tryCompress = (quality) => {
-            canvas.toBlob(
-              (blob) => {
-                if (!blob) {
-                  reject(new Error('压缩失败'));
-                  return;
-                }
-                
-                const blobSizeKB = blob.size / 1024;
-                
-                // 如果文件大小在目标范围内，或者质量已经很低了，就使用这个结果
-                if ((blobSizeKB >= minSizeKB && blobSizeKB <= maxSizeKB) || quality <= 0.1) {
-                  const compressedFile = new File([blob], file.name, {
-                    type: file.type,
-                    lastModified: Date.now(),
-                  });
-                  resolve(compressedFile);
-                } else if (blobSizeKB > maxSizeKB && quality > 0.1) {
-                  // 如果还是太大，继续降低质量
-                  tryCompress(Math.max(0.1, quality - 0.1));
-                } else if (blobSizeKB < minSizeKB && quality < 0.9) {
-                  // 如果太小了，稍微提高质量
-                  tryCompress(Math.min(0.9, quality + 0.1));
-                } else {
-                  // 其他情况直接使用
-                  const compressedFile = new File([blob], file.name, {
-                    type: file.type,
-                    lastModified: Date.now(),
-                  });
-                  resolve(compressedFile);
-                }
-              },
-              file.type,
-              quality
-            );
-          };
-          
-          // 从0.8开始尝试
-          tryCompress(0.8);
         };
-        img.onerror = () => reject(new Error('图片加载失败'));
+        img.onerror = () => {
+          clearTimeout(timeout);
+          reject(new Error('图片加载失败'));
+        };
         img.src = e.target.result;
       };
-      reader.onerror = () => reject(new Error('文件读取失败'));
+      reader.onerror = () => {
+        clearTimeout(timeout);
+        reject(new Error('文件读取失败'));
+      };
       reader.readAsDataURL(file);
     });
   };
@@ -152,28 +204,43 @@ const ImageUpload = ({
       setUploadProgress(0);
       setUploadSuccess(false);
       
-      // 如果是图片文件且启用了压缩，先压缩
+      // 如果是图片文件且启用了压缩，先在前端压缩
       let fileToUpload = file;
       if (file.type.startsWith('image/') && enableCompress) {
         try {
+          console.log('开始压缩图片，原始大小:', (file.size / 1024).toFixed(2), 'KB');
           fileToUpload = await compressImage(file);
+          console.log('压缩完成，压缩后大小:', (fileToUpload.size / 1024).toFixed(2), 'KB');
         } catch (error) {
           console.error('图片压缩失败:', error);
           message.warning(t('imageCompressFailed') || '图片压缩失败，将上传原图');
+          // 压缩失败时使用原文件
+          fileToUpload = file;
         }
       }
 
       const formData = new FormData();
       formData.append('file', fileToUpload);
       
+      // 不要手动设置 Content-Type，让浏览器自动设置，这样才会包含正确的 boundary
+      // 并且能正确触发 onUploadProgress
       const response = await api.post('/manage/image/upload', formData, {
         onUploadProgress: (progressEvent) => {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setUploadProgress(progress);
+          if (progressEvent) {
+            const { loaded, total } = progressEvent;
+            if (total && total > 0) {
+              const progress = Math.min(Math.round((loaded * 100) / total), 100);
+              setUploadProgress(progress);
+            } else if (progressEvent.lengthComputable && progressEvent.total > 0) {
+              const progress = Math.min(Math.round((progressEvent.loaded * 100) / progressEvent.total), 100);
+              setUploadProgress(progress);
+            }
+          }
         }
       });
       
-      if (response) {
+      // axios 拦截器已经处理了响应，response 就是图片URL字符串
+      if (response && typeof response === 'string') {
         onImageChange(response);
         setUploadSuccess(true);
         message.success(t('uploadSuccess'));
@@ -182,7 +249,9 @@ const ImageUpload = ({
           setUploadSuccess(false);
         }, 2000);
       } else {
-        message.error(t('responseFormatError'));
+        console.error('上传响应格式错误:', response);
+        message.error(t('responseFormatError') || '响应格式错误');
+        throw new Error('响应格式错误');
       }
       return false;
     } catch (error) {
@@ -579,6 +648,7 @@ ImageUpload.propTypes = {
   onImageChange: PropTypes.func.isRequired,
   type: PropTypes.oneOf(['background', 'avatar']),
   tipText: PropTypes.string,
+  defaultCompress: PropTypes.bool,
 };
 
 export default ImageUpload;
