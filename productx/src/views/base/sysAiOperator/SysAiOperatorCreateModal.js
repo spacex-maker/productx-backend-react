@@ -22,25 +22,41 @@ const SysAiOperatorCreateModal = ({
   }, [isVisible, form]);
 
   const handleFinish = (values) => {
-    // 处理JSON字段
+    // 处理JSON字段 - 标签字段转换为JSON字符串
     if (values.interestedTags) {
       try {
-        values.interestedTags = typeof values.interestedTags === 'string'
-          ? values.interestedTags
-          : JSON.stringify(values.interestedTags);
+        if (Array.isArray(values.interestedTags)) {
+          values.interestedTags = JSON.stringify(values.interestedTags);
+        } else if (typeof values.interestedTags === 'string') {
+          // 如果已经是字符串，尝试解析验证
+          JSON.parse(values.interestedTags);
+        } else {
+          values.interestedTags = JSON.stringify([]);
+        }
       } catch (e) {
         values.interestedTags = JSON.stringify([]);
       }
+    } else {
+      values.interestedTags = JSON.stringify([]);
     }
+
     if (values.excludeTags) {
       try {
-        values.excludeTags = typeof values.excludeTags === 'string'
-          ? values.excludeTags
-          : JSON.stringify(values.excludeTags);
+        if (Array.isArray(values.excludeTags)) {
+          values.excludeTags = JSON.stringify(values.excludeTags);
+        } else if (typeof values.excludeTags === 'string') {
+          // 如果已经是字符串，尝试解析验证
+          JSON.parse(values.excludeTags);
+        } else {
+          values.excludeTags = JSON.stringify([]);
+        }
       } catch (e) {
         values.excludeTags = JSON.stringify([]);
       }
+    } else {
+      values.excludeTags = JSON.stringify([]);
     }
+
     if (values.postPromptTemplate) {
       try {
         values.postPromptTemplate = typeof values.postPromptTemplate === 'string'
@@ -94,8 +110,8 @@ const SysAiOperatorCreateModal = ({
           postFrequencyDays: 1,
           status: true,
           tokenUsageLimit: 1000,
-          interestedTags: '[]',
-          excludeTags: '[]',
+          interestedTags: [],
+          excludeTags: [],
           postPromptTemplate: '{}',
           modelConfig: '{}',
         }}
@@ -311,22 +327,26 @@ const SysAiOperatorCreateModal = ({
         </Form.Item>
 
         <Form.Item
-          label={t('interestedTags') || '感兴趣的标签 (JSON数组)'}
+          label={t('interestedTags') || '感兴趣的标签'}
           name="interestedTags"
         >
-          <TextArea 
-            rows={2}
-            placeholder={t('enterInterestedTags') || '请输入JSON数组，如: ["anime", "gaming", "art"]'}
+          <Select
+            mode="tags"
+            style={{ width: '100%' }}
+            placeholder={t('enterInterestedTags') || '请输入标签，按回车添加，如: horror, cthulhu, monster'}
+            tokenSeparators={[',']}
           />
         </Form.Item>
 
         <Form.Item
-          label={t('excludeTags') || '避雷标签 (JSON数组)'}
+          label={t('excludeTags') || '避雷标签'}
           name="excludeTags"
         >
-          <TextArea 
-            rows={2}
-            placeholder={t('enterExcludeTags') || '请输入JSON数组，如: ["nsfw", "violence"]'}
+          <Select
+            mode="tags"
+            style={{ width: '100%' }}
+            placeholder={t('enterExcludeTags') || '请输入标签，按回车添加，如: nsfw, violence'}
+            tokenSeparators={[',']}
           />
         </Form.Item>
 

@@ -301,8 +301,8 @@
     "AI运营发帖素材管理": "Gestión de Inventario de Materiales de Publicación IA",
     "AI运营工具": "Herramientas de Operaciones IA",
     "社区管理": "Gestión de Comunidad",
-    "AI生图场景配置": "Configuración de Escenarios de Generación de Imágenes IA",
-    "AI生图场景分类": "Categorías de Escenarios de Generación de Imágenes IA"
+    "生图场景管理": "Gestión de Escenarios de Generación de Imágenes",
+    "生图场景分类": "Categorías de Escenarios de Generación de Imágenes"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",

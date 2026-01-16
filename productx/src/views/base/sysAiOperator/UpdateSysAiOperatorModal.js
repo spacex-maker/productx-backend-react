@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
+import UserSearchSelect from 'src/views/common/UserSearchSelect';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -18,18 +19,34 @@ const UpdateSysAiOperatorModal = ({
 }) => {
   useEffect(() => {
     if (selectedOperator && isVisible) {
-      // 处理JSON字段
-      const interestedTagsValue = selectedOperator.interestedTags
-        ? (typeof selectedOperator.interestedTags === 'string'
-            ? selectedOperator.interestedTags
-            : JSON.stringify(selectedOperator.interestedTags))
-        : '[]';
+      // 处理JSON字段 - 标签字段解析为数组
+      let interestedTagsArray = [];
+      if (selectedOperator.interestedTags) {
+        try {
+          interestedTagsArray = typeof selectedOperator.interestedTags === 'string'
+            ? JSON.parse(selectedOperator.interestedTags)
+            : selectedOperator.interestedTags;
+          if (!Array.isArray(interestedTagsArray)) {
+            interestedTagsArray = [];
+          }
+        } catch (e) {
+          interestedTagsArray = [];
+        }
+      }
 
-      const excludeTagsValue = selectedOperator.excludeTags
-        ? (typeof selectedOperator.excludeTags === 'string'
-            ? selectedOperator.excludeTags
-            : JSON.stringify(selectedOperator.excludeTags))
-        : '[]';
+      let excludeTagsArray = [];
+      if (selectedOperator.excludeTags) {
+        try {
+          excludeTagsArray = typeof selectedOperator.excludeTags === 'string'
+            ? JSON.parse(selectedOperator.excludeTags)
+            : selectedOperator.excludeTags;
+          if (!Array.isArray(excludeTagsArray)) {
+            excludeTagsArray = [];
+          }
+        } catch (e) {
+          excludeTagsArray = [];
+        }
+      }
 
       const postPromptTemplateValue = selectedOperator.postPromptTemplate
         ? (typeof selectedOperator.postPromptTemplate === 'string'
@@ -49,8 +66,8 @@ const UpdateSysAiOperatorModal = ({
         internalName: selectedOperator.internalName || '',
         personaPreset: selectedOperator.personaPreset || '',
         languageStyle: selectedOperator.languageStyle || 'CASUAL',
-        interestedTags: interestedTagsValue,
-        excludeTags: excludeTagsValue,
+        interestedTags: interestedTagsArray,
+        excludeTags: excludeTagsArray,
         canPost: selectedOperator.canPost !== undefined ? selectedOperator.canPost : false,
         canComment: selectedOperator.canComment !== undefined ? selectedOperator.canComment : true,
         canLike: selectedOperator.canLike !== undefined ? selectedOperator.canLike : true,
@@ -75,25 +92,41 @@ const UpdateSysAiOperatorModal = ({
   }, [selectedOperator, isVisible, form]);
 
   const handleFinish = (values) => {
-    // 处理JSON字段
+    // 处理JSON字段 - 标签字段转换为JSON字符串
     if (values.interestedTags) {
       try {
-        values.interestedTags = typeof values.interestedTags === 'string'
-          ? values.interestedTags
-          : JSON.stringify(values.interestedTags);
+        if (Array.isArray(values.interestedTags)) {
+          values.interestedTags = JSON.stringify(values.interestedTags);
+        } else if (typeof values.interestedTags === 'string') {
+          // 如果已经是字符串，尝试解析验证
+          JSON.parse(values.interestedTags);
+        } else {
+          values.interestedTags = JSON.stringify([]);
+        }
       } catch (e) {
         values.interestedTags = JSON.stringify([]);
       }
+    } else {
+      values.interestedTags = JSON.stringify([]);
     }
+
     if (values.excludeTags) {
       try {
-        values.excludeTags = typeof values.excludeTags === 'string'
-          ? values.excludeTags
-          : JSON.stringify(values.excludeTags);
+        if (Array.isArray(values.excludeTags)) {
+          values.excludeTags = JSON.stringify(values.excludeTags);
+        } else if (typeof values.excludeTags === 'string') {
+          // 如果已经是字符串，尝试解析验证
+          JSON.parse(values.excludeTags);
+        } else {
+          values.excludeTags = JSON.stringify([]);
+        }
       } catch (e) {
         values.excludeTags = JSON.stringify([]);
       }
+    } else {
+      values.excludeTags = JSON.stringify([]);
     }
+
     if (values.postPromptTemplate) {
       try {
         values.postPromptTemplate = typeof values.postPromptTemplate === 'string'
@@ -140,9 +173,11 @@ const UpdateSysAiOperatorModal = ({
             <Form.Item
               label={t('userId') || '用户ID'}
               name="userId"
-              rules={[{ required: true, message: t('enterUserId') || '请输入用户ID' }]}
+              rules={[{ required: true, message: t('enterUserId') || '请输入或选择用户' }]}
             >
-              <InputNumber min={1} style={{ width: '100%' }} placeholder={t('enterUserId') || '请输入用户ID'} />
+              <UserSearchSelect
+                placeholder={t('enterUserId') || '请输入用户ID或用户名搜索'}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -344,22 +379,26 @@ const UpdateSysAiOperatorModal = ({
         </Form.Item>
 
         <Form.Item
-          label={t('interestedTags') || '感兴趣的标签 (JSON数组)'}
+          label={t('interestedTags') || '感兴趣的标签'}
           name="interestedTags"
         >
-          <TextArea 
-            rows={2}
-            placeholder={t('enterInterestedTags') || '请输入JSON数组，如: ["anime", "gaming", "art"]'}
+          <Select
+            mode="tags"
+            style={{ width: '100%' }}
+            placeholder={t('enterInterestedTags') || '请输入标签，按回车添加，如: horror, cthulhu, monster'}
+            tokenSeparators={[',']}
           />
         </Form.Item>
 
         <Form.Item
-          label={t('excludeTags') || '避雷标签 (JSON数组)'}
+          label={t('excludeTags') || '避雷标签'}
           name="excludeTags"
         >
-          <TextArea 
-            rows={2}
-            placeholder={t('enterExcludeTags') || '请输入JSON数组，如: ["nsfw", "violence"]'}
+          <Select
+            mode="tags"
+            style={{ width: '100%' }}
+            placeholder={t('enterExcludeTags') || '请输入标签，按回车添加，如: nsfw, violence'}
+            tokenSeparators={[',']}
           />
         </Form.Item>
 
