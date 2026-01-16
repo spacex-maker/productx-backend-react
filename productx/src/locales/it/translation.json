@@ -289,7 +289,13 @@
     "管理员日志": "Log di amministrazione",
     "Token使用日志": "Log di utilizzo dei token",
     "AI助手评论": "Commenti dell'AI Assistant",
-    "用户账务记录": "Registro delle modifiche del conto utente"
+    "用户账务记录": "Registro delle modifiche del conto utente",
+    "AI运营配置管理": "Gestione Configurazione Operazioni IA",
+    "AI运营发帖素材管理": "Gestione Inventario Materiali Pubblicazione IA",
+    "AI运营工具": "Strumenti Operazioni IA",
+    "社区管理": "Gestione Comunità",
+    "AI生图场景配置": "Configurazione Scenari Generazione Immagini IA",
+    "AI生图场景分类": "Categorie Scenari Generazione Immagini IA"
   },
   "confirmDelete": "Conferma eliminazione",
   "countryName": "Nome del paese",

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Tabs, Badge } from 'antd'
-import { TeamOutlined, SettingOutlined, FileTextOutlined } from '@ant-design/icons'
+import { TeamOutlined, SettingOutlined, FileTextOutlined, RobotOutlined, PictureOutlined } from '@ant-design/icons'
 import AdminList from './AdminList'
 import RoleSettings from './RoleSettings'
 import ApplicationList from './ApplicationList'
+import ListSysAiOperators from '../sysAiOperator/ListSysAiOperators'
+import ListSysAiPostStocks from '../sysAiPostStock/ListSysAiPostStocks'
 import { useTranslation } from 'react-i18next'
 
 const CommunityRole = () => {
@@ -44,6 +46,26 @@ const CommunityRole = () => {
         </span>
       ),
       children: <ApplicationList onPendingCountChange={setPendingCount} />,
+    },
+    {
+      key: 'aiOperators',
+      label: (
+        <span>
+          <RobotOutlined />
+          {t('AI运营配置管理') || 'AI运营配置管理'}
+        </span>
+      ),
+      children: <ListSysAiOperators />,
+    },
+    {
+      key: 'aiPostStock',
+      label: (
+        <span>
+          <PictureOutlined />
+          {t('AI运营发帖素材管理') || 'AI运营发帖素材管理'}
+        </span>
+      ),
+      children: <ListSysAiPostStocks />,
     },
   ]
 

@@ -246,6 +246,10 @@ const AiImageScenarioCategoriesRouter = React.lazy(() => import('./views/base/ai
 
 const CommunityRoleRouter = React.lazy(() => import('./views/base/communityRole/CommunityRole'));
 
+const ListSysAiOperatorsRouter = React.lazy(() => import('./views/base/sysAiOperator/ListSysAiOperators'));
+
+const ListSysAiPostStocksRouter = React.lazy(() => import('./views/base/sysAiPostStock/ListSysAiPostStocks'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -998,7 +1002,7 @@ const routes = [
   },
   {
     path: '/base/aiImageScenarios',
-    name: 'AI生图场景配置',
+    name: '生图场景管理',
     element: (
       <PrivateRoute>
         <AiImageScenariosRouter />
@@ -1007,7 +1011,7 @@ const routes = [
   },
   {
     path: '/base/aiImageScenarioCategories',
-    name: 'AI生图场景分类',
+    name: '生图场景分类',
     element: (
       <PrivateRoute>
         <AiImageScenarioCategoriesRouter />
@@ -1020,6 +1024,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <CommunityRoleRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/sysAiOperator',
+    name: 'AI运营配置管理',
+    element: (
+      <PrivateRoute>
+        <ListSysAiOperatorsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/sysAiPostStock',
+    name: 'AI运营发帖素材管理',
+    element: (
+      <PrivateRoute>
+        <ListSysAiPostStocksRouter />
       </PrivateRoute>
     ),
   },

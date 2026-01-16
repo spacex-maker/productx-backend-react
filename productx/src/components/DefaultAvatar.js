@@ -6,6 +6,8 @@ const DefaultAvatar = ({ name, size = 40 }) => {
   
   // 根据名字生成一个固定的颜色
   const getColorFromName = (name) => {
+    // 如果 name 为空，使用默认值
+    const nameStr = name || '?';
     const colors = [
       '#1890FF', // 蓝色
       '#52C41A', // 绿色
@@ -18,8 +20,8 @@ const DefaultAvatar = ({ name, size = 40 }) => {
     ];
     
     let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    for (let i = 0; i < nameStr.length; i++) {
+      hash = nameStr.charCodeAt(i) + ((hash << 5) - hash);
     }
     
     return colors[Math.abs(hash) % colors.length];

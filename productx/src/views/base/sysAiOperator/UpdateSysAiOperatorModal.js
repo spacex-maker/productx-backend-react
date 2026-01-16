@@ -1,0 +1,405 @@
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col } from 'antd';
+import PropTypes from 'prop-types';
+
+const { Option } = Select;
+const { TextArea } = Input;
+
+const UpdateSysAiOperatorModal = ({
+  isVisible,
+  onCancel,
+  onOk,
+  form,
+  handleUpdateOperator,
+  selectedOperator,
+  t,
+  languageStyleOptions,
+  postSourceTypeOptions,
+}) => {
+  useEffect(() => {
+    if (selectedOperator && isVisible) {
+      // 处理JSON字段
+      const interestedTagsValue = selectedOperator.interestedTags
+        ? (typeof selectedOperator.interestedTags === 'string'
+            ? selectedOperator.interestedTags
+            : JSON.stringify(selectedOperator.interestedTags))
+        : '[]';
+
+      const excludeTagsValue = selectedOperator.excludeTags
+        ? (typeof selectedOperator.excludeTags === 'string'
+            ? selectedOperator.excludeTags
+            : JSON.stringify(selectedOperator.excludeTags))
+        : '[]';
+
+      const postPromptTemplateValue = selectedOperator.postPromptTemplate
+        ? (typeof selectedOperator.postPromptTemplate === 'string'
+            ? selectedOperator.postPromptTemplate
+            : JSON.stringify(selectedOperator.postPromptTemplate))
+        : '{}';
+
+      const modelConfigValue = selectedOperator.modelConfig
+        ? (typeof selectedOperator.modelConfig === 'string'
+            ? selectedOperator.modelConfig
+            : JSON.stringify(selectedOperator.modelConfig))
+        : '{}';
+
+      form.setFieldsValue({
+        id: selectedOperator.id,
+        userId: selectedOperator.userId,
+        internalName: selectedOperator.internalName || '',
+        personaPreset: selectedOperator.personaPreset || '',
+        languageStyle: selectedOperator.languageStyle || 'CASUAL',
+        interestedTags: interestedTagsValue,
+        excludeTags: excludeTagsValue,
+        canPost: selectedOperator.canPost !== undefined ? selectedOperator.canPost : false,
+        canComment: selectedOperator.canComment !== undefined ? selectedOperator.canComment : true,
+        canLike: selectedOperator.canLike !== undefined ? selectedOperator.canLike : true,
+        canReply: selectedOperator.canReply !== undefined ? selectedOperator.canReply : false,
+        activeTimeRange: selectedOperator.activeTimeRange || '09:00-23:00',
+        timeZone: selectedOperator.timeZone || 'Asia/Shanghai',
+        actionsPerDay: selectedOperator.actionsPerDay || 20,
+        actionIntervalMin: selectedOperator.actionIntervalMin || 5,
+        actionIntervalMax: selectedOperator.actionIntervalMax || 60,
+        probabilityLike: selectedOperator.probabilityLike || 0.80,
+        probabilityComment: selectedOperator.probabilityComment || 0.20,
+        postSourceType: selectedOperator.postSourceType || 'STOCK_POOL',
+        postPromptTemplate: postPromptTemplateValue,
+        postFrequencyDays: selectedOperator.postFrequencyDays || 1,
+        status: selectedOperator.status !== undefined ? selectedOperator.status : true,
+        tokenUsageLimit: selectedOperator.tokenUsageLimit || 1000,
+        modelConfig: modelConfigValue,
+      });
+    } else {
+      form.resetFields();
+    }
+  }, [selectedOperator, isVisible, form]);
+
+  const handleFinish = (values) => {
+    // 处理JSON字段
+    if (values.interestedTags) {
+      try {
+        values.interestedTags = typeof values.interestedTags === 'string'
+          ? values.interestedTags
+          : JSON.stringify(values.interestedTags);
+      } catch (e) {
+        values.interestedTags = JSON.stringify([]);
+      }
+    }
+    if (values.excludeTags) {
+      try {
+        values.excludeTags = typeof values.excludeTags === 'string'
+          ? values.excludeTags
+          : JSON.stringify(values.excludeTags);
+      } catch (e) {
+        values.excludeTags = JSON.stringify([]);
+      }
+    }
+    if (values.postPromptTemplate) {
+      try {
+        values.postPromptTemplate = typeof values.postPromptTemplate === 'string'
+          ? values.postPromptTemplate
+          : JSON.stringify(values.postPromptTemplate);
+      } catch (e) {
+        values.postPromptTemplate = JSON.stringify({});
+      }
+    }
+    if (values.modelConfig) {
+      try {
+        values.modelConfig = typeof values.modelConfig === 'string'
+          ? values.modelConfig
+          : JSON.stringify(values.modelConfig);
+      } catch (e) {
+        values.modelConfig = JSON.stringify({});
+      }
+    }
+    handleUpdateOperator(values);
+  };
+
+  return (
+    <Modal
+      title={t('editAiOperator') || t('edit') || '编辑AI运营配置'}
+      open={isVisible}
+      onCancel={onCancel}
+      onOk={onOk}
+      okText={t('confirm') || '确认'}
+      cancelText={t('cancel') || '取消'}
+      width={900}
+      maskClosable={false}
+    >
+      <Form 
+        form={form} 
+        onFinish={handleFinish}
+        layout="vertical"
+      >
+        <Form.Item name="id" hidden>
+          <Input />
+        </Form.Item>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('userId') || '用户ID'}
+              name="userId"
+              rules={[{ required: true, message: t('enterUserId') || '请输入用户ID' }]}
+            >
+              <InputNumber min={1} style={{ width: '100%' }} placeholder={t('enterUserId') || '请输入用户ID'} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('internalName') || '内部代号'}
+              name="internalName"
+              rules={[{ required: true, message: t('enterInternalName') || '请输入内部代号' }]}
+            >
+              <Input placeholder={t('enterInternalName') || '请输入内部代号（如: 001-二次元狂热粉）'} maxLength={50} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Form.Item
+          label={t('personaPreset') || 'LLM系统提示词'}
+          name="personaPreset"
+        >
+          <TextArea 
+            rows={4}
+            placeholder={t('enterPersonaPreset') || '请输入系统提示词，用于定义AI人设'}
+          />
+        </Form.Item>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('languageStyle') || '语言风格'}
+              name="languageStyle"
+            >
+              <Select placeholder={t('selectLanguageStyle') || '请选择语言风格'}>
+                {languageStyleOptions.map((style) => (
+                  <Option key={style.value} value={style.value}>
+                    {style.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('activeTimeRange') || '活跃时间段'}
+              name="activeTimeRange"
+            >
+              <Input placeholder={t('enterActiveTimeRange') || '如: 09:00-23:00'} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('timeZone') || '时区'}
+              name="timeZone"
+            >
+              <Input placeholder={t('enterTimeZone') || '如: Asia/Shanghai'} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('status') || '状态'}
+              name="status"
+              valuePropName="checked"
+            >
+              <Switch checkedChildren={t('running') || '运行'} unCheckedChildren={t('paused') || '暂停'} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={6}>
+            <Form.Item
+              label={t('canPost') || '自动发帖'}
+              name="canPost"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              label={t('canComment') || '自动评论'}
+              name="canComment"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              label={t('canLike') || '自动点赞'}
+              name="canLike"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              label={t('canReply') || '回复评论'}
+              name="canReply"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={8}>
+            <Form.Item
+              label={t('actionsPerDay') || '每日最大互动数'}
+              name="actionsPerDay"
+            >
+              <InputNumber min={1} style={{ width: '100%' }} placeholder={t('enterActionsPerDay') || '请输入每日最大互动数'} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('actionIntervalMin') || '最小间隔(分)'}
+              name="actionIntervalMin"
+            >
+              <InputNumber min={1} style={{ width: '100%' }} placeholder={t('enterMinInterval') || '请输入最小间隔'} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item
+              label={t('actionIntervalMax') || '最大间隔(分)'}
+              name="actionIntervalMax"
+            >
+              <InputNumber min={1} style={{ width: '100%' }} placeholder={t('enterMaxInterval') || '请输入最大间隔'} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('probabilityLike') || '点赞概率'}
+              name="probabilityLike"
+            >
+              <InputNumber 
+                min={0} 
+                max={1} 
+                step={0.01}
+                style={{ width: '100%' }} 
+                placeholder={t('enterProbabilityLike') || '请输入点赞概率 (0-1)'}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('probabilityComment') || '评论概率'}
+              name="probabilityComment"
+            >
+              <InputNumber 
+                min={0} 
+                max={1} 
+                step={0.01}
+                style={{ width: '100%' }} 
+                placeholder={t('enterProbabilityComment') || '请输入评论概率 (0-1)'}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('postSourceType') || '发帖来源'}
+              name="postSourceType"
+            >
+              <Select placeholder={t('selectPostSourceType') || '请选择发帖来源'}>
+                {postSourceTypeOptions.map((type) => (
+                  <Option key={type.value} value={type.value}>
+                    {type.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('postFrequencyDays') || '发帖频率(天)'}
+              name="postFrequencyDays"
+            >
+              <InputNumber min={1} style={{ width: '100%' }} placeholder={t('enterPostFrequency') || '请输入发帖频率'} />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Form.Item
+          label={t('postPromptTemplate') || '生成参数模板 (JSON)'}
+          name="postPromptTemplate"
+        >
+          <TextArea 
+            rows={3}
+            placeholder={t('enterPostPromptTemplate') || '请输入JSON格式的生成参数模板，如: {"style": "anime", "aspect": "16:9"}'}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label={t('interestedTags') || '感兴趣的标签 (JSON数组)'}
+          name="interestedTags"
+        >
+          <TextArea 
+            rows={2}
+            placeholder={t('enterInterestedTags') || '请输入JSON数组，如: ["anime", "gaming", "art"]'}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label={t('excludeTags') || '避雷标签 (JSON数组)'}
+          name="excludeTags"
+        >
+          <TextArea 
+            rows={2}
+            placeholder={t('enterExcludeTags') || '请输入JSON数组，如: ["nsfw", "violence"]'}
+          />
+        </Form.Item>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label={t('tokenUsageLimit') || '每日Token上限'}
+              name="tokenUsageLimit"
+            >
+              <InputNumber min={1} style={{ width: '100%' }} placeholder={t('enterTokenLimit') || '请输入每日Token上限'} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label={t('modelConfig') || '模型配置 (JSON)'}
+              name="modelConfig"
+            >
+              <TextArea 
+                rows={2}
+                placeholder={t('enterModelConfig') || '请输入JSON格式的模型配置'}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </Modal>
+  );
+};
+
+UpdateSysAiOperatorModal.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onOk: PropTypes.func.isRequired,
+  form: PropTypes.object.isRequired,
+  handleUpdateOperator: PropTypes.func.isRequired,
+  selectedOperator: PropTypes.object,
+  t: PropTypes.func.isRequired,
+  languageStyleOptions: PropTypes.array.isRequired,
+  postSourceTypeOptions: PropTypes.array.isRequired,
+};
+
+export default UpdateSysAiOperatorModal;
+
