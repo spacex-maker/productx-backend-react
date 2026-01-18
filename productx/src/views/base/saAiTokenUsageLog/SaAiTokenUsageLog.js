@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Col, Row, Select, Space, DatePicker } from 'antd';
+import { Button, Form, Input, message, Spin, Col, Row, Select, Space, DatePicker, Tabs } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import Pagination from 'src/components/common/Pagination';
 import SaAiTokenUsageLogTable from './SaAiTokenUsageLogTable';
+import SaAiTokenUsageLogDashboard from './SaAiTokenUsageLogDashboard';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
+const { TabPane } = Tabs;
 
 const SaAiTokenUsageLog = () => {
   const { t } = useTranslation();
@@ -101,97 +103,106 @@ const SaAiTokenUsageLog = () => {
     { value: 'USD', label: 'USD' },
   ];
 
+  const [activeTab, setActiveTab] = useState('list');
+
   return (
     <div>
-      <div className="mb-3">
-        <div className="search-container">
-          <Row gutter={[16, 16]}>
-            <Col>
-              <Input
-                value={searchParams.userId}
-                onChange={handleSearchChange}
-                name="userId"
-                placeholder={t('userId')}
-                allowClear
-                style={{ width: 150 }}
-              />
-            </Col>
-            <Col>
-              <Input
-                value={searchParams.agentId}
-                onChange={handleSearchChange}
-                name="agentId"
-                placeholder={t('agentId')}
-                allowClear
-                style={{ width: 150 }}
-              />
-            </Col>
-            <Col>
-              <Input
-                value={searchParams.modelName}
-                onChange={handleSearchChange}
-                name="modelName"
-                placeholder={t('modelName')}
-                allowClear
-                style={{ width: 150 }}
-              />
-            </Col>
-            <Col>
-              <Select
-                value={searchParams.success}
-                onChange={(value) => handleSelectChange(value, 'success')}
-                placeholder={t('selectStatus')}
-                style={{ width: 150 }}
-                allowClear
-                options={successOptions}
-              />
-            </Col>
-            <Col>
-              <Select
-                value={searchParams.currency}
-                onChange={(value) => handleSelectChange(value, 'currency')}
-                placeholder={t('currency')}
-                style={{ width: 150 }}
-                allowClear
-                options={currencyOptions}
-              />
-            </Col>
-            <Col span={6}>
-              <RangePicker
-                showTime
-                onChange={handleTimeChange}
-                style={{ width: '100%' }}
-                placeholder={[t('startTime'), t('endTime')]}
-              />
-            </Col>
-            <Col>
-              <Button type="primary" onClick={fetchData} disabled={isLoading}>
-                {isLoading ? <Spin /> : t('search')}
-              </Button>
-            </Col>
-          </Row>
-        </div>
-      </div>
+      <Tabs activeKey={activeTab} onChange={setActiveTab} type="card" size="large">
+        <TabPane tab="数据列表" key="list">
+          <div className="mb-3">
+            <div className="search-container">
+              <Row gutter={[16, 16]}>
+                <Col>
+                  <Input
+                    value={searchParams.userId}
+                    onChange={handleSearchChange}
+                    name="userId"
+                    placeholder={t('userId')}
+                    allowClear
+                    style={{ width: 150 }}
+                  />
+                </Col>
+                <Col>
+                  <Input
+                    value={searchParams.agentId}
+                    onChange={handleSearchChange}
+                    name="agentId"
+                    placeholder={t('agentId')}
+                    allowClear
+                    style={{ width: 150 }}
+                  />
+                </Col>
+                <Col>
+                  <Input
+                    value={searchParams.modelName}
+                    onChange={handleSearchChange}
+                    name="modelName"
+                    placeholder={t('modelName')}
+                    allowClear
+                    style={{ width: 150 }}
+                  />
+                </Col>
+                <Col>
+                  <Select
+                    value={searchParams.success}
+                    onChange={(value) => handleSelectChange(value, 'success')}
+                    placeholder={t('selectStatus')}
+                    style={{ width: 150 }}
+                    allowClear
+                    options={successOptions}
+                  />
+                </Col>
+                <Col>
+                  <Select
+                    value={searchParams.currency}
+                    onChange={(value) => handleSelectChange(value, 'currency')}
+                    placeholder={t('currency')}
+                    style={{ width: 150 }}
+                    allowClear
+                    options={currencyOptions}
+                  />
+                </Col>
+                <Col span={6}>
+                  <RangePicker
+                    showTime
+                    onChange={handleTimeChange}
+                    style={{ width: '100%' }}
+                    placeholder={[t('startTime'), t('endTime')]}
+                  />
+                </Col>
+                <Col>
+                  <Button type="primary" onClick={fetchData} disabled={isLoading}>
+                    {isLoading ? <Spin /> : t('search')}
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          </div>
 
-      <div className="table-responsive">
-        <Spin spinning={isLoading}>
-          <SaAiTokenUsageLogTable
-            data={data}
-            selectAll={selectAll}
-            selectedRows={selectedRows}
-            handleSelectAll={handleSelectAll}
-            handleSelectRow={handleSelectRow}
+          <div className="table-responsive">
+            <Spin spinning={isLoading}>
+              <SaAiTokenUsageLogTable
+                data={data}
+                selectAll={selectAll}
+                selectedRows={selectedRows}
+                handleSelectAll={handleSelectAll}
+                handleSelectRow={handleSelectRow}
+              />
+            </Spin>
+          </div>
+
+          <Pagination
+            totalPages={totalPages}
+            current={currentPage}
+            onPageChange={setCurrent}
+            pageSize={pageSize}
+            onPageSizeChange={handlePageSizeChange}
           />
-        </Spin>
-      </div>
-
-      <Pagination
-        totalPages={totalPages}
-        current={currentPage}
-        onPageChange={setCurrent}
-        pageSize={pageSize}
-        onPageSizeChange={handlePageSizeChange}
-      />
+        </TabPane>
+        <TabPane tab="数据统计看板" key="dashboard">
+          <SaAiTokenUsageLogDashboard />
+        </TabPane>
+      </Tabs>
     </div>
   );
 };

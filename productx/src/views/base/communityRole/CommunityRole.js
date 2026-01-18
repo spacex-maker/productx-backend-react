@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Tabs, Badge } from 'antd'
-import { TeamOutlined, SettingOutlined, FileTextOutlined, RobotOutlined, PictureOutlined } from '@ant-design/icons'
+import { TeamOutlined, SettingOutlined, FileTextOutlined, RobotOutlined, PictureOutlined, HistoryOutlined } from '@ant-design/icons'
 import AdminList from './AdminList'
 import RoleSettings from './RoleSettings'
 import ApplicationList from './ApplicationList'
 import ListSysAiOperators from '../sysAiOperator/ListSysAiOperators'
 import ListSysAiPostStocks from '../sysAiPostStock/ListSysAiPostStocks'
+import ListSysAiOperatorActionLogs from '../sysAiOperatorActionLog/ListSysAiOperatorActionLogs'
 import { useTranslation } from 'react-i18next'
 
 const CommunityRole = () => {
@@ -66,6 +67,16 @@ const CommunityRole = () => {
         </span>
       ),
       children: <ListSysAiPostStocks />,
+    },
+    {
+      key: 'aiOperatorActionLog',
+      label: (
+        <span>
+          <HistoryOutlined />
+          {t('AI机器人行为日志') || 'AI机器人行为日志'}
+        </span>
+      ),
+      children: <ListSysAiOperatorActionLogs />,
     },
   ]
 
