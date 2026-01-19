@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Col, Row, Space, Select } from 'antd';
+import { Button, Form, Input, message, Spin, Col, Row, Space, Select, Modal } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
@@ -33,6 +33,8 @@ const ListCommunityPosts = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedPost, setSelectedPost] = useState(null);
+  const [isBatchAuditModalVisible, setIsBatchAuditModalVisible] = useState(false);
+  const [batchAuditStatus, setBatchAuditStatus] = useState(undefined);
 
   const statusOptions = [
     { value: 0, label: t('underReview') || '审核中' },
@@ -115,6 +117,35 @@ const ListCommunityPosts = () => {
   const handleEditClick = (post) => {
     setSelectedPost(post);
     setIsUpdateModalVisible(true);
+  };
+
+  const handleBatchAudit = async () => {
+    if (!batchAuditStatus && batchAuditStatus !== 0) {
+      message.warning(t('pleaseSelectAuditStatus') || '请选择审核状态');
+      return;
+    }
+
+    try {
+      await api.post('/manage/community-post/batch-audit', {
+        idList: selectedRows,
+        status: batchAuditStatus,
+      });
+      message.success(t('batchAuditSuccess') || '批量审核成功');
+      setIsBatchAuditModalVisible(false);
+      setBatchAuditStatus(undefined);
+      resetSelection();
+      await fetchData();
+    } catch (error) {
+      message.error(t('batchAuditFailed') || '批量审核失败');
+    }
+  };
+
+  const showBatchAuditModal = () => {
+    if (selectedRows.length === 0) {
+      message.warning(t('pleaseSelectRecords') || '请选择要审核的记录');
+      return;
+    }
+    setIsBatchAuditModalVisible(true);
   };
 
   const totalPages = Math.ceil(totalNum / pageSize);
@@ -211,6 +242,14 @@ const ListCommunityPosts = () => {
                 </Button>
                 <Button
                   type="primary"
+                  onClick={showBatchAuditModal}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchAudit') || '批量审核'}
+                </Button>
+                <Button
+                  type="primary"
+                  danger
                   onClick={() => HandleBatchDelete({
                     url: '/manage/community-post/delete-batch',
                     selectedRows,
@@ -270,6 +309,36 @@ const ListCommunityPosts = () => {
         statusOptions={statusOptions}
         mediaTypeOptions={mediaTypeOptions}
       />
+
+      <Modal
+        title={t('batchAudit') || '批量审核'}
+        open={isBatchAuditModalVisible}
+        onOk={handleBatchAudit}
+        onCancel={() => {
+          setIsBatchAuditModalVisible(false);
+          setBatchAuditStatus(undefined);
+        }}
+        okText={t('confirm') || '确认'}
+        cancelText={t('cancel') || '取消'}
+      >
+        <div style={{ marginBottom: 16 }}>
+          <p>{t('selectedCount') || '已选择'}: {selectedRows.length} {t('records') || '条记录'}</p>
+        </div>
+        <Form.Item label={t('auditStatus') || '审核状态'} required>
+          <Select
+            value={batchAuditStatus}
+            onChange={setBatchAuditStatus}
+            placeholder={t('pleaseSelectAuditStatus') || '请选择审核状态'}
+            style={{ width: '100%' }}
+          >
+            {statusOptions.map((status) => (
+              <Option key={status.value} value={status.value}>
+                {status.label}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Modal>
     </div>
   );
 };
