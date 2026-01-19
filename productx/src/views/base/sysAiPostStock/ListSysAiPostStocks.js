@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Col, Row, Space, Select } from 'antd';
+import { Button, Form, Input, message, Spin, Col, Row, Space, Select, Modal } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 import Pagination from 'src/components/common/Pagination';
@@ -121,6 +121,43 @@ const ListSysAiPostStocks = () => {
     setIsUpdateModalVisible(true);
   };
 
+  const handleBatchReviewToPending = async () => {
+    if (selectedRows.length === 0) {
+      message.warning(t('pleaseSelectData') || '请选择要审核的数据');
+      return;
+    }
+
+    // 检查选中的素材是否都是待审核状态
+    const selectedStocks = data.filter(item => selectedRows.includes(item.id));
+    const notPendingReview = selectedStocks.filter(item => item.status !== 0);
+    
+    if (notPendingReview.length > 0) {
+      message.warning(t('onlyPendingReviewCanBeApproved') || '只能审核待审核状态的素材');
+      return;
+    }
+
+    Modal.confirm({
+      title: t('batchReviewToPending') || '批量审核为待发布',
+      content: t('confirmBatchReviewToPending', { count: selectedRows.length }) || `确认要将选中的 ${selectedRows.length} 条素材审核为待发布吗？`,
+      onOk: async () => {
+        try {
+          setIsLoading(true);
+          await api.post('/manage/sys-ai-post-stock/batch-review-to-pending', {
+            ids: selectedRows,
+          });
+          message.success(t('batchReviewSuccess') || '批量审核成功');
+          resetSelection();
+          await fetchData();
+        } catch (error) {
+          const errorMessage = error?.response?.data?.message || error?.message || t('batchReviewFailed') || '批量审核失败';
+          message.error(errorMessage);
+        } finally {
+          setIsLoading(false);
+        }
+      },
+    });
+  };
+
   const totalPages = Math.ceil(totalNum / pageSize);
 
   const {
@@ -188,13 +225,19 @@ const ListSysAiPostStocks = () => {
                 </Button>
                 <Button
                   type="primary"
+                  onClick={handleBatchReviewToPending}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchReviewToPending') || '批量审核为待发布'}
+                </Button>
+                <Button
+                  type="primary"
                   danger
                   onClick={() => HandleBatchDelete({
                     url: '/manage/sys-ai-post-stock/delete',
                     selectedRows,
                     fetchData,
                     resetSelection,
-                    method: 'delete',
                   })}
                   disabled={selectedRows.length === 0}
                 >
