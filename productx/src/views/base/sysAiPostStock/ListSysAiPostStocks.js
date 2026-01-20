@@ -158,6 +158,43 @@ const ListSysAiPostStocks = () => {
     });
   };
 
+  const handleBatchReject = async () => {
+    if (selectedRows.length === 0) {
+      message.warning(t('pleaseSelectData') || '请选择要拒绝的数据');
+      return;
+    }
+
+    // 检查选中的素材是否都是待审核状态
+    const selectedStocks = data.filter(item => selectedRows.includes(item.id));
+    const notPendingReview = selectedStocks.filter(item => item.status !== 0);
+    
+    if (notPendingReview.length > 0) {
+      message.warning(t('onlyPendingReviewCanBeRejected') || '只能拒绝待审核状态的素材');
+      return;
+    }
+
+    Modal.confirm({
+      title: t('batchReject') || '批量拒绝',
+      content: t('confirmBatchReject', { count: selectedRows.length }) || `确认要拒绝选中的 ${selectedRows.length} 条素材吗？`,
+      onOk: async () => {
+        try {
+          setIsLoading(true);
+          await api.post('/manage/sys-ai-post-stock/batch-reject', {
+            ids: selectedRows,
+          });
+          message.success(t('batchRejectSuccess') || '批量拒绝成功');
+          resetSelection();
+          await fetchData();
+        } catch (error) {
+          const errorMessage = error?.response?.data?.message || error?.message || t('batchRejectFailed') || '批量拒绝失败';
+          message.error(errorMessage);
+        } finally {
+          setIsLoading(false);
+        }
+      },
+    });
+  };
+
   const totalPages = Math.ceil(totalNum / pageSize);
 
   const {
@@ -229,6 +266,14 @@ const ListSysAiPostStocks = () => {
                   disabled={selectedRows.length === 0}
                 >
                   {t('batchReviewToPending') || '批量审核为待发布'}
+                </Button>
+                <Button
+                  type="default"
+                  onClick={handleBatchReject}
+                  disabled={selectedRows.length === 0}
+                  style={{ color: '#ff4d4f', borderColor: '#ff4d4f' }}
+                >
+                  {t('batchReject') || '批量拒绝'}
                 </Button>
                 <Button
                   type="primary"

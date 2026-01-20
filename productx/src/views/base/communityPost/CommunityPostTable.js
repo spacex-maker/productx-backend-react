@@ -11,6 +11,21 @@ const CommunityPostTable = ({
   handleEditClick,
   t,
 }) => {
+  /**
+   * 添加腾讯云图片压缩后缀
+   * @param {string} url - 图片URL
+   * @param {number} width - 缩略图宽度
+   * @returns {string} 添加压缩后缀的URL
+   */
+  const addImageCompressSuffix = (url, width = 200) => {
+    if (!url) return '';
+    // 如果已经包含压缩参数或是base64图片，直接返回
+    if (url.includes('imageMogr2') || url.startsWith('data:')) return url;
+    // 添加腾讯云万象压缩参数
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}imageMogr2/format/webp/quality/80/thumbnail/${width}x`;
+  };
+
   const getStatusLabel = (status) => {
     const statusMap = {
       0: { label: t('underReview') || '审核中', color: 'processing' },
@@ -37,12 +52,14 @@ const CommunityPostTable = ({
 
     return (
       <Image
-        src={mediaUrl}
+        src={addImageCompressSuffix(mediaUrl, 400)}
         alt={t('preview') || '预览'}
-        width={60}
-        height={60}
-        style={{ objectFit: 'cover', borderRadius: 4 }}
-        preview={false}
+        width={120}
+        height={120}
+        style={{ objectFit: 'cover', borderRadius: 8, cursor: 'pointer' }}
+        preview={{
+          mask: <div style={{ fontSize: '12px' }}>点击查看大图</div>
+        }}
       />
     );
   };
@@ -108,7 +125,7 @@ const CommunityPostTable = ({
               <td className="text-truncate">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Avatar 
-                    src={item.avatar} 
+                    src={addImageCompressSuffix(item.avatar, 100)} 
                     size={40}
                     style={{ flexShrink: 0 }}
                   >

@@ -93,6 +93,7 @@ const UserAccountChangeLog = () => {
   const coinTypeOptions = [
     { value: 'USDT_ERC20', label: 'USDT_ERC20' },
     { value: 'CNY', label: 'CNY' },
+    { value: 'TOKEN', label: 'TOKEN' },
   ];
 
   const changeTypeOptions = [
