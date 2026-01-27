@@ -12,6 +12,21 @@ const SysAiPostStockTable = ({
   agentList,
   t,
 }) => {
+  /**
+   * 添加腾讯云图片压缩后缀
+   * @param {string} url - 图片URL
+   * @param {number} width - 缩略图宽度
+   * @returns {string} 添加压缩后缀的URL
+   */
+  const addImageCompressSuffix = (url, width = 200) => {
+    if (!url) return '';
+    // 如果已经包含压缩参数或是base64图片，直接返回
+    if (url.includes('imageMogr2') || url.startsWith('data:')) return url;
+    // 添加腾讯云万象压缩参数
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}imageMogr2/format/webp/quality/80/thumbnail/${width}x`;
+  };
+
   const getStatusTag = (status) => {
     const statusMap = {
       0: { label: t('pendingReview') || '待审核', color: 'processing' },
@@ -101,13 +116,14 @@ const SysAiPostStockTable = ({
             <td>
               {item.imageUrl ? (
                 <Image
-                  src={item.imageUrl}
+                  src={addImageCompressSuffix(item.imageUrl, 400)}
                   alt={t('preview') || '预览'}
-                  width={60}
-                  height={60}
-                  style={{ objectFit: 'cover', borderRadius: 4 }}
+                  width={120}
+                  height={120}
+                  style={{ objectFit: 'cover', borderRadius: 8, cursor: 'pointer' }}
                   preview={{
-                    src: item.imageUrl,
+                    src: addImageCompressSuffix(item.imageUrl, 1200),
+                    mask: <div style={{ fontSize: '12px' }}>点击查看大图</div>
                   }}
                 />
               ) : (
