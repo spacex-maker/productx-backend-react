@@ -1,7 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
-  cilBell, cilBrowser,
+  cilBell, cilBrowser, cilBasket,
   cilCalculator,
   cilChartPie, cilCommentSquare,
   cilCursor,
@@ -37,6 +37,19 @@ const _nav = [
       color: 'success',
       text: 'NEW',
     },
+  },
+  {
+    component: CNavGroup,
+    name: 'AI生成管理',
+    icon: <CIcon icon={cilImage} customClassName="nav-icon" />,
+    to: '/base/aiGenManage',
+    items: [
+      {
+        component: CNavItem,
+        name: '任务管理',
+        to: '/base/aiGenManage',
+      },
+    ],
   },
   {
     component: CNavItem,
@@ -267,6 +280,24 @@ const _nav = [
         component: CNavItem,
         name: 'Tooltips',
         to: '/base/tooltips',
+      },
+      {
+        component: CNavGroup,
+        name: '提示词商城',
+        icon: <CIcon icon={cilBasket} customClassName="nav-icon" />,
+        to: '/base/promptMarket',
+        items: [
+          {
+            component: CNavItem,
+            name: '提示词管理',
+            to: '/base/promptMarket',
+          },
+          {
+            component: CNavItem,
+            name: '标签库管理',
+            to: '/base/promptMarket',
+          },
+        ],
       },
     ],
   },

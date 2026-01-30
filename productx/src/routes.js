@@ -244,6 +244,10 @@ const AiImageScenariosRouter = React.lazy(() => import('./views/base/aiImageScen
 
 const AiImageScenarioCategoriesRouter = React.lazy(() => import('./views/base/aiImageScenarioCategories/AiImageScenarioCategories'));
 
+const PromptMarketRouter = React.lazy(() => import('./views/base/promptMarket/PromptMarket'));
+
+const AiGenManageRouter = React.lazy(() => import('./views/base/aiGenManage/AiGenManage'));
+
 const CommunityRoleRouter = React.lazy(() => import('./views/base/communityRole/CommunityRole'));
 
 const ListSysAiOperatorsRouter = React.lazy(() => import('./views/base/sysAiOperator/ListSysAiOperators'));
@@ -1015,6 +1019,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <AiImageScenarioCategoriesRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/promptMarket',
+    name: '提示词商城',
+    element: (
+      <PrivateRoute>
+        <PromptMarketRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/aiGenManage',
+    name: 'AI生成管理',
+    element: (
+      <PrivateRoute>
+        <AiGenManageRouter />
       </PrivateRoute>
     ),
   },
