@@ -16,7 +16,9 @@
     "build": "vite build",
     "lint": "eslint \"src/**/*.js\"",
     "serve": "vite preview",
-    "start": "vite"
+    "start": "vite",
+    "start:safe": "node --max-old-space-size=4096 ./node_modules/vite/bin/vite.js",
+    "clean": "node -e \"const fs=require('fs');const p='node_modules/.vite';try{fs.rmSync(p,{recursive:true});console.log('Cleaned',p);}catch(e){console.log(e.message);}\""
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",

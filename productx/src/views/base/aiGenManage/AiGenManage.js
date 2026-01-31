@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Tabs } from 'antd'
 import { ThunderboltOutlined, UnorderedListOutlined } from '@ant-design/icons'
-import SaAiGenTask from '../saAiGenTask/SaAiGenTask'
 import { useTranslation } from 'react-i18next'
+import SaAiGenTask from '../saAiGenTask/SaAiGenTask'
 
 const AiGenManage = () => {
   const { t } = useTranslation()

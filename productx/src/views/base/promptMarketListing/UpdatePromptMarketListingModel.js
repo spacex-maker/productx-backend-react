@@ -34,7 +34,6 @@ const UpdatePromptMarketListingModel = ({
     if (isVisible && selectedItem) {
       form.setFieldsValue({
         id: selectedItem.id,
-        categoryId: selectedItem.categoryId,
         title: selectedItem.title,
         description: selectedItem.description,
         coverImageUrl: selectedItem.coverImageUrl,
@@ -72,13 +71,6 @@ const UpdatePromptMarketListingModel = ({
         </Form.Item>
 
         <Divider orientation="left">{t('基本信息')}</Divider>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label={t('分类ID')} name="categoryId">
-              <InputNumber min={1} style={{ width: '100%' }} />
-            </Form.Item>
-          </Col>
-        </Row>
         <Form.Item label={t('商品标题')} name="title">
           <Input placeholder={t('商品标题')} />
         </Form.Item>

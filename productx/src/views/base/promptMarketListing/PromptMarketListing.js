@@ -40,7 +40,6 @@ const PromptMarketListing = () => {
   const [searchParams, setSearchParams] = useState({
     userId: undefined,
     listingType: undefined,
-    categoryId: undefined,
     title: '',
     modelType: '',
     status: undefined,
@@ -92,7 +91,11 @@ const PromptMarketListing = () => {
   }
 
   const handleCreate = async (values) => {
-    const payload = { ...values, isPromptHidden: values.isPromptHidden ? 1 : 0 }
+    const payload = {
+      ...values,
+      isPromptHidden: values.isPromptHidden ? 1 : 0,
+      tags: Array.isArray(values.tags) ? JSON.stringify(values.tags) : (values.tags || '[]'),
+    }
     try {
       await api.post('/manage/prompt-market-listing/create', payload)
       message.success(t('创建成功'))
@@ -174,16 +177,6 @@ const PromptMarketListing = () => {
                   </Option>
                 ))}
               </Select>
-            </Col>
-            <Col>
-              <Input
-                value={searchParams.categoryId}
-                onChange={handleSearchChange}
-                name="categoryId"
-                placeholder={t('分类ID')}
-                allowClear
-                style={{ width: 100 }}
-              />
             </Col>
             <Col>
               <Input

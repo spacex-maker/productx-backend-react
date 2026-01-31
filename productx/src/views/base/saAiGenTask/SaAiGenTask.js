@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Input, message, Spin, Col, Row, Space, Select } from 'antd'
-import Pagination from 'src/components/common/Pagination'
+import { Button, Input, message, Spin, Col, Row, Select, Pagination } from 'antd'
 import SaAiGenTaskTable from './SaAiGenTaskTable'
 import SaAiGenTaskDetailModal from './SaAiGenTaskDetailModal'
 import { useTranslation } from 'react-i18next'
@@ -43,7 +42,7 @@ const SaAiGenTask = () => {
 
   useEffect(() => {
     fetchData()
-  }, [currentPage, pageSize, searchParams])
+  }, [currentPage, pageSize])
 
   const fetchData = async () => {
     setIsLoading(true)
@@ -81,8 +80,6 @@ const SaAiGenTask = () => {
     setDetailId(id)
     setDetailVisible(true)
   }
-
-  const totalPages = Math.ceil(totalNum / pageSize) || 1
 
   return (
     <div>
@@ -156,13 +153,20 @@ const SaAiGenTask = () => {
           <SaAiGenTaskTable data={data} onViewDetail={handleViewDetail} t={t} />
         </Spin>
       </div>
-      <Pagination
-        totalPages={totalPages}
-        current={currentPage}
-        onPageChange={setCurrent}
-        pageSize={pageSize}
-        onPageSizeChange={setPageSize}
-      />
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+        <Pagination
+          total={totalNum}
+          current={currentPage}
+          pageSize={pageSize}
+          showSizeChanger
+          pageSizeOptions={[10, 50, 100]}
+          showTotal={(total) => `${t('共')} ${total} ${t('条')}`}
+          onChange={(page, size) => {
+            setCurrent(page)
+            if (size !== pageSize) setPageSize(size)
+          }}
+        />
+      </div>
       <SaAiGenTaskDetailModal
         visible={detailVisible}
         taskId={detailId}

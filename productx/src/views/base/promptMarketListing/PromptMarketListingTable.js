@@ -103,10 +103,7 @@ const PromptMarketListingTable = ({
               </div>
             </td>
             <td>
-              <div>
-                <Tag color="cyan">{item.listingType || '-'}</Tag>
-                <span style={{ marginLeft: 4 }}>分类: {item.categoryId ?? '-'}</span>
-              </div>
+              <Tag color="cyan">{item.listingType || '-'}</Tag>
             </td>
             <td className="text-truncate">
               <span>{item.priceToken ?? 0}</span>
