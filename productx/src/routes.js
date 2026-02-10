@@ -218,6 +218,8 @@ const ServerInstancesRouter = React.lazy(() => import('./views/base/serverInstan
 
 const AdminLoginLogsRouter = React.lazy(() => import('./views/base/adminLoginLogs/AdminLoginLogs'));
 
+const ApiAccessLogRouter = React.lazy(() => import('./views/base/apiAccessLog/ApiAccessLog'));
+
 const UserLoginLogsRouter = React.lazy(() => import('./views/base/userLoginLogs/UserLoginLogs'));
 
 const SaAiAgentCommentRouter = React.lazy(() => import('./views/base/saAiAgentComment/SaAiAgentComment'));
@@ -920,6 +922,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <AdminLoginLogsRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/apiAccessLog',
+    name: 'API访问日志',
+    element: (
+      <PrivateRoute>
+        <ApiAccessLogRouter />
       </PrivateRoute>
     ),
   },

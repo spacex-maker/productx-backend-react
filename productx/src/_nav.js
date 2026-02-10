@@ -101,6 +101,12 @@ const _nav = [
     icon: <CIcon icon={cilDevices} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'API访问日志',
+    to: '/base/apiAccessLog',
+    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: '客服',
   },

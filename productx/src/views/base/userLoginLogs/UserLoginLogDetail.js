@@ -32,10 +32,23 @@ const UserLoginLogDetail = ({ visible, onClose, data }) => {
             <UserOutlined style={{ fontSize: '18px', color: '#1890ff' }} />
             <span style={{ fontSize: '16px', fontWeight: 500 }}>{t('userInfo')}</span>
           </Space>
-          <Descriptions column={2} labelStyle={{ whiteSpace: 'nowrap' }}>
-            <Descriptions.Item label={t('username')}>{data?.username}</Descriptions.Item>
-            <Descriptions.Item label={t('userId')}>{data?.userId}</Descriptions.Item>
-          </Descriptions>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {data?.avatar ? (
+              <img
+                src={data.avatar}
+                alt=""
+                style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }}
+              />
+            ) : (
+              <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <UserOutlined style={{ fontSize: 24, color: '#999' }} />
+              </div>
+            )}
+            <Descriptions column={1} labelStyle={{ whiteSpace: 'nowrap' }}>
+              <Descriptions.Item label={t('username')}>{data?.username ?? '—'}</Descriptions.Item>
+              <Descriptions.Item label={t('userId')}>{data?.userId ?? '—'}</Descriptions.Item>
+            </Descriptions>
+          </div>
         </div>
 
         <Divider style={{ margin: '16px 0' }} />
@@ -58,15 +71,30 @@ const UserLoginLogDetail = ({ visible, onClose, data }) => {
 
         <Divider style={{ margin: '16px 0' }} />
 
-        {/* 位置信息部分 */}
+        {/* 位置与来源部分 */}
         <div style={{ marginBottom: 24 }}>
           <Space align="center" style={{ marginBottom: 8 }}>
             <GlobalOutlined style={{ fontSize: '18px', color: '#1890ff' }} />
-            <span style={{ fontSize: '16px', fontWeight: 500 }}>{t('location')}</span>
+            <span style={{ fontSize: '16px', fontWeight: 500 }}>{t('location')} / 来源</span>
           </Space>
           <Descriptions column={2} labelStyle={{ whiteSpace: 'nowrap' }}>
-            <Descriptions.Item label={t('loginIp')}>{data?.loginIp}</Descriptions.Item>
-            <Descriptions.Item label={t('location')}>{data?.location || '-'}</Descriptions.Item>
+            <Descriptions.Item label={t('loginIp')}>{data?.loginIp ?? '—'}</Descriptions.Item>
+            <Descriptions.Item label={t('location')}>{data?.location || '—'}</Descriptions.Item>
+            <Descriptions.Item label="国家代码">{data?.countryCode || '—'}</Descriptions.Item>
+            <Descriptions.Item label="前端域名">{data?.frontendDomain || '—'}</Descriptions.Item>
+          </Descriptions>
+        </div>
+
+        <Divider style={{ margin: '16px 0' }} />
+
+        {/* 登录方式与渠道 */}
+        <div style={{ marginBottom: 24 }}>
+          <Space align="center" style={{ marginBottom: 8 }}>
+            <span style={{ fontSize: '16px', fontWeight: 500 }}>登录方式 / 渠道</span>
+          </Space>
+          <Descriptions column={2} labelStyle={{ whiteSpace: 'nowrap' }}>
+            <Descriptions.Item label="登录方式">{data?.loginMethod || '—'}</Descriptions.Item>
+            <Descriptions.Item label="登录渠道">{data?.loginChannel || '—'}</Descriptions.Item>
           </Descriptions>
         </div>
 
@@ -79,9 +107,10 @@ const UserLoginLogDetail = ({ visible, onClose, data }) => {
             <span style={{ fontSize: '16px', fontWeight: 500 }}>{t('device')}</span>
           </Space>
           <Descriptions column={1} labelStyle={{ whiteSpace: 'nowrap' }}>
-            <Descriptions.Item label={t('device')}>{data?.device || '-'}</Descriptions.Item>
-            <Descriptions.Item label={t('browser')}>{data?.browser || '-'}</Descriptions.Item>
-            <Descriptions.Item label={t('os')}>{data?.os || '-'}</Descriptions.Item>
+            <Descriptions.Item label="设备类型">{data?.deviceType || '—'}</Descriptions.Item>
+            <Descriptions.Item label={t('device')}>{data?.device || '—'}</Descriptions.Item>
+            <Descriptions.Item label={t('browser')}>{data?.browser || '—'}</Descriptions.Item>
+            <Descriptions.Item label={t('os')}>{data?.os || '—'}</Descriptions.Item>
           </Descriptions>
         </div>
 
