@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, Tag, Space, Image, Avatar } from 'antd'
+import React, { useState } from 'react'
+import { Button, Tag, Space, Image, Avatar, Modal } from 'antd'
 
 const STATUS_MAP = {
   0: { color: 'default', text: '排队' },
@@ -8,6 +8,7 @@ const STATUS_MAP = {
   3: { color: 'error', text: '失败' },
   4: { color: 'warning', text: '超时' },
 }
+const BILLING_MAP = { 0: '未扣费', 1: '已扣费', 2: '已退款' }
 
 const addImageCompressSuffix = (url, width = 120) => {
   if (!url) return ''
@@ -34,7 +35,65 @@ const parseResultUrls = (str) => {
 }
 
 const SaAiGenTaskTable = ({ data, onViewDetail, t }) => {
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState(null)
+
+  const renderPreview = (item) => {
+    const urls = parseResultUrls(item.resultUrls)
+    const firstUrl = urls[0] || item.thumbnailUrl
+    if (!firstUrl) return <span style={{ color: '#999' }}>-</span>
+
+    if (isVideoUrl(firstUrl)) {
+      return (
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => setVideoPreviewUrl(firstUrl)}
+          onKeyDown={(e) => e.key === 'Enter' && setVideoPreviewUrl(firstUrl)}
+          style={{
+            width: 96,
+            height: 96,
+            borderRadius: 6,
+            overflow: 'hidden',
+            cursor: 'pointer',
+            background: '#f0f0f0',
+            border: '1px solid rgba(0,0,0,0.06)',
+            transition: 'opacity 0.2s, border-color 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '0.85'
+            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.12)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '1'
+            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.06)'
+          }}
+        >
+          <video
+            src={firstUrl}
+            poster={item.thumbnailUrl || undefined}
+            preload="metadata"
+            width={96}
+            height={96}
+            muted
+            playsInline
+            style={{ objectFit: 'cover', pointerEvents: 'none', display: 'block' }}
+          />
+        </div>
+      )
+    }
+
+    return (
+      <Image
+        src={firstUrl}
+        width={96}
+        height={96}
+        style={{ objectFit: 'cover', borderRadius: 6 }}
+      />
+    )
+  }
+
   return (
+    <>
     <table className="table table-bordered table-striped">
       <thead>
         <tr>
@@ -51,17 +110,25 @@ const SaAiGenTaskTable = ({ data, onViewDetail, t }) => {
       </thead>
       <tbody>
         {data.map((item) => {
-          const urls = parseResultUrls(item.resultUrls)
-          const firstUrl = urls[0] || item.thumbnailUrl
           return (
             <tr key={item.id} className="record-font">
               <td>{item.id}</td>
               <td>
-                {(item.userAvatar != null || item.userNickname != null || item.userName != null) ? (
-                  <Space size="small">
-                    <Avatar src={item.userAvatar} size="small">{item.userNickname?.[0] || item.userName?.[0] || '-'}</Avatar>
-                    <span>{item.userNickname || item.userName || item.userId}</span>
-                  </Space>
+                {(item.userAvatar != null || item.userNickname != null || item.userName != null || item.userId != null) ? (
+                  <div>
+                    <Space size="small" wrap>
+                      <Space size="small">
+                        <Avatar src={item.userAvatar} size="small">{item.userNickname?.[0] || item.userName?.[0] || '-'}</Avatar>
+                        <span>{item.userNickname || item.userName || '-'}</span>
+                      </Space>
+                      {item.isBelongSystem === true && (
+                        <Tag color="purple">{t('系统')}</Tag>
+                      )}
+                    </Space>
+                    {item.userId != null && (
+                      <div style={{ fontSize: 12, color: '#666', marginTop: 2 }}>ID: {item.userId}</div>
+                    )}
+                  </div>
                 ) : (
                   item.userId ?? '-'
                 )}
@@ -74,33 +141,19 @@ const SaAiGenTaskTable = ({ data, onViewDetail, t }) => {
                 </div>
               </td>
               <td>
-                {STATUS_MAP[item.status] != null ? (
-                  <Tag color={STATUS_MAP[item.status].color}>{STATUS_MAP[item.status].text}</Tag>
-                ) : '-'}
-              </td>
-              <td>
-                {firstUrl ? (
-                  isVideoUrl(firstUrl) ? (
-                    <video
-                      src={firstUrl}
-                      width={48}
-                      height={48}
-                      muted
-                      loop
-                      playsInline
-                      style={{ objectFit: 'cover', borderRadius: 4 }}
-                    />
+                <Space size="small">
+                  {STATUS_MAP[item.status] != null ? (
+                    <Tag color={STATUS_MAP[item.status].color}>{STATUS_MAP[item.status].text}</Tag>
                   ) : (
-                    <Image
-                      src={addImageCompressSuffix(firstUrl, 80)}
-                      width={48}
-                      height={48}
-                      style={{ objectFit: 'cover', borderRadius: 4 }}
-                    />
-                  )
-                ) : (
-                  <span style={{ color: '#999' }}>-</span>
-                )}
+                    <span>-</span>
+                  )}
+                  <Tag color={item.billingStatus === 2 ? 'green' : item.billingStatus === 1 ? 'orange' : 'default'}>
+                    {BILLING_MAP[item.billingStatus] ?? item.billingStatus ?? '-'}
+                  </Tag>
+                </Space>
+              </td>
+              <td style={{ position: 'relative' }}>
+                {renderPreview(item)}
               </td>
               <td>{item.creditsCost ?? 0}</td>
               <td className="text-truncate">{item.createTime || '-'}</td>
@@ -114,6 +167,24 @@ const SaAiGenTaskTable = ({ data, onViewDetail, t }) => {
         })}
       </tbody>
     </table>
+    <Modal
+      open={!!videoPreviewUrl}
+      onCancel={() => setVideoPreviewUrl(null)}
+      footer={null}
+      width="min(90vw, 800px)"
+      centered
+      destroyOnClose
+    >
+      {videoPreviewUrl && (
+        <video
+          src={videoPreviewUrl}
+          controls
+          autoPlay
+          style={{ width: '100%', borderRadius: 8 }}
+        />
+      )}
+    </Modal>
+    </>
   )
 }
 

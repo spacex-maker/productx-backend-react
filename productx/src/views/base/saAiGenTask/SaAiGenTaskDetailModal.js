@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import api from 'src/axiosInstance'
-import { Modal, Image, Spin, Tag, Space, Collapse, Typography, theme, Avatar, Card, Row, Col } from 'antd'
+import { Modal, Image, Spin, Tag, Space, Collapse, Typography, theme, Avatar, Card, Row, Col, Button, message } from 'antd'
+import { DollarOutlined, SyncOutlined } from '@ant-design/icons'
 
 const { Text } = Typography
 
@@ -68,18 +69,78 @@ const SaAiGenTaskDetailModal = ({ visible, taskId, onClose, t }) => {
   const { token } = theme.useToken()
   const [detail, setDetail] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [refunding, setRefunding] = useState(false)
+  const [queryingStatus, setQueryingStatus] = useState(false)
+
+  const fetchDetail = React.useCallback(() => {
+    if (!taskId) return
+    setLoading(true)
+    api.get(`/manage/sa-ai-gen-task/${taskId}/detail`)
+      .then((res) => setDetail(res))
+      .catch(() => setDetail(null))
+      .finally(() => setLoading(false))
+  }, [taskId])
 
   useEffect(() => {
     if (!visible || !taskId) {
       setDetail(null)
       return
     }
-    setLoading(true)
-    api.get(`/manage/sa-ai-gen-task/${taskId}/detail`)
-      .then((res) => setDetail(res))
-      .catch(() => setDetail(null))
-      .finally(() => setLoading(false))
-  }, [visible, taskId])
+    fetchDetail()
+  }, [visible, taskId, fetchDetail])
+
+  // 判断是否可以退款
+  const canRefund = useMemo(() => {
+    return detail && 
+      detail.status === 3 && // 任务状态为失败
+      detail.creditsCost > 0 && // 有Token消耗
+      detail.billingStatus === 1 // 已扣费但未退款
+  }, [detail])
+
+  // 判断是否可手动查询状态（排队中或进行中）
+  const canQueryStatus = useMemo(() => {
+    return detail && (detail.status === 0 || detail.status === 1)
+  }, [detail])
+
+  // 手动查询任务状态（向第三方拉取并更新）
+  const handleQueryStatus = async () => {
+    if (!taskId) return
+    setQueryingStatus(true)
+    try {
+      const res = await api.post(`/manage/sa-ai-gen-task/${taskId}/query-status`)
+      if (res) setDetail(res)
+      message.success(t('查询成功，状态已更新'))
+    } catch (error) {
+      message.error(error?.response?.data?.message || error?.message || t('查询状态失败'))
+    } finally {
+      setQueryingStatus(false)
+    }
+  }
+
+  // 处理退款
+  const handleRefund = async () => {
+    if (!taskId) return
+    
+    Modal.confirm({
+      title: t('确认退款'),
+      content: t('确定要对该失败任务进行Token退款吗？退款金额：') + (detail?.creditsCost || 0) + ' Token',
+      okText: t('确认'),
+      cancelText: t('取消'),
+      onOk: async () => {
+        setRefunding(true)
+        try {
+          await api.post(`/manage/sa-ai-gen-task/${taskId}/refund`)
+          message.success(t('退款成功'))
+          // 刷新详情数据
+          fetchDetail()
+        } catch (error) {
+          message.error(error?.response?.data?.message || t('退款失败'))
+        } finally {
+          setRefunding(false)
+        }
+      },
+    })
+  }
 
   const outputUrls = (() => {
     if (detail?.outputFiles?.length) {
@@ -108,7 +169,32 @@ const SaAiGenTaskDetailModal = ({ visible, taskId, onClose, t }) => {
       }
       open={visible}
       onCancel={onClose}
-      footer={null}
+      footer={
+        (canQueryStatus || canRefund) ? (
+          <Space>
+            {canQueryStatus && (
+              <Button
+                icon={<SyncOutlined />}
+                loading={queryingStatus}
+                onClick={handleQueryStatus}
+              >
+                {t('查询状态')}
+              </Button>
+            )}
+            {canRefund && (
+              <Button
+                type="primary"
+                danger
+                icon={<DollarOutlined />}
+                loading={refunding}
+                onClick={handleRefund}
+              >
+                {t('退款')}
+              </Button>
+            )}
+          </Space>
+        ) : null
+      }
       width={820}
       destroyOnClose
       styles={{
@@ -128,27 +214,37 @@ const SaAiGenTaskDetailModal = ({ visible, taskId, onClose, t }) => {
                     <Tag color="blue">{detail.taskType || '-'}</Tag>
                   </InfoRow>
                   <InfoRow label={t('状态')}>
-                    <Tag color={detail.status === 2 ? 'success' : detail.status === 3 ? 'error' : 'default'}>
-                      {STATUS_MAP[detail.status] ?? detail.status}
-                    </Tag>
+                    <Space size="small">
+                      <Tag color={detail.status === 2 ? 'success' : detail.status === 3 ? 'error' : 'default'}>
+                        {STATUS_MAP[detail.status] ?? detail.status}
+                      </Tag>
+                      <Tag color={detail.billingStatus === 2 ? 'green' : detail.billingStatus === 1 ? 'orange' : 'default'}>
+                        {BILLING_MAP[detail.billingStatus] ?? detail.billingStatus ?? '-'}
+                      </Tag>
+                    </Space>
                   </InfoRow>
                   <InfoRow label={t('输入类型')}>{detail.inputType || '-'}</InfoRow>
                   <InfoRow label={t('输出类型')}>{detail.outputType || '-'}</InfoRow>
                 </div>
                 <div>
                   <InfoRow label={t('用户')}>
-                    {(detail.userAvatar != null || detail.userNickname != null || detail.userName != null) ? (
-                      <Space size="small">
-                        <Avatar src={detail.userAvatar} size={28}>
-                          {detail.userNickname?.[0] || detail.userName?.[0] || '-'}
-                        </Avatar>
-                        <span>{detail.userNickname || detail.userName || detail.userId}</span>
-                        {detail.userName && detail.userNickname && detail.userName !== detail.userNickname && (
-                          <Text type="secondary" style={{ fontSize: 12 }}>({detail.userName})</Text>
+                    {(detail.userAvatar != null || detail.userNickname != null || detail.userName != null || detail.userId != null) ? (
+                      <div>
+                        <Space size="small">
+                          <Avatar src={detail.userAvatar} size={28}>
+                            {detail.userNickname?.[0] || detail.userName?.[0] || '-'}
+                          </Avatar>
+                          <span>{detail.userNickname || detail.userName || '-'}</span>
+                          {detail.userName && detail.userNickname && detail.userName !== detail.userNickname && (
+                            <Text type="secondary" style={{ fontSize: 12 }}>({detail.userName})</Text>
+                          )}
+                        </Space>
+                        {detail.userId != null && (
+                          <Text type="secondary" style={{ display: 'block', fontSize: 12, marginTop: 4 }}>ID: {detail.userId}</Text>
                         )}
-                      </Space>
+                      </div>
                     ) : (
-                      detail.userId ?? '-'
+                      '-'
                     )}
                   </InfoRow>
                   <InfoRow label={t('创建时间')}>{detail.createTime || '-'}</InfoRow>
@@ -199,7 +295,28 @@ const SaAiGenTaskDetailModal = ({ visible, taskId, onClose, t }) => {
             {(detail.errorCode || detail.errorMessage) && (
               <SectionCard title={t('错误信息')} style={{ borderColor: token.colorErrorBorder }}>
                 {detail.errorCode && <InfoRow label={t('错误码')}>{detail.errorCode}</InfoRow>}
-                {detail.errorMessage && <InfoRow label={t('错误信息')}>{detail.errorMessage}</InfoRow>}
+                {detail.errorMessage && (
+                  <div style={{ padding: '6px 0' }}>
+                    <Typography.Paragraph
+                      copyable={{ text: detail.errorMessage }}
+                      style={{
+                        margin: 0,
+                        background: token.colorErrorBg,
+                        padding: 12,
+                        borderRadius: 8,
+                        fontSize: 13,
+                        lineHeight: 1.6,
+                        maxHeight: 240,
+                        overflow: 'auto',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-word',
+                        border: `1px solid ${token.colorErrorBorder}`,
+                      }}
+                    >
+                      {detail.errorMessage}
+                    </Typography.Paragraph>
+                  </div>
+                )}
               </SectionCard>
             )}
 
@@ -213,16 +330,16 @@ const SaAiGenTaskDetailModal = ({ visible, taskId, onClose, t }) => {
                           key={i}
                           src={url}
                           controls
-                          width={120}
-                          style={{ maxHeight: 120, objectFit: 'contain', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}
+                          width={220}
+                          style={{ maxHeight: 220, objectFit: 'contain', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}
                         />
                       ) : (
                         <Image
                           key={i}
-                          src={addImageCompressSuffix(url, 200)}
-                          width={88}
-                          height={88}
-                          style={{ objectFit: 'cover', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}
+                          src={url}
+                          width={180}
+                          height={180}
+                          style={{ objectFit: 'contain', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}
                         />
                       )
                     )}

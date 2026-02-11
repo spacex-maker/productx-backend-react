@@ -35,6 +35,7 @@ const SaAiGenTask = () => {
     status: undefined,
     modelCode: '',
     modelName: '',
+    realUserOnly: undefined,
   })
   const [isLoading, setIsLoading] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false)
@@ -119,6 +120,18 @@ const SaAiGenTask = () => {
               {STATUS_OPTIONS.map((o) => (
                 <Option key={o.value} value={o.value}>{o.label}</Option>
               ))}
+            </Select>
+          </Col>
+          <Col>
+            <Select
+              value={searchParams.realUserOnly}
+              onChange={(v) => handleSelectChange('realUserOnly', v)}
+              placeholder={t('用户类型')}
+              allowClear
+              style={{ width: 100 }}
+            >
+              <Option value={true}>{t('仅真实用户')}</Option>
+              <Option value={false}>{t('全部用户')}</Option>
             </Select>
           </Col>
           <Col>
