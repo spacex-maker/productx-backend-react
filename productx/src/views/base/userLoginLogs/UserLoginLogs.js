@@ -40,8 +40,10 @@ const UserLoginLogs = () => {
       });
 
       if (response) {
-        setData(response.data);
-        setTotalNum(response.totalNum);
+        const list = response.data ?? [];
+        const total = response.totalNum ?? 0;
+        setData(Array.isArray(list) ? list : []);
+        setTotalNum(Number(total) || 0);
       }
     } catch (error) {
       console.error('获取数据失败', error);

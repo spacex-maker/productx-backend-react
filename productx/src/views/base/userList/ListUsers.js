@@ -77,9 +77,12 @@ const UserList = () => {
         params: { currentPage:current, pageSize: pageSize, ...filteredParams },
       })
 
-      if (response && response.data) {
-        setData(response.data) // 更新为新的数据结构
-        setTotalNum(response.totalNum) // 读取总数
+      if (response) {
+        // 拦截器返回 BasePageResult：{ data: [], totalNum }
+        const list = response.data ?? []
+        const total = response.totalNum ?? 0
+        setData(Array.isArray(list) ? list : [])
+        setTotalNum(Number(total) || 0)
       }
     } catch (error) {
       console.error('Failed to fetch data', error)
