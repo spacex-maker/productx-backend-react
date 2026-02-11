@@ -1977,5 +1977,17 @@
   "totalLikesGiven": "Total de me gusta dados",
   "totalCommentsGiven": "Total de comentarios dados",
   "lastActionTime": "Última acción",
-  "publishTime": "Hora de publicación"
+  "publishTime": "Hora de publicación",
+  "keyUsage": "Uso de clave",
+  "keyLimit": "Límite de clave",
+  "planUsage": "Uso del plan",
+  "planLimit": "Límite del plan",
+  "lastCheckTime": "Última hora de verificación",
+  "addTavilyAccount": "Agregar cuenta Tavily",
+  "editTavilyAccount": "Editar cuenta Tavily",
+  "pleaseInputApiKey": "Por favor ingrese la clave API",
+  "pleaseInputAccountAlias": "Por favor ingrese el alias/notas de la cuenta",
+  "pleaseSelectPlan": "Por favor seleccione el plan",
+  "accountAlias": "Alias de cuenta",
+  "currentPlan": "Plan actual"
 }

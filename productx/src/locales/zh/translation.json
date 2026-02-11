@@ -2008,5 +2008,17 @@
   "totalLikesGiven": "累计点赞",
   "totalCommentsGiven": "累计评论",
   "lastActionTime": "最后操作时间",
-  "publishTime": "发布时间"
+  "publishTime": "发布时间",
+  "keyUsage": "Key用量",
+  "keyLimit": "Key限额",
+  "planUsage": "计划用量",
+  "planLimit": "计划限额",
+  "lastCheckTime": "最后检查时间",
+  "addTavilyAccount": "新增 Tavily 账号",
+  "editTavilyAccount": "编辑 Tavily 账号",
+  "pleaseInputApiKey": "请输入 API Key",
+  "pleaseInputAccountAlias": "请输入账号别名/备注",
+  "pleaseSelectPlan": "请选择套餐计划",
+  "accountAlias": "账号别名",
+  "currentPlan": "套餐计划"
 }

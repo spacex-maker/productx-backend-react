@@ -1888,5 +1888,17 @@
   "statusPrivate": "Privato",
   "statusViolationRemoved": "Rimosso per violazione",
   "enableImageCompress": "Abilita compressione immagine",
-  "compressImage": "Comprimi immagine (300-700KB)"
+  "compressImage": "Comprimi immagine (300-700KB)",
+  "keyUsage": "Utilizzo chiave",
+  "keyLimit": "Limite chiave",
+  "planUsage": "Utilizzo piano",
+  "planLimit": "Limite piano",
+  "lastCheckTime": "Ultima ora di verifica",
+  "addTavilyAccount": "Aggiungi account Tavily",
+  "editTavilyAccount": "Modifica account Tavily",
+  "pleaseInputApiKey": "Inserisci la chiave API",
+  "pleaseInputAccountAlias": "Inserisci alias/note dell'account",
+  "pleaseSelectPlan": "Seleziona il piano",
+  "accountAlias": "Alias account",
+  "currentPlan": "Piano attuale"
 }

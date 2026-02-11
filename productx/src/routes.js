@@ -254,6 +254,8 @@ const ListSysAiOperatorsRouter = React.lazy(() => import('./views/base/sysAiOper
 
 const ListSysAiPostStocksRouter = React.lazy(() => import('./views/base/sysAiPostStock/ListSysAiPostStocks'));
 
+const TavilyAccountRouter = React.lazy(() => import('./views/base/tavilyAccount/TavilyAccount'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -1064,6 +1066,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <ListSysAiPostStocksRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/tavilyAccount',
+    name: 'Tavily 账号管理',
+    element: (
+      <PrivateRoute>
+        <TavilyAccountRouter />
       </PrivateRoute>
     ),
   },

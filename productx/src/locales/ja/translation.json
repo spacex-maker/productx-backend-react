@@ -1965,5 +1965,17 @@
   "totalLikesGiven": "累計いいね数",
   "totalCommentsGiven": "累計コメント数",
   "lastActionTime": "最終アクション時間",
-  "publishTime": "公開時間"
+  "publishTime": "公開時間",
+  "keyUsage": "キー使用量",
+  "keyLimit": "キー制限",
+  "planUsage": "プラン使用量",
+  "planLimit": "プラン制限",
+  "lastCheckTime": "最終チェック時間",
+  "addTavilyAccount": "Tavilyアカウントを追加",
+  "editTavilyAccount": "Tavilyアカウントを編集",
+  "pleaseInputApiKey": "APIキーを入力してください",
+  "pleaseInputAccountAlias": "アカウント別名/備考を入力してください",
+  "pleaseSelectPlan": "プランを選択してください",
+  "accountAlias": "アカウント別名",
+  "currentPlan": "現在のプラン"
 }

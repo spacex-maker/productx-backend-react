@@ -1969,5 +1969,17 @@
   "totalLikesGiven": "Total Likes Given",
   "totalCommentsGiven": "Total Comments Given",
   "lastActionTime": "Last Action Time",
-  "publishTime": "Publish Time"
+  "publishTime": "Publish Time",
+  "keyUsage": "Key Usage",
+  "keyLimit": "Key Limit",
+  "planUsage": "Plan Usage",
+  "planLimit": "Plan Limit",
+  "lastCheckTime": "Last Check Time",
+  "addTavilyAccount": "Add Tavily Account",
+  "editTavilyAccount": "Edit Tavily Account",
+  "pleaseInputApiKey": "Please enter API Key",
+  "pleaseInputAccountAlias": "Please enter account alias/notes",
+  "pleaseSelectPlan": "Please select plan",
+  "accountAlias": "Account Alias",
+  "currentPlan": "Current Plan"
 }

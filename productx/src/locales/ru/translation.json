@@ -1957,5 +1957,17 @@
   "totalLikesGiven": "Всего лайков",
   "totalCommentsGiven": "Всего комментариев",
   "lastActionTime": "Время последнего действия",
-  "publishTime": "Время публикации"
+  "publishTime": "Время публикации",
+  "keyUsage": "Использование ключа",
+  "keyLimit": "Лимит ключа",
+  "planUsage": "Использование плана",
+  "planLimit": "Лимит плана",
+  "lastCheckTime": "Время последней проверки",
+  "addTavilyAccount": "Добавить аккаунт Tavily",
+  "editTavilyAccount": "Редактировать аккаунт Tavily",
+  "pleaseInputApiKey": "Пожалуйста, введите API ключ",
+  "pleaseInputAccountAlias": "Пожалуйста, введите псевдоним/заметки аккаунта",
+  "pleaseSelectPlan": "Пожалуйста, выберите план",
+  "accountAlias": "Псевдоним аккаунта",
+  "currentPlan": "Текущий план"
 }

@@ -1962,5 +1962,17 @@
   "totalLikesGiven": "إجمالي الإعجابات",
   "totalCommentsGiven": "إجمالي التعليقات",
   "lastActionTime": "وقت آخر إجراء",
-  "publishTime": "وقت النشر"
+  "publishTime": "وقت النشر",
+  "keyUsage": "استخدام المفتاح",
+  "keyLimit": "حد المفتاح",
+  "planUsage": "استخدام الخطة",
+  "planLimit": "حد الخطة",
+  "lastCheckTime": "وقت آخر فحص",
+  "addTavilyAccount": "إضافة حساب Tavily",
+  "editTavilyAccount": "تحرير حساب Tavily",
+  "pleaseInputApiKey": "يرجى إدخال مفتاح API",
+  "pleaseInputAccountAlias": "يرجى إدخال اسم الحساب/ملاحظات",
+  "pleaseSelectPlan": "يرجى اختيار الخطة",
+  "accountAlias": "اسم الحساب",
+  "currentPlan": "الخطة الحالية"
 }

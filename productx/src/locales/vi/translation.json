@@ -397,5 +397,17 @@
   "totalLikesGiven": "Tổng lượt thích",
   "totalCommentsGiven": "Tổng bình luận",
   "lastActionTime": "Thời gian hành động cuối",
-  "publishTime": "Thời gian xuất bản"
+  "publishTime": "Thời gian xuất bản",
+  "keyUsage": "Lượng sử dụng Key",
+  "keyLimit": "Giới hạn Key",
+  "planUsage": "Lượng sử dụng gói",
+  "planLimit": "Giới hạn gói",
+  "lastCheckTime": "Thời gian kiểm tra cuối",
+  "addTavilyAccount": "Thêm tài khoản Tavily",
+  "editTavilyAccount": "Chỉnh sửa tài khoản Tavily",
+  "pleaseInputApiKey": "Vui lòng nhập API Key",
+  "pleaseInputAccountAlias": "Vui lòng nhập tên tài khoản/ghi chú",
+  "pleaseSelectPlan": "Vui lòng chọn gói",
+  "accountAlias": "Tên tài khoản",
+  "currentPlan": "Gói hiện tại"
 } 
