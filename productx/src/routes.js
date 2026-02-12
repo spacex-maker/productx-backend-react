@@ -258,6 +258,8 @@ const ListSysAiPostStocksRouter = React.lazy(() => import('./views/base/sysAiPos
 
 const TavilyAccountRouter = React.lazy(() => import('./views/base/tavilyAccount/TavilyAccount'));
 
+const AppProductPackagesRouter = React.lazy(() => import('./views/base/appProductPackages/AppProductPackages'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -987,6 +989,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <CreemProductConfigRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/appProductPackages',
+    name: 'App 产品套餐',
+    element: (
+      <PrivateRoute>
+        <AppProductPackagesRouter />
       </PrivateRoute>
     ),
   },

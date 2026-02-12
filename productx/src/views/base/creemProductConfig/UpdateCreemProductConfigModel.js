@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Select } from 'antd';
+import { Modal, Form, Input, InputNumber, Select, Row, Col, Divider } from 'antd';
+
+const formItemLayout = { labelCol: { span: 10 }, wrapperCol: { span: 14 } };
 
 const UpdateCreemProductConfigModel = ({
   isVisible,
@@ -10,6 +12,14 @@ const UpdateCreemProductConfigModel = ({
   selectedConfig,
   t
 }) => {
+  const tokenInputProps = {
+    style: { width: '100%' },
+    min: 0,
+    precision: 0,
+    formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+    parser: (value) => value.replace(/,/g, ''),
+  };
+
   useEffect(() => {
     if (isVisible && selectedConfig) {
       form.setFieldsValue({
@@ -35,109 +45,103 @@ const UpdateCreemProductConfigModel = ({
       onOk={() => form.submit()}
       okText={t('confirm')}
       cancelText={t('cancel')}
-      width={600}
+      width={680}
     >
-      <Form form={form} onFinish={handleUpdateConfig} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+      <Form form={form} onFinish={handleUpdateConfig} layout="horizontal">
         <Form.Item name="id" hidden>
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label={t('productName')}
-          name="productName"
-          rules={[{ required: true, message: t('pleaseInputProductName') }]}
-        >
-          <Input placeholder={t('pleaseInputProductName')} />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              {...formItemLayout}
+              label={t('productName')}
+              name="productName"
+              rules={[{ required: true, message: t('pleaseInputProductName') }]}
+            >
+              <Input placeholder={t('pleaseInputProductName')} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              {...formItemLayout}
+              label={t('creemProductId')}
+              name="creemProductId"
+              rules={[{ required: true, message: t('pleaseInputCreemProductId') }]}
+            >
+              <Input placeholder={t('pleaseInputCreemProductId')} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item {...formItemLayout} label={t('coinType')} name="coinType">
+              <Select>
+                <Select.Option value="USD">USD</Select.Option>
+                <Select.Option value="CNY">CNY</Select.Option>
+                <Select.Option value="EUR">EUR</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              {...formItemLayout}
+              label={t('amount')}
+              name="amount"
+              rules={[{ required: true, message: t('pleaseInputAmount') }]}
+            >
+              <InputNumber
+                style={{ width: '100%' }}
+                min={0}
+                precision={2}
+                placeholder={t('pleaseInputAmount')}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
 
-        <Form.Item
-          label={t('creemProductId')}
-          name="creemProductId"
-          rules={[{ required: true, message: t('pleaseInputCreemProductId') }]}
-        >
-          <Input placeholder={t('pleaseInputCreemProductId')} />
-        </Form.Item>
+        <Divider style={{ margin: '12px 0' }} />
 
-        <Form.Item
-          label={t('coinType')}
-          name="coinType"
-        >
-          <Select>
-            <Select.Option value="USD">USD</Select.Option>
-            <Select.Option value="CNY">CNY</Select.Option>
-            <Select.Option value="EUR">EUR</Select.Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label={t('amount')}
-          name="amount"
-          rules={[{ required: true, message: t('pleaseInputAmount') }]}
-        >
-          <InputNumber
-            style={{ width: '100%' }}
-            min={0}
-            precision={2}
-            placeholder={t('pleaseInputAmount')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('baseToken')}
-          name="baseToken"
-        >
-          <InputNumber
-            style={{ width: '100%' }}
-            min={0}
-            precision={0}
-            placeholder={t('pleaseInputBaseToken')}
-            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            parser={(value) => value.replace(/,/g, '')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('bonusToken')}
-          name="bonusToken"
-        >
-          <InputNumber
-            style={{ width: '100%' }}
-            min={0}
-            precision={0}
-            placeholder={t('pleaseInputBonusToken')}
-            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-            parser={(value) => value.replace(/,/g, '')}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label={t('tag')}
-          name="tag"
-        >
-          <Input placeholder={t('pleaseInputTag')} />
-        </Form.Item>
-
-        <Form.Item
-          label={t('status')}
-          name="status"
-        >
-          <Select>
-            <Select.Option value="ACTIVE">{t('active')}</Select.Option>
-            <Select.Option value="INACTIVE">{t('inactive')}</Select.Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label={t('sortOrder')}
-          name="sortOrder"
-        >
-          <InputNumber
-            style={{ width: '100%' }}
-            min={0}
-            precision={0}
-            placeholder={t('pleaseInputSortOrder')}
-          />
-        </Form.Item>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item {...formItemLayout} label={t('baseToken')} name="baseToken">
+              <InputNumber {...tokenInputProps} placeholder={t('pleaseInputBaseToken')} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item {...formItemLayout} label={t('bonusToken')} name="bonusToken">
+              <InputNumber {...tokenInputProps} placeholder={t('pleaseInputBonusToken')} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item {...formItemLayout} label={t('tag')} name="tag">
+              <Input placeholder={t('pleaseInputTag')} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item {...formItemLayout} label={t('status')} name="status">
+              <Select>
+                <Select.Option value="ACTIVE">{t('active')}</Select.Option>
+                <Select.Option value="INACTIVE">{t('inactive')}</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item {...formItemLayout} label={t('sortOrder')} name="sortOrder">
+              <InputNumber
+                style={{ width: '100%' }}
+                min={0}
+                precision={0}
+                placeholder={t('pleaseInputSortOrder')}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

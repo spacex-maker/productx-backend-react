@@ -444,5 +444,20 @@
   "pleaseInputAccountAlias": "Vui lòng nhập tên tài khoản/ghi chú",
   "pleaseSelectPlan": "Vui lòng chọn gói",
   "accountAlias": "Tên tài khoản",
-  "currentPlan": "Gói hiện tại"
+  "currentPlan": "Gói hiện tại",
+  "addCreemProductConfig": "Thêm cấu hình sản phẩm Creem",
+  "editCreemProductConfig": "Chỉnh sửa cấu hình sản phẩm Creem",
+  "creemProductId": "ID sản phẩm Creem",
+  "baseToken": "Token cơ bản",
+  "bonusToken": "Token thưởng",
+  "totalToken": "Tổng token",
+  "tag": "Thẻ",
+  "pleaseInputProductName": "Vui lòng nhập tên sản phẩm",
+  "pleaseInputCreemProductId": "Vui lòng nhập ID sản phẩm Creem",
+  "pleaseInputAmount": "Vui lòng nhập số tiền",
+  "pleaseInputBaseToken": "Vui lòng nhập token cơ bản",
+  "pleaseInputBonusToken": "Vui lòng nhập token thưởng",
+  "pleaseInputTag": "Vui lòng nhập thẻ",
+  "statusChangeSuccess": "Cập nhật trạng thái thành công",
+  "statusChangeFailed": "Cập nhật trạng thái thất bại"
 } 

@@ -29,7 +29,6 @@ const CreemProductConfigTable = ({
           </th>
           {[
             t('productName'),
-            t('creemProductId'),
             t('coinType'),
             t('amount'),
             t('baseToken'),
@@ -64,8 +63,10 @@ const CreemProductConfigTable = ({
                 ></label>
               </div>
             </td>
-            <td className="text-truncate" style={{ fontWeight: 'bold' }}>{item.productName}</td>
-            <td className="text-truncate" style={{ fontSize: '12px', color: '#666' }}>{item.creemProductId}</td>
+            <td className="text-truncate">
+              <div style={{ fontWeight: 'bold' }}>{item.productName}</div>
+              <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>{item.creemProductId}</div>
+            </td>
             <td>
               <Tag color="blue">{item.coinType || 'USD'}</Tag>
             </td>
