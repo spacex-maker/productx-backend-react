@@ -31,7 +31,8 @@ import {
   cilUserFemale,
 } from '@coreui/icons'
 import ReactECharts from 'echarts-for-react'
-import { DatePicker, Spin, Row, Col, Card } from 'antd'
+import { DatePicker, Spin, Row, Col, Card, Button, message, theme } from 'antd'
+import { SyncOutlined } from '@ant-design/icons'
 import api from 'src/axiosInstance'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
@@ -52,14 +53,24 @@ dayjs.locale('zh-cn')
 const { RangePicker } = DatePicker
 
 const Dashboard = () => {
+  const { token } = theme.useToken()
   const [startDate, setStartDate] = useState(dayjs().subtract(7, 'days'))
   const [endDate, setEndDate] = useState(dayjs())
   const [growthStats, setGrowthStats] = useState([])
+  const [regionDistribution, setRegionDistribution] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const [syncLoading, setSyncLoading] = useState(false)
   const [activeTab, setActiveTab] = useState(1)
+
+  const textColor = token.colorText
+  const textColorSecondary = token.colorTextSecondary
+  const axisLineColor = token.colorBorderSecondary
+  const splitLineColor = token.colorSplit
+  const chartBg = 'transparent'
 
   useEffect(() => {
     fetchGrowthStats()
+    fetchRegionDistribution()
   }, [startDate, endDate])
 
   const fetchGrowthStats = async () => {
@@ -79,6 +90,22 @@ const Dashboard = () => {
       console.error('获取用户增长数据失败:', error)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const fetchRegionDistribution = async () => {
+    try {
+      const res = await api.get('/manage/user-growth-stats/region-distribution', {
+        params: {
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD')
+        }
+      })
+      const data = res?.data ?? res ?? {}
+      setRegionDistribution(typeof data === 'object' && data !== null ? data : {})
+    } catch (error) {
+      console.error('获取用户地域分布失败:', error)
+      setRegionDistribution({})
     }
   }
 
@@ -204,22 +231,21 @@ const Dashboard = () => {
   ]
 
   const getUserGrowthOption = () => ({
+    backgroundColor: chartBg,
     title: {
-      text: '用户增长趋势'
+      text: '用户增长趋势',
+      textStyle: { color: textColor }
     },
     tooltip: {
       trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        animation: true,
-        label: {
-          backgroundColor: '#6a7985'
-        }
-      }
+      axisPointer: { type: 'cross', animation: true },
+      backgroundColor: token.colorBgElevated,
+      borderColor: token.colorBorder,
+      textStyle: { color: textColor }
     },
     legend: {
       data: ['新增用户', '活跃用户', '总用户数'],
-      textStyle: { fontSize: 12 }
+      textStyle: { fontSize: 12, color: textColor }
     },
     grid: {
       left: '3%',
@@ -231,16 +257,17 @@ const Dashboard = () => {
       type: 'category',
       boundaryGap: true,
       data: growthStats?.map(item => item.date) || [],
-      axisLine: {
-        lineStyle: { color: '#666' }
-      }
+      axisLabel: { color: textColor },
+      axisLine: { lineStyle: { color: axisLineColor } },
+      splitLine: { lineStyle: { color: splitLineColor } }
     },
     yAxis: [{
       type: 'value',
       name: '用户数',
-      splitLine: {
-        lineStyle: { type: 'dashed' }
-      }
+      nameTextStyle: { color: textColorSecondary },
+      axisLabel: { color: textColor },
+      axisLine: { lineStyle: { color: axisLineColor } },
+      splitLine: { lineStyle: { type: 'dashed', color: splitLineColor } }
     }],
     series: [
       {
@@ -278,12 +305,17 @@ const Dashboard = () => {
   })
 
   const getRegionDistributionOption = () => ({
+    backgroundColor: chartBg,
     title: {
-      text: '用户地域分布'
+      text: '用户地域分布',
+      textStyle: { color: textColor }
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{b}: {c} ({d}%)'
+      formatter: '{b}: {c} ({d}%)',
+      backgroundColor: token.colorBgElevated,
+      borderColor: token.colorBorder,
+      textStyle: { color: textColor }
     },
     series: [{
       type: 'pie',
@@ -294,24 +326,29 @@ const Dashboard = () => {
         borderRadius: 8
       },
       label: {
-        formatter: '{b}: {d}%'
+        formatter: '{b}: {d}%',
+        color: textColor
       },
+      labelLine: { lineStyle: { color: axisLineColor } },
       animationType: 'scale',
       animationEasing: 'elasticOut',
       animationDelay: (idx) => idx * 200,
-      data: growthStats?.length > 0 ?
-        Object.entries(JSON.parse(growthStats[growthStats.length - 1].regionDistribution || '{}'))
-          .map(([name, value]) => ({ name, value })) : []
+      data: Object.entries(regionDistribution).map(([name, value]) => ({ name, value }))
     }]
   })
 
   const getDeviceDistributionOption = () => ({
+    backgroundColor: chartBg,
     title: {
-      text: '设备使用分布'
+      text: '设备使用分布',
+      textStyle: { color: textColor }
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{b}: {c} ({d}%)'
+      formatter: '{b}: {c} ({d}%)',
+      backgroundColor: token.colorBgElevated,
+      borderColor: token.colorBorder,
+      textStyle: { color: textColor }
     },
     series: [{
       type: 'pie',
@@ -323,13 +360,15 @@ const Dashboard = () => {
         borderWidth: 2
       },
       label: {
-        show: false
+        show: false,
+        color: textColor
       },
       emphasis: {
         label: {
           show: true,
           fontSize: '12',
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          color: textColor
         },
         itemStyle: {
           shadowBlur: 10,
@@ -349,14 +388,17 @@ const Dashboard = () => {
   })
 
   const getUserSourceOption = () => ({
+    backgroundColor: chartBg,
     title: {
-      text: '新用户来源分析'
+      text: '新用户来源分析',
+      textStyle: { color: textColor }
     },
     tooltip: {
       trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      }
+      axisPointer: { type: 'shadow' },
+      backgroundColor: token.colorBgElevated,
+      borderColor: token.colorBorder,
+      textStyle: { color: textColor }
     },
     grid: {
       left: '3%',
@@ -367,12 +409,17 @@ const Dashboard = () => {
     xAxis: {
       type: 'category',
       data: ['广告', '社交媒体', '自然搜索', '推荐'],
-      axisTick: { show: false }
+      axisTick: { show: false },
+      axisLabel: { color: textColor },
+      axisLine: { lineStyle: { color: axisLineColor } }
     },
     yAxis: {
       type: 'value',
       name: '占比(%)',
-      splitLine: { lineStyle: { type: 'dashed' } }
+      nameTextStyle: { color: textColorSecondary },
+      axisLabel: { color: textColor },
+      axisLine: { lineStyle: { color: axisLineColor } },
+      splitLine: { lineStyle: { type: 'dashed', color: splitLineColor } }
     },
     series: [{
       data: growthStats?.length > 0 ?
@@ -448,7 +495,7 @@ const Dashboard = () => {
           <CCol key={index} sm={6} lg={4} xl={2}>
             <CCard className="mb-4">
               <CCardBody className="text-center">
-                <div className="text-medium-emphasis small">{metric.title}</div>
+                <div className="small" style={{ color: token.colorTextSecondary }}>{metric.title}</div>
                 <div className={`fs-4 fw-semibold text-${metric.color}`}>{metric.value}</div>
               </CCardBody>
             </CCard>
@@ -465,6 +512,27 @@ const Dashboard = () => {
     } else {
       setStartDate(dayjs().subtract(7, 'days'))
       setEndDate(dayjs())
+    }
+  }
+
+  const handleSyncData = async () => {
+    setSyncLoading(true)
+    try {
+      await api.post('/manage/user-growth-stats/aggregate', null, {
+        params: {
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD')
+        }
+      })
+      message.success('数据同步任务已触发，正在刷新数据…')
+      await fetchGrowthStats()
+      await fetchRegionDistribution()
+      message.success('数据已刷新')
+    } catch (error) {
+      console.error('数据同步失败:', error)
+      message.error('数据同步失败')
+    } finally {
+      setSyncLoading(false)
     }
   }
 
@@ -497,14 +565,24 @@ const Dashboard = () => {
               <div className="pt-3">
                 <ConfigProvider locale={locale}>
                   <CCard className="mb-2">
-                    <CCardBody className="d-flex align-items-center py-2">
-                      <small className="text-medium-emphasis me-2">选择时间范围：</small>
-                      <RangePicker
-                        defaultValue={[startDate, endDate]}
-                        onChange={handleDateRangeChange}
-                        format="YYYY-MM-DD"
-                        style={{ fontSize: '12px' }}
-                      />
+                    <CCardBody className="d-flex align-items-center justify-content-between flex-wrap gap-2 py-2">
+                      <div className="d-flex align-items-center">
+                        <small className="me-2" style={{ color: token.colorText }}>选择时间范围：</small>
+                        <RangePicker
+                          value={[startDate, endDate]}
+                          onChange={handleDateRangeChange}
+                          format="YYYY-MM-DD"
+                          style={{ fontSize: '12px' }}
+                        />
+                      </div>
+                      <Button
+                        type="primary"
+                        icon={<SyncOutlined spin={syncLoading} />}
+                        loading={syncLoading}
+                        onClick={handleSyncData}
+                      >
+                        数据同步
+                      </Button>
                     </CCardBody>
                   </CCard>
 
@@ -513,7 +591,7 @@ const Dashboard = () => {
                   <CRow className="mb-4">
                     <CCol sm={12}>
                       <CCard>
-                        <CCardHeader>用户数据分析</CCardHeader>
+                        <CCardHeader style={{ color: token.colorTextHeading }}>用户数据分析</CCardHeader>
                         <CCardBody>
                           <Spin spinning={isLoading}>
                             <CRow>
@@ -533,7 +611,7 @@ const Dashboard = () => {
                   <CRow>
                     <CCol sm={6}>
                       <CCard>
-                        <CCardHeader>设备使用分析</CCardHeader>
+                        <CCardHeader style={{ color: token.colorTextHeading }}>设备使用分析</CCardHeader>
                         <CCardBody>
                           <ReactECharts option={getDeviceDistributionOption()} style={{height: '300px'}}/>
                         </CCardBody>
@@ -541,7 +619,7 @@ const Dashboard = () => {
                     </CCol>
                     <CCol sm={6}>
                       <CCard>
-                        <CCardHeader>新用户来源分析</CCardHeader>
+                        <CCardHeader style={{ color: token.colorTextHeading }}>新用户来源分析</CCardHeader>
                         <CCardBody>
                           <ReactECharts option={getUserSourceOption()} style={{height: '300px'}}/>
                         </CCardBody>

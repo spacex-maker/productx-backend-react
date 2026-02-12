@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Input, message, Spin, Col, Row, Select, Space, DatePicker } from 'antd';
+import { Button, Input, message, Spin, Col, Row, Select, DatePicker, Tabs } from 'antd';
 import Pagination from 'src/components/common/Pagination';
 import ApiAccessLogTable from './ApiAccessLogTable';
+import ApiAccessLogDashboard from './ApiAccessLogDashboard';
 import { useTranslation } from 'react-i18next';
+import { UnorderedListOutlined, BarChartOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 const { Option } = Select;
@@ -16,6 +18,7 @@ const ApiAccessLog = () => {
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [activeTab, setActiveTab] = useState('list');
   const [searchParams, setSearchParams] = useState({
     traceId: '',
     requestId: '',
@@ -108,6 +111,11 @@ const ApiAccessLog = () => {
   };
 
   const totalPages = Math.ceil(totalNum / pageSize) || 1;
+
+  const timeRangeForDashboard = {
+    startTime: searchParams.startTime ? dayjs(searchParams.startTime).format('YYYY-MM-DD HH:mm:ss') : undefined,
+    endTime: searchParams.endTime ? dayjs(searchParams.endTime).format('YYYY-MM-DD HH:mm:ss') : undefined,
+  };
 
   return (
     <div>
@@ -222,18 +230,48 @@ const ApiAccessLog = () => {
         </div>
       </div>
 
-      <div className="table-responsive">
-        <Spin spinning={isLoading}>
-          <ApiAccessLogTable data={data} onRefresh={fetchData} />
-        </Spin>
-      </div>
-
-      <Pagination
-        totalPages={totalPages}
-        current={currentPage}
-        onPageChange={setCurrent}
-        pageSize={pageSize}
-        onPageSizeChange={setPageSize}
+      <Tabs
+        activeKey={activeTab}
+        onChange={setActiveTab}
+        items={[
+          {
+            key: 'list',
+            label: (
+              <span>
+                <UnorderedListOutlined />
+                {t('apiAccessLogStats.tabList') || '列表'}
+              </span>
+            ),
+            children: (
+              <>
+                <div className="table-responsive">
+                  <Spin spinning={isLoading}>
+                    <ApiAccessLogTable data={data} onRefresh={fetchData} />
+                  </Spin>
+                </div>
+                <Pagination
+                  totalPages={totalPages}
+                  current={currentPage}
+                  onPageChange={setCurrent}
+                  pageSize={pageSize}
+                  onPageSizeChange={setPageSize}
+                />
+              </>
+            ),
+          },
+          {
+            key: 'dashboard',
+            label: (
+              <span>
+                <BarChartOutlined />
+                {t('apiAccessLogStats.tabDashboard') || '看板'}
+              </span>
+            ),
+            children: (
+              <ApiAccessLogDashboard timeRange={timeRangeForDashboard} />
+            ),
+          },
+        ]}
       />
     </div>
   );

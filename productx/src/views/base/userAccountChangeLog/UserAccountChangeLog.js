@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Col, Row, Select, Space, DatePicker } from 'antd';
+import { Button, Input, message, Spin, Col, Row, Select, DatePicker, Tabs } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
 import Pagination from 'src/components/common/Pagination';
 import UserAccountChangeLogTable from './UserAccountChangeLogTable';
+import UserAccountChangeLogDashboard from './UserAccountChangeLogDashboard';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import { UnorderedListOutlined, BarChartOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
 
@@ -26,6 +28,7 @@ const UserAccountChangeLog = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('list');
 
   useEffect(() => {
     fetchData();
@@ -102,6 +105,7 @@ const UserAccountChangeLog = () => {
     { value: 'UNFROZEN', label: t('unfrozen') },
     { value: 'DEPOSIT', label: t('deposit') },
     { value: 'WITHDRAW', label: t('withdraw') },
+    { value: 'REFUND', label: t('refund') },
   ];
 
   return (
@@ -176,24 +180,59 @@ const UserAccountChangeLog = () => {
         </div>
       </div>
 
-      <div className="table-responsive">
-        <Spin spinning={isLoading}>
-          <UserAccountChangeLogTable
-            data={data}
-            selectAll={selectAll}
-            selectedRows={selectedRows}
-            handleSelectAll={handleSelectAll}
-            handleSelectRow={handleSelectRow}
-          />
-        </Spin>
-      </div>
-
-      <Pagination
-        totalPages={totalPages}
-        current={currentPage}
-        onPageChange={setCurrent}
-        pageSize={pageSize}
-        onPageSizeChange={handlePageSizeChange}
+      <Tabs
+        activeKey={activeTab}
+        onChange={setActiveTab}
+        items={[
+          {
+            key: 'list',
+            label: (
+              <span>
+                <UnorderedListOutlined />
+                {t('accountChangeLogStats.tabList')}
+              </span>
+            ),
+            children: (
+              <>
+                <div className="table-responsive">
+                  <Spin spinning={isLoading}>
+                    <UserAccountChangeLogTable
+                      data={data}
+                      selectAll={selectAll}
+                      selectedRows={selectedRows}
+                      handleSelectAll={handleSelectAll}
+                      handleSelectRow={handleSelectRow}
+                    />
+                  </Spin>
+                </div>
+                <Pagination
+                  totalPages={totalPages}
+                  current={currentPage}
+                  onPageChange={setCurrent}
+                  pageSize={pageSize}
+                  onPageSizeChange={handlePageSizeChange}
+                />
+              </>
+            ),
+          },
+          {
+            key: 'dashboard',
+            label: (
+              <span>
+                <BarChartOutlined />
+                {t('accountChangeLogStats.tabDashboard')}
+              </span>
+            ),
+            children: (
+              <UserAccountChangeLogDashboard
+                timeRange={{
+                  startTime: searchParams.startTime || undefined,
+                  endTime: searchParams.endTime || undefined,
+                }}
+              />
+            ),
+          },
+        ]}
       />
     </div>
   );

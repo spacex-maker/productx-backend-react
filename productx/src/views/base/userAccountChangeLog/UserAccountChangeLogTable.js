@@ -24,6 +24,8 @@ const UserAccountChangeLogTable = ({
         return <Tag color="green">{t('deposit')}</Tag>;
       case 'WITHDRAW':
         return <Tag color="orange">{t('withdraw')}</Tag>;
+      case 'REFUND':
+        return <Tag color="cyan">{t('refund')}</Tag>;
       default:
         return <Tag>{changeType}</Tag>;
     }

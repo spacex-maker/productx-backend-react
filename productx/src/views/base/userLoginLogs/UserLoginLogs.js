@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from 'src/axiosInstance';
-import { Button, Form, Input, message, Spin, Col, Row, Select, Space, DatePicker } from 'antd';
+import { Button, Input, message, Spin, Col, Row, Select, Space, DatePicker, Tabs } from 'antd';
 import Pagination from 'src/components/common/Pagination';
 import UserLoginLogsTable from './UserLoginLogsTable';
+import UserLoginLogDashboard from './UserLoginLogDashboard';
 import { useTranslation } from 'react-i18next';
+import { UnorderedListOutlined, BarChartOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
 
@@ -24,6 +26,7 @@ const UserLoginLogs = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('list');
 
   useEffect(() => {
     fetchData();
@@ -157,20 +160,53 @@ const UserLoginLogs = () => {
         </div>
       </div>
 
-      <div className="table-responsive">
-        <Spin spinning={isLoading}>
-          <UserLoginLogsTable
-            data={data}
-          />
-        </Spin>
-      </div>
-
-      <Pagination
-        totalPages={totalPages}
-        current={currentPage}
-        onPageChange={setCurrent}
-        pageSize={pageSize}
-        onPageSizeChange={handlePageSizeChange}
+      <Tabs
+        activeKey={activeTab}
+        onChange={setActiveTab}
+        items={[
+          {
+            key: 'list',
+            label: (
+              <span>
+                <UnorderedListOutlined />
+                {t('loginLogStats.tabList') || '列表'}
+              </span>
+            ),
+            children: (
+              <>
+                <div className="table-responsive">
+                  <Spin spinning={isLoading}>
+                    <UserLoginLogsTable data={data} />
+                  </Spin>
+                </div>
+                <Pagination
+                  totalPages={totalPages}
+                  current={currentPage}
+                  onPageChange={setCurrent}
+                  pageSize={pageSize}
+                  onPageSizeChange={handlePageSizeChange}
+                />
+              </>
+            ),
+          },
+          {
+            key: 'dashboard',
+            label: (
+              <span>
+                <BarChartOutlined />
+                {t('loginLogStats.tabDashboard') || '看板'}
+              </span>
+            ),
+            children: (
+              <UserLoginLogDashboard
+                timeRange={{
+                  startTime: searchParams.startTime || undefined,
+                  endTime: searchParams.endTime || undefined,
+                }}
+              />
+            ),
+          },
+        ]}
       />
     </div>
   );
