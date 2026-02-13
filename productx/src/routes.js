@@ -260,6 +260,8 @@ const TavilyAccountRouter = React.lazy(() => import('./views/base/tavilyAccount/
 
 const AppProductPackagesRouter = React.lazy(() => import('./views/base/appProductPackages/AppProductPackages'));
 
+const ActivityManagementRouter = React.lazy(() => import('./views/base/activityManagement/ActivityManagement'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -1097,6 +1099,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <TavilyAccountRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/activityManagement',
+    name: '运营活动管理',
+    element: (
+      <PrivateRoute>
+        <ActivityManagementRouter />
       </PrivateRoute>
     ),
   },
