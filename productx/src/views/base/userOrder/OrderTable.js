@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Popconfirm, Table } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { formatDate } from 'src/components/common/Common';
 import DetailOrderModal from 'src/views/base/userOrder/DetailOrderModal';
 import { useTranslation } from 'react-i18next';
@@ -43,100 +43,109 @@ const OrderTable = ({
     setLoadingDetails(null);
   };
 
-  const columns = [
-    {
-      title: '',
-      dataIndex: 'id',
-      width: 50,
-      render: (id) => (
-        <input
-          type="checkbox"
-          checked={selectedRows.includes(id)}
-          onChange={() => handleSelectRow(id, data)}
-        />
-      ),
-    },
-    {
-      title: t('orderId'),
-      dataIndex: 'id',
-    },
-    {
-      title: t('userId'),
-      dataIndex: 'userId',
-    },
-    {
-      title: t('receiver'),
-      dataIndex: 'receiverName',
-    },
-    {
-      title: t('phoneNumber'),
-      dataIndex: 'phoneNum',
-    },
-    {
-      title: t('orderStatus'),
-      dataIndex: 'orderStatus',
-      render: (status) => <OrderStatus status={status} />,
-    },
-    {
-      title: t('paymentMethod'),
-      dataIndex: 'paymentType',
-      render: (type) => parsePaymentType(type),
-    },
-    {
-      title: t('paymentTime'),
-      dataIndex: 'payTime',
-      render: (time) => formatDate(time),
-    },
-    {
-      title: t('totalAmount'),
-      dataIndex: 'totalAmount',
-    },
-    {
-      title: t('deliveryMethod'),
-      dataIndex: 'shippingMethod',
-      render: (method) => <DeliveryMethod method={method} />,
-    },
-    {
-      title: t('action'),
-      key: 'action',
-      fixed: 'right',
-      width: 200,
-      render: (_, record) => (
-        <>
-          <Button type="link" onClick={() => handleEditClick(record)}>
-            {t('edit')}
-          </Button>
-          <Button 
-            type="link" 
-            onClick={() => handleViewDetails(record.id)}
-            loading={loadingDetails === record.id}
-          >
-            {t('detail')}
-          </Button>
-          <Popconfirm
-            title={t('confirmDelete?')}
-            onConfirm={() => handleDeleteClick(record.id)}
-            okText="是"
-            cancelText="否"
-          >
-            <Button type="link" danger>
-              {t('delete')}
-            </Button>
-          </Popconfirm>
-        </>
-      ),
-    },
-  ];
-
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        size="small"
-        scroll={{ x: true }}
-      />
+      <div className="table-responsive">
+        <table className="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>
+                <div className="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    className="custom-control-input"
+                    id="select_all_orders"
+                    checked={selectAll}
+                    onChange={(event) => handleSelectAll(event, data)}
+                  />
+                  <label className="custom-control-label" htmlFor="select_all_orders"></label>
+                </div>
+              </th>
+              <th>{t('orderId')}</th>
+              <th>{t('userId')}</th>
+              <th>{t('receiver')}</th>
+              <th>{t('phoneNumber')}</th>
+              <th>{t('orderStatus')}</th>
+              <th>{t('paymentMethod')}</th>
+              <th>{t('paymentTime')}</th>
+              <th>{t('totalAmount')}</th>
+              <th>{t('deliveryMethod')}</th>
+              <th className="fixed-column">{t('action')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.id} className="record-font">
+                <td>
+                  <div className="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      className="custom-control-input"
+                      id={`order_checkbox_${item.id}`}
+                      checked={selectedRows.includes(item.id)}
+                      onChange={() => handleSelectRow(item.id, data)}
+                    />
+                    <label
+                      className="custom-control-label"
+                      htmlFor={`order_checkbox_${item.id}`}
+                    ></label>
+                  </div>
+                </td>
+                <td className="text-truncate" title={item.id}>
+                  {item.id}
+                </td>
+                <td className="text-truncate" title={item.userId}>
+                  {item.userId}
+                </td>
+                <td className="text-truncate" title={item.receiverName}>
+                  {item.receiverName || '—'}
+                </td>
+                <td className="text-truncate" title={item.phoneNum}>
+                  {item.phoneNum || '—'}
+                </td>
+                <td>
+                  <OrderStatus status={item.orderStatus} />
+                </td>
+                <td className="text-truncate" title={item.paymentType}>
+                  {parsePaymentType(item.paymentType) || '—'}
+                </td>
+                <td className="text-truncate" title={item.payTime}>
+                  {item.payTime ? formatDate(item.payTime) : '—'}
+                </td>
+                <td className="text-truncate" title={item.totalAmount}>
+                  {item.totalAmount != null ? item.totalAmount : '—'}
+                </td>
+                <td className="text-truncate" title={item.shippingMethod}>
+                  <DeliveryMethod method={item.shippingMethod} />
+                </td>
+                <td className="fixed-column">
+                  <Button type="link" size="small" onClick={() => handleEditClick(item)}>
+                    {t('edit')}
+                  </Button>
+                  <Button
+                    type="link"
+                    size="small"
+                    onClick={() => handleViewDetails(item.id)}
+                    loading={loadingDetails === item.id}
+                  >
+                    {t('detail')}
+                  </Button>
+                  <Popconfirm
+                    title={t('confirmDelete?')}
+                    onConfirm={() => handleDeleteClick(item.id)}
+                    okText="是"
+                    cancelText="否"
+                  >
+                    <Button type="link" danger size="small">
+                      {t('delete')}
+                    </Button>
+                  </Popconfirm>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <DetailOrderModal 
         visible={isModalVisible} 

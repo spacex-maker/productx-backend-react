@@ -84,7 +84,7 @@ const ApiAccessLogTable = ({ data, onRefresh }) => {
                     </div>
                   </div>
                 ) : (
-                  <span style={{ color: '#999' }}>—</span>
+                  <span style={{ color: '#999' }}>{t('notLoggedIn') || '未登录'}</span>
                 )}
               </td>
               <td className="text-truncate">{item.id}</td>
@@ -94,7 +94,9 @@ const ApiAccessLogTable = ({ data, onRefresh }) => {
               <td className="text-truncate" title={item.requestId}>
                 {item.requestId ? item.requestId.slice(0, 16) + (item.requestId.length > 16 ? '...' : '') : '-'}
               </td>
-              <td className="text-truncate">{item.appCode || '-'}</td>
+              <td className="text-truncate">
+                {item.appCode ? <Tag color="blue">{item.appCode}</Tag> : '—'}
+              </td>
               <td style={{ minWidth: 220, wordBreak: 'break-all', whiteSpace: 'normal' }}>
                 {item.apiPath || '-'}
               </td>
