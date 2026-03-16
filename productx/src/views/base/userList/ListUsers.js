@@ -8,6 +8,7 @@ import UserTable from "src/views/base/userList/UserTable";
 import UpdateUserModal from "src/views/base/userList/UpdateUserModal";
 import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
+import BatchSendEmailModal from "src/views/base/userList/BatchSendEmailModal";
 import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 const { Option } = Select;
 
@@ -45,6 +46,7 @@ const UserList = () => {
   const [updateForm] = Form.useForm()
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null) // 用于存储选中的用户
+  const [isBatchSendEmailModalVisible, setIsBatchSendEmailModalVisible] = useState(false)
   useEffect(() => {
     fetchData()
   }, [current, pageSize, searchParams])
@@ -218,6 +220,12 @@ const UserList = () => {
                 >
                   {t('batchDelete')}
                 </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsBatchSendEmailModalVisible(true)}
+                >
+                  {t('batchSendEmail')}
+                </Button>
               </Space>
             </Col>
           </Row>
@@ -263,6 +271,12 @@ const UserList = () => {
         isVisible={isDetailModalVisible}
         onCancel={() => setIsDetailModalVisible(false)}
         selectedUser={selectedUser}
+      />
+      <BatchSendEmailModal
+        isVisible={isBatchSendEmailModalVisible}
+        onCancel={() => setIsBatchSendEmailModalVisible(false)}
+        onSuccess={fetchData}
+        selectedUsers={data.filter((u) => selectedRows.includes(u.id))}
       />
     </div>
   )

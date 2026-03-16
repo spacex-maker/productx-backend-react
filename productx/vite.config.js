@@ -18,6 +18,12 @@ export default defineConfig(() => {
           autoprefixer({}),
         ],
       },
+      preprocessorOptions: {
+        scss: {
+          // 消除 Dart Sass 弃用警告：legacy-js-api（Vite 仍通过旧 API 调用）、import（@coreui 等依赖仍使用 @import）
+          silenceDeprecations: ['legacy-js-api', 'import'],
+        },
+      },
     },
     esbuild: {
       loader: 'jsx',
