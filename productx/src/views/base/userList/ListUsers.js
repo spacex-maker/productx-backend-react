@@ -9,11 +9,17 @@ import UpdateUserModal from "src/views/base/userList/UpdateUserModal";
 import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
 import BatchSendEmailModal from "src/views/base/userList/BatchSendEmailModal";
+import UserKycReviewModal from "src/views/base/userList/UserKycReviewModal";
+import UserDisableModal from "src/views/base/userList/UserDisableModal";
 import { useTranslation } from 'react-i18next'; // 引入 useTranslation
 const { Option } = Select;
 
-const updateUserStatus = async (id, newStatus) => {
-  await api.post('/manage/user/change-status', { id, status: newStatus})
+const updateUserStatus = async (id, newStatus, disableReason) => {
+  await api.post('/manage/user/change-status', {
+    id,
+    status: newStatus,
+    disableReason: newStatus ? undefined : disableReason,
+  })
 }
 
 const createUser = async (userData) => {
@@ -36,7 +42,8 @@ const UserList = () => {
     nickname: '',
     email: '',
     address: '',
-    status: undefined
+    status: undefined,
+    kycStatus: undefined,
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -47,6 +54,11 @@ const UserList = () => {
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null) // 用于存储选中的用户
   const [isBatchSendEmailModalVisible, setIsBatchSendEmailModalVisible] = useState(false)
+  const [isKycReviewModalVisible, setIsKycReviewModalVisible] = useState(false)
+  const [kycReviewUser, setKycReviewUser] = useState(null)
+  const [isDisableModalVisible, setIsDisableModalVisible] = useState(false)
+  const [disableTargetUser, setDisableTargetUser] = useState(null)
+  const [disableSubmitting, setDisableSubmitting] = useState(false)
   useEffect(() => {
     fetchData()
   }, [current, pageSize, searchParams])
@@ -93,10 +105,36 @@ const UserList = () => {
     }
   }
 
-  const handleStatusChange = async (id, event) => {
+  const handleStatusChange = async (user, event) => {
     const newStatus = event.target.checked
-    await updateUserStatus(id, newStatus)
-    await fetchData() // 状态更新后重新获取数据
+    if (!newStatus) {
+      setDisableTargetUser(user)
+      setIsDisableModalVisible(true)
+      return
+    }
+    try {
+      await updateUserStatus(user.id, true)
+      message.success('用户已启用')
+      await fetchData()
+    } catch (error) {
+      message.error(error?.response?.data?.message || '启用失败')
+    }
+  }
+
+  const handleDisableSubmit = async (disableReason) => {
+    if (!disableTargetUser) return
+    setDisableSubmitting(true)
+    try {
+      await updateUserStatus(disableTargetUser.id, false, disableReason)
+      message.success('用户已禁用')
+      setIsDisableModalVisible(false)
+      setDisableTargetUser(null)
+      await fetchData()
+    } catch (error) {
+      message.error(error?.response?.data?.message || '禁用失败')
+    } finally {
+      setDisableSubmitting(false)
+    }
   }
 
   const handleSearchChange = (event) => {
@@ -121,6 +159,17 @@ const UserList = () => {
   const handleEditClick = (user) => {
     setSelectedUser(user)
     setIsUpdateModalVisible(true)
+  }
+
+  const handleKycReviewClick = (user) => {
+    setKycReviewUser(user)
+    setIsKycReviewModalVisible(true)
+  }
+
+  const handleKycReviewSuccess = () => {
+    setIsKycReviewModalVisible(false)
+    setKycReviewUser(null)
+    fetchData()
   }
 
   const totalPages = Math.ceil(totalNum / pageSize)
@@ -193,6 +242,23 @@ const UserList = () => {
               </Select>
             </Col>
             <Col>
+              <Select
+                value={searchParams.kycStatus}
+                onChange={(value) => handleSearchChange({ target: { name: 'kycStatus', value }})}
+                placeholder="实名状态"
+                allowClear
+                style={{ width: 150 }}
+              >
+                <Option value={0}>未认证</Option>
+                <Option value={1}>审核中</Option>
+                <Option value={2}>已通过</Option>
+                <Option value={3}>审核失败</Option>
+                <Option value={4}>需重新认证</Option>
+                <Option value={5}>解绑审核中</Option>
+                <Option value={6}>解绑未通过</Option>
+              </Select>
+            </Col>
+            <Col>
               <Space>
                 <Button
                   type="primary"
@@ -243,6 +309,7 @@ const UserList = () => {
             handleStatusChange={handleStatusChange}
             handleEditClick={handleEditClick}
             handleDetailClick={handleDetailClick}
+            handleKycReviewClick={handleKycReviewClick}
           />
         </Spin>
       </div>
@@ -277,6 +344,25 @@ const UserList = () => {
         onCancel={() => setIsBatchSendEmailModalVisible(false)}
         onSuccess={fetchData}
         selectedUsers={data.filter((u) => selectedRows.includes(u.id))}
+      />
+      <UserKycReviewModal
+        visible={isKycReviewModalVisible}
+        user={kycReviewUser}
+        onCancel={() => {
+          setIsKycReviewModalVisible(false)
+          setKycReviewUser(null)
+        }}
+        onSuccess={handleKycReviewSuccess}
+      />
+      <UserDisableModal
+        open={isDisableModalVisible}
+        user={disableTargetUser}
+        loading={disableSubmitting}
+        onCancel={() => {
+          setIsDisableModalVisible(false)
+          setDisableTargetUser(null)
+        }}
+        onSubmit={handleDisableSubmit}
       />
     </div>
   )

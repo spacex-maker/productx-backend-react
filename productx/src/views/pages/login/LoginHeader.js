@@ -35,6 +35,7 @@ const HeaderWrapper = styled.header`
   padding: 0 24px;
   z-index: 1000;
   border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: 0 0 24px 24px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
   @media (max-width: ${breakpoints.sm}) {
@@ -71,6 +72,7 @@ const LogoText = styled.span`
 const RegisterButton = styled(Button)`
   background: transparent;
   border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 9999px !important;
   color: #8b5cf6;
   height: 32px;
   padding: 0 16px;

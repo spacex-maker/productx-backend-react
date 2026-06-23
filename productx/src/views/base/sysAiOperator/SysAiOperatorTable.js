@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Tag, Switch } from 'antd';
 import PropTypes from 'prop-types';
+import { resolveGenerationModelCode } from './aiOperatorFormUtils';
 
 const SysAiOperatorTable = ({
   data,
@@ -10,6 +11,7 @@ const SysAiOperatorTable = ({
   handleSelectRow,
   handleEditClick,
   handleStatusChange,
+  channelList,
   t,
 }) => {
   const getStatusTag = (status) => {
@@ -25,6 +27,25 @@ const SysAiOperatorTable = ({
       'AI_GENERATE': t('aiGenerate') || 'AI生成',
     };
     return typeMap[type] || type || '-';
+  };
+
+  const getChannelName = (channelId) => {
+    if (!channelId) return '-';
+    const channel = channelList.find((c) => c.id === channelId);
+    return channel ? channel.name : `#${channelId}`;
+  };
+
+  const getGenerationMediaTypeLabel = (type) => {
+    const map = {
+      IMAGE: t('generationMediaTypeImage') || '图片',
+      VIDEO: t('generationMediaTypeVideo') || '视频',
+    };
+    return map[type] || type || '-';
+  };
+
+  const getGenerationModelLabel = (item) => {
+    const code = resolveGenerationModelCode(item);
+    return code || '-';
   };
 
   const getLanguageStyleLabel = (style) => {
@@ -80,6 +101,9 @@ const SysAiOperatorTable = ({
             t('canComment') || '自动评论',
             t('canLike') || '自动点赞',
             t('postSourceType') || '发帖来源',
+            t('postChannel') || '发帖频道',
+            t('generationMediaType') || '内容类型',
+            t('generationModelCode') || '生成模型',
             t('actionsPerDay') || '每日互动数',
             t('totalLikesGiven') || '累计点赞',
             t('totalCommentsGiven') || '累计评论',
@@ -148,6 +172,15 @@ const SysAiOperatorTable = ({
             <td className="text-truncate">
               <Tag>{getPostSourceTypeLabel(item.postSourceType)}</Tag>
             </td>
+            <td className="text-truncate" title={getChannelName(item.channelId)}>
+              {getChannelName(item.channelId)}
+            </td>
+            <td className="text-truncate">
+              <Tag>{getGenerationMediaTypeLabel(item.generationMediaType)}</Tag>
+            </td>
+            <td className="text-truncate" title={getGenerationModelLabel(item)}>
+              {getGenerationModelLabel(item)}
+            </td>
             <td className="text-truncate">{item.actionsPerDay || 0}</td>
             <td className="text-truncate">{item.totalLikesGiven || 0}</td>
             <td className="text-truncate">{item.totalCommentsGiven || 0}</td>
@@ -173,6 +206,7 @@ SysAiOperatorTable.propTypes = {
   handleSelectRow: PropTypes.func.isRequired,
   handleEditClick: PropTypes.func.isRequired,
   handleStatusChange: PropTypes.func.isRequired,
+  channelList: PropTypes.array.isRequired,
   t: PropTypes.func.isRequired,
 };
 

@@ -2058,5 +2058,10 @@
   "pleaseInputBonusToken": "ボーナストークンを入力してください",
   "pleaseInputTag": "タグを入力してください",
   "statusChangeSuccess": "ステータスが正常に更新されました",
-  "statusChangeFailed": "ステータスの更新に失敗しました"
+  "statusChangeFailed": "ステータスの更新に失敗しました",
+  "batchApproveConfirm": "選択した {{count}} 件の商品を承認しますか？",
+  "batchApproveSuccess": "一括承認が完了しました",
+  "batchApproveFailed": "一括承認に失敗しました",
+  "视频预览": "動画プレビュー",
+  "图片预览": "画像プレビュー"
 }

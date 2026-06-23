@@ -8,7 +8,8 @@ const SaAiModelsCreateFormModal = ({
   visible,
   onCancel,
   onOk,
-  confirmLoading
+  confirmLoading,
+  fixedModelType,
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
@@ -23,13 +24,22 @@ const SaAiModelsCreateFormModal = ({
     if (visible) {
       fetchCompanies();
       fetchTaskTypes();
+      if (fixedModelType) {
+        setModelType(fixedModelType);
+        form.setFieldsValue({
+          modelType: fixedModelType,
+          unit: fixedModelType === 't2a' ? 'char' : undefined,
+        });
+      }
       } else {
       // 弹窗关闭时清空表单
       form.resetFields();
       setModelType('');
       setCoverImageUrl('');
     }
-  }, [visible, form]);
+  }, [visible, form, fixedModelType]);
+
+  const isTtsTaskType = (taskTypeCode) => taskTypeCode === 't2a';
 
   const fetchCompanies = async () => {
     setLoadingCompanies(true);
@@ -221,6 +231,7 @@ const SaAiModelsCreateFormModal = ({
               <Select 
                 placeholder={t('pleaseSelectModelType')}
                 loading={loadingTaskTypes}
+                disabled={!!fixedModelType}
                 onChange={(value) => setModelType(value)}
                 showSearch
                 filterOption={(input, option) => {
@@ -256,6 +267,18 @@ const SaAiModelsCreateFormModal = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
+              name="requireKyc"
+              label={t('requireKyc')}
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
               name="releaseYear"
               label={t('releaseYear')}
             >
@@ -282,6 +305,43 @@ const SaAiModelsCreateFormModal = ({
             </Form.Item>
           </Col>
         </Row>
+
+        {/* TTS 引擎字段 */}
+        {isTtsTaskType(modelType) && (
+          <>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item name="apiBaseUrl" label={t('apiBaseUrl')}>
+                  <Input placeholder={t('pleaseInputApiBaseUrl')} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={8}>
+                <Form.Item name="inputPrice" label={t('inputPrice')}>
+                  <InputNumber style={{ width: '100%' }} min={0} step={0.0001} />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item name="currency" label={t('currency')}>
+                  <Input placeholder="USD" />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item name="unit" label={t('unit')}>
+                  <Input placeholder="char" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item name="description" label={t('description')}>
+                  <Input.TextArea rows={3} />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
 
         {/* LLM/文本 类型字段 */}
         {isTextTaskType(modelType) && (

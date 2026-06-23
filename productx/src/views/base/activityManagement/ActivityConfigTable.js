@@ -32,6 +32,21 @@ const ActivityConfigTable = ({
     return typeMap[type] || type;
   };
 
+  const formatRuleSummary = (item) => {
+    if (item.activityType !== 'invite_friend') {
+      return '-';
+    }
+    try {
+      const rule = JSON.parse(item.ruleConfig || '{}');
+      const inviter = rule.registerRewardInviter ?? 0;
+      const invitee = rule.registerRewardInvitee ?? 0;
+      const auto = rule.autoIssueOnRegister !== false ? '自动发放' : '手动/审核';
+      return `${inviter}/${invitee} Token · ${auto}`;
+    } catch {
+      return '-';
+    }
+  };
+
   return (
     <table className="table table-bordered table-striped">
       <thead>
@@ -51,6 +66,7 @@ const ActivityConfigTable = ({
           <th>活动名称</th>
           <th>展示名称</th>
           <th>活动类型</th>
+          <th>奖励规则</th>
           <th>状态</th>
           <th>优先级</th>
           <th>开始时间</th>
@@ -77,6 +93,7 @@ const ActivityConfigTable = ({
             <td>{item.title || '-'}</td>
             <td>{item.displayName || '-'}</td>
             <td>{getActivityTypeText(item.activityType)}</td>
+            <td>{formatRuleSummary(item)}</td>
             <td>{getStatusText(item.status)}</td>
             <td>{item.priority || 0}</td>
             <td>{formatDate(item.startTime) || '-'}</td>

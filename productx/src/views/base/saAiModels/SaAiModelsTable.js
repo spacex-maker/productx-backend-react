@@ -66,6 +66,9 @@ const SaAiModelsTable = ({
   const renderModelDetails = (item) => {
     const { modelType } = item;
     const details = [];
+    if (item.requireKyc) {
+      details.push(t('requireKyc'));
+    }
 
     // 兼容旧数据格式
     const isTextType = isTextTaskType(modelType) || modelType === 'llm' || modelType === 'multimodal';

@@ -1981,5 +1981,10 @@
   "pleaseInputBonusToken": "Inserisci i token bonus",
   "pleaseInputTag": "Inserisci il tag",
   "statusChangeSuccess": "Stato aggiornato con successo",
-  "statusChangeFailed": "Aggiornamento stato fallito"
+  "statusChangeFailed": "Aggiornamento stato fallito",
+  "batchApproveConfirm": "Approvare {{count}} prodotto/i selezionato/i?",
+  "batchApproveSuccess": "Approvazione in blocco riuscita",
+  "batchApproveFailed": "Approvazione in blocco fallita",
+  "视频预览": "Anteprima video",
+  "图片预览": "Anteprima immagine"
 }

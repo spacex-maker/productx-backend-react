@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
-import { Button, Form, Input, message, Spin, Col, Row, Space, Select } from 'antd'
+import { Button, Form, Input, message, Spin, Col, Row, Space, Select, Modal } from 'antd'
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows'
 import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete'
 import Pagination from 'src/components/common/Pagination'
@@ -138,6 +138,33 @@ const PromptMarketListing = () => {
     }
   }
 
+  const handleBatchApprove = () => {
+    if (!selectedRows?.length) {
+      message.warning(t('pleaseSelectRecords'))
+      return
+    }
+
+    Modal.confirm({
+      title: t('batchApprove'),
+      content: t('batchApproveConfirm', { count: selectedRows.length }),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      onOk: async () => {
+        try {
+          await api.post('/manage/prompt-market-listing/batch-audit', {
+            idList: selectedRows,
+            auditStatus: 1,
+          })
+          message.success(t('batchApproveSuccess'))
+          resetSelection()
+          await fetchData()
+        } catch (error) {
+          message.error(error?.response?.data?.message || t('batchApproveFailed'))
+        }
+      },
+    })
+  }
+
   const totalPages = Math.ceil(totalNum / pageSize) || 1
 
   const {
@@ -225,6 +252,13 @@ const PromptMarketListing = () => {
                 </Button>
                 <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>
                   {t('创建商品')}
+                </Button>
+                <Button
+                  type="primary"
+                  disabled={!selectedRows?.length}
+                  onClick={handleBatchApprove}
+                >
+                  {t('batchApprove')}
                 </Button>
                 <Button
                   danger

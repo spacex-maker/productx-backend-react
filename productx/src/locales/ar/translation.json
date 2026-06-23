@@ -2055,5 +2055,10 @@
   "pleaseInputBonusToken": "يرجى إدخال رموز المكافأة",
   "pleaseInputTag": "يرجى إدخال الوسم",
   "statusChangeSuccess": "تم تحديث الحالة بنجاح",
-  "statusChangeFailed": "فشل تحديث الحالة"
+  "statusChangeFailed": "فشل تحديث الحالة",
+  "batchApproveConfirm": "هل تريد الموافقة على {{count}} منتج(ات) محدد(ة)؟",
+  "batchApproveSuccess": "تمت الموافقة الجماعية بنجاح",
+  "batchApproveFailed": "فشلت الموافقة الجماعية",
+  "视频预览": "معاينة الفيديو",
+  "图片预览": "معاينة الصورة"
 }

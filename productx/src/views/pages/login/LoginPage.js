@@ -93,7 +93,7 @@ const LoginCard = styled(CCard)`
     0 0 0 1px rgba(99, 102, 241, 0.1) inset;
   overflow: visible;
   position: relative;
-  border-radius: 24px;
+  border-radius: 48px;
   transform-style: preserve-3d;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   
@@ -108,14 +108,6 @@ const LoginCard = styled(CCard)`
     transform: perspective(1000px) rotateY(720deg) translateZ(300px);
     opacity: 0;
     scale: 0.8;
-  }
-
-  & > div:first-child {
-    border-radius: 16px 16px 0 0;
-  }
-
-  & > div:last-child {
-    border-radius: 0 0 16px 16px;
   }
 
   // 标语容器
@@ -201,6 +193,7 @@ const LoginCard = styled(CCard)`
 const CardHeader = styled.div`
   padding: 24px;
   border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: 48px 48px 0 0;
   background: linear-gradient(
     to right,
     rgba(99, 102, 241, 0.05),
@@ -228,13 +221,14 @@ const CardHeader = styled.div`
 
 const CardBody = styled(CCardBody)`
   padding: 2rem 1.5rem;
+  border-radius: 0 0 48px 48px;
 `;
 
 const ApiSection = styled.div`
   margin-bottom: ${(props) => (props.$visible ? '16px' : '0')};
   padding: ${(props) => (props.$visible ? '16px' : '0')};
   background: rgba(99, 102, 241, 0.05);
-  border-radius: 12px;
+  border-radius: 28px;
   border: 1px solid rgba(99, 102, 241, 0.1);
   transition: transform 0.3s steps(3), opacity 0.3s steps(3);
   opacity: ${(props) => (props.$visible ? 1 : 0)};
@@ -264,7 +258,8 @@ const ApiInputGroup = styled.div`
   width: 100%;
   gap: 1px;
   background: rgba(99, 102, 241, 0.2);
-  border-radius: 6px;
+  border-radius: 9999px;
+  overflow: hidden;
   padding: 1px;
 `;
 
@@ -275,7 +270,7 @@ const StyledEnvSelect = styled(Select)`
     .ant-select-selector {
       background: rgba(30, 32, 47, 0.95) !important;
       border: 1px solid rgba(99, 102, 241, 0.2) !important;
-      border-radius: 4px 0 0 4px !important;
+      border-radius: 9999px 0 0 9999px !important;
       height: 32px !important;
       padding: 0 11px !important;
 
@@ -306,6 +301,7 @@ const StyledEnvDropdown = styled.div`
     background: rgba(30, 32, 47, 0.98) !important;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 20px !important;
     min-width: 280px !important;
     width: auto !important;
     max-width: 600px !important;
@@ -357,7 +353,7 @@ const ApiInput = styled(CFormInput)`
   border: none !important;
   color: #f1f5f9 !important;
   font-size: 0.875rem !important;
-  border-radius: ${(props) => (props.$isCustom ? '4px' : '0 4px 4px 0')} !important;
+  border-radius: 0 !important;
 
   &:disabled {
     background: rgba(255, 255, 255, 0.02) !important;
@@ -375,7 +371,7 @@ const ApiButton = styled(CButton)`
   border: none !important;
   color: white !important;
   font-size: 0.875rem !important;
-  border-radius: 4px !important;
+  border-radius: 0 9999px 9999px 0 !important;
   margin-left: 1px !important;
 
   &:hover {
@@ -387,37 +383,18 @@ const ApiButton = styled(CButton)`
   }
 `;
 
-const LoginForm = styled(CForm)`
-  .divider {
-    margin: 2rem 0;
-    border-top: 1px solid rgba(99, 102, 241, 0.1);
-    position: relative;
-
-    &::after {
-      content: 'or';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(30, 32, 47, 0.95);
-      padding: 0 1rem;
-      background: linear-gradient(120deg, #6366f1, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: 0.875rem;
-    }
-  }
-`;
-
 const StyledInputGroup = styled(CInputGroup)`
   margin-bottom: 1.5rem;
   position: relative;
   transition: all 0.3s ease;
+  border-radius: 9999px !important;
+  overflow: hidden;
 
   .input-group-text {
     background: rgba(99, 102, 241, 0.15);
     border: 1px solid rgba(99, 102, 241, 0.3);
     border-right: none;
+    border-radius: 9999px 0 0 9999px !important;
     color: #8b5cf6;
     min-width: 46px;
     justify-content: center;
@@ -463,6 +440,7 @@ const StyledInput = styled(CFormInput)`
   background: rgba(30, 32, 47, 0.95);
   border: 1px solid rgba(99, 102, 241, 0.3);
   border-left: none;
+  border-radius: 0 9999px 9999px 0 !important;
   color: #e2e8f0;
   transition: all 0.3s ease;
   font-size: 0.95rem;
@@ -496,7 +474,7 @@ const StyledButton = styled(CButton)`
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 1rem;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 9999px;
   position: relative;
   overflow: hidden;
 
@@ -547,34 +525,6 @@ const StyledButton = styled(CButton)`
   }
 `;
 
-const GithubButton = styled(CButton)`
-  background: linear-gradient(
-    120deg,
-    rgba(99, 102, 241, 0.1) 0%,
-    rgba(139, 92, 246, 0.1) 100%
-  );
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  color: #8b5cf6;
-  padding: 0.625rem 1rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 1rem;
-
-  &:hover {
-    background: linear-gradient(
-      120deg,
-      rgba(99, 102, 241, 0.2) 0%,
-      rgba(139, 92, 246, 0.2) 100%
-    );
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
-  }
-`;
-
 const ForgotPasswordLink = styled.a`
   background: linear-gradient(120deg, #6366f1, #8b5cf6);
   -webkit-background-clip: text;
@@ -607,6 +557,7 @@ const ForgotPasswordLink = styled.a`
 const StyledFormSelect = styled(CFormSelect)`
   background: rgba(30, 32, 47, 0.95);
   border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 9999px;
   color: #e2e8f0;
   font-size: 14px;
   padding: 8px 12px;
@@ -648,7 +599,7 @@ const CaptchaInputGroup = styled(StyledInputGroup)`
     background: rgba(99, 102, 241, 0.15);
     border: 1px solid rgba(99, 102, 241, 0.3);
     border-right: none;
-    border-radius: 4px 0 0 4px;
+    border-radius: 9999px 0 0 9999px;
     position: relative;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -673,7 +624,7 @@ const CaptchaInputGroup = styled(StyledInputGroup)`
       height: 40px;
       width: 100%;
       object-fit: cover;
-      border-radius: 3px;
+      border-radius: 10px;
       transition: all 0.3s ease;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       filter: brightness(1.05);
@@ -716,6 +667,10 @@ const CaptchaInputGroup = styled(StyledInputGroup)`
     animation: refresh-success 0.5s ease;
   }
 
+  .form-control {
+    border-radius: 0 9999px 9999px 0 !important;
+  }
+
   @keyframes refresh-success {
     0% {
       transform: scale(1);
@@ -737,7 +692,7 @@ const ApiConfigHint = styled.div`
   background: rgba(99, 102, 241, 0.1);
   border: 1px solid rgba(99, 102, 241, 0.2);
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: 9999px;
   background: linear-gradient(120deg, #6366f1, #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1702,11 +1657,6 @@ const LoginPage = () => {
     }
   };
 
-  const handleGitHubLogin = () => {
-    window.location.href =
-      'https://github.com/login/oauth/authorize?client_id=Ov23liKtBY8tbrKGO1q2&redirect_uri=https://protx.cn/manage/manager/github-callback';
-  };
-
   // 在组件加载时自动设置当前环境
   useEffect(() => {
     const hostname = window.location.hostname;
@@ -1847,7 +1797,6 @@ const LoginPage = () => {
                             </StyledEnvSelect>
                           </StyledEnvDropdown>
                           <ApiInput
-                            $isCustom={isCustomEnv}
                             value={isCustomEnv ? customUrl : API_CONFIG[selectedEnv]}
                             onChange={(e) => isCustomEnv && setCustomUrl(e.target.value)}
                             disabled={!isCustomEnv}
@@ -1875,7 +1824,7 @@ const LoginPage = () => {
                       </VerticalStack>
                     </ApiSection>
 
-                    <LoginForm onSubmit={handleLogin}>
+                    <CForm onSubmit={handleLogin}>
                       <StyledInputGroup>
                         <CInputGroupText>
                           <CIcon icon={cilUser} />
@@ -1941,31 +1890,14 @@ const LoginPage = () => {
                         {loading ? '登录中...' : t('loginButton')}
                       </StyledButton>
 
-                      <div className="divider" />
-
                       <CRow>
-                        <CCol xs={12} className="text-center mb-3">
-                          <GithubButton onClick={handleGitHubLogin} className="w-100">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              className="bi bi-github me-2"
-                              viewBox="0 0 16 16"
-                            >
-                              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
-                            </svg>
-                            {t('githubLogin')}
-                          </GithubButton>
-                        </CCol>
-                        <CCol xs={12} className="text-center">
+                        <CCol xs={12} className="text-center mt-3">
                           <RegisterLink href="/register">
                             {t('register')}
                           </RegisterLink>
                         </CCol>
                       </CRow>
-                    </LoginForm>
+                    </CForm>
                   </CardBody>
                 </LoginCard>
               </motion.div>

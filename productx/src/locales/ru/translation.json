@@ -2050,5 +2050,10 @@
   "pleaseInputBonusToken": "Введите бонусные токены",
   "pleaseInputTag": "Введите тег",
   "statusChangeSuccess": "Статус успешно обновлен",
-  "statusChangeFailed": "Ошибка обновления статуса"
+  "statusChangeFailed": "Ошибка обновления статуса",
+  "batchApproveConfirm": "Одобрить {{count}} выбранных товаров?",
+  "batchApproveSuccess": "Массовое одобрение выполнено",
+  "batchApproveFailed": "Ошибка массового одобрения",
+  "视频预览": "Предпросмотр видео",
+  "图片预览": "Предпросмотр изображения"
 }

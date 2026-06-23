@@ -39,11 +39,11 @@ const UserInviteStatsTable = ({
               <label className="custom-control-label"></label>
             </div>
           </th>
-          <th>ID</th>
           <th>用户UID</th>
           <th>总邀请人数</th>
           <th>有效邀请人数</th>
           <th>累计获得积分</th>
+          <th>待领取积分</th>
           <th>邀请等级</th>
           <th>创建时间</th>
           <th>更新时间</th>
@@ -52,23 +52,23 @@ const UserInviteStatsTable = ({
       </thead>
       <tbody>
         {data.map((item) => (
-          <tr key={item.id}>
+          <tr key={item.uid}>
             <td>
               <div className="custom-control custom-checkbox">
                 <input
                   type="checkbox"
                   className="custom-control-input"
-                  checked={selectedRows.includes(item.id)}
-                  onChange={() => handleSelectRow(item.id)}
+                  checked={selectedRows.includes(item.uid)}
+                  onChange={() => handleSelectRow(item.uid)}
                 />
                 <label className="custom-control-label"></label>
               </div>
             </td>
-            <td>{item.id}</td>
             <td>{item.uid || '-'}</td>
             <td>{item.totalInvitedCount || 0}</td>
             <td>{item.validInvitedCount || 0}</td>
             <td>{item.totalRewardPoints || 0}</td>
+            <td>{item.pendingRewardPoints || 0}</td>
             <td>{getLevelText(item.currentLevel)}</td>
             <td>{formatDate(item.createTime) || '-'}</td>
             <td>{formatDate(item.updateTime) || '-'}</td>
@@ -78,7 +78,7 @@ const UserInviteStatsTable = ({
               </Button>
               <Popconfirm
                 title="确定要删除这条统计吗？"
-                onConfirm={() => handleDeleteClick(item.id)}
+                onConfirm={() => handleDeleteClick(item.uid)}
                 okText="是"
                 cancelText="否"
               >

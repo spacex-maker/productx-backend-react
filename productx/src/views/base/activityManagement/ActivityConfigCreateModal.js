@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input, Select, DatePicker, InputNumber, Row, Col, Tabs, Upload, message, Image, Button } from 'antd';
+import { Modal, Form, Input, Select, DatePicker, InputNumber, Row, Col, Tabs, Upload, message, Image, Button, Switch } from 'antd';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import api from 'src/axiosInstance';
@@ -19,7 +19,11 @@ const ActivityConfigCreateModal = ({ isVisible, onCancel, onFinish, form }) => {
   const [targetAction, setTargetAction] = useState('register');
   const [rewardType, setRewardType] = useState('video_credits');
   const [rewardAmount, setRewardAmount] = useState(30);
+  const [registerRewardInviter, setRegisterRewardInviter] = useState(100);
+  const [registerRewardInvitee, setRegisterRewardInvitee] = useState(50);
+  const [autoIssueOnRegister, setAutoIssueOnRegister] = useState(true);
   const [uploading, setUploading] = useState({});
+  const activityType = Form.useWatch('activityType', form);
 
   // 重置所有状态
   const resetStates = () => {
@@ -35,6 +39,9 @@ const ActivityConfigCreateModal = ({ isVisible, onCancel, onFinish, form }) => {
     setTargetAction('register');
     setRewardType('video_credits');
     setRewardAmount(30);
+    setRegisterRewardInviter(100);
+    setRegisterRewardInvitee(50);
+    setAutoIssueOnRegister(true);
     setUploading({});
   };
 
@@ -76,7 +83,7 @@ const ActivityConfigCreateModal = ({ isVisible, onCancel, onFinish, form }) => {
   };
 
   // 组装JSON数据
-  const buildJsonData = () => {
+  const buildJsonData = (currentActivityType) => {
     // 组装 displayName JSON
     const displayNameJson = JSON.stringify({
       zh_CN: displayNameZh,
@@ -84,11 +91,17 @@ const ActivityConfigCreateModal = ({ isVisible, onCancel, onFinish, form }) => {
     });
 
     // 组装 ruleConfig JSON
-    const ruleConfigJson = JSON.stringify({
-      target_action: targetAction,
-      reward_type: rewardType,
-      reward_amount: rewardAmount,
-    });
+    const ruleConfigJson = currentActivityType === 'invite_friend'
+      ? JSON.stringify({
+          registerRewardInviter: registerRewardInviter ?? 100,
+          registerRewardInvitee: registerRewardInvitee ?? 50,
+          autoIssueOnRegister: autoIssueOnRegister !== false,
+        })
+      : JSON.stringify({
+          target_action: targetAction,
+          reward_type: rewardType,
+          reward_amount: rewardAmount,
+        });
 
     // 组装 uiConfig JSON
     const uiConfig = {};
@@ -117,7 +130,7 @@ const ActivityConfigCreateModal = ({ isVisible, onCancel, onFinish, form }) => {
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      const { displayNameJson, ruleConfigJson, uiConfigJson } = buildJsonData();
+      const { displayNameJson, ruleConfigJson, uiConfigJson } = buildJsonData(values.activityType);
       
       const submitData = {
         ...values,
@@ -238,41 +251,82 @@ const ActivityConfigCreateModal = ({ isVisible, onCancel, onFinish, form }) => {
         </Form.Item>
 
         <Form.Item label="规则配置">
-          <Row gutter={16}>
-            <Col span={8}>
-              <Select
-                placeholder="目标行为"
-                value={targetAction}
-                onChange={setTargetAction}
-                style={{ width: '100%' }}
-              >
-                <Select.Option value="register">注册</Select.Option>
-                <Select.Option value="recharge">充值</Select.Option>
-                <Select.Option value="generate">生成视频</Select.Option>
-              </Select>
-            </Col>
-            <Col span={8}>
-              <Select
-                placeholder="奖励类型"
-                value={rewardType}
-                onChange={setRewardType}
-                style={{ width: '100%' }}
-              >
-                <Select.Option value="video_credits">视频时长</Select.Option>
-                <Select.Option value="points">积分</Select.Option>
-                <Select.Option value="credits">算力</Select.Option>
-              </Select>
-            </Col>
-            <Col span={8}>
-              <InputNumber
-                placeholder="奖励数量"
-                value={rewardAmount}
-                onChange={setRewardAmount}
-                min={0}
-                style={{ width: '100%' }}
-              />
-            </Col>
-          </Row>
+          {activityType === 'invite_friend' ? (
+            <>
+              <Row gutter={16}>
+                <Col span={8}>
+                  <div style={{ marginBottom: 8 }}>邀请人奖励 Token</div>
+                  <InputNumber
+                    placeholder="邀请人奖励"
+                    value={registerRewardInviter}
+                    onChange={setRegisterRewardInviter}
+                    min={0}
+                    style={{ width: '100%' }}
+                    addonAfter="Token"
+                  />
+                </Col>
+                <Col span={8}>
+                  <div style={{ marginBottom: 8 }}>被邀请人奖励 Token</div>
+                  <InputNumber
+                    placeholder="被邀请人奖励"
+                    value={registerRewardInvitee}
+                    onChange={setRegisterRewardInvitee}
+                    min={0}
+                    style={{ width: '100%' }}
+                    addonAfter="Token"
+                  />
+                </Col>
+                <Col span={8}>
+                  <div style={{ marginBottom: 8 }}>注册后自动发放（邀请人）</div>
+                  <Switch
+                    checked={autoIssueOnRegister}
+                    onChange={setAutoIssueOnRegister}
+                    checkedChildren="开启"
+                    unCheckedChildren="关闭"
+                  />
+                </Col>
+              </Row>
+              <div style={{ marginTop: 8, color: '#999', fontSize: 12 }}>
+                被邀请人注册成功后自动入账；关闭自动发放时，邀请人奖励需用户手动领取或后台审核发放。
+              </div>
+            </>
+          ) : (
+            <Row gutter={16}>
+              <Col span={8}>
+                <Select
+                  placeholder="目标行为"
+                  value={targetAction}
+                  onChange={setTargetAction}
+                  style={{ width: '100%' }}
+                >
+                  <Select.Option value="register">注册</Select.Option>
+                  <Select.Option value="recharge">充值</Select.Option>
+                  <Select.Option value="generate">生成视频</Select.Option>
+                </Select>
+              </Col>
+              <Col span={8}>
+                <Select
+                  placeholder="奖励类型"
+                  value={rewardType}
+                  onChange={setRewardType}
+                  style={{ width: '100%' }}
+                >
+                  <Select.Option value="video_credits">视频时长</Select.Option>
+                  <Select.Option value="points">积分</Select.Option>
+                  <Select.Option value="credits">算力</Select.Option>
+                </Select>
+              </Col>
+              <Col span={8}>
+                <InputNumber
+                  placeholder="奖励数量"
+                  value={rewardAmount}
+                  onChange={setRewardAmount}
+                  min={0}
+                  style={{ width: '100%' }}
+                />
+              </Col>
+            </Row>
+          )}
         </Form.Item>
 
         <Form.Item label="UI配置">

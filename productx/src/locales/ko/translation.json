@@ -2056,5 +2056,10 @@
   "pleaseInputBonusToken": "보너스 토큰을 입력해주세요",
   "pleaseInputTag": "태그를 입력해주세요",
   "statusChangeSuccess": "상태가 성공적으로 업데이트되었습니다",
-  "statusChangeFailed": "상태 업데이트 실패"
+  "statusChangeFailed": "상태 업데이트 실패",
+  "batchApproveConfirm": "선택한 {{count}}개 상품을 승인하시겠습니까?",
+  "batchApproveSuccess": "일괄 승인 성공",
+  "batchApproveFailed": "일괄 승인 실패",
+  "视频预览": "동영상 미리보기",
+  "图片预览": "이미지 미리보기"
 }

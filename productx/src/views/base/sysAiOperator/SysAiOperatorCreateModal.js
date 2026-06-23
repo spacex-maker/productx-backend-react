@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import UserSearchSelect from 'src/views/common/UserSearchSelect';
+import AiOperatorPostConfigFields from './AiOperatorPostConfigFields';
+import { mergeGenerationModelIntoConfig } from './aiOperatorFormUtils';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -14,6 +16,9 @@ const SysAiOperatorCreateModal = ({
   t,
   languageStyleOptions,
   postSourceTypeOptions,
+  channelList,
+  imageModels,
+  videoModels,
 }) => {
   useEffect(() => {
     if (!isVisible) {
@@ -75,7 +80,7 @@ const SysAiOperatorCreateModal = ({
         values.modelConfig = JSON.stringify({});
       }
     }
-    onFinish(values);
+    onFinish(mergeGenerationModelIntoConfig(values));
   };
 
   return (
@@ -108,6 +113,7 @@ const SysAiOperatorCreateModal = ({
           probabilityComment: 0.20,
           postSourceType: 'STOCK_POOL',
           postFrequencyDays: 1,
+          generationMediaType: 'IMAGE',
           status: true,
           tokenUsageLimit: 1000,
           interestedTags: [],
@@ -316,6 +322,14 @@ const SysAiOperatorCreateModal = ({
           </Col>
         </Row>
 
+        <AiOperatorPostConfigFields
+          t={t}
+          form={form}
+          channelList={channelList}
+          imageModels={imageModels}
+          videoModels={videoModels}
+        />
+
         <Form.Item
           label={t('postPromptTemplate') || '生成参数模板 (JSON)'}
           name="postPromptTemplate"
@@ -384,6 +398,9 @@ SysAiOperatorCreateModal.propTypes = {
   t: PropTypes.func.isRequired,
   languageStyleOptions: PropTypes.array.isRequired,
   postSourceTypeOptions: PropTypes.array.isRequired,
+  channelList: PropTypes.array.isRequired,
+  imageModels: PropTypes.array.isRequired,
+  videoModels: PropTypes.array.isRequired,
 };
 
 export default SysAiOperatorCreateModal;

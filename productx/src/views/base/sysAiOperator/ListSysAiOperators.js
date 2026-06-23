@@ -32,6 +32,9 @@ const ListSysAiOperators = () => {
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [updateForm] = Form.useForm();
   const [selectedOperator, setSelectedOperator] = useState(null);
+  const [channelList, setChannelList] = useState([]);
+  const [imageModels, setImageModels] = useState([]);
+  const [videoModels, setVideoModels] = useState([]);
 
   const statusOptions = [
     { value: true, label: t('running') || '运行中' },
@@ -53,6 +56,33 @@ const ListSysAiOperators = () => {
   useEffect(() => {
     fetchData();
   }, [currentPage, pageSize, searchParams]);
+
+  useEffect(() => {
+    const fetchMeta = async () => {
+      try {
+        const [channelRes, modelRes] = await Promise.all([
+          api.get('/manage/sys-channel/list', {
+            params: { currentPage: 1, pageSize: 1000, isActive: true },
+          }),
+          api.get('/manage/sa-ai-models/list', {
+            params: { currentPage: 1, pageSize: 1000, status: true, modelLevel: 2 },
+          }),
+        ]);
+
+        if (channelRes?.data) {
+          setChannelList(channelRes.data);
+        }
+        if (modelRes?.data) {
+          const models = modelRes.data;
+          setImageModels(models.filter((m) => ['t2i', 'i2i'].includes(m.modelType)));
+          setVideoModels(models.filter((m) => ['t2v', 'i2v', 'v2v', 'a2v'].includes(m.modelType)));
+        }
+      } catch (error) {
+        console.error('Failed to fetch channel/model meta', error);
+      }
+    };
+    fetchMeta();
+  }, []);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -247,6 +277,7 @@ const ListSysAiOperators = () => {
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
             handleStatusChange={handleStatusChange}
+            channelList={channelList}
             t={t}
           />
         </Spin>
@@ -268,6 +299,9 @@ const ListSysAiOperators = () => {
         t={t}
         languageStyleOptions={languageStyleOptions}
         postSourceTypeOptions={postSourceTypeOptions}
+        channelList={channelList}
+        imageModels={imageModels}
+        videoModels={videoModels}
       />
 
       <UpdateSysAiOperatorModal
@@ -280,6 +314,9 @@ const ListSysAiOperators = () => {
         t={t}
         languageStyleOptions={languageStyleOptions}
         postSourceTypeOptions={postSourceTypeOptions}
+        channelList={channelList}
+        imageModels={imageModels}
+        videoModels={videoModels}
       />
     </div>
   );

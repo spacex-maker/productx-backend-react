@@ -9,7 +9,7 @@ import InviteRecordCreateModal from './InviteRecordCreateModal';
 import InviteRecordUpdateModal from './InviteRecordUpdateModal';
 import { SearchOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const InviteRecord = () => {
+const InviteRecord = ({ onReviewChange }) => {
   const [data, setData] = useState([]);
   const [totalNum, setTotalNum] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,9 +100,32 @@ const InviteRecord = () => {
       await api.delete(`/manage/invite-record/${id}`);
       message.success('删除成功');
       await fetchData();
+      onReviewChange?.();
     } catch (error) {
       console.error('Failed to delete invite record', error);
       message.error('删除失败');
+    }
+  };
+
+  const handleApproveReward = async (id) => {
+    try {
+      await api.post(`/manage/invite-system/records/${id}/approve-reward`);
+      message.success('奖励已发放');
+      await fetchData();
+      onReviewChange?.();
+    } catch (error) {
+      message.error(error?.response?.data?.message || '发放失败');
+    }
+  };
+
+  const handleRejectReward = async (id) => {
+    try {
+      await api.post(`/manage/invite-system/records/${id}/reject-reward`);
+      message.success('已拒绝并冻结');
+      await fetchData();
+      onReviewChange?.();
+    } catch (error) {
+      message.error(error?.response?.data?.message || '操作失败');
     }
   };
 
@@ -211,9 +234,12 @@ const InviteRecord = () => {
                 danger
                 onClick={() =>
                   HandleBatchDelete({
-                    url: '/manage/invite-record/delete-batch',
+                    url: '/manage/invite-system/records/delete-batch',
                     selectedRows,
-                    fetchData,
+                    fetchData: async () => {
+                      await fetchData();
+                      onReviewChange?.();
+                    },
                   })
                 }
                 disabled={selectedRows.length === 0}
@@ -235,6 +261,8 @@ const InviteRecord = () => {
             handleSelectRow={handleSelectRow}
             handleEditClick={handleEditClick}
             handleDeleteClick={handleDeleteClick}
+            handleApproveReward={handleApproveReward}
+            handleRejectReward={handleRejectReward}
           />
         </Spin>
       </div>

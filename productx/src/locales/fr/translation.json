@@ -2065,5 +2065,10 @@
   "pleaseInputBonusToken": "Veuillez entrer les jetons bonus",
   "pleaseInputTag": "Veuillez entrer l'étiquette",
   "statusChangeSuccess": "Statut mis à jour avec succès",
-  "statusChangeFailed": "Échec de la mise à jour du statut"
+  "statusChangeFailed": "Échec de la mise à jour du statut",
+  "batchApproveConfirm": "Approuver {{count}} produit(s) sélectionné(s) ?",
+  "batchApproveSuccess": "Approbation par lot réussie",
+  "batchApproveFailed": "Échec de l'approbation par lot",
+  "视频预览": "Aperçu vidéo",
+  "图片预览": "Aperçu image"
 }

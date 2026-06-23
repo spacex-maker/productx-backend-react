@@ -10,7 +10,8 @@ const UpdateSaAiModelsModel = ({
   onCancel,
   onOk,
   initialValues,
-  confirmLoading
+  confirmLoading,
+  fixedModelType,
 }) => {
   const [form] = Form.useForm();
   const { t } = useTranslation();
@@ -137,6 +138,8 @@ const UpdateSaAiModelsModel = ({
     ];
     return textTaskTypes.includes(taskTypeCode);
   };
+
+  const isTtsTaskType = (taskTypeCode) => taskTypeCode === 't2a';
 
   return (
     <Modal
@@ -292,6 +295,18 @@ const UpdateSaAiModelsModel = ({
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
+              name="requireKyc"
+              label={t('requireKyc')}
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
               name="releaseYear"
               label={t('releaseYear')}
             >
@@ -318,6 +333,43 @@ const UpdateSaAiModelsModel = ({
             </Form.Item>
           </Col>
         </Row>
+
+        {/* TTS 引擎字段 */}
+        {isTtsTaskType(modelType) && (
+          <>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item name="apiBaseUrl" label={t('apiBaseUrl')}>
+                  <Input placeholder={t('pleaseInputApiBaseUrl')} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={8}>
+                <Form.Item name="inputPrice" label={t('inputPrice')}>
+                  <InputNumber style={{ width: '100%' }} min={0} step={0.0001} />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item name="currency" label={t('currency')}>
+                  <Input placeholder="USD" />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
+                <Form.Item name="unit" label={t('unit')}>
+                  <Input placeholder="char" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={24}>
+                <Form.Item name="description" label={t('description')}>
+                  <Input.TextArea rows={3} />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
 
         {/* LLM/文本 类型字段 */}
         {isTextTaskType(modelType) && (

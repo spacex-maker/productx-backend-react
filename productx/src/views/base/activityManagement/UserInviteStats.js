@@ -91,9 +91,9 @@ const UserInviteStats = () => {
     }
   };
 
-  const handleDeleteClick = async (id) => {
+  const handleDeleteClick = async (uid) => {
     try {
-      await api.delete(`/manage/user-invite-stats/${id}`);
+      await api.delete(`/manage/user-invite-stats/${uid}`);
       message.success('删除成功');
       await fetchData();
     } catch (error) {
@@ -104,11 +104,11 @@ const UserInviteStats = () => {
 
   const handleEditClick = (stats) => {
     updateForm.setFieldsValue({
-      id: stats.id,
       uid: stats.uid,
       totalInvitedCount: stats.totalInvitedCount,
       validInvitedCount: stats.validInvitedCount,
       totalRewardPoints: stats.totalRewardPoints,
+      pendingRewardPoints: stats.pendingRewardPoints,
       currentLevel: stats.currentLevel,
     });
     setSelectedStats(stats);

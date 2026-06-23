@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import UserSearchSelect from 'src/views/common/UserSearchSelect';
+import AiOperatorPostConfigFields from './AiOperatorPostConfigFields';
+import { mergeGenerationModelIntoConfig, resolveGenerationModelCode } from './aiOperatorFormUtils';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -16,6 +18,9 @@ const UpdateSysAiOperatorModal = ({
   t,
   languageStyleOptions,
   postSourceTypeOptions,
+  channelList,
+  imageModels,
+  videoModels,
 }) => {
   useEffect(() => {
     if (selectedOperator && isVisible) {
@@ -82,6 +87,9 @@ const UpdateSysAiOperatorModal = ({
         postSourceType: selectedOperator.postSourceType || 'STOCK_POOL',
         postPromptTemplate: postPromptTemplateValue,
         postFrequencyDays: selectedOperator.postFrequencyDays || 1,
+        channelId: selectedOperator.channelId,
+        generationMediaType: selectedOperator.generationMediaType || 'IMAGE',
+        generationModelCode: resolveGenerationModelCode(selectedOperator),
         status: selectedOperator.status !== undefined ? selectedOperator.status : true,
         tokenUsageLimit: selectedOperator.tokenUsageLimit || 1000,
         modelConfig: modelConfigValue,
@@ -145,7 +153,7 @@ const UpdateSysAiOperatorModal = ({
         values.modelConfig = JSON.stringify({});
       }
     }
-    handleUpdateOperator(values);
+    handleUpdateOperator(mergeGenerationModelIntoConfig(values));
   };
 
   return (
@@ -368,6 +376,14 @@ const UpdateSysAiOperatorModal = ({
           </Col>
         </Row>
 
+        <AiOperatorPostConfigFields
+          t={t}
+          form={form}
+          channelList={channelList}
+          imageModels={imageModels}
+          videoModels={videoModels}
+        />
+
         <Form.Item
           label={t('postPromptTemplate') || '生成参数模板 (JSON)'}
           name="postPromptTemplate"
@@ -438,6 +454,9 @@ UpdateSysAiOperatorModal.propTypes = {
   t: PropTypes.func.isRequired,
   languageStyleOptions: PropTypes.array.isRequired,
   postSourceTypeOptions: PropTypes.array.isRequired,
+  channelList: PropTypes.array.isRequired,
+  imageModels: PropTypes.array.isRequired,
+  videoModels: PropTypes.array.isRequired,
 };
 
 export default UpdateSysAiOperatorModal;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import { formatDate } from 'src/components/common/Common';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, CheckOutlined, StopOutlined } from '@ant-design/icons';
 
 const InviteRecordTable = ({
   data,
@@ -11,6 +11,8 @@ const InviteRecordTable = ({
   handleSelectRow,
   handleEditClick,
   handleDeleteClick,
+  handleApproveReward,
+  handleRejectReward,
 }) => {
   const getStatusText = (status) => {
     const statusMap = {
@@ -47,6 +49,7 @@ const InviteRecordTable = ({
           <th>邀请码</th>
           <th>来源渠道</th>
           <th>状态</th>
+          <th>奖励积分</th>
           <th>奖励状态</th>
           <th>注册IP</th>
           <th>创建时间</th>
@@ -73,10 +76,23 @@ const InviteRecordTable = ({
             <td>{item.inviteCode || '-'}</td>
             <td>{item.channel || '-'}</td>
             <td>{getStatusText(item.status)}</td>
+            <td>{item.rewardPoints ?? '-'}</td>
             <td>{getRewardIssuedText(item.rewardIssued)}</td>
             <td>{item.clientIp || '-'}</td>
             <td>{formatDate(item.createTime) || '-'}</td>
             <td>
+              {item.rewardIssued === 0 && item.status !== 9 && (
+                <>
+                  <Button type="link" onClick={() => handleApproveReward(item.id)}>
+                    <CheckOutlined /> 发放
+                  </Button>
+                  <Popconfirm title="确认拒绝并冻结该邀请奖励？" onConfirm={() => handleRejectReward(item.id)}>
+                    <Button type="link" danger>
+                      <StopOutlined /> 拒绝
+                    </Button>
+                  </Popconfirm>
+                </>
+              )}
               <Button type="link" onClick={() => handleEditClick(item)}>
                 <EditOutlined /> 修改
               </Button>

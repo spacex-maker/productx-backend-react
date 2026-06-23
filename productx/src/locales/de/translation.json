@@ -2051,5 +2051,10 @@
   "pleaseInputBonusToken": "Bitte Bonus-Token eingeben",
   "pleaseInputTag": "Bitte Tag eingeben",
   "statusChangeSuccess": "Status erfolgreich aktualisiert",
-  "statusChangeFailed": "Statusaktualisierung fehlgeschlagen"
+  "statusChangeFailed": "Statusaktualisierung fehlgeschlagen",
+  "batchApproveConfirm": "{{count}} ausgewählte Artikel genehmigen?",
+  "batchApproveSuccess": "Massenfreigabe erfolgreich",
+  "batchApproveFailed": "Massenfreigabe fehlgeschlagen",
+  "视频预览": "Videovorschau",
+  "图片预览": "Bildvorschau"
 }

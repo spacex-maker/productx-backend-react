@@ -262,6 +262,8 @@ const AppProductPackagesRouter = React.lazy(() => import('./views/base/appProduc
 
 const ActivityManagementRouter = React.lazy(() => import('./views/base/activityManagement/ActivityManagement'));
 
+const InviteSystemRouter = React.lazy(() => import('./views/base/inviteSystem'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -1108,6 +1110,15 @@ const routes = [
     element: (
       <PrivateRoute>
         <ActivityManagementRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/base/inviteSystem',
+    name: '邀请系统',
+    element: (
+      <PrivateRoute>
+        <InviteSystemRouter />
       </PrivateRoute>
     ),
   },

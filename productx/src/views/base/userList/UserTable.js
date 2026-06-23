@@ -3,8 +3,8 @@ import { Button, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 import DefaultAvatar from 'src/components/DefaultAvatar';
 
-const KYC_STATUS_MAP = { 0: '未认证', 1: '审核中', 2: '已通过', 3: '审核失败', 4: '需重新认证' };
-const KYC_COLOR = { 0: 'default', 1: 'processing', 2: 'success', 3: 'error', 4: 'warning' };
+const KYC_STATUS_MAP = { 0: '未认证', 1: '审核中', 2: '已通过', 3: '审核失败', 4: '需重新认证', 5: '解绑审核中', 6: '解绑未通过' };
+const KYC_COLOR = { 0: 'default', 1: 'processing', 2: 'success', 3: 'error', 4: 'warning', 5: 'processing', 6: 'warning' };
 
 const UserTable = ({
                      data,
@@ -14,7 +14,8 @@ const UserTable = ({
                      handleSelectRow,
                      handleStatusChange,
                      handleEditClick,
-                     handleDetailClick
+                     handleDetailClick,
+                     handleKycReviewClick,
                    }) => {
   const { t } = useTranslation();
 
@@ -100,7 +101,11 @@ const UserTable = ({
           <td className="text-truncate" title={item.countryCode}>{item.countryCode || '—'}</td>
           <td>
             {item.kycStatus != null ? (
-              <Tag color={KYC_COLOR[item.kycStatus] ?? 'default'}>
+              <Tag
+                color={KYC_COLOR[item.kycStatus] ?? 'default'}
+                style={item.kycStatus >= 1 ? { cursor: 'pointer' } : undefined}
+                onClick={() => item.kycStatus >= 1 && handleKycReviewClick?.(item)}
+              >
                 {KYC_STATUS_MAP[item.kycStatus] ?? item.kycStatus}
               </Tag>
             ) : '—'}
@@ -115,7 +120,7 @@ const UserTable = ({
               <input
                 type="checkbox"
                 checked={!!item.status}
-                onChange={(e) => handleStatusChange(item.id, e)}
+                onChange={(e) => handleStatusChange(item, e)}
               />
               <span className="toggle-switch-slider"></span>
             </label>
@@ -124,6 +129,15 @@ const UserTable = ({
           <td className="fixed-column">
             <Button type="link" size="small" onClick={() => handleEditClick(item)}>{t('update')}</Button>
             <Button type="link" size="small" onClick={() => handleDetailClick(item)}>{t('detail')}</Button>
+            {item.kycStatus === 1 || item.kycStatus === 5 ? (
+              <Button type="link" size="small" onClick={() => handleKycReviewClick?.(item)}>
+                {item.kycStatus === 5 ? '解绑审核' : '审核'}
+              </Button>
+            ) : item.kycStatus >= 2 ? (
+              <Button type="link" size="small" onClick={() => handleKycReviewClick?.(item)}>
+                实名
+              </Button>
+            ) : null}
           </td>
         </tr>
       ))}

@@ -2070,5 +2070,10 @@
   "pleaseInputBonusToken": "Por favor ingrese el token de bonificación",
   "pleaseInputTag": "Por favor ingrese la etiqueta",
   "statusChangeSuccess": "Estado actualizado correctamente",
-  "statusChangeFailed": "Error al actualizar el estado"
+  "statusChangeFailed": "Error al actualizar el estado",
+  "batchApproveConfirm": "¿Aprobar {{count}} producto(s) seleccionado(s)?",
+  "batchApproveSuccess": "Aprobación por lotes exitosa",
+  "batchApproveFailed": "Error en la aprobación por lotes",
+  "视频预览": "Vista previa de video",
+  "图片预览": "Vista previa de imagen"
 }

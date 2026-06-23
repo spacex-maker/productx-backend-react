@@ -93,7 +93,12 @@ const WorkOrderTable = ({
         {detailData && (
           <Descriptions bordered  column={1}>
             <Descriptions.Item label="工单 ID">{detailData.id}</Descriptions.Item>
-            <Descriptions.Item label="用户">{detailData.username}</Descriptions.Item>
+            <Descriptions.Item label="工单编号">{detailData.ticketNo || '—'}</Descriptions.Item>
+            <Descriptions.Item label="来源">{detailData.source || '—'}</Descriptions.Item>
+            <Descriptions.Item label="用户">{detailData.username || detailData.contactName || '—'}</Descriptions.Item>
+            <Descriptions.Item label="联系邮箱">{detailData.contactEmail || '—'}</Descriptions.Item>
+            <Descriptions.Item label="客户端 IP">{detailData.clientIp || '—'}</Descriptions.Item>
+            <Descriptions.Item label="分类">{detailData.categoryName || '—'}</Descriptions.Item>
             <Descriptions.Item label="描述">{detailData.description}</Descriptions.Item>
             <Descriptions.Item label="提交时间">{formatDate(detailData.createTime)}</Descriptions.Item>
             <Descriptions.Item label="当前状态">{getStatusLabel(detailData.status)}</Descriptions.Item>
