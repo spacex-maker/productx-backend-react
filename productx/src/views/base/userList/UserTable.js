@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Tag } from 'antd';
+import { Button, Tag, theme } from 'antd';
 import { useTranslation } from 'react-i18next';
 import DefaultAvatar from 'src/components/DefaultAvatar';
+import SystemUserBadge from 'src/components/common/SystemUserBadge';
 
 const KYC_STATUS_MAP = { 0: '未认证', 1: '审核中', 2: '已通过', 3: '审核失败', 4: '需重新认证', 5: '解绑审核中', 6: '解绑未通过' };
 const KYC_COLOR = { 0: 'default', 1: 'processing', 2: 'success', 3: 'error', 4: 'warning', 5: 'processing', 6: 'warning' };
@@ -18,6 +19,7 @@ const UserTable = ({
                      handleKycReviewClick,
                    }) => {
   const { t } = useTranslation();
+  const { token } = theme.useToken();
 
   const columns = [
     t('userInfo'),
@@ -85,9 +87,22 @@ const UserTable = ({
               ) : (
                 <DefaultAvatar name={item.username} size={40} />
               )}
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontWeight: '500' }}>{item.username || '—'}</span>
-                <span style={{ fontSize: '12px', color: '#8c8c8c' }}>ID: {item.id}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, minWidth: 0 }}>
+                  <span
+                    style={{
+                      fontWeight: 500,
+                      color: token.colorText,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {item.username || '—'}
+                  </span>
+                  {item.isBelongSystem ? <SystemUserBadge compact /> : null}
+                </div>
+                <span style={{ fontSize: 12, color: token.colorTextSecondary }}>ID: {item.id}</span>
               </div>
             </div>
           </td>

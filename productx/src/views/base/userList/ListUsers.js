@@ -9,6 +9,7 @@ import UpdateUserModal from "src/views/base/userList/UpdateUserModal";
 import UserDetailModal from "src/views/base/userList/UserDetailModal";
 import UserCreateFormModal from "src/views/base/userList/UserCreateFormModal";
 import BatchSendEmailModal from "src/views/base/userList/BatchSendEmailModal";
+import BatchTokenRechargeModal from "src/views/base/userList/BatchTokenRechargeModal";
 import UserKycReviewModal from "src/views/base/userList/UserKycReviewModal";
 import UserDisableModal from "src/views/base/userList/UserDisableModal";
 import { useTranslation } from 'react-i18next'; // 引入 useTranslation
@@ -44,6 +45,7 @@ const UserList = () => {
     address: '',
     status: undefined,
     kycStatus: undefined,
+    userType: undefined,
   })
 
   const [isLoading, setIsLoading] = useState(false)
@@ -54,6 +56,7 @@ const UserList = () => {
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null) // 用于存储选中的用户
   const [isBatchSendEmailModalVisible, setIsBatchSendEmailModalVisible] = useState(false)
+  const [isBatchTokenRechargeModalVisible, setIsBatchTokenRechargeModalVisible] = useState(false)
   const [isKycReviewModalVisible, setIsKycReviewModalVisible] = useState(false)
   const [kycReviewUser, setKycReviewUser] = useState(null)
   const [isDisableModalVisible, setIsDisableModalVisible] = useState(false)
@@ -77,11 +80,19 @@ const UserList = () => {
     setIsLoading(true)
     try {
       const filteredParams = Object.fromEntries(
-        Object.entries(searchParams).filter(([_, value]) => {
+        Object.entries(searchParams).filter(([key, value]) => {
+          if (key === 'userType') return false;
           if (value === 0 || value === '0') return true;
-          return value !== '' && value !== null;
+          if (value === false || value === true) return true;
+          return value !== '' && value !== null && value !== undefined;
         }),
       )
+
+      if (searchParams.userType === 'real') {
+        filteredParams.isBelongSystem = false;
+      } else if (searchParams.userType === 'system') {
+        filteredParams.isBelongSystem = true;
+      }
 
       if (filteredParams.id) {
         filteredParams.id = Number(filteredParams.id);
@@ -156,10 +167,15 @@ const UserList = () => {
     await fetchData()
   }
 
-  const handleEditClick = (user) => {
-    setSelectedUser(user)
-    setIsUpdateModalVisible(true)
-  }
+  const handleEditClick = async (user) => {
+    try {
+      const full = await api.get(`/manage/user/${user.id}`);
+      setSelectedUser(full || user);
+    } catch {
+      setSelectedUser(user);
+    }
+    setIsUpdateModalVisible(true);
+  };
 
   const handleKycReviewClick = (user) => {
     setKycReviewUser(user)
@@ -243,6 +259,18 @@ const UserList = () => {
             </Col>
             <Col>
               <Select
+                value={searchParams.userType}
+                onChange={(value) => handleSearchChange({ target: { name: 'userType', value }})}
+                placeholder={t('userTypeFilter')}
+                allowClear
+                style={{ width: 150 }}
+              >
+                <Option value="real">{t('realUser')}</Option>
+                <Option value="system">{t('systemUser')}</Option>
+              </Select>
+            </Col>
+            <Col>
+              <Select
                 value={searchParams.kycStatus}
                 onChange={(value) => handleSearchChange({ target: { name: 'kycStatus', value }})}
                 placeholder="实名状态"
@@ -291,6 +319,13 @@ const UserList = () => {
                   onClick={() => setIsBatchSendEmailModalVisible(true)}
                 >
                   {t('batchSendEmail')}
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => setIsBatchTokenRechargeModalVisible(true)}
+                  disabled={selectedRows.length === 0}
+                >
+                  {t('batchTokenRecharge')}
                 </Button>
               </Space>
             </Col>
@@ -342,6 +377,12 @@ const UserList = () => {
       <BatchSendEmailModal
         isVisible={isBatchSendEmailModalVisible}
         onCancel={() => setIsBatchSendEmailModalVisible(false)}
+        onSuccess={fetchData}
+        selectedUsers={data.filter((u) => selectedRows.includes(u.id))}
+      />
+      <BatchTokenRechargeModal
+        isVisible={isBatchTokenRechargeModalVisible}
+        onCancel={() => setIsBatchTokenRechargeModalVisible(false)}
         onSuccess={fetchData}
         selectedUsers={data.filter((u) => selectedRows.includes(u.id))}
       />

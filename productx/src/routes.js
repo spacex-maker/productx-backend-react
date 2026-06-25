@@ -264,6 +264,9 @@ const ActivityManagementRouter = React.lazy(() => import('./views/base/activityM
 
 const InviteSystemRouter = React.lazy(() => import('./views/base/inviteSystem'));
 
+const UserExpActionRouter = React.lazy(() => import('./views/base/userLevel/UserExpAction'));
+const UserLevelConfigRouter = React.lazy(() => import('./views/base/userLevel/UserLevelConfig'));
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/login', name: '登录', element: LoginPage },
@@ -1119,6 +1122,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <InviteSystemRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/data/userExpAction',
+    name: '经验行为配置',
+    element: (
+      <PrivateRoute>
+        <UserExpActionRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/data/userLevelConfig',
+    name: '用户等级配置',
+    element: (
+      <PrivateRoute>
+        <UserLevelConfigRouter />
       </PrivateRoute>
     ),
   },

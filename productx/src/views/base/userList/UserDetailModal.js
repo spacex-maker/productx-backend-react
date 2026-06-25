@@ -35,6 +35,8 @@ import {
   HistoryOutlined,
 } from '@ant-design/icons';
 import DefaultAvatar from 'src/components/DefaultAvatar';
+import SystemUserBadge from 'src/components/common/SystemUserBadge';
+import UserAdminKycVerifyModal from 'src/views/base/userList/UserAdminKycVerifyModal';
 import { formatDate } from 'src/components/common/Common';
 import api from 'src/axiosInstance';
 
@@ -131,6 +133,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
   const [accountLogPage, setAccountLogPage] = useState(1);
   const [activeTab, setActiveTab] = useState('overview');
   const [frontendBaseUrl, setFrontendBaseUrl] = useState('');
+  const [adminKycVisible, setAdminKycVisible] = useState(false);
 
   const currentUser = useSelector((state) => state.user?.currentUser || {});
   const watermarkContent = `ID: ${currentUser?.id || ''} ${currentUser?.username || ''}`;
@@ -177,6 +180,20 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
     setAccountLogTotal(response?.totalNum || 0);
     setAccountLogPage(page);
   }, []);
+
+  const refreshKycAndUser = useCallback(async () => {
+    if (!userId) return;
+    try {
+      const [userRes, kycRes] = await Promise.all([
+        api.get(`/manage/user/${userId}`),
+        api.get(`/manage/user/kyc/${userId}`).catch(() => null),
+      ]);
+      setUser(userRes || selectedUser);
+      setKycDetail(kycRes);
+    } catch {
+      message.error(t('loadFailed') || '加载失败');
+    }
+  }, [userId, selectedUser, t]);
 
   const loadUserDetail = useCallback(async () => {
     if (!userId) return;
@@ -393,7 +410,7 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
                 <Tag color={displayUser?.isActive ? 'blue' : 'default'}>
                   {displayUser?.isActive ? '已激活' : '未激活'}
                 </Tag>
-                {displayUser?.isBelongSystem ? <Tag color="purple">系统用户</Tag> : null}
+                {displayUser?.isBelongSystem ? <SystemUserBadge compact={false} /> : null}
               </Space>
               <Space wrap>
                 <Text type="secondary">ID: {showValue(displayUser?.id)}</Text>
@@ -559,13 +576,27 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
     const detail = kycDetail;
     const statusConfig = KYC_STATUS_MAP[detail?.kycStatus ?? displayUser?.kycStatus] || { color: 'default', text: '未知' };
     const isUnbind = detail?.requestType === 'UNBIND';
+    const kycStatus = detail?.kycStatus ?? displayUser?.kycStatus;
+    const canAdminVerify = kycStatus == null || kycStatus === 0 || kycStatus === 3 || kycStatus === 4 || kycStatus === 6;
 
     if (!detail && !displayUser?.kycStatus) {
-      return <Text type="secondary">暂无实名认证信息</Text>;
+      return (
+        <Space direction="vertical" size={16} style={{ width: '100%' }}>
+          <Text type="secondary">暂无实名认证信息</Text>
+          <Button type="primary" onClick={() => setAdminKycVisible(true)}>
+            {t('userKycAdminVerifyTitle')}
+          </Button>
+        </Space>
+      );
     }
 
     return (
       <Space direction="vertical" size={16} style={{ width: '100%' }}>
+        {canAdminVerify ? (
+          <Button type="primary" onClick={() => setAdminKycVisible(true)}>
+            {t('userKycAdminVerifyTitle')}
+          </Button>
+        ) : null}
         <Descriptions bordered size="small" column={{ xs: 1, sm: 2 }}>
           <Descriptions.Item label="实名状态">
             <Tag color={statusConfig.color}>{statusConfig.text}</Tag>
@@ -716,6 +747,16 @@ const UserDetailModal = ({ isVisible, onCancel, selectedUser }) => {
           !loading && <Text type="secondary">未选择用户</Text>
         )}
       </Spin>
+
+      <UserAdminKycVerifyModal
+        visible={adminKycVisible}
+        user={displayUser}
+        onCancel={() => setAdminKycVisible(false)}
+        onSuccess={() => {
+          setAdminKycVisible(false);
+          refreshKycAndUser();
+        }}
+      />
     </Modal>
   );
 };
