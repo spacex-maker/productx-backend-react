@@ -5,11 +5,13 @@ import {
   CommentOutlined,
   RobotOutlined,
   SoundOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import SaAiModelsList from './SaAiModelsList';
 import SaAiVoiceModels from '../saAiVoiceModels/SaAiVoiceModels';
 import SaAiVoiceComment from '../saAiVoiceComment/SaAiVoiceComment';
+import SaI2iOfficialPlay from '../saI2iOfficialPlay/SaI2iOfficialPlay';
 
 const SaAiModels = () => {
   const { t } = useTranslation();
@@ -55,6 +57,16 @@ const SaAiModels = () => {
         </span>
       ),
       children: <SaAiVoiceComment />,
+    },
+    {
+      key: 'i2iOfficialPlay',
+      label: (
+        <span>
+          <AppstoreOutlined />
+          {t('i2iOfficialPlayTab')}
+        </span>
+      ),
+      children: <SaI2iOfficialPlay />,
     },
   ];
 
