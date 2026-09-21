@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import api from 'src/axiosInstance';
-import { Card, Row, Col, Spin, Statistic, message, theme, Table, Avatar, Tag, Tooltip, Button, Popconfirm } from 'antd';
+import { Card, Row, Col, Spin, Statistic, message, theme, Table, Avatar, Tag, Tooltip, Button, Popconfirm, Typography } from 'antd';
 import ReactECharts from 'echarts-for-react';
 import { useTranslation } from 'react-i18next';
 import IpBlockModal from './IpBlockModal';
+import IpDetailModal from './IpDetailModal';
 import {
   ApiOutlined,
   CheckCircleOutlined,
@@ -13,6 +14,8 @@ import {
   UserOutlined,
   StopOutlined,
 } from '@ant-design/icons';
+
+const { Link } = Typography;
 
 const KYC_STATUS_MAP = { 0: '未认证', 1: '审核中', 2: '已通过', 3: '审核失败', 4: '需重新认证' };
 const KYC_COLOR = { 0: 'default', 1: 'processing', 2: 'success', 3: 'error', 4: 'warning' };
@@ -35,6 +38,8 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
   const [blockModalOpen, setBlockModalOpen] = useState(false);
   const [blockTargetIp, setBlockTargetIp] = useState(null);
   const [blockSubmitting, setBlockSubmitting] = useState(false);
+  const [ipDetailOpen, setIpDetailOpen] = useState(false);
+  const [ipDetailTarget, setIpDetailTarget] = useState(null);
 
   const textColor = token.colorText;
   const axisLineColor = token.colorBorderSecondary;
@@ -65,6 +70,21 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
   const handleOpenBlockModal = (record) => {
     setBlockTargetIp(record.clientIp);
     setBlockModalOpen(true);
+  };
+
+  const handleOpenIpDetail = (ip) => {
+    if (!ip || ip === 'unknown' || ip === '—') return;
+    setIpDetailTarget(ip);
+    setIpDetailOpen(true);
+  };
+
+  const renderClickableIp = (ip) => {
+    if (!ip) return '—';
+    return (
+      <Link onClick={() => handleOpenIpDetail(ip)} style={{ wordBreak: 'break-all' }}>
+        {ip}
+      </Link>
+    );
   };
 
   const handleBlockSubmit = async (reason) => {
@@ -196,12 +216,40 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
   }, [dailyTrend, t, textColor, axisLineColor, splitLineColor, chartBg, token.colorBgElevated, token.colorBorder]);
 
   const topPathsColumns = [
-    { title: t('apiAccessLogStats.apiPath') || '接口路径', dataIndex: 'key', key: 'key', ellipsis: true },
+    {
+      title: t('apiAccessLogStats.method') || '方法',
+      dataIndex: 'method',
+      key: 'method',
+      width: 80,
+      render: (value) => value || '-',
+    },
+    {
+      title: t('apiAccessLogStats.apiPath') || '接口路径',
+      dataIndex: 'apiPath',
+      key: 'apiPath',
+      ellipsis: true,
+      render: (value) => value || '-',
+    },
     { title: t('apiAccessLogStats.callCount') || '访问次数', dataIndex: 'count', key: 'count', width: 100 },
   ];
 
   const topIpsColumns = [
-    { title: t('apiAccessLogStats.clientIp') || 'IP', dataIndex: 'key', key: 'key', ellipsis: true },
+    {
+      title: t('apiAccessLogStats.clientIp') || 'IP',
+      dataIndex: 'key',
+      key: 'key',
+      ellipsis: true,
+      render: (value, record) => (
+        <div>
+          <div>{renderClickableIp(value)}</div>
+          {record.region ? (
+            <div style={{ fontSize: 12, color: '#888', marginTop: 2 }} title={record.region}>
+              {record.region}
+            </div>
+          ) : null}
+        </div>
+      ),
+    },
     { title: t('apiAccessLogStats.callCount') || '访问次数', dataIndex: 'count', key: 'count', width: 100 },
   ];
 
@@ -219,7 +267,7 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
       width: 180,
       render: (value, record) => (
         <div>
-          <div>{value || '—'}</div>
+          <div>{renderClickableIp(value)}</div>
           {record.blocked ? (
             <Tag color="error" style={{ marginTop: 4 }}>
               {t('apiAccessLogStats.ipBlocked') || '已封禁'}
@@ -416,7 +464,11 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
 
   const topIpMultiUsersBarOption = useMemo(() => {
     const list = Array.isArray(topIpMultiUsers) ? topIpMultiUsers.slice(0, 10) : [];
-    const categories = list.map((item) => item.clientIp || '-');
+    const categories = list.map((item) => {
+      const ip = item.clientIp || '-';
+      const region = (item.region || '').trim();
+      return region ? `${ip}\n${region}` : ip;
+    });
     const values = list.map((item) => Number(item.userCount || 0));
     const axisCommon = {
       axisLabel: { color: textColor },
@@ -435,9 +487,31 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
         backgroundColor: token.colorBgElevated,
         borderColor: token.colorBorder,
         textStyle: { color: textColor },
+        formatter: (params) => {
+          const p = Array.isArray(params) ? params[0] : params;
+          const idx = p?.dataIndex ?? 0;
+          const row = list[idx] || {};
+          const ip = row.clientIp || p?.name || '-';
+          const region = row.region || '-';
+          const userCount = row.userCount ?? p?.value ?? 0;
+          return `${ip}<br/>${t('apiAccessLogStats.region') || '地域'}: ${region}<br/>${
+            t('apiAccessLogStats.userCount') || '用户数'
+          }: ${userCount}`;
+        },
       },
-      grid: { left: '3%', right: '4%', bottom: '3%', top: 40, containLabel: true },
-      xAxis: { type: 'category', data: categories, ...axisCommon },
+      grid: { left: '3%', right: '4%', bottom: '8%', top: 40, containLabel: true },
+      xAxis: {
+        type: 'category',
+        data: categories,
+        ...axisCommon,
+        axisLabel: {
+          ...axisCommon.axisLabel,
+          interval: 0,
+          lineHeight: 14,
+          fontSize: 11,
+          hideOverlap: true,
+        },
+      },
       yAxis: {
         type: 'value',
         name: t('apiAccessLogStats.userCount') || '用户数',
@@ -570,7 +644,9 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
                 size="small"
                 dataSource={topPaths}
                 columns={topPathsColumns}
-                rowKey="key"
+                rowKey={(record, index) =>
+                  `${record.apiPath || ''}|${record.method || ''}|${record.appCode || ''}|${index}`
+                }
                 pagination={false}
                 scroll={{ y: 240 }}
               />
@@ -624,6 +700,15 @@ const ApiAccessLogDashboard = ({ timeRange = {} }) => {
           setBlockTargetIp(null);
         }}
         onSubmit={handleBlockSubmit}
+      />
+      <IpDetailModal
+        open={ipDetailOpen}
+        clientIp={ipDetailTarget}
+        timeRange={timeRange}
+        onClose={() => {
+          setIpDetailOpen(false);
+          setIpDetailTarget(null);
+        }}
       />
     </div>
   );

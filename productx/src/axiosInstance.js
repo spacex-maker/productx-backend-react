@@ -6,7 +6,7 @@ import { getNavigate } from './utils/navigationService';
 export const API_CONFIG = {
   TEST: 'http://34.92.193.186:8090',
   TEST2: 'http://34.92.218.25:18090',
-  PROD: 'https://admin.anakkix.cn',
+  PROD: 'https://ai-admin.aimatex.com',
   LOCAL: 'http://localhost:8090',
 };
 
