@@ -226,6 +226,11 @@ const SaAiAgentCommentRouter = React.lazy(() => import('./views/base/saAiAgentCo
 
 const SaAiTokenUsageLogRouter = React.lazy(() => import('./views/base/saAiTokenUsageLog/SaAiTokenUsageLog'));
 
+const DeepSeekApiManageRouter = React.lazy(() => import('./views/base/deepSeekApiManage/DeepSeekApiManage'));
+const SaEcommerceOfficialModelRouter = React.lazy(() =>
+  import('./views/base/saEcommerceOfficialModel/SaEcommerceOfficialModel')
+);
+
 const UserAccountChangeLogRouter = React.lazy(() => import('./views/base/userAccountChangeLog/UserAccountChangeLog'));
 
 const UserFeedbackRouter = React.lazy(() => import('./views/base/userFeedback/UserFeedback'));
@@ -969,6 +974,24 @@ const routes = [
     element: (
       <PrivateRoute>
         <SaAiTokenUsageLogRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/deepSeekApiManage',
+    name: 'DeepSeek API调用管理',
+    element: (
+      <PrivateRoute>
+        <DeepSeekApiManageRouter />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/sys/saEcommerceOfficialModel',
+    name: '官方模特管理',
+    element: (
+      <PrivateRoute>
+        <SaEcommerceOfficialModelRouter />
       </PrivateRoute>
     ),
   },

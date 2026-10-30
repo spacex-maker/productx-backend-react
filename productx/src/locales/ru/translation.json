@@ -302,7 +302,13 @@
     "AI运营工具": "Инструменты операций ИИ",
     "社区管理": "Управление сообществом",
     "生图场景管理": "Управление сценариями генерации изображений",
-    "生图场景分类": "Категории сценариев генерации изображений"
+    "生图场景分类": "Категории сценариев генерации изображений",
+    "提示词商城": "Маркет промптов",
+    "AI生成管理": "Управление AI-генерацией",
+    "Tavily账号": "Аккаунты Tavily",
+    "套餐管理": "Управление пакетами",
+    "邀请系统": "Система приглашений",
+    "DeepSeek API调用管理": "Управление вызовами DeepSeek API"
   },
   "confirmDelete": "Подтвердите удаление",
   "countryName": "Название страны",
@@ -714,7 +720,6 @@
   "secretKey": "Секретный ключ",
   "endpoint": "Точка доступа",
   "tags": "Теги",
-
   "enterStorageProvider": "Введите поставщика хранилища",
   "enterStorageType": "Введите тип хранилища",
   "enterAccessKey": "Введите ключ доступа",
@@ -737,7 +742,6 @@
   "securityConfig": "Конфигурация безопасности",
   "advancedConfig": "Расширенная конфигурация",
   "auditInfo": "Аудит информация",
-
   "compliance": "Соответствие",
   "encryptionType": "Тип шифрования",
   "isEncrypted": "Зашифровано",
@@ -747,7 +751,6 @@
   "maxStorageSize": "Максимальный размер хранилища",
   "maxRequestLimit": "Максимальное ограничение запросов",
   "lastCheckedAt": "Последняя проверка",
-
   "verifyConfig": "Проверить конфигурацию",
   "verifying": "Проверка",
   "verifySuccess": "Проверка успешна",
@@ -764,13 +767,11 @@
   "aesKeyTooltip": "Этот ключ используется для шифрования и хранения AccessKey и SecretKey",
   "errorInfo": "Информация об ошибке",
   "dataContributors": "Участники данных",
-
   "regionsCount": "Количество административных регионов",
   "subRegionsCount": "Количество подчиненных регионов",
   "totalPopulation": "Общая численность населения",
   "totalArea": "Общая площадь",
   "tenThousand": "Десять тысяч",
-
   "regionCodeTip": "Код административного региона (страна, провинция, город и т. д.)",
   "countryCodeTip": "Код страны (например, CN для Китая, US для США)",
   "localNameTip": "Название на местном языке",
@@ -781,12 +782,10 @@
   "populationTip": "Численность населения",
   "areaKm2Tip": "Площадь (квадратные километры)",
   "regionTip": "Регион (например, Северный Китай, Южный Китай и т. д.)",
-
   "usersCanContactThemselves": "Пользователи могут связаться самостоятельно",
   "callTheErrandRunnerToDeliver": "Позвоните курьеру для доставки",
   "expressDelivery": "Экспресс-доставка",
   "logisticsDelivery": "Логистическая доставка",
-
   "agentName": "Имя агента",
   "agentType": "Тип агента",
   "regionName": "Название региона",
@@ -799,7 +798,6 @@
   "tertiaryAgent": "Третичный агент",
   "approved": "Одобрено",
   "rejected": "Отклонено",
-
   "pleaseInputAgentName": "Пожалуйста, введите имя агента",
   "pleaseSelectAgentType": "Пожалуйста, выберите тип агента",
   "pleaseInputRegionCode": "Пожалуйста, введите код региона",
@@ -827,19 +825,16 @@
   "USD": "Доллар США",
   "EUR": "Евро",
   "pleaseInputRemarks": "Пожалуйста, введите замечания",
-
   "regionId": "ID региона",
   "pleaseSelectCityToGetRegionId": "Пожалуйста, выберите город, чтобы получить ID региона",
   "pleaseSelectCityToGetRegionCode": "Пожалуйста, выберите город, чтобы получить код региона",
   "pleaseSelectCityToGetRegionName": "Пожалуйста, выберите город, чтобы получить название региона",
   "pleaseSelectIsExclusive": "Пожалуйста, выберите, является ли эксклюзивным",
-
   "authorizationPeriod": "Период авторизации",
   "agentAuthorizationStartDate": "Дата начала авторизации агента",
   "agentAuthorizationEndDate": "Дата окончания авторизации агента",
   "pleaseSelectAuthorizationStartDate": "Пожалуйста, выберите дату начала авторизации",
   "pleaseSelectAuthorizationEndDate": "Пожалуйста, выберите дату окончания авторизации",
-
   "searchAgentFailed": "Не удалось найти агента",
   "getCountryListFailed": "Не удалось получить список стран",
   "searchCityFailed": "Не удалось найти город",
@@ -849,52 +844,40 @@
   "settlementCurrency": "Валюта расчётов",
   "pleaseSelectSettlementCurrency": "Пожалуйста, выберите валюту расчётов",
   "cityType": "Тип города",
-
   "updateRegionalAgent": "Обновить регионального агента",
   "regionInfo": "Информация о регионе",
   "authorizationTime": "Время авторизации",
-
   "pleaseSelectAuditStatus": "Статус проверки",
   "pendingAudit": "Ожидает проверки",
   "pleaseSelectStatus": "Статус",
   "cooperationStartDate": "Дата начала сотрудничества",
   "cooperationEndDate": "Дата окончания сотрудничества",
-
   "validationTime": "Время проверки / секунды",
-
   "languageCode": "Код языка",
   "englishName": "Английское название",
   "nativeName": "Родное название",
   "developmentStatus": "Статус разработки",
   "enableStatus": "Статус включения",
-
   "developed": "Разработано",
   "notDeveloped": "Не разработано",
   "addLanguage": "Добавить язык",
   "batchEnable": "Массовое включение",
   "batchDisable": "Массовое отключение",
-
   "pleaseSelectRecords": "Выберите записи для изменения",
-
   "enterLanguageCode": "Пожалуйста, введите код языка",
   "enterChineseName": "Пожалуйста, введите китайское название",
   "selectDevelopmentStatus": "Пожалуйста, выберите статус разработки",
   "selectEnableStatus": "Пожалуйста, выберите статус включения",
-
   "inputLanguageCode": "Пожалуйста, введите код языка",
   "inputEnglishName": "Пожалуйста, введите английское название",
   "inputChineseName": "Пожалуйста, введите китайское название",
   "inputNativeName": "Пожалуйста, введите родное название",
-
   "addTitle": "Создать",
   "editTitle": "Изменить",
   "selectRecord": "Пожалуйста, выберите записи для изменения",
-
   "modifyingEnableStatusWillAffectLanguageOptions": "Изменение состояния включения повлияет на языковые настройки в системе администрирования и приложении",
-
   "confirmStatusChange": "Подтвердить изменение статуса",
   "confirmLanguageStatusChangeMessage": "Вы уверены, что хотите изменить статус языка? Это повлияет на доступные языковые параметры в системе.",
-
   "addPaymentMethod": "Добавить способ оплаты",
   "editPaymentMethod": "Изменить способ оплаты",
   "paymentMethodName": "Название способа оплаты",
@@ -936,7 +919,6 @@
   "configJson": "Конфиг JSON",
   "configJsonPlaceholder": "{\"secret_key\":\"xxx\",\"webhook_secret\":\"xxx\"}",
   "badgeTextPlaceholderPayment": "HOT / NEW / 0% комиссии",
-
   "clientName": "Имя клиента",
   "privacyPolicyUrl": "URL политики конфиденциальности",
   "termsConditionsUrl": "URL условий и положений",
@@ -949,7 +931,6 @@
   "saving": "Сохранение...",
   "pleaseInput": "Пожалуйста, введите",
   "getFailed": "Не удалось получить",
-
   "createCurrency": "Добавить валюту",
   "currencyName": "Название валюты",
   "currencySymbol": "Символ валюты",
@@ -961,7 +942,6 @@
   "currencyDescriptionPlaceholder": "Введите описание валюты на английском",
   "currencyDescriptionZhTip": "Описание валюты на китайском",
   "currencyDescriptionZhPlaceholder": "Введите описание валюты на китайском",
-
   "basicInformation": "Основная информация",
   "addressInformation": "Информация об адресе",
   "selectUser": "Выбрать пользователя",
@@ -974,7 +954,6 @@
   "usageCount": "Количество использований",
   "copySuccessful": "Копирование успешно",
   "invalidPhoneNumber": "Неверный номер телефона",
-
   "userInfo": "Информация о пользователе",
   "bankInfo": "Банковская информация",
   "deliveryInfo": "Информация о доставке",
@@ -987,7 +966,6 @@
   "delivered": "Доставлено",
   "inTransit": "В пути",
   "deliveryFailed": "Доставка не удалась",
-
   "createBank": "Создать банк",
   "bin": "BIN код банка",
   "enterBankBIN": "Введите BIN код банка",
@@ -995,7 +973,6 @@
   "systemSupport": "Поддержка системы",
   "supported": "Поддерживается",
   "unsupported": "Не поддерживается",
-
   "createCrypto": "Добавить криптовалюту",
   "updateCrypto": "Обновить криптовалюту",
   "technicalInfo": "Техническая информация",
@@ -1033,7 +1010,6 @@
   "avalanche": "Avalanche",
   "cardano": "Cardano",
   "polkadot": "Polkadot",
-
   "bug": "Ошибка",
   "featureRequest": "Запрос функции",
   "discussion": "Обсуждение",
@@ -1046,14 +1022,12 @@
   "reporter": "Сообщивший",
   "assignee": "Исполнитель",
   "issueTimeline": "Хронология задачи",
-
   "legendaryContributor": "Легендарный контрибьютор",
   "eliteContributor": "Элитный контрибьютор",
   "seniorContributor": "Старший контрибьютор",
   "activeContributor": "Активный контрибьютор",
   "contributor": "Контрибьютор",
   "contributionCount": "Количество вкладов",
-
   "siteName": "Название сайта",
   "siteUrl": "Ссылка на сайт",
   "classification": "Категория",
@@ -1103,7 +1077,6 @@
   "pleaseEnterTags": "Введите теги",
   "pleaseSelectBusinessModel": "Выберите бизнес-модель",
   "pleaseEnterCompanyName": "Введите название компании",
-
   "websiteDetails": "Детали сайта",
   "mainCategory": "Основная категория",
   "subCategory": "Подкатегория",
@@ -1122,7 +1095,6 @@
   "seoTitle": "SEO заголовок",
   "seoKeywords": "SEO ключевые слова",
   "seoDescription": "SEO описание",
-
   "createWebsite": "Создать сайт",
   "websiteName": "Название сайта",
   "pleaseInputWebsiteName": "Пожалуйста, введите название сайта",
@@ -1131,17 +1103,14 @@
   "pleaseInputValidWebsiteLink": "Пожалуйста, введите действительную ссылку на сайт",
   "websiteDescription": "Описание сайта",
   "pleaseInputWebsiteDescription": "Пожалуйста, введите описание сайта",
-
   "socialNetwork": "Социальная сеть",
   "pleaseInputSubClassification": "Пожалуйста, введите подкатегорию",
   "priorityLevel": "Уровень приоритета",
   "pleaseInputPriorityLevel": "Пожалуйста, введите уровень приоритета",
-
   "pleaseInputLogoLink": "Пожалуйста, введите ссылку на логотип",
   "pleaseInputFaviconLink": "Пожалуйста, введите ссылку на фавикон",
   "label": "Метка",
   "pleaseInputLabel": "Пожалуйста, введите метку",
-
   "countryRegion": "Страна/Регион",
   "pleaseSelectCountryRegion": "Пожалуйста, выберите страну/регион",
   "pleaseSelectLanguage": "Пожалуйста, выберите язык",
@@ -1152,34 +1121,27 @@
   "pleaseInputSeoTitle": "Пожалуйста, введите SEO-заголовок",
   "pleaseInputSeoKeywords": "Пожалуйста, введите SEO-ключевые слова",
   "pleaseInputSeoDescription": "Пожалуйста, введите SEO-описание",
-
   "pleaseInputCompanyName": "Пожалуйста, введите название компании",
   "establishmentYear": "Год основания",
   "pleaseInputEstablishmentYear": "Пожалуйста, введите год основания",
   "freePlusValue": "Бесплатно с доп. услугами",
-
   "contactMailbox": "Контактный почтовый ящик",
   "pleaseInputContactMailbox": "Пожалуйста, введите контактный почтовый ящик",
-
   "customCss": "Пользовательский CSS",
   "pleaseInputCustomCss": "Пожалуйста, введите пользовательский CSS",
   "customJavaScript": "Пользовательский JavaScript",
   "pleaseInputCustomJavaScript": "Пожалуйста, введите пользовательский JavaScript",
-
   "dataSourceApi": "API источник данных",
   "pleaseInputDataSourceApi": "Пожалуйста, введите API источник данных",
   "relatedWebsites": "Связанные сайты",
   "pleaseInputRelatedWebsites": "Пожалуйста, введите связанные сайты",
   "pleaseInputSocialMediaLinks": "Пожалуйста, введите ссылки на соцсети",
-
   "managementRemarks": "Замечания по управлению",
   "pleaseInputManagementRemarks": "Пожалуйста, введите замечания по управлению",
   "customData": "Пользовательские данные",
   "pleaseInputCustomData": "Пожалуйста, введите пользовательские данные",
-
   "features": "Особенности",
   "socialMedia": "Социальные сети",
-
   "androidAppDownloadLink": "Ссылка на загрузку Android-приложения",
   "iosAppDownloadLink": "Ссылка на загрузку iOS-приложения",
   "pleaseInputAndroidAppLink": "Введите ссылку на загрузку Android-приложения",
@@ -1197,22 +1159,18 @@
   "harmonyOSApp": "HarmonyOS-приложение",
   "trafficSource": "Источник трафика",
   "displayMode": "Режим отображения",
-
   "expressCompanyManagement": "Управление курьерскими компаниями",
   "addExpressCompany": "Добавить курьерскую компанию",
   "editExpressCompany": "Редактировать курьерскую компанию",
   "expressCompanyDetails": "Детали курьерской компании",
-
   "trackingNumberFormat": "Формат номера отслеживания",
   "pleaseEnterTrackingFormat": "Пожалуйста, введите формат номера отслеживания",
   "pleaseEnterWebsite": "Пожалуйста, введите веб-сайт",
   "pleaseEnterContactNumber": "Пожалуйста, введите контактный номер",
   "trackingFormatExample": "Пример: ^\\d{12}$",
-
   "fetchCountriesFailed": "Не удалось получить список стран",
   "fetchDataFailed": "Не удалось получить данные",
   "trackingFormat": "Формат номера отслеживания",
-
   "websiteApplications": "Управление приложениями сайта",
   "applicationStatus": "Статус заявки",
   "reviewComments": "Комментарии к отзыву",
@@ -1226,7 +1184,6 @@
   "pleaseInputReviewComments": "Пожалуйста, введите комментарии к отзыву",
   "batchDeleteSuccess": "Массовое удаление успешно",
   "batchDeleteFailed": "Массовое удаление не удалось",
-
   "aiAssistant": "AI помощник",
   "online": "Онлайн",
   "startNewChat": "Начать новый чат",
@@ -1240,7 +1197,6 @@
   "getSessionsFailed": "Не удалось получить список сессий",
   "getMessageHistoryFailed": "Не удалось получить историю сообщений",
   "imageUploadFailed": "Ошибка загрузки изображения",
-
   "send": "Отправить",
   "text": "Текст",
   "system": "Система",
@@ -1268,27 +1224,22 @@
   "expireTime": "Время истечения",
   "markReadSuccess": "Успешно отмечено как прочитанное",
   "markReadFailed": "Ошибка при отметке как прочитанное",
-
   "birthday": "День рождения",
   "oldPassword": "Старый пароль",
   "newPassword": "Новый пароль",
   "invalidPhone": "Недействительный номер телефона",
   "passwordTooSimple": "Пароль слишком простой",
-
   "logoutConfirm": "Подтверждение выхода",
   "logoutConfirmContent": "Вы уверены, что хотите выйти?",
-
   "changePassword": "Изменить пароль",
   "confirmPassword": "Подтвердить пароль",
   "securitySettings": "Настройки безопасности",
   "newChat": "Новый чат",
   "openAIAssistant": "Открыть помощник AI",
-
   "resolve": "Решить",
   "enterAssignee": "Введите исполнителя",
   "enterReporter": "Введите докладчика",
   "onlyShowAssignedToMe": "Назначено мне",
-
   "shippingMethodName": "Название способа доставки",
   "addShippingMethod": "Добавить способ доставки",
   "editShippingMethod": "Редактировать способ доставки",
@@ -1402,7 +1353,6 @@
   "termsConditions": "Условия использования",
   "privacyPolicy": "Политика конфиденциальности",
   "selectLanguage": "Выберите язык",
-
   "confirmTitle": "Подтверждение операции",
   "enableConfirmTitle": "Подтвердить включение?",
   "disableConfirmTitle": "Подтвердить отключение?",
@@ -1410,7 +1360,6 @@
   "adminLanguageSetting": "Языковые настройки системы администрирования",
   "appLanguageSetting": "Языковые настройки приложения",
   "termsOfService": "Условия использования",
-
   "searchTerm": "Поисковый запрос",
   "totalSearchCount": "Общее количество поисков",
   "mobileSearchCount": "Поиски с мобильных",
@@ -1423,9 +1372,7 @@
   "pleaseInputCategoryId": "Пожалуйста, введите ID категории",
   "addHotSearch": "Добавить популярный поиск",
   "editHotSearch": "Редактировать популярный поиск",
-
   "appearanceSettings": "Настройки внешнего вида",
-
   "primaryColor": "Основной цвет",
   "secondaryColor": "Дополнительный цвет",
   "fontSize": "Размер шрифта",
@@ -1435,7 +1382,6 @@
   "splashScreenUrl": "URL заставки",
   "homeLayout": "Макет главной страницы",
   "customText": "Пользовательский текст",
-
   "small": "Маленький",
   "large": "Большой",
   "rounded": "Закругленный",
@@ -1718,7 +1664,6 @@
   "completionTokens": "Токены ответа",
   "totalTokens": "Всего токенов",
   "durationMs": "Продолжительность (мс)",
-  
   "coinType": "Тип валюты",
   "changeType": "Тип изменения",
   "amount": "Сумма",
@@ -2055,5 +2000,53 @@
   "batchApproveSuccess": "Массовое одобрение выполнено",
   "batchApproveFailed": "Ошибка массового одобрения",
   "视频预览": "Предпросмотр видео",
-  "图片预览": "Предпросмотр изображения"
+  "图片预览": "Предпросмотр изображения",
+  "AI运营发帖素材管理": "Склад материалов ИИ",
+  "AI机器人行为日志": "Журнал действий ИИ-бота",
+  "published": "Опубликовано",
+  "pleaseSelectData": "Выберите данные",
+  "onlyPendingReviewCanBeApproved": "Можно одобрить только материалы на проверке",
+  "onlyPendingReviewCanBeRejected": "Можно отклонить только материалы на проверке",
+  "batchReviewToPending": "Пакетно одобрить к публикации",
+  "batchReviewSuccess": "Пакетная проверка успешна",
+  "batchReviewFailed": "Пакетная проверка не удалась",
+  "batchReject": "Пакетно отклонить",
+  "batchRejectSuccess": "Пакетное отклонение успешно",
+  "batchRejectFailed": "Пакетное отклонение не удалось",
+  "confirmBatchReject": "Отклонить выбранные материалы?",
+  "confirmBatchReviewToPending": "Одобрить выбранные к публикации?",
+  "imageUrl": "URL изображения",
+  "todayPostStats": "Статистика постов за сегодня",
+  "todayPublished": "Опубликовано сегодня",
+  "todayCreated": "Добавлено сегодня",
+  "todayPendingReview": "На проверке сегодня",
+  "agentTypes": "Активные агенты",
+  "agentShare": "Доля агентов",
+  "channelShare": "Доля каналов",
+  "styleShare": "Доля стилей",
+  "noStyleTags": "Нет тегов стиля",
+  "todayStatusShare": "Статусы поступлений за сегодня",
+  "operatorId": "ID бота",
+  "actionType": "Тип действия",
+  "actionResult": "Результат действия",
+  "actionDescription": "Описание действия",
+  "actionDetails": "Детали действия",
+  "generateImage": "Сгенерировать изображение",
+  "postPublish": "Опубликовать пост",
+  "postLike": "Лайкнуть пост",
+  "postComment": "Комментировать пост",
+  "resourceId": "ID ресурса",
+  "postStockReport": "Отчёт по публикациям",
+  "last7Days": "7 дней",
+  "last14Days": "14 дней",
+  "last30Days": "30 дней",
+  "last90Days": "90 дней",
+  "periodPublished": "Опубликовано",
+  "periodCreated": "Добавлено",
+  "periodPendingReview": "На проверке",
+  "dailyTrend": "Дневной тренд",
+  "createdTrend": "Поступление",
+  "publishedTrend": "Публикация",
+  "pendingReviewTrend": "Проверка",
+  "statusShare": "Распределение статусов"
 }

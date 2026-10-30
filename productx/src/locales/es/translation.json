@@ -302,7 +302,13 @@
     "AI运营工具": "Herramientas de Operaciones IA",
     "社区管理": "Gestión de Comunidad",
     "生图场景管理": "Gestión de Escenarios de Generación de Imágenes",
-    "生图场景分类": "Categorías de Escenarios de Generación de Imágenes"
+    "生图场景分类": "Categorías de Escenarios de Generación de Imágenes",
+    "提示词商城": "Mercado de prompts",
+    "AI生成管理": "Gestión de generación IA",
+    "Tavily账号": "Cuentas Tavily",
+    "套餐管理": "Gestión de paquetes",
+    "邀请系统": "Sistema de invitaciones",
+    "DeepSeek API调用管理": "Gestión de llamadas API DeepSeek"
   },
   "confirmDelete": "Confirmar eliminación",
   "countryName": "Nombre del país",
@@ -714,7 +720,6 @@
   "secretKey": "Clave Secreta",
   "endpoint": "Punto de Acceso",
   "tags": "Etiquetas",
-
   "enterStorageProvider": "Ingrese Proveedor de Almacenamiento",
   "enterStorageType": "Ingrese Tipo de Almacenamiento",
   "enterAccessKey": "Ingrese Clave de Acceso",
@@ -737,7 +742,6 @@
   "securityConfig": "Configuración de Seguridad",
   "advancedConfig": "Configuración Avanzada",
   "auditInfo": "Información de Auditoría",
-
   "compliance": "Cumplimiento",
   "encryptionType": "Tipo de Encriptación",
   "isEncrypted": "Está Encriptado",
@@ -747,7 +751,6 @@
   "maxStorageSize": "Tamaño Máximo de Almacenamiento",
   "maxRequestLimit": "Límite Máximo de Solicitudes",
   "lastCheckedAt": "Última Verificación",
-
   "verifyConfig": "Configurar Verificación",
   "verifying": "Verificando",
   "verifySuccess": "Verificación Exitosa",
@@ -764,13 +767,11 @@
   "aesKeyTooltip": "Esta clave se utiliza para cifrar y almacenar AccessKey y SecretKey",
   "errorInfo": "Información de Error",
   "dataContributors": "Contribuyentes de Datos",
-
   "regionsCount": "Cantidad de Regiones Administrativas",
   "subRegionsCount": "Cantidad de Subregiones",
   "totalPopulation": "Población Total",
   "totalArea": "Área Total",
   "tenThousand": "Diez Mil",
-
   "regionCodeTip": "Código de región administrativa (país, provincia, ciudad, etc.)",
   "countryCodeTip": "Código del país (por ejemplo, CN para China, US para los Estados Unidos)",
   "localNameTip": "Nombre en el idioma local",
@@ -781,12 +782,10 @@
   "populationTip": "Población",
   "areaKm2Tip": "Área (kilómetros cuadrados)",
   "regionTip": "Región (por ejemplo, Norte de China, Sur de China, etc.)",
-
   "usersCanContactThemselves": "Los usuarios pueden contactarse ellos mismos",
   "callTheErrandRunnerToDeliver": "Llame al repartidor para entregar",
   "expressDelivery": "Entrega exprés",
   "logisticsDelivery": "Entrega logística",
-
   "agentName": "Nombre del agente",
   "agentType": "Tipo de agente",
   "regionName": "Nombre de la región",
@@ -799,7 +798,6 @@
   "tertiaryAgent": "Agente terciario",
   "approved": "Aprobado",
   "rejected": "Rechazado",
-
   "pleaseInputAgentName": "Por favor, ingrese el nombre del agente",
   "pleaseSelectAgentType": "Por favor, seleccione el tipo de agente",
   "pleaseInputRegionCode": "Por favor, ingrese el código de la región",
@@ -827,19 +825,16 @@
   "USD": "Dólar estadounidense",
   "EUR": "Euro",
   "pleaseInputRemarks": "Por favor, ingrese observaciones",
-
   "regionId": "ID de la región",
   "pleaseSelectCityToGetRegionId": "Por favor, seleccione una ciudad para obtener el ID de la región",
   "pleaseSelectCityToGetRegionCode": "Por favor, seleccione una ciudad para obtener el código de la región",
   "pleaseSelectCityToGetRegionName": "Por favor, seleccione una ciudad para obtener el nombre de la región",
   "pleaseSelectIsExclusive": "Por favor, seleccione si es exclusivo",
-
   "authorizationPeriod": "Período de autorización",
   "agentAuthorizationStartDate": "Fecha de inicio de la autorización del agente",
   "agentAuthorizationEndDate": "Fecha de finalización de la autorización del agente",
   "pleaseSelectAuthorizationStartDate": "Por favor, seleccione la fecha de inicio de la autorización",
   "pleaseSelectAuthorizationEndDate": "Por favor, seleccione la fecha de finalización de la autorización",
-
   "searchAgentFailed": "Falló la búsqueda del agente",
   "getCountryListFailed": "Error al obtener la lista de países",
   "searchCityFailed": "Falló la búsqueda de la ciudad",
@@ -849,52 +844,40 @@
   "settlementCurrency": "Moneda de liquidación",
   "pleaseSelectSettlementCurrency": "Por favor, seleccione la moneda de liquidación",
   "cityType": "Tipo de ciudad",
-
   "updateRegionalAgent": "Actualizar agente regional",
   "regionInfo": "Información de la región",
   "authorizationTime": "Tiempo de autorización",
-
   "pleaseSelectAuditStatus": "Estado de auditoría",
   "pendingAudit": "Auditoría pendiente",
   "pleaseSelectStatus": "Estado",
   "cooperationStartDate": "Fecha de inicio de la cooperación",
   "cooperationEndDate": "Fecha de finalización de la cooperación",
-
   "validationTime": "Tiempo de validación / segundos",
-
   "languageCode": "Código de idioma",
   "englishName": "Nombre en inglés",
   "nativeName": "Nombre nativo",
   "developmentStatus": "Estado de desarrollo",
   "enableStatus": "Estado de habilitación",
-
   "developed": "Desarrollado",
   "notDeveloped": "No desarrollado",
   "addLanguage": "Agregar idioma",
   "batchEnable": "Habilitar por lote",
   "batchDisable": "Deshabilitar por lote",
-
   "pleaseSelectRecords": "Seleccione los registros a modificar",
-
   "enterLanguageCode": "Por favor, ingrese el código de idioma",
   "enterChineseName": "Por favor, ingrese el nombre en chino",
   "selectDevelopmentStatus": "Por favor, seleccione el estado de desarrollo",
   "selectEnableStatus": "Por favor, seleccione el estado de habilitación",
-
   "inputLanguageCode": "Por favor, ingrese el código de idioma",
   "inputEnglishName": "Por favor, ingrese el nombre en inglés",
   "inputChineseName": "Por favor, ingrese el nombre en chino",
   "inputNativeName": "Por favor, ingrese el nombre nativo",
-
   "addTitle": "Crear",
   "editTitle": "Editar",
   "selectRecord": "Por favor, seleccione los registros a modificar",
-
   "modifyingEnableStatusWillAffectLanguageOptions": "Modificar el estado de habilitación afectará las opciones de idioma en el sistema de administración y la aplicación",
-
   "confirmStatusChange": "Confirmar cambio de estado",
   "confirmLanguageStatusChangeMessage": "¿Está seguro de que desea cambiar el estado del idioma? Esto afectará las opciones de idioma disponibles en el sistema.",
-
   "addPaymentMethod": "Agregar método de pago",
   "editPaymentMethod": "Editar método de pago",
   "paymentMethodName": "Nombre del método de pago",
@@ -936,7 +919,6 @@
   "configJson": "Config JSON",
   "configJsonPlaceholder": "{\"secret_key\":\"xxx\",\"webhook_secret\":\"xxx\"}",
   "badgeTextPlaceholderPayment": "HOT / NEW / 0% comisión",
-
   "clientName": "Nombre del cliente",
   "privacyPolicyUrl": "URL de la política de privacidad",
   "termsConditionsUrl": "URL de términos y condiciones",
@@ -949,7 +931,6 @@
   "saving": "Guardando...",
   "pleaseInput": "Por favor, introduzca",
   "getFailed": "Error al obtener",
-
   "createCurrency": "Agregar moneda",
   "currencyName": "Nombre de la moneda",
   "currencySymbol": "Símbolo de la moneda",
@@ -961,7 +942,6 @@
   "currencyDescriptionPlaceholder": "Por favor, introduzca la descripción de la moneda en inglés",
   "currencyDescriptionZhTip": "Descripción de la moneda en chino",
   "currencyDescriptionZhPlaceholder": "Por favor, introduzca la descripción de la moneda en chino",
-
   "basicInformation": "Información básica",
   "addressInformation": "Información de la dirección",
   "selectUser": "Seleccionar usuario",
@@ -974,7 +954,6 @@
   "usageCount": "Recuento de uso",
   "copySuccessful": "Copia exitosa",
   "invalidPhoneNumber": "Número de teléfono no válido",
-
   "userInfo": "Información del usuario",
   "bankInfo": "Información bancaria",
   "deliveryInfo": "Información de entrega",
@@ -987,7 +966,6 @@
   "delivered": "Entregado",
   "inTransit": "En tránsito",
   "deliveryFailed": "Entrega fallida",
-
   "createBank": "Crear banco",
   "bin": "Código BIN del banco",
   "enterBankBIN": "Por favor, introduzca el código BIN del banco",
@@ -995,7 +973,6 @@
   "systemSupport": "Soporte del sistema",
   "supported": "Compatible",
   "unsupported": "No compatible",
-
   "createCrypto": "Agregar nueva criptomoneda",
   "updateCrypto": "Actualizar criptomoneda",
   "technicalInfo": "Información técnica",
@@ -1033,7 +1010,6 @@
   "avalanche": "Avalanche",
   "cardano": "Cardano",
   "polkadot": "Polkadot",
-
   "bug": "Error",
   "featureRequest": "Solicitud de Función",
   "discussion": "Discusión",
@@ -1046,14 +1022,12 @@
   "reporter": "Reportero",
   "assignee": "Responsable",
   "issueTimeline": "Cronología del Problema",
-
   "legendaryContributor": "Contribuidor legendario",
   "eliteContributor": "Contribuidor de élite",
   "seniorContributor": "Contribuidor senior",
   "activeContributor": "Contribuidor activo",
   "contributor": "Contribuidor",
   "contributionCount": "Número de contribuciones",
-
   "siteName": "Nombre del sitio",
   "siteUrl": "Enlace del sitio",
   "classification": "Clasificación",
@@ -1112,7 +1086,6 @@
   "social": "Social",
   "details": "Detalles",
   "supportFeatures": "Funciones soportadas",
-
   "websiteDetails": "Detalles del sitio web",
   "mainCategory": "Categoría principal",
   "subCategory": "Subcategoría",
@@ -1131,7 +1104,6 @@
   "seoTitle": "Título SEO",
   "seoKeywords": "Palabras clave SEO",
   "seoDescription": "Descripción SEO",
-
   "createWebsite": "Crear sitio web",
   "websiteName": "Nombre del sitio web",
   "pleaseInputWebsiteName": "Por favor, ingrese el nombre del sitio web",
@@ -1140,17 +1112,14 @@
   "pleaseInputValidWebsiteLink": "Por favor, ingrese un enlace válido del sitio web",
   "websiteDescription": "Descripción del sitio web",
   "pleaseInputWebsiteDescription": "Por favor, ingrese la descripción del sitio web",
-
   "socialNetwork": "Red social",
   "pleaseInputSubClassification": "Por favor, ingrese una subcategoría",
   "priorityLevel": "Nivel de prioridad",
   "pleaseInputPriorityLevel": "Por favor, ingrese el nivel de prioridad",
-
   "pleaseInputLogoLink": "Por favor, ingrese el enlace del logo",
   "pleaseInputFaviconLink": "Por favor, ingrese el enlace del favicon",
   "label": "Etiqueta",
   "pleaseInputLabel": "Por favor, ingrese una etiqueta",
-
   "countryRegion": "País/Región",
   "pleaseSelectCountryRegion": "Por favor, seleccione un país o región",
   "pleaseSelectLanguage": "Por favor, seleccione un idioma",
@@ -1161,34 +1130,27 @@
   "pleaseInputSeoTitle": "Por favor, ingrese el título SEO",
   "pleaseInputSeoKeywords": "Por favor, ingrese las palabras clave SEO",
   "pleaseInputSeoDescription": "Por favor, ingrese la descripción SEO",
-
   "pleaseInputCompanyName": "Por favor, ingrese el nombre de la empresa",
   "establishmentYear": "Año de establecimiento",
   "pleaseInputEstablishmentYear": "Por favor, ingrese el año de establecimiento",
   "freePlusValue": "Freemium",
-
   "contactMailbox": "Correo de contacto",
   "pleaseInputContactMailbox": "Por favor, ingrese el correo de contacto",
-
   "customCss": "CSS personalizado",
   "pleaseInputCustomCss": "Por favor, ingrese el CSS personalizado",
   "customJavaScript": "JavaScript personalizado",
   "pleaseInputCustomJavaScript": "Por favor, ingrese el JavaScript personalizado",
-
   "dataSourceApi": "API de fuente de datos",
   "pleaseInputDataSourceApi": "Por favor, ingrese la API de fuente de datos",
   "relatedWebsites": "Sitios web relacionados",
   "pleaseInputRelatedWebsites": "Por favor, ingrese los sitios web relacionados",
   "pleaseInputSocialMediaLinks": "Por favor, ingrese los enlaces de redes sociales",
-
   "managementRemarks": "Notas de gestión",
   "pleaseInputManagementRemarks": "Por favor, ingrese las notas de gestión",
   "customData": "Datos personalizados",
   "pleaseInputCustomData": "Por favor, ingrese los datos personalizados",
-
   "features": "Características",
   "socialMedia": "Redes sociales",
-
   "androidAppDownloadLink": "Enlace de descarga de la aplicación Android",
   "iosAppDownloadLink": "Enlace de descarga de la aplicación iOS",
   "pleaseInputAndroidAppLink": "Por favor ingrese el enlace de descarga de la aplicación Android",
@@ -1206,22 +1168,18 @@
   "harmonyOSApp": "Aplicación HarmonyOS",
   "trafficSource": "Fuente de tráfico",
   "displayMode": "Modo de visualización",
-
   "expressCompanyManagement": "Gestión de Empresas de Envíos",
   "addExpressCompany": "Añadir Empresa de Envíos",
   "editExpressCompany": "Editar Empresa de Envíos",
   "expressCompanyDetails": "Detalles de la Empresa de Envíos",
-
   "trackingNumberFormat": "Formato del Número de Seguimiento",
   "pleaseEnterTrackingFormat": "Por favor ingrese el formato del número de seguimiento",
   "pleaseEnterWebsite": "Por favor ingrese el sitio web",
   "pleaseEnterContactNumber": "Por favor ingrese el número de contacto",
   "trackingFormatExample": "Ejemplo: ^\\d{12}$",
-
   "fetchCountriesFailed": "No se pudo obtener la lista de países",
   "fetchDataFailed": "No se pudo obtener los datos",
   "trackingFormat": "Formato del número de seguimiento",
-
   "websiteApplications": "Gestión de aplicaciones del sitio web",
   "applicationStatus": "Estado de la solicitud",
   "reviewComments": "Comentarios de revisión",
@@ -1235,7 +1193,6 @@
   "pleaseInputReviewComments": "Por favor, introduzca comentarios de revisión",
   "batchDeleteSuccess": "Eliminación masiva exitosa",
   "batchDeleteFailed": "Falló la eliminación masiva",
-
   "aiAssistant": "Asistente IA",
   "online": "En línea",
   "startNewChat": "Iniciar un nuevo chat",
@@ -1249,7 +1206,6 @@
   "getSessionsFailed": "No se pudieron obtener las sesiones",
   "getMessageHistoryFailed": "No se pudo obtener el historial de mensajes",
   "imageUploadFailed": "Fallo en la carga de imagen",
-
   "send": "Enviar",
   "text": "Texto",
   "system": "Sistema",
@@ -1277,16 +1233,13 @@
   "expireTime": "Hora de expiración",
   "markReadSuccess": "Marcado como leído con éxito",
   "markReadFailed": "Error al marcar como leído",
-
   "birthday": "Cumpleaños",
   "oldPassword": "Contraseña antigua",
   "newPassword": "Nueva contraseña",
   "invalidPhone": "Número de teléfono inválido",
   "passwordTooSimple": "La contraseña es demasiado simple",
-
   "logoutConfirm": "Confirmar cierre de sesión",
   "logoutConfirmContent": "¿Está seguro de que desea cerrar sesión?",
-
   "changePassword": "Cambiar contraseña",
   "confirmPassword": "Confirmar contraseña",
   "securitySettings": "Configuraciones de seguridad",
@@ -1296,7 +1249,6 @@
   "enterAssignee": "Por favor, introduzca el asignado",
   "enterReporter": "Por favor, introduzca el informante",
   "onlyShowAssignedToMe": "Asignado a mí",
-
   "shippingMethodName": "Nombre del método de envío",
   "addShippingMethod": "Agregar método de envío",
   "editShippingMethod": "Editar método de envío",
@@ -1410,7 +1362,6 @@
   "termsConditions": "Términos y Condiciones",
   "privacyPolicy": "Política de Privacidad",
   "selectLanguage": "Seleccionar idioma",
-
   "confirmTitle": "Confirmar operación",
   "enableConfirmTitle": "¿Confirmar activación?",
   "disableConfirmTitle": "¿Confirmar desactivación?",
@@ -1418,7 +1369,6 @@
   "adminLanguageSetting": "Configuración de idioma del sistema de administración",
   "appLanguageSetting": "Configuración de idioma de la aplicación",
   "termsOfService": "Términos de servicio",
-
   "searchTerm": "Término de búsqueda",
   "totalSearchCount": "Total de búsquedas",
   "mobileSearchCount": "Búsquedas en móvil",
@@ -1431,9 +1381,7 @@
   "pleaseInputCategoryId": "Por favor ingrese el ID de categoría",
   "addHotSearch": "Agregar búsqueda popular",
   "editHotSearch": "Editar búsqueda popular",
-
   "appearanceSettings": "Configuración de apariencia",
-
   "primaryColor": "Color primario",
   "secondaryColor": "Color secundario",
   "fontSize": "Tamaño de fuente",
@@ -1443,7 +1391,6 @@
   "splashScreenUrl": "URL de pantalla de inicio",
   "homeLayout": "Diseño de inicio",
   "customText": "Texto personalizado",
-
   "small": "Pequeño",
   "large": "Grande",
   "rounded": "Redondeado",
@@ -1739,7 +1686,6 @@
   "completionTokens": "Tokens de respuesta",
   "totalTokens": "Total de tokens",
   "durationMs": "Duración (ms)",
-  
   "coinType": "Tipo de moneda",
   "changeType": "Tipo de cambio",
   "amount": "Importe",
@@ -2075,5 +2021,53 @@
   "batchApproveSuccess": "Aprobación por lotes exitosa",
   "batchApproveFailed": "Error en la aprobación por lotes",
   "视频预览": "Vista previa de video",
-  "图片预览": "Vista previa de imagen"
+  "图片预览": "Vista previa de imagen",
+  "AI运营发帖素材管理": "Inventario de publicacion IA",
+  "AI机器人行为日志": "Registros de acciones del bot IA",
+  "published": "Publicado",
+  "pleaseSelectData": "Seleccione datos",
+  "onlyPendingReviewCanBeApproved": "Solo se pueden aprobar elementos pendientes de revisión",
+  "onlyPendingReviewCanBeRejected": "Solo se pueden rechazar elementos pendientes de revisión",
+  "batchReviewToPending": "Aprobar en lote a pendiente de publicación",
+  "batchReviewSuccess": "Revisión por lotes correcta",
+  "batchReviewFailed": "Error en revisión por lotes",
+  "batchReject": "Rechazar en lote",
+  "batchRejectSuccess": "Rechazo por lotes correcto",
+  "batchRejectFailed": "Error al rechazar por lotes",
+  "confirmBatchReject": "¿Rechazar los elementos seleccionados?",
+  "confirmBatchReviewToPending": "¿Aprobar los seleccionados a pendiente de publicación?",
+  "imageUrl": "URL de imagen",
+  "todayPostStats": "Estadísticas de hoy",
+  "todayPublished": "Publicado hoy",
+  "todayCreated": "Añadidos hoy",
+  "todayPendingReview": "Pendiente de revisión hoy",
+  "agentTypes": "Agentes activos",
+  "agentShare": "Participación de agentes",
+  "channelShare": "Participación de canales",
+  "styleShare": "Participación de estilos",
+  "noStyleTags": "Sin etiquetas de estilo",
+  "todayStatusShare": "Entradas de hoy por estado",
+  "operatorId": "ID del bot",
+  "actionType": "Tipo de acción",
+  "actionResult": "Resultado de la acción",
+  "actionDescription": "Descripción de la acción",
+  "actionDetails": "Detalles de la acción",
+  "generateImage": "Generar imagen",
+  "postPublish": "Publicar publicación",
+  "postLike": "Dar me gusta",
+  "postComment": "Comentar publicación",
+  "resourceId": "ID de recurso",
+  "postStockReport": "Informe de publicaciones",
+  "last7Days": "7 días",
+  "last14Days": "14 días",
+  "last30Days": "30 días",
+  "last90Days": "90 días",
+  "periodPublished": "Publicados",
+  "periodCreated": "Añadidos",
+  "periodPendingReview": "Pendiente",
+  "dailyTrend": "Tendencia diaria",
+  "createdTrend": "Alta",
+  "publishedTrend": "Publicación",
+  "pendingReviewTrend": "Revisión",
+  "statusShare": "Distribución de estados"
 }

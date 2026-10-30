@@ -302,7 +302,13 @@
     "AI运营工具": "أدوات عمليات الذكاء الاصطناعي",
     "社区管理": "إدارة المجتمع",
     "生图场景管理": "إدارة سيناريوهات إنشاء الصور",
-    "生图场景分类": "فئات سيناريوهات إنشاء الصور"
+    "生图场景分类": "فئات سيناريوهات إنشاء الصور",
+    "提示词商城": "سوق المطالبات",
+    "AI生成管理": "إدارة توليد الذكاء الاصطناعي",
+    "Tavily账号": "حسابات Tavily",
+    "套餐管理": "إدارة الباقات",
+    "邀请系统": "نظام الدعوات",
+    "DeepSeek API调用管理": "إدارة استدعاءات DeepSeek API"
   },
   "confirmDelete": "تأكيد الحذف",
   "countryName": "اسم الدولة",
@@ -439,14 +445,12 @@
   "viewCount": "عدد المشاهدات",
   "createTime": "وقت الإنشاء",
   "updateTime": "وقت التحديث",
-
   "computer": "كمبيوتر",
   "phone": "هاتف",
   "other": "آخر",
   "productEnabled": "تم تفعيل المنتج",
   "productDisabled": "تم تعطيل المنتج",
   "productStatus": "حالة المنتج",
-
   "createProduct": "إنشاء منتج",
   "updateProduct": "تحديث منتج",
   "deleteProduct": "حذف منتج",
@@ -457,7 +461,6 @@
   "enterStock": "أدخل المخزون",
   "selectCategory": "اختر التصنيف",
   "enterProvince": "أدخل المقاطعة",
-
   "coverImage": "صورة الغلاف",
   "coverImageTip": "قم بتحميل صورة غلاف النموذج، نسبة العرض إلى الارتفاع الموصى بها 2:1",
   "productImages": "صور المنتج",
@@ -466,7 +469,6 @@
   "errorAddingProduct": "فشل إضافة المنتج",
   "errorUpdatingProduct": "فشل تحديث المنتج",
   "productDetails": "تفاصيل المنتج",
-
   "electronics": "الإلكترونيات",
   "homeAppliances": "الأجهزة المنزلية",
   "clothingAndAccessories": "الملابس والإكسسوارات",
@@ -697,7 +699,6 @@
   "secretKey": "المفتاح السري",
   "endpoint": "نقطة النهاية",
   "tags": "العلامات",
-
   "enterStorageProvider": "أدخل مزود التخزين",
   "enterStorageType": "أدخل نوع التخزين",
   "enterAccessKey": "أدخل مفتاح الوصول",
@@ -720,7 +721,6 @@
   "securityConfig": "إعدادات الأمان",
   "advancedConfig": "إعدادات متقدمة",
   "auditInfo": "معلومات التدقيق",
-
   "compliance": "الامتثال",
   "encryptionType": "نوع التشفير",
   "isEncrypted": "مُشفر",
@@ -730,7 +730,6 @@
   "maxStorageSize": "أقصى حجم للتخزين",
   "maxRequestLimit": "أقصى حد للطلبات",
   "lastCheckedAt": "آخر وقت فحص",
-
   "verifyConfig": "تكوين التحقق",
   "verifying": "جارٍ التحقق",
   "verifySuccess": "تم التحقق بنجاح",
@@ -752,7 +751,6 @@
   "totalPopulation": "إجمالي السكان",
   "totalArea": "إجمالي المساحة",
   "tenThousand": "عشرة آلاف",
-
   "regionCodeTip": "رمز المنطقة الإدارية (الدولة، المحافظة، المدينة، إلخ.)",
   "countryCodeTip": "رمز الدولة (مثل: CN للصين، US للولايات المتحدة)",
   "localNameTip": "الاسم باللغة المحلية",
@@ -763,12 +761,10 @@
   "populationTip": "عدد السكان",
   "areaKm2Tip": "المساحة (بالكيلومترات المربعة)",
   "regionTip": "المنطقة (مثل: شمال الصين، جنوب الصين، إلخ.)",
-
   "usersCanContactThemselves": "يمكن للمستخدمين التواصل بأنفسهم",
   "callTheErrandRunnerToDeliver": "اتصل بالمرسال للتوصيل",
   "expressDelivery": "توصيل سريع",
   "logisticsDelivery": "توصيل لوجستي",
-
   "agentName": "اسم الوكيل",
   "agentType": "نوع الوكيل",
   "regionName": "اسم المنطقة",
@@ -781,7 +777,6 @@
   "tertiaryAgent": "وكيل ثالثي",
   "approved": "تمت الموافقة",
   "rejected": "تم الرفض",
-
   "pleaseInputAgentName": "يرجى إدخال اسم الوكيل",
   "pleaseSelectAgentType": "يرجى اختيار نوع الوكيل",
   "pleaseInputRegionCode": "يرجى إدخال رمز المنطقة",
@@ -809,19 +804,16 @@
   "USD": "دولار أمريكي",
   "EUR": "يورو",
   "pleaseInputRemarks": "يرجى إدخال معلومات الملاحظات",
-
   "regionId": "معرف المنطقة",
   "pleaseSelectCityToGetRegionId": "يرجى اختيار مدينة للحصول على معرف المنطقة",
   "pleaseSelectCityToGetRegionCode": "يرجى اختيار مدينة للحصول على رمز المنطقة",
   "pleaseSelectCityToGetRegionName": "يرجى اختيار مدينة للحصول على اسم المنطقة",
   "pleaseSelectIsExclusive": "يرجى اختيار ما إذا كان حصريًا",
-
   "authorizationPeriod": "فترة التفويض",
   "agentAuthorizationStartDate": "تاريخ بدء تفويض الوكيل",
   "agentAuthorizationEndDate": "تاريخ انتهاء تفويض الوكيل",
   "pleaseSelectAuthorizationStartDate": "يرجى اختيار تاريخ بدء التفويض",
   "pleaseSelectAuthorizationEndDate": "يرجى اختيار تاريخ انتهاء التفويض",
-
   "searchAgentFailed": "فشل البحث عن الوكيل",
   "getCountryListFailed": "فشل في الحصول على قائمة الدول",
   "searchCityFailed": "فشل البحث عن المدينة",
@@ -831,52 +823,40 @@
   "settlementCurrency": "عملة التسوية",
   "pleaseSelectSettlementCurrency": "يرجى اختيار عملة التسوية",
   "cityType": "نوع المدينة",
-
   "updateRegionalAgent": "تعديل الوكيل الإقليمي",
   "regionInfo": "معلومات المنطقة",
   "authorizationTime": "وقت التفويض",
-
   "pleaseSelectAuditStatus": "حالة التدقيق",
   "pendingAudit": "قيد التدقيق",
   "pleaseSelectStatus": "الحالة",
   "cooperationStartDate": "تاريخ بدء التعاون",
   "cooperationEndDate": "تاريخ انتهاء التعاون",
-
   "validationTime": "وقت التحقق / ثانية",
-
   "languageCode": "رمز اللغة",
   "englishName": "الاسم الإنجليزي",
   "nativeName": "الاسم الأصلي",
   "developmentStatus": "حالة التطوير",
   "enableStatus": "حالة التمكين",
-
   "developed": "تم التطوير",
   "notDeveloped": "غير مطور",
   "addLanguage": "إضافة لغة",
   "batchEnable": "تمكين الدفعة",
   "batchDisable": "تعطيل الدفعة",
-
   "pleaseSelectRecords": "يرجى اختيار السجلات لتعديلها",
-
   "enterLanguageCode": "يرجى إدخال رمز اللغة",
   "enterChineseName": "يرجى إدخال الاسم الصيني",
   "selectDevelopmentStatus": "يرجى اختيار حالة التطوير",
   "selectEnableStatus": "يرجى اختيار حالة التمكين",
-
   "inputLanguageCode": "يرجى إدخال رمز اللغة",
   "inputEnglishName": "يرجى إدخال الاسم الإنجليزي",
   "inputChineseName": "يرجى إدخال الاسم الصيني",
   "inputNativeName": "يرجى إدخال الاسم الأصلي",
-
   "addTitle": "إنشاء",
   "editTitle": "تعديل",
   "selectRecord": "يرجى اختيار السجلات لتعديلها",
-
   "modifyingEnableStatusWillAffectLanguageOptions": "تعديل حالة التمكين سيؤثر على خيارات اللغة في نظام الإدارة والتطبيق",
-
   "confirmStatusChange": "تأكيد تغيير الحالة",
   "confirmLanguageStatusChangeMessage": "هل أنت متأكد من أنك تريد تغيير حالة اللغة؟ سيؤثر هذا على خيارات اللغة المتاحة في النظام.",
-
   "addPaymentMethod": "إضافة طريقة دفع جديدة",
   "editPaymentMethod": "تعديل طريقة الدفع",
   "paymentMethodName": "اسم طريقة الدفع",
@@ -918,7 +898,6 @@
   "configJson": "إعداد JSON",
   "configJsonPlaceholder": "{\"secret_key\":\"xxx\",\"webhook_secret\":\"xxx\"}",
   "badgeTextPlaceholderPayment": "HOT / NEW / 0% عمولة",
-
   "clientName": "اسم العميل",
   "privacyPolicyUrl": "رابط سياسة الخصوصية",
   "termsConditionsUrl": "رابط الشروط والأحكام",
@@ -931,7 +910,6 @@
   "saving": "جارٍ الحفظ...",
   "pleaseInput": "يرجى الإدخال",
   "getFailed": "فشل الحصول",
-
   "createCurrency": "إضافة عملة جديدة",
   "currencyName": "اسم العملة",
   "currencySymbol": "رمز العملة",
@@ -943,8 +921,6 @@
   "currencyDescriptionPlaceholder": "يرجى إدخال وصف العملة باللغة الإنجليزية",
   "currencyDescriptionZhTip": "وصف العملة باللغة الصينية",
   "currencyDescriptionZhPlaceholder": "يرجى إدخال وصف العملة باللغة الصينية",
-
-
   "basicInformation": "المعلومات الأساسية",
   "addressInformation": "معلومات العنوان",
   "selectUser": "اختر المستخدم",
@@ -957,7 +933,6 @@
   "usageCount": "عدد الاستخدامات",
   "copySuccessful": "تم النسخ بنجاح",
   "invalidPhoneNumber": "رقم الهاتف غير صالح",
-
   "userInfo": "معلومات المستخدم",
   "bankInfo": "معلومات البنك",
   "deliveryInfo": "معلومات التوصيل",
@@ -970,7 +945,6 @@
   "delivered": "تم التوصيل",
   "inTransit": "قيد النقل",
   "deliveryFailed": "فشل التوصيل",
-
   "createBank": "إنشاء بنك",
   "bin": "رمز BIN الخاص بالبنك",
   "enterBankBIN": "يرجى إدخال رمز BIN الخاص بالبنك",
@@ -978,7 +952,6 @@
   "systemSupport": "دعم النظام",
   "supported": "مدعوم",
   "unsupported": "غير مدعوم",
-
   "createCrypto": "إضافة عملة مشفرة جديدة",
   "updateCrypto": "تحديث العملة المشفرة",
   "technicalInfo": "معلومات تقنية",
@@ -1016,7 +989,6 @@
   "avalanche": "أفالانش",
   "cardano": "كاردانو",
   "polkadot": "بولكادوت",
-
   "bug": "خلل",
   "featureRequest": "طلب ميزة",
   "discussion": "مناقشة",
@@ -1029,14 +1001,12 @@
   "reporter": "المراسل",
   "assignee": "المسؤول",
   "issueTimeline": "الجدول الزمني للقضية",
-
   "legendaryContributor": "مساهم أسطوري",
   "eliteContributor": "مساهم متميز",
   "seniorContributor": "مساهم كبير",
   "activeContributor": "مساهم نشط",
   "contributor": "مساهم",
   "contributionCount": "عدد المساهمات",
-
   "siteName": "اسم الموقع",
   "siteUrl": "رابط الموقع",
   "classification": "التصنيف",
@@ -1095,7 +1065,6 @@
   "social": "اجتماعي",
   "details": "تفاصيل",
   "supportFeatures": "الميزات المدعومة",
-
   "websiteDetails": "تفاصيل الموقع",
   "mainCategory": "الفئة الرئيسية",
   "subCategory": "الفئة الفرعية",
@@ -1114,7 +1083,6 @@
   "seoTitle": "عنوان تحسين محركات البحث",
   "seoKeywords": "كلمات تحسين محركات البحث",
   "seoDescription": "وصف تحسين محركات البحث",
-
   "createWebsite": "إنشاء موقع",
   "websiteName": "اسم الموقع",
   "pleaseInputWebsiteName": "يرجى إدخال اسم الموقع",
@@ -1123,17 +1091,14 @@
   "pleaseInputValidWebsiteLink": "يرجى إدخال رابط موقع صحيح",
   "websiteDescription": "وصف الموقع",
   "pleaseInputWebsiteDescription": "يرجى إدخال وصف الموقع",
-
   "socialNetwork": "شبكة اجتماعية",
   "pleaseInputSubClassification": "يرجى إدخال التصنيف الفرعي",
   "priorityLevel": "مستوى الأولوية",
   "pleaseInputPriorityLevel": "يرجى إدخال مستوى الأولوية",
-
   "pleaseInputLogoLink": "يرجى إدخال رابط الشعار",
   "pleaseInputFaviconLink": "يرجى إدخال رابط الأيقونة المصغرة",
   "label": "تسمية",
   "pleaseInputLabel": "يرجى إدخال التسمية",
-
   "countryRegion": "الدولة/المنطقة",
   "pleaseSelectCountryRegion": "يرجى اختيار الدولة/المنطقة",
   "pleaseSelectLanguage": "يرجى اختيار اللغة",
@@ -1144,34 +1109,27 @@
   "pleaseInputSeoTitle": "يرجى إدخال عنوان SEO",
   "pleaseInputSeoKeywords": "يرجى إدخال كلمات SEO المفتاحية",
   "pleaseInputSeoDescription": "يرجى إدخال وصف SEO",
-
   "pleaseInputCompanyName": "يرجى إدخال اسم الشركة",
   "establishmentYear": "سنة التأسيس",
   "pleaseInputEstablishmentYear": "يرجى إدخال سنة التأسيس",
   "freePlusValue": "قيمة إضافية مجانية",
-
   "contactMailbox": "صندوق البريد",
   "pleaseInputContactMailbox": "يرجى إدخال صندوق البريد",
-
   "customCss": "CSS مخصص",
   "pleaseInputCustomCss": "يرجى إدخال CSS مخصص",
   "customJavaScript": "JavaScript مخصص",
   "pleaseInputCustomJavaScript": "يرجى إدخال JavaScript مخصص",
-
   "dataSourceApi": "مصدر بيانات API",
   "pleaseInputDataSourceApi": "يرجى إدخال مصدر بيانات API",
   "relatedWebsites": "مواقع ذات صلة",
   "pleaseInputRelatedWebsites": "يرجى إدخال المواقع ذات الصلة",
   "pleaseInputSocialMediaLinks": "يرجى إدخال روابط وسائل التواصل الاجتماعي",
-
   "managementRemarks": "ملاحظات الإدارة",
   "pleaseInputManagementRemarks": "يرجى إدخال ملاحظات الإدارة",
   "customData": "بيانات مخصصة",
   "pleaseInputCustomData": "يرجى إدخال البيانات المخصصة",
-
   "features": "الميزات",
   "socialMedia": "وسائل التواصل الاجتماعي",
-
   "androidAppDownloadLink": "رابط تحميل تطبيق الأندرويد",
   "iosAppDownloadLink": "رابط تحميل تطبيق iOS",
   "pleaseInputAndroidAppLink": "يرجى إدخال رابط تحميل تطبيق الأندرويد",
@@ -1189,22 +1147,18 @@
   "harmonyOSApp": "تطبيق هونغمنغ",
   "trafficSource": "مصدر الحركة",
   "displayMode": "وضع العرض",
-
   "expressCompanyManagement": "إدارة شركات الشحن",
   "addExpressCompany": "إضافة شركة شحن",
   "editExpressCompany": "تعديل شركة شحن",
   "expressCompanyDetails": "تفاصيل شركة الشحن",
-
   "trackingNumberFormat": "تنسيق رقم التتبع",
   "pleaseEnterTrackingFormat": "يرجى إدخال تنسيق رقم التتبع",
   "pleaseEnterWebsite": "يرجى إدخال رابط الموقع",
   "pleaseEnterContactNumber": "يرجى إدخال رقم الاتصال",
   "trackingFormatExample": "مثال: ^\\d{12}$",
-
   "fetchCountriesFailed": "فشل في جلب قائمة الدول",
   "fetchDataFailed": "فشل في جلب البيانات",
   "trackingFormat": "تنسيق رقم التتبع",
-
   "websiteApplications": "إدارة تطبيقات الموقع",
   "applicationStatus": "حالة الطلب",
   "reviewComments": "تعليقات المراجعة",
@@ -1218,7 +1172,6 @@
   "pleaseInputReviewComments": "يرجى إدخال تعليقات المراجعة",
   "batchDeleteSuccess": "تم الحذف الجماعي بنجاح",
   "batchDeleteFailed": "فشل الحذف الجماعي",
-
   "aiAssistant": "مساعد الذكاء الاصطناعي",
   "online": "متصل",
   "startNewChat": "ابدأ محادثة جديدة",
@@ -1232,7 +1185,6 @@
   "getSessionsFailed": "فشل في الحصول على قائمة الجلسات",
   "getMessageHistoryFailed": "فشل في الحصول على سجل الرسائل",
   "imageUploadFailed": "فشل في تحميل الصورة",
-
   "send": "إرسال",
   "text": "نص",
   "system": "النظام",
@@ -1260,16 +1212,13 @@
   "expireTime": "وقت الانتهاء",
   "markReadSuccess": "تم وضع علامة مقروء بنجاح",
   "markReadFailed": "فشل وضع علامة مقروء",
-
   "birthday": "تاريخ الميلاد",
   "oldPassword": "كلمة المرور القديمة",
   "newPassword": "كلمة المرور الجديدة",
   "invalidPhone": "رقم الهاتف غير صالح",
   "passwordTooSimple": "كلمة المرور بسيطة جدًا",
-
   "logoutConfirm": "تأكيد تسجيل الخروج",
   "logoutConfirmContent": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
-
   "changePassword": "تغيير كلمة المرور",
   "confirmPassword": "تأكيد كلمة المرور",
   "securitySettings": "إعدادات الأمان",
@@ -1279,7 +1228,6 @@
   "enterAssignee": "يرجى إدخال الشخص المخصص",
   "enterReporter": "يرجى إدخال المبلغ",
   "onlyShowAssignedToMe": "المخصصة لي",
-
   "shippingMethodName": "اسم طريقة الشحن",
   "addShippingMethod": "إضافة طريقة شحن",
   "editShippingMethod": "تحرير طريقة الشحن",
@@ -1382,12 +1330,10 @@
   "cornerFittings": "زوايا الحاوية",
   "forkliftPockets": "جيوب الرافعة الشوكية",
   "distanceFromEnd": "المسافة من النهاية",
-
   "termsConditionsContent": "محتوى الشروط والأحكام",
   "privacyPolicyContent": "محتوى سياسة الخصوصية",
   "pleaseInputTermsConditionsContent": "الرجاء إدخال محتوى الشروط والأحكام",
   "pleaseInputPrivacyPolicyContent": "الرجاء إدخال محتوى سياسة الخصوصية",
-
   "basicSettings": "الإعدادات الأساسية",
   "supportInfo": "معلومات الدعم",
   "appSettings": "إعدادات التطبيق",
@@ -1414,9 +1360,7 @@
   "pleaseInputCategoryId": "الرجاء إدخال معرف الفئة",
   "addHotSearch": "إضافة بحث شائع",
   "editHotSearch": "تعديل البحث الشائع",
-
   "appearanceSettings": "إعدادات المظهر",
-
   "primaryColor": "اللون الأساسي",
   "secondaryColor": "اللون الثانوي",
   "fontSize": "حجم الخط",
@@ -1426,7 +1370,6 @@
   "splashScreenUrl": "رابط شاشة البداية",
   "homeLayout": "تخطيط الصفحة الرئيسية",
   "customText": "نص مخصص",
-
   "small": "صغير",
   "large": "كبير",
   "rounded": "مستدير",
@@ -1506,7 +1449,6 @@
   "pleaseInputAccessKey": "الرجاء إدخال مفتاح الوصول",
   "pleaseInputSecretKey": "الرجاء إدخال المفتاح السري",
   "pleaseSelectType": "الرجاء اختيار النوع",
-
   "addStorage": "إضافة تخزين",
   "editStorage": "تعديل التخزين",
   "pleaseInputUserId": "الرجاء إدخال معرف المستخدم",
@@ -1531,7 +1473,6 @@
   "activeStatus": "نشط",
   "inactiveStatus": "غير نشط",
   "disabledStatus": "معطل",
-
   "addBucket": "إضافة حاوية",
   "editBucket": "تعديل الحاوية",
   "providerId": "معرف الموفر",
@@ -1724,7 +1665,6 @@
   "completionTokens": "رموز الاستجابة",
   "totalTokens": "إجمالي الرموز",
   "durationMs": "المدة (مللي ثانية)",
-  
   "coinType": "نوع العملة",
   "changeType": "نوع التغيير",
   "amount": "المبلغ",
@@ -2060,5 +2000,53 @@
   "batchApproveSuccess": "تمت الموافقة الجماعية بنجاح",
   "batchApproveFailed": "فشلت الموافقة الجماعية",
   "视频预览": "معاينة الفيديو",
-  "图片预览": "معاينة الصورة"
+  "图片预览": "معاينة الصورة",
+  "AI运营发帖素材管理": "مخزون نشر الذكاء الاصطناعي",
+  "AI机器人行为日志": "سجلات إجراءات روبوت الذكاء الاصطناعي",
+  "published": "منشور",
+  "pleaseSelectData": "يرجى تحديد البيانات",
+  "onlyPendingReviewCanBeApproved": "يمكن الموافقة فقط على العناصر قيد المراجعة",
+  "onlyPendingReviewCanBeRejected": "يمكن رفض العناصر قيد المراجعة فقط",
+  "batchReviewToPending": "الموافقة الجماعية إلى انتظار النشر",
+  "batchReviewSuccess": "نجحت المراجعة الجماعية",
+  "batchReviewFailed": "فشلت المراجعة الجماعية",
+  "batchReject": "رفض جماعي",
+  "batchRejectSuccess": "نجح الرفض الجماعي",
+  "batchRejectFailed": "فشل الرفض الجماعي",
+  "confirmBatchReject": "هل تريد رفض العناصر المحددة؟",
+  "confirmBatchReviewToPending": "الموافقة على العناصر المحددة لانتظار النشر؟",
+  "imageUrl": "رابط الصورة",
+  "todayPostStats": "إحصائيات النشر اليوم",
+  "todayPublished": "نُشر اليوم",
+  "todayCreated": "أُضيف اليوم",
+  "todayPendingReview": "قيد المراجعة اليوم",
+  "agentTypes": "الوكلاء النشطون",
+  "agentShare": "حصة الوكلاء",
+  "channelShare": "حصة القنوات",
+  "styleShare": "حصة وسوم الأسلوب",
+  "noStyleTags": "لا توجد وسوم أسلوب",
+  "todayStatusShare": "حالة الإدخال اليوم",
+  "operatorId": "معرّف الروبوت",
+  "actionType": "نوع الإجراء",
+  "actionResult": "نتيجة الإجراء",
+  "actionDescription": "وصف الإجراء",
+  "actionDetails": "تفاصيل الإجراء",
+  "generateImage": "إنشاء صورة",
+  "postPublish": "نشر منشور",
+  "postLike": "إعجاب بالمنشور",
+  "postComment": "التعليق على المنشور",
+  "resourceId": "معرّف المورد",
+  "postStockReport": "تقرير النشر",
+  "last7Days": "7 أيام",
+  "last14Days": "14 يومًا",
+  "last30Days": "30 يومًا",
+  "last90Days": "90 يومًا",
+  "periodPublished": "منشور",
+  "periodCreated": "مضاف",
+  "periodPendingReview": "قيد المراجعة",
+  "dailyTrend": "الاتجاه اليومي",
+  "createdTrend": "إدخال",
+  "publishedTrend": "نشر",
+  "pendingReviewTrend": "مراجعة",
+  "statusShare": "توزيع الحالات"
 }

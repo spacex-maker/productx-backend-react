@@ -302,7 +302,13 @@
     "AI运营工具": "AI運用ツール",
     "社区管理": "コミュニティ管理",
     "生图场景管理": "画像生成シーン管理",
-    "生图场景分类": "画像生成シーンカテゴリー"
+    "生图场景分类": "画像生成シーンカテゴリー",
+    "提示词商城": "プロンプトマーケット",
+    "AI生成管理": "AI生成管理",
+    "Tavily账号": "Tavilyアカウント",
+    "套餐管理": "プラン管理",
+    "邀请系统": "招待システム",
+    "DeepSeek API调用管理": "DeepSeek API呼び出し管理"
   },
   "confirmDelete": "削除の確認",
   "countryName": "国名",
@@ -714,7 +720,6 @@
   "secretKey": "シークレットキー",
   "endpoint": "エンドポイント",
   "tags": "タグ",
-
   "enterStorageProvider": "ストレージプロバイダーを入力してください",
   "enterStorageType": "ストレージタイプを入力してください",
   "enterAccessKey": "アクセスキーを入力してください",
@@ -737,7 +742,6 @@
   "securityConfig": "セキュリティ設定",
   "advancedConfig": "高度な設定",
   "auditInfo": "監査情報",
-
   "compliance": "コンプライアンス",
   "encryptionType": "暗号化タイプ",
   "isEncrypted": "暗号化されている",
@@ -747,7 +751,6 @@
   "maxStorageSize": "最大ストレージサイズ",
   "maxRequestLimit": "最大リクエスト制限",
   "lastCheckedAt": "最終確認時間",
-
   "verifyConfig": "構成の確認",
   "verifying": "確認中",
   "verifySuccess": "確認成功",
@@ -764,13 +767,11 @@
   "aesKeyTooltip": "このキーは、AccessKey と SecretKey を暗号化して保存するために使用されます",
   "errorInfo": "エラー情報",
   "dataContributors": "データ貢献者",
-
   "regionsCount": "行政区画数",
   "subRegionsCount": "下位行政区画数",
   "totalPopulation": "総人口",
   "totalArea": "総面積",
   "tenThousand": "万",
-
   "regionCodeTip": "行政区画コード（国、都道府県、市区町村など）",
   "countryCodeTip": "国コード（例：中国はCN、アメリカはUS）",
   "localNameTip": "現地語の名称",
@@ -781,12 +782,10 @@
   "populationTip": "人口",
   "areaKm2Tip": "面積（平方キロメートル）",
   "regionTip": "地域（例：華北、華南など）",
-
   "usersCanContactThemselves": "ユーザーは自分で連絡できます",
   "callTheErrandRunnerToDeliver": "お使いランナーに配達を依頼する",
   "expressDelivery": "速達配送",
   "logisticsDelivery": "物流配送",
-
   "agentName": "エージェント名",
   "agentType": "エージェントタイプ",
   "regionName": "地域名",
@@ -799,7 +798,6 @@
   "tertiaryAgent": "三次エージェント",
   "approved": "承認済み",
   "rejected": "拒否されました",
-
   "pleaseInputAgentName": "エージェント名を入力してください",
   "pleaseSelectAgentType": "エージェントタイプを選択してください",
   "pleaseInputRegionCode": "地域コードを入力してください",
@@ -827,19 +825,16 @@
   "USD": "米ドル",
   "EUR": "ユーロ",
   "pleaseInputRemarks": "備考を入力してください",
-
   "regionId": "地域ID",
   "pleaseSelectCityToGetRegionId": "地域IDを取得するには都市を選択してください",
   "pleaseSelectCityToGetRegionCode": "地域コードを取得するには都市を選択してください",
   "pleaseSelectCityToGetRegionName": "地域名を取得するには都市を選択してください",
   "pleaseSelectIsExclusive": "独占代理であるかどうかを選択してください",
-
   "authorizationPeriod": "認可期間",
   "agentAuthorizationStartDate": "エージェントの認可開始日",
   "agentAuthorizationEndDate": "エージェントの認可終了日",
   "pleaseSelectAuthorizationStartDate": "認可開始日を選択してください",
   "pleaseSelectAuthorizationEndDate": "認可終了日を選択してください",
-
   "searchAgentFailed": "エージェントの検索に失敗しました",
   "getCountryListFailed": "国リストの取得に失敗しました",
   "searchCityFailed": "都市の検索に失敗しました",
@@ -849,49 +844,38 @@
   "settlementCurrency": "決済通貨",
   "pleaseSelectSettlementCurrency": "決済通貨を選択してください",
   "cityType": "都市タイプ",
-
   "updateRegionalAgent": "地域エージェントを更新",
   "regionInfo": "地域情報",
   "authorizationTime": "認可時間",
-
   "pleaseSelectAuditStatus": "監査ステータス",
   "pendingAudit": "監査保留中",
   "pleaseSelectStatus": "ステータス",
   "cooperationStartDate": "協力開始日",
   "cooperationEndDate": "協力終了日",
-
   "validationTime": "検証時間 / 秒",
-
   "languageCode": "言語コード",
   "englishName": "英語名",
   "nativeName": "ネイティブ名",
   "developmentStatus": "開発状況",
   "enableStatus": "有効状態",
-
   "developed": "開発済み",
   "notDeveloped": "未開発",
   "addLanguage": "言語を追加",
   "batchEnable": "一括有効化",
   "batchDisable": "一括無効化",
-
   "pleaseSelectRecords": "変更するレコードを選択してください",
-
   "enterLanguageCode": "言語コードを入力してください",
   "enterChineseName": "中国語の名前を入力してください",
   "selectDevelopmentStatus": "開発状況を選択してください",
   "selectEnableStatus": "有効状態を選択してください",
-
   "inputLanguageCode": "言語コードを入力してください",
   "inputEnglishName": "英語名を入力してください",
   "inputChineseName": "中国語名を入力してください",
   "inputNativeName": "ネイティブ名を入力してください",
-
   "addTitle": "作成",
   "editTitle": "編集",
   "selectRecord": "変更するレコードを選択してください",
-
   "modifyingEnableStatusWillAffectLanguageOptions": "有効状態の変更は、管理システムおよびアプリ内の言語オプションに影響を与えます",
-
   "confirmStatusChange": "ステータス変更の確認",
   "confirmLanguageStatusChangeMessage": "言語ステータスを変更してもよろしいですか？ これにより、システムで利用可能な言語オプションに影響します。",
   "addPaymentMethod": "支払い方法を追加",
@@ -935,7 +919,6 @@
   "configJson": "設定JSON",
   "configJsonPlaceholder": "{\"secret_key\":\"xxx\",\"webhook_secret\":\"xxx\"}",
   "badgeTextPlaceholderPayment": "HOT / NEW / 0%手数料",
-
   "clientName": "クライアント名",
   "privacyPolicyUrl": "プライバシーポリシーのURL",
   "termsConditionsUrl": "利用規約のURL",
@@ -948,7 +931,6 @@
   "saving": "保存中...",
   "pleaseInput": "入力してください",
   "getFailed": "取得に失敗しました",
-
   "createCurrency": "通貨を追加",
   "currencyName": "通貨名",
   "currencySymbol": "通貨記号",
@@ -960,7 +942,6 @@
   "currencyDescriptionPlaceholder": "英語で通貨の説明を入力してください",
   "currencyDescriptionZhTip": "通貨の中国語説明",
   "currencyDescriptionZhPlaceholder": "中国語で通貨の説明を入力してください",
-
   "basicInformation": "基本情報",
   "addressInformation": "住所情報",
   "selectUser": "ユーザーを選択",
@@ -972,7 +953,6 @@
   "usageCount": "使用回数",
   "copySuccessful": "コピー成功",
   "invalidPhoneNumber": "無効な電話番号",
-
   "userInfo": "ユーザー情報",
   "bankInfo": "銀行情報",
   "deliveryInfo": "配送情報",
@@ -985,7 +965,6 @@
   "delivered": "配達済み",
   "inTransit": "輸送中",
   "deliveryFailed": "配送失敗",
-
   "createBank": "銀行を作成",
   "bin": "銀行BINコード",
   "enterBankBIN": "銀行のBINコードを入力してください",
@@ -993,7 +972,6 @@
   "systemSupport": "システムサポート",
   "supported": "サポートされている",
   "unsupported": "サポートされていない",
-
   "createCrypto": "新しい暗号通貨を追加",
   "updateCrypto": "暗号通貨を更新",
   "technicalInfo": "技術情報",
@@ -1031,7 +1009,6 @@
   "avalanche": "アバランチ",
   "cardano": "カルダノ",
   "polkadot": "ポルカドット",
-
   "bug": "バグ",
   "featureRequest": "機能リクエスト",
   "discussion": "ディスカッション",
@@ -1044,14 +1021,12 @@
   "reporter": "報告者",
   "assignee": "担当者",
   "issueTimeline": "問題タイムライン",
-
   "legendaryContributor": "伝説的貢献者",
   "eliteContributor": "エリート貢献者",
   "seniorContributor": "シニア貢献者",
   "activeContributor": "アクティブ貢献者",
   "contributor": "貢献者",
   "contributionCount": "貢献回数",
-
   "siteName": "サイト名",
   "siteUrl": "サイトURL",
   "classification": "分類",
@@ -1101,7 +1076,6 @@
   "pleaseEnterTags": "タグを入力してください",
   "pleaseSelectBusinessModel": "ビジネスモデルを選択してください",
   "pleaseEnterCompanyName": "会社名を入力してください",
-
   "websiteDetails": "ウェブサイトの詳細",
   "mainCategory": "メインカテゴリー",
   "subCategory": "サブカテゴリー",
@@ -1120,7 +1094,6 @@
   "seoTitle": "SEOタイトル",
   "seoKeywords": "SEOキーワード",
   "seoDescription": "SEO説明",
-
   "createWebsite": "ウェブサイトを作成",
   "websiteName": "ウェブサイト名",
   "pleaseInputWebsiteName": "ウェブサイト名を入力してください",
@@ -1129,17 +1102,14 @@
   "pleaseInputValidWebsiteLink": "有効なウェブサイトリンクを入力してください",
   "websiteDescription": "ウェブサイトの説明",
   "pleaseInputWebsiteDescription": "ウェブサイトの説明を入力してください",
-
   "socialNetwork": "ソーシャルネットワーク",
   "pleaseInputSubClassification": "サブ分類を入力してください",
   "priorityLevel": "優先度",
   "pleaseInputPriorityLevel": "優先度を入力してください",
-
   "pleaseInputLogoLink": "ロゴリンクを入力してください",
   "pleaseInputFaviconLink": "ファビコンリンクを入力してください",
   "label": "ラベル",
   "pleaseInputLabel": "ラベルを入力してください",
-
   "countryRegion": "国/地域",
   "pleaseSelectCountryRegion": "国/地域を選択してください",
   "pleaseSelectLanguage": "言語を選択してください",
@@ -1150,34 +1120,27 @@
   "pleaseInputSeoTitle": "SEOタイトルを入力してください",
   "pleaseInputSeoKeywords": "SEOキーワードを入力してください",
   "pleaseInputSeoDescription": "SEO説明を入力してください",
-
   "pleaseInputCompanyName": "会社名を入力してください",
   "establishmentYear": "設立年",
   "pleaseInputEstablishmentYear": "設立年を入力してください",
   "freePlusValue": "無料プラス価値",
-
   "contactMailbox": "連絡先メールボックス",
   "pleaseInputContactMailbox": "連絡先メールボックスを入力してください",
-
   "customCss": "カスタムCSS",
   "pleaseInputCustomCss": "カスタムCSSを入力してください",
   "customJavaScript": "カスタムJavaScript",
   "pleaseInputCustomJavaScript": "カスタムJavaScriptを入力してください",
-
   "dataSourceApi": "データソースAPI",
   "pleaseInputDataSourceApi": "データソースAPIを入力してください",
   "relatedWebsites": "関連ウェブサイト",
   "pleaseInputRelatedWebsites": "関連ウェブサイトを入力してください",
   "pleaseInputSocialMediaLinks": "ソーシャルメディアリンクを入力してください",
-
   "managementRemarks": "管理メモ",
   "pleaseInputManagementRemarks": "管理メモを入力してください",
   "customData": "カスタムデータ",
   "pleaseInputCustomData": "カスタムデータを入力してください",
-
   "features": "機能",
   "socialMedia": "ソーシャルメディア",
-
   "androidAppDownloadLink": "Androidアプリのダウンロードリンク",
   "iosAppDownloadLink": "iOSアプリのダウンロードリンク",
   "pleaseInputAndroidAppLink": "Androidアプリのダウンロードリンクを入力してください",
@@ -1195,22 +1158,18 @@
   "harmonyOSApp": "HarmonyOSアプリ",
   "trafficSource": "トラフィックソース",
   "displayMode": "表示モード",
-
   "expressCompanyManagement": "宅配業者管理",
   "addExpressCompany": "宅配業者追加",
   "editExpressCompany": "宅配業者編集",
   "expressCompanyDetails": "宅配業者詳細",
-
   "trackingNumberFormat": "追跡番号フォーマット",
   "pleaseEnterTrackingFormat": "追跡番号フォーマットを入力してください",
   "pleaseEnterWebsite": "ウェブサイトを入力してください",
   "pleaseEnterContactNumber": "連絡先番号を入力してください",
   "trackingFormatExample": "例: ^\\d{12}$",
-
   "fetchCountriesFailed": "国リストの取得に失敗しました",
   "fetchDataFailed": "データの取得に失敗しました",
   "trackingFormat": "追跡番号の形式",
-
   "websiteApplications": "ウェブサイトアプリケーション管理",
   "applicationStatus": "申請状況",
   "reviewComments": "レビューコメント",
@@ -1224,7 +1183,6 @@
   "pleaseInputReviewComments": "レビューコメントを入力してください",
   "batchDeleteSuccess": "バッチ削除に成功しました",
   "batchDeleteFailed": "バッチ削除に失敗しました",
-
   "aiAssistant": "AI アシスタント",
   "online": "オンライン",
   "startNewChat": "新しいチャットを始める",
@@ -1238,7 +1196,6 @@
   "getSessionsFailed": "セッションリストの取得に失敗しました",
   "getMessageHistoryFailed": "メッセージ履歴の取得に失敗しました",
   "imageUploadFailed": "画像のアップロードに失敗しました",
-
   "send": "送信",
   "text": "テキスト",
   "system": "システム",
@@ -1266,16 +1223,13 @@
   "expireTime": "有効期限",
   "markReadSuccess": "既読に成功",
   "markReadFailed": "既読に失敗",
-
   "birthday": "誕生日",
   "oldPassword": "旧パスワード",
   "newPassword": "新しいパスワード",
   "invalidPhone": "無効な電話番号",
   "passwordTooSimple": "パスワードが簡単すぎます",
-
   "logoutConfirm": "ログアウトの確認",
   "logoutConfirmContent": "ログアウトしてもよろしいですか？",
-
   "changePassword": "パスワードを変更",
   "confirmPassword": "パスワードを確認",
   "securitySettings": "セキュリティ設定",
@@ -1285,7 +1239,6 @@
   "enterAssignee": "担当者を入力してください",
   "enterReporter": "報告者を入力してください",
   "onlyShowAssignedToMe": "自分に割り当てられたもの",
-
   "shippingMethodName": "配送方法名",
   "addShippingMethod": "配送方法を追加",
   "editShippingMethod": "配送方法を編集",
@@ -1399,7 +1352,6 @@
   "termsConditions": "利用規約",
   "privacyPolicy": "プライバシーポリシー",
   "selectLanguage": "言語を選択",
-
   "confirmTitle": "操作の確認",
   "enableConfirmTitle": "有効にしますか？",
   "disableConfirmTitle": "無効にしますか？",
@@ -1419,9 +1371,7 @@
   "pleaseInputCategoryId": "カテゴリーIDを入力してください",
   "addHotSearch": "人気検索を追加",
   "editHotSearch": "人気検索を編集",
-
   "appearanceSettings": "外観設定",
-
   "primaryColor": "プライマリカラー",
   "secondaryColor": "セカンダリカラー",
   "fontSize": "フォントサイズ",
@@ -1431,7 +1381,6 @@
   "splashScreenUrl": "スプラッシュ画面URL",
   "homeLayout": "ホームレイアウト",
   "customText": "カスタムテキスト",
-
   "small": "小",
   "large": "大",
   "rounded": "丸み",
@@ -1727,7 +1676,6 @@
   "completionTokens": "完了トークン",
   "totalTokens": "合計トークン",
   "durationMs": "所要時間（ms）",
-  
   "coinType": "コインタイプ",
   "changeType": "変更タイプ",
   "amount": "金額",
@@ -2063,5 +2011,53 @@
   "batchApproveSuccess": "一括承認が完了しました",
   "batchApproveFailed": "一括承認に失敗しました",
   "视频预览": "動画プレビュー",
-  "图片预览": "画像プレビュー"
+  "图片预览": "画像プレビュー",
+  "AI运营发帖素材管理": "AI運用投稿素材管理",
+  "AI机器人行为日志": "AIボット行動ログ",
+  "published": "公開済み",
+  "pleaseSelectData": "データを選択してください",
+  "onlyPendingReviewCanBeApproved": "審査待ちの素材のみ承認できます",
+  "onlyPendingReviewCanBeRejected": "審査待ちの素材のみ拒否できます",
+  "batchReviewToPending": "一括承認して公開待ちにする",
+  "batchReviewSuccess": "一括審査に成功しました",
+  "batchReviewFailed": "一括審査に失敗しました",
+  "batchReject": "一括拒否",
+  "batchRejectSuccess": "一括拒否に成功しました",
+  "batchRejectFailed": "一括拒否に失敗しました",
+  "confirmBatchReject": "選択した素材を一括拒否しますか？",
+  "confirmBatchReviewToPending": "選択した素材を公開待ちに一括承認しますか？",
+  "imageUrl": "画像URL",
+  "todayPostStats": "本日の投稿統計",
+  "todayPublished": "本日公開",
+  "todayCreated": "本日登録",
+  "todayPendingReview": "本日の審査待ち",
+  "agentTypes": "アクティブAgent",
+  "agentShare": "Agent比率",
+  "channelShare": "チャンネル比率",
+  "styleShare": "スタイルタグ比率",
+  "noStyleTags": "スタイルタグなし",
+  "todayStatusShare": "本日登録のステータス",
+  "operatorId": "ボットID",
+  "actionType": "行動タイプ",
+  "actionResult": "行動結果",
+  "actionDescription": "行動説明",
+  "actionDetails": "行動詳細",
+  "generateImage": "画像生成",
+  "postPublish": "投稿を公開",
+  "postLike": "投稿にいいね",
+  "postComment": "投稿にコメント",
+  "resourceId": "リソースID",
+  "postStockReport": "投稿統計レポート",
+  "last7Days": "直近7日",
+  "last14Days": "直近14日",
+  "last30Days": "直近30日",
+  "last90Days": "直近90日",
+  "periodPublished": "期間公開",
+  "periodCreated": "期間登録",
+  "periodPendingReview": "期間審査待ち",
+  "dailyTrend": "日次トレンド",
+  "createdTrend": "登録",
+  "publishedTrend": "公開",
+  "pendingReviewTrend": "審査待ち",
+  "statusShare": "ステータス分布"
 }

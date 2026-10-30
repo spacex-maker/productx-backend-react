@@ -295,7 +295,13 @@
     "AI运营工具": "Strumenti Operazioni IA",
     "社区管理": "Gestione Comunità",
     "生图场景管理": "Gestione Scenari Generazione Immagini",
-    "生图场景分类": "Categorie Scenari Generazione Immagini"
+    "生图场景分类": "Categorie Scenari Generazione Immagini",
+    "提示词商城": "Mercato dei prompt",
+    "AI生成管理": "Gestione generazione IA",
+    "Tavily账号": "Account Tavily",
+    "套餐管理": "Gestione pacchetti",
+    "邀请系统": "Sistema di inviti",
+    "DeepSeek API调用管理": "Gestione chiamate API DeepSeek"
   },
   "confirmDelete": "Conferma eliminazione",
   "countryName": "Nome del paese",
@@ -707,7 +713,6 @@
   "secretKey": "Chiave Segreta",
   "endpoint": "Endpoint",
   "tags": "Tag",
-
   "enterStorageProvider": "Inserisci il Fornitore di Archiviazione",
   "enterStorageType": "Inserisci il Tipo di Archiviazione",
   "enterAccessKey": "Inserisci la Chiave di Accesso",
@@ -730,7 +735,6 @@
   "securityConfig": "Configurazione della Sicurezza",
   "advancedConfig": "Configurazione Avanzata",
   "auditInfo": "Informazioni di Audit",
-
   "compliance": "Conformità",
   "encryptionType": "Tipo di Crittografia",
   "isEncrypted": "È Crittografato",
@@ -740,7 +744,6 @@
   "maxStorageSize": "Dimensione Massima di Archiviazione",
   "maxRequestLimit": "Limite Massimo di Richieste",
   "lastCheckedAt": "Ultima Verifica",
-
   "verifyConfig": "Verifica Configurazione",
   "verifying": "Verifica in corso",
   "verifySuccess": "Verifica riuscita",
@@ -757,13 +760,11 @@
   "aesKeyTooltip": "Questa chiave viene utilizzata per crittografare e memorizzare AccessKey e SecretKey",
   "errorInfo": "Informazioni sull'errore",
   "dataContributors": "Contributori di dati",
-
   "regionsCount": "Numero di Regioni Amministrative",
   "subRegionsCount": "Numero di Sotto-Region",
   "totalPopulation": "Popolazione Totale",
   "totalArea": "Area Totale",
   "tenThousand": "Diecimila",
-
   "regionCodeTip": "Codice della regione amministrativa (paese, provincia, città, ecc.)",
   "countryCodeTip": "Codice paese (es.: CN per la Cina, US per gli Stati Uniti)",
   "localNameTip": "Nome nella lingua locale",
@@ -774,12 +775,10 @@
   "populationTip": "Popolazione",
   "areaKm2Tip": "Area (chilometri quadrati)",
   "regionTip": "Regione (es.: Cina del Nord, Cina del Sud, ecc.)",
-
   "usersCanContactThemselves": "Gli utenti possono contattarsi da soli",
   "callTheErrandRunnerToDeliver": "Chiama il fattorino per consegnare",
   "expressDelivery": "Consegna espressa",
   "logisticsDelivery": "Consegna logistica",
-
   "agentName": "Nome dell'agente",
   "agentType": "Tipo di agente",
   "regionName": "Nome della regione",
@@ -792,7 +791,6 @@
   "tertiaryAgent": "Agente terziario",
   "approved": "Approvato",
   "rejected": "Rifiutato",
-
   "pleaseInputAgentName": "Si prega di inserire il nome dell'agente",
   "pleaseSelectAgentType": "Si prega di selezionare il tipo di agente",
   "pleaseInputRegionCode": "Si prega di inserire il codice della regione",
@@ -820,19 +818,16 @@
   "USD": "Dollaro statunitense",
   "EUR": "Euro",
   "pleaseInputRemarks": "Si prega di inserire le osservazioni",
-
   "regionId": "ID della regione",
   "pleaseSelectCityToGetRegionId": "Si prega di selezionare una città per ottenere l'ID della regione",
   "pleaseSelectCityToGetRegionCode": "Si prega di selezionare una città per ottenere il codice della regione",
   "pleaseSelectCityToGetRegionName": "Si prega di selezionare una città per ottenere il nome della regione",
   "pleaseSelectIsExclusive": "Si prega di selezionare se è esclusivo",
-
   "authorizationPeriod": "Periodo di autorizzazione",
   "agentAuthorizationStartDate": "Data di inizio autorizzazione agente",
   "agentAuthorizationEndDate": "Data di fine autorizzazione agente",
   "pleaseSelectAuthorizationStartDate": "Si prega di selezionare la data di inizio dell'autorizzazione",
   "pleaseSelectAuthorizationEndDate": "Si prega di selezionare la data di fine dell'autorizzazione",
-
   "searchAgentFailed": "Ricerca dell'agente fallita",
   "getCountryListFailed": "Impossibile ottenere l'elenco dei paesi",
   "searchCityFailed": "Ricerca della città fallita",
@@ -842,52 +837,40 @@
   "settlementCurrency": "Valuta di regolamento",
   "pleaseSelectSettlementCurrency": "Si prega di selezionare la valuta di regolamento",
   "cityType": "Tipo di città",
-
   "updateRegionalAgent": "Aggiorna agente regionale",
   "regionInfo": "Informazioni sulla regione",
   "authorizationTime": "Tempo di autorizzazione",
-
   "pleaseSelectAuditStatus": "Stato di revisione",
   "pendingAudit": "Revisione in sospeso",
   "pleaseSelectStatus": "Stato",
   "cooperationStartDate": "Data di inizio cooperazione",
   "cooperationEndDate": "Data di fine cooperazione",
-
   "validationTime": "Tempo di validazione / secondi",
-
   "languageCode": "Codice lingua",
   "englishName": "Nome inglese",
   "nativeName": "Nome nativo",
   "developmentStatus": "Stato di sviluppo",
   "enableStatus": "Stato di abilitazione",
-
   "developed": "Sviluppato",
   "notDeveloped": "Non sviluppato",
   "addLanguage": "Aggiungi lingua",
   "batchEnable": "Abilita batch",
   "batchDisable": "Disabilita batch",
-
   "pleaseSelectRecords": "Seleziona i record da modificare",
-
   "enterLanguageCode": "Inserisci il codice della lingua",
   "enterChineseName": "Inserisci il nome cinese",
   "selectDevelopmentStatus": "Seleziona lo stato di sviluppo",
   "selectEnableStatus": "Seleziona lo stato di abilitazione",
-
   "inputLanguageCode": "Inserisci il codice della lingua",
   "inputEnglishName": "Inserisci il nome inglese",
   "inputChineseName": "Inserisci il nome cinese",
   "inputNativeName": "Inserisci il nome nativo",
-
   "addTitle": "Creare",
   "editTitle": "Modificare",
   "selectRecord": "Seleziona i record da modificare",
-
   "modifyingEnableStatusWillAffectLanguageOptions": "Modificare lo stato di abilitazione influirà sulle opzioni della lingua nel sistema di amministrazione e nell'app",
-
   "confirmStatusChange": "Conferma cambio di stato",
   "confirmLanguageStatusChangeMessage": "Sei sicuro di voler cambiare lo stato della lingua? Questo influirà sulle opzioni linguistiche disponibili nel sistema.",
-
   "addPaymentMethod": "Aggiungi metodo di pagamento",
   "editPaymentMethod": "Modifica metodo di pagamento",
   "paymentMethodName": "Nome del metodo di pagamento",
@@ -929,7 +912,6 @@
   "configJson": "Config JSON",
   "configJsonPlaceholder": "{\"secret_key\":\"xxx\",\"webhook_secret\":\"xxx\"}",
   "badgeTextPlaceholderPayment": "HOT / NEW / 0% commissione",
-
   "clientName": "Nome del cliente",
   "privacyPolicyUrl": "URL dell'informativa sulla privacy",
   "termsConditionsUrl": "URL dei termini e condizioni",
@@ -942,7 +924,6 @@
   "saving": "Salvataggio in corso...",
   "pleaseInput": "Si prega di inserire",
   "getFailed": "Recupero fallito",
-
   "createCurrency": "Aggiungi valuta",
   "currencyName": "Nome della valuta",
   "currencySymbol": "Simbolo della valuta",
@@ -954,7 +935,6 @@
   "currencyDescriptionPlaceholder": "Si prega di inserire la descrizione della valuta in inglese",
   "currencyDescriptionZhTip": "Descrizione della valuta in cinese",
   "currencyDescriptionZhPlaceholder": "Si prega di inserire la descrizione della valuta in cinese",
-
   "basicInformation": "Informazioni di base",
   "addressInformation": "Informazioni sull'indirizzo",
   "selectUser": "Seleziona utente",
@@ -967,7 +947,6 @@
   "usageCount": "Conteggio utilizzo",
   "copySuccessful": "Copia riuscita",
   "invalidPhoneNumber": "Numero di telefono non valido",
-
   "userInfo": "Informazioni utente",
   "bankInfo": "Informazioni bancarie",
   "deliveryInfo": "Informazioni sulla consegna",
@@ -980,7 +959,6 @@
   "delivered": "Consegnato",
   "inTransit": "In transito",
   "deliveryFailed": "Consegna fallita",
-
   "createBank": "Crea banca",
   "bin": "Codice BIN della banca",
   "enterBankBIN": "Inserisci il codice BIN della banca",
@@ -988,7 +966,6 @@
   "systemSupport": "Supporto del sistema",
   "supported": "Supportato",
   "unsupported": "Non supportato",
-
   "createCrypto": "Aggiungi nuova criptovaluta",
   "updateCrypto": "Aggiorna criptovaluta",
   "technicalInfo": "Informazioni tecniche",
@@ -1026,7 +1003,6 @@
   "avalanche": "Avalanche",
   "cardano": "Cardano",
   "polkadot": "Polkadot",
-
   "bug": "Bug",
   "featureRequest": "Richiesta di Funzione",
   "discussion": "Discussione",
@@ -1039,14 +1015,12 @@
   "reporter": "Segnalatore",
   "assignee": "Assegnatario",
   "issueTimeline": "Cronologia del Problema",
-
   "legendaryContributor": "Contributore leggendario",
   "eliteContributor": "Contributore d'élite",
   "seniorContributor": "Contributore senior",
   "activeContributor": "Contributore attivo",
   "contributor": "Contributore",
   "contributionCount": "Conteggio delle contribuzioni",
-
   "siteName": "Nome del sito",
   "siteUrl": "URL del sito",
   "classification": "Classificazione",
@@ -1096,7 +1070,6 @@
   "pleaseEnterTags": "Inserisci i tag",
   "pleaseSelectBusinessModel": "Seleziona il modello di business",
   "pleaseEnterCompanyName": "Inserisci il nome dell'azienda",
-
   "websiteDetails": "Dettagli del sito web",
   "mainCategory": "Categoria principale",
   "subCategory": "Sottocategoria",
@@ -1115,7 +1088,6 @@
   "seoTitle": "Titolo SEO",
   "seoKeywords": "Parole chiave SEO",
   "seoDescription": "Descrizione SEO",
-
   "createWebsite": "Crea sito web",
   "websiteName": "Nome del sito web",
   "pleaseInputWebsiteName": "Per favore, inserisci il nome del sito web",
@@ -1124,17 +1096,14 @@
   "pleaseInputValidWebsiteLink": "Per favore, inserisci un link valido del sito web",
   "websiteDescription": "Descrizione del sito web",
   "pleaseInputWebsiteDescription": "Per favore, inserisci la descrizione del sito web",
-
   "socialNetwork": "Rete sociale",
   "pleaseInputSubClassification": "Per favore, inserisci la sottocategoria",
   "priorityLevel": "Livello di priorità",
   "pleaseInputPriorityLevel": "Per favore, inserisci il livello di priorità",
-
   "pleaseInputLogoLink": "Per favore, inserisci il link del logo",
   "pleaseInputFaviconLink": "Per favore, inserisci il link del favicon",
   "label": "Etichetta",
   "pleaseInputLabel": "Per favore, inserisci l'etichetta",
-
   "countryRegion": "Paese/Regione",
   "pleaseSelectCountryRegion": "Per favore, seleziona un paese o una regione",
   "pleaseSelectLanguage": "Per favore, seleziona una lingua",
@@ -1145,34 +1114,27 @@
   "pleaseInputSeoTitle": "Per favore, inserisci il titolo SEO",
   "pleaseInputSeoKeywords": "Per favore, inserisci le parole chiave SEO",
   "pleaseInputSeoDescription": "Per favore, inserisci la descrizione SEO",
-
   "pleaseInputCompanyName": "Per favore, inserisci il nome della società",
   "establishmentYear": "Anno di fondazione",
   "pleaseInputEstablishmentYear": "Per favore, inserisci l'anno di fondazione",
   "freePlusValue": "Freemium",
-
   "contactMailbox": "Casella di posta di contatto",
   "pleaseInputContactMailbox": "Per favore, inserisci la casella di posta di contatto",
-
   "customCss": "CSS personalizzato",
   "pleaseInputCustomCss": "Per favore, inserisci il CSS personalizzato",
   "customJavaScript": "JavaScript personalizzato",
   "pleaseInputCustomJavaScript": "Per favore, inserisci il JavaScript personalizzato",
-
   "dataSourceApi": "API della fonte dati",
   "pleaseInputDataSourceApi": "Per favore, inserisci l'API della fonte dati",
   "relatedWebsites": "Siti web correlati",
   "pleaseInputRelatedWebsites": "Per favore, inserisci i siti web correlati",
   "pleaseInputSocialMediaLinks": "Per favore, inserisci i link dei social media",
-
   "managementRemarks": "Note di gestione",
   "pleaseInputManagementRemarks": "Per favore, inserisci le note di gestione",
   "customData": "Dati personalizzati",
   "pleaseInputCustomData": "Per favore, inserisci i dati personalizzati",
-
   "features": "Caratteristiche",
   "socialMedia": "Social Media",
-
   "androidAppDownloadLink": "Link di download dell'app Android",
   "iosAppDownloadLink": "Link di download dell'app iOS",
   "pleaseInputAndroidAppLink": "Inserisci il link di download dell'app Android",
@@ -1190,22 +1152,18 @@
   "harmonyOSApp": "App HarmonyOS",
   "trafficSource": "Fonte di traffico",
   "displayMode": "Modalità di visualizzazione",
-
   "expressCompanyManagement": "Gestione Aziende di Corriere",
   "addExpressCompany": "Aggiungi Azienda di Corriere",
   "editExpressCompany": "Modifica Azienda di Corriere",
   "expressCompanyDetails": "Dettagli Azienda di Corriere",
-
   "trackingNumberFormat": "Formato del Numero di Tracciamento",
   "pleaseEnterTrackingFormat": "Per favore inserisci il formato del numero di tracciamento",
   "pleaseEnterWebsite": "Per favore inserisci il sito web",
   "pleaseEnterContactNumber": "Per favore inserisci il numero di contatto",
   "trackingFormatExample": "Esempio: ^\\d{12}$",
-
   "fetchCountriesFailed": "Impossibile recuperare la lista dei paesi",
   "fetchDataFailed": "Impossibile recuperare i dati",
   "trackingFormat": "Formato del numero di tracciamento",
-
   "websiteApplications": "Gestione delle applicazioni del sito web",
   "applicationStatus": "Stato della domanda",
   "reviewComments": "Commenti della revisione",
@@ -1219,7 +1177,6 @@
   "pleaseInputReviewComments": "Inserisci i commenti della revisione",
   "batchDeleteSuccess": "Eliminazione batch riuscita",
   "batchDeleteFailed": "Eliminazione batch fallita",
-
   "aiAssistant": "Assistente IA",
   "online": "Online",
   "startNewChat": "Inizia una nuova chat",
@@ -1233,7 +1190,6 @@
   "getSessionsFailed": "Impossibile ottenere la lista delle sessioni",
   "getMessageHistoryFailed": "Impossibile ottenere la cronologia dei messaggi",
   "imageUploadFailed": "Caricamento immagine fallito",
-
   "send": "Invia",
   "text": "Testo",
   "system": "Sistema",
@@ -1261,16 +1217,13 @@
   "expireTime": "Orario di scadenza",
   "markReadSuccess": "Segnato come letto con successo",
   "markReadFailed": "Segnatura come letto fallita",
-
   "birthday": "Compleanno",
   "oldPassword": "Vecchia password",
   "newPassword": "Nuova password",
   "invalidPhone": "Numero di telefono non valido",
   "passwordTooSimple": "La password è troppo semplice",
-
   "logoutConfirm": "Conferma logout",
   "logoutConfirmContent": "Sei sicuro di voler effettuare il logout?",
-
   "changePassword": "Cambia password",
   "confirmPassword": "Conferma password",
   "securitySettings": "Impostazioni di sicurezza",
@@ -1280,7 +1233,6 @@
   "enterAssignee": "Inserisci il destinatario",
   "enterReporter": "Inserisci il segnalatore",
   "onlyShowAssignedToMe": "Assegnato a me",
-
   "shippingMethodName": "Nome del metodo di spedizione",
   "addShippingMethod": "Aggiungi metodo di spedizione",
   "editShippingMethod": "Modifica metodo di spedizione",
@@ -1413,7 +1365,6 @@
   "pleaseInputCategoryId": "Inserisci l'ID categoria",
   "addHotSearch": "Aggiungi ricerca popolare",
   "editHotSearch": "Modifica ricerca popolare",
-
   "appearanceSettings": "Impostazioni aspetto",
   "primaryColor": "Colore primario",
   "secondaryColor": "Colore secondario",
@@ -1424,7 +1375,6 @@
   "splashScreenUrl": "URL schermata iniziale",
   "homeLayout": "Layout home",
   "customText": "Testo personalizzato",
-
   "small": "Piccolo",
   "large": "Grande",
   "rounded": "Arrotondato",
@@ -1718,7 +1668,6 @@
   "completionTokens": "Token di risposta",
   "totalTokens": "Token totali",
   "durationMs": "Durata (ms)",
-  
   "coinType": "Tipo di valuta",
   "changeType": "Tipo di modifica",
   "amount": "Importo",
@@ -1986,5 +1935,69 @@
   "batchApproveSuccess": "Approvazione in blocco riuscita",
   "batchApproveFailed": "Approvazione in blocco fallita",
   "视频预览": "Anteprima video",
-  "图片预览": "Anteprima immagine"
+  "图片预览": "Anteprima immagine",
+  "AI运营发帖素材管理": "Inventario pubblicazioni IA",
+  "AI机器人行为日志": "Log azioni bot IA",
+  "published": "Pubblicato",
+  "pleaseSelectData": "Seleziona i dati",
+  "onlyPendingReviewCanBeApproved": "Solo gli elementi in revisione possono essere approvati",
+  "onlyPendingReviewCanBeRejected": "Solo gli elementi in revisione possono essere rifiutati",
+  "batchReviewToPending": "Approva in batch (in attesa di pubblicazione)",
+  "batchReviewSuccess": "Revisione batch riuscita",
+  "batchReviewFailed": "Revisione batch non riuscita",
+  "batchReject": "Rifiuta in batch",
+  "batchRejectSuccess": "Rifiuto batch riuscito",
+  "batchRejectFailed": "Rifiuto batch non riuscito",
+  "confirmBatchReject": "Rifiutare gli elementi selezionati?",
+  "confirmBatchReviewToPending": "Approvare i selezionati in attesa di pubblicazione?",
+  "imageUrl": "URL immagine",
+  "width": "Larghezza",
+  "height": "Altezza",
+  "enterWidth": "Inserisci larghezza",
+  "enterHeight": "Inserisci altezza",
+  "todayPostStats": "Statistiche post di oggi",
+  "todayPublished": "Pubblicati oggi",
+  "todayCreated": "Aggiunti oggi",
+  "todayPendingReview": "In revisione oggi",
+  "agentTypes": "Agent attivi",
+  "agentShare": "Quota agent",
+  "channelShare": "Quota canali",
+  "styleShare": "Quota tag stile",
+  "noStyleTags": "Nessun tag di stile",
+  "todayStatusShare": "Ingressi di oggi per stato",
+  "operatorId": "ID bot",
+  "actionType": "Tipo azione",
+  "actionResult": "Risultato azione",
+  "actionDescription": "Descrizione azione",
+  "actionDetails": "Dettagli azione",
+  "generateImage": "Genera immagine",
+  "postPublish": "Pubblica post",
+  "postLike": "Metti mi piace",
+  "postComment": "Commenta post",
+  "addPostStock": "Aggiungi materiale di pubblicazione",
+  "allAgents": "Tutti gli AI",
+  "assignedAgent": "AI assegnato",
+  "categoryTags": "Tag categoria/stile (array JSON)",
+  "editPostStock": "Modifica materiale di pubblicazione",
+  "enterCategoryTags": "Inserisci array JSON, es: [\"cyberpunk\", \"landscape\"]",
+  "enterImageUrl": "Inserisci URL immagine",
+  "pendingPublish": "In attesa di pubblicazione",
+  "pendingReview": "In revisione",
+  "publishTime": "Ora di pubblicazione",
+  "resourceId": "ID risorsa",
+  "selectAgentOptional": "Seleziona AI (opzionale, NULL = qualsiasi AI)",
+  "uploadImageTip": "Carica un'immagine",
+  "postStockReport": "Report pubblicazioni",
+  "last7Days": "7 giorni",
+  "last14Days": "14 giorni",
+  "last30Days": "30 giorni",
+  "last90Days": "90 giorni",
+  "periodPublished": "Pubblicati",
+  "periodCreated": "Aggiunti",
+  "periodPendingReview": "In revisione",
+  "dailyTrend": "Trend giornaliero",
+  "createdTrend": "Ingresso",
+  "publishedTrend": "Pubblicazione",
+  "pendingReviewTrend": "Revisione",
+  "statusShare": "Distribuzione stati"
 }
