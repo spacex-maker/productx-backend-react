@@ -24,10 +24,15 @@ const DeepSeekApiManage = () => {
 
   const [settings, setSettings] = useState(null);
   const [keyModalOpen, setKeyModalOpen] = useState(false);
+  const [aimodelKeyModalOpen, setAimodelKeyModalOpen] = useState(false);
   const [keySaving, setKeySaving] = useState(false);
+  const [aimodelKeySaving, setAimodelKeySaving] = useState(false);
   const [modelSaving, setModelSaving] = useState(false);
+  const [channelSaving, setChannelSaving] = useState(false);
   const [selectedModel, setSelectedModel] = useState(undefined);
+  const [selectedChannel, setSelectedChannel] = useState('deepseek');
   const [keyForm] = Form.useForm();
+  const [aimodelKeyForm] = Form.useForm();
 
   const { selectedRows, selectAll, handleSelectAll, handleSelectRow } = UseSelectableRows();
 
@@ -44,6 +49,7 @@ const DeepSeekApiManage = () => {
       const response = await api.get('/manage/deepseek-api/settings');
       setSettings(response || null);
       setSelectedModel(response?.defaultModelCode);
+      setSelectedChannel(response?.llmDefaultChannel || 'deepseek');
     } catch (e) {
       console.error(e);
       // fallback older endpoint
@@ -106,6 +112,11 @@ const DeepSeekApiManage = () => {
     setKeyModalOpen(true);
   };
 
+  const openAimodelKeyModal = () => {
+    aimodelKeyForm.resetFields();
+    setAimodelKeyModalOpen(true);
+  };
+
   const saveApiKey = async () => {
     try {
       const values = await keyForm.validateFields();
@@ -119,6 +130,22 @@ const DeepSeekApiManage = () => {
       message.error(e?.message || '更新失败');
     } finally {
       setKeySaving(false);
+    }
+  };
+
+  const saveAimodelApiKey = async () => {
+    try {
+      const values = await aimodelKeyForm.validateFields();
+      setAimodelKeySaving(true);
+      await api.post('/manage/deepseek-api/aimodel-api-key', { apiKey: values.apiKey });
+      message.success('Aimodel API Key 已更新');
+      setAimodelKeyModalOpen(false);
+      fetchSettings();
+    } catch (e) {
+      if (e?.errorFields) return;
+      message.error(e?.message || '更新失败');
+    } finally {
+      setAimodelKeySaving(false);
     }
   };
 
@@ -139,7 +166,25 @@ const DeepSeekApiManage = () => {
     }
   };
 
+  const saveDefaultChannel = async () => {
+    if (!selectedChannel) {
+      message.warning('请选择默认通道');
+      return;
+    }
+    try {
+      setChannelSaving(true);
+      await api.post('/manage/deepseek-api/llm-default-channel', { channel: selectedChannel });
+      message.success('系统默认 LLM 通道已更新');
+      fetchSettings();
+    } catch (e) {
+      message.error(e?.message || '更新失败');
+    } finally {
+      setChannelSaving(false);
+    }
+  };
+
   const keyInfo = settings?.apiKey;
+  const aimodelKeyInfo = settings?.aimodelApiKey;
   const modelOptions = (settings?.availableModels || []).map((m) => ({
     value: m.code,
     label: `${m.name}${m.recommended ? '（推荐）' : ''}`,
@@ -150,8 +195,8 @@ const DeepSeekApiManage = () => {
 
   return (
     <div>
-      <Card size="small" title="系统配置" style={{ marginBottom: 16 }}>
-        <Row gutter={[24, 16]} align="middle">
+      <Card size="small" title="系统 LLM 配置" style={{ marginBottom: 16 }}>
+        <Row gutter={[24, 16]} align="top">
           <Col xs={24} md={12}>
             <Space direction="vertical" size={4} style={{ width: '100%' }}>
               <div style={{ fontWeight: 600 }}>DeepSeek API Key</div>
@@ -163,15 +208,54 @@ const DeepSeekApiManage = () => {
                   : '未配置'}
               </div>
               <Button type="primary" onClick={openKeyModal}>
-                配置 API Key
+                配置 DeepSeek Key
               </Button>
+            </Space>
+          </Col>
+          <Col xs={24} md={12}>
+            <Space direction="vertical" size={4} style={{ width: '100%' }}>
+              <div style={{ fontWeight: 600 }}>Aimodel API Key（Qwen3-8B）</div>
+              <div style={{ color: '#666' }}>
+                配置键：{aimodelKeyInfo?.configKey || 'AI_API_KEY_Aimodel'}
+                {' · '}
+                {aimodelKeyInfo?.configured
+                  ? `已配置（${aimodelKeyInfo.maskedKey}，长度 ${aimodelKeyInfo.keyLength}）`
+                  : '未配置'}
+              </div>
+              <div style={{ color: '#888', fontSize: 12 }}>
+                Base URL：{settings?.aimodelBaseUrl || 'https://aimodel-api.aimatex.com/v1/chat/completions'}
+                （sys_config: AI_Aimodel_Base_URL）
+              </div>
+              <Button onClick={openAimodelKeyModal}>配置 Aimodel Key</Button>
+            </Space>
+          </Col>
+          <Col xs={24} md={12}>
+            <Space direction="vertical" size={4} style={{ width: '100%' }}>
+              <div style={{ fontWeight: 600 }}>默认 LLM 通道</div>
+              <div style={{ color: '#666', fontSize: 12 }}>
+                deepseek（默认）或 aimodel（未指定模型时走 qwen3-8b）。配置键 AI_LLM_Default_Channel
+              </div>
+              <Space wrap>
+                <Select
+                  style={{ minWidth: 200 }}
+                  value={selectedChannel}
+                  onChange={setSelectedChannel}
+                  options={[
+                    { value: 'deepseek', label: 'deepseek（DeepSeek）' },
+                    { value: 'aimodel', label: 'aimodel（Qwen3-8B）' },
+                  ]}
+                />
+                <Button type="primary" loading={channelSaving} onClick={saveDefaultChannel}>
+                  保存通道
+                </Button>
+              </Space>
             </Space>
           </Col>
           <Col xs={24} md={12}>
             <Space direction="vertical" size={4} style={{ width: '100%' }}>
               <div style={{ fontWeight: 600 }}>系统默认模型</div>
               <div style={{ color: '#666', fontSize: 12 }}>
-                未在业务里指定模型时使用此项（官网：deepseek-flash / deepseek-v4-pro）
+                未在业务里指定模型时：deepseek 通道用下方模型；aimodel 通道固定 qwen3-8b
               </div>
               <Space wrap>
                 <Select
@@ -294,6 +378,26 @@ const DeepSeekApiManage = () => {
             extra="将写入系统配置 AI_API_KEY_DeepSeek，全站 DeepSeek 调用共用此 Key"
           >
             <Input.Password placeholder="sk-..." autoComplete="off" />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="配置 Aimodel API Key"
+        open={aimodelKeyModalOpen}
+        onCancel={() => setAimodelKeyModalOpen(false)}
+        onOk={saveAimodelApiKey}
+        confirmLoading={aimodelKeySaving}
+        destroyOnClose
+      >
+        <Form form={aimodelKeyForm} layout="vertical">
+          <Form.Item
+            label="API Key"
+            name="apiKey"
+            rules={[{ required: true, message: '请输入 API Key' }]}
+            extra="写入 AI_API_KEY_Aimodel；请求头 Authorization: Bearer amk_..."
+          >
+            <Input.Password placeholder="amk_..." autoComplete="off" />
           </Form.Item>
         </Form>
       </Modal>
