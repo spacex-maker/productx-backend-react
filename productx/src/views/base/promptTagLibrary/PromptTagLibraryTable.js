@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Popconfirm, Space } from 'antd'
 
 const STATUS_MAP = { 0: { color: 'default', text: '禁用' }, 1: { color: 'green', text: '启用' } }
@@ -90,7 +91,7 @@ const PromptTagLibraryTable = ({
                   <Tag color={STATUS_MAP[item.status].color}>{STATUS_MAP[item.status].text}</Tag>
                 ) : '-'}
               </td>
-              <td className="text-truncate">{item.createTime || '-'}</td>
+              <td className="text-truncate">{formatDate(item.createTime)}</td>
               <td>
                 <Space>
                   <Button type="link" onClick={() => handleEditClick(item)} size="small">{t('edit')}</Button>

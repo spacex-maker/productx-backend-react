@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Switch, Tooltip, Image } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -103,8 +104,8 @@ const SysPaymentMethodsTable = ({
             </td>
             <td>{item.isRecommend ? t('yes') : t('no')}</td>
             <td>{item.badgeText || '—'}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td>
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}

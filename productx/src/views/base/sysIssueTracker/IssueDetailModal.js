@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Descriptions, Tag, Avatar, Timeline, Typography } from 'antd'
 import dayjs from 'dayjs'
 import IssueComments from './IssueComments'
@@ -127,7 +128,7 @@ const IssueDetailModal = ({ visible, issue, onCancel }) => {
           </div>
         </Descriptions.Item>
         <Descriptions.Item label={t('createTime')} span={2}>
-          {dayjs(issue.createTime).format('YYYY-MM-DD HH:mm:ss')}
+          {formatDate(issue.createTime)}
         </Descriptions.Item>
         <Descriptions.Item label={t('tags')} span={2}>
           {tags.length > 0 ? tags.map(tag => (

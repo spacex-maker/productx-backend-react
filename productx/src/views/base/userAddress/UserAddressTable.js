@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -129,8 +130,8 @@ const UserAddressTable = ({
               </Tag>
             </td>
             <td className="text-truncate">{item.useCount}</td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td className="text-truncate">{item.updateTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
+            <td className="text-truncate">{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}

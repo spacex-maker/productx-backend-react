@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Popconfirm, Space, Image, Modal } from 'antd'
 import { PlayCircleOutlined } from '@ant-design/icons'
 
@@ -251,7 +252,7 @@ const PromptMarketListingTable = ({
                   '-'
                 )}
               </td>
-              <td className="text-truncate">{item.createTime || '-'}</td>
+              <td className="text-truncate">{formatDate(item.createTime)}</td>
               <td>
                 <Space>
                   <Button type="link" onClick={() => handleEditClick(item)} size="small">

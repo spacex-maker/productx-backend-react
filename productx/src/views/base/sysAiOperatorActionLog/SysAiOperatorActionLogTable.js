@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Tag, Tooltip, Avatar, Space } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
@@ -155,7 +156,7 @@ const SysAiOperatorActionLogTable = ({
             <td className="text-truncate">
               {renderActionDetails(item.actionDetails)}
             </td>
-            <td className="text-truncate">{item.createTime || '-'}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
           </tr>
         ))}
       </tbody>

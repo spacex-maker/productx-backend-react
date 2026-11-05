@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
+import { formatDate as formatDateTz, parseBackendUtc, getAdminTimezone } from "src/utils/dateUtils";
+import dayjs from "dayjs";
 
-const formatDate = (date) => {
-    if (!date) return "-";
-    return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-};
+/** UTC wall clock -> admin browser timezone */
+const formatDate = (date, format = "YYYY-MM-DD HH:mm:ss") => formatDateTz(date, format);
 
 export { formatDate }
 
@@ -13,9 +13,14 @@ function formatTimeDifference(createTime) {
 
   useEffect(() => {
     const updateDifference = () => {
-      const now = new Date();
-      const created = new Date(createTime);
-      const diffInSeconds = Math.floor((now - created) / 1000);
+      const parsed = parseBackendUtc(createTime);
+      if (!parsed || !parsed.isValid()) {
+        setTimeDifference("");
+        return;
+      }
+      const now = dayjs();
+      const created = parsed.tz(getAdminTimezone());
+      const diffInSeconds = Math.max(0, Math.floor(now.diff(created, "second")));
       const hours = Math.floor(diffInSeconds / 3600);
       const minutes = Math.floor((diffInSeconds % 3600) / 60);
       const seconds = diffInSeconds % 60;
@@ -30,9 +35,9 @@ function formatTimeDifference(createTime) {
     };
 
     const interval = setInterval(updateDifference, 1000);
-    updateDifference(); // 初始化调用
+    updateDifference();
 
-    return () => clearInterval(interval); // 清除定时器
+    return () => clearInterval(interval);
   }, [createTime]);
 
   return timeDifference;

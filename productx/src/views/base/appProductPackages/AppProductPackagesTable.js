@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
@@ -65,7 +66,7 @@ const AppProductPackagesTable = ({
             <td>{(item.points || 0) + (item.giftPoints || 0)}</td>
             <td>{STATUS_MAP[item.status] ?? item.status}</td>
             <td>{item.sort}</td>
-            <td>{item.createTime}</td>
+            <td>{formatDate(item.createTime)}</td>
             <td>
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}

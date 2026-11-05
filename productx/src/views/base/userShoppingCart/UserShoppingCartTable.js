@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -61,8 +62,8 @@ const UserShoppingCartTable = ({
             <td>{item.quantity}</td>
             <td>{item.createBy}</td>
             <td>{item.updateBy}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}

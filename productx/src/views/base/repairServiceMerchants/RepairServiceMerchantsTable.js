@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Image, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 import DefaultAvatar from 'src/components/DefaultAvatar';
@@ -140,8 +141,8 @@ const RepairServiceMerchantsTable = ({
                 {item.rating?.toFixed(1)}
               </Tag>
             </td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleViewDetail(item)}>
                 {t('detail')}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Descriptions, Typography, Divider, Space } from 'antd';
 import { 
   TwitterOutlined, 
@@ -212,7 +213,7 @@ const SocialPostsDetailModal = ({
                 </Space>
               }
             >
-              {post.createTime}
+              {formatDate(post.createTime)}
             </Descriptions.Item>
             <Descriptions.Item 
               label={
@@ -222,7 +223,7 @@ const SocialPostsDetailModal = ({
                 </Space>
               }
             >
-              {post.updateTime}
+              {formatDate(post.updateTime)}
             </Descriptions.Item>
             <Descriptions.Item 
               label={

@@ -37,7 +37,9 @@ const updateImageStatus = async (id, newStatus) => {
     }
 };
 
-const formatDate = (date) => {
+import { formatDate } from 'src/utils/dateUtils';
+
+const toUtcQueryParam = (date) => {
     if (!date) return null;
     return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
 };
@@ -128,10 +130,10 @@ const RecordList = () => {
             const params = Object.fromEntries(
                 Object.entries({
                     ...searchParams,
-                    createTimeStart: formatDate(searchParams.createTimeStart),
-                    createTimeEnd: formatDate(searchParams.createTimeEnd),
-                    photoTimeStart: formatDate(searchParams.photoTimeStart),
-                    photoTimeEnd: formatDate(searchParams.photoTimeEnd),
+                    createTimeStart: toUtcQueryParam(searchParams.createTimeStart),
+                    createTimeEnd: toUtcQueryParam(searchParams.createTimeEnd),
+                    photoTimeStart: toUtcQueryParam(searchParams.photoTimeStart),
+                    photoTimeEnd: toUtcQueryParam(searchParams.photoTimeEnd),
                     current,
                     size: pageSize,
                 }).filter(([_, v]) => v !== '' && v !== null)
@@ -499,7 +501,7 @@ const RecordList = () => {
                                               拍摄时间：{item.photoTime.replace('T', ' ')}
                                             </span>
                                                                 <span className="vertical-span">
-                                              上传时间：{item.createTime.replace('T', ' ')}
+                                              上传时间：{formatDate(item.createTime)}
                                             </span>
                                                                 <span className="vertical-span">
                                               修改时间：{item.updateTime.replace('T', ' ')}

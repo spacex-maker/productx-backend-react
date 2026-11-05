@@ -13,6 +13,7 @@ import { cilCloudDownload, cilCopy, cilFile, cilLink } from '@coreui/icons';
 import { message } from 'antd';
 import { DetailModalWrapper } from './styles';
 import styled from 'styled-components';
+import { formatDate } from 'src/utils/dateUtils';
 
 const isImageUrl = (filename) => {
   const ext = filename?.split('.').pop()?.toLowerCase();
@@ -30,17 +31,7 @@ const formatBytes = (bytes, decimals = 2) => {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 };
 
-const formatDate = (date) => {
-  if (!date) return '-';
-  return new Date(date).toLocaleString('zh-CN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  });
-};
+
 
 const ModernDetailWrapper = styled.div`
   .file-header {

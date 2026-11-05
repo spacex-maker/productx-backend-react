@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, theme } from 'antd';
 import { useTranslation } from 'react-i18next';
 import DefaultAvatar from 'src/components/DefaultAvatar';
@@ -140,7 +141,7 @@ const UserTable = ({
               <span className="toggle-switch-slider"></span>
             </label>
           </td>
-          <td className="text-truncate">{item.createTime || '—'}</td>
+          <td className="text-truncate">{formatDate(item.createTime)}</td>
           <td className="fixed-column">
             <Button type="link" size="small" onClick={() => handleEditClick(item)}>{t('update')}</Button>
             <Button type="link" size="small" onClick={() => handleDetailClick(item)}>{t('detail')}</Button>

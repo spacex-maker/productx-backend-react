@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Space, Rate } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, EyeOutlined, NodeIndexOutlined } from '@ant-design/icons';
 
@@ -77,7 +78,7 @@ const LogisticsProvidersTable = ({
             </td>
             <td>{item.lastAuditDate}</td>
             <td>{renderStatus(item.isActive)}</td>
-            <td>{item.createTime}</td>
+            <td>{formatDate(item.createTime)}</td>
             <td className="fixed-column">
               <Space>
                 <Button

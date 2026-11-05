@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Descriptions, Tag, Space, Spin, message, Button, Card, Row, Col, Statistic } from 'antd';
 import { SyncOutlined, CloudOutlined, DatabaseOutlined, FileOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
@@ -194,7 +195,7 @@ const MsxStorageBucketDetailModal = ({
                 </Descriptions.Item>
 
                 <Descriptions.Item label={t('createTime')}>
-                  {detailData.createTime}
+                  {formatDate(detailData.createTime)}
                 </Descriptions.Item>
 
                 <Descriptions.Item label={t('remark')} span={2}>

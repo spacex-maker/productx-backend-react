@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Space, Button } from 'antd';
 import moment from 'moment';
+import { formatDate } from 'src/utils/dateUtils';
 
 const UserRequirementsTable = ({
   data,
@@ -110,13 +111,13 @@ const UserRequirementsTable = ({
       title: t('createTime'),
       dataIndex: 'createTime',
       key: 'createTime',
-      render: (time) => moment(time).format('YYYY-MM-DD HH:mm:ss'),
+      render: (time) => formatDate(time),
     },
     {
       title: t('updateTime'),
       dataIndex: 'updateTime',
       key: 'updateTime',
-      render: (time) => moment(time).format('YYYY-MM-DD HH:mm:ss'),
+      render: (time) => formatDate(time),
     },
     {
       title: t('operation'),

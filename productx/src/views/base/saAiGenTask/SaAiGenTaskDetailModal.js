@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import api from 'src/axiosInstance'
 import { Modal, Image, Spin, Tag, Space, Collapse, Typography, theme, Avatar, Card, Row, Col, Button, message } from 'antd'
 import { DollarOutlined, SyncOutlined } from '@ant-design/icons'
+import { formatDate } from 'src/utils/dateUtils'
 
 const { Text } = Typography
 
@@ -247,9 +248,9 @@ const SaAiGenTaskDetailModal = ({ visible, taskId, onClose, t }) => {
                       '-'
                     )}
                   </InfoRow>
-                  <InfoRow label={t('创建时间')}>{detail.createTime || '-'}</InfoRow>
-                  <InfoRow label={t('开始时间')}>{detail.startTime || '-'}</InfoRow>
-                  <InfoRow label={t('结束时间')}>{detail.endTime || '-'}</InfoRow>
+                  <InfoRow label={t('创建时间')}>{formatDate(detail.createTime)}</InfoRow>
+                  <InfoRow label={t('开始时间')}>{formatDate(detail.startTime)}</InfoRow>
+                  <InfoRow label={t('结束时间')}>{formatDate(detail.endTime)}</InfoRow>
                   <InfoRow label={t('供应商')}>{detail.provider || '-'}</InfoRow>
                   <InfoRow label={t('第三方任务ID')}>{detail.thirdPartyId || '-'}</InfoRow>
                 </div>

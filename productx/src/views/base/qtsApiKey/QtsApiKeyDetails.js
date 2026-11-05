@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Descriptions, Tag } from 'antd';
 import moment from 'moment';
 
@@ -44,10 +45,10 @@ const QtsApiKeyDetails = ({ isVisible, onCancel, apiKeyData }) => {
           {apiKeyData?.lastUsedTime ? moment(apiKeyData.lastUsedTime).format('YYYY-MM-DD HH:mm:ss') : '-'}
         </Descriptions.Item>
         <Descriptions.Item label="创建时间">
-          {moment(apiKeyData?.createTime).format('YYYY-MM-DD HH:mm:ss')}
+          {formatDate(apiKeyData?.createTime)}
         </Descriptions.Item>
         <Descriptions.Item label="更新时间">
-          {moment(apiKeyData?.updateTime).format('YYYY-MM-DD HH:mm:ss')}
+          {formatDate(apiKeyData?.updateTime)}
         </Descriptions.Item>
       </Descriptions>
     </Modal>

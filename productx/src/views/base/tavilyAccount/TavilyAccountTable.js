@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Tag, Space } from 'antd';
 import { EditOutlined, SyncOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
+import { formatDate } from 'src/utils/dateUtils';
 
 const TavilyAccountTable = ({
   data,
@@ -17,11 +17,6 @@ const TavilyAccountTable = ({
   const formatNumber = (num) => {
     if (num === null || num === undefined) return '-';
     return num.toLocaleString();
-  };
-
-  const formatDate = (date) => {
-    if (!date) return '-';
-    return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
   };
 
   return (

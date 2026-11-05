@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Tag, Space, Image, Avatar, Modal } from 'antd'
+import { formatDate } from 'src/utils/dateUtils'
 
 const STATUS_MAP = {
   0: { color: 'default', text: '排队' },
@@ -103,7 +104,7 @@ const SaAiGenTaskTable = ({ data, onViewDetail, t }) => {
           <th>{t('模型')}</th>
           <th>{t('状态')}</th>
           <th>{t('结果预览')}</th>
-          <th>{t('消耗')}</th>
+          <th>{t('消耗')}/{t('耗时(ms)')}</th>
           <th>{t('创建时间')}</th>
           <th>{t('operations')}</th>
         </tr>
@@ -155,8 +156,15 @@ const SaAiGenTaskTable = ({ data, onViewDetail, t }) => {
               <td style={{ position: 'relative' }}>
                 {renderPreview(item)}
               </td>
-              <td>{item.creditsCost ?? 0}</td>
-              <td className="text-truncate">{item.createTime || '-'}</td>
+              <td>
+                <div>{item.creditsCost ?? 0}</div>
+                <div style={{ fontSize: 12, color: '#666', marginTop: 2 }}>
+                  {item.durationMs != null && item.durationMs !== ''
+                    ? `${Number(item.durationMs).toLocaleString()} ms`
+                    : '-'}
+                </div>
+              </td>
+              <td className="text-truncate">{formatDate(item.createTime)}</td>
               <td>
                 <Button type="link" size="small" onClick={() => onViewDetail(item.id)}>
                   {t('详情')}

@@ -1,3 +1,12 @@
+/** 本机 ComfyUI FLUX.3 Klein（与 sa_ai_models.model_code 一致） */
+export const DEFAULT_GENERATION_MODEL_CODE = 'FLUX.3-Klein';
+
+export const isFluxKleinModelCode = (code) => {
+  if (!code) return false;
+  const c = String(code).toLowerCase();
+  return c === 'flux.3-klein' || (c.includes('flux') && c.includes('klein'));
+};
+
 /** 提交前合并生成模型到 modelConfig JSON */
 export const mergeGenerationModelIntoConfig = (values) => {
   const next = { ...values };
@@ -15,9 +24,16 @@ export const mergeGenerationModelIntoConfig = (values) => {
 
   if (next.generationModelCode) {
     config.sdModelCheckpoint = next.generationModelCode;
-    // API 模型（Seedream 等）只需 sdModelCheckpoint，勿重复写入 modelCode 以免被当作 LoRA
+    // API / Comfy 基座只需 sdModelCheckpoint，勿重复写入 modelCode 以免被当作 LoRA
     if (!config.modelCode || config.modelCode === next.generationModelCode) {
       delete config.modelCode;
+    }
+    // 切到 FLUX 时清掉 Seedream 专用字段
+    if (isFluxKleinModelCode(next.generationModelCode)) {
+      delete config.size;
+      delete config.seedreamWatermark;
+      if (!config.width) config.width = 1024;
+      if (!config.height) config.height = 1024;
     }
   }
 

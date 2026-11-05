@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import { resolveGenerationModelCode } from './aiOperatorFormUtils';
@@ -185,7 +186,7 @@ const SysAiOperatorTable = ({
             <td className="text-truncate">{item.totalLikesGiven || 0}</td>
             <td className="text-truncate">{item.totalCommentsGiven || 0}</td>
             <td className="text-truncate">{item.lastActionTime || '-'}</td>
-            <td className="text-truncate">{item.createTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit') || '编辑'}

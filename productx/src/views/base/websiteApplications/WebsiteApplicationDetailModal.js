@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Descriptions, Space, Tag } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -89,7 +90,7 @@ const WebsiteApplicationDetailModal = ({
         </Descriptions.Item>
         
         <Descriptions.Item label={t('createTime')}>
-          {applicationData?.createTime}
+          {formatDate(applicationData?.createTime)}
         </Descriptions.Item>
         
         <Descriptions.Item label={t('createBy')}>

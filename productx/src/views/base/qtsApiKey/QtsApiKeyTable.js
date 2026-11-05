@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Space, Tag } from 'antd';
 import moment from 'moment';
 
@@ -70,7 +71,7 @@ const QtsApiKeyTable = ({
                 {item.status ? '启用' : '禁用'}
               </Tag>
             </td>
-            <td>{moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Space>
                 <Button type="link" onClick={() => handleEditClick(item)}>

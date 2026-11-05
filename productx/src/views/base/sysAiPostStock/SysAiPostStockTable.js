@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Tag, Image } from 'antd';
 import PropTypes from 'prop-types';
+import { formatDate } from 'src/utils/dateUtils';
 
 const SysAiPostStockTable = ({
   data,
@@ -144,8 +145,8 @@ const SysAiPostStockTable = ({
             <td className="text-truncate">{item.width || '-'}</td>
             <td className="text-truncate">{item.height || '-'}</td>
             <td className="text-truncate">{renderCategoryTags(item.categoryTags)}</td>
-            <td className="text-truncate">{item.publishTime || '-'}</td>
-            <td className="text-truncate">{item.createTime}</td>
+            <td className="text-truncate">{formatDate(item.publishTime)}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit') || '编辑'}

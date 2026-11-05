@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Tabs, Descriptions, Button, Input, Form, message, Spin, Space, Typography } from 'antd';
 import { LockOutlined, EyeOutlined, EyeInvisibleOutlined, CopyOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -104,10 +105,10 @@ const WalletDetailModal = ({ isVisible, onCancel, wallet, countries = [] }) => {
                 {wallet.status ? t('enabled') : t('disabled')}
               </Descriptions.Item>
               <Descriptions.Item label={t('createTime')} span={2}>
-                {wallet.createTime}
+                {formatDate(wallet.createTime)}
               </Descriptions.Item>
               <Descriptions.Item label={t('updateTime')} span={2}>
-                {wallet.updateTime}
+                {formatDate(wallet.updateTime)}
               </Descriptions.Item>
             </Descriptions>
           )}

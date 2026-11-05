@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import api from 'src/axiosInstance';
 import { Button, Input, message, Spin, Col, Row, Select, DatePicker, Tabs } from 'antd';
 import Pagination from 'src/components/common/Pagination';
@@ -63,12 +64,12 @@ const ApiAccessLog = () => {
         filteredParams.statusCode = Number(filteredParams.statusCode);
       }
       if (filteredParams.startTime) {
-        filteredParams.startTime = dayjs(filteredParams.startTime).format('YYYY-MM-DD HH:mm:ss');
+        filteredParams.startTime = formatDate(filteredParams.startTime);
       } else {
         delete filteredParams.startTime;
       }
       if (filteredParams.endTime) {
-        filteredParams.endTime = dayjs(filteredParams.endTime).format('YYYY-MM-DD HH:mm:ss');
+        filteredParams.endTime = formatDate(filteredParams.endTime);
       } else {
         delete filteredParams.endTime;
       }
@@ -113,8 +114,8 @@ const ApiAccessLog = () => {
   const totalPages = Math.ceil(totalNum / pageSize) || 1;
 
   const timeRangeForDashboard = {
-    startTime: searchParams.startTime ? dayjs(searchParams.startTime).format('YYYY-MM-DD HH:mm:ss') : undefined,
-    endTime: searchParams.endTime ? dayjs(searchParams.endTime).format('YYYY-MM-DD HH:mm:ss') : undefined,
+    startTime: searchParams.startTime ? formatDate(searchParams.startTime) : undefined,
+    endTime: searchParams.endTime ? formatDate(searchParams.endTime) : undefined,
   };
 
   return (

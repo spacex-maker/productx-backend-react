@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Space } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 
@@ -90,8 +91,8 @@ const LogisticsProviderRoutesTable = ({
             <td>{renderTransportTypes(item)}</td>
             <td>{renderServiceQualityTag(item.serviceQuality)}</td>
             <td>¥{item.estimatedCost.toFixed(2)}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td>{renderStatus(item.status)}</td>
             <td className="fixed-column">
               <Space>

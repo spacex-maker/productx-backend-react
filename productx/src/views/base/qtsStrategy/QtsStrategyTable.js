@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button } from 'antd';
 
 const QtsStrategyTable = ({
@@ -57,8 +58,8 @@ const QtsStrategyTable = ({
             <td>{item.description}</td>
             <td>{item.runInterval}</td>
             <td>{item.status ? '启用' : '禁用'}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 修改

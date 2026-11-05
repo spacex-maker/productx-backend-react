@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Space, Tooltip, Tag } from 'antd';
 import { EyeOutlined, EditOutlined, AuditOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -109,7 +110,7 @@ const WebsiteApplicationTable = ({
               {item.countryCode && countryDisplay(item.countryCode)}
             </td>
             <td>{getStatusTag(item.status)}</td>
-            <td>{item.createTime}</td>
+            <td>{formatDate(item.createTime)}</td>
             <td>
               <Space  >
                 <Tooltip title={t('detail')}>

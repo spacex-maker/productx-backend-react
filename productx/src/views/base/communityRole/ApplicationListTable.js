@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatDate } from 'src/utils/dateUtils'
 import { Tag, Button, Space, Tooltip, Avatar } from 'antd'
 import { CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
@@ -127,7 +128,7 @@ const ApplicationListTable = ({ data, selectedRows, selectAll, onSelectAll, onSe
                     </div>
                   </Tooltip>
                 </td>
-                <td>{item.createTime}</td>
+                <td>{formatDate(item.createTime)}</td>
                 <td>
                   <Space size="small">
                     {item.status === 0 && (

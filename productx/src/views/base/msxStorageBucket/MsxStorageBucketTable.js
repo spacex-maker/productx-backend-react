@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Space, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -122,7 +123,7 @@ const MsxStorageBucketTable = ({
               {formatFileSize(item.totalSize)}
             </td>
             <td className="text-truncate">{item.remark}</td>
-            <td className="text-truncate">{item.createTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
             <td className="fixed-column">
               <Space>
                 <Button type="link" onClick={() => handleDetailClick(item)}>

@@ -7,7 +7,9 @@ import Pagination from 'src/components/common/Pagination';
 import SysAiPostStockTable from './SysAiPostStockTable';
 import UpdateSysAiPostStockModal from './UpdateSysAiPostStockModal';
 import SysAiPostStockCreateModal from './SysAiPostStockCreateModal';
+import PostStockReportStats from './PostStockReportStats';
 import { useTranslation } from 'react-i18next';
+import { getAdminTimezone } from 'src/utils/dateUtils';
 
 const { Option } = Select;
 
@@ -25,6 +27,9 @@ const ListSysAiPostStocks = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [stats, setStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [statsDays, setStatsDays] = useState(7);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [createForm] = Form.useForm();
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
@@ -41,8 +46,30 @@ const ListSysAiPostStocks = () => {
 
   useEffect(() => {
     fetchAgentList();
+  }, []);
+
+  useEffect(() => {
+    fetchReportStats();
+  }, [statsDays]);
+
+  useEffect(() => {
     fetchData();
   }, [currentPage, pageSize, searchParams]);
+
+  const fetchReportStats = async () => {
+    setStatsLoading(true);
+    try {
+      const response = await api.get('/manage/sys-ai-post-stock/report-stats', {
+        params: { timezone: getAdminTimezone(), days: statsDays },
+      });
+      setStats(response?.data || response || null);
+    } catch (error) {
+      console.error('Failed to fetch report stats', error);
+      setStats(null);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
 
   const fetchAgentList = async () => {
     try {
@@ -99,6 +126,7 @@ const ListSysAiPostStocks = () => {
       setIsCreateModalVisible(false);
       createForm.resetFields();
       await fetchData();
+      await fetchReportStats();
     } catch (error) {
       message.error(t('createFailed') || '创建失败');
     }
@@ -111,6 +139,7 @@ const ListSysAiPostStocks = () => {
       setIsUpdateModalVisible(false);
       updateForm.resetFields();
       await fetchData();
+      await fetchReportStats();
     } catch (error) {
       message.error(t('updateFailed') || '更新失败');
     }
@@ -148,6 +177,7 @@ const ListSysAiPostStocks = () => {
           message.success(t('batchReviewSuccess') || '批量审核成功');
           resetSelection();
           await fetchData();
+          await fetchReportStats();
         } catch (error) {
           const errorMessage = error?.response?.data?.message || error?.message || t('batchReviewFailed') || '批量审核失败';
           message.error(errorMessage);
@@ -185,6 +215,7 @@ const ListSysAiPostStocks = () => {
           message.success(t('batchRejectSuccess') || '批量拒绝成功');
           resetSelection();
           await fetchData();
+          await fetchReportStats();
         } catch (error) {
           const errorMessage = error?.response?.data?.message || error?.message || t('batchRejectFailed') || '批量拒绝失败';
           message.error(errorMessage);
@@ -207,6 +238,13 @@ const ListSysAiPostStocks = () => {
 
   return (
     <div>
+      <PostStockReportStats
+        stats={stats}
+        loading={statsLoading}
+        days={statsDays}
+        onDaysChange={setStatsDays}
+        t={t}
+      />
       <div className="card" style={{ marginTop: 0, marginBottom: 0 }}>
         <div className="card-body">
           <Row gutter={16}>
@@ -254,7 +292,14 @@ const ListSysAiPostStocks = () => {
             </Col>
             <Col>
               <Space>
-                <Button type="primary" onClick={fetchData} disabled={isLoading}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    fetchData();
+                    fetchReportStats();
+                  }}
+                  disabled={isLoading}
+                >
                   {isLoading ? <Spin /> : t('search')}
                 </Button>
                 <Button type="primary" onClick={() => setIsCreateModalVisible(true)}>

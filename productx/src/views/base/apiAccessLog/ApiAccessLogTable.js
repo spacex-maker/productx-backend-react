@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Tag, Tooltip, Button, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -132,7 +133,7 @@ const ApiAccessLogTable = ({ data, onRefresh }) => {
                   '-'
                 )}
               </td>
-              <td className="text-truncate">{item.createTime || '-'}</td>
+              <td className="text-truncate">{formatDate(item.createTime)}</td>
               <td>
                 <Button type="link" size="small" onClick={() => handleViewDetail(item)}>
                   {t('viewDetail') || '详情'}

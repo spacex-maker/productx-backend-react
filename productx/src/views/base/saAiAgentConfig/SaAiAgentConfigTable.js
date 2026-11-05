@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Space, Switch, Tag } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -87,7 +88,7 @@ const SaAiAgentConfigTable = ({
               />
             </td>
             <td>{item.isPublic === 1 ? '是' : '否'}</td>
-            <td>{item.createTime || '-'}</td>
+            <td>{formatDate(item.createTime)}</td>
             <td className="fixed-column">
               <Space>
                 <Button type="link" onClick={() => handleEditClick(item)}>

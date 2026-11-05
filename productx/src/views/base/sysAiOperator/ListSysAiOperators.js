@@ -64,8 +64,9 @@ const ListSysAiOperators = () => {
           api.get('/manage/sys-channel/list', {
             params: { currentPage: 1, pageSize: 1000, isActive: true },
           }),
+          // 基座模型 modelLevel=1（含 FLUX.3-Klein / Seedream）；勿用 level=2 LoRA
           api.get('/manage/sa-ai-models/list', {
-            params: { currentPage: 1, pageSize: 1000, status: true, modelLevel: 2 },
+            params: { currentPage: 1, pageSize: 1000, status: true, modelLevel: 1 },
           }),
         ]);
 
@@ -74,8 +75,21 @@ const ListSysAiOperators = () => {
         }
         if (modelRes?.data) {
           const models = modelRes.data;
-          setImageModels(models.filter((m) => ['t2i', 'i2i'].includes(m.modelType)));
-          setVideoModels(models.filter((m) => ['t2v', 'i2v', 'v2v', 'a2v'].includes(m.modelType)));
+          const preferFlux = (a, b) => {
+            const score = (m) => {
+              const code = String(m.modelCode || '').toLowerCase();
+              if (code === 'flux.3-klein' || (code.includes('flux') && code.includes('klein'))) return 0;
+              if (code.includes('flux')) return 1;
+              return 2;
+            };
+            return score(a) - score(b) || String(a.modelName || '').localeCompare(String(b.modelName || ''));
+          };
+          setImageModels(
+            models.filter((m) => ['t2i', 'i2i'].includes(m.modelType)).sort(preferFlux)
+          );
+          setVideoModels(
+            models.filter((m) => ['t2v', 'i2v', 'v2v', 'a2v'].includes(m.modelType))
+          );
         }
       } catch (error) {
         console.error('Failed to fetch channel/model meta', error);

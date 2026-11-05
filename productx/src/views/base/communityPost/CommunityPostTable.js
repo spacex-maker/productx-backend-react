@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Image, Avatar } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -158,7 +159,7 @@ const CommunityPostTable = ({
               <td className="text-truncate">{item.likeCount || 0}</td>
               <td className="text-truncate">{item.commentCount || 0}</td>
               <td className="text-truncate">{item.collectCount || 0}</td>
-              <td className="text-truncate">{item.createTime}</td>
+              <td className="text-truncate">{formatDate(item.createTime)}</td>
               <td className="fixed-column">
                 <Button type="link" onClick={() => handleEditClick(item)}>
                   {t('edit') || '编辑'}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Tag, Button, Image } from 'antd';
 import { useTranslation } from 'react-i18next';
 import DefaultAvatar from 'src/components/DefaultAvatar';
@@ -112,8 +113,8 @@ const ObjectStorageTable = ({
             <td className="text-center">
               <Tag color={getStatusTagColor(item.status)}>{t(item.status)}</Tag>
             </td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td className="text-truncate">{item.updateTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
+            <td className="text-truncate">{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleDetailClick(item)}>
                 {t('detail')}

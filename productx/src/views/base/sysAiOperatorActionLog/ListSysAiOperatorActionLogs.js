@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import api from 'src/axiosInstance';
 import { Button, Form, Input, message, Spin, Col, Row, Space, Select, DatePicker } from 'antd';
 import { UseSelectableRows } from 'src/components/common/UseSelectableRows';
@@ -62,12 +63,12 @@ const ListSysAiOperatorActionLogs = () => {
         filteredParams.userId = Number(filteredParams.userId);
       }
       if (filteredParams.startTime) {
-        filteredParams.startTime = dayjs(filteredParams.startTime).format('YYYY-MM-DD HH:mm:ss');
+        filteredParams.startTime = formatDate(filteredParams.startTime);
       } else {
         delete filteredParams.startTime;
       }
       if (filteredParams.endTime) {
-        filteredParams.endTime = dayjs(filteredParams.endTime).format('YYYY-MM-DD HH:mm:ss');
+        filteredParams.endTime = formatDate(filteredParams.endTime);
       } else {
         delete filteredParams.endTime;
       }

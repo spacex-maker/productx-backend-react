@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Form, Input, message, Alert, Space, Typography, Tabs, Select, Pagination, Tag, Button } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -315,7 +316,7 @@ const BatchSendEmailModal = ({ isVisible, onCancel, onSuccess, selectedUsers = [
                         </tr>
                       )}
                       {logList.map((item) => (
-                        <tr key={item.id || `${item.toEmail}-${item.createTime}`}>
+                        <tr key={item.id || `${item.toEmail}-${formatDate(item.createTime)}`}>
                           <td className="text-truncate" title={item.toEmail}>
                             {item.toEmail || '—'}
                           </td>
@@ -334,8 +335,8 @@ const BatchSendEmailModal = ({ isVisible, onCancel, onSuccess, selectedUsers = [
                             )}
                             {item.status !== 0 && item.status !== 1 && item.status !== 2 && (item.status ?? '—')}
                           </td>
-                          <td className="text-truncate" title={item.createTime}>
-                            {item.createTime || '—'}
+                          <td className="text-truncate" title={formatDate(item.createTime)}>
+                            {formatDate(item.createTime)}
                           </td>
                         </tr>
                       ))}

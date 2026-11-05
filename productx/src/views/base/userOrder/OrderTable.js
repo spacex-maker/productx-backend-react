@@ -109,7 +109,7 @@ const OrderTable = ({
                 <td className="text-truncate" title={item.paymentType}>
                   {parsePaymentType(item.paymentType) || '—'}
                 </td>
-                <td className="text-truncate" title={item.payTime}>
+                <td className="text-truncate" title={formatDate(item.payTime)}>
                   {item.payTime ? formatDate(item.payTime) : '—'}
                 </td>
                 <td className="text-truncate" title={item.totalAmount}>

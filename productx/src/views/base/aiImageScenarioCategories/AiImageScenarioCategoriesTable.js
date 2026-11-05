@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Switch, Tag, Popconfirm, Space, Badge } from 'antd';
 
 const AiImageScenarioCategoriesTable = ({
@@ -101,8 +102,8 @@ const AiImageScenarioCategoriesTable = ({
                 onChange={(checked) => handleStatusChange(item.id, checked)}
               />
             </td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td className="text-truncate">{item.updateTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
+            <td className="text-truncate">{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Space>
                 <Button type="link" onClick={() => handleEditClick(item)} size="small">

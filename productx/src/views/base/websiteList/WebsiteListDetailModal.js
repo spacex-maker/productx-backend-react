@@ -35,6 +35,7 @@ import {
   CloudOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import { formatDate } from 'src/utils/dateUtils';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -68,9 +69,6 @@ const WebsiteListDetailModal = ({
 
   const socialLinks = websiteData?.socialLinks ? JSON.parse(websiteData.socialLinks) : {};
 
-  const formatDateTime = (dateString) => {
-    return dateString ? dayjs(dateString).format('YYYY-MM-DD HH:mm:ss') : '-';
-  };
 
   return (
     <Modal
@@ -349,21 +347,21 @@ const WebsiteListDetailModal = ({
               <Col span={8}>
                 <Statistic
                   title={t('createTime')}
-                  value={formatDateTime(websiteData?.createTime)}
+                  value={formatDate(websiteData?.createTime)}
                   prefix={<FieldTimeOutlined />}
                 />
               </Col>
               <Col span={8}>
                 <Statistic
                   title={t('updateTime')}
-                  value={formatDateTime(websiteData?.updateTime)}
+                  value={formatDate(websiteData?.updateTime)}
                   prefix={<FieldTimeOutlined />}
                 />
               </Col>
               <Col span={8}>
                 <Statistic
                   title={t('lastAccessed')}
-                  value={formatDateTime(websiteData?.lastAccessed)}
+                  value={formatDate(websiteData?.lastAccessed)}
                   prefix={<FieldTimeOutlined />}
                 />
               </Col>

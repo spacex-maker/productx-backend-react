@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import api from 'src/axiosInstance';
 import 'src/scss/_custom.scss';
 import { Modal, Button, Form, Input, message, Spin, Progress } from 'antd';
@@ -460,7 +461,7 @@ const ResourceList = () => {
               <strong>是否公开:</strong> {selectedItem.isPublic ? '是' : '否'}
             </p>
             <p>
-              <strong>上传时间:</strong> {selectedItem.createTime}
+              <strong>上传时间:</strong> {formatDate(selectedItem.createTime)}
             </p>
             {selectedItem.fileUrls &&
               selectedItem.fileUrls.map((url, index) => (

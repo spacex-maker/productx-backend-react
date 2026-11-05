@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 
 const QtsSystemLogTable = ({ data }) => {
   return (
@@ -20,8 +21,8 @@ const QtsSystemLogTable = ({ data }) => {
             <td>{item.logLevel}</td>
             <td>{item.message}</td>
             <td>{item.exception}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
           </tr>
         ))}
       </tbody>

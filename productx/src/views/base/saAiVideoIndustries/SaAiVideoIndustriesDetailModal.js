@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Modal, Descriptions, Badge, Spin, Space, Tag, Image } from 'antd';
 import {
   InfoCircleOutlined,
@@ -321,7 +322,7 @@ const SaAiVideoIndustriesDetailModal = ({ isVisible, onCancel, industryId }) => 
                 </Space>
               }
             >
-              {industryData.createTime || '-'}
+              {formatDate(industryData.createTime)}
             </Descriptions.Item>
 
             <Descriptions.Item
@@ -332,7 +333,7 @@ const SaAiVideoIndustriesDetailModal = ({ isVisible, onCancel, industryId }) => 
                 </Space>
               }
             >
-              {industryData.updateTime || '-'}
+              {formatDate(industryData.updateTime)}
             </Descriptions.Item>
           </Descriptions>
         )}

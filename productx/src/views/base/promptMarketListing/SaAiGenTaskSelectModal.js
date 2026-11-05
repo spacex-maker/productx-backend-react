@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import api from 'src/axiosInstance'
 import { Modal, Input, Select, Button, Spin, message, Row, Col, Pagination, Image, Tag, Space, Avatar } from 'antd'
 import { useTranslation } from 'react-i18next'
+import { formatDate } from 'src/utils/dateUtils'
 
 const { Option } = Select
 
@@ -232,7 +233,7 @@ const SaAiGenTaskSelectModal = ({ visible, onClose, onSelect, t }) => {
                         <span style={{ color: '#999' }}>-</span>
                       )}
                     </td>
-                    <td className="text-truncate">{item.createTime || '-'}</td>
+                    <td className="text-truncate">{formatDate(item.createTime)}</td>
                     <td>
                       <Button type="primary" size="small" onClick={() => handleSelectTask(item)}>
                         {t('选择')}

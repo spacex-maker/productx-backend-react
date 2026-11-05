@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { formatDate } from 'src/utils/dateUtils'
 import { List, Avatar, Form, Button, Input, message } from 'antd'
 import { UserOutlined, SendOutlined } from '@ant-design/icons'
 import api from 'src/axiosInstance'
@@ -126,7 +127,7 @@ const IssueComments = ({ issueId }) => {
                     {item.commenter}
                   </span>
                   <span style={{ color: '#999' }}>
-                    {dayjs(item.createTime).format('MM-DD HH:mm')}
+                    {formatDate(item.createTime, 'MM-DD HH:mm')}
                   </span>
                 </div>
               }

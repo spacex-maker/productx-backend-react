@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Space, Tooltip, Tag, Spin, Switch } from 'antd';
 import { EyeOutlined, EditOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -134,7 +135,7 @@ const WebsiteListTable = ({
                   <Tag>{t('numberOfLikes')}: {item.likes || 0}</Tag>
                 </Space>
               </td>
-              <td>{dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</td>
+              <td>{formatDate(item.createTime)}</td>
               <td>
                 <Space size={8}>
                   <Button

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Space, Tag } from 'antd';
 import PropTypes from 'prop-types';
 
@@ -121,8 +122,8 @@ const MsxCloudProviderRegionsTable = ({
                 <Tag color="warning">{t('inactive')}</Tag>
               )}
             </td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td className="text-truncate">{item.updateTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
+            <td className="text-truncate">{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Space size={0}>
                 <Button type="link" onClick={() => handleViewClick(item)}>

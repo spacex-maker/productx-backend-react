@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Switch } from 'antd';
 
 const CreemProductConfigTable = ({
@@ -90,8 +91,8 @@ const CreemProductConfigTable = ({
               />
             </td>
             <td className="text-truncate">{item.sortOrder}</td>
-            <td className="text-truncate">{item.createTime}</td>
-            <td className="text-truncate">{item.updateTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
+            <td className="text-truncate">{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}

@@ -7,7 +7,9 @@ import { HandleBatchDelete } from 'src/components/common/HandleBatchDelete';
 
 const { RangePicker } = DatePicker;
 
-const formatDate = (date) => {
+import { formatDate } from 'src/utils/dateUtils';
+
+const toUtcQueryParam = (date) => {
     if (!date) return null;
     return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
 };
@@ -44,8 +46,8 @@ const PathAccessLogManagement = () => {
             const params = Object.fromEntries(
                 Object.entries({
                     ...searchParams,
-                    createTimeStart: formatDate(searchParams.createTimeStart),
-                    createTimeEnd: formatDate(searchParams.createTimeEnd),
+                    createTimeStart: toUtcQueryParam(searchParams.createTimeStart),
+                    createTimeEnd: toUtcQueryParam(searchParams.createTimeEnd),
                     current,
                     size: pageSize,
                 }).filter(([_, v]) => v !== '' && v !== null)

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Space, Tag, Select } from 'antd';
 
 const { Option } = Select;
@@ -124,7 +125,7 @@ const UserFeedbackTable = ({
               </Select>
             </td>
             <td>{item.contact || '-'}</td>
-            <td>{item.createTime}</td>
+            <td>{formatDate(item.createTime)}</td>
             <td className="fixed-column">
               <Space>
                 <Button type="link" onClick={() => handleViewDetail(item)}>

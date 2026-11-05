@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Descriptions, Tag, Button, Input, Space, message, Modal, List, Card, theme, Image } from 'antd';
 import { PaperClipOutlined, DownloadOutlined, EyeOutlined, FileImageOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -121,8 +122,8 @@ const UserFeedbackDetail = ({ feedback, onReply, onStatusChange, t }) => {
             </Descriptions.Item>
           </>
         )}
-        <Descriptions.Item label={t('createTime')}>{feedback.createTime}</Descriptions.Item>
-        <Descriptions.Item label={t('updateTime')}>{feedback.updateTime || '-'}</Descriptions.Item>
+        <Descriptions.Item label={t('createTime')}>{formatDate(feedback.createTime)}</Descriptions.Item>
+        <Descriptions.Item label={t('updateTime')}>{formatDate(feedback.updateTime)}</Descriptions.Item>
         <Descriptions.Item label={t('createdBy')}>{feedback.createBy || '-'}</Descriptions.Item>
         <Descriptions.Item label={t('updatedBy')}>{feedback.updateBy || '-'}</Descriptions.Item>
         <Descriptions.Item label={t('attachmentList')} span={2}>

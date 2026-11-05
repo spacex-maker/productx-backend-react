@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Space, Badge, Tooltip } from 'antd';
 import { 
   TwitterOutlined, 
@@ -118,8 +119,8 @@ const SocialMonitoredAccountsTable = ({
             </td>
             <td>{item.accountDescription}</td>
             <td>{getStatusTag(item.status, item.monitorExceptionInfo)}</td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td>
               <Space>
                 <Button type="link" onClick={() => handleEditClick(item)}>

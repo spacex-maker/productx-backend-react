@@ -103,7 +103,7 @@ const SysDailyChallengeTable = ({
               <td className="text-truncate">{item.startTime ? formatDate(item.startTime) : '-'}</td>
               <td className="text-truncate">{item.endTime ? formatDate(item.endTime) : '-'}</td>
               <td className="text-truncate">{item.votingEndTime ? formatDate(item.votingEndTime) : '-'}</td>
-              <td className="text-truncate">{item.createTime}</td>
+              <td className="text-truncate">{formatDate(item.createTime)}</td>
               <td className="fixed-column">
                 <Button type="link" onClick={() => handleEditClick(item)}>
                   {t('edit')}

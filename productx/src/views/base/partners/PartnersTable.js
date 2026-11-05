@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Image } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -96,8 +97,8 @@ const PartnersTable = ({
                 <span className="toggle-switch-slider"></span>
               </label>
             </td>
-            <td className="text-truncate align-middle">{item.createTime}</td>
-            <td className="text-truncate align-middle">{item.updateTime}</td>
+            <td className="text-truncate align-middle">{formatDate(item.createTime)}</td>
+            <td className="text-truncate align-middle">{formatDate(item.updateTime)}</td>
             <td className="text-truncate align-middle">{item.createBy}</td>
             <td className="text-truncate align-middle">{item.updateBy}</td>
             <td className="fixed-column align-middle">

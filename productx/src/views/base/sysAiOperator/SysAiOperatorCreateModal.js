@@ -3,7 +3,7 @@ import { Modal, Form, Input, Select, Switch, InputNumber, Row, Col } from 'antd'
 import PropTypes from 'prop-types';
 import UserSearchSelect from 'src/views/common/UserSearchSelect';
 import AiOperatorPostConfigFields from './AiOperatorPostConfigFields';
-import { mergeGenerationModelIntoConfig } from './aiOperatorFormUtils';
+import { mergeGenerationModelIntoConfig, DEFAULT_GENERATION_MODEL_CODE } from './aiOperatorFormUtils';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -114,6 +114,7 @@ const SysAiOperatorCreateModal = ({
           postSourceType: 'STOCK_POOL',
           postFrequencyDays: 1,
           generationMediaType: 'IMAGE',
+          generationModelCode: DEFAULT_GENERATION_MODEL_CODE,
           status: true,
           tokenUsageLimit: 1000,
           interestedTags: [],

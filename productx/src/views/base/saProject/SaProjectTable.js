@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Space, Avatar, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 
@@ -82,8 +83,8 @@ const SaProjectTable = ({
                 <span className="toggle-switch-slider"></span>
               </label>
             </td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td className="fixed-column">
               <Space>
                 <Button type="link" onClick={() => handleDetailClick(item)}>

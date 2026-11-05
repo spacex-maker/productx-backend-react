@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Typography, Space } from 'antd';
 import { 
   TwitterOutlined, 
@@ -195,8 +196,8 @@ const SocialPostsTable = ({
                 </div>
               </div>
             </td>
-            <td>{item.createTime}</td>
-            <td>{item.updateTime}</td>
+            <td>{formatDate(item.createTime)}</td>
+            <td>{formatDate(item.updateTime)}</td>
             <td>
               <Space>
                 <Button 

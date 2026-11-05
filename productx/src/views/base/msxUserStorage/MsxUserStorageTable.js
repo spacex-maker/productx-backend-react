@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatDate } from 'src/utils/dateUtils'
 import { Button, Tag, Space, Progress } from 'antd';
 import PropTypes from 'prop-types';
 import { formatBytes } from 'src/utils/format';
@@ -176,7 +177,7 @@ const MsxUserStorageTable = ({
                 />
               </div>
             </td>
-            <td className="text-truncate">{item.createTime}</td>
+            <td className="text-truncate">{formatDate(item.createTime)}</td>
             <td className="fixed-column">
               <Button type="link" onClick={() => handleEditClick(item)}>
                 {t('edit')}
